@@ -70,8 +70,8 @@ public struct QProgressDialog : QDialog
 	public static extern void QProgressDialog_SetCancelButtonText(Self* c_this, libqt_string text);
 	[LinkName("QProgressDialog_SetMinimumDuration")]
 	public static extern void QProgressDialog_SetMinimumDuration(Self* c_this, int32 ms);
-	[LinkName("QProgressDialog_Canceled")]
-	public static extern void QProgressDialog_Canceled(Self* c_this);
+	[LinkName("QProgressDialog_Connect_Canceled")]
+	public static extern void QProgressDialog_Connect_Canceled(Self* c_this, c_intptr slot);
 	[LinkName("QProgressDialog_ResizeEvent")]
 	public static extern void QProgressDialog_ResizeEvent(Self* c_this, QResizeEvent* event);
 	[LinkName("QProgressDialog_CloseEvent")]

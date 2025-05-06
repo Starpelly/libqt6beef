@@ -104,18 +104,18 @@ public struct QIODevice : QIODeviceBase
 	public static extern bool QIODevice_GetChar(Self* c_this, char8[] c);
 	[LinkName("QIODevice_ErrorString")]
 	public static extern libqt_string QIODevice_ErrorString(Self* c_this);
-	[LinkName("QIODevice_ReadyRead")]
-	public static extern void QIODevice_ReadyRead(Self* c_this);
-	[LinkName("QIODevice_ChannelReadyRead")]
-	public static extern void QIODevice_ChannelReadyRead(Self* c_this, int32 channel);
-	[LinkName("QIODevice_BytesWritten")]
-	public static extern void QIODevice_BytesWritten(Self* c_this, int64 bytes);
-	[LinkName("QIODevice_ChannelBytesWritten")]
-	public static extern void QIODevice_ChannelBytesWritten(Self* c_this, int32 channel, int64 bytes);
-	[LinkName("QIODevice_AboutToClose")]
-	public static extern void QIODevice_AboutToClose(Self* c_this);
-	[LinkName("QIODevice_ReadChannelFinished")]
-	public static extern void QIODevice_ReadChannelFinished(Self* c_this);
+	[LinkName("QIODevice_Connect_ReadyRead")]
+	public static extern void QIODevice_Connect_ReadyRead(Self* c_this, c_intptr slot);
+	[LinkName("QIODevice_Connect_ChannelReadyRead")]
+	public static extern void QIODevice_Connect_ChannelReadyRead(Self* c_this, c_intptr slot);
+	[LinkName("QIODevice_Connect_BytesWritten")]
+	public static extern void QIODevice_Connect_BytesWritten(Self* c_this, c_intptr slot);
+	[LinkName("QIODevice_Connect_ChannelBytesWritten")]
+	public static extern void QIODevice_Connect_ChannelBytesWritten(Self* c_this, c_intptr slot);
+	[LinkName("QIODevice_Connect_AboutToClose")]
+	public static extern void QIODevice_Connect_AboutToClose(Self* c_this, c_intptr slot);
+	[LinkName("QIODevice_Connect_ReadChannelFinished")]
+	public static extern void QIODevice_Connect_ReadChannelFinished(Self* c_this, c_intptr slot);
 	[LinkName("QIODevice_ReadData")]
 	public static extern int64 QIODevice_ReadData(Self* c_this, char8[] data, int64 maxlen);
 	[LinkName("QIODevice_ReadLineData")]

@@ -36,8 +36,8 @@ public struct QStatusBar : QWidget
 	public static extern void QStatusBar_ShowMessage(Self* c_this, libqt_string text);
 	[LinkName("QStatusBar_ClearMessage")]
 	public static extern void QStatusBar_ClearMessage(Self* c_this);
-	[LinkName("QStatusBar_MessageChanged")]
-	public static extern void QStatusBar_MessageChanged(Self* c_this, libqt_string text);
+	[LinkName("QStatusBar_Connect_MessageChanged")]
+	public static extern void QStatusBar_Connect_MessageChanged(Self* c_this, c_intptr slot);
 	[LinkName("QStatusBar_ShowEvent")]
 	public static extern void QStatusBar_ShowEvent(Self* c_this, QShowEvent* param1);
 	[LinkName("QStatusBar_PaintEvent")]

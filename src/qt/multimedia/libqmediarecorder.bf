@@ -117,38 +117,38 @@ public struct QMediaRecorder : QObject
 	public static extern void QMediaRecorder_Pause(Self* c_this);
 	[LinkName("QMediaRecorder_Stop")]
 	public static extern void QMediaRecorder_Stop(Self* c_this);
-	[LinkName("QMediaRecorder_RecorderStateChanged")]
-	public static extern void QMediaRecorder_RecorderStateChanged(Self* c_this, int64 state);
-	[LinkName("QMediaRecorder_DurationChanged")]
-	public static extern void QMediaRecorder_DurationChanged(Self* c_this, int64 duration);
-	[LinkName("QMediaRecorder_ActualLocationChanged")]
-	public static extern void QMediaRecorder_ActualLocationChanged(Self* c_this, QUrl* location);
-	[LinkName("QMediaRecorder_EncoderSettingsChanged")]
-	public static extern void QMediaRecorder_EncoderSettingsChanged(Self* c_this);
-	[LinkName("QMediaRecorder_ErrorOccurred")]
-	public static extern void QMediaRecorder_ErrorOccurred(Self* c_this, int64 errorVal, libqt_string errorString);
-	[LinkName("QMediaRecorder_ErrorChanged")]
-	public static extern void QMediaRecorder_ErrorChanged(Self* c_this);
-	[LinkName("QMediaRecorder_MetaDataChanged")]
-	public static extern void QMediaRecorder_MetaDataChanged(Self* c_this);
-	[LinkName("QMediaRecorder_MediaFormatChanged")]
-	public static extern void QMediaRecorder_MediaFormatChanged(Self* c_this);
-	[LinkName("QMediaRecorder_EncodingModeChanged")]
-	public static extern void QMediaRecorder_EncodingModeChanged(Self* c_this);
-	[LinkName("QMediaRecorder_QualityChanged")]
-	public static extern void QMediaRecorder_QualityChanged(Self* c_this);
-	[LinkName("QMediaRecorder_VideoResolutionChanged")]
-	public static extern void QMediaRecorder_VideoResolutionChanged(Self* c_this);
-	[LinkName("QMediaRecorder_VideoFrameRateChanged")]
-	public static extern void QMediaRecorder_VideoFrameRateChanged(Self* c_this);
-	[LinkName("QMediaRecorder_VideoBitRateChanged")]
-	public static extern void QMediaRecorder_VideoBitRateChanged(Self* c_this);
-	[LinkName("QMediaRecorder_AudioBitRateChanged")]
-	public static extern void QMediaRecorder_AudioBitRateChanged(Self* c_this);
-	[LinkName("QMediaRecorder_AudioChannelCountChanged")]
-	public static extern void QMediaRecorder_AudioChannelCountChanged(Self* c_this);
-	[LinkName("QMediaRecorder_AudioSampleRateChanged")]
-	public static extern void QMediaRecorder_AudioSampleRateChanged(Self* c_this);
+	[LinkName("QMediaRecorder_Connect_RecorderStateChanged")]
+	public static extern void QMediaRecorder_Connect_RecorderStateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_DurationChanged")]
+	public static extern void QMediaRecorder_Connect_DurationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_ActualLocationChanged")]
+	public static extern void QMediaRecorder_Connect_ActualLocationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_EncoderSettingsChanged")]
+	public static extern void QMediaRecorder_Connect_EncoderSettingsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_ErrorOccurred")]
+	public static extern void QMediaRecorder_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_ErrorChanged")]
+	public static extern void QMediaRecorder_Connect_ErrorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_MetaDataChanged")]
+	public static extern void QMediaRecorder_Connect_MetaDataChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_MediaFormatChanged")]
+	public static extern void QMediaRecorder_Connect_MediaFormatChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_EncodingModeChanged")]
+	public static extern void QMediaRecorder_Connect_EncodingModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_QualityChanged")]
+	public static extern void QMediaRecorder_Connect_QualityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_VideoResolutionChanged")]
+	public static extern void QMediaRecorder_Connect_VideoResolutionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_VideoFrameRateChanged")]
+	public static extern void QMediaRecorder_Connect_VideoFrameRateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_VideoBitRateChanged")]
+	public static extern void QMediaRecorder_Connect_VideoBitRateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_AudioBitRateChanged")]
+	public static extern void QMediaRecorder_Connect_AudioBitRateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_AudioChannelCountChanged")]
+	public static extern void QMediaRecorder_Connect_AudioChannelCountChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaRecorder_Connect_AudioSampleRateChanged")]
+	public static extern void QMediaRecorder_Connect_AudioSampleRateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QMediaRecorder_Tr2")]
 	public static extern libqt_string QMediaRecorder_Tr2(char8[] s, char8[] c);
 	[LinkName("QMediaRecorder_Tr3")]

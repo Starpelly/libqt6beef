@@ -166,20 +166,20 @@ public struct QLineEdit : QWidget
 	public static extern void QLineEdit_Insert(Self* c_this, libqt_string param1);
 	[LinkName("QLineEdit_CreateStandardContextMenu")]
 	public static extern QMenu* QLineEdit_CreateStandardContextMenu(Self* c_this);
-	[LinkName("QLineEdit_TextChanged")]
-	public static extern void QLineEdit_TextChanged(Self* c_this, libqt_string param1);
-	[LinkName("QLineEdit_TextEdited")]
-	public static extern void QLineEdit_TextEdited(Self* c_this, libqt_string param1);
-	[LinkName("QLineEdit_CursorPositionChanged")]
-	public static extern void QLineEdit_CursorPositionChanged(Self* c_this, int32 param1, int32 param2);
-	[LinkName("QLineEdit_ReturnPressed")]
-	public static extern void QLineEdit_ReturnPressed(Self* c_this);
-	[LinkName("QLineEdit_EditingFinished")]
-	public static extern void QLineEdit_EditingFinished(Self* c_this);
-	[LinkName("QLineEdit_SelectionChanged")]
-	public static extern void QLineEdit_SelectionChanged(Self* c_this);
-	[LinkName("QLineEdit_InputRejected")]
-	public static extern void QLineEdit_InputRejected(Self* c_this);
+	[LinkName("QLineEdit_Connect_TextChanged")]
+	public static extern void QLineEdit_Connect_TextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_TextEdited")]
+	public static extern void QLineEdit_Connect_TextEdited(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_CursorPositionChanged")]
+	public static extern void QLineEdit_Connect_CursorPositionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_ReturnPressed")]
+	public static extern void QLineEdit_Connect_ReturnPressed(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_EditingFinished")]
+	public static extern void QLineEdit_Connect_EditingFinished(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_SelectionChanged")]
+	public static extern void QLineEdit_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QLineEdit_Connect_InputRejected")]
+	public static extern void QLineEdit_Connect_InputRejected(Self* c_this, c_intptr slot);
 	[LinkName("QLineEdit_MousePressEvent")]
 	public static extern void QLineEdit_MousePressEvent(Self* c_this, QMouseEvent* param1);
 	[LinkName("QLineEdit_MouseMoveEvent")]

@@ -50,14 +50,14 @@ public struct QClipboard : QObject
 	public static extern void QClipboard_SetImage(Self* c_this, QImage* param1);
 	[LinkName("QClipboard_SetPixmap")]
 	public static extern void QClipboard_SetPixmap(Self* c_this, QPixmap* param1);
-	[LinkName("QClipboard_Changed")]
-	public static extern void QClipboard_Changed(Self* c_this, int64 mode);
-	[LinkName("QClipboard_SelectionChanged")]
-	public static extern void QClipboard_SelectionChanged(Self* c_this);
-	[LinkName("QClipboard_FindBufferChanged")]
-	public static extern void QClipboard_FindBufferChanged(Self* c_this);
-	[LinkName("QClipboard_DataChanged")]
-	public static extern void QClipboard_DataChanged(Self* c_this);
+	[LinkName("QClipboard_Connect_Changed")]
+	public static extern void QClipboard_Connect_Changed(Self* c_this, c_intptr slot);
+	[LinkName("QClipboard_Connect_SelectionChanged")]
+	public static extern void QClipboard_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QClipboard_Connect_FindBufferChanged")]
+	public static extern void QClipboard_Connect_FindBufferChanged(Self* c_this, c_intptr slot);
+	[LinkName("QClipboard_Connect_DataChanged")]
+	public static extern void QClipboard_Connect_DataChanged(Self* c_this, c_intptr slot);
 	[LinkName("QClipboard_Tr2")]
 	public static extern libqt_string QClipboard_Tr2(char8[] s, char8[] c);
 	[LinkName("QClipboard_Tr3")]

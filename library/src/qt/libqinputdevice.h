@@ -71,7 +71,7 @@ QTLIBC_API libqt_list /* of QInputDevice* */ QInputDevice_Devices();
 QTLIBC_API QInputDevice* QInputDevice_PrimaryKeyboard();
 QTLIBC_API bool QInputDevice_OperatorEqual(const QInputDevice* self, QInputDevice* other);
 QTLIBC_API void QInputDevice_AvailableVirtualGeometryChanged(QInputDevice* self, QRect* area);
-void QInputDevice_Connect_AvailableVirtualGeometryChanged(QInputDevice* self, intptr_t slot);
+QTLIBC_API void QInputDevice_Connect_AvailableVirtualGeometryChanged(QInputDevice* self, intptr_t slot);
 QTLIBC_API libqt_string QInputDevice_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QInputDevice_Tr3(const char* s, const char* c, int n);
 QTLIBC_API QInputDevice* QInputDevice_PrimaryKeyboard1(libqt_string seatName);

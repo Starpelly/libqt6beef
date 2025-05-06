@@ -26,10 +26,10 @@ public struct QVideoWidget : QWidget
 	public static extern void QVideoWidget_SetFullScreen(Self* c_this, bool fullScreen);
 	[LinkName("QVideoWidget_SetAspectRatioMode")]
 	public static extern void QVideoWidget_SetAspectRatioMode(Self* c_this, int64 mode);
-	[LinkName("QVideoWidget_FullScreenChanged")]
-	public static extern void QVideoWidget_FullScreenChanged(Self* c_this, bool fullScreen);
-	[LinkName("QVideoWidget_AspectRatioModeChanged")]
-	public static extern void QVideoWidget_AspectRatioModeChanged(Self* c_this, int64 mode);
+	[LinkName("QVideoWidget_Connect_FullScreenChanged")]
+	public static extern void QVideoWidget_Connect_FullScreenChanged(Self* c_this, c_intptr slot);
+	[LinkName("QVideoWidget_Connect_AspectRatioModeChanged")]
+	public static extern void QVideoWidget_Connect_AspectRatioModeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QVideoWidget_Event")]
 	public static extern bool QVideoWidget_Event(Self* c_this, QEvent* event);
 	[LinkName("QVideoWidget_ShowEvent")]

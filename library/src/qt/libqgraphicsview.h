@@ -197,7 +197,7 @@ QTLIBC_API void QGraphicsView_UpdateScene(QGraphicsView* self, libqt_list /* of 
 QTLIBC_API void QGraphicsView_InvalidateScene(QGraphicsView* self);
 QTLIBC_API void QGraphicsView_UpdateSceneRect(QGraphicsView* self, QRectF* rect);
 QTLIBC_API void QGraphicsView_RubberBandChanged(QGraphicsView* self, QRect* viewportRect, QPointF* fromScenePoint, QPointF* toScenePoint);
-void QGraphicsView_Connect_RubberBandChanged(QGraphicsView* self, intptr_t slot);
+QTLIBC_API void QGraphicsView_Connect_RubberBandChanged(QGraphicsView* self, intptr_t slot);
 QTLIBC_API void QGraphicsView_SetupViewport(QGraphicsView* self, QWidget* widget);
 QTLIBC_API void QGraphicsView_OnSetupViewport(QGraphicsView* self, intptr_t slot);
 QTLIBC_API void QGraphicsView_QBaseSetupViewport(QGraphicsView* self, QWidget* widget);

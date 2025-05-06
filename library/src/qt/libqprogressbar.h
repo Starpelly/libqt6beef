@@ -129,7 +129,7 @@ QTLIBC_API void QProgressBar_SetMaximum(QProgressBar* self, int maximum);
 QTLIBC_API void QProgressBar_SetValue(QProgressBar* self, int value);
 QTLIBC_API void QProgressBar_SetOrientation(QProgressBar* self, int orientation);
 QTLIBC_API void QProgressBar_ValueChanged(QProgressBar* self, int value);
-void QProgressBar_Connect_ValueChanged(QProgressBar* self, intptr_t slot);
+QTLIBC_API void QProgressBar_Connect_ValueChanged(QProgressBar* self, intptr_t slot);
 QTLIBC_API bool QProgressBar_Event(QProgressBar* self, QEvent* e);
 QTLIBC_API void QProgressBar_OnEvent(QProgressBar* self, intptr_t slot);
 QTLIBC_API bool QProgressBar_QBaseEvent(QProgressBar* self, QEvent* e);

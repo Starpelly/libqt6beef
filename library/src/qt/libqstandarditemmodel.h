@@ -285,7 +285,7 @@ QTLIBC_API bool QStandardItemModel_DropMimeData(QStandardItemModel* self, QMimeD
 QTLIBC_API void QStandardItemModel_OnDropMimeData(QStandardItemModel* self, intptr_t slot);
 QTLIBC_API bool QStandardItemModel_QBaseDropMimeData(QStandardItemModel* self, QMimeData* data, int action, int row, int column, QModelIndex* parent);
 QTLIBC_API void QStandardItemModel_ItemChanged(QStandardItemModel* self, QStandardItem* item);
-void QStandardItemModel_Connect_ItemChanged(QStandardItemModel* self, intptr_t slot);
+QTLIBC_API void QStandardItemModel_Connect_ItemChanged(QStandardItemModel* self, intptr_t slot);
 QTLIBC_API libqt_string QStandardItemModel_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QStandardItemModel_Tr3(const char* s, const char* c, int n);
 QTLIBC_API QStandardItem* QStandardItemModel_Item2(const QStandardItemModel* self, int row, int column);

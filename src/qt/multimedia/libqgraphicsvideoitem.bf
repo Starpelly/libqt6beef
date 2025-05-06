@@ -43,8 +43,8 @@ public struct QGraphicsVideoItem : QGraphicsObject
 	public static extern void QGraphicsVideoItem_Paint(Self* c_this, QPainter* painter, QStyleOptionGraphicsItem* option, QWidget* widget);
 	[LinkName("QGraphicsVideoItem_Type")]
 	public static extern int32 QGraphicsVideoItem_Type(Self* c_this);
-	[LinkName("QGraphicsVideoItem_NativeSizeChanged")]
-	public static extern void QGraphicsVideoItem_NativeSizeChanged(Self* c_this, QSizeF* size);
+	[LinkName("QGraphicsVideoItem_Connect_NativeSizeChanged")]
+	public static extern void QGraphicsVideoItem_Connect_NativeSizeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsVideoItem_TimerEvent")]
 	public static extern void QGraphicsVideoItem_TimerEvent(Self* c_this, QTimerEvent* event);
 	[LinkName("QGraphicsVideoItem_ItemChange")]

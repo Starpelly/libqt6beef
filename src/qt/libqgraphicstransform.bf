@@ -57,16 +57,16 @@ public struct QGraphicsScale : QGraphicsTransform
 	public static extern void QGraphicsScale_SetZScale(Self* c_this, double zScale);
 	[LinkName("QGraphicsScale_ApplyTo")]
 	public static extern void QGraphicsScale_ApplyTo(Self* c_this, QMatrix4x4* matrix);
-	[LinkName("QGraphicsScale_OriginChanged")]
-	public static extern void QGraphicsScale_OriginChanged(Self* c_this);
-	[LinkName("QGraphicsScale_XScaleChanged")]
-	public static extern void QGraphicsScale_XScaleChanged(Self* c_this);
-	[LinkName("QGraphicsScale_YScaleChanged")]
-	public static extern void QGraphicsScale_YScaleChanged(Self* c_this);
-	[LinkName("QGraphicsScale_ZScaleChanged")]
-	public static extern void QGraphicsScale_ZScaleChanged(Self* c_this);
-	[LinkName("QGraphicsScale_ScaleChanged")]
-	public static extern void QGraphicsScale_ScaleChanged(Self* c_this);
+	[LinkName("QGraphicsScale_Connect_OriginChanged")]
+	public static extern void QGraphicsScale_Connect_OriginChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScale_Connect_XScaleChanged")]
+	public static extern void QGraphicsScale_Connect_XScaleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScale_Connect_YScaleChanged")]
+	public static extern void QGraphicsScale_Connect_YScaleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScale_Connect_ZScaleChanged")]
+	public static extern void QGraphicsScale_Connect_ZScaleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScale_Connect_ScaleChanged")]
+	public static extern void QGraphicsScale_Connect_ScaleChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsScale_Tr2")]
 	public static extern libqt_string QGraphicsScale_Tr2(char8[] s, char8[] c);
 	[LinkName("QGraphicsScale_Tr3")]
@@ -102,12 +102,12 @@ public struct QGraphicsRotation : QGraphicsTransform
 	public static extern void QGraphicsRotation_SetAxisWithAxis(Self* c_this, int64 axis);
 	[LinkName("QGraphicsRotation_ApplyTo")]
 	public static extern void QGraphicsRotation_ApplyTo(Self* c_this, QMatrix4x4* matrix);
-	[LinkName("QGraphicsRotation_OriginChanged")]
-	public static extern void QGraphicsRotation_OriginChanged(Self* c_this);
-	[LinkName("QGraphicsRotation_AngleChanged")]
-	public static extern void QGraphicsRotation_AngleChanged(Self* c_this);
-	[LinkName("QGraphicsRotation_AxisChanged")]
-	public static extern void QGraphicsRotation_AxisChanged(Self* c_this);
+	[LinkName("QGraphicsRotation_Connect_OriginChanged")]
+	public static extern void QGraphicsRotation_Connect_OriginChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsRotation_Connect_AngleChanged")]
+	public static extern void QGraphicsRotation_Connect_AngleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsRotation_Connect_AxisChanged")]
+	public static extern void QGraphicsRotation_Connect_AxisChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsRotation_Tr2")]
 	public static extern libqt_string QGraphicsRotation_Tr2(char8[] s, char8[] c);
 	[LinkName("QGraphicsRotation_Tr3")]

@@ -24,8 +24,8 @@ public struct QSequentialAnimationGroup : QAnimationGroup
 	public static extern QAbstractAnimation* QSequentialAnimationGroup_CurrentAnimation(Self* c_this);
 	[LinkName("QSequentialAnimationGroup_Duration")]
 	public static extern int32 QSequentialAnimationGroup_Duration(Self* c_this);
-	[LinkName("QSequentialAnimationGroup_CurrentAnimationChanged")]
-	public static extern void QSequentialAnimationGroup_CurrentAnimationChanged(Self* c_this, QAbstractAnimation* current);
+	[LinkName("QSequentialAnimationGroup_Connect_CurrentAnimationChanged")]
+	public static extern void QSequentialAnimationGroup_Connect_CurrentAnimationChanged(Self* c_this, c_intptr slot);
 	[LinkName("QSequentialAnimationGroup_Event")]
 	public static extern bool QSequentialAnimationGroup_Event(Self* c_this, QEvent* event);
 	[LinkName("QSequentialAnimationGroup_UpdateCurrentTime")]

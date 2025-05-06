@@ -198,8 +198,8 @@ public struct QGraphicsView : QAbstractScrollArea
 	public static extern void QGraphicsView_InvalidateScene(Self* c_this);
 	[LinkName("QGraphicsView_UpdateSceneRect")]
 	public static extern void QGraphicsView_UpdateSceneRect(Self* c_this, QRectF* rect);
-	[LinkName("QGraphicsView_RubberBandChanged")]
-	public static extern void QGraphicsView_RubberBandChanged(Self* c_this, QRect viewportRect, QPointF fromScenePoint, QPointF toScenePoint);
+	[LinkName("QGraphicsView_Connect_RubberBandChanged")]
+	public static extern void QGraphicsView_Connect_RubberBandChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsView_SetupViewport")]
 	public static extern void QGraphicsView_SetupViewport(Self* c_this, QWidget* widget);
 	[LinkName("QGraphicsView_Event")]

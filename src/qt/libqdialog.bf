@@ -40,12 +40,12 @@ public struct QDialog : QWidget
 	public static extern void QDialog_SetModal(Self* c_this, bool modal);
 	[LinkName("QDialog_SetResult")]
 	public static extern void QDialog_SetResult(Self* c_this, int32 r);
-	[LinkName("QDialog_Finished")]
-	public static extern void QDialog_Finished(Self* c_this, int32 result);
-	[LinkName("QDialog_Accepted")]
-	public static extern void QDialog_Accepted(Self* c_this);
-	[LinkName("QDialog_Rejected")]
-	public static extern void QDialog_Rejected(Self* c_this);
+	[LinkName("QDialog_Connect_Finished")]
+	public static extern void QDialog_Connect_Finished(Self* c_this, c_intptr slot);
+	[LinkName("QDialog_Connect_Accepted")]
+	public static extern void QDialog_Connect_Accepted(Self* c_this, c_intptr slot);
+	[LinkName("QDialog_Connect_Rejected")]
+	public static extern void QDialog_Connect_Rejected(Self* c_this, c_intptr slot);
 	[LinkName("QDialog_Open")]
 	public static extern void QDialog_Open(Self* c_this);
 	[LinkName("QDialog_Exec")]

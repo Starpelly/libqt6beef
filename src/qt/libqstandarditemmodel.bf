@@ -333,8 +333,8 @@ public struct QStandardItemModel : QAbstractItemModel
 	public static extern QMimeData* QStandardItemModel_MimeData(Self* c_this, QModelIndex[] indexes);
 	[LinkName("QStandardItemModel_DropMimeData")]
 	public static extern bool QStandardItemModel_DropMimeData(Self* c_this, QMimeData* data, int64 action, int32 row, int32 column, QModelIndex* parent);
-	[LinkName("QStandardItemModel_ItemChanged")]
-	public static extern void QStandardItemModel_ItemChanged(Self* c_this, QStandardItem* item);
+	[LinkName("QStandardItemModel_Connect_ItemChanged")]
+	public static extern void QStandardItemModel_Connect_ItemChanged(Self* c_this, c_intptr slot);
 	[LinkName("QStandardItemModel_Tr2")]
 	public static extern libqt_string QStandardItemModel_Tr2(char8[] s, char8[] c);
 	[LinkName("QStandardItemModel_Tr3")]

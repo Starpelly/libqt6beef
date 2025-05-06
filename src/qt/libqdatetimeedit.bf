@@ -137,12 +137,12 @@ public struct QDateTimeEdit : QAbstractSpinBox
 	public static extern void QDateTimeEdit_StepBy(Self* c_this, int32 steps);
 	[LinkName("QDateTimeEdit_Event")]
 	public static extern bool QDateTimeEdit_Event(Self* c_this, QEvent* event);
-	[LinkName("QDateTimeEdit_DateTimeChanged")]
-	public static extern void QDateTimeEdit_DateTimeChanged(Self* c_this, QDateTime* dateTime);
-	[LinkName("QDateTimeEdit_TimeChanged")]
-	public static extern void QDateTimeEdit_TimeChanged(Self* c_this, QTime time);
-	[LinkName("QDateTimeEdit_DateChanged")]
-	public static extern void QDateTimeEdit_DateChanged(Self* c_this, QDate date);
+	[LinkName("QDateTimeEdit_Connect_DateTimeChanged")]
+	public static extern void QDateTimeEdit_Connect_DateTimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDateTimeEdit_Connect_TimeChanged")]
+	public static extern void QDateTimeEdit_Connect_TimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDateTimeEdit_Connect_DateChanged")]
+	public static extern void QDateTimeEdit_Connect_DateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDateTimeEdit_SetDateTime")]
 	public static extern void QDateTimeEdit_SetDateTime(Self* c_this, QDateTime* dateTime);
 	[LinkName("QDateTimeEdit_SetDate")]
@@ -196,8 +196,8 @@ public struct QTimeEdit : QDateTimeEdit
 	public static extern int32 QTimeEdit_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QTimeEdit_Tr")]
 	public static extern libqt_string QTimeEdit_Tr(char8[] s);
-	[LinkName("QTimeEdit_UserTimeChanged")]
-	public static extern void QTimeEdit_UserTimeChanged(Self* c_this, QTime time);
+	[LinkName("QTimeEdit_Connect_UserTimeChanged")]
+	public static extern void QTimeEdit_Connect_UserTimeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QTimeEdit_Tr2")]
 	public static extern libqt_string QTimeEdit_Tr2(char8[] s, char8[] c);
 	[LinkName("QTimeEdit_Tr3")]
@@ -221,8 +221,8 @@ public struct QDateEdit : QDateTimeEdit
 	public static extern int32 QDateEdit_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QDateEdit_Tr")]
 	public static extern libqt_string QDateEdit_Tr(char8[] s);
-	[LinkName("QDateEdit_UserDateChanged")]
-	public static extern void QDateEdit_UserDateChanged(Self* c_this, QDate date);
+	[LinkName("QDateEdit_Connect_UserDateChanged")]
+	public static extern void QDateEdit_Connect_UserDateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDateEdit_Tr2")]
 	public static extern libqt_string QDateEdit_Tr2(char8[] s, char8[] c);
 	[LinkName("QDateEdit_Tr3")]

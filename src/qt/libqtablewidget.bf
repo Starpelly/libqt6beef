@@ -254,36 +254,36 @@ public struct QTableWidget : QTableView
 	public static extern void QTableWidget_Clear(Self* c_this);
 	[LinkName("QTableWidget_ClearContents")]
 	public static extern void QTableWidget_ClearContents(Self* c_this);
-	[LinkName("QTableWidget_ItemPressed")]
-	public static extern void QTableWidget_ItemPressed(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_ItemClicked")]
-	public static extern void QTableWidget_ItemClicked(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_ItemDoubleClicked")]
-	public static extern void QTableWidget_ItemDoubleClicked(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_ItemActivated")]
-	public static extern void QTableWidget_ItemActivated(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_ItemEntered")]
-	public static extern void QTableWidget_ItemEntered(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_ItemChanged")]
-	public static extern void QTableWidget_ItemChanged(Self* c_this, QTableWidgetItem* item);
-	[LinkName("QTableWidget_CurrentItemChanged")]
-	public static extern void QTableWidget_CurrentItemChanged(Self* c_this, QTableWidgetItem* current, QTableWidgetItem* previous);
-	[LinkName("QTableWidget_ItemSelectionChanged")]
-	public static extern void QTableWidget_ItemSelectionChanged(Self* c_this);
-	[LinkName("QTableWidget_CellPressed")]
-	public static extern void QTableWidget_CellPressed(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CellClicked")]
-	public static extern void QTableWidget_CellClicked(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CellDoubleClicked")]
-	public static extern void QTableWidget_CellDoubleClicked(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CellActivated")]
-	public static extern void QTableWidget_CellActivated(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CellEntered")]
-	public static extern void QTableWidget_CellEntered(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CellChanged")]
-	public static extern void QTableWidget_CellChanged(Self* c_this, int32 row, int32 column);
-	[LinkName("QTableWidget_CurrentCellChanged")]
-	public static extern void QTableWidget_CurrentCellChanged(Self* c_this, int32 currentRow, int32 currentColumn, int32 previousRow, int32 previousColumn);
+	[LinkName("QTableWidget_Connect_ItemPressed")]
+	public static extern void QTableWidget_Connect_ItemPressed(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemClicked")]
+	public static extern void QTableWidget_Connect_ItemClicked(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemDoubleClicked")]
+	public static extern void QTableWidget_Connect_ItemDoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemActivated")]
+	public static extern void QTableWidget_Connect_ItemActivated(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemEntered")]
+	public static extern void QTableWidget_Connect_ItemEntered(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemChanged")]
+	public static extern void QTableWidget_Connect_ItemChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CurrentItemChanged")]
+	public static extern void QTableWidget_Connect_CurrentItemChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_ItemSelectionChanged")]
+	public static extern void QTableWidget_Connect_ItemSelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellPressed")]
+	public static extern void QTableWidget_Connect_CellPressed(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellClicked")]
+	public static extern void QTableWidget_Connect_CellClicked(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellDoubleClicked")]
+	public static extern void QTableWidget_Connect_CellDoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellActivated")]
+	public static extern void QTableWidget_Connect_CellActivated(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellEntered")]
+	public static extern void QTableWidget_Connect_CellEntered(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CellChanged")]
+	public static extern void QTableWidget_Connect_CellChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTableWidget_Connect_CurrentCellChanged")]
+	public static extern void QTableWidget_Connect_CurrentCellChanged(Self* c_this, c_intptr slot);
 	[LinkName("QTableWidget_Event")]
 	public static extern bool QTableWidget_Event(Self* c_this, QEvent* e);
 	[LinkName("QTableWidget_MimeTypes")]

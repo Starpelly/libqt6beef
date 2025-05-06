@@ -30,10 +30,10 @@ public struct QKeySequenceEdit : QWidget
 	public static extern void QKeySequenceEdit_SetKeySequence(Self* c_this, QKeySequence* keySequence);
 	[LinkName("QKeySequenceEdit_Clear")]
 	public static extern void QKeySequenceEdit_Clear(Self* c_this);
-	[LinkName("QKeySequenceEdit_EditingFinished")]
-	public static extern void QKeySequenceEdit_EditingFinished(Self* c_this);
-	[LinkName("QKeySequenceEdit_KeySequenceChanged")]
-	public static extern void QKeySequenceEdit_KeySequenceChanged(Self* c_this, QKeySequence* keySequence);
+	[LinkName("QKeySequenceEdit_Connect_EditingFinished")]
+	public static extern void QKeySequenceEdit_Connect_EditingFinished(Self* c_this, c_intptr slot);
+	[LinkName("QKeySequenceEdit_Connect_KeySequenceChanged")]
+	public static extern void QKeySequenceEdit_Connect_KeySequenceChanged(Self* c_this, c_intptr slot);
 	[LinkName("QKeySequenceEdit_Event")]
 	public static extern bool QKeySequenceEdit_Event(Self* c_this, QEvent* param1);
 	[LinkName("QKeySequenceEdit_KeyPressEvent")]

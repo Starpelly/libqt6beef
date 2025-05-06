@@ -271,20 +271,20 @@ public struct QAbstractItemView : QAbstractScrollArea
 	public static extern void QAbstractItemView_CommitData(Self* c_this, QWidget* editor);
 	[LinkName("QAbstractItemView_EditorDestroyed")]
 	public static extern void QAbstractItemView_EditorDestroyed(Self* c_this, QObject* editor);
-	[LinkName("QAbstractItemView_Pressed")]
-	public static extern void QAbstractItemView_Pressed(Self* c_this, QModelIndex* index);
-	[LinkName("QAbstractItemView_Clicked")]
-	public static extern void QAbstractItemView_Clicked(Self* c_this, QModelIndex* index);
-	[LinkName("QAbstractItemView_DoubleClicked")]
-	public static extern void QAbstractItemView_DoubleClicked(Self* c_this, QModelIndex* index);
-	[LinkName("QAbstractItemView_Activated")]
-	public static extern void QAbstractItemView_Activated(Self* c_this, QModelIndex* index);
-	[LinkName("QAbstractItemView_Entered")]
-	public static extern void QAbstractItemView_Entered(Self* c_this, QModelIndex* index);
-	[LinkName("QAbstractItemView_ViewportEntered")]
-	public static extern void QAbstractItemView_ViewportEntered(Self* c_this);
-	[LinkName("QAbstractItemView_IconSizeChanged")]
-	public static extern void QAbstractItemView_IconSizeChanged(Self* c_this, QSize* size);
+	[LinkName("QAbstractItemView_Connect_Pressed")]
+	public static extern void QAbstractItemView_Connect_Pressed(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_Clicked")]
+	public static extern void QAbstractItemView_Connect_Clicked(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_DoubleClicked")]
+	public static extern void QAbstractItemView_Connect_DoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_Activated")]
+	public static extern void QAbstractItemView_Connect_Activated(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_Entered")]
+	public static extern void QAbstractItemView_Connect_Entered(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_ViewportEntered")]
+	public static extern void QAbstractItemView_Connect_ViewportEntered(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemView_Connect_IconSizeChanged")]
+	public static extern void QAbstractItemView_Connect_IconSizeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractItemView_MoveCursor")]
 	public static extern QModelIndex QAbstractItemView_MoveCursor(Self* c_this, int64 cursorAction, int64 modifiers);
 	[LinkName("QAbstractItemView_HorizontalOffset")]

@@ -104,7 +104,7 @@ QTLIBC_API libqt_string QSplashScreen_Message(const QSplashScreen* self);
 QTLIBC_API void QSplashScreen_ShowMessage(QSplashScreen* self, libqt_string message);
 QTLIBC_API void QSplashScreen_ClearMessage(QSplashScreen* self);
 QTLIBC_API void QSplashScreen_MessageChanged(QSplashScreen* self, libqt_string message);
-void QSplashScreen_Connect_MessageChanged(QSplashScreen* self, intptr_t slot);
+QTLIBC_API void QSplashScreen_Connect_MessageChanged(QSplashScreen* self, intptr_t slot);
 QTLIBC_API bool QSplashScreen_Event(QSplashScreen* self, QEvent* e);
 QTLIBC_API void QSplashScreen_OnEvent(QSplashScreen* self, intptr_t slot);
 QTLIBC_API bool QSplashScreen_QBaseEvent(QSplashScreen* self, QEvent* e);

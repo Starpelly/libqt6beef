@@ -116,34 +116,34 @@ public struct QGuiApplication : QCoreApplication
 	public static extern void* QGuiApplication_ResolveInterface(Self* c_this, char8[] name, int32 revision);
 	[LinkName("QGuiApplication_Sync")]
 	public static extern void QGuiApplication_Sync();
-	[LinkName("QGuiApplication_FontDatabaseChanged")]
-	public static extern void QGuiApplication_FontDatabaseChanged(Self* c_this);
-	[LinkName("QGuiApplication_ScreenAdded")]
-	public static extern void QGuiApplication_ScreenAdded(Self* c_this, QScreen* screen);
-	[LinkName("QGuiApplication_ScreenRemoved")]
-	public static extern void QGuiApplication_ScreenRemoved(Self* c_this, QScreen* screen);
-	[LinkName("QGuiApplication_PrimaryScreenChanged")]
-	public static extern void QGuiApplication_PrimaryScreenChanged(Self* c_this, QScreen* screen);
-	[LinkName("QGuiApplication_LastWindowClosed")]
-	public static extern void QGuiApplication_LastWindowClosed(Self* c_this);
-	[LinkName("QGuiApplication_FocusObjectChanged")]
-	public static extern void QGuiApplication_FocusObjectChanged(Self* c_this, QObject* focusObject);
-	[LinkName("QGuiApplication_FocusWindowChanged")]
-	public static extern void QGuiApplication_FocusWindowChanged(Self* c_this, QWindow* focusWindow);
-	[LinkName("QGuiApplication_ApplicationStateChanged")]
-	public static extern void QGuiApplication_ApplicationStateChanged(Self* c_this, int64 state);
-	[LinkName("QGuiApplication_LayoutDirectionChanged")]
-	public static extern void QGuiApplication_LayoutDirectionChanged(Self* c_this, int64 direction);
-	[LinkName("QGuiApplication_CommitDataRequest")]
-	public static extern void QGuiApplication_CommitDataRequest(Self* c_this, QSessionManager* sessionManager);
-	[LinkName("QGuiApplication_SaveStateRequest")]
-	public static extern void QGuiApplication_SaveStateRequest(Self* c_this, QSessionManager* sessionManager);
-	[LinkName("QGuiApplication_ApplicationDisplayNameChanged")]
-	public static extern void QGuiApplication_ApplicationDisplayNameChanged(Self* c_this);
-	[LinkName("QGuiApplication_PaletteChanged")]
-	public static extern void QGuiApplication_PaletteChanged(Self* c_this, QPalette* pal);
-	[LinkName("QGuiApplication_FontChanged")]
-	public static extern void QGuiApplication_FontChanged(Self* c_this, QFont* font);
+	[LinkName("QGuiApplication_Connect_FontDatabaseChanged")]
+	public static extern void QGuiApplication_Connect_FontDatabaseChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_ScreenAdded")]
+	public static extern void QGuiApplication_Connect_ScreenAdded(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_ScreenRemoved")]
+	public static extern void QGuiApplication_Connect_ScreenRemoved(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_PrimaryScreenChanged")]
+	public static extern void QGuiApplication_Connect_PrimaryScreenChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_LastWindowClosed")]
+	public static extern void QGuiApplication_Connect_LastWindowClosed(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_FocusObjectChanged")]
+	public static extern void QGuiApplication_Connect_FocusObjectChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_FocusWindowChanged")]
+	public static extern void QGuiApplication_Connect_FocusWindowChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_ApplicationStateChanged")]
+	public static extern void QGuiApplication_Connect_ApplicationStateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_LayoutDirectionChanged")]
+	public static extern void QGuiApplication_Connect_LayoutDirectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_CommitDataRequest")]
+	public static extern void QGuiApplication_Connect_CommitDataRequest(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_SaveStateRequest")]
+	public static extern void QGuiApplication_Connect_SaveStateRequest(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_ApplicationDisplayNameChanged")]
+	public static extern void QGuiApplication_Connect_ApplicationDisplayNameChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_PaletteChanged")]
+	public static extern void QGuiApplication_Connect_PaletteChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGuiApplication_Connect_FontChanged")]
+	public static extern void QGuiApplication_Connect_FontChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGuiApplication_Event")]
 	public static extern bool QGuiApplication_Event(Self* c_this, QEvent* param1);
 	[LinkName("QGuiApplication_Tr2")]

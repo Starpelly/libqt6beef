@@ -63,9 +63,9 @@ QTLIBC_API void QAbstractEventDispatcher_InstallNativeEventFilter(QAbstractEvent
 QTLIBC_API void QAbstractEventDispatcher_RemoveNativeEventFilter(QAbstractEventDispatcher* self, QAbstractNativeEventFilter* filterObj);
 QTLIBC_API bool QAbstractEventDispatcher_FilterNativeEvent(QAbstractEventDispatcher* self, libqt_string eventType, void* message, intptr_t* result);
 QTLIBC_API void QAbstractEventDispatcher_AboutToBlock(QAbstractEventDispatcher* self);
-void QAbstractEventDispatcher_Connect_AboutToBlock(QAbstractEventDispatcher* self, intptr_t slot);
+QTLIBC_API void QAbstractEventDispatcher_Connect_AboutToBlock(QAbstractEventDispatcher* self, intptr_t slot);
 QTLIBC_API void QAbstractEventDispatcher_Awake(QAbstractEventDispatcher* self);
-void QAbstractEventDispatcher_Connect_Awake(QAbstractEventDispatcher* self, intptr_t slot);
+QTLIBC_API void QAbstractEventDispatcher_Connect_Awake(QAbstractEventDispatcher* self, intptr_t slot);
 QTLIBC_API libqt_string QAbstractEventDispatcher_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QAbstractEventDispatcher_Tr3(const char* s, const char* c, int n);
 QTLIBC_API QAbstractEventDispatcher* QAbstractEventDispatcher_Instance1(QThread* thread);

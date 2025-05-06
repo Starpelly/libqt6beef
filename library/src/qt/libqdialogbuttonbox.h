@@ -127,13 +127,13 @@ QTLIBC_API QPushButton* QDialogButtonBox_Button(const QDialogButtonBox* self, in
 QTLIBC_API void QDialogButtonBox_SetCenterButtons(QDialogButtonBox* self, bool center);
 QTLIBC_API bool QDialogButtonBox_CenterButtons(const QDialogButtonBox* self);
 QTLIBC_API void QDialogButtonBox_Clicked(QDialogButtonBox* self, QAbstractButton* button);
-void QDialogButtonBox_Connect_Clicked(QDialogButtonBox* self, intptr_t slot);
+QTLIBC_API void QDialogButtonBox_Connect_Clicked(QDialogButtonBox* self, intptr_t slot);
 QTLIBC_API void QDialogButtonBox_Accepted(QDialogButtonBox* self);
-void QDialogButtonBox_Connect_Accepted(QDialogButtonBox* self, intptr_t slot);
+QTLIBC_API void QDialogButtonBox_Connect_Accepted(QDialogButtonBox* self, intptr_t slot);
 QTLIBC_API void QDialogButtonBox_HelpRequested(QDialogButtonBox* self);
-void QDialogButtonBox_Connect_HelpRequested(QDialogButtonBox* self, intptr_t slot);
+QTLIBC_API void QDialogButtonBox_Connect_HelpRequested(QDialogButtonBox* self, intptr_t slot);
 QTLIBC_API void QDialogButtonBox_Rejected(QDialogButtonBox* self);
-void QDialogButtonBox_Connect_Rejected(QDialogButtonBox* self, intptr_t slot);
+QTLIBC_API void QDialogButtonBox_Connect_Rejected(QDialogButtonBox* self, intptr_t slot);
 QTLIBC_API void QDialogButtonBox_ChangeEvent(QDialogButtonBox* self, QEvent* event);
 QTLIBC_API void QDialogButtonBox_OnChangeEvent(QDialogButtonBox* self, intptr_t slot);
 QTLIBC_API void QDialogButtonBox_QBaseChangeEvent(QDialogButtonBox* self, QEvent* event);

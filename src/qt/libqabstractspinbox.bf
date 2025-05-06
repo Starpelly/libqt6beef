@@ -150,8 +150,8 @@ public struct QAbstractSpinBox : QWidget
 	public static extern void QAbstractSpinBox_SetLineEdit(Self* c_this, QLineEdit* edit);
 	[LinkName("QAbstractSpinBox_StepEnabled")]
 	public static extern int64 QAbstractSpinBox_StepEnabled(Self* c_this);
-	[LinkName("QAbstractSpinBox_EditingFinished")]
-	public static extern void QAbstractSpinBox_EditingFinished(Self* c_this);
+	[LinkName("QAbstractSpinBox_Connect_EditingFinished")]
+	public static extern void QAbstractSpinBox_Connect_EditingFinished(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractSpinBox_Tr2")]
 	public static extern libqt_string QAbstractSpinBox_Tr2(char8[] s, char8[] c);
 	[LinkName("QAbstractSpinBox_Tr3")]

@@ -123,9 +123,9 @@ QTLIBC_API void QMdiSubWindow_SetSystemMenu(QMdiSubWindow* self, QMenu* systemMe
 QTLIBC_API QMenu* QMdiSubWindow_SystemMenu(const QMdiSubWindow* self);
 QTLIBC_API QMdiArea* QMdiSubWindow_MdiArea(const QMdiSubWindow* self);
 QTLIBC_API void QMdiSubWindow_WindowStateChanged(QMdiSubWindow* self, int oldState, int newState);
-void QMdiSubWindow_Connect_WindowStateChanged(QMdiSubWindow* self, intptr_t slot);
+QTLIBC_API void QMdiSubWindow_Connect_WindowStateChanged(QMdiSubWindow* self, intptr_t slot);
 QTLIBC_API void QMdiSubWindow_AboutToActivate(QMdiSubWindow* self);
-void QMdiSubWindow_Connect_AboutToActivate(QMdiSubWindow* self, intptr_t slot);
+QTLIBC_API void QMdiSubWindow_Connect_AboutToActivate(QMdiSubWindow* self, intptr_t slot);
 QTLIBC_API void QMdiSubWindow_ShowSystemMenu(QMdiSubWindow* self);
 QTLIBC_API void QMdiSubWindow_ShowShaded(QMdiSubWindow* self);
 QTLIBC_API bool QMdiSubWindow_EventFilter(QMdiSubWindow* self, QObject* object, QEvent* event);

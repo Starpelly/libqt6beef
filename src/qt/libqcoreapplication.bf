@@ -95,10 +95,10 @@ public struct QCoreApplication : QObject
 	public static extern libqt_string QCoreApplication_Translate(char8[] context, char8[] key);
 	[LinkName("QCoreApplication_ResolveInterface")]
 	public static extern void* QCoreApplication_ResolveInterface(Self* c_this, char8[] name, int32 revision);
-	[LinkName("QCoreApplication_InstallNativeEventFilter")]
-	public static extern void QCoreApplication_InstallNativeEventFilter(Self* c_this, QAbstractNativeEventFilter* filterObj);
-	[LinkName("QCoreApplication_RemoveNativeEventFilter")]
-	public static extern void QCoreApplication_RemoveNativeEventFilter(Self* c_this, QAbstractNativeEventFilter* filterObj);
+	[LinkName("QCoreApplication_Connect_InstallNativeEventFilter")]
+	public static extern void QCoreApplication_Connect_InstallNativeEventFilter(Self* c_this, c_intptr slot);
+	[LinkName("QCoreApplication_Connect_RemoveNativeEventFilter")]
+	public static extern void QCoreApplication_Connect_RemoveNativeEventFilter(Self* c_this, c_intptr slot);
 	[LinkName("QCoreApplication_IsQuitLockEnabled")]
 	public static extern bool QCoreApplication_IsQuitLockEnabled();
 	[LinkName("QCoreApplication_SetQuitLockEnabled")]
@@ -107,14 +107,14 @@ public struct QCoreApplication : QObject
 	public static extern void QCoreApplication_Quit();
 	[LinkName("QCoreApplication_Exit")]
 	public static extern void QCoreApplication_Exit();
-	[LinkName("QCoreApplication_OrganizationNameChanged")]
-	public static extern void QCoreApplication_OrganizationNameChanged(Self* c_this);
-	[LinkName("QCoreApplication_OrganizationDomainChanged")]
-	public static extern void QCoreApplication_OrganizationDomainChanged(Self* c_this);
-	[LinkName("QCoreApplication_ApplicationNameChanged")]
-	public static extern void QCoreApplication_ApplicationNameChanged(Self* c_this);
-	[LinkName("QCoreApplication_ApplicationVersionChanged")]
-	public static extern void QCoreApplication_ApplicationVersionChanged(Self* c_this);
+	[LinkName("QCoreApplication_Connect_OrganizationNameChanged")]
+	public static extern void QCoreApplication_Connect_OrganizationNameChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCoreApplication_Connect_OrganizationDomainChanged")]
+	public static extern void QCoreApplication_Connect_OrganizationDomainChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCoreApplication_Connect_ApplicationNameChanged")]
+	public static extern void QCoreApplication_Connect_ApplicationNameChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCoreApplication_Connect_ApplicationVersionChanged")]
+	public static extern void QCoreApplication_Connect_ApplicationVersionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QCoreApplication_Event")]
 	public static extern bool QCoreApplication_Event(Self* c_this, QEvent* param1);
 	[LinkName("QCoreApplication_Tr2")]

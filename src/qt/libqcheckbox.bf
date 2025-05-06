@@ -32,8 +32,8 @@ public struct QCheckBox : QAbstractButton
 	public static extern int64 QCheckBox_CheckState(Self* c_this);
 	[LinkName("QCheckBox_SetCheckState")]
 	public static extern void QCheckBox_SetCheckState(Self* c_this, int64 state);
-	[LinkName("QCheckBox_StateChanged")]
-	public static extern void QCheckBox_StateChanged(Self* c_this, int32 param1);
+	[LinkName("QCheckBox_Connect_StateChanged")]
+	public static extern void QCheckBox_Connect_StateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QCheckBox_Event")]
 	public static extern bool QCheckBox_Event(Self* c_this, QEvent* e);
 	[LinkName("QCheckBox_HitButton")]

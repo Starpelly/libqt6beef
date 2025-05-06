@@ -107,8 +107,14 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 	outDir = filepath.Join(outDir, packageName)
 
 	// cleanGeneratedFilesInDir(includeDir)
-	cleanGeneratedFilesInDir(libDir)
-	cleanGeneratedFilesInDir(outDir)
+	// cleanGeneratedFilesInDir(libDir)
+	// cleanGeneratedFilesInDir(outDir)
+
+	os.RemoveAll(libDir)
+	os.MkdirAll(libDir, 0755)
+
+	os.RemoveAll(outDir)
+	os.MkdirAll(outDir, 0755)
 
 	var processHeaders []*CppParsedHeader
 	atr := astTransformRedundant{

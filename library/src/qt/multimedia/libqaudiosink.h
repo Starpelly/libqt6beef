@@ -68,7 +68,7 @@ QTLIBC_API int QAudioSink_State(const QAudioSink* self);
 QTLIBC_API void QAudioSink_SetVolume(QAudioSink* self, double volume);
 QTLIBC_API double QAudioSink_Volume(const QAudioSink* self);
 QTLIBC_API void QAudioSink_StateChanged(QAudioSink* self, int state);
-void QAudioSink_Connect_StateChanged(QAudioSink* self, intptr_t slot);
+QTLIBC_API void QAudioSink_Connect_StateChanged(QAudioSink* self, intptr_t slot);
 QTLIBC_API libqt_string QAudioSink_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QAudioSink_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QAudioSink_Event(QAudioSink* self, QEvent* event);

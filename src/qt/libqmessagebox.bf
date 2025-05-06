@@ -197,8 +197,8 @@ public struct QMessageBox : QDialog
 	public static extern void QMessageBox_SetWindowModality(Self* c_this, int64 windowModality);
 	[LinkName("QMessageBox_StandardIcon")]
 	public static extern QPixmap QMessageBox_StandardIcon(int64 icon);
-	[LinkName("QMessageBox_ButtonClicked")]
-	public static extern void QMessageBox_ButtonClicked(Self* c_this, QAbstractButton* button);
+	[LinkName("QMessageBox_Connect_ButtonClicked")]
+	public static extern void QMessageBox_Connect_ButtonClicked(Self* c_this, c_intptr slot);
 	[LinkName("QMessageBox_Event")]
 	public static extern bool QMessageBox_Event(Self* c_this, QEvent* e);
 	[LinkName("QMessageBox_ResizeEvent")]

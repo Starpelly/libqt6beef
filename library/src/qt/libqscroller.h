@@ -78,9 +78,9 @@ QTLIBC_API void QScroller_EnsureVisible(QScroller* self, QRectF* rect, double xm
 QTLIBC_API void QScroller_EnsureVisible2(QScroller* self, QRectF* rect, double xmargin, double ymargin, int scrollTime);
 QTLIBC_API void QScroller_ResendPrepareEvent(QScroller* self);
 QTLIBC_API void QScroller_StateChanged(QScroller* self, int newstate);
-void QScroller_Connect_StateChanged(QScroller* self, intptr_t slot);
+QTLIBC_API void QScroller_Connect_StateChanged(QScroller* self, intptr_t slot);
 QTLIBC_API void QScroller_ScrollerPropertiesChanged(QScroller* self, QScrollerProperties* param1);
-void QScroller_Connect_ScrollerPropertiesChanged(QScroller* self, intptr_t slot);
+QTLIBC_API void QScroller_Connect_ScrollerPropertiesChanged(QScroller* self, intptr_t slot);
 QTLIBC_API libqt_string QScroller_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QScroller_Tr3(const char* s, const char* c, int n);
 QTLIBC_API int QScroller_GrabGesture2(QObject* target, int gestureType);

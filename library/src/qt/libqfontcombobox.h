@@ -123,7 +123,7 @@ QTLIBC_API libqt_string QFontComboBox_SampleTextForFont(const QFontComboBox* sel
 QTLIBC_API void QFontComboBox_SetDisplayFont(QFontComboBox* self, libqt_string fontFamily, QFont* font);
 QTLIBC_API void QFontComboBox_SetCurrentFont(QFontComboBox* self, QFont* f);
 QTLIBC_API void QFontComboBox_CurrentFontChanged(QFontComboBox* self, QFont* f);
-void QFontComboBox_Connect_CurrentFontChanged(QFontComboBox* self, intptr_t slot);
+QTLIBC_API void QFontComboBox_Connect_CurrentFontChanged(QFontComboBox* self, intptr_t slot);
 QTLIBC_API bool QFontComboBox_Event(QFontComboBox* self, QEvent* e);
 QTLIBC_API void QFontComboBox_OnEvent(QFontComboBox* self, intptr_t slot);
 QTLIBC_API bool QFontComboBox_QBaseEvent(QFontComboBox* self, QEvent* e);

@@ -121,8 +121,8 @@ public struct QListView : QAbstractItemView
 	public static extern void QListView_Reset(Self* c_this);
 	[LinkName("QListView_SetRootIndex")]
 	public static extern void QListView_SetRootIndex(Self* c_this, QModelIndex* index);
-	[LinkName("QListView_IndexesMoved")]
-	public static extern void QListView_IndexesMoved(Self* c_this, QModelIndex[] indexes);
+	[LinkName("QListView_Connect_IndexesMoved")]
+	public static extern void QListView_Connect_IndexesMoved(Self* c_this, c_intptr slot);
 	[LinkName("QListView_Event")]
 	public static extern bool QListView_Event(Self* c_this, QEvent* e);
 	[LinkName("QListView_ScrollContentsBy")]

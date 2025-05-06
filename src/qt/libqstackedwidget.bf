@@ -36,10 +36,10 @@ public struct QStackedWidget : QFrame
 	public static extern void QStackedWidget_SetCurrentIndex(Self* c_this, int32 index);
 	[LinkName("QStackedWidget_SetCurrentWidget")]
 	public static extern void QStackedWidget_SetCurrentWidget(Self* c_this, QWidget* w);
-	[LinkName("QStackedWidget_CurrentChanged")]
-	public static extern void QStackedWidget_CurrentChanged(Self* c_this, int32 param1);
-	[LinkName("QStackedWidget_WidgetRemoved")]
-	public static extern void QStackedWidget_WidgetRemoved(Self* c_this, int32 index);
+	[LinkName("QStackedWidget_Connect_CurrentChanged")]
+	public static extern void QStackedWidget_Connect_CurrentChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStackedWidget_Connect_WidgetRemoved")]
+	public static extern void QStackedWidget_Connect_WidgetRemoved(Self* c_this, c_intptr slot);
 	[LinkName("QStackedWidget_Event")]
 	public static extern bool QStackedWidget_Event(Self* c_this, QEvent* e);
 	[LinkName("QStackedWidget_Tr2")]

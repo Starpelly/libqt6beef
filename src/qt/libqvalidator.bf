@@ -37,8 +37,8 @@ public struct QValidator : QObject
 	public static extern int64 QValidator_Validate(Self* c_this, libqt_string param1, int32* param2);
 	[LinkName("QValidator_Fixup")]
 	public static extern void QValidator_Fixup(Self* c_this, libqt_string param1);
-	[LinkName("QValidator_Changed")]
-	public static extern void QValidator_Changed(Self* c_this);
+	[LinkName("QValidator_Connect_Changed")]
+	public static extern void QValidator_Connect_Changed(Self* c_this, c_intptr slot);
 	[LinkName("QValidator_Tr2")]
 	public static extern libqt_string QValidator_Tr2(char8[] s, char8[] c);
 	[LinkName("QValidator_Tr3")]
@@ -76,10 +76,10 @@ public struct QIntValidator : QValidator
 	public static extern int32 QIntValidator_Bottom(Self* c_this);
 	[LinkName("QIntValidator_Top")]
 	public static extern int32 QIntValidator_Top(Self* c_this);
-	[LinkName("QIntValidator_BottomChanged")]
-	public static extern void QIntValidator_BottomChanged(Self* c_this, int32 bottom);
-	[LinkName("QIntValidator_TopChanged")]
-	public static extern void QIntValidator_TopChanged(Self* c_this, int32 top);
+	[LinkName("QIntValidator_Connect_BottomChanged")]
+	public static extern void QIntValidator_Connect_BottomChanged(Self* c_this, c_intptr slot);
+	[LinkName("QIntValidator_Connect_TopChanged")]
+	public static extern void QIntValidator_Connect_TopChanged(Self* c_this, c_intptr slot);
 	[LinkName("QIntValidator_Tr2")]
 	public static extern libqt_string QIntValidator_Tr2(char8[] s, char8[] c);
 	[LinkName("QIntValidator_Tr3")]
@@ -127,14 +127,14 @@ public struct QDoubleValidator : QValidator
 	public static extern int32 QDoubleValidator_Decimals(Self* c_this);
 	[LinkName("QDoubleValidator_Notation")]
 	public static extern int64 QDoubleValidator_Notation(Self* c_this);
-	[LinkName("QDoubleValidator_BottomChanged")]
-	public static extern void QDoubleValidator_BottomChanged(Self* c_this, double bottom);
-	[LinkName("QDoubleValidator_TopChanged")]
-	public static extern void QDoubleValidator_TopChanged(Self* c_this, double top);
-	[LinkName("QDoubleValidator_DecimalsChanged")]
-	public static extern void QDoubleValidator_DecimalsChanged(Self* c_this, int32 decimals);
-	[LinkName("QDoubleValidator_NotationChanged")]
-	public static extern void QDoubleValidator_NotationChanged(Self* c_this, int64 notation);
+	[LinkName("QDoubleValidator_Connect_BottomChanged")]
+	public static extern void QDoubleValidator_Connect_BottomChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDoubleValidator_Connect_TopChanged")]
+	public static extern void QDoubleValidator_Connect_TopChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDoubleValidator_Connect_DecimalsChanged")]
+	public static extern void QDoubleValidator_Connect_DecimalsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDoubleValidator_Connect_NotationChanged")]
+	public static extern void QDoubleValidator_Connect_NotationChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDoubleValidator_Tr2")]
 	public static extern libqt_string QDoubleValidator_Tr2(char8[] s, char8[] c);
 	[LinkName("QDoubleValidator_Tr3")]
@@ -164,8 +164,8 @@ public struct QRegularExpressionValidator : QValidator
 	public static extern QRegularExpression QRegularExpressionValidator_RegularExpression(Self* c_this);
 	[LinkName("QRegularExpressionValidator_SetRegularExpression")]
 	public static extern void QRegularExpressionValidator_SetRegularExpression(Self* c_this, QRegularExpression* re);
-	[LinkName("QRegularExpressionValidator_RegularExpressionChanged")]
-	public static extern void QRegularExpressionValidator_RegularExpressionChanged(Self* c_this, QRegularExpression* re);
+	[LinkName("QRegularExpressionValidator_Connect_RegularExpressionChanged")]
+	public static extern void QRegularExpressionValidator_Connect_RegularExpressionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QRegularExpressionValidator_Tr2")]
 	public static extern libqt_string QRegularExpressionValidator_Tr2(char8[] s, char8[] c);
 	[LinkName("QRegularExpressionValidator_Tr3")]

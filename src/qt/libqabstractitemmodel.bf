@@ -261,14 +261,14 @@ public struct QAbstractItemModel : QObject
 	public static extern bool QAbstractItemModel_CheckIndex(Self* c_this, QModelIndex* index);
 	[LinkName("QAbstractItemModel_MultiData")]
 	public static extern void QAbstractItemModel_MultiData(Self* c_this, QModelIndex* index, QModelRoleDataSpan roleDataSpan);
-	[LinkName("QAbstractItemModel_DataChanged")]
-	public static extern void QAbstractItemModel_DataChanged(Self* c_this, QModelIndex* topLeft, QModelIndex* bottomRight);
-	[LinkName("QAbstractItemModel_HeaderDataChanged")]
-	public static extern void QAbstractItemModel_HeaderDataChanged(Self* c_this, int64 orientation, int32 first, int32 last);
-	[LinkName("QAbstractItemModel_LayoutChanged")]
-	public static extern void QAbstractItemModel_LayoutChanged(Self* c_this);
-	[LinkName("QAbstractItemModel_LayoutAboutToBeChanged")]
-	public static extern void QAbstractItemModel_LayoutAboutToBeChanged(Self* c_this);
+	[LinkName("QAbstractItemModel_Connect_DataChanged")]
+	public static extern void QAbstractItemModel_Connect_DataChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_HeaderDataChanged")]
+	public static extern void QAbstractItemModel_Connect_HeaderDataChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutChanged")]
+	public static extern void QAbstractItemModel_Connect_LayoutChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutAboutToBeChanged")]
+	public static extern void QAbstractItemModel_Connect_LayoutAboutToBeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractItemModel_Submit")]
 	public static extern bool QAbstractItemModel_Submit(Self* c_this);
 	[LinkName("QAbstractItemModel_Revert")]
@@ -333,16 +333,16 @@ public struct QAbstractItemModel : QObject
 	public static extern bool QAbstractItemModel_RemoveColumn2(Self* c_this, int32 column, QModelIndex* parent);
 	[LinkName("QAbstractItemModel_CheckIndex2")]
 	public static extern bool QAbstractItemModel_CheckIndex2(Self* c_this, QModelIndex* index, int64 options);
-	[LinkName("QAbstractItemModel_DataChanged3")]
-	public static extern void QAbstractItemModel_DataChanged3(Self* c_this, QModelIndex* topLeft, QModelIndex* bottomRight, int32[] roles);
-	[LinkName("QAbstractItemModel_LayoutChanged1")]
-	public static extern void QAbstractItemModel_LayoutChanged1(Self* c_this, QPersistentModelIndex[] parents);
-	[LinkName("QAbstractItemModel_LayoutChanged2")]
-	public static extern void QAbstractItemModel_LayoutChanged2(Self* c_this, QPersistentModelIndex[] parents, int64 hint);
-	[LinkName("QAbstractItemModel_LayoutAboutToBeChanged1")]
-	public static extern void QAbstractItemModel_LayoutAboutToBeChanged1(Self* c_this, QPersistentModelIndex[] parents);
-	[LinkName("QAbstractItemModel_LayoutAboutToBeChanged2")]
-	public static extern void QAbstractItemModel_LayoutAboutToBeChanged2(Self* c_this, QPersistentModelIndex[] parents, int64 hint);
+	[LinkName("QAbstractItemModel_Connect_DataChanged3")]
+	public static extern void QAbstractItemModel_Connect_DataChanged3(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutChanged1")]
+	public static extern void QAbstractItemModel_Connect_LayoutChanged1(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutChanged2")]
+	public static extern void QAbstractItemModel_Connect_LayoutChanged2(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutAboutToBeChanged1")]
+	public static extern void QAbstractItemModel_Connect_LayoutAboutToBeChanged1(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemModel_Connect_LayoutAboutToBeChanged2")]
+	public static extern void QAbstractItemModel_Connect_LayoutAboutToBeChanged2(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractItemModel_CreateIndex3")]
 	public static extern QModelIndex QAbstractItemModel_CreateIndex3(Self* c_this, int32 row, int32 column, void* data);
 }

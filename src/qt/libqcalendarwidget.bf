@@ -138,14 +138,14 @@ public struct QCalendarWidget : QWidget
 	public static extern void QCalendarWidget_ShowSelectedDate(Self* c_this);
 	[LinkName("QCalendarWidget_ShowToday")]
 	public static extern void QCalendarWidget_ShowToday(Self* c_this);
-	[LinkName("QCalendarWidget_SelectionChanged")]
-	public static extern void QCalendarWidget_SelectionChanged(Self* c_this);
-	[LinkName("QCalendarWidget_Clicked")]
-	public static extern void QCalendarWidget_Clicked(Self* c_this, QDate date);
-	[LinkName("QCalendarWidget_Activated")]
-	public static extern void QCalendarWidget_Activated(Self* c_this, QDate date);
-	[LinkName("QCalendarWidget_CurrentPageChanged")]
-	public static extern void QCalendarWidget_CurrentPageChanged(Self* c_this, int32 year, int32 month);
+	[LinkName("QCalendarWidget_Connect_SelectionChanged")]
+	public static extern void QCalendarWidget_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCalendarWidget_Connect_Clicked")]
+	public static extern void QCalendarWidget_Connect_Clicked(Self* c_this, c_intptr slot);
+	[LinkName("QCalendarWidget_Connect_Activated")]
+	public static extern void QCalendarWidget_Connect_Activated(Self* c_this, c_intptr slot);
+	[LinkName("QCalendarWidget_Connect_CurrentPageChanged")]
+	public static extern void QCalendarWidget_Connect_CurrentPageChanged(Self* c_this, c_intptr slot);
 	[LinkName("QCalendarWidget_Tr2")]
 	public static extern libqt_string QCalendarWidget_Tr2(char8[] s, char8[] c);
 	[LinkName("QCalendarWidget_Tr3")]

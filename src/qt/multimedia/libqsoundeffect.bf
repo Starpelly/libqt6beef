@@ -63,24 +63,24 @@ public struct QSoundEffect : QObject
 	public static extern bool QSoundEffect_IsPlaying(Self* c_this);
 	[LinkName("QSoundEffect_Status")]
 	public static extern int64 QSoundEffect_Status(Self* c_this);
-	[LinkName("QSoundEffect_SourceChanged")]
-	public static extern void QSoundEffect_SourceChanged(Self* c_this);
-	[LinkName("QSoundEffect_LoopCountChanged")]
-	public static extern void QSoundEffect_LoopCountChanged(Self* c_this);
-	[LinkName("QSoundEffect_LoopsRemainingChanged")]
-	public static extern void QSoundEffect_LoopsRemainingChanged(Self* c_this);
-	[LinkName("QSoundEffect_VolumeChanged")]
-	public static extern void QSoundEffect_VolumeChanged(Self* c_this);
-	[LinkName("QSoundEffect_MutedChanged")]
-	public static extern void QSoundEffect_MutedChanged(Self* c_this);
-	[LinkName("QSoundEffect_LoadedChanged")]
-	public static extern void QSoundEffect_LoadedChanged(Self* c_this);
-	[LinkName("QSoundEffect_PlayingChanged")]
-	public static extern void QSoundEffect_PlayingChanged(Self* c_this);
-	[LinkName("QSoundEffect_StatusChanged")]
-	public static extern void QSoundEffect_StatusChanged(Self* c_this);
-	[LinkName("QSoundEffect_AudioDeviceChanged")]
-	public static extern void QSoundEffect_AudioDeviceChanged(Self* c_this);
+	[LinkName("QSoundEffect_Connect_SourceChanged")]
+	public static extern void QSoundEffect_Connect_SourceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_LoopCountChanged")]
+	public static extern void QSoundEffect_Connect_LoopCountChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_LoopsRemainingChanged")]
+	public static extern void QSoundEffect_Connect_LoopsRemainingChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_VolumeChanged")]
+	public static extern void QSoundEffect_Connect_VolumeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_MutedChanged")]
+	public static extern void QSoundEffect_Connect_MutedChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_LoadedChanged")]
+	public static extern void QSoundEffect_Connect_LoadedChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_PlayingChanged")]
+	public static extern void QSoundEffect_Connect_PlayingChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_StatusChanged")]
+	public static extern void QSoundEffect_Connect_StatusChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSoundEffect_Connect_AudioDeviceChanged")]
+	public static extern void QSoundEffect_Connect_AudioDeviceChanged(Self* c_this, c_intptr slot);
 	[LinkName("QSoundEffect_Play")]
 	public static extern void QSoundEffect_Play(Self* c_this);
 	[LinkName("QSoundEffect_Stop")]

@@ -74,8 +74,8 @@ public struct QSvgRenderer : QObject
 	public static extern void QSvgRenderer_Render2(Self* c_this, QPainter* p, QRectF* bounds);
 	[LinkName("QSvgRenderer_Render3")]
 	public static extern void QSvgRenderer_Render3(Self* c_this, QPainter* p, libqt_string elementId);
-	[LinkName("QSvgRenderer_RepaintNeeded")]
-	public static extern void QSvgRenderer_RepaintNeeded(Self* c_this);
+	[LinkName("QSvgRenderer_Connect_RepaintNeeded")]
+	public static extern void QSvgRenderer_Connect_RepaintNeeded(Self* c_this, c_intptr slot);
 	[LinkName("QSvgRenderer_Tr2")]
 	public static extern libqt_string QSvgRenderer_Tr2(char8[] s, char8[] c);
 	[LinkName("QSvgRenderer_Tr3")]

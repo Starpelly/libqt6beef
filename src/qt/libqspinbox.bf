@@ -62,10 +62,10 @@ public struct QSpinBox : QAbstractSpinBox
 	public static extern void QSpinBox_Fixup(Self* c_this, libqt_string str);
 	[LinkName("QSpinBox_SetValue")]
 	public static extern void QSpinBox_SetValue(Self* c_this, int32 val);
-	[LinkName("QSpinBox_ValueChanged")]
-	public static extern void QSpinBox_ValueChanged(Self* c_this, int32 param1);
-	[LinkName("QSpinBox_TextChanged")]
-	public static extern void QSpinBox_TextChanged(Self* c_this, libqt_string param1);
+	[LinkName("QSpinBox_Connect_ValueChanged")]
+	public static extern void QSpinBox_Connect_ValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSpinBox_Connect_TextChanged")]
+	public static extern void QSpinBox_Connect_TextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QSpinBox_Tr2")]
 	public static extern libqt_string QSpinBox_Tr2(char8[] s, char8[] c);
 	[LinkName("QSpinBox_Tr3")]
@@ -129,10 +129,10 @@ public struct QDoubleSpinBox : QAbstractSpinBox
 	public static extern void QDoubleSpinBox_Fixup(Self* c_this, libqt_string str);
 	[LinkName("QDoubleSpinBox_SetValue")]
 	public static extern void QDoubleSpinBox_SetValue(Self* c_this, double val);
-	[LinkName("QDoubleSpinBox_ValueChanged")]
-	public static extern void QDoubleSpinBox_ValueChanged(Self* c_this, double param1);
-	[LinkName("QDoubleSpinBox_TextChanged")]
-	public static extern void QDoubleSpinBox_TextChanged(Self* c_this, libqt_string param1);
+	[LinkName("QDoubleSpinBox_Connect_ValueChanged")]
+	public static extern void QDoubleSpinBox_Connect_ValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDoubleSpinBox_Connect_TextChanged")]
+	public static extern void QDoubleSpinBox_Connect_TextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDoubleSpinBox_Tr2")]
 	public static extern libqt_string QDoubleSpinBox_Tr2(char8[] s, char8[] c);
 	[LinkName("QDoubleSpinBox_Tr3")]

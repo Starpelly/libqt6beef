@@ -166,7 +166,7 @@ QTLIBC_API void QListView_SetRootIndex(QListView* self, QModelIndex* index);
 QTLIBC_API void QListView_OnSetRootIndex(QListView* self, intptr_t slot);
 QTLIBC_API void QListView_QBaseSetRootIndex(QListView* self, QModelIndex* index);
 QTLIBC_API void QListView_IndexesMoved(QListView* self, libqt_list /* of QModelIndex* */ indexes);
-void QListView_Connect_IndexesMoved(QListView* self, intptr_t slot);
+QTLIBC_API void QListView_Connect_IndexesMoved(QListView* self, intptr_t slot);
 QTLIBC_API bool QListView_Event(QListView* self, QEvent* e);
 QTLIBC_API void QListView_OnEvent(QListView* self, intptr_t slot);
 QTLIBC_API bool QListView_QBaseEvent(QListView* self, QEvent* e);

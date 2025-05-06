@@ -56,10 +56,10 @@ public struct QStackedLayout : QLayout
 	public static extern bool QStackedLayout_HasHeightForWidth(Self* c_this);
 	[LinkName("QStackedLayout_HeightForWidth")]
 	public static extern int32 QStackedLayout_HeightForWidth(Self* c_this, int32 width);
-	[LinkName("QStackedLayout_WidgetRemoved")]
-	public static extern void QStackedLayout_WidgetRemoved(Self* c_this, int32 index);
-	[LinkName("QStackedLayout_CurrentChanged")]
-	public static extern void QStackedLayout_CurrentChanged(Self* c_this, int32 index);
+	[LinkName("QStackedLayout_Connect_WidgetRemoved")]
+	public static extern void QStackedLayout_Connect_WidgetRemoved(Self* c_this, c_intptr slot);
+	[LinkName("QStackedLayout_Connect_CurrentChanged")]
+	public static extern void QStackedLayout_Connect_CurrentChanged(Self* c_this, c_intptr slot);
 	[LinkName("QStackedLayout_SetCurrentIndex")]
 	public static extern void QStackedLayout_SetCurrentIndex(Self* c_this, int32 index);
 	[LinkName("QStackedLayout_SetCurrentWidget")]

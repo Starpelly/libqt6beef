@@ -51,11 +51,11 @@ QTLIBC_API void QVideoSink_SetSubtitleText(QVideoSink* self, libqt_string subtit
 QTLIBC_API void QVideoSink_SetVideoFrame(QVideoSink* self, QVideoFrame* frame);
 QTLIBC_API QVideoFrame* QVideoSink_VideoFrame(const QVideoSink* self);
 QTLIBC_API void QVideoSink_VideoFrameChanged(const QVideoSink* self, QVideoFrame* frame);
-void QVideoSink_Connect_VideoFrameChanged(QVideoSink* self, intptr_t slot);
+QTLIBC_API void QVideoSink_Connect_VideoFrameChanged(QVideoSink* self, intptr_t slot);
 QTLIBC_API void QVideoSink_SubtitleTextChanged(const QVideoSink* self, libqt_string subtitleText);
-void QVideoSink_Connect_SubtitleTextChanged(QVideoSink* self, intptr_t slot);
+QTLIBC_API void QVideoSink_Connect_SubtitleTextChanged(QVideoSink* self, intptr_t slot);
 QTLIBC_API void QVideoSink_VideoSizeChanged(QVideoSink* self);
-void QVideoSink_Connect_VideoSizeChanged(QVideoSink* self, intptr_t slot);
+QTLIBC_API void QVideoSink_Connect_VideoSizeChanged(QVideoSink* self, intptr_t slot);
 QTLIBC_API libqt_string QVideoSink_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QVideoSink_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QVideoSink_Event(QVideoSink* self, QEvent* event);

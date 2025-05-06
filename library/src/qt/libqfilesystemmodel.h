@@ -66,11 +66,11 @@ QTLIBC_API void QFileSystemModel_OnMetacall(QFileSystemModel* self, intptr_t slo
 QTLIBC_API int QFileSystemModel_QBaseMetacall(QFileSystemModel* self, int param1, int param2, void** param3);
 QTLIBC_API libqt_string QFileSystemModel_Tr(const char* s);
 QTLIBC_API void QFileSystemModel_RootPathChanged(QFileSystemModel* self, libqt_string newPath);
-void QFileSystemModel_Connect_RootPathChanged(QFileSystemModel* self, intptr_t slot);
+QTLIBC_API void QFileSystemModel_Connect_RootPathChanged(QFileSystemModel* self, intptr_t slot);
 QTLIBC_API void QFileSystemModel_FileRenamed(QFileSystemModel* self, libqt_string path, libqt_string oldName, libqt_string newName);
-void QFileSystemModel_Connect_FileRenamed(QFileSystemModel* self, intptr_t slot);
+QTLIBC_API void QFileSystemModel_Connect_FileRenamed(QFileSystemModel* self, intptr_t slot);
 QTLIBC_API void QFileSystemModel_DirectoryLoaded(QFileSystemModel* self, libqt_string path);
-void QFileSystemModel_Connect_DirectoryLoaded(QFileSystemModel* self, intptr_t slot);
+QTLIBC_API void QFileSystemModel_Connect_DirectoryLoaded(QFileSystemModel* self, intptr_t slot);
 QTLIBC_API QModelIndex* QFileSystemModel_Index(const QFileSystemModel* self, int row, int column, QModelIndex* parent);
 QTLIBC_API void QFileSystemModel_OnIndex(const QFileSystemModel* self, intptr_t slot);
 QTLIBC_API QModelIndex* QFileSystemModel_QBaseIndex(const QFileSystemModel* self, int row, int column, QModelIndex* parent);

@@ -156,26 +156,26 @@ public struct QAction : QObject
 	public static extern void QAction_SetDisabled(Self* c_this, bool b);
 	[LinkName("QAction_SetVisible")]
 	public static extern void QAction_SetVisible(Self* c_this, bool visible);
-	[LinkName("QAction_Changed")]
-	public static extern void QAction_Changed(Self* c_this);
-	[LinkName("QAction_EnabledChanged")]
-	public static extern void QAction_EnabledChanged(Self* c_this, bool enabled);
-	[LinkName("QAction_CheckableChanged")]
-	public static extern void QAction_CheckableChanged(Self* c_this, bool checkable);
-	[LinkName("QAction_VisibleChanged")]
-	public static extern void QAction_VisibleChanged(Self* c_this);
-	[LinkName("QAction_Triggered")]
-	public static extern void QAction_Triggered(Self* c_this);
-	[LinkName("QAction_Hovered")]
-	public static extern void QAction_Hovered(Self* c_this);
-	[LinkName("QAction_Toggled")]
-	public static extern void QAction_Toggled(Self* c_this, bool param1);
+	[LinkName("QAction_Connect_Changed")]
+	public static extern void QAction_Connect_Changed(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_EnabledChanged")]
+	public static extern void QAction_Connect_EnabledChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_CheckableChanged")]
+	public static extern void QAction_Connect_CheckableChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_VisibleChanged")]
+	public static extern void QAction_Connect_VisibleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_Triggered")]
+	public static extern void QAction_Connect_Triggered(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_Hovered")]
+	public static extern void QAction_Connect_Hovered(Self* c_this, c_intptr slot);
+	[LinkName("QAction_Connect_Toggled")]
+	public static extern void QAction_Connect_Toggled(Self* c_this, c_intptr slot);
 	[LinkName("QAction_Tr2")]
 	public static extern libqt_string QAction_Tr2(char8[] s, char8[] c);
 	[LinkName("QAction_Tr3")]
 	public static extern libqt_string QAction_Tr3(char8[] s, char8[] c, int32 n);
 	[LinkName("QAction_ShowStatusText1")]
 	public static extern bool QAction_ShowStatusText1(Self* c_this, QObject* object);
-	[LinkName("QAction_Triggered1")]
-	public static extern void QAction_Triggered1(Self* c_this, bool _checked);
+	[LinkName("QAction_Connect_Triggered1")]
+	public static extern void QAction_Connect_Triggered1(Self* c_this, c_intptr slot);
 }

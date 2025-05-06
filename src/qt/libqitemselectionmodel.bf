@@ -126,16 +126,16 @@ public struct QItemSelectionModel : QObject
 	public static extern void QItemSelectionModel_ClearSelection(Self* c_this);
 	[LinkName("QItemSelectionModel_ClearCurrentIndex")]
 	public static extern void QItemSelectionModel_ClearCurrentIndex(Self* c_this);
-	[LinkName("QItemSelectionModel_SelectionChanged")]
-	public static extern void QItemSelectionModel_SelectionChanged(Self* c_this, QItemSelection* selected, QItemSelection* deselected);
-	[LinkName("QItemSelectionModel_CurrentChanged")]
-	public static extern void QItemSelectionModel_CurrentChanged(Self* c_this, QModelIndex* current, QModelIndex* previous);
-	[LinkName("QItemSelectionModel_CurrentRowChanged")]
-	public static extern void QItemSelectionModel_CurrentRowChanged(Self* c_this, QModelIndex* current, QModelIndex* previous);
-	[LinkName("QItemSelectionModel_CurrentColumnChanged")]
-	public static extern void QItemSelectionModel_CurrentColumnChanged(Self* c_this, QModelIndex* current, QModelIndex* previous);
-	[LinkName("QItemSelectionModel_ModelChanged")]
-	public static extern void QItemSelectionModel_ModelChanged(Self* c_this, QAbstractItemModel* model);
+	[LinkName("QItemSelectionModel_Connect_SelectionChanged")]
+	public static extern void QItemSelectionModel_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QItemSelectionModel_Connect_CurrentChanged")]
+	public static extern void QItemSelectionModel_Connect_CurrentChanged(Self* c_this, c_intptr slot);
+	[LinkName("QItemSelectionModel_Connect_CurrentRowChanged")]
+	public static extern void QItemSelectionModel_Connect_CurrentRowChanged(Self* c_this, c_intptr slot);
+	[LinkName("QItemSelectionModel_Connect_CurrentColumnChanged")]
+	public static extern void QItemSelectionModel_Connect_CurrentColumnChanged(Self* c_this, c_intptr slot);
+	[LinkName("QItemSelectionModel_Connect_ModelChanged")]
+	public static extern void QItemSelectionModel_Connect_ModelChanged(Self* c_this, c_intptr slot);
 	[LinkName("QItemSelectionModel_EmitSelectionChanged")]
 	public static extern void QItemSelectionModel_EmitSelectionChanged(Self* c_this, QItemSelection* newSelection, QItemSelection* oldSelection);
 	[LinkName("QItemSelectionModel_Tr2")]

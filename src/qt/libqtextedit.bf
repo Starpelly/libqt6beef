@@ -215,20 +215,20 @@ public struct QTextEdit : QAbstractScrollArea
 	public static extern void QTextEdit_ZoomIn(Self* c_this);
 	[LinkName("QTextEdit_ZoomOut")]
 	public static extern void QTextEdit_ZoomOut(Self* c_this);
-	[LinkName("QTextEdit_TextChanged")]
-	public static extern void QTextEdit_TextChanged(Self* c_this);
-	[LinkName("QTextEdit_UndoAvailable")]
-	public static extern void QTextEdit_UndoAvailable(Self* c_this, bool b);
-	[LinkName("QTextEdit_RedoAvailable")]
-	public static extern void QTextEdit_RedoAvailable(Self* c_this, bool b);
-	[LinkName("QTextEdit_CurrentCharFormatChanged")]
-	public static extern void QTextEdit_CurrentCharFormatChanged(Self* c_this, QTextCharFormat* format);
-	[LinkName("QTextEdit_CopyAvailable")]
-	public static extern void QTextEdit_CopyAvailable(Self* c_this, bool b);
-	[LinkName("QTextEdit_SelectionChanged")]
-	public static extern void QTextEdit_SelectionChanged(Self* c_this);
-	[LinkName("QTextEdit_CursorPositionChanged")]
-	public static extern void QTextEdit_CursorPositionChanged(Self* c_this);
+	[LinkName("QTextEdit_Connect_TextChanged")]
+	public static extern void QTextEdit_Connect_TextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_UndoAvailable")]
+	public static extern void QTextEdit_Connect_UndoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_RedoAvailable")]
+	public static extern void QTextEdit_Connect_RedoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_CurrentCharFormatChanged")]
+	public static extern void QTextEdit_Connect_CurrentCharFormatChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_CopyAvailable")]
+	public static extern void QTextEdit_Connect_CopyAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_SelectionChanged")]
+	public static extern void QTextEdit_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextEdit_Connect_CursorPositionChanged")]
+	public static extern void QTextEdit_Connect_CursorPositionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QTextEdit_Event")]
 	public static extern bool QTextEdit_Event(Self* c_this, QEvent* e);
 	[LinkName("QTextEdit_TimerEvent")]

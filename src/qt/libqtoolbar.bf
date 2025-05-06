@@ -68,22 +68,22 @@ public struct QToolBar : QWidget
 	public static extern void QToolBar_SetIconSize(Self* c_this, QSize* iconSize);
 	[LinkName("QToolBar_SetToolButtonStyle")]
 	public static extern void QToolBar_SetToolButtonStyle(Self* c_this, int64 toolButtonStyle);
-	[LinkName("QToolBar_ActionTriggered")]
-	public static extern void QToolBar_ActionTriggered(Self* c_this, QAction* action);
-	[LinkName("QToolBar_MovableChanged")]
-	public static extern void QToolBar_MovableChanged(Self* c_this, bool movable);
-	[LinkName("QToolBar_AllowedAreasChanged")]
-	public static extern void QToolBar_AllowedAreasChanged(Self* c_this, int64 allowedAreas);
-	[LinkName("QToolBar_OrientationChanged")]
-	public static extern void QToolBar_OrientationChanged(Self* c_this, int64 orientation);
-	[LinkName("QToolBar_IconSizeChanged")]
-	public static extern void QToolBar_IconSizeChanged(Self* c_this, QSize* iconSize);
-	[LinkName("QToolBar_ToolButtonStyleChanged")]
-	public static extern void QToolBar_ToolButtonStyleChanged(Self* c_this, int64 toolButtonStyle);
-	[LinkName("QToolBar_TopLevelChanged")]
-	public static extern void QToolBar_TopLevelChanged(Self* c_this, bool topLevel);
-	[LinkName("QToolBar_VisibilityChanged")]
-	public static extern void QToolBar_VisibilityChanged(Self* c_this, bool visible);
+	[LinkName("QToolBar_Connect_ActionTriggered")]
+	public static extern void QToolBar_Connect_ActionTriggered(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_MovableChanged")]
+	public static extern void QToolBar_Connect_MovableChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_AllowedAreasChanged")]
+	public static extern void QToolBar_Connect_AllowedAreasChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_OrientationChanged")]
+	public static extern void QToolBar_Connect_OrientationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_IconSizeChanged")]
+	public static extern void QToolBar_Connect_IconSizeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_ToolButtonStyleChanged")]
+	public static extern void QToolBar_Connect_ToolButtonStyleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_TopLevelChanged")]
+	public static extern void QToolBar_Connect_TopLevelChanged(Self* c_this, c_intptr slot);
+	[LinkName("QToolBar_Connect_VisibilityChanged")]
+	public static extern void QToolBar_Connect_VisibilityChanged(Self* c_this, c_intptr slot);
 	[LinkName("QToolBar_ActionEvent")]
 	public static extern void QToolBar_ActionEvent(Self* c_this, QActionEvent* event);
 	[LinkName("QToolBar_ChangeEvent")]

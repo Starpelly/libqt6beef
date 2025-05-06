@@ -235,26 +235,26 @@ public struct QTextDocument : QObject
 	public static extern int64 QTextDocument_DefaultCursorMoveStyle(Self* c_this);
 	[LinkName("QTextDocument_SetDefaultCursorMoveStyle")]
 	public static extern void QTextDocument_SetDefaultCursorMoveStyle(Self* c_this, int64 style);
-	[LinkName("QTextDocument_ContentsChange")]
-	public static extern void QTextDocument_ContentsChange(Self* c_this, int32 from, int32 charsRemoved, int32 charsAdded);
-	[LinkName("QTextDocument_ContentsChanged")]
-	public static extern void QTextDocument_ContentsChanged(Self* c_this);
-	[LinkName("QTextDocument_UndoAvailable")]
-	public static extern void QTextDocument_UndoAvailable(Self* c_this, bool param1);
-	[LinkName("QTextDocument_RedoAvailable")]
-	public static extern void QTextDocument_RedoAvailable(Self* c_this, bool param1);
-	[LinkName("QTextDocument_UndoCommandAdded")]
-	public static extern void QTextDocument_UndoCommandAdded(Self* c_this);
-	[LinkName("QTextDocument_ModificationChanged")]
-	public static extern void QTextDocument_ModificationChanged(Self* c_this, bool m);
-	[LinkName("QTextDocument_CursorPositionChanged")]
-	public static extern void QTextDocument_CursorPositionChanged(Self* c_this, QTextCursor* cursor);
-	[LinkName("QTextDocument_BlockCountChanged")]
-	public static extern void QTextDocument_BlockCountChanged(Self* c_this, int32 newBlockCount);
-	[LinkName("QTextDocument_BaseUrlChanged")]
-	public static extern void QTextDocument_BaseUrlChanged(Self* c_this, QUrl* url);
-	[LinkName("QTextDocument_DocumentLayoutChanged")]
-	public static extern void QTextDocument_DocumentLayoutChanged(Self* c_this);
+	[LinkName("QTextDocument_Connect_ContentsChange")]
+	public static extern void QTextDocument_Connect_ContentsChange(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_ContentsChanged")]
+	public static extern void QTextDocument_Connect_ContentsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_UndoAvailable")]
+	public static extern void QTextDocument_Connect_UndoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_RedoAvailable")]
+	public static extern void QTextDocument_Connect_RedoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_UndoCommandAdded")]
+	public static extern void QTextDocument_Connect_UndoCommandAdded(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_ModificationChanged")]
+	public static extern void QTextDocument_Connect_ModificationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_CursorPositionChanged")]
+	public static extern void QTextDocument_Connect_CursorPositionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_BlockCountChanged")]
+	public static extern void QTextDocument_Connect_BlockCountChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_BaseUrlChanged")]
+	public static extern void QTextDocument_Connect_BaseUrlChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextDocument_Connect_DocumentLayoutChanged")]
+	public static extern void QTextDocument_Connect_DocumentLayoutChanged(Self* c_this, c_intptr slot);
 	[LinkName("QTextDocument_Undo2")]
 	public static extern void QTextDocument_Undo2(Self* c_this);
 	[LinkName("QTextDocument_Redo2")]

@@ -42,10 +42,10 @@ public struct QWaveDecoder : QIODevice
 	public static extern bool QWaveDecoder_IsSequential(Self* c_this);
 	[LinkName("QWaveDecoder_BytesAvailable")]
 	public static extern int64 QWaveDecoder_BytesAvailable(Self* c_this);
-	[LinkName("QWaveDecoder_FormatKnown")]
-	public static extern void QWaveDecoder_FormatKnown(Self* c_this);
-	[LinkName("QWaveDecoder_ParsingError")]
-	public static extern void QWaveDecoder_ParsingError(Self* c_this);
+	[LinkName("QWaveDecoder_Connect_FormatKnown")]
+	public static extern void QWaveDecoder_Connect_FormatKnown(Self* c_this, c_intptr slot);
+	[LinkName("QWaveDecoder_Connect_ParsingError")]
+	public static extern void QWaveDecoder_Connect_ParsingError(Self* c_this, c_intptr slot);
 	[LinkName("QWaveDecoder_Tr2")]
 	public static extern libqt_string QWaveDecoder_Tr2(char8[] s, char8[] c);
 	[LinkName("QWaveDecoder_Tr3")]

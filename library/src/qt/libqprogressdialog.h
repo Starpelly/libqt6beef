@@ -125,7 +125,7 @@ QTLIBC_API void QProgressDialog_SetLabelText(QProgressDialog* self, libqt_string
 QTLIBC_API void QProgressDialog_SetCancelButtonText(QProgressDialog* self, libqt_string text);
 QTLIBC_API void QProgressDialog_SetMinimumDuration(QProgressDialog* self, int ms);
 QTLIBC_API void QProgressDialog_Canceled(QProgressDialog* self);
-void QProgressDialog_Connect_Canceled(QProgressDialog* self, intptr_t slot);
+QTLIBC_API void QProgressDialog_Connect_Canceled(QProgressDialog* self, intptr_t slot);
 QTLIBC_API void QProgressDialog_ResizeEvent(QProgressDialog* self, QResizeEvent* event);
 QTLIBC_API void QProgressDialog_OnResizeEvent(QProgressDialog* self, intptr_t slot);
 QTLIBC_API void QProgressDialog_QBaseResizeEvent(QProgressDialog* self, QResizeEvent* event);

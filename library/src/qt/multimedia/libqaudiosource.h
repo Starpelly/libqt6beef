@@ -68,7 +68,7 @@ QTLIBC_API long long QAudioSource_ElapsedUSecs(const QAudioSource* self);
 QTLIBC_API int QAudioSource_Error(const QAudioSource* self);
 QTLIBC_API int QAudioSource_State(const QAudioSource* self);
 QTLIBC_API void QAudioSource_StateChanged(QAudioSource* self, int state);
-void QAudioSource_Connect_StateChanged(QAudioSource* self, intptr_t slot);
+QTLIBC_API void QAudioSource_Connect_StateChanged(QAudioSource* self, intptr_t slot);
 QTLIBC_API libqt_string QAudioSource_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QAudioSource_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QAudioSource_Event(QAudioSource* self, QEvent* event);

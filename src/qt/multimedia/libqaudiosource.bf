@@ -58,8 +58,8 @@ public struct QAudioSource : QObject
 	public static extern int64 QAudioSource_Error(Self* c_this);
 	[LinkName("QAudioSource_State")]
 	public static extern int64 QAudioSource_State(Self* c_this);
-	[LinkName("QAudioSource_StateChanged")]
-	public static extern void QAudioSource_StateChanged(Self* c_this, int64 state);
+	[LinkName("QAudioSource_Connect_StateChanged")]
+	public static extern void QAudioSource_Connect_StateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAudioSource_Tr2")]
 	public static extern libqt_string QAudioSource_Tr2(char8[] s, char8[] c);
 	[LinkName("QAudioSource_Tr3")]

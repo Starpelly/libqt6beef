@@ -92,9 +92,9 @@ QTLIBC_API int QStackedLayout_HeightForWidth(const QStackedLayout* self, int wid
 QTLIBC_API void QStackedLayout_OnHeightForWidth(const QStackedLayout* self, intptr_t slot);
 QTLIBC_API int QStackedLayout_QBaseHeightForWidth(const QStackedLayout* self, int width);
 QTLIBC_API void QStackedLayout_WidgetRemoved(QStackedLayout* self, int index);
-void QStackedLayout_Connect_WidgetRemoved(QStackedLayout* self, intptr_t slot);
+QTLIBC_API void QStackedLayout_Connect_WidgetRemoved(QStackedLayout* self, intptr_t slot);
 QTLIBC_API void QStackedLayout_CurrentChanged(QStackedLayout* self, int index);
-void QStackedLayout_Connect_CurrentChanged(QStackedLayout* self, intptr_t slot);
+QTLIBC_API void QStackedLayout_Connect_CurrentChanged(QStackedLayout* self, intptr_t slot);
 QTLIBC_API void QStackedLayout_SetCurrentIndex(QStackedLayout* self, int index);
 QTLIBC_API void QStackedLayout_SetCurrentWidget(QStackedLayout* self, QWidget* w);
 QTLIBC_API libqt_string QStackedLayout_Tr2(const char* s, const char* c);

@@ -126,7 +126,7 @@ QTLIBC_API void QLCDNumber_SetOctMode(QLCDNumber* self);
 QTLIBC_API void QLCDNumber_SetBinMode(QLCDNumber* self);
 QTLIBC_API void QLCDNumber_SetSmallDecimalPoint(QLCDNumber* self, bool smallDecimalPoint);
 QTLIBC_API void QLCDNumber_Overflow(QLCDNumber* self);
-void QLCDNumber_Connect_Overflow(QLCDNumber* self, intptr_t slot);
+QTLIBC_API void QLCDNumber_Connect_Overflow(QLCDNumber* self, intptr_t slot);
 QTLIBC_API bool QLCDNumber_Event(QLCDNumber* self, QEvent* e);
 QTLIBC_API void QLCDNumber_OnEvent(QLCDNumber* self, intptr_t slot);
 QTLIBC_API bool QLCDNumber_QBaseEvent(QLCDNumber* self, QEvent* e);

@@ -105,7 +105,7 @@ QTLIBC_API bool QApplication_Notify(QApplication* self, QObject* param1, QEvent*
 QTLIBC_API void QApplication_OnNotify(QApplication* self, intptr_t slot);
 QTLIBC_API bool QApplication_QBaseNotify(QApplication* self, QObject* param1, QEvent* param2);
 QTLIBC_API void QApplication_FocusChanged(QApplication* self, QWidget* old, QWidget* now);
-void QApplication_Connect_FocusChanged(QApplication* self, intptr_t slot);
+QTLIBC_API void QApplication_Connect_FocusChanged(QApplication* self, intptr_t slot);
 QTLIBC_API libqt_string QApplication_StyleSheet(const QApplication* self);
 QTLIBC_API void QApplication_SetStyleSheet(QApplication* self, libqt_string sheet);
 QTLIBC_API void QApplication_SetAutoSipEnabled(QApplication* self, const bool enabled);

@@ -139,7 +139,7 @@ QTLIBC_API int QMdiArea_TabShape(const QMdiArea* self);
 QTLIBC_API void QMdiArea_SetTabPosition(QMdiArea* self, int position);
 QTLIBC_API int QMdiArea_TabPosition(const QMdiArea* self);
 QTLIBC_API void QMdiArea_SubWindowActivated(QMdiArea* self, QMdiSubWindow* param1);
-void QMdiArea_Connect_SubWindowActivated(QMdiArea* self, intptr_t slot);
+QTLIBC_API void QMdiArea_Connect_SubWindowActivated(QMdiArea* self, intptr_t slot);
 QTLIBC_API void QMdiArea_SetActiveSubWindow(QMdiArea* self, QMdiSubWindow* window);
 QTLIBC_API void QMdiArea_TileSubWindows(QMdiArea* self);
 QTLIBC_API void QMdiArea_CascadeSubWindows(QMdiArea* self);

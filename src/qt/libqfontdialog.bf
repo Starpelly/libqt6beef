@@ -50,10 +50,10 @@ public struct QFontDialog : QDialog
 	public static extern QFont QFontDialog_GetFont(bool* ok);
 	[LinkName("QFontDialog_GetFont2")]
 	public static extern QFont QFontDialog_GetFont2(bool* ok, QFont* initial);
-	[LinkName("QFontDialog_CurrentFontChanged")]
-	public static extern void QFontDialog_CurrentFontChanged(Self* c_this, QFont* font);
-	[LinkName("QFontDialog_FontSelected")]
-	public static extern void QFontDialog_FontSelected(Self* c_this, QFont* font);
+	[LinkName("QFontDialog_Connect_CurrentFontChanged")]
+	public static extern void QFontDialog_Connect_CurrentFontChanged(Self* c_this, c_intptr slot);
+	[LinkName("QFontDialog_Connect_FontSelected")]
+	public static extern void QFontDialog_Connect_FontSelected(Self* c_this, c_intptr slot);
 	[LinkName("QFontDialog_ChangeEvent")]
 	public static extern void QFontDialog_ChangeEvent(Self* c_this, QEvent* event);
 	[LinkName("QFontDialog_Done")]

@@ -57,24 +57,6 @@ public struct QAudioDecoder : QObject
 	public static extern void QAudioDecoder_Start(Self* c_this);
 	[LinkName("QAudioDecoder_Stop")]
 	public static extern void QAudioDecoder_Stop(Self* c_this);
-	[LinkName("QAudioDecoder_BufferAvailableChanged")]
-	public static extern void QAudioDecoder_BufferAvailableChanged(Self* c_this, bool param1);
-	[LinkName("QAudioDecoder_BufferReady")]
-	public static extern void QAudioDecoder_BufferReady(Self* c_this);
-	[LinkName("QAudioDecoder_Finished")]
-	public static extern void QAudioDecoder_Finished(Self* c_this);
-	[LinkName("QAudioDecoder_IsDecodingChanged")]
-	public static extern void QAudioDecoder_IsDecodingChanged(Self* c_this, bool param1);
-	[LinkName("QAudioDecoder_FormatChanged")]
-	public static extern void QAudioDecoder_FormatChanged(Self* c_this, QAudioFormat* format);
-	[LinkName("QAudioDecoder_ErrorWithErrorVal")]
-	public static extern void QAudioDecoder_ErrorWithErrorVal(Self* c_this, int64 errorVal);
-	[LinkName("QAudioDecoder_SourceChanged")]
-	public static extern void QAudioDecoder_SourceChanged(Self* c_this);
-	[LinkName("QAudioDecoder_PositionChanged")]
-	public static extern void QAudioDecoder_PositionChanged(Self* c_this, int64 position);
-	[LinkName("QAudioDecoder_DurationChanged")]
-	public static extern void QAudioDecoder_DurationChanged(Self* c_this, int64 duration);
 	[LinkName("QAudioDecoder_Tr2")]
 	public static extern libqt_string QAudioDecoder_Tr2(char8[] s, char8[] c);
 	[LinkName("QAudioDecoder_Tr3")]

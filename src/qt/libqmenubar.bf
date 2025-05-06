@@ -58,10 +58,10 @@ public struct QMenuBar : QWidget
 	public static extern void QMenuBar_SetNativeMenuBar(Self* c_this, bool nativeMenuBar);
 	[LinkName("QMenuBar_SetVisible")]
 	public static extern void QMenuBar_SetVisible(Self* c_this, bool visible);
-	[LinkName("QMenuBar_Triggered")]
-	public static extern void QMenuBar_Triggered(Self* c_this, QAction* action);
-	[LinkName("QMenuBar_Hovered")]
-	public static extern void QMenuBar_Hovered(Self* c_this, QAction* action);
+	[LinkName("QMenuBar_Connect_Triggered")]
+	public static extern void QMenuBar_Connect_Triggered(Self* c_this, c_intptr slot);
+	[LinkName("QMenuBar_Connect_Hovered")]
+	public static extern void QMenuBar_Connect_Hovered(Self* c_this, c_intptr slot);
 	[LinkName("QMenuBar_ChangeEvent")]
 	public static extern void QMenuBar_ChangeEvent(Self* c_this, QEvent* param1);
 	[LinkName("QMenuBar_KeyPressEvent")]

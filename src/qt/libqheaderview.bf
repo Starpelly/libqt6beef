@@ -165,28 +165,28 @@ public struct QHeaderView : QAbstractItemView
 	public static extern void QHeaderView_SetOffsetToLastSection(Self* c_this);
 	[LinkName("QHeaderView_HeaderDataChanged")]
 	public static extern void QHeaderView_HeaderDataChanged(Self* c_this, int64 orientation, int32 logicalFirst, int32 logicalLast);
-	[LinkName("QHeaderView_SectionMoved")]
-	public static extern void QHeaderView_SectionMoved(Self* c_this, int32 logicalIndex, int32 oldVisualIndex, int32 newVisualIndex);
-	[LinkName("QHeaderView_SectionResized")]
-	public static extern void QHeaderView_SectionResized(Self* c_this, int32 logicalIndex, int32 oldSize, int32 newSize);
-	[LinkName("QHeaderView_SectionPressed")]
-	public static extern void QHeaderView_SectionPressed(Self* c_this, int32 logicalIndex);
-	[LinkName("QHeaderView_SectionClicked")]
-	public static extern void QHeaderView_SectionClicked(Self* c_this, int32 logicalIndex);
-	[LinkName("QHeaderView_SectionEntered")]
-	public static extern void QHeaderView_SectionEntered(Self* c_this, int32 logicalIndex);
-	[LinkName("QHeaderView_SectionDoubleClicked")]
-	public static extern void QHeaderView_SectionDoubleClicked(Self* c_this, int32 logicalIndex);
-	[LinkName("QHeaderView_SectionCountChanged")]
-	public static extern void QHeaderView_SectionCountChanged(Self* c_this, int32 oldCount, int32 newCount);
-	[LinkName("QHeaderView_SectionHandleDoubleClicked")]
-	public static extern void QHeaderView_SectionHandleDoubleClicked(Self* c_this, int32 logicalIndex);
-	[LinkName("QHeaderView_GeometriesChanged")]
-	public static extern void QHeaderView_GeometriesChanged(Self* c_this);
-	[LinkName("QHeaderView_SortIndicatorChanged")]
-	public static extern void QHeaderView_SortIndicatorChanged(Self* c_this, int32 logicalIndex, int64 order);
-	[LinkName("QHeaderView_SortIndicatorClearableChanged")]
-	public static extern void QHeaderView_SortIndicatorClearableChanged(Self* c_this, bool clearable);
+	[LinkName("QHeaderView_Connect_SectionMoved")]
+	public static extern void QHeaderView_Connect_SectionMoved(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionResized")]
+	public static extern void QHeaderView_Connect_SectionResized(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionPressed")]
+	public static extern void QHeaderView_Connect_SectionPressed(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionClicked")]
+	public static extern void QHeaderView_Connect_SectionClicked(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionEntered")]
+	public static extern void QHeaderView_Connect_SectionEntered(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionDoubleClicked")]
+	public static extern void QHeaderView_Connect_SectionDoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionCountChanged")]
+	public static extern void QHeaderView_Connect_SectionCountChanged(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SectionHandleDoubleClicked")]
+	public static extern void QHeaderView_Connect_SectionHandleDoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_GeometriesChanged")]
+	public static extern void QHeaderView_Connect_GeometriesChanged(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SortIndicatorChanged")]
+	public static extern void QHeaderView_Connect_SortIndicatorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QHeaderView_Connect_SortIndicatorClearableChanged")]
+	public static extern void QHeaderView_Connect_SortIndicatorClearableChanged(Self* c_this, c_intptr slot);
 	[LinkName("QHeaderView_UpdateSection")]
 	public static extern void QHeaderView_UpdateSection(Self* c_this, int32 logicalIndex);
 	[LinkName("QHeaderView_ResizeSections2")]

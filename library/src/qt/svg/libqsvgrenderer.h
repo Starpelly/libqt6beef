@@ -79,7 +79,7 @@ QTLIBC_API void QSvgRenderer_Render(QSvgRenderer* self, QPainter* p);
 QTLIBC_API void QSvgRenderer_Render2(QSvgRenderer* self, QPainter* p, QRectF* bounds);
 QTLIBC_API void QSvgRenderer_Render3(QSvgRenderer* self, QPainter* p, libqt_string elementId);
 QTLIBC_API void QSvgRenderer_RepaintNeeded(QSvgRenderer* self);
-void QSvgRenderer_Connect_RepaintNeeded(QSvgRenderer* self, intptr_t slot);
+QTLIBC_API void QSvgRenderer_Connect_RepaintNeeded(QSvgRenderer* self, intptr_t slot);
 QTLIBC_API libqt_string QSvgRenderer_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QSvgRenderer_Tr3(const char* s, const char* c, int n);
 QTLIBC_API void QSvgRenderer_Render32(QSvgRenderer* self, QPainter* p, libqt_string elementId, QRectF* bounds);

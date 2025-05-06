@@ -199,26 +199,26 @@ public struct QListWidget : QListView
 	public static extern void QListWidget_ScrollToItem(Self* c_this, QListWidgetItem* item);
 	[LinkName("QListWidget_Clear")]
 	public static extern void QListWidget_Clear(Self* c_this);
-	[LinkName("QListWidget_ItemPressed")]
-	public static extern void QListWidget_ItemPressed(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_ItemClicked")]
-	public static extern void QListWidget_ItemClicked(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_ItemDoubleClicked")]
-	public static extern void QListWidget_ItemDoubleClicked(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_ItemActivated")]
-	public static extern void QListWidget_ItemActivated(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_ItemEntered")]
-	public static extern void QListWidget_ItemEntered(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_ItemChanged")]
-	public static extern void QListWidget_ItemChanged(Self* c_this, QListWidgetItem* item);
-	[LinkName("QListWidget_CurrentItemChanged")]
-	public static extern void QListWidget_CurrentItemChanged(Self* c_this, QListWidgetItem* current, QListWidgetItem* previous);
-	[LinkName("QListWidget_CurrentTextChanged")]
-	public static extern void QListWidget_CurrentTextChanged(Self* c_this, libqt_string currentText);
-	[LinkName("QListWidget_CurrentRowChanged")]
-	public static extern void QListWidget_CurrentRowChanged(Self* c_this, int32 currentRow);
-	[LinkName("QListWidget_ItemSelectionChanged")]
-	public static extern void QListWidget_ItemSelectionChanged(Self* c_this);
+	[LinkName("QListWidget_Connect_ItemPressed")]
+	public static extern void QListWidget_Connect_ItemPressed(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemClicked")]
+	public static extern void QListWidget_Connect_ItemClicked(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemDoubleClicked")]
+	public static extern void QListWidget_Connect_ItemDoubleClicked(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemActivated")]
+	public static extern void QListWidget_Connect_ItemActivated(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemEntered")]
+	public static extern void QListWidget_Connect_ItemEntered(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemChanged")]
+	public static extern void QListWidget_Connect_ItemChanged(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_CurrentItemChanged")]
+	public static extern void QListWidget_Connect_CurrentItemChanged(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_CurrentTextChanged")]
+	public static extern void QListWidget_Connect_CurrentTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_CurrentRowChanged")]
+	public static extern void QListWidget_Connect_CurrentRowChanged(Self* c_this, c_intptr slot);
+	[LinkName("QListWidget_Connect_ItemSelectionChanged")]
+	public static extern void QListWidget_Connect_ItemSelectionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QListWidget_Event")]
 	public static extern bool QListWidget_Event(Self* c_this, QEvent* e);
 	[LinkName("QListWidget_MimeTypes")]

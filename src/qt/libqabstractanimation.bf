@@ -57,14 +57,14 @@ public struct QAbstractAnimation : QObject
 	public static extern int32 QAbstractAnimation_Duration(Self* c_this);
 	[LinkName("QAbstractAnimation_TotalDuration")]
 	public static extern int32 QAbstractAnimation_TotalDuration(Self* c_this);
-	[LinkName("QAbstractAnimation_Finished")]
-	public static extern void QAbstractAnimation_Finished(Self* c_this);
-	[LinkName("QAbstractAnimation_StateChanged")]
-	public static extern void QAbstractAnimation_StateChanged(Self* c_this, int64 newState, int64 oldState);
-	[LinkName("QAbstractAnimation_CurrentLoopChanged")]
-	public static extern void QAbstractAnimation_CurrentLoopChanged(Self* c_this, int32 currentLoop);
-	[LinkName("QAbstractAnimation_DirectionChanged")]
-	public static extern void QAbstractAnimation_DirectionChanged(Self* c_this, int64 param1);
+	[LinkName("QAbstractAnimation_Connect_Finished")]
+	public static extern void QAbstractAnimation_Connect_Finished(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractAnimation_Connect_StateChanged")]
+	public static extern void QAbstractAnimation_Connect_StateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractAnimation_Connect_CurrentLoopChanged")]
+	public static extern void QAbstractAnimation_Connect_CurrentLoopChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractAnimation_Connect_DirectionChanged")]
+	public static extern void QAbstractAnimation_Connect_DirectionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractAnimation_Start")]
 	public static extern void QAbstractAnimation_Start(Self* c_this);
 	[LinkName("QAbstractAnimation_Pause")]
@@ -116,10 +116,10 @@ public struct QAnimationDriver : QObject
 	public static extern bool QAnimationDriver_IsRunning(Self* c_this);
 	[LinkName("QAnimationDriver_Elapsed")]
 	public static extern int64 QAnimationDriver_Elapsed(Self* c_this);
-	[LinkName("QAnimationDriver_Started")]
-	public static extern void QAnimationDriver_Started(Self* c_this);
-	[LinkName("QAnimationDriver_Stopped")]
-	public static extern void QAnimationDriver_Stopped(Self* c_this);
+	[LinkName("QAnimationDriver_Connect_Started")]
+	public static extern void QAnimationDriver_Connect_Started(Self* c_this, c_intptr slot);
+	[LinkName("QAnimationDriver_Connect_Stopped")]
+	public static extern void QAnimationDriver_Connect_Stopped(Self* c_this, c_intptr slot);
 	[LinkName("QAnimationDriver_AdvanceAnimation")]
 	public static extern void QAnimationDriver_AdvanceAnimation(Self* c_this);
 	[LinkName("QAnimationDriver_Start")]

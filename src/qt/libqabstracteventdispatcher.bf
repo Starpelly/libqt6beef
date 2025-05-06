@@ -46,10 +46,10 @@ public struct QAbstractEventDispatcher : QObject
 	public static extern void QAbstractEventDispatcher_RemoveNativeEventFilter(Self* c_this, QAbstractNativeEventFilter* filterObj);
 	[LinkName("QAbstractEventDispatcher_FilterNativeEvent")]
 	public static extern bool QAbstractEventDispatcher_FilterNativeEvent(Self* c_this, libqt_string eventType, void* message, c_uintptr* result);
-	[LinkName("QAbstractEventDispatcher_AboutToBlock")]
-	public static extern void QAbstractEventDispatcher_AboutToBlock(Self* c_this);
-	[LinkName("QAbstractEventDispatcher_Awake")]
-	public static extern void QAbstractEventDispatcher_Awake(Self* c_this);
+	[LinkName("QAbstractEventDispatcher_Connect_AboutToBlock")]
+	public static extern void QAbstractEventDispatcher_Connect_AboutToBlock(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractEventDispatcher_Connect_Awake")]
+	public static extern void QAbstractEventDispatcher_Connect_Awake(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractEventDispatcher_Tr2")]
 	public static extern libqt_string QAbstractEventDispatcher_Tr2(char8[] s, char8[] c);
 	[LinkName("QAbstractEventDispatcher_Tr3")]

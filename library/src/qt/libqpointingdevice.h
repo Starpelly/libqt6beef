@@ -85,7 +85,7 @@ QTLIBC_API QPointingDeviceUniqueId* QPointingDevice_UniqueId(const QPointingDevi
 QTLIBC_API QPointingDevice* QPointingDevice_PrimaryPointingDevice();
 QTLIBC_API bool QPointingDevice_OperatorEqual(const QPointingDevice* self, QPointingDevice* other);
 QTLIBC_API void QPointingDevice_GrabChanged(const QPointingDevice* self, QObject* grabber, int transition, QPointerEvent* event, QEventPoint* point);
-void QPointingDevice_Connect_GrabChanged(QPointingDevice* self, intptr_t slot);
+QTLIBC_API void QPointingDevice_Connect_GrabChanged(QPointingDevice* self, intptr_t slot);
 QTLIBC_API libqt_string QPointingDevice_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QPointingDevice_Tr3(const char* s, const char* c, int n);
 QTLIBC_API QPointingDevice* QPointingDevice_PrimaryPointingDevice1(libqt_string seatName);

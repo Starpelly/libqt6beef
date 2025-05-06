@@ -16,8 +16,8 @@ public struct QColumnView : QAbstractItemView
 	public static extern int32 QColumnView_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QColumnView_Tr")]
 	public static extern libqt_string QColumnView_Tr(char8[] s);
-	[LinkName("QColumnView_UpdatePreviewWidget")]
-	public static extern void QColumnView_UpdatePreviewWidget(Self* c_this, QModelIndex* index);
+	[LinkName("QColumnView_Connect_UpdatePreviewWidget")]
+	public static extern void QColumnView_Connect_UpdatePreviewWidget(Self* c_this, c_intptr slot);
 	[LinkName("QColumnView_IndexAt")]
 	public static extern QModelIndex QColumnView_IndexAt(Self* c_this, QPoint* point);
 	[LinkName("QColumnView_ScrollTo")]

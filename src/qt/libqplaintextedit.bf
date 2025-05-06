@@ -162,24 +162,24 @@ public struct QPlainTextEdit : QAbstractScrollArea
 	public static extern void QPlainTextEdit_ZoomIn(Self* c_this);
 	[LinkName("QPlainTextEdit_ZoomOut")]
 	public static extern void QPlainTextEdit_ZoomOut(Self* c_this);
-	[LinkName("QPlainTextEdit_TextChanged")]
-	public static extern void QPlainTextEdit_TextChanged(Self* c_this);
-	[LinkName("QPlainTextEdit_UndoAvailable")]
-	public static extern void QPlainTextEdit_UndoAvailable(Self* c_this, bool b);
-	[LinkName("QPlainTextEdit_RedoAvailable")]
-	public static extern void QPlainTextEdit_RedoAvailable(Self* c_this, bool b);
-	[LinkName("QPlainTextEdit_CopyAvailable")]
-	public static extern void QPlainTextEdit_CopyAvailable(Self* c_this, bool b);
-	[LinkName("QPlainTextEdit_SelectionChanged")]
-	public static extern void QPlainTextEdit_SelectionChanged(Self* c_this);
-	[LinkName("QPlainTextEdit_CursorPositionChanged")]
-	public static extern void QPlainTextEdit_CursorPositionChanged(Self* c_this);
-	[LinkName("QPlainTextEdit_UpdateRequest")]
-	public static extern void QPlainTextEdit_UpdateRequest(Self* c_this, QRect* rect, int32 dy);
-	[LinkName("QPlainTextEdit_BlockCountChanged")]
-	public static extern void QPlainTextEdit_BlockCountChanged(Self* c_this, int32 newBlockCount);
-	[LinkName("QPlainTextEdit_ModificationChanged")]
-	public static extern void QPlainTextEdit_ModificationChanged(Self* c_this, bool param1);
+	[LinkName("QPlainTextEdit_Connect_TextChanged")]
+	public static extern void QPlainTextEdit_Connect_TextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_UndoAvailable")]
+	public static extern void QPlainTextEdit_Connect_UndoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_RedoAvailable")]
+	public static extern void QPlainTextEdit_Connect_RedoAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_CopyAvailable")]
+	public static extern void QPlainTextEdit_Connect_CopyAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_SelectionChanged")]
+	public static extern void QPlainTextEdit_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_CursorPositionChanged")]
+	public static extern void QPlainTextEdit_Connect_CursorPositionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_UpdateRequest")]
+	public static extern void QPlainTextEdit_Connect_UpdateRequest(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_BlockCountChanged")]
+	public static extern void QPlainTextEdit_Connect_BlockCountChanged(Self* c_this, c_intptr slot);
+	[LinkName("QPlainTextEdit_Connect_ModificationChanged")]
+	public static extern void QPlainTextEdit_Connect_ModificationChanged(Self* c_this, c_intptr slot);
 	[LinkName("QPlainTextEdit_Event")]
 	public static extern bool QPlainTextEdit_Event(Self* c_this, QEvent* e);
 	[LinkName("QPlainTextEdit_TimerEvent")]

@@ -212,7 +212,7 @@ QTLIBC_API int QAbstractSpinBox_StepEnabled(const QAbstractSpinBox* self);
 QTLIBC_API void QAbstractSpinBox_OnStepEnabled(const QAbstractSpinBox* self, intptr_t slot);
 QTLIBC_API int QAbstractSpinBox_QBaseStepEnabled(const QAbstractSpinBox* self);
 QTLIBC_API void QAbstractSpinBox_EditingFinished(QAbstractSpinBox* self);
-void QAbstractSpinBox_Connect_EditingFinished(QAbstractSpinBox* self, intptr_t slot);
+QTLIBC_API void QAbstractSpinBox_Connect_EditingFinished(QAbstractSpinBox* self, intptr_t slot);
 QTLIBC_API libqt_string QAbstractSpinBox_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QAbstractSpinBox_Tr3(const char* s, const char* c, int n);
 QTLIBC_API int QAbstractSpinBox_DevType(const QAbstractSpinBox* self);

@@ -98,8 +98,8 @@ public struct QApplication : QGuiApplication
 	public static extern bool QApplication_Notify(Self* c_this, QObject* param1, QEvent* param2);
 	[LinkName("QApplication_ResolveInterface")]
 	public static extern void* QApplication_ResolveInterface(Self* c_this, char8[] name, int32 revision);
-	[LinkName("QApplication_FocusChanged")]
-	public static extern void QApplication_FocusChanged(Self* c_this, QWidget* old, QWidget* now);
+	[LinkName("QApplication_Connect_FocusChanged")]
+	public static extern void QApplication_Connect_FocusChanged(Self* c_this, c_intptr slot);
 	[LinkName("QApplication_StyleSheet")]
 	public static extern libqt_string QApplication_StyleSheet(Self* c_this);
 	[LinkName("QApplication_SetStyleSheet")]

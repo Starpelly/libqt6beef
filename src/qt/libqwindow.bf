@@ -254,44 +254,44 @@ public struct QWindow : QSurface
 	public static extern void QWindow_Alert(Self* c_this, int32 msec);
 	[LinkName("QWindow_RequestUpdate")]
 	public static extern void QWindow_RequestUpdate(Self* c_this);
-	[LinkName("QWindow_ScreenChanged")]
-	public static extern void QWindow_ScreenChanged(Self* c_this, QScreen* screen);
-	[LinkName("QWindow_ModalityChanged")]
-	public static extern void QWindow_ModalityChanged(Self* c_this, int64 modality);
-	[LinkName("QWindow_WindowStateChanged")]
-	public static extern void QWindow_WindowStateChanged(Self* c_this, int64 windowState);
-	[LinkName("QWindow_WindowTitleChanged")]
-	public static extern void QWindow_WindowTitleChanged(Self* c_this, libqt_string title);
-	[LinkName("QWindow_XChanged")]
-	public static extern void QWindow_XChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_YChanged")]
-	public static extern void QWindow_YChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_WidthChanged")]
-	public static extern void QWindow_WidthChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_HeightChanged")]
-	public static extern void QWindow_HeightChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_MinimumWidthChanged")]
-	public static extern void QWindow_MinimumWidthChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_MinimumHeightChanged")]
-	public static extern void QWindow_MinimumHeightChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_MaximumWidthChanged")]
-	public static extern void QWindow_MaximumWidthChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_MaximumHeightChanged")]
-	public static extern void QWindow_MaximumHeightChanged(Self* c_this, int32 arg);
-	[LinkName("QWindow_VisibleChanged")]
-	public static extern void QWindow_VisibleChanged(Self* c_this, bool arg);
-	[LinkName("QWindow_VisibilityChanged")]
-	public static extern void QWindow_VisibilityChanged(Self* c_this, int64 visibility);
-	[LinkName("QWindow_ActiveChanged")]
-	public static extern void QWindow_ActiveChanged(Self* c_this);
-	[LinkName("QWindow_ContentOrientationChanged")]
-	public static extern void QWindow_ContentOrientationChanged(Self* c_this, int64 orientation);
-	[LinkName("QWindow_FocusObjectChanged")]
-	public static extern void QWindow_FocusObjectChanged(Self* c_this, QObject* object);
-	[LinkName("QWindow_OpacityChanged")]
-	public static extern void QWindow_OpacityChanged(Self* c_this, double opacity);
-	[LinkName("QWindow_TransientParentChanged")]
-	public static extern void QWindow_TransientParentChanged(Self* c_this, QWindow* transientParent);
+	[LinkName("QWindow_Connect_ScreenChanged")]
+	public static extern void QWindow_Connect_ScreenChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_ModalityChanged")]
+	public static extern void QWindow_Connect_ModalityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_WindowStateChanged")]
+	public static extern void QWindow_Connect_WindowStateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_WindowTitleChanged")]
+	public static extern void QWindow_Connect_WindowTitleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_XChanged")]
+	public static extern void QWindow_Connect_XChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_YChanged")]
+	public static extern void QWindow_Connect_YChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_WidthChanged")]
+	public static extern void QWindow_Connect_WidthChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_HeightChanged")]
+	public static extern void QWindow_Connect_HeightChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_MinimumWidthChanged")]
+	public static extern void QWindow_Connect_MinimumWidthChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_MinimumHeightChanged")]
+	public static extern void QWindow_Connect_MinimumHeightChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_MaximumWidthChanged")]
+	public static extern void QWindow_Connect_MaximumWidthChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_MaximumHeightChanged")]
+	public static extern void QWindow_Connect_MaximumHeightChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_VisibleChanged")]
+	public static extern void QWindow_Connect_VisibleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_VisibilityChanged")]
+	public static extern void QWindow_Connect_VisibilityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_ActiveChanged")]
+	public static extern void QWindow_Connect_ActiveChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_ContentOrientationChanged")]
+	public static extern void QWindow_Connect_ContentOrientationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_FocusObjectChanged")]
+	public static extern void QWindow_Connect_FocusObjectChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_OpacityChanged")]
+	public static extern void QWindow_Connect_OpacityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWindow_Connect_TransientParentChanged")]
+	public static extern void QWindow_Connect_TransientParentChanged(Self* c_this, c_intptr slot);
 	[LinkName("QWindow_ExposeEvent")]
 	public static extern void QWindow_ExposeEvent(Self* c_this, QExposeEvent* param1);
 	[LinkName("QWindow_ResizeEvent")]

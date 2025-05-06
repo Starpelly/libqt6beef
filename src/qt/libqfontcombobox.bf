@@ -49,8 +49,8 @@ public struct QFontComboBox : QComboBox
 	public static extern void QFontComboBox_SetDisplayFont(Self* c_this, libqt_string fontFamily, QFont* font);
 	[LinkName("QFontComboBox_SetCurrentFont")]
 	public static extern void QFontComboBox_SetCurrentFont(Self* c_this, QFont* f);
-	[LinkName("QFontComboBox_CurrentFontChanged")]
-	public static extern void QFontComboBox_CurrentFontChanged(Self* c_this, QFont* f);
+	[LinkName("QFontComboBox_Connect_CurrentFontChanged")]
+	public static extern void QFontComboBox_Connect_CurrentFontChanged(Self* c_this, c_intptr slot);
 	[LinkName("QFontComboBox_Event")]
 	public static extern bool QFontComboBox_Event(Self* c_this, QEvent* e);
 	[LinkName("QFontComboBox_Tr2")]

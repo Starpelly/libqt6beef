@@ -44,18 +44,18 @@ public struct QMediaCaptureSession : QObject
 	public static extern void QMediaCaptureSession_SetAudioOutput(Self* c_this, QAudioOutput* output);
 	[LinkName("QMediaCaptureSession_AudioOutput")]
 	public static extern QAudioOutput* QMediaCaptureSession_AudioOutput(Self* c_this);
-	[LinkName("QMediaCaptureSession_AudioInputChanged")]
-	public static extern void QMediaCaptureSession_AudioInputChanged(Self* c_this);
-	[LinkName("QMediaCaptureSession_CameraChanged")]
-	public static extern void QMediaCaptureSession_CameraChanged(Self* c_this);
-	[LinkName("QMediaCaptureSession_ImageCaptureChanged")]
-	public static extern void QMediaCaptureSession_ImageCaptureChanged(Self* c_this);
-	[LinkName("QMediaCaptureSession_RecorderChanged")]
-	public static extern void QMediaCaptureSession_RecorderChanged(Self* c_this);
-	[LinkName("QMediaCaptureSession_VideoOutputChanged")]
-	public static extern void QMediaCaptureSession_VideoOutputChanged(Self* c_this);
-	[LinkName("QMediaCaptureSession_AudioOutputChanged")]
-	public static extern void QMediaCaptureSession_AudioOutputChanged(Self* c_this);
+	[LinkName("QMediaCaptureSession_Connect_AudioInputChanged")]
+	public static extern void QMediaCaptureSession_Connect_AudioInputChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaCaptureSession_Connect_CameraChanged")]
+	public static extern void QMediaCaptureSession_Connect_CameraChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaCaptureSession_Connect_ImageCaptureChanged")]
+	public static extern void QMediaCaptureSession_Connect_ImageCaptureChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaCaptureSession_Connect_RecorderChanged")]
+	public static extern void QMediaCaptureSession_Connect_RecorderChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaCaptureSession_Connect_VideoOutputChanged")]
+	public static extern void QMediaCaptureSession_Connect_VideoOutputChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaCaptureSession_Connect_AudioOutputChanged")]
+	public static extern void QMediaCaptureSession_Connect_AudioOutputChanged(Self* c_this, c_intptr slot);
 	[LinkName("QMediaCaptureSession_Tr2")]
 	public static extern libqt_string QMediaCaptureSession_Tr2(char8[] s, char8[] c);
 	[LinkName("QMediaCaptureSession_Tr3")]

@@ -100,14 +100,14 @@ public struct QMenu : QWidget
 	public static extern bool QMenu_ToolTipsVisible(Self* c_this);
 	[LinkName("QMenu_SetToolTipsVisible")]
 	public static extern void QMenu_SetToolTipsVisible(Self* c_this, bool visible);
-	[LinkName("QMenu_AboutToShow")]
-	public static extern void QMenu_AboutToShow(Self* c_this);
-	[LinkName("QMenu_AboutToHide")]
-	public static extern void QMenu_AboutToHide(Self* c_this);
-	[LinkName("QMenu_Triggered")]
-	public static extern void QMenu_Triggered(Self* c_this, QAction* action);
-	[LinkName("QMenu_Hovered")]
-	public static extern void QMenu_Hovered(Self* c_this, QAction* action);
+	[LinkName("QMenu_Connect_AboutToShow")]
+	public static extern void QMenu_Connect_AboutToShow(Self* c_this, c_intptr slot);
+	[LinkName("QMenu_Connect_AboutToHide")]
+	public static extern void QMenu_Connect_AboutToHide(Self* c_this, c_intptr slot);
+	[LinkName("QMenu_Connect_Triggered")]
+	public static extern void QMenu_Connect_Triggered(Self* c_this, c_intptr slot);
+	[LinkName("QMenu_Connect_Hovered")]
+	public static extern void QMenu_Connect_Hovered(Self* c_this, c_intptr slot);
 	[LinkName("QMenu_ColumnCount")]
 	public static extern int32 QMenu_ColumnCount(Self* c_this);
 	[LinkName("QMenu_ChangeEvent")]

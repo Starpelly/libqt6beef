@@ -80,24 +80,24 @@ public struct QScreen : QObject
 	public static extern double QScreen_RefreshRate(Self* c_this);
 	[LinkName("QScreen_ResolveInterface")]
 	public static extern void* QScreen_ResolveInterface(Self* c_this, char8[] name, int32 revision);
-	[LinkName("QScreen_GeometryChanged")]
-	public static extern void QScreen_GeometryChanged(Self* c_this, QRect* geometry);
-	[LinkName("QScreen_AvailableGeometryChanged")]
-	public static extern void QScreen_AvailableGeometryChanged(Self* c_this, QRect* geometry);
-	[LinkName("QScreen_PhysicalSizeChanged")]
-	public static extern void QScreen_PhysicalSizeChanged(Self* c_this, QSizeF* size);
-	[LinkName("QScreen_PhysicalDotsPerInchChanged")]
-	public static extern void QScreen_PhysicalDotsPerInchChanged(Self* c_this, double dpi);
-	[LinkName("QScreen_LogicalDotsPerInchChanged")]
-	public static extern void QScreen_LogicalDotsPerInchChanged(Self* c_this, double dpi);
-	[LinkName("QScreen_VirtualGeometryChanged")]
-	public static extern void QScreen_VirtualGeometryChanged(Self* c_this, QRect* rect);
-	[LinkName("QScreen_PrimaryOrientationChanged")]
-	public static extern void QScreen_PrimaryOrientationChanged(Self* c_this, int64 orientation);
-	[LinkName("QScreen_OrientationChanged")]
-	public static extern void QScreen_OrientationChanged(Self* c_this, int64 orientation);
-	[LinkName("QScreen_RefreshRateChanged")]
-	public static extern void QScreen_RefreshRateChanged(Self* c_this, double refreshRate);
+	[LinkName("QScreen_Connect_GeometryChanged")]
+	public static extern void QScreen_Connect_GeometryChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_AvailableGeometryChanged")]
+	public static extern void QScreen_Connect_AvailableGeometryChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_PhysicalSizeChanged")]
+	public static extern void QScreen_Connect_PhysicalSizeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_PhysicalDotsPerInchChanged")]
+	public static extern void QScreen_Connect_PhysicalDotsPerInchChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_LogicalDotsPerInchChanged")]
+	public static extern void QScreen_Connect_LogicalDotsPerInchChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_VirtualGeometryChanged")]
+	public static extern void QScreen_Connect_VirtualGeometryChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_PrimaryOrientationChanged")]
+	public static extern void QScreen_Connect_PrimaryOrientationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_OrientationChanged")]
+	public static extern void QScreen_Connect_OrientationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScreen_Connect_RefreshRateChanged")]
+	public static extern void QScreen_Connect_RefreshRateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QScreen_Tr2")]
 	public static extern libqt_string QScreen_Tr2(char8[] s, char8[] c);
 	[LinkName("QScreen_Tr3")]

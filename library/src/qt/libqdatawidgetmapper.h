@@ -82,7 +82,7 @@ QTLIBC_API void QDataWidgetMapper_OnSetCurrentIndex(QDataWidgetMapper* self, int
 QTLIBC_API void QDataWidgetMapper_QBaseSetCurrentIndex(QDataWidgetMapper* self, int index);
 QTLIBC_API void QDataWidgetMapper_SetCurrentModelIndex(QDataWidgetMapper* self, QModelIndex* index);
 QTLIBC_API void QDataWidgetMapper_CurrentIndexChanged(QDataWidgetMapper* self, int index);
-void QDataWidgetMapper_Connect_CurrentIndexChanged(QDataWidgetMapper* self, intptr_t slot);
+QTLIBC_API void QDataWidgetMapper_Connect_CurrentIndexChanged(QDataWidgetMapper* self, intptr_t slot);
 QTLIBC_API libqt_string QDataWidgetMapper_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QDataWidgetMapper_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QDataWidgetMapper_Event(QDataWidgetMapper* self, QEvent* event);

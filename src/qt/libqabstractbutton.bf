@@ -68,14 +68,14 @@ public struct QAbstractButton : QWidget
 	public static extern void QAbstractButton_Toggle(Self* c_this);
 	[LinkName("QAbstractButton_SetChecked")]
 	public static extern void QAbstractButton_SetChecked(Self* c_this, bool _checked);
-	[LinkName("QAbstractButton_Pressed")]
-	public static extern void QAbstractButton_Pressed(Self* c_this);
-	[LinkName("QAbstractButton_Released")]
-	public static extern void QAbstractButton_Released(Self* c_this);
-	[LinkName("QAbstractButton_Clicked")]
-	public static extern void QAbstractButton_Clicked(Self* c_this);
-	[LinkName("QAbstractButton_Toggled")]
-	public static extern void QAbstractButton_Toggled(Self* c_this, bool _checked);
+	[LinkName("QAbstractButton_Connect_Pressed")]
+	public static extern void QAbstractButton_Connect_Pressed(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractButton_Connect_Released")]
+	public static extern void QAbstractButton_Connect_Released(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractButton_Connect_Clicked")]
+	public static extern void QAbstractButton_Connect_Clicked(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractButton_Connect_Toggled")]
+	public static extern void QAbstractButton_Connect_Toggled(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractButton_PaintEvent")]
 	public static extern void QAbstractButton_PaintEvent(Self* c_this, QPaintEvent* e);
 	[LinkName("QAbstractButton_HitButton")]
@@ -108,6 +108,6 @@ public struct QAbstractButton : QWidget
 	public static extern libqt_string QAbstractButton_Tr2(char8[] s, char8[] c);
 	[LinkName("QAbstractButton_Tr3")]
 	public static extern libqt_string QAbstractButton_Tr3(char8[] s, char8[] c, int32 n);
-	[LinkName("QAbstractButton_Clicked1")]
-	public static extern void QAbstractButton_Clicked1(Self* c_this, bool _checked);
+	[LinkName("QAbstractButton_Connect_Clicked1")]
+	public static extern void QAbstractButton_Connect_Clicked1(Self* c_this, c_intptr slot);
 }

@@ -55,10 +55,10 @@ public struct QColorDialog : QDialog
 	public static extern QColor QColorDialog_StandardColor(int32 index);
 	[LinkName("QColorDialog_SetStandardColor")]
 	public static extern void QColorDialog_SetStandardColor(int32 index, QColor color);
-	[LinkName("QColorDialog_CurrentColorChanged")]
-	public static extern void QColorDialog_CurrentColorChanged(Self* c_this, QColor* color);
-	[LinkName("QColorDialog_ColorSelected")]
-	public static extern void QColorDialog_ColorSelected(Self* c_this, QColor* color);
+	[LinkName("QColorDialog_Connect_CurrentColorChanged")]
+	public static extern void QColorDialog_Connect_CurrentColorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QColorDialog_Connect_ColorSelected")]
+	public static extern void QColorDialog_Connect_ColorSelected(Self* c_this, c_intptr slot);
 	[LinkName("QColorDialog_ChangeEvent")]
 	public static extern void QColorDialog_ChangeEvent(Self* c_this, QEvent* event);
 	[LinkName("QColorDialog_Done")]

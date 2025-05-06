@@ -85,10 +85,10 @@ public struct QScroller : QObject
 	public static extern void QScroller_EnsureVisible2(Self* c_this, QRectF* rect, double xmargin, double ymargin, int32 scrollTime);
 	[LinkName("QScroller_ResendPrepareEvent")]
 	public static extern void QScroller_ResendPrepareEvent(Self* c_this);
-	[LinkName("QScroller_StateChanged")]
-	public static extern void QScroller_StateChanged(Self* c_this, int64 newstate);
-	[LinkName("QScroller_ScrollerPropertiesChanged")]
-	public static extern void QScroller_ScrollerPropertiesChanged(Self* c_this, QScrollerProperties* param1);
+	[LinkName("QScroller_Connect_StateChanged")]
+	public static extern void QScroller_Connect_StateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QScroller_Connect_ScrollerPropertiesChanged")]
+	public static extern void QScroller_Connect_ScrollerPropertiesChanged(Self* c_this, c_intptr slot);
 	[LinkName("QScroller_Tr2")]
 	public static extern libqt_string QScroller_Tr2(char8[] s, char8[] c);
 	[LinkName("QScroller_Tr3")]

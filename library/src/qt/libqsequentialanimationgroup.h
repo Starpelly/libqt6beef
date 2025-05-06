@@ -53,7 +53,7 @@ QTLIBC_API int QSequentialAnimationGroup_Duration(const QSequentialAnimationGrou
 QTLIBC_API void QSequentialAnimationGroup_OnDuration(const QSequentialAnimationGroup* self, intptr_t slot);
 QTLIBC_API int QSequentialAnimationGroup_QBaseDuration(const QSequentialAnimationGroup* self);
 QTLIBC_API void QSequentialAnimationGroup_CurrentAnimationChanged(QSequentialAnimationGroup* self, QAbstractAnimation* current);
-void QSequentialAnimationGroup_Connect_CurrentAnimationChanged(QSequentialAnimationGroup* self, intptr_t slot);
+QTLIBC_API void QSequentialAnimationGroup_Connect_CurrentAnimationChanged(QSequentialAnimationGroup* self, intptr_t slot);
 QTLIBC_API bool QSequentialAnimationGroup_Event(QSequentialAnimationGroup* self, QEvent* event);
 QTLIBC_API void QSequentialAnimationGroup_OnEvent(QSequentialAnimationGroup* self, intptr_t slot);
 QTLIBC_API bool QSequentialAnimationGroup_QBaseEvent(QSequentialAnimationGroup* self, QEvent* event);

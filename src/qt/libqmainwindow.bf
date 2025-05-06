@@ -132,12 +132,12 @@ public struct QMainWindow : QWidget
 	public static extern void QMainWindow_SetDockNestingEnabled(Self* c_this, bool enabled);
 	[LinkName("QMainWindow_SetUnifiedTitleAndToolBarOnMac")]
 	public static extern void QMainWindow_SetUnifiedTitleAndToolBarOnMac(Self* c_this, bool set);
-	[LinkName("QMainWindow_IconSizeChanged")]
-	public static extern void QMainWindow_IconSizeChanged(Self* c_this, QSize* iconSize);
-	[LinkName("QMainWindow_ToolButtonStyleChanged")]
-	public static extern void QMainWindow_ToolButtonStyleChanged(Self* c_this, int64 toolButtonStyle);
-	[LinkName("QMainWindow_TabifiedDockWidgetActivated")]
-	public static extern void QMainWindow_TabifiedDockWidgetActivated(Self* c_this, QDockWidget* dockWidget);
+	[LinkName("QMainWindow_Connect_IconSizeChanged")]
+	public static extern void QMainWindow_Connect_IconSizeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMainWindow_Connect_ToolButtonStyleChanged")]
+	public static extern void QMainWindow_Connect_ToolButtonStyleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMainWindow_Connect_TabifiedDockWidgetActivated")]
+	public static extern void QMainWindow_Connect_TabifiedDockWidgetActivated(Self* c_this, c_intptr slot);
 	[LinkName("QMainWindow_ContextMenuEvent")]
 	public static extern void QMainWindow_ContextMenuEvent(Self* c_this, QContextMenuEvent* event);
 	[LinkName("QMainWindow_Event")]

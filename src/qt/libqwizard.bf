@@ -148,16 +148,16 @@ public struct QWizard : QDialog
 	public static extern void QWizard_SetVisible(Self* c_this, bool visible);
 	[LinkName("QWizard_SizeHint")]
 	public static extern QSize QWizard_SizeHint(Self* c_this);
-	[LinkName("QWizard_CurrentIdChanged")]
-	public static extern void QWizard_CurrentIdChanged(Self* c_this, int32 id);
-	[LinkName("QWizard_HelpRequested")]
-	public static extern void QWizard_HelpRequested(Self* c_this);
-	[LinkName("QWizard_CustomButtonClicked")]
-	public static extern void QWizard_CustomButtonClicked(Self* c_this, int32 which);
-	[LinkName("QWizard_PageAdded")]
-	public static extern void QWizard_PageAdded(Self* c_this, int32 id);
-	[LinkName("QWizard_PageRemoved")]
-	public static extern void QWizard_PageRemoved(Self* c_this, int32 id);
+	[LinkName("QWizard_Connect_CurrentIdChanged")]
+	public static extern void QWizard_Connect_CurrentIdChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWizard_Connect_HelpRequested")]
+	public static extern void QWizard_Connect_HelpRequested(Self* c_this, c_intptr slot);
+	[LinkName("QWizard_Connect_CustomButtonClicked")]
+	public static extern void QWizard_Connect_CustomButtonClicked(Self* c_this, c_intptr slot);
+	[LinkName("QWizard_Connect_PageAdded")]
+	public static extern void QWizard_Connect_PageAdded(Self* c_this, c_intptr slot);
+	[LinkName("QWizard_Connect_PageRemoved")]
+	public static extern void QWizard_Connect_PageRemoved(Self* c_this, c_intptr slot);
 	[LinkName("QWizard_Back")]
 	public static extern void QWizard_Back(Self* c_this);
 	[LinkName("QWizard_Next")]
@@ -233,8 +233,8 @@ public struct QWizardPage : QWidget
 	public static extern bool QWizardPage_IsComplete(Self* c_this);
 	[LinkName("QWizardPage_NextId")]
 	public static extern int32 QWizardPage_NextId(Self* c_this);
-	[LinkName("QWizardPage_CompleteChanged")]
-	public static extern void QWizardPage_CompleteChanged(Self* c_this);
+	[LinkName("QWizardPage_Connect_CompleteChanged")]
+	public static extern void QWizardPage_Connect_CompleteChanged(Self* c_this, c_intptr slot);
 	[LinkName("QWizardPage_SetField")]
 	public static extern void QWizardPage_SetField(Self* c_this, libqt_string name, QVariant* value);
 	[LinkName("QWizardPage_Field")]

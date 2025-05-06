@@ -53,11 +53,11 @@ QTLIBC_API void QAudioOutput_SetDevice(QAudioOutput* self, QAudioDevice* device)
 QTLIBC_API void QAudioOutput_SetVolume(QAudioOutput* self, float volume);
 QTLIBC_API void QAudioOutput_SetMuted(QAudioOutput* self, bool muted);
 QTLIBC_API void QAudioOutput_DeviceChanged(QAudioOutput* self);
-void QAudioOutput_Connect_DeviceChanged(QAudioOutput* self, intptr_t slot);
+QTLIBC_API void QAudioOutput_Connect_DeviceChanged(QAudioOutput* self, intptr_t slot);
 QTLIBC_API void QAudioOutput_VolumeChanged(QAudioOutput* self, float volume);
-void QAudioOutput_Connect_VolumeChanged(QAudioOutput* self, intptr_t slot);
+QTLIBC_API void QAudioOutput_Connect_VolumeChanged(QAudioOutput* self, intptr_t slot);
 QTLIBC_API void QAudioOutput_MutedChanged(QAudioOutput* self, bool muted);
-void QAudioOutput_Connect_MutedChanged(QAudioOutput* self, intptr_t slot);
+QTLIBC_API void QAudioOutput_Connect_MutedChanged(QAudioOutput* self, intptr_t slot);
 QTLIBC_API libqt_string QAudioOutput_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QAudioOutput_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QAudioOutput_Event(QAudioOutput* self, QEvent* event);

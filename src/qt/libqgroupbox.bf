@@ -42,10 +42,10 @@ public struct QGroupBox : QWidget
 	public static extern bool QGroupBox_IsChecked(Self* c_this);
 	[LinkName("QGroupBox_SetChecked")]
 	public static extern void QGroupBox_SetChecked(Self* c_this, bool _checked);
-	[LinkName("QGroupBox_Clicked")]
-	public static extern void QGroupBox_Clicked(Self* c_this);
-	[LinkName("QGroupBox_Toggled")]
-	public static extern void QGroupBox_Toggled(Self* c_this, bool param1);
+	[LinkName("QGroupBox_Connect_Clicked")]
+	public static extern void QGroupBox_Connect_Clicked(Self* c_this, c_intptr slot);
+	[LinkName("QGroupBox_Connect_Toggled")]
+	public static extern void QGroupBox_Connect_Toggled(Self* c_this, c_intptr slot);
 	[LinkName("QGroupBox_Event")]
 	public static extern bool QGroupBox_Event(Self* c_this, QEvent* event);
 	[LinkName("QGroupBox_ChildEvent")]
@@ -70,6 +70,6 @@ public struct QGroupBox : QWidget
 	public static extern libqt_string QGroupBox_Tr2(char8[] s, char8[] c);
 	[LinkName("QGroupBox_Tr3")]
 	public static extern libqt_string QGroupBox_Tr3(char8[] s, char8[] c, int32 n);
-	[LinkName("QGroupBox_Clicked1")]
-	public static extern void QGroupBox_Clicked1(Self* c_this, bool _checked);
+	[LinkName("QGroupBox_Connect_Clicked1")]
+	public static extern void QGroupBox_Connect_Clicked1(Self* c_this, c_intptr slot);
 }

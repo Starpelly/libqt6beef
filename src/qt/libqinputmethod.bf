@@ -58,22 +58,22 @@ public struct QInputMethod : QObject
 	public static extern void QInputMethod_Commit(Self* c_this);
 	[LinkName("QInputMethod_InvokeAction")]
 	public static extern void QInputMethod_InvokeAction(Self* c_this, int64 a, int32 cursorPosition);
-	[LinkName("QInputMethod_CursorRectangleChanged")]
-	public static extern void QInputMethod_CursorRectangleChanged(Self* c_this);
-	[LinkName("QInputMethod_AnchorRectangleChanged")]
-	public static extern void QInputMethod_AnchorRectangleChanged(Self* c_this);
-	[LinkName("QInputMethod_KeyboardRectangleChanged")]
-	public static extern void QInputMethod_KeyboardRectangleChanged(Self* c_this);
-	[LinkName("QInputMethod_InputItemClipRectangleChanged")]
-	public static extern void QInputMethod_InputItemClipRectangleChanged(Self* c_this);
-	[LinkName("QInputMethod_VisibleChanged")]
-	public static extern void QInputMethod_VisibleChanged(Self* c_this);
-	[LinkName("QInputMethod_AnimatingChanged")]
-	public static extern void QInputMethod_AnimatingChanged(Self* c_this);
-	[LinkName("QInputMethod_LocaleChanged")]
-	public static extern void QInputMethod_LocaleChanged(Self* c_this);
-	[LinkName("QInputMethod_InputDirectionChanged")]
-	public static extern void QInputMethod_InputDirectionChanged(Self* c_this, int64 newDirection);
+	[LinkName("QInputMethod_Connect_CursorRectangleChanged")]
+	public static extern void QInputMethod_Connect_CursorRectangleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_AnchorRectangleChanged")]
+	public static extern void QInputMethod_Connect_AnchorRectangleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_KeyboardRectangleChanged")]
+	public static extern void QInputMethod_Connect_KeyboardRectangleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_InputItemClipRectangleChanged")]
+	public static extern void QInputMethod_Connect_InputItemClipRectangleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_VisibleChanged")]
+	public static extern void QInputMethod_Connect_VisibleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_AnimatingChanged")]
+	public static extern void QInputMethod_Connect_AnimatingChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_LocaleChanged")]
+	public static extern void QInputMethod_Connect_LocaleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputMethod_Connect_InputDirectionChanged")]
+	public static extern void QInputMethod_Connect_InputDirectionChanged(Self* c_this, c_intptr slot);
 	[LinkName("QInputMethod_Tr2")]
 	public static extern libqt_string QInputMethod_Tr2(char8[] s, char8[] c);
 	[LinkName("QInputMethod_Tr3")]

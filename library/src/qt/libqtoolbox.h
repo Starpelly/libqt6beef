@@ -115,7 +115,7 @@ QTLIBC_API int QToolBox_Count(const QToolBox* self);
 QTLIBC_API void QToolBox_SetCurrentIndex(QToolBox* self, int index);
 QTLIBC_API void QToolBox_SetCurrentWidget(QToolBox* self, QWidget* widget);
 QTLIBC_API void QToolBox_CurrentChanged(QToolBox* self, int index);
-void QToolBox_Connect_CurrentChanged(QToolBox* self, intptr_t slot);
+QTLIBC_API void QToolBox_Connect_CurrentChanged(QToolBox* self, intptr_t slot);
 QTLIBC_API bool QToolBox_Event(QToolBox* self, QEvent* e);
 QTLIBC_API void QToolBox_OnEvent(QToolBox* self, intptr_t slot);
 QTLIBC_API bool QToolBox_QBaseEvent(QToolBox* self, QEvent* e);

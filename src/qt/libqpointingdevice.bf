@@ -81,8 +81,8 @@ public struct QPointingDevice : QInputDevice
 	public static extern QPointingDevice* QPointingDevice_PrimaryPointingDevice();
 	[LinkName("QPointingDevice_OperatorEqual")]
 	public static extern bool QPointingDevice_OperatorEqual(Self* c_this, QPointingDevice* other);
-	[LinkName("QPointingDevice_GrabChanged")]
-	public static extern void QPointingDevice_GrabChanged(Self* c_this, QObject* grabber, int64 transition, QPointerEvent* event, QEventPoint* point);
+	[LinkName("QPointingDevice_Connect_GrabChanged")]
+	public static extern void QPointingDevice_Connect_GrabChanged(Self* c_this, c_intptr slot);
 	[LinkName("QPointingDevice_Tr2")]
 	public static extern libqt_string QPointingDevice_Tr2(char8[] s, char8[] c);
 	[LinkName("QPointingDevice_Tr3")]

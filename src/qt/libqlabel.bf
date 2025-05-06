@@ -100,10 +100,10 @@ public struct QLabel : QFrame
 	public static extern void QLabel_SetNumWithNum(Self* c_this, double num);
 	[LinkName("QLabel_Clear")]
 	public static extern void QLabel_Clear(Self* c_this);
-	[LinkName("QLabel_LinkActivated")]
-	public static extern void QLabel_LinkActivated(Self* c_this, libqt_string link);
-	[LinkName("QLabel_LinkHovered")]
-	public static extern void QLabel_LinkHovered(Self* c_this, libqt_string link);
+	[LinkName("QLabel_Connect_LinkActivated")]
+	public static extern void QLabel_Connect_LinkActivated(Self* c_this, c_intptr slot);
+	[LinkName("QLabel_Connect_LinkHovered")]
+	public static extern void QLabel_Connect_LinkHovered(Self* c_this, c_intptr slot);
 	[LinkName("QLabel_Event")]
 	public static extern bool QLabel_Event(Self* c_this, QEvent* e);
 	[LinkName("QLabel_KeyPressEvent")]

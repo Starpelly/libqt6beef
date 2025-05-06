@@ -44,20 +44,20 @@ public struct QUndoGroup : QObject
 	public static extern void QUndoGroup_Redo(Self* c_this);
 	[LinkName("QUndoGroup_SetActiveStack")]
 	public static extern void QUndoGroup_SetActiveStack(Self* c_this, QUndoStack* stack);
-	[LinkName("QUndoGroup_ActiveStackChanged")]
-	public static extern void QUndoGroup_ActiveStackChanged(Self* c_this, QUndoStack* stack);
-	[LinkName("QUndoGroup_IndexChanged")]
-	public static extern void QUndoGroup_IndexChanged(Self* c_this, int32 idx);
-	[LinkName("QUndoGroup_CleanChanged")]
-	public static extern void QUndoGroup_CleanChanged(Self* c_this, bool clean);
-	[LinkName("QUndoGroup_CanUndoChanged")]
-	public static extern void QUndoGroup_CanUndoChanged(Self* c_this, bool canUndo);
-	[LinkName("QUndoGroup_CanRedoChanged")]
-	public static extern void QUndoGroup_CanRedoChanged(Self* c_this, bool canRedo);
-	[LinkName("QUndoGroup_UndoTextChanged")]
-	public static extern void QUndoGroup_UndoTextChanged(Self* c_this, libqt_string undoText);
-	[LinkName("QUndoGroup_RedoTextChanged")]
-	public static extern void QUndoGroup_RedoTextChanged(Self* c_this, libqt_string redoText);
+	[LinkName("QUndoGroup_Connect_ActiveStackChanged")]
+	public static extern void QUndoGroup_Connect_ActiveStackChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_IndexChanged")]
+	public static extern void QUndoGroup_Connect_IndexChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_CleanChanged")]
+	public static extern void QUndoGroup_Connect_CleanChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_CanUndoChanged")]
+	public static extern void QUndoGroup_Connect_CanUndoChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_CanRedoChanged")]
+	public static extern void QUndoGroup_Connect_CanRedoChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_UndoTextChanged")]
+	public static extern void QUndoGroup_Connect_UndoTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoGroup_Connect_RedoTextChanged")]
+	public static extern void QUndoGroup_Connect_RedoTextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QUndoGroup_Tr2")]
 	public static extern libqt_string QUndoGroup_Tr2(char8[] s, char8[] c);
 	[LinkName("QUndoGroup_Tr3")]

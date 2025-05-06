@@ -30,12 +30,12 @@ public struct QSignalMapper : QObject
 	public static extern QObject* QSignalMapper_MappingWithText(Self* c_this, libqt_string text);
 	[LinkName("QSignalMapper_MappingWithObject")]
 	public static extern QObject* QSignalMapper_MappingWithObject(Self* c_this, QObject* object);
-	[LinkName("QSignalMapper_MappedInt")]
-	public static extern void QSignalMapper_MappedInt(Self* c_this, int32 param1);
-	[LinkName("QSignalMapper_MappedString")]
-	public static extern void QSignalMapper_MappedString(Self* c_this, libqt_string param1);
-	[LinkName("QSignalMapper_MappedObject")]
-	public static extern void QSignalMapper_MappedObject(Self* c_this, QObject* param1);
+	[LinkName("QSignalMapper_Connect_MappedInt")]
+	public static extern void QSignalMapper_Connect_MappedInt(Self* c_this, c_intptr slot);
+	[LinkName("QSignalMapper_Connect_MappedString")]
+	public static extern void QSignalMapper_Connect_MappedString(Self* c_this, c_intptr slot);
+	[LinkName("QSignalMapper_Connect_MappedObject")]
+	public static extern void QSignalMapper_Connect_MappedObject(Self* c_this, c_intptr slot);
 	[LinkName("QSignalMapper_Map")]
 	public static extern void QSignalMapper_Map(Self* c_this);
 	[LinkName("QSignalMapper_MapWithSender")]

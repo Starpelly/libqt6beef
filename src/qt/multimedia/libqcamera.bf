@@ -208,62 +208,62 @@ public struct QCamera : QObject
 	public static extern void QCamera_SetWhiteBalanceMode(Self* c_this, int64 mode);
 	[LinkName("QCamera_SetColorTemperature")]
 	public static extern void QCamera_SetColorTemperature(Self* c_this, int32 colorTemperature);
-	[LinkName("QCamera_ActiveChanged")]
-	public static extern void QCamera_ActiveChanged(Self* c_this, bool param1);
-	[LinkName("QCamera_ErrorChanged")]
-	public static extern void QCamera_ErrorChanged(Self* c_this);
-	[LinkName("QCamera_ErrorOccurred")]
-	public static extern void QCamera_ErrorOccurred(Self* c_this, int64 errorVal, libqt_string errorString);
-	[LinkName("QCamera_CameraDeviceChanged")]
-	public static extern void QCamera_CameraDeviceChanged(Self* c_this);
-	[LinkName("QCamera_CameraFormatChanged")]
-	public static extern void QCamera_CameraFormatChanged(Self* c_this);
-	[LinkName("QCamera_SupportedFeaturesChanged")]
-	public static extern void QCamera_SupportedFeaturesChanged(Self* c_this);
-	[LinkName("QCamera_FocusModeChanged")]
-	public static extern void QCamera_FocusModeChanged(Self* c_this);
-	[LinkName("QCamera_ZoomFactorChanged")]
-	public static extern void QCamera_ZoomFactorChanged(Self* c_this, float param1);
-	[LinkName("QCamera_MinimumZoomFactorChanged")]
-	public static extern void QCamera_MinimumZoomFactorChanged(Self* c_this, float param1);
-	[LinkName("QCamera_MaximumZoomFactorChanged")]
-	public static extern void QCamera_MaximumZoomFactorChanged(Self* c_this, float param1);
-	[LinkName("QCamera_FocusDistanceChanged")]
-	public static extern void QCamera_FocusDistanceChanged(Self* c_this, float param1);
-	[LinkName("QCamera_FocusPointChanged")]
-	public static extern void QCamera_FocusPointChanged(Self* c_this);
-	[LinkName("QCamera_CustomFocusPointChanged")]
-	public static extern void QCamera_CustomFocusPointChanged(Self* c_this);
-	[LinkName("QCamera_FlashReady")]
-	public static extern void QCamera_FlashReady(Self* c_this, bool param1);
-	[LinkName("QCamera_FlashModeChanged")]
-	public static extern void QCamera_FlashModeChanged(Self* c_this);
-	[LinkName("QCamera_TorchModeChanged")]
-	public static extern void QCamera_TorchModeChanged(Self* c_this);
-	[LinkName("QCamera_ExposureTimeChanged")]
-	public static extern void QCamera_ExposureTimeChanged(Self* c_this, float speed);
-	[LinkName("QCamera_ManualExposureTimeChanged")]
-	public static extern void QCamera_ManualExposureTimeChanged(Self* c_this, float speed);
-	[LinkName("QCamera_IsoSensitivityChanged")]
-	public static extern void QCamera_IsoSensitivityChanged(Self* c_this, int32 param1);
-	[LinkName("QCamera_ManualIsoSensitivityChanged")]
-	public static extern void QCamera_ManualIsoSensitivityChanged(Self* c_this, int32 param1);
-	[LinkName("QCamera_ExposureCompensationChanged")]
-	public static extern void QCamera_ExposureCompensationChanged(Self* c_this, float param1);
-	[LinkName("QCamera_ExposureModeChanged")]
-	public static extern void QCamera_ExposureModeChanged(Self* c_this);
-	[LinkName("QCamera_WhiteBalanceModeChanged")]
-	public static extern void QCamera_WhiteBalanceModeChanged(Self* c_this);
-	[LinkName("QCamera_ColorTemperatureChanged")]
-	public static extern void QCamera_ColorTemperatureChanged(Self* c_this);
-	[LinkName("QCamera_BrightnessChanged")]
-	public static extern void QCamera_BrightnessChanged(Self* c_this);
-	[LinkName("QCamera_ContrastChanged")]
-	public static extern void QCamera_ContrastChanged(Self* c_this);
-	[LinkName("QCamera_SaturationChanged")]
-	public static extern void QCamera_SaturationChanged(Self* c_this);
-	[LinkName("QCamera_HueChanged")]
-	public static extern void QCamera_HueChanged(Self* c_this);
+	[LinkName("QCamera_Connect_ActiveChanged")]
+	public static extern void QCamera_Connect_ActiveChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ErrorChanged")]
+	public static extern void QCamera_Connect_ErrorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ErrorOccurred")]
+	public static extern void QCamera_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_CameraDeviceChanged")]
+	public static extern void QCamera_Connect_CameraDeviceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_CameraFormatChanged")]
+	public static extern void QCamera_Connect_CameraFormatChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_SupportedFeaturesChanged")]
+	public static extern void QCamera_Connect_SupportedFeaturesChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_FocusModeChanged")]
+	public static extern void QCamera_Connect_FocusModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ZoomFactorChanged")]
+	public static extern void QCamera_Connect_ZoomFactorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_MinimumZoomFactorChanged")]
+	public static extern void QCamera_Connect_MinimumZoomFactorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_MaximumZoomFactorChanged")]
+	public static extern void QCamera_Connect_MaximumZoomFactorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_FocusDistanceChanged")]
+	public static extern void QCamera_Connect_FocusDistanceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_FocusPointChanged")]
+	public static extern void QCamera_Connect_FocusPointChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_CustomFocusPointChanged")]
+	public static extern void QCamera_Connect_CustomFocusPointChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_FlashReady")]
+	public static extern void QCamera_Connect_FlashReady(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_FlashModeChanged")]
+	public static extern void QCamera_Connect_FlashModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_TorchModeChanged")]
+	public static extern void QCamera_Connect_TorchModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ExposureTimeChanged")]
+	public static extern void QCamera_Connect_ExposureTimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ManualExposureTimeChanged")]
+	public static extern void QCamera_Connect_ManualExposureTimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_IsoSensitivityChanged")]
+	public static extern void QCamera_Connect_IsoSensitivityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ManualIsoSensitivityChanged")]
+	public static extern void QCamera_Connect_ManualIsoSensitivityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ExposureCompensationChanged")]
+	public static extern void QCamera_Connect_ExposureCompensationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ExposureModeChanged")]
+	public static extern void QCamera_Connect_ExposureModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_WhiteBalanceModeChanged")]
+	public static extern void QCamera_Connect_WhiteBalanceModeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ColorTemperatureChanged")]
+	public static extern void QCamera_Connect_ColorTemperatureChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_BrightnessChanged")]
+	public static extern void QCamera_Connect_BrightnessChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_ContrastChanged")]
+	public static extern void QCamera_Connect_ContrastChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_SaturationChanged")]
+	public static extern void QCamera_Connect_SaturationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QCamera_Connect_HueChanged")]
+	public static extern void QCamera_Connect_HueChanged(Self* c_this, c_intptr slot);
 	[LinkName("QCamera_Tr2")]
 	public static extern libqt_string QCamera_Tr2(char8[] s, char8[] c);
 	[LinkName("QCamera_Tr3")]

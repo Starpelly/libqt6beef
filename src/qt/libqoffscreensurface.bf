@@ -40,8 +40,8 @@ public struct QOffscreenSurface : QSurface
 	public static extern void QOffscreenSurface_SetScreen(Self* c_this, QScreen* screen);
 	[LinkName("QOffscreenSurface_ResolveInterface")]
 	public static extern void* QOffscreenSurface_ResolveInterface(Self* c_this, char8[] name, int32 revision);
-	[LinkName("QOffscreenSurface_ScreenChanged")]
-	public static extern void QOffscreenSurface_ScreenChanged(Self* c_this, QScreen* screen);
+	[LinkName("QOffscreenSurface_Connect_ScreenChanged")]
+	public static extern void QOffscreenSurface_Connect_ScreenChanged(Self* c_this, c_intptr slot);
 	[LinkName("QOffscreenSurface_Tr2")]
 	public static extern libqt_string QOffscreenSurface_Tr2(char8[] s, char8[] c);
 	[LinkName("QOffscreenSurface_Tr3")]

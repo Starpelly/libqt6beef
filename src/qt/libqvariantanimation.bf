@@ -42,8 +42,8 @@ public struct QVariantAnimation : QAbstractAnimation
 	public static extern QEasingCurve QVariantAnimation_EasingCurve(Self* c_this);
 	[LinkName("QVariantAnimation_SetEasingCurve")]
 	public static extern void QVariantAnimation_SetEasingCurve(Self* c_this, QEasingCurve* easing);
-	[LinkName("QVariantAnimation_ValueChanged")]
-	public static extern void QVariantAnimation_ValueChanged(Self* c_this, QVariant* value);
+	[LinkName("QVariantAnimation_Connect_ValueChanged")]
+	public static extern void QVariantAnimation_Connect_ValueChanged(Self* c_this, c_intptr slot);
 	[LinkName("QVariantAnimation_Event")]
 	public static extern bool QVariantAnimation_Event(Self* c_this, QEvent* event);
 	[LinkName("QVariantAnimation_UpdateCurrentTime")]

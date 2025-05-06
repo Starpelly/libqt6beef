@@ -58,8 +58,8 @@ public struct QAudioSink : QObject
 	public static extern void QAudioSink_SetVolume(Self* c_this, double volume);
 	[LinkName("QAudioSink_Volume")]
 	public static extern double QAudioSink_Volume(Self* c_this);
-	[LinkName("QAudioSink_StateChanged")]
-	public static extern void QAudioSink_StateChanged(Self* c_this, int64 state);
+	[LinkName("QAudioSink_Connect_StateChanged")]
+	public static extern void QAudioSink_Connect_StateChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAudioSink_Tr2")]
 	public static extern libqt_string QAudioSink_Tr2(char8[] s, char8[] c);
 	[LinkName("QAudioSink_Tr3")]

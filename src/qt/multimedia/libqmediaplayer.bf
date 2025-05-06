@@ -130,42 +130,42 @@ public struct QMediaPlayer : QObject
 	public static extern void QMediaPlayer_SetSource(Self* c_this, QUrl* source);
 	[LinkName("QMediaPlayer_SetSourceDevice")]
 	public static extern void QMediaPlayer_SetSourceDevice(Self* c_this, QIODevice* device);
-	[LinkName("QMediaPlayer_SourceChanged")]
-	public static extern void QMediaPlayer_SourceChanged(Self* c_this, QUrl* media);
-	[LinkName("QMediaPlayer_PlaybackStateChanged")]
-	public static extern void QMediaPlayer_PlaybackStateChanged(Self* c_this, int64 newState);
-	[LinkName("QMediaPlayer_MediaStatusChanged")]
-	public static extern void QMediaPlayer_MediaStatusChanged(Self* c_this, int64 status);
-	[LinkName("QMediaPlayer_DurationChanged")]
-	public static extern void QMediaPlayer_DurationChanged(Self* c_this, int64 duration);
-	[LinkName("QMediaPlayer_PositionChanged")]
-	public static extern void QMediaPlayer_PositionChanged(Self* c_this, int64 position);
-	[LinkName("QMediaPlayer_HasAudioChanged")]
-	public static extern void QMediaPlayer_HasAudioChanged(Self* c_this, bool available);
-	[LinkName("QMediaPlayer_HasVideoChanged")]
-	public static extern void QMediaPlayer_HasVideoChanged(Self* c_this, bool videoAvailable);
-	[LinkName("QMediaPlayer_BufferProgressChanged")]
-	public static extern void QMediaPlayer_BufferProgressChanged(Self* c_this, float progress);
-	[LinkName("QMediaPlayer_SeekableChanged")]
-	public static extern void QMediaPlayer_SeekableChanged(Self* c_this, bool seekable);
-	[LinkName("QMediaPlayer_PlaybackRateChanged")]
-	public static extern void QMediaPlayer_PlaybackRateChanged(Self* c_this, double rate);
-	[LinkName("QMediaPlayer_LoopsChanged")]
-	public static extern void QMediaPlayer_LoopsChanged(Self* c_this);
-	[LinkName("QMediaPlayer_MetaDataChanged")]
-	public static extern void QMediaPlayer_MetaDataChanged(Self* c_this);
-	[LinkName("QMediaPlayer_VideoOutputChanged")]
-	public static extern void QMediaPlayer_VideoOutputChanged(Self* c_this);
-	[LinkName("QMediaPlayer_AudioOutputChanged")]
-	public static extern void QMediaPlayer_AudioOutputChanged(Self* c_this);
-	[LinkName("QMediaPlayer_TracksChanged")]
-	public static extern void QMediaPlayer_TracksChanged(Self* c_this);
-	[LinkName("QMediaPlayer_ActiveTracksChanged")]
-	public static extern void QMediaPlayer_ActiveTracksChanged(Self* c_this);
-	[LinkName("QMediaPlayer_ErrorChanged")]
-	public static extern void QMediaPlayer_ErrorChanged(Self* c_this);
-	[LinkName("QMediaPlayer_ErrorOccurred")]
-	public static extern void QMediaPlayer_ErrorOccurred(Self* c_this, int64 errorVal, libqt_string errorString);
+	[LinkName("QMediaPlayer_Connect_SourceChanged")]
+	public static extern void QMediaPlayer_Connect_SourceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_PlaybackStateChanged")]
+	public static extern void QMediaPlayer_Connect_PlaybackStateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_MediaStatusChanged")]
+	public static extern void QMediaPlayer_Connect_MediaStatusChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_DurationChanged")]
+	public static extern void QMediaPlayer_Connect_DurationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_PositionChanged")]
+	public static extern void QMediaPlayer_Connect_PositionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_HasAudioChanged")]
+	public static extern void QMediaPlayer_Connect_HasAudioChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_HasVideoChanged")]
+	public static extern void QMediaPlayer_Connect_HasVideoChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_BufferProgressChanged")]
+	public static extern void QMediaPlayer_Connect_BufferProgressChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_SeekableChanged")]
+	public static extern void QMediaPlayer_Connect_SeekableChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_PlaybackRateChanged")]
+	public static extern void QMediaPlayer_Connect_PlaybackRateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_LoopsChanged")]
+	public static extern void QMediaPlayer_Connect_LoopsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_MetaDataChanged")]
+	public static extern void QMediaPlayer_Connect_MetaDataChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_VideoOutputChanged")]
+	public static extern void QMediaPlayer_Connect_VideoOutputChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_AudioOutputChanged")]
+	public static extern void QMediaPlayer_Connect_AudioOutputChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_TracksChanged")]
+	public static extern void QMediaPlayer_Connect_TracksChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_ActiveTracksChanged")]
+	public static extern void QMediaPlayer_Connect_ActiveTracksChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_ErrorChanged")]
+	public static extern void QMediaPlayer_Connect_ErrorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaPlayer_Connect_ErrorOccurred")]
+	public static extern void QMediaPlayer_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Tr2")]
 	public static extern libqt_string QMediaPlayer_Tr2(char8[] s, char8[] c);
 	[LinkName("QMediaPlayer_Tr3")]

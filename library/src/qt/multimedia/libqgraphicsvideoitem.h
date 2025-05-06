@@ -88,7 +88,7 @@ QTLIBC_API int QGraphicsVideoItem_Type(const QGraphicsVideoItem* self);
 QTLIBC_API void QGraphicsVideoItem_OnType(const QGraphicsVideoItem* self, intptr_t slot);
 QTLIBC_API int QGraphicsVideoItem_QBaseType(const QGraphicsVideoItem* self);
 QTLIBC_API void QGraphicsVideoItem_NativeSizeChanged(QGraphicsVideoItem* self, QSizeF* size);
-void QGraphicsVideoItem_Connect_NativeSizeChanged(QGraphicsVideoItem* self, intptr_t slot);
+QTLIBC_API void QGraphicsVideoItem_Connect_NativeSizeChanged(QGraphicsVideoItem* self, intptr_t slot);
 QTLIBC_API void QGraphicsVideoItem_TimerEvent(QGraphicsVideoItem* self, QTimerEvent* event);
 QTLIBC_API void QGraphicsVideoItem_OnTimerEvent(QGraphicsVideoItem* self, intptr_t slot);
 QTLIBC_API void QGraphicsVideoItem_QBaseTimerEvent(QGraphicsVideoItem* self, QTimerEvent* event);

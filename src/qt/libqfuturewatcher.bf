@@ -40,30 +40,30 @@ public struct QFutureWatcherBase : QObject
 	public static extern void QFutureWatcherBase_SetPendingResultsLimit(Self* c_this, int32 limit);
 	[LinkName("QFutureWatcherBase_Event")]
 	public static extern bool QFutureWatcherBase_Event(Self* c_this, QEvent* event);
-	[LinkName("QFutureWatcherBase_Started")]
-	public static extern void QFutureWatcherBase_Started(Self* c_this);
-	[LinkName("QFutureWatcherBase_Finished")]
-	public static extern void QFutureWatcherBase_Finished(Self* c_this);
-	[LinkName("QFutureWatcherBase_Canceled")]
-	public static extern void QFutureWatcherBase_Canceled(Self* c_this);
-	[LinkName("QFutureWatcherBase_Paused")]
-	public static extern void QFutureWatcherBase_Paused(Self* c_this);
-	[LinkName("QFutureWatcherBase_Suspending")]
-	public static extern void QFutureWatcherBase_Suspending(Self* c_this);
-	[LinkName("QFutureWatcherBase_Suspended")]
-	public static extern void QFutureWatcherBase_Suspended(Self* c_this);
-	[LinkName("QFutureWatcherBase_Resumed")]
-	public static extern void QFutureWatcherBase_Resumed(Self* c_this);
-	[LinkName("QFutureWatcherBase_ResultReadyAt")]
-	public static extern void QFutureWatcherBase_ResultReadyAt(Self* c_this, int32 resultIndex);
-	[LinkName("QFutureWatcherBase_ResultsReadyAt")]
-	public static extern void QFutureWatcherBase_ResultsReadyAt(Self* c_this, int32 beginIndex, int32 endIndex);
-	[LinkName("QFutureWatcherBase_ProgressRangeChanged")]
-	public static extern void QFutureWatcherBase_ProgressRangeChanged(Self* c_this, int32 minimum, int32 maximum);
-	[LinkName("QFutureWatcherBase_ProgressValueChanged")]
-	public static extern void QFutureWatcherBase_ProgressValueChanged(Self* c_this, int32 progressValue);
-	[LinkName("QFutureWatcherBase_ProgressTextChanged")]
-	public static extern void QFutureWatcherBase_ProgressTextChanged(Self* c_this, libqt_string progressText);
+	[LinkName("QFutureWatcherBase_Connect_Started")]
+	public static extern void QFutureWatcherBase_Connect_Started(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Finished")]
+	public static extern void QFutureWatcherBase_Connect_Finished(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Canceled")]
+	public static extern void QFutureWatcherBase_Connect_Canceled(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Paused")]
+	public static extern void QFutureWatcherBase_Connect_Paused(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Suspending")]
+	public static extern void QFutureWatcherBase_Connect_Suspending(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Suspended")]
+	public static extern void QFutureWatcherBase_Connect_Suspended(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_Resumed")]
+	public static extern void QFutureWatcherBase_Connect_Resumed(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_ResultReadyAt")]
+	public static extern void QFutureWatcherBase_Connect_ResultReadyAt(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_ResultsReadyAt")]
+	public static extern void QFutureWatcherBase_Connect_ResultsReadyAt(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_ProgressRangeChanged")]
+	public static extern void QFutureWatcherBase_Connect_ProgressRangeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_ProgressValueChanged")]
+	public static extern void QFutureWatcherBase_Connect_ProgressValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QFutureWatcherBase_Connect_ProgressTextChanged")]
+	public static extern void QFutureWatcherBase_Connect_ProgressTextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QFutureWatcherBase_Cancel")]
 	public static extern void QFutureWatcherBase_Cancel(Self* c_this);
 	[LinkName("QFutureWatcherBase_SetSuspended")]

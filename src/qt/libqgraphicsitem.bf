@@ -575,30 +575,30 @@ public struct QGraphicsObject : QGraphicsItem
 	public static extern void QGraphicsObject_UngrabGesture(Self* c_this, int64 typeVal);
 	[LinkName("QGraphicsObject_UpdateMicroFocus")]
 	public static extern void QGraphicsObject_UpdateMicroFocus(Self* c_this);
-	[LinkName("QGraphicsObject_ParentChanged")]
-	public static extern void QGraphicsObject_ParentChanged(Self* c_this);
-	[LinkName("QGraphicsObject_OpacityChanged")]
-	public static extern void QGraphicsObject_OpacityChanged(Self* c_this);
-	[LinkName("QGraphicsObject_VisibleChanged")]
-	public static extern void QGraphicsObject_VisibleChanged(Self* c_this);
-	[LinkName("QGraphicsObject_EnabledChanged")]
-	public static extern void QGraphicsObject_EnabledChanged(Self* c_this);
-	[LinkName("QGraphicsObject_XChanged")]
-	public static extern void QGraphicsObject_XChanged(Self* c_this);
-	[LinkName("QGraphicsObject_YChanged")]
-	public static extern void QGraphicsObject_YChanged(Self* c_this);
-	[LinkName("QGraphicsObject_ZChanged")]
-	public static extern void QGraphicsObject_ZChanged(Self* c_this);
-	[LinkName("QGraphicsObject_RotationChanged")]
-	public static extern void QGraphicsObject_RotationChanged(Self* c_this);
-	[LinkName("QGraphicsObject_ScaleChanged")]
-	public static extern void QGraphicsObject_ScaleChanged(Self* c_this);
-	[LinkName("QGraphicsObject_ChildrenChanged")]
-	public static extern void QGraphicsObject_ChildrenChanged(Self* c_this);
-	[LinkName("QGraphicsObject_WidthChanged")]
-	public static extern void QGraphicsObject_WidthChanged(Self* c_this);
-	[LinkName("QGraphicsObject_HeightChanged")]
-	public static extern void QGraphicsObject_HeightChanged(Self* c_this);
+	[LinkName("QGraphicsObject_Connect_ParentChanged")]
+	public static extern void QGraphicsObject_Connect_ParentChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_OpacityChanged")]
+	public static extern void QGraphicsObject_Connect_OpacityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_VisibleChanged")]
+	public static extern void QGraphicsObject_Connect_VisibleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_EnabledChanged")]
+	public static extern void QGraphicsObject_Connect_EnabledChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_XChanged")]
+	public static extern void QGraphicsObject_Connect_XChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_YChanged")]
+	public static extern void QGraphicsObject_Connect_YChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_ZChanged")]
+	public static extern void QGraphicsObject_Connect_ZChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_RotationChanged")]
+	public static extern void QGraphicsObject_Connect_RotationChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_ScaleChanged")]
+	public static extern void QGraphicsObject_Connect_ScaleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_ChildrenChanged")]
+	public static extern void QGraphicsObject_Connect_ChildrenChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_WidthChanged")]
+	public static extern void QGraphicsObject_Connect_WidthChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsObject_Connect_HeightChanged")]
+	public static extern void QGraphicsObject_Connect_HeightChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsObject_Event")]
 	public static extern bool QGraphicsObject_Event(Self* c_this, QEvent* ev);
 	[LinkName("QGraphicsObject_Tr2")]
@@ -951,10 +951,10 @@ public struct QGraphicsTextItem : QGraphicsObject
 	public static extern void QGraphicsTextItem_SetTextCursor(Self* c_this, QTextCursor* cursor);
 	[LinkName("QGraphicsTextItem_TextCursor")]
 	public static extern QTextCursor QGraphicsTextItem_TextCursor(Self* c_this);
-	[LinkName("QGraphicsTextItem_LinkActivated")]
-	public static extern void QGraphicsTextItem_LinkActivated(Self* c_this, libqt_string param1);
-	[LinkName("QGraphicsTextItem_LinkHovered")]
-	public static extern void QGraphicsTextItem_LinkHovered(Self* c_this, libqt_string param1);
+	[LinkName("QGraphicsTextItem_Connect_LinkActivated")]
+	public static extern void QGraphicsTextItem_Connect_LinkActivated(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsTextItem_Connect_LinkHovered")]
+	public static extern void QGraphicsTextItem_Connect_LinkHovered(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsTextItem_SceneEvent")]
 	public static extern bool QGraphicsTextItem_SceneEvent(Self* c_this, QEvent* event);
 	[LinkName("QGraphicsTextItem_MousePressEvent")]

@@ -28,12 +28,12 @@ public struct QMediaDevices : QObject
 	public static extern QAudioDevice QMediaDevices_DefaultAudioOutput();
 	[LinkName("QMediaDevices_DefaultVideoInput")]
 	public static extern QCameraDevice QMediaDevices_DefaultVideoInput();
-	[LinkName("QMediaDevices_AudioInputsChanged")]
-	public static extern void QMediaDevices_AudioInputsChanged(Self* c_this);
-	[LinkName("QMediaDevices_AudioOutputsChanged")]
-	public static extern void QMediaDevices_AudioOutputsChanged(Self* c_this);
-	[LinkName("QMediaDevices_VideoInputsChanged")]
-	public static extern void QMediaDevices_VideoInputsChanged(Self* c_this);
+	[LinkName("QMediaDevices_Connect_AudioInputsChanged")]
+	public static extern void QMediaDevices_Connect_AudioInputsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaDevices_Connect_AudioOutputsChanged")]
+	public static extern void QMediaDevices_Connect_AudioOutputsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMediaDevices_Connect_VideoInputsChanged")]
+	public static extern void QMediaDevices_Connect_VideoInputsChanged(Self* c_this, c_intptr slot);
 	[LinkName("QMediaDevices_Tr2")]
 	public static extern libqt_string QMediaDevices_Tr2(char8[] s, char8[] c);
 	[LinkName("QMediaDevices_Tr3")]

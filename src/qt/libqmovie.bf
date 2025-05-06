@@ -93,20 +93,20 @@ public struct QMovie : QObject
 	public static extern int64 QMovie_CacheMode(Self* c_this);
 	[LinkName("QMovie_SetCacheMode")]
 	public static extern void QMovie_SetCacheMode(Self* c_this, int64 mode);
-	[LinkName("QMovie_Started")]
-	public static extern void QMovie_Started(Self* c_this);
-	[LinkName("QMovie_Resized")]
-	public static extern void QMovie_Resized(Self* c_this, QSize* size);
-	[LinkName("QMovie_Updated")]
-	public static extern void QMovie_Updated(Self* c_this, QRect* rect);
-	[LinkName("QMovie_StateChanged")]
-	public static extern void QMovie_StateChanged(Self* c_this, int64 state);
-	[LinkName("QMovie_Error")]
-	public static extern void QMovie_Error(Self* c_this, int64 errorVal);
-	[LinkName("QMovie_Finished")]
-	public static extern void QMovie_Finished(Self* c_this);
-	[LinkName("QMovie_FrameChanged")]
-	public static extern void QMovie_FrameChanged(Self* c_this, int32 frameNumber);
+	[LinkName("QMovie_Connect_Started")]
+	public static extern void QMovie_Connect_Started(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_Resized")]
+	public static extern void QMovie_Connect_Resized(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_Updated")]
+	public static extern void QMovie_Connect_Updated(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_StateChanged")]
+	public static extern void QMovie_Connect_StateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_Error")]
+	public static extern void QMovie_Connect_Error(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_Finished")]
+	public static extern void QMovie_Connect_Finished(Self* c_this, c_intptr slot);
+	[LinkName("QMovie_Connect_FrameChanged")]
+	public static extern void QMovie_Connect_FrameChanged(Self* c_this, c_intptr slot);
 	[LinkName("QMovie_Start")]
 	public static extern void QMovie_Start(Self* c_this);
 	[LinkName("QMovie_JumpToNextFrame")]

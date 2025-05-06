@@ -70,7 +70,7 @@ QTLIBC_API void QVariantAnimation_SetDuration(QVariantAnimation* self, int msecs
 QTLIBC_API QEasingCurve* QVariantAnimation_EasingCurve(const QVariantAnimation* self);
 QTLIBC_API void QVariantAnimation_SetEasingCurve(QVariantAnimation* self, QEasingCurve* easing);
 QTLIBC_API void QVariantAnimation_ValueChanged(QVariantAnimation* self, QVariant* value);
-void QVariantAnimation_Connect_ValueChanged(QVariantAnimation* self, intptr_t slot);
+QTLIBC_API void QVariantAnimation_Connect_ValueChanged(QVariantAnimation* self, intptr_t slot);
 QTLIBC_API bool QVariantAnimation_Event(QVariantAnimation* self, QEvent* event);
 QTLIBC_API void QVariantAnimation_OnEvent(QVariantAnimation* self, intptr_t slot);
 QTLIBC_API bool QVariantAnimation_QBaseEvent(QVariantAnimation* self, QEvent* event);

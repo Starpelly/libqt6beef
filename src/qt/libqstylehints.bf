@@ -80,28 +80,28 @@ public struct QStyleHints : QObject
 	public static extern void QStyleHints_SetMouseQuickSelectionThreshold(Self* c_this, int32 threshold);
 	[LinkName("QStyleHints_MouseQuickSelectionThreshold")]
 	public static extern int32 QStyleHints_MouseQuickSelectionThreshold(Self* c_this);
-	[LinkName("QStyleHints_CursorFlashTimeChanged")]
-	public static extern void QStyleHints_CursorFlashTimeChanged(Self* c_this, int32 cursorFlashTime);
-	[LinkName("QStyleHints_KeyboardInputIntervalChanged")]
-	public static extern void QStyleHints_KeyboardInputIntervalChanged(Self* c_this, int32 keyboardInputInterval);
-	[LinkName("QStyleHints_MouseDoubleClickIntervalChanged")]
-	public static extern void QStyleHints_MouseDoubleClickIntervalChanged(Self* c_this, int32 mouseDoubleClickInterval);
-	[LinkName("QStyleHints_MousePressAndHoldIntervalChanged")]
-	public static extern void QStyleHints_MousePressAndHoldIntervalChanged(Self* c_this, int32 mousePressAndHoldInterval);
-	[LinkName("QStyleHints_StartDragDistanceChanged")]
-	public static extern void QStyleHints_StartDragDistanceChanged(Self* c_this, int32 startDragDistance);
-	[LinkName("QStyleHints_StartDragTimeChanged")]
-	public static extern void QStyleHints_StartDragTimeChanged(Self* c_this, int32 startDragTime);
-	[LinkName("QStyleHints_TabFocusBehaviorChanged")]
-	public static extern void QStyleHints_TabFocusBehaviorChanged(Self* c_this, int64 tabFocusBehavior);
-	[LinkName("QStyleHints_UseHoverEffectsChanged")]
-	public static extern void QStyleHints_UseHoverEffectsChanged(Self* c_this, bool useHoverEffects);
-	[LinkName("QStyleHints_ShowShortcutsInContextMenusChanged")]
-	public static extern void QStyleHints_ShowShortcutsInContextMenusChanged(Self* c_this, bool param1);
-	[LinkName("QStyleHints_WheelScrollLinesChanged")]
-	public static extern void QStyleHints_WheelScrollLinesChanged(Self* c_this, int32 scrollLines);
-	[LinkName("QStyleHints_MouseQuickSelectionThresholdChanged")]
-	public static extern void QStyleHints_MouseQuickSelectionThresholdChanged(Self* c_this, int32 threshold);
+	[LinkName("QStyleHints_Connect_CursorFlashTimeChanged")]
+	public static extern void QStyleHints_Connect_CursorFlashTimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_KeyboardInputIntervalChanged")]
+	public static extern void QStyleHints_Connect_KeyboardInputIntervalChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_MouseDoubleClickIntervalChanged")]
+	public static extern void QStyleHints_Connect_MouseDoubleClickIntervalChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_MousePressAndHoldIntervalChanged")]
+	public static extern void QStyleHints_Connect_MousePressAndHoldIntervalChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_StartDragDistanceChanged")]
+	public static extern void QStyleHints_Connect_StartDragDistanceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_StartDragTimeChanged")]
+	public static extern void QStyleHints_Connect_StartDragTimeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_TabFocusBehaviorChanged")]
+	public static extern void QStyleHints_Connect_TabFocusBehaviorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_UseHoverEffectsChanged")]
+	public static extern void QStyleHints_Connect_UseHoverEffectsChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_ShowShortcutsInContextMenusChanged")]
+	public static extern void QStyleHints_Connect_ShowShortcutsInContextMenusChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_WheelScrollLinesChanged")]
+	public static extern void QStyleHints_Connect_WheelScrollLinesChanged(Self* c_this, c_intptr slot);
+	[LinkName("QStyleHints_Connect_MouseQuickSelectionThresholdChanged")]
+	public static extern void QStyleHints_Connect_MouseQuickSelectionThresholdChanged(Self* c_this, c_intptr slot);
 	[LinkName("QStyleHints_Tr2")]
 	public static extern libqt_string QStyleHints_Tr2(char8[] s, char8[] c);
 	[LinkName("QStyleHints_Tr3")]

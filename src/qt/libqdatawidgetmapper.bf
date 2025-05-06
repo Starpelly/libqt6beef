@@ -74,8 +74,8 @@ public struct QDataWidgetMapper : QObject
 	public static extern void QDataWidgetMapper_SetCurrentIndex(Self* c_this, int32 index);
 	[LinkName("QDataWidgetMapper_SetCurrentModelIndex")]
 	public static extern void QDataWidgetMapper_SetCurrentModelIndex(Self* c_this, QModelIndex* index);
-	[LinkName("QDataWidgetMapper_CurrentIndexChanged")]
-	public static extern void QDataWidgetMapper_CurrentIndexChanged(Self* c_this, int32 index);
+	[LinkName("QDataWidgetMapper_Connect_CurrentIndexChanged")]
+	public static extern void QDataWidgetMapper_Connect_CurrentIndexChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDataWidgetMapper_Tr2")]
 	public static extern libqt_string QDataWidgetMapper_Tr2(char8[] s, char8[] c);
 	[LinkName("QDataWidgetMapper_Tr3")]

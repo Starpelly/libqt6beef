@@ -70,8 +70,8 @@ public struct QProgressBar : QWidget
 	public static extern void QProgressBar_SetValue(Self* c_this, int32 value);
 	[LinkName("QProgressBar_SetOrientation")]
 	public static extern void QProgressBar_SetOrientation(Self* c_this, int64 orientation);
-	[LinkName("QProgressBar_ValueChanged")]
-	public static extern void QProgressBar_ValueChanged(Self* c_this, int32 value);
+	[LinkName("QProgressBar_Connect_ValueChanged")]
+	public static extern void QProgressBar_Connect_ValueChanged(Self* c_this, c_intptr slot);
 	[LinkName("QProgressBar_Event")]
 	public static extern bool QProgressBar_Event(Self* c_this, QEvent* e);
 	[LinkName("QProgressBar_PaintEvent")]

@@ -58,8 +58,8 @@ public struct QToolBox : QFrame
 	public static extern void QToolBox_SetCurrentIndex(Self* c_this, int32 index);
 	[LinkName("QToolBox_SetCurrentWidget")]
 	public static extern void QToolBox_SetCurrentWidget(Self* c_this, QWidget* widget);
-	[LinkName("QToolBox_CurrentChanged")]
-	public static extern void QToolBox_CurrentChanged(Self* c_this, int32 index);
+	[LinkName("QToolBox_Connect_CurrentChanged")]
+	public static extern void QToolBox_Connect_CurrentChanged(Self* c_this, c_intptr slot);
 	[LinkName("QToolBox_Event")]
 	public static extern bool QToolBox_Event(Self* c_this, QEvent* e);
 	[LinkName("QToolBox_ItemInserted")]

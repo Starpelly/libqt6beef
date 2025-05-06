@@ -155,16 +155,16 @@ public struct QTabBar : QWidget
 	public static extern void QTabBar_SetAccessibleTabName(Self* c_this, int32 index, libqt_string name);
 	[LinkName("QTabBar_SetCurrentIndex")]
 	public static extern void QTabBar_SetCurrentIndex(Self* c_this, int32 index);
-	[LinkName("QTabBar_CurrentChanged")]
-	public static extern void QTabBar_CurrentChanged(Self* c_this, int32 index);
-	[LinkName("QTabBar_TabCloseRequested")]
-	public static extern void QTabBar_TabCloseRequested(Self* c_this, int32 index);
-	[LinkName("QTabBar_TabMoved")]
-	public static extern void QTabBar_TabMoved(Self* c_this, int32 from, int32 to);
-	[LinkName("QTabBar_TabBarClicked")]
-	public static extern void QTabBar_TabBarClicked(Self* c_this, int32 index);
-	[LinkName("QTabBar_TabBarDoubleClicked")]
-	public static extern void QTabBar_TabBarDoubleClicked(Self* c_this, int32 index);
+	[LinkName("QTabBar_Connect_CurrentChanged")]
+	public static extern void QTabBar_Connect_CurrentChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTabBar_Connect_TabCloseRequested")]
+	public static extern void QTabBar_Connect_TabCloseRequested(Self* c_this, c_intptr slot);
+	[LinkName("QTabBar_Connect_TabMoved")]
+	public static extern void QTabBar_Connect_TabMoved(Self* c_this, c_intptr slot);
+	[LinkName("QTabBar_Connect_TabBarClicked")]
+	public static extern void QTabBar_Connect_TabBarClicked(Self* c_this, c_intptr slot);
+	[LinkName("QTabBar_Connect_TabBarDoubleClicked")]
+	public static extern void QTabBar_Connect_TabBarDoubleClicked(Self* c_this, c_intptr slot);
 	[LinkName("QTabBar_TabSizeHint")]
 	public static extern QSize QTabBar_TabSizeHint(Self* c_this, int32 index);
 	[LinkName("QTabBar_MinimumTabSizeHint")]

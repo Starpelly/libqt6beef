@@ -58,18 +58,18 @@ public struct QTextBrowser : QTextEdit
 	public static extern void QTextBrowser_Home(Self* c_this);
 	[LinkName("QTextBrowser_Reload")]
 	public static extern void QTextBrowser_Reload(Self* c_this);
-	[LinkName("QTextBrowser_BackwardAvailable")]
-	public static extern void QTextBrowser_BackwardAvailable(Self* c_this, bool param1);
-	[LinkName("QTextBrowser_ForwardAvailable")]
-	public static extern void QTextBrowser_ForwardAvailable(Self* c_this, bool param1);
-	[LinkName("QTextBrowser_HistoryChanged")]
-	public static extern void QTextBrowser_HistoryChanged(Self* c_this);
-	[LinkName("QTextBrowser_SourceChanged")]
-	public static extern void QTextBrowser_SourceChanged(Self* c_this, QUrl* param1);
-	[LinkName("QTextBrowser_Highlighted")]
-	public static extern void QTextBrowser_Highlighted(Self* c_this, QUrl* param1);
-	[LinkName("QTextBrowser_AnchorClicked")]
-	public static extern void QTextBrowser_AnchorClicked(Self* c_this, QUrl* param1);
+	[LinkName("QTextBrowser_Connect_BackwardAvailable")]
+	public static extern void QTextBrowser_Connect_BackwardAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextBrowser_Connect_ForwardAvailable")]
+	public static extern void QTextBrowser_Connect_ForwardAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QTextBrowser_Connect_HistoryChanged")]
+	public static extern void QTextBrowser_Connect_HistoryChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextBrowser_Connect_SourceChanged")]
+	public static extern void QTextBrowser_Connect_SourceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QTextBrowser_Connect_Highlighted")]
+	public static extern void QTextBrowser_Connect_Highlighted(Self* c_this, c_intptr slot);
+	[LinkName("QTextBrowser_Connect_AnchorClicked")]
+	public static extern void QTextBrowser_Connect_AnchorClicked(Self* c_this, c_intptr slot);
 	[LinkName("QTextBrowser_Event")]
 	public static extern bool QTextBrowser_Event(Self* c_this, QEvent* e);
 	[LinkName("QTextBrowser_KeyPressEvent")]

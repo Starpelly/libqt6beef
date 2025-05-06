@@ -32,12 +32,12 @@ public struct QAudioOutput : QObject
 	public static extern void QAudioOutput_SetVolume(Self* c_this, float volume);
 	[LinkName("QAudioOutput_SetMuted")]
 	public static extern void QAudioOutput_SetMuted(Self* c_this, bool muted);
-	[LinkName("QAudioOutput_DeviceChanged")]
-	public static extern void QAudioOutput_DeviceChanged(Self* c_this);
-	[LinkName("QAudioOutput_VolumeChanged")]
-	public static extern void QAudioOutput_VolumeChanged(Self* c_this, float volume);
-	[LinkName("QAudioOutput_MutedChanged")]
-	public static extern void QAudioOutput_MutedChanged(Self* c_this, bool muted);
+	[LinkName("QAudioOutput_Connect_DeviceChanged")]
+	public static extern void QAudioOutput_Connect_DeviceChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAudioOutput_Connect_VolumeChanged")]
+	public static extern void QAudioOutput_Connect_VolumeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAudioOutput_Connect_MutedChanged")]
+	public static extern void QAudioOutput_Connect_MutedChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAudioOutput_Tr2")]
 	public static extern libqt_string QAudioOutput_Tr2(char8[] s, char8[] c);
 	[LinkName("QAudioOutput_Tr3")]

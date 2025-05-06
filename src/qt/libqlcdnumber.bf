@@ -75,8 +75,8 @@ public struct QLCDNumber : QFrame
 	public static extern void QLCDNumber_SetBinMode(Self* c_this);
 	[LinkName("QLCDNumber_SetSmallDecimalPoint")]
 	public static extern void QLCDNumber_SetSmallDecimalPoint(Self* c_this, bool smallDecimalPoint);
-	[LinkName("QLCDNumber_Overflow")]
-	public static extern void QLCDNumber_Overflow(Self* c_this);
+	[LinkName("QLCDNumber_Connect_Overflow")]
+	public static extern void QLCDNumber_Connect_Overflow(Self* c_this, c_intptr slot);
 	[LinkName("QLCDNumber_Event")]
 	public static extern bool QLCDNumber_Event(Self* c_this, QEvent* e);
 	[LinkName("QLCDNumber_PaintEvent")]

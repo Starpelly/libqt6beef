@@ -67,10 +67,10 @@ public struct QSystemTrayIcon : QObject
 	public static extern void QSystemTrayIcon_ShowMessage(Self* c_this, libqt_string title, libqt_string msg, QIcon* icon);
 	[LinkName("QSystemTrayIcon_ShowMessage2")]
 	public static extern void QSystemTrayIcon_ShowMessage2(Self* c_this, libqt_string title, libqt_string msg);
-	[LinkName("QSystemTrayIcon_Activated")]
-	public static extern void QSystemTrayIcon_Activated(Self* c_this, int64 reason);
-	[LinkName("QSystemTrayIcon_MessageClicked")]
-	public static extern void QSystemTrayIcon_MessageClicked(Self* c_this);
+	[LinkName("QSystemTrayIcon_Connect_Activated")]
+	public static extern void QSystemTrayIcon_Connect_Activated(Self* c_this, c_intptr slot);
+	[LinkName("QSystemTrayIcon_Connect_MessageClicked")]
+	public static extern void QSystemTrayIcon_Connect_MessageClicked(Self* c_this, c_intptr slot);
 	[LinkName("QSystemTrayIcon_Event")]
 	public static extern bool QSystemTrayIcon_Event(Self* c_this, QEvent* event);
 	[LinkName("QSystemTrayIcon_Tr2")]

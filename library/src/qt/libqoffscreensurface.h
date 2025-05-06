@@ -65,7 +65,7 @@ QTLIBC_API QSize* QOffscreenSurface_QBaseSize(const QOffscreenSurface* self);
 QTLIBC_API QScreen* QOffscreenSurface_Screen(const QOffscreenSurface* self);
 QTLIBC_API void QOffscreenSurface_SetScreen(QOffscreenSurface* self, QScreen* screen);
 QTLIBC_API void QOffscreenSurface_ScreenChanged(QOffscreenSurface* self, QScreen* screen);
-void QOffscreenSurface_Connect_ScreenChanged(QOffscreenSurface* self, intptr_t slot);
+QTLIBC_API void QOffscreenSurface_Connect_ScreenChanged(QOffscreenSurface* self, intptr_t slot);
 QTLIBC_API libqt_string QOffscreenSurface_Tr2(const char* s, const char* c);
 QTLIBC_API libqt_string QOffscreenSurface_Tr3(const char* s, const char* c, int n);
 QTLIBC_API bool QOffscreenSurface_Event(QOffscreenSurface* self, QEvent* event);

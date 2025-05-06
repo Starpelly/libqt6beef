@@ -38,8 +38,8 @@ public struct QSplashScreen : QWidget
 	public static extern void QSplashScreen_ShowMessage(Self* c_this, libqt_string message);
 	[LinkName("QSplashScreen_ClearMessage")]
 	public static extern void QSplashScreen_ClearMessage(Self* c_this);
-	[LinkName("QSplashScreen_MessageChanged")]
-	public static extern void QSplashScreen_MessageChanged(Self* c_this, libqt_string message);
+	[LinkName("QSplashScreen_Connect_MessageChanged")]
+	public static extern void QSplashScreen_Connect_MessageChanged(Self* c_this, c_intptr slot);
 	[LinkName("QSplashScreen_Event")]
 	public static extern bool QSplashScreen_Event(Self* c_this, QEvent* e);
 	[LinkName("QSplashScreen_DrawContents")]

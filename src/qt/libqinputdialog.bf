@@ -128,18 +128,18 @@ public struct QInputDialog : QDialog
 	public static extern void QInputDialog_SetDoubleStep(Self* c_this, double step);
 	[LinkName("QInputDialog_DoubleStep")]
 	public static extern double QInputDialog_DoubleStep(Self* c_this);
-	[LinkName("QInputDialog_TextValueChanged")]
-	public static extern void QInputDialog_TextValueChanged(Self* c_this, libqt_string text);
-	[LinkName("QInputDialog_TextValueSelected")]
-	public static extern void QInputDialog_TextValueSelected(Self* c_this, libqt_string text);
-	[LinkName("QInputDialog_IntValueChanged")]
-	public static extern void QInputDialog_IntValueChanged(Self* c_this, int32 value);
-	[LinkName("QInputDialog_IntValueSelected")]
-	public static extern void QInputDialog_IntValueSelected(Self* c_this, int32 value);
-	[LinkName("QInputDialog_DoubleValueChanged")]
-	public static extern void QInputDialog_DoubleValueChanged(Self* c_this, double value);
-	[LinkName("QInputDialog_DoubleValueSelected")]
-	public static extern void QInputDialog_DoubleValueSelected(Self* c_this, double value);
+	[LinkName("QInputDialog_Connect_TextValueChanged")]
+	public static extern void QInputDialog_Connect_TextValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputDialog_Connect_TextValueSelected")]
+	public static extern void QInputDialog_Connect_TextValueSelected(Self* c_this, c_intptr slot);
+	[LinkName("QInputDialog_Connect_IntValueChanged")]
+	public static extern void QInputDialog_Connect_IntValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputDialog_Connect_IntValueSelected")]
+	public static extern void QInputDialog_Connect_IntValueSelected(Self* c_this, c_intptr slot);
+	[LinkName("QInputDialog_Connect_DoubleValueChanged")]
+	public static extern void QInputDialog_Connect_DoubleValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QInputDialog_Connect_DoubleValueSelected")]
+	public static extern void QInputDialog_Connect_DoubleValueSelected(Self* c_this, c_intptr slot);
 	[LinkName("QInputDialog_Done")]
 	public static extern void QInputDialog_Done(Self* c_this, int32 result);
 	[LinkName("QInputDialog_Tr2")]

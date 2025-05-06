@@ -72,8 +72,8 @@ public struct QSplitter : QFrame
 	public static extern QSplitterHandle* QSplitter_Handle(Self* c_this, int32 index);
 	[LinkName("QSplitter_SetStretchFactor")]
 	public static extern void QSplitter_SetStretchFactor(Self* c_this, int32 index, int32 stretch);
-	[LinkName("QSplitter_SplitterMoved")]
-	public static extern void QSplitter_SplitterMoved(Self* c_this, int32 pos, int32 index);
+	[LinkName("QSplitter_Connect_SplitterMoved")]
+	public static extern void QSplitter_Connect_SplitterMoved(Self* c_this, c_intptr slot);
 	[LinkName("QSplitter_CreateHandle")]
 	public static extern QSplitterHandle* QSplitter_CreateHandle(Self* c_this);
 	[LinkName("QSplitter_ChildEvent")]

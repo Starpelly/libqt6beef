@@ -107,7 +107,7 @@ QTLIBC_API bool QCheckBox_IsTristate(const QCheckBox* self);
 QTLIBC_API int QCheckBox_CheckState(const QCheckBox* self);
 QTLIBC_API void QCheckBox_SetCheckState(QCheckBox* self, int state);
 QTLIBC_API void QCheckBox_StateChanged(QCheckBox* self, int param1);
-void QCheckBox_Connect_StateChanged(QCheckBox* self, intptr_t slot);
+QTLIBC_API void QCheckBox_Connect_StateChanged(QCheckBox* self, intptr_t slot);
 QTLIBC_API bool QCheckBox_Event(QCheckBox* self, QEvent* e);
 QTLIBC_API void QCheckBox_OnEvent(QCheckBox* self, intptr_t slot);
 QTLIBC_API bool QCheckBox_QBaseEvent(QCheckBox* self, QEvent* e);

@@ -82,8 +82,8 @@ public struct QObject
 	public static extern QBindingStorage* QObject_BindingStorage(Self* c_this);
 	[LinkName("QObject_BindingStorage2")]
 	public static extern QBindingStorage* QObject_BindingStorage2(Self* c_this);
-	[LinkName("QObject_Destroyed")]
-	public static extern void QObject_Destroyed(Self* c_this);
+	[LinkName("QObject_Connect_Destroyed")]
+	public static extern void QObject_Connect_Destroyed(Self* c_this, c_intptr slot);
 	[LinkName("QObject_Parent")]
 	public static extern QObject* QObject_Parent(Self* c_this);
 	[LinkName("QObject_Inherits")]
@@ -118,8 +118,8 @@ public struct QObject
 	public static extern QMetaObject__Connection QObject_Connect5(QObject* sender, QMetaMethod* signal, QObject* receiver, QMetaMethod* method, int64 typeVal);
 	[LinkName("QObject_Connect4")]
 	public static extern QMetaObject__Connection QObject_Connect4(Self* c_this, QObject* sender, char8[] signal, char8[] member, int64 typeVal);
-	[LinkName("QObject_Destroyed1")]
-	public static extern void QObject_Destroyed1(Self* c_this, QObject* param1);
+	[LinkName("QObject_Connect_Destroyed1")]
+	public static extern void QObject_Connect_Destroyed1(Self* c_this, c_intptr slot);
 }
 public struct QSignalBlocker
 {

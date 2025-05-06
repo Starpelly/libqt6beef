@@ -31,12 +31,12 @@ public struct QFileSystemModel : QAbstractItemModel
 	public static extern int32 QFileSystemModel_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QFileSystemModel_Tr")]
 	public static extern libqt_string QFileSystemModel_Tr(char8[] s);
-	[LinkName("QFileSystemModel_RootPathChanged")]
-	public static extern void QFileSystemModel_RootPathChanged(Self* c_this, libqt_string newPath);
-	[LinkName("QFileSystemModel_FileRenamed")]
-	public static extern void QFileSystemModel_FileRenamed(Self* c_this, libqt_string path, libqt_string oldName, libqt_string newName);
-	[LinkName("QFileSystemModel_DirectoryLoaded")]
-	public static extern void QFileSystemModel_DirectoryLoaded(Self* c_this, libqt_string path);
+	[LinkName("QFileSystemModel_Connect_RootPathChanged")]
+	public static extern void QFileSystemModel_Connect_RootPathChanged(Self* c_this, c_intptr slot);
+	[LinkName("QFileSystemModel_Connect_FileRenamed")]
+	public static extern void QFileSystemModel_Connect_FileRenamed(Self* c_this, c_intptr slot);
+	[LinkName("QFileSystemModel_Connect_DirectoryLoaded")]
+	public static extern void QFileSystemModel_Connect_DirectoryLoaded(Self* c_this, c_intptr slot);
 	[LinkName("QFileSystemModel_Index")]
 	public static extern QModelIndex QFileSystemModel_Index(Self* c_this, int32 row, int32 column, QModelIndex* parent);
 	[LinkName("QFileSystemModel_IndexWithPath")]

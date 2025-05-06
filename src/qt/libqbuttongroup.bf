@@ -36,22 +36,22 @@ public struct QButtonGroup : QObject
 	public static extern int32 QButtonGroup_Id(Self* c_this, QAbstractButton* button);
 	[LinkName("QButtonGroup_CheckedId")]
 	public static extern int32 QButtonGroup_CheckedId(Self* c_this);
-	[LinkName("QButtonGroup_ButtonClicked")]
-	public static extern void QButtonGroup_ButtonClicked(Self* c_this, QAbstractButton* param1);
-	[LinkName("QButtonGroup_ButtonPressed")]
-	public static extern void QButtonGroup_ButtonPressed(Self* c_this, QAbstractButton* param1);
-	[LinkName("QButtonGroup_ButtonReleased")]
-	public static extern void QButtonGroup_ButtonReleased(Self* c_this, QAbstractButton* param1);
-	[LinkName("QButtonGroup_ButtonToggled")]
-	public static extern void QButtonGroup_ButtonToggled(Self* c_this, QAbstractButton* param1, bool param2);
-	[LinkName("QButtonGroup_IdClicked")]
-	public static extern void QButtonGroup_IdClicked(Self* c_this, int32 param1);
-	[LinkName("QButtonGroup_IdPressed")]
-	public static extern void QButtonGroup_IdPressed(Self* c_this, int32 param1);
-	[LinkName("QButtonGroup_IdReleased")]
-	public static extern void QButtonGroup_IdReleased(Self* c_this, int32 param1);
-	[LinkName("QButtonGroup_IdToggled")]
-	public static extern void QButtonGroup_IdToggled(Self* c_this, int32 param1, bool param2);
+	[LinkName("QButtonGroup_Connect_ButtonClicked")]
+	public static extern void QButtonGroup_Connect_ButtonClicked(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_ButtonPressed")]
+	public static extern void QButtonGroup_Connect_ButtonPressed(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_ButtonReleased")]
+	public static extern void QButtonGroup_Connect_ButtonReleased(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_ButtonToggled")]
+	public static extern void QButtonGroup_Connect_ButtonToggled(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_IdClicked")]
+	public static extern void QButtonGroup_Connect_IdClicked(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_IdPressed")]
+	public static extern void QButtonGroup_Connect_IdPressed(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_IdReleased")]
+	public static extern void QButtonGroup_Connect_IdReleased(Self* c_this, c_intptr slot);
+	[LinkName("QButtonGroup_Connect_IdToggled")]
+	public static extern void QButtonGroup_Connect_IdToggled(Self* c_this, c_intptr slot);
 	[LinkName("QButtonGroup_Tr2")]
 	public static extern libqt_string QButtonGroup_Tr2(char8[] s, char8[] c);
 	[LinkName("QButtonGroup_Tr3")]

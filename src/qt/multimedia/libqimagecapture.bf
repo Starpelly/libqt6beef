@@ -85,30 +85,30 @@ public struct QImageCapture : QObject
 	public static extern int32 QImageCapture_CaptureToFile(Self* c_this);
 	[LinkName("QImageCapture_Capture")]
 	public static extern int32 QImageCapture_Capture(Self* c_this);
-	[LinkName("QImageCapture_ErrorChanged")]
-	public static extern void QImageCapture_ErrorChanged(Self* c_this);
-	[LinkName("QImageCapture_ErrorOccurred")]
-	public static extern void QImageCapture_ErrorOccurred(Self* c_this, int32 id, int64 errorVal, libqt_string errorString);
-	[LinkName("QImageCapture_ReadyForCaptureChanged")]
-	public static extern void QImageCapture_ReadyForCaptureChanged(Self* c_this, bool ready);
-	[LinkName("QImageCapture_MetaDataChanged")]
-	public static extern void QImageCapture_MetaDataChanged(Self* c_this);
-	[LinkName("QImageCapture_FileFormatChanged")]
-	public static extern void QImageCapture_FileFormatChanged(Self* c_this);
-	[LinkName("QImageCapture_QualityChanged")]
-	public static extern void QImageCapture_QualityChanged(Self* c_this);
-	[LinkName("QImageCapture_ResolutionChanged")]
-	public static extern void QImageCapture_ResolutionChanged(Self* c_this);
-	[LinkName("QImageCapture_ImageExposed")]
-	public static extern void QImageCapture_ImageExposed(Self* c_this, int32 id);
-	[LinkName("QImageCapture_ImageCaptured")]
-	public static extern void QImageCapture_ImageCaptured(Self* c_this, int32 id, QImage* preview);
-	[LinkName("QImageCapture_ImageMetadataAvailable")]
-	public static extern void QImageCapture_ImageMetadataAvailable(Self* c_this, int32 id, QMediaMetaData* metaData);
-	[LinkName("QImageCapture_ImageAvailable")]
-	public static extern void QImageCapture_ImageAvailable(Self* c_this, int32 id, QVideoFrame* frame);
-	[LinkName("QImageCapture_ImageSaved")]
-	public static extern void QImageCapture_ImageSaved(Self* c_this, int32 id, libqt_string fileName);
+	[LinkName("QImageCapture_Connect_ErrorChanged")]
+	public static extern void QImageCapture_Connect_ErrorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ErrorOccurred")]
+	public static extern void QImageCapture_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ReadyForCaptureChanged")]
+	public static extern void QImageCapture_Connect_ReadyForCaptureChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_MetaDataChanged")]
+	public static extern void QImageCapture_Connect_MetaDataChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_FileFormatChanged")]
+	public static extern void QImageCapture_Connect_FileFormatChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_QualityChanged")]
+	public static extern void QImageCapture_Connect_QualityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ResolutionChanged")]
+	public static extern void QImageCapture_Connect_ResolutionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ImageExposed")]
+	public static extern void QImageCapture_Connect_ImageExposed(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ImageCaptured")]
+	public static extern void QImageCapture_Connect_ImageCaptured(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ImageMetadataAvailable")]
+	public static extern void QImageCapture_Connect_ImageMetadataAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ImageAvailable")]
+	public static extern void QImageCapture_Connect_ImageAvailable(Self* c_this, c_intptr slot);
+	[LinkName("QImageCapture_Connect_ImageSaved")]
+	public static extern void QImageCapture_Connect_ImageSaved(Self* c_this, c_intptr slot);
 	[LinkName("QImageCapture_Tr2")]
 	public static extern libqt_string QImageCapture_Tr2(char8[] s, char8[] c);
 	[LinkName("QImageCapture_Tr3")]

@@ -121,7 +121,7 @@ QTLIBC_API void QToolButton_ShowMenu(QToolButton* self);
 QTLIBC_API void QToolButton_SetToolButtonStyle(QToolButton* self, int style);
 QTLIBC_API void QToolButton_SetDefaultAction(QToolButton* self, QAction* defaultAction);
 QTLIBC_API void QToolButton_Triggered(QToolButton* self, QAction* param1);
-void QToolButton_Connect_Triggered(QToolButton* self, intptr_t slot);
+QTLIBC_API void QToolButton_Connect_Triggered(QToolButton* self, intptr_t slot);
 QTLIBC_API bool QToolButton_Event(QToolButton* self, QEvent* e);
 QTLIBC_API void QToolButton_OnEvent(QToolButton* self, intptr_t slot);
 QTLIBC_API bool QToolButton_QBaseEvent(QToolButton* self, QEvent* e);

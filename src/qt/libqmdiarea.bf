@@ -84,8 +84,8 @@ public struct QMdiArea : QAbstractScrollArea
 	public static extern void QMdiArea_SetTabPosition(Self* c_this, int64 position);
 	[LinkName("QMdiArea_TabPosition")]
 	public static extern int64 QMdiArea_TabPosition(Self* c_this);
-	[LinkName("QMdiArea_SubWindowActivated")]
-	public static extern void QMdiArea_SubWindowActivated(Self* c_this, QMdiSubWindow* param1);
+	[LinkName("QMdiArea_Connect_SubWindowActivated")]
+	public static extern void QMdiArea_Connect_SubWindowActivated(Self* c_this, c_intptr slot);
 	[LinkName("QMdiArea_SetActiveSubWindow")]
 	public static extern void QMdiArea_SetActiveSubWindow(Self* c_this, QMdiSubWindow* window);
 	[LinkName("QMdiArea_TileSubWindows")]

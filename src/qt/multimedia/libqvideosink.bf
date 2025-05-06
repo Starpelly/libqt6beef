@@ -26,12 +26,12 @@ public struct QVideoSink : QObject
 	public static extern void QVideoSink_SetVideoFrame(Self* c_this, QVideoFrame* frame);
 	[LinkName("QVideoSink_VideoFrame")]
 	public static extern QVideoFrame QVideoSink_VideoFrame(Self* c_this);
-	[LinkName("QVideoSink_VideoFrameChanged")]
-	public static extern void QVideoSink_VideoFrameChanged(Self* c_this, QVideoFrame* frame);
-	[LinkName("QVideoSink_SubtitleTextChanged")]
-	public static extern void QVideoSink_SubtitleTextChanged(Self* c_this, libqt_string subtitleText);
-	[LinkName("QVideoSink_VideoSizeChanged")]
-	public static extern void QVideoSink_VideoSizeChanged(Self* c_this);
+	[LinkName("QVideoSink_Connect_VideoFrameChanged")]
+	public static extern void QVideoSink_Connect_VideoFrameChanged(Self* c_this, c_intptr slot);
+	[LinkName("QVideoSink_Connect_SubtitleTextChanged")]
+	public static extern void QVideoSink_Connect_SubtitleTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QVideoSink_Connect_VideoSizeChanged")]
+	public static extern void QVideoSink_Connect_VideoSizeChanged(Self* c_this, c_intptr slot);
 	[LinkName("QVideoSink_Tr2")]
 	public static extern libqt_string QVideoSink_Tr2(char8[] s, char8[] c);
 	[LinkName("QVideoSink_Tr3")]

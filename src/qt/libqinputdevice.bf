@@ -77,8 +77,8 @@ public struct QInputDevice : QObject
 	public static extern QInputDevice* QInputDevice_PrimaryKeyboard();
 	[LinkName("QInputDevice_OperatorEqual")]
 	public static extern bool QInputDevice_OperatorEqual(Self* c_this, QInputDevice* other);
-	[LinkName("QInputDevice_AvailableVirtualGeometryChanged")]
-	public static extern void QInputDevice_AvailableVirtualGeometryChanged(Self* c_this, QRect area);
+	[LinkName("QInputDevice_Connect_AvailableVirtualGeometryChanged")]
+	public static extern void QInputDevice_Connect_AvailableVirtualGeometryChanged(Self* c_this, c_intptr slot);
 	[LinkName("QInputDevice_Tr2")]
 	public static extern libqt_string QInputDevice_Tr2(char8[] s, char8[] c);
 	[LinkName("QInputDevice_Tr3")]

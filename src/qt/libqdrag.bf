@@ -44,10 +44,10 @@ public struct QDrag : QObject
 	public static extern int64 QDrag_DefaultAction(Self* c_this);
 	[LinkName("QDrag_Cancel")]
 	public static extern void QDrag_Cancel();
-	[LinkName("QDrag_ActionChanged")]
-	public static extern void QDrag_ActionChanged(Self* c_this, int64 action);
-	[LinkName("QDrag_TargetChanged")]
-	public static extern void QDrag_TargetChanged(Self* c_this, QObject* newTarget);
+	[LinkName("QDrag_Connect_ActionChanged")]
+	public static extern void QDrag_Connect_ActionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDrag_Connect_TargetChanged")]
+	public static extern void QDrag_Connect_TargetChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDrag_Tr2")]
 	public static extern libqt_string QDrag_Tr2(char8[] s, char8[] c);
 	[LinkName("QDrag_Tr3")]

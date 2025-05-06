@@ -53,8 +53,8 @@ public struct QToolButton : QAbstractButton
 	public static extern void QToolButton_SetToolButtonStyle(Self* c_this, int64 style);
 	[LinkName("QToolButton_SetDefaultAction")]
 	public static extern void QToolButton_SetDefaultAction(Self* c_this, QAction* defaultAction);
-	[LinkName("QToolButton_Triggered")]
-	public static extern void QToolButton_Triggered(Self* c_this, QAction* param1);
+	[LinkName("QToolButton_Connect_Triggered")]
+	public static extern void QToolButton_Connect_Triggered(Self* c_this, c_intptr slot);
 	[LinkName("QToolButton_Event")]
 	public static extern bool QToolButton_Event(Self* c_this, QEvent* e);
 	[LinkName("QToolButton_MousePressEvent")]

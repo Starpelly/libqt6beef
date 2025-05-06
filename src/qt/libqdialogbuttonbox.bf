@@ -107,14 +107,14 @@ public struct QDialogButtonBox : QWidget
 	public static extern void QDialogButtonBox_SetCenterButtons(Self* c_this, bool center);
 	[LinkName("QDialogButtonBox_CenterButtons")]
 	public static extern bool QDialogButtonBox_CenterButtons(Self* c_this);
-	[LinkName("QDialogButtonBox_Clicked")]
-	public static extern void QDialogButtonBox_Clicked(Self* c_this, QAbstractButton* button);
-	[LinkName("QDialogButtonBox_Accepted")]
-	public static extern void QDialogButtonBox_Accepted(Self* c_this);
-	[LinkName("QDialogButtonBox_HelpRequested")]
-	public static extern void QDialogButtonBox_HelpRequested(Self* c_this);
-	[LinkName("QDialogButtonBox_Rejected")]
-	public static extern void QDialogButtonBox_Rejected(Self* c_this);
+	[LinkName("QDialogButtonBox_Connect_Clicked")]
+	public static extern void QDialogButtonBox_Connect_Clicked(Self* c_this, c_intptr slot);
+	[LinkName("QDialogButtonBox_Connect_Accepted")]
+	public static extern void QDialogButtonBox_Connect_Accepted(Self* c_this, c_intptr slot);
+	[LinkName("QDialogButtonBox_Connect_HelpRequested")]
+	public static extern void QDialogButtonBox_Connect_HelpRequested(Self* c_this, c_intptr slot);
+	[LinkName("QDialogButtonBox_Connect_Rejected")]
+	public static extern void QDialogButtonBox_Connect_Rejected(Self* c_this, c_intptr slot);
 	[LinkName("QDialogButtonBox_ChangeEvent")]
 	public static extern void QDialogButtonBox_ChangeEvent(Self* c_this, QEvent* event);
 	[LinkName("QDialogButtonBox_Event")]

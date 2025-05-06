@@ -103,7 +103,7 @@ QTLIBC_API void QColumnView_OnMetacall(QColumnView* self, intptr_t slot);
 QTLIBC_API int QColumnView_QBaseMetacall(QColumnView* self, int param1, int param2, void** param3);
 QTLIBC_API libqt_string QColumnView_Tr(const char* s);
 QTLIBC_API void QColumnView_UpdatePreviewWidget(QColumnView* self, QModelIndex* index);
-void QColumnView_Connect_UpdatePreviewWidget(QColumnView* self, intptr_t slot);
+QTLIBC_API void QColumnView_Connect_UpdatePreviewWidget(QColumnView* self, intptr_t slot);
 QTLIBC_API QModelIndex* QColumnView_IndexAt(const QColumnView* self, QPoint* point);
 QTLIBC_API void QColumnView_OnIndexAt(const QColumnView* self, intptr_t slot);
 QTLIBC_API QModelIndex* QColumnView_QBaseIndexAt(const QColumnView* self, QPoint* point);

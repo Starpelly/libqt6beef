@@ -127,7 +127,7 @@ QTLIBC_API void QSplitter_GetRange(const QSplitter* self, int index, int* param2
 QTLIBC_API QSplitterHandle* QSplitter_Handle(const QSplitter* self, int index);
 QTLIBC_API void QSplitter_SetStretchFactor(QSplitter* self, int index, int stretch);
 QTLIBC_API void QSplitter_SplitterMoved(QSplitter* self, int pos, int index);
-void QSplitter_Connect_SplitterMoved(QSplitter* self, intptr_t slot);
+QTLIBC_API void QSplitter_Connect_SplitterMoved(QSplitter* self, intptr_t slot);
 QTLIBC_API QSplitterHandle* QSplitter_CreateHandle(QSplitter* self);
 QTLIBC_API void QSplitter_OnCreateHandle(QSplitter* self, intptr_t slot);
 QTLIBC_API QSplitterHandle* QSplitter_QBaseCreateHandle(QSplitter* self);

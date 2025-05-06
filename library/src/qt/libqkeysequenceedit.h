@@ -99,9 +99,9 @@ QTLIBC_API bool QKeySequenceEdit_IsClearButtonEnabled(const QKeySequenceEdit* se
 QTLIBC_API void QKeySequenceEdit_SetKeySequence(QKeySequenceEdit* self, QKeySequence* keySequence);
 QTLIBC_API void QKeySequenceEdit_Clear(QKeySequenceEdit* self);
 QTLIBC_API void QKeySequenceEdit_EditingFinished(QKeySequenceEdit* self);
-void QKeySequenceEdit_Connect_EditingFinished(QKeySequenceEdit* self, intptr_t slot);
+QTLIBC_API void QKeySequenceEdit_Connect_EditingFinished(QKeySequenceEdit* self, intptr_t slot);
 QTLIBC_API void QKeySequenceEdit_KeySequenceChanged(QKeySequenceEdit* self, QKeySequence* keySequence);
-void QKeySequenceEdit_Connect_KeySequenceChanged(QKeySequenceEdit* self, intptr_t slot);
+QTLIBC_API void QKeySequenceEdit_Connect_KeySequenceChanged(QKeySequenceEdit* self, intptr_t slot);
 QTLIBC_API bool QKeySequenceEdit_Event(QKeySequenceEdit* self, QEvent* param1);
 QTLIBC_API void QKeySequenceEdit_OnEvent(QKeySequenceEdit* self, intptr_t slot);
 QTLIBC_API bool QKeySequenceEdit_QBaseEvent(QKeySequenceEdit* self, QEvent* param1);

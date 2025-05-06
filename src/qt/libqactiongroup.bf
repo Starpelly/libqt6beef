@@ -51,10 +51,10 @@ public struct QActionGroup : QObject
 	public static extern void QActionGroup_SetExclusive(Self* c_this, bool exclusive);
 	[LinkName("QActionGroup_SetExclusionPolicy")]
 	public static extern void QActionGroup_SetExclusionPolicy(Self* c_this, int64 policy);
-	[LinkName("QActionGroup_Triggered")]
-	public static extern void QActionGroup_Triggered(Self* c_this, QAction* param1);
-	[LinkName("QActionGroup_Hovered")]
-	public static extern void QActionGroup_Hovered(Self* c_this, QAction* param1);
+	[LinkName("QActionGroup_Connect_Triggered")]
+	public static extern void QActionGroup_Connect_Triggered(Self* c_this, c_intptr slot);
+	[LinkName("QActionGroup_Connect_Hovered")]
+	public static extern void QActionGroup_Connect_Hovered(Self* c_this, c_intptr slot);
 	[LinkName("QActionGroup_Tr2")]
 	public static extern libqt_string QActionGroup_Tr2(char8[] s, char8[] c);
 	[LinkName("QActionGroup_Tr3")]

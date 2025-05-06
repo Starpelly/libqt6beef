@@ -45,16 +45,16 @@ public struct QAbstractItemDelegate : QObject
 	public static extern bool QAbstractItemDelegate_HelpEvent(Self* c_this, QHelpEvent* event, QAbstractItemView* view, QStyleOptionViewItem* option, QModelIndex* index);
 	[LinkName("QAbstractItemDelegate_PaintingRoles")]
 	public static extern int32[] QAbstractItemDelegate_PaintingRoles(Self* c_this);
-	[LinkName("QAbstractItemDelegate_CommitData")]
-	public static extern void QAbstractItemDelegate_CommitData(Self* c_this, QWidget* editor);
-	[LinkName("QAbstractItemDelegate_CloseEditor")]
-	public static extern void QAbstractItemDelegate_CloseEditor(Self* c_this, QWidget* editor);
-	[LinkName("QAbstractItemDelegate_SizeHintChanged")]
-	public static extern void QAbstractItemDelegate_SizeHintChanged(Self* c_this, QModelIndex* param1);
+	[LinkName("QAbstractItemDelegate_Connect_CommitData")]
+	public static extern void QAbstractItemDelegate_Connect_CommitData(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemDelegate_Connect_CloseEditor")]
+	public static extern void QAbstractItemDelegate_Connect_CloseEditor(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractItemDelegate_Connect_SizeHintChanged")]
+	public static extern void QAbstractItemDelegate_Connect_SizeHintChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractItemDelegate_Tr2")]
 	public static extern libqt_string QAbstractItemDelegate_Tr2(char8[] s, char8[] c);
 	[LinkName("QAbstractItemDelegate_Tr3")]
 	public static extern libqt_string QAbstractItemDelegate_Tr3(char8[] s, char8[] c, int32 n);
-	[LinkName("QAbstractItemDelegate_CloseEditor2")]
-	public static extern void QAbstractItemDelegate_CloseEditor2(Self* c_this, QWidget* editor, int64 hint);
+	[LinkName("QAbstractItemDelegate_Connect_CloseEditor2")]
+	public static extern void QAbstractItemDelegate_Connect_CloseEditor2(Self* c_this, c_intptr slot);
 }

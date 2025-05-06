@@ -99,18 +99,18 @@ public struct QUndoStack : QObject
 	public static extern void QUndoStack_Redo(Self* c_this);
 	[LinkName("QUndoStack_SetActive")]
 	public static extern void QUndoStack_SetActive(Self* c_this);
-	[LinkName("QUndoStack_IndexChanged")]
-	public static extern void QUndoStack_IndexChanged(Self* c_this, int32 idx);
-	[LinkName("QUndoStack_CleanChanged")]
-	public static extern void QUndoStack_CleanChanged(Self* c_this, bool clean);
-	[LinkName("QUndoStack_CanUndoChanged")]
-	public static extern void QUndoStack_CanUndoChanged(Self* c_this, bool canUndo);
-	[LinkName("QUndoStack_CanRedoChanged")]
-	public static extern void QUndoStack_CanRedoChanged(Self* c_this, bool canRedo);
-	[LinkName("QUndoStack_UndoTextChanged")]
-	public static extern void QUndoStack_UndoTextChanged(Self* c_this, libqt_string undoText);
-	[LinkName("QUndoStack_RedoTextChanged")]
-	public static extern void QUndoStack_RedoTextChanged(Self* c_this, libqt_string redoText);
+	[LinkName("QUndoStack_Connect_IndexChanged")]
+	public static extern void QUndoStack_Connect_IndexChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoStack_Connect_CleanChanged")]
+	public static extern void QUndoStack_Connect_CleanChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoStack_Connect_CanUndoChanged")]
+	public static extern void QUndoStack_Connect_CanUndoChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoStack_Connect_CanRedoChanged")]
+	public static extern void QUndoStack_Connect_CanRedoChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoStack_Connect_UndoTextChanged")]
+	public static extern void QUndoStack_Connect_UndoTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QUndoStack_Connect_RedoTextChanged")]
+	public static extern void QUndoStack_Connect_RedoTextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QUndoStack_Tr2")]
 	public static extern libqt_string QUndoStack_Tr2(char8[] s, char8[] c);
 	[LinkName("QUndoStack_Tr3")]

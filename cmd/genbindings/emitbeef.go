@@ -416,8 +416,25 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 					cMethodName := methodPrefixName + "_" + m.SafeMethodName()
 					// ret.WriteLine("[Import(" + `"` + pcName + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
 					// ret.WriteLine("[Import(" + `"` + "QtBeefLink" + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
-					ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-					ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
+
+					if m.IsSignal {
+						addConnect := true
+						if _, ok := noQtConnect[methodPrefixName]; ok {
+							addConnect = false
+						}
+						if addConnect {
+							cMethodName := methodPrefixName + "_Connect_" + m.SafeMethodName()
+
+							ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+							ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(Self* c_this, c_intptr slot);")
+							// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
+						}
+					} else {
+
+						ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+						ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
+
+					}
 				}
 
 				/*

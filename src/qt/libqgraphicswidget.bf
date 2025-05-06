@@ -135,10 +135,10 @@ public struct QGraphicsWidget : QGraphicsLayoutItem
 	public static extern QRectF QGraphicsWidget_BoundingRect(Self* c_this);
 	[LinkName("QGraphicsWidget_Shape")]
 	public static extern QPainterPath QGraphicsWidget_Shape(Self* c_this);
-	[LinkName("QGraphicsWidget_GeometryChanged")]
-	public static extern void QGraphicsWidget_GeometryChanged(Self* c_this);
-	[LinkName("QGraphicsWidget_LayoutChanged")]
-	public static extern void QGraphicsWidget_LayoutChanged(Self* c_this);
+	[LinkName("QGraphicsWidget_Connect_GeometryChanged")]
+	public static extern void QGraphicsWidget_Connect_GeometryChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsWidget_Connect_LayoutChanged")]
+	public static extern void QGraphicsWidget_Connect_LayoutChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsWidget_Close")]
 	public static extern bool QGraphicsWidget_Close(Self* c_this);
 	[LinkName("QGraphicsWidget_InitStyleOption")]

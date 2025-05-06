@@ -90,7 +90,7 @@ QTLIBC_API libqt_list /* of libqt_string */ QObject_DynamicPropertyNames(const Q
 QTLIBC_API QBindingStorage* QObject_BindingStorage(QObject* self);
 QTLIBC_API QBindingStorage* QObject_BindingStorage2(const QObject* self);
 QTLIBC_API void QObject_Destroyed(QObject* self);
-void QObject_Connect_Destroyed(QObject* self, intptr_t slot);
+QTLIBC_API void QObject_Connect_Destroyed(QObject* self, intptr_t slot);
 QTLIBC_API QObject* QObject_Parent(const QObject* self);
 QTLIBC_API bool QObject_Inherits(const QObject* self, const char* classname);
 QTLIBC_API void QObject_DeleteLater(QObject* self);
@@ -115,7 +115,7 @@ QTLIBC_API int QObject_StartTimer2(QObject* self, int interval, int timerType);
 QTLIBC_API QMetaObject__Connection* QObject_Connect5(QObject* sender, QMetaMethod* signal, QObject* receiver, QMetaMethod* method, int typeVal);
 QTLIBC_API QMetaObject__Connection* QObject_Connect4(const QObject* self, QObject* sender, const char* signal, const char* member, int typeVal);
 QTLIBC_API void QObject_Destroyed1(QObject* self, QObject* param1);
-void QObject_Connect_Destroyed1(QObject* self, intptr_t slot);
+QTLIBC_API void QObject_Connect_Destroyed1(QObject* self, intptr_t slot);
 QTLIBC_API QObject* QObject_Sender(const QObject* self);
 QTLIBC_API void QObject_OnSender(const QObject* self, intptr_t slot);
 QTLIBC_API QObject* QObject_QBaseSender(const QObject* self);

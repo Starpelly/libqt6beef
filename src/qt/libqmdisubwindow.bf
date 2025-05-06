@@ -58,10 +58,10 @@ public struct QMdiSubWindow : QWidget
 	public static extern QMenu* QMdiSubWindow_SystemMenu(Self* c_this);
 	[LinkName("QMdiSubWindow_MdiArea")]
 	public static extern QMdiArea* QMdiSubWindow_MdiArea(Self* c_this);
-	[LinkName("QMdiSubWindow_WindowStateChanged")]
-	public static extern void QMdiSubWindow_WindowStateChanged(Self* c_this, int64 oldState, int64 newState);
-	[LinkName("QMdiSubWindow_AboutToActivate")]
-	public static extern void QMdiSubWindow_AboutToActivate(Self* c_this);
+	[LinkName("QMdiSubWindow_Connect_WindowStateChanged")]
+	public static extern void QMdiSubWindow_Connect_WindowStateChanged(Self* c_this, c_intptr slot);
+	[LinkName("QMdiSubWindow_Connect_AboutToActivate")]
+	public static extern void QMdiSubWindow_Connect_AboutToActivate(Self* c_this, c_intptr slot);
 	[LinkName("QMdiSubWindow_ShowSystemMenu")]
 	public static extern void QMdiSubWindow_ShowSystemMenu(Self* c_this);
 	[LinkName("QMdiSubWindow_ShowShaded")]

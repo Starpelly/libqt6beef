@@ -46,14 +46,14 @@ public struct QAbstractTextDocumentLayout : QObject
 	public static extern void QAbstractTextDocumentLayout_UnregisterHandler(Self* c_this, int32 objectType);
 	[LinkName("QAbstractTextDocumentLayout_HandlerForObject")]
 	public static extern QTextObjectInterface* QAbstractTextDocumentLayout_HandlerForObject(Self* c_this, int32 objectType);
-	[LinkName("QAbstractTextDocumentLayout_Update")]
-	public static extern void QAbstractTextDocumentLayout_Update(Self* c_this);
-	[LinkName("QAbstractTextDocumentLayout_UpdateBlock")]
-	public static extern void QAbstractTextDocumentLayout_UpdateBlock(Self* c_this, QTextBlock* block);
-	[LinkName("QAbstractTextDocumentLayout_DocumentSizeChanged")]
-	public static extern void QAbstractTextDocumentLayout_DocumentSizeChanged(Self* c_this, QSizeF* newSize);
-	[LinkName("QAbstractTextDocumentLayout_PageCountChanged")]
-	public static extern void QAbstractTextDocumentLayout_PageCountChanged(Self* c_this, int32 newPages);
+	[LinkName("QAbstractTextDocumentLayout_Connect_Update")]
+	public static extern void QAbstractTextDocumentLayout_Connect_Update(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractTextDocumentLayout_Connect_UpdateBlock")]
+	public static extern void QAbstractTextDocumentLayout_Connect_UpdateBlock(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractTextDocumentLayout_Connect_DocumentSizeChanged")]
+	public static extern void QAbstractTextDocumentLayout_Connect_DocumentSizeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractTextDocumentLayout_Connect_PageCountChanged")]
+	public static extern void QAbstractTextDocumentLayout_Connect_PageCountChanged(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractTextDocumentLayout_DocumentChanged")]
 	public static extern void QAbstractTextDocumentLayout_DocumentChanged(Self* c_this, int32 from, int32 charsRemoved, int32 charsAdded);
 	[LinkName("QAbstractTextDocumentLayout_ResizeInlineObject")]
@@ -72,8 +72,8 @@ public struct QAbstractTextDocumentLayout : QObject
 	public static extern libqt_string QAbstractTextDocumentLayout_Tr3(char8[] s, char8[] c, int32 n);
 	[LinkName("QAbstractTextDocumentLayout_UnregisterHandler2")]
 	public static extern void QAbstractTextDocumentLayout_UnregisterHandler2(Self* c_this, int32 objectType, QObject* component);
-	[LinkName("QAbstractTextDocumentLayout_Update1")]
-	public static extern void QAbstractTextDocumentLayout_Update1(Self* c_this, QRectF* param1);
+	[LinkName("QAbstractTextDocumentLayout_Connect_Update1")]
+	public static extern void QAbstractTextDocumentLayout_Connect_Update1(Self* c_this, c_intptr slot);
 }
 public struct QTextObjectInterface
 {

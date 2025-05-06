@@ -59,16 +59,16 @@ public struct QDockWidget : QWidget
 	public static extern bool QDockWidget_IsAreaAllowed(Self* c_this, int64 area);
 	[LinkName("QDockWidget_ToggleViewAction")]
 	public static extern QAction* QDockWidget_ToggleViewAction(Self* c_this);
-	[LinkName("QDockWidget_FeaturesChanged")]
-	public static extern void QDockWidget_FeaturesChanged(Self* c_this, int64 features);
-	[LinkName("QDockWidget_TopLevelChanged")]
-	public static extern void QDockWidget_TopLevelChanged(Self* c_this, bool topLevel);
-	[LinkName("QDockWidget_AllowedAreasChanged")]
-	public static extern void QDockWidget_AllowedAreasChanged(Self* c_this, int64 allowedAreas);
-	[LinkName("QDockWidget_VisibilityChanged")]
-	public static extern void QDockWidget_VisibilityChanged(Self* c_this, bool visible);
-	[LinkName("QDockWidget_DockLocationChanged")]
-	public static extern void QDockWidget_DockLocationChanged(Self* c_this, int64 area);
+	[LinkName("QDockWidget_Connect_FeaturesChanged")]
+	public static extern void QDockWidget_Connect_FeaturesChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDockWidget_Connect_TopLevelChanged")]
+	public static extern void QDockWidget_Connect_TopLevelChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDockWidget_Connect_AllowedAreasChanged")]
+	public static extern void QDockWidget_Connect_AllowedAreasChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDockWidget_Connect_VisibilityChanged")]
+	public static extern void QDockWidget_Connect_VisibilityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QDockWidget_Connect_DockLocationChanged")]
+	public static extern void QDockWidget_Connect_DockLocationChanged(Self* c_this, c_intptr slot);
 	[LinkName("QDockWidget_ChangeEvent")]
 	public static extern void QDockWidget_ChangeEvent(Self* c_this, QEvent* event);
 	[LinkName("QDockWidget_CloseEvent")]

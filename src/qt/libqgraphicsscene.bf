@@ -230,14 +230,14 @@ public struct QGraphicsScene : QObject
 	public static extern void QGraphicsScene_DrawForeground(Self* c_this, QPainter* painter, QRectF* rect);
 	[LinkName("QGraphicsScene_FocusNextPrevChild")]
 	public static extern bool QGraphicsScene_FocusNextPrevChild(Self* c_this, bool next);
-	[LinkName("QGraphicsScene_Changed")]
-	public static extern void QGraphicsScene_Changed(Self* c_this, QRectF[] region);
-	[LinkName("QGraphicsScene_SceneRectChanged")]
-	public static extern void QGraphicsScene_SceneRectChanged(Self* c_this, QRectF* rect);
-	[LinkName("QGraphicsScene_SelectionChanged")]
-	public static extern void QGraphicsScene_SelectionChanged(Self* c_this);
-	[LinkName("QGraphicsScene_FocusItemChanged")]
-	public static extern void QGraphicsScene_FocusItemChanged(Self* c_this, QGraphicsItem* newFocus, QGraphicsItem* oldFocus, int64 reason);
+	[LinkName("QGraphicsScene_Connect_Changed")]
+	public static extern void QGraphicsScene_Connect_Changed(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScene_Connect_SceneRectChanged")]
+	public static extern void QGraphicsScene_Connect_SceneRectChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScene_Connect_SelectionChanged")]
+	public static extern void QGraphicsScene_Connect_SelectionChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsScene_Connect_FocusItemChanged")]
+	public static extern void QGraphicsScene_Connect_FocusItemChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsScene_Tr2")]
 	public static extern libqt_string QGraphicsScene_Tr2(char8[] s, char8[] c);
 	[LinkName("QGraphicsScene_Tr3")]

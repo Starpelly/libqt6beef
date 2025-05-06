@@ -1575,7 +1575,7 @@ extern "C" {
 					addConnect = false
 				}
 				if addConnect {
-					ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
+					ret.WriteString(fmt.Sprintf("QTLIBC_API %s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
 				}
 			}
 

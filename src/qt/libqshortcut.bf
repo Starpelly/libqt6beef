@@ -58,10 +58,10 @@ public struct QShortcut : QObject
 	public static extern void QShortcut_SetWhatsThis(Self* c_this, libqt_string text);
 	[LinkName("QShortcut_WhatsThis")]
 	public static extern libqt_string QShortcut_WhatsThis(Self* c_this);
-	[LinkName("QShortcut_Activated")]
-	public static extern void QShortcut_Activated(Self* c_this);
-	[LinkName("QShortcut_ActivatedAmbiguously")]
-	public static extern void QShortcut_ActivatedAmbiguously(Self* c_this);
+	[LinkName("QShortcut_Connect_Activated")]
+	public static extern void QShortcut_Connect_Activated(Self* c_this, c_intptr slot);
+	[LinkName("QShortcut_Connect_ActivatedAmbiguously")]
+	public static extern void QShortcut_Connect_ActivatedAmbiguously(Self* c_this, c_intptr slot);
 	[LinkName("QShortcut_Event")]
 	public static extern bool QShortcut_Event(Self* c_this, QEvent* e);
 	[LinkName("QShortcut_Tr2")]

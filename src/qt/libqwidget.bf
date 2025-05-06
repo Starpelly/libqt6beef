@@ -538,14 +538,14 @@ public struct QWidget : QPaintDevice
 	public static extern void QWidget_SetScreen(Self* c_this, QScreen* screen);
 	[LinkName("QWidget_CreateWindowContainer")]
 	public static extern QWidget* QWidget_CreateWindowContainer(QWindow* window);
-	[LinkName("QWidget_WindowTitleChanged")]
-	public static extern void QWidget_WindowTitleChanged(Self* c_this, libqt_string title);
-	[LinkName("QWidget_WindowIconChanged")]
-	public static extern void QWidget_WindowIconChanged(Self* c_this, QIcon* icon);
-	[LinkName("QWidget_WindowIconTextChanged")]
-	public static extern void QWidget_WindowIconTextChanged(Self* c_this, libqt_string iconText);
-	[LinkName("QWidget_CustomContextMenuRequested")]
-	public static extern void QWidget_CustomContextMenuRequested(Self* c_this, QPoint* pos);
+	[LinkName("QWidget_Connect_WindowTitleChanged")]
+	public static extern void QWidget_Connect_WindowTitleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWidget_Connect_WindowIconChanged")]
+	public static extern void QWidget_Connect_WindowIconChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWidget_Connect_WindowIconTextChanged")]
+	public static extern void QWidget_Connect_WindowIconTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QWidget_Connect_CustomContextMenuRequested")]
+	public static extern void QWidget_Connect_CustomContextMenuRequested(Self* c_this, c_intptr slot);
 	[LinkName("QWidget_Event")]
 	public static extern bool QWidget_Event(Self* c_this, QEvent* event);
 	[LinkName("QWidget_MousePressEvent")]

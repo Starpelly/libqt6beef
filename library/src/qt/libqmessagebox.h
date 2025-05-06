@@ -173,7 +173,7 @@ QTLIBC_API void QMessageBox_SetWindowTitle(QMessageBox* self, libqt_string title
 QTLIBC_API void QMessageBox_SetWindowModality(QMessageBox* self, int windowModality);
 QTLIBC_API QPixmap* QMessageBox_StandardIcon(int icon);
 QTLIBC_API void QMessageBox_ButtonClicked(QMessageBox* self, QAbstractButton* button);
-void QMessageBox_Connect_ButtonClicked(QMessageBox* self, intptr_t slot);
+QTLIBC_API void QMessageBox_Connect_ButtonClicked(QMessageBox* self, intptr_t slot);
 QTLIBC_API bool QMessageBox_Event(QMessageBox* self, QEvent* e);
 QTLIBC_API void QMessageBox_OnEvent(QMessageBox* self, intptr_t slot);
 QTLIBC_API bool QMessageBox_QBaseEvent(QMessageBox* self, QEvent* e);

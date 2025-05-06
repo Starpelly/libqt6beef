@@ -48,8 +48,8 @@ public struct QGraphicsEffect : QObject
 	public static extern void QGraphicsEffect_SetEnabled(Self* c_this, bool enable);
 	[LinkName("QGraphicsEffect_Update")]
 	public static extern void QGraphicsEffect_Update(Self* c_this);
-	[LinkName("QGraphicsEffect_EnabledChanged")]
-	public static extern void QGraphicsEffect_EnabledChanged(Self* c_this, bool enabled);
+	[LinkName("QGraphicsEffect_Connect_EnabledChanged")]
+	public static extern void QGraphicsEffect_Connect_EnabledChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsEffect_Draw")]
 	public static extern void QGraphicsEffect_Draw(Self* c_this, QPainter* painter);
 	[LinkName("QGraphicsEffect_SourceChanged")]
@@ -99,10 +99,10 @@ public struct QGraphicsColorizeEffect : QGraphicsEffect
 	public static extern void QGraphicsColorizeEffect_SetColor(Self* c_this, QColor* c);
 	[LinkName("QGraphicsColorizeEffect_SetStrength")]
 	public static extern void QGraphicsColorizeEffect_SetStrength(Self* c_this, double strength);
-	[LinkName("QGraphicsColorizeEffect_ColorChanged")]
-	public static extern void QGraphicsColorizeEffect_ColorChanged(Self* c_this, QColor* color);
-	[LinkName("QGraphicsColorizeEffect_StrengthChanged")]
-	public static extern void QGraphicsColorizeEffect_StrengthChanged(Self* c_this, double strength);
+	[LinkName("QGraphicsColorizeEffect_Connect_ColorChanged")]
+	public static extern void QGraphicsColorizeEffect_Connect_ColorChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsColorizeEffect_Connect_StrengthChanged")]
+	public static extern void QGraphicsColorizeEffect_Connect_StrengthChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsColorizeEffect_Draw")]
 	public static extern void QGraphicsColorizeEffect_Draw(Self* c_this, QPainter* painter);
 	[LinkName("QGraphicsColorizeEffect_Tr2")]
@@ -134,10 +134,10 @@ public struct QGraphicsBlurEffect : QGraphicsEffect
 	public static extern void QGraphicsBlurEffect_SetBlurRadius(Self* c_this, double blurRadius);
 	[LinkName("QGraphicsBlurEffect_SetBlurHints")]
 	public static extern void QGraphicsBlurEffect_SetBlurHints(Self* c_this, int64 hints);
-	[LinkName("QGraphicsBlurEffect_BlurRadiusChanged")]
-	public static extern void QGraphicsBlurEffect_BlurRadiusChanged(Self* c_this, double blurRadius);
-	[LinkName("QGraphicsBlurEffect_BlurHintsChanged")]
-	public static extern void QGraphicsBlurEffect_BlurHintsChanged(Self* c_this, int64 hints);
+	[LinkName("QGraphicsBlurEffect_Connect_BlurRadiusChanged")]
+	public static extern void QGraphicsBlurEffect_Connect_BlurRadiusChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsBlurEffect_Connect_BlurHintsChanged")]
+	public static extern void QGraphicsBlurEffect_Connect_BlurHintsChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsBlurEffect_Draw")]
 	public static extern void QGraphicsBlurEffect_Draw(Self* c_this, QPainter* painter);
 	[LinkName("QGraphicsBlurEffect_Tr2")]
@@ -185,12 +185,12 @@ public struct QGraphicsDropShadowEffect : QGraphicsEffect
 	public static extern void QGraphicsDropShadowEffect_SetBlurRadius(Self* c_this, double blurRadius);
 	[LinkName("QGraphicsDropShadowEffect_SetColor")]
 	public static extern void QGraphicsDropShadowEffect_SetColor(Self* c_this, QColor* color);
-	[LinkName("QGraphicsDropShadowEffect_OffsetChanged")]
-	public static extern void QGraphicsDropShadowEffect_OffsetChanged(Self* c_this, QPointF* offset);
-	[LinkName("QGraphicsDropShadowEffect_BlurRadiusChanged")]
-	public static extern void QGraphicsDropShadowEffect_BlurRadiusChanged(Self* c_this, double blurRadius);
-	[LinkName("QGraphicsDropShadowEffect_ColorChanged")]
-	public static extern void QGraphicsDropShadowEffect_ColorChanged(Self* c_this, QColor* color);
+	[LinkName("QGraphicsDropShadowEffect_Connect_OffsetChanged")]
+	public static extern void QGraphicsDropShadowEffect_Connect_OffsetChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsDropShadowEffect_Connect_BlurRadiusChanged")]
+	public static extern void QGraphicsDropShadowEffect_Connect_BlurRadiusChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsDropShadowEffect_Connect_ColorChanged")]
+	public static extern void QGraphicsDropShadowEffect_Connect_ColorChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsDropShadowEffect_Draw")]
 	public static extern void QGraphicsDropShadowEffect_Draw(Self* c_this, QPainter* painter);
 	[LinkName("QGraphicsDropShadowEffect_Tr2")]
@@ -220,10 +220,10 @@ public struct QGraphicsOpacityEffect : QGraphicsEffect
 	public static extern void QGraphicsOpacityEffect_SetOpacity(Self* c_this, double opacity);
 	[LinkName("QGraphicsOpacityEffect_SetOpacityMask")]
 	public static extern void QGraphicsOpacityEffect_SetOpacityMask(Self* c_this, QBrush* mask);
-	[LinkName("QGraphicsOpacityEffect_OpacityChanged")]
-	public static extern void QGraphicsOpacityEffect_OpacityChanged(Self* c_this, double opacity);
-	[LinkName("QGraphicsOpacityEffect_OpacityMaskChanged")]
-	public static extern void QGraphicsOpacityEffect_OpacityMaskChanged(Self* c_this, QBrush* mask);
+	[LinkName("QGraphicsOpacityEffect_Connect_OpacityChanged")]
+	public static extern void QGraphicsOpacityEffect_Connect_OpacityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QGraphicsOpacityEffect_Connect_OpacityMaskChanged")]
+	public static extern void QGraphicsOpacityEffect_Connect_OpacityMaskChanged(Self* c_this, c_intptr slot);
 	[LinkName("QGraphicsOpacityEffect_Draw")]
 	public static extern void QGraphicsOpacityEffect_Draw(Self* c_this, QPainter* painter);
 	[LinkName("QGraphicsOpacityEffect_Tr2")]

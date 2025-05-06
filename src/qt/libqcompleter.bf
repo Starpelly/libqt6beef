@@ -108,14 +108,6 @@ public struct QCompleter : QObject
 	public static extern bool QCompleter_EventFilter(Self* c_this, QObject* o, QEvent* e);
 	[LinkName("QCompleter_Event")]
 	public static extern bool QCompleter_Event(Self* c_this, QEvent* param1);
-	[LinkName("QCompleter_Activated")]
-	public static extern void QCompleter_Activated(Self* c_this, libqt_string text);
-	[LinkName("QCompleter_ActivatedWithIndex")]
-	public static extern void QCompleter_ActivatedWithIndex(Self* c_this, QModelIndex* index);
-	[LinkName("QCompleter_Highlighted")]
-	public static extern void QCompleter_Highlighted(Self* c_this, libqt_string text);
-	[LinkName("QCompleter_HighlightedWithIndex")]
-	public static extern void QCompleter_HighlightedWithIndex(Self* c_this, QModelIndex* index);
 	[LinkName("QCompleter_Tr2")]
 	public static extern libqt_string QCompleter_Tr2(char8[] s, char8[] c);
 	[LinkName("QCompleter_Tr3")]

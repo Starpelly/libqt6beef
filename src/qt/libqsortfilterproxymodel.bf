@@ -140,22 +140,22 @@ public struct QSortFilterProxyModel : QAbstractProxyModel
 	public static extern libqt_string[] QSortFilterProxyModel_MimeTypes(Self* c_this);
 	[LinkName("QSortFilterProxyModel_SupportedDropActions")]
 	public static extern int64 QSortFilterProxyModel_SupportedDropActions(Self* c_this);
-	[LinkName("QSortFilterProxyModel_DynamicSortFilterChanged")]
-	public static extern void QSortFilterProxyModel_DynamicSortFilterChanged(Self* c_this, bool dynamicSortFilter);
-	[LinkName("QSortFilterProxyModel_FilterCaseSensitivityChanged")]
-	public static extern void QSortFilterProxyModel_FilterCaseSensitivityChanged(Self* c_this, int64 filterCaseSensitivity);
-	[LinkName("QSortFilterProxyModel_SortCaseSensitivityChanged")]
-	public static extern void QSortFilterProxyModel_SortCaseSensitivityChanged(Self* c_this, int64 sortCaseSensitivity);
-	[LinkName("QSortFilterProxyModel_SortLocaleAwareChanged")]
-	public static extern void QSortFilterProxyModel_SortLocaleAwareChanged(Self* c_this, bool sortLocaleAware);
-	[LinkName("QSortFilterProxyModel_SortRoleChanged")]
-	public static extern void QSortFilterProxyModel_SortRoleChanged(Self* c_this, int32 sortRole);
-	[LinkName("QSortFilterProxyModel_FilterRoleChanged")]
-	public static extern void QSortFilterProxyModel_FilterRoleChanged(Self* c_this, int32 filterRole);
-	[LinkName("QSortFilterProxyModel_RecursiveFilteringEnabledChanged")]
-	public static extern void QSortFilterProxyModel_RecursiveFilteringEnabledChanged(Self* c_this, bool recursiveFilteringEnabled);
-	[LinkName("QSortFilterProxyModel_AutoAcceptChildRowsChanged")]
-	public static extern void QSortFilterProxyModel_AutoAcceptChildRowsChanged(Self* c_this, bool autoAcceptChildRows);
+	[LinkName("QSortFilterProxyModel_Connect_DynamicSortFilterChanged")]
+	public static extern void QSortFilterProxyModel_Connect_DynamicSortFilterChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_FilterCaseSensitivityChanged")]
+	public static extern void QSortFilterProxyModel_Connect_FilterCaseSensitivityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_SortCaseSensitivityChanged")]
+	public static extern void QSortFilterProxyModel_Connect_SortCaseSensitivityChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_SortLocaleAwareChanged")]
+	public static extern void QSortFilterProxyModel_Connect_SortLocaleAwareChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_SortRoleChanged")]
+	public static extern void QSortFilterProxyModel_Connect_SortRoleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_FilterRoleChanged")]
+	public static extern void QSortFilterProxyModel_Connect_FilterRoleChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_RecursiveFilteringEnabledChanged")]
+	public static extern void QSortFilterProxyModel_Connect_RecursiveFilteringEnabledChanged(Self* c_this, c_intptr slot);
+	[LinkName("QSortFilterProxyModel_Connect_AutoAcceptChildRowsChanged")]
+	public static extern void QSortFilterProxyModel_Connect_AutoAcceptChildRowsChanged(Self* c_this, c_intptr slot);
 	[LinkName("QSortFilterProxyModel_Tr2")]
 	public static extern libqt_string QSortFilterProxyModel_Tr2(char8[] s, char8[] c);
 	[LinkName("QSortFilterProxyModel_Tr3")]

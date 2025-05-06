@@ -200,10 +200,10 @@ public struct QProcess : QIODevice
 	public static extern void QProcess_Terminate(Self* c_this);
 	[LinkName("QProcess_Kill")]
 	public static extern void QProcess_Kill(Self* c_this);
-	[LinkName("QProcess_Finished")]
-	public static extern void QProcess_Finished(Self* c_this, int32 exitCode);
-	[LinkName("QProcess_ErrorOccurred")]
-	public static extern void QProcess_ErrorOccurred(Self* c_this, int64 errorVal);
+	[LinkName("QProcess_Connect_Finished")]
+	public static extern void QProcess_Connect_Finished(Self* c_this, c_intptr slot);
+	[LinkName("QProcess_Connect_ErrorOccurred")]
+	public static extern void QProcess_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
 	[LinkName("QProcess_SetProcessState")]
 	public static extern void QProcess_SetProcessState(Self* c_this, int64 state);
 	[LinkName("QProcess_ReadData")]
@@ -240,6 +240,6 @@ public struct QProcess : QIODevice
 	public static extern bool QProcess_StartDetached3(libqt_string program, libqt_string[] arguments, libqt_string workingDirectory);
 	[LinkName("QProcess_StartDetached4")]
 	public static extern bool QProcess_StartDetached4(libqt_string program, libqt_string[] arguments, libqt_string workingDirectory, int64* pid);
-	[LinkName("QProcess_Finished2")]
-	public static extern void QProcess_Finished2(Self* c_this, int32 exitCode, int64 exitStatus);
+	[LinkName("QProcess_Connect_Finished2")]
+	public static extern void QProcess_Connect_Finished2(Self* c_this, c_intptr slot);
 }

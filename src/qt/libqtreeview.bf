@@ -120,10 +120,10 @@ public struct QTreeView : QAbstractItemView
 	public static extern void QTreeView_DataChanged(Self* c_this, QModelIndex* topLeft, QModelIndex* bottomRight, int32[] roles);
 	[LinkName("QTreeView_SelectAll")]
 	public static extern void QTreeView_SelectAll(Self* c_this);
-	[LinkName("QTreeView_Expanded")]
-	public static extern void QTreeView_Expanded(Self* c_this, QModelIndex* index);
-	[LinkName("QTreeView_Collapsed")]
-	public static extern void QTreeView_Collapsed(Self* c_this, QModelIndex* index);
+	[LinkName("QTreeView_Connect_Expanded")]
+	public static extern void QTreeView_Connect_Expanded(Self* c_this, c_intptr slot);
+	[LinkName("QTreeView_Connect_Collapsed")]
+	public static extern void QTreeView_Connect_Collapsed(Self* c_this, c_intptr slot);
 	[LinkName("QTreeView_HideColumn")]
 	public static extern void QTreeView_HideColumn(Self* c_this, int32 column);
 	[LinkName("QTreeView_ShowColumn")]

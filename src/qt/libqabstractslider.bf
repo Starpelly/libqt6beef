@@ -84,18 +84,18 @@ public struct QAbstractSlider : QWidget
 	public static extern void QAbstractSlider_SetOrientation(Self* c_this, int64 orientation);
 	[LinkName("QAbstractSlider_SetRange")]
 	public static extern void QAbstractSlider_SetRange(Self* c_this, int32 min, int32 max);
-	[LinkName("QAbstractSlider_ValueChanged")]
-	public static extern void QAbstractSlider_ValueChanged(Self* c_this, int32 value);
-	[LinkName("QAbstractSlider_SliderPressed")]
-	public static extern void QAbstractSlider_SliderPressed(Self* c_this);
-	[LinkName("QAbstractSlider_SliderMoved")]
-	public static extern void QAbstractSlider_SliderMoved(Self* c_this, int32 position);
-	[LinkName("QAbstractSlider_SliderReleased")]
-	public static extern void QAbstractSlider_SliderReleased(Self* c_this);
-	[LinkName("QAbstractSlider_RangeChanged")]
-	public static extern void QAbstractSlider_RangeChanged(Self* c_this, int32 min, int32 max);
-	[LinkName("QAbstractSlider_ActionTriggered")]
-	public static extern void QAbstractSlider_ActionTriggered(Self* c_this, int32 action);
+	[LinkName("QAbstractSlider_Connect_ValueChanged")]
+	public static extern void QAbstractSlider_Connect_ValueChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractSlider_Connect_SliderPressed")]
+	public static extern void QAbstractSlider_Connect_SliderPressed(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractSlider_Connect_SliderMoved")]
+	public static extern void QAbstractSlider_Connect_SliderMoved(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractSlider_Connect_SliderReleased")]
+	public static extern void QAbstractSlider_Connect_SliderReleased(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractSlider_Connect_RangeChanged")]
+	public static extern void QAbstractSlider_Connect_RangeChanged(Self* c_this, c_intptr slot);
+	[LinkName("QAbstractSlider_Connect_ActionTriggered")]
+	public static extern void QAbstractSlider_Connect_ActionTriggered(Self* c_this, c_intptr slot);
 	[LinkName("QAbstractSlider_Event")]
 	public static extern bool QAbstractSlider_Event(Self* c_this, QEvent* e);
 	[LinkName("QAbstractSlider_SetRepeatAction")]

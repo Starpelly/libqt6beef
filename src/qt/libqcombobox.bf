@@ -170,20 +170,20 @@ public struct QComboBox : QWidget
 	public static extern void QComboBox_SetCurrentIndex(Self* c_this, int32 index);
 	[LinkName("QComboBox_SetCurrentText")]
 	public static extern void QComboBox_SetCurrentText(Self* c_this, libqt_string text);
-	[LinkName("QComboBox_EditTextChanged")]
-	public static extern void QComboBox_EditTextChanged(Self* c_this, libqt_string param1);
-	[LinkName("QComboBox_Activated")]
-	public static extern void QComboBox_Activated(Self* c_this, int32 index);
-	[LinkName("QComboBox_TextActivated")]
-	public static extern void QComboBox_TextActivated(Self* c_this, libqt_string param1);
-	[LinkName("QComboBox_Highlighted")]
-	public static extern void QComboBox_Highlighted(Self* c_this, int32 index);
-	[LinkName("QComboBox_TextHighlighted")]
-	public static extern void QComboBox_TextHighlighted(Self* c_this, libqt_string param1);
-	[LinkName("QComboBox_CurrentIndexChanged")]
-	public static extern void QComboBox_CurrentIndexChanged(Self* c_this, int32 index);
-	[LinkName("QComboBox_CurrentTextChanged")]
-	public static extern void QComboBox_CurrentTextChanged(Self* c_this, libqt_string param1);
+	[LinkName("QComboBox_Connect_EditTextChanged")]
+	public static extern void QComboBox_Connect_EditTextChanged(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_Activated")]
+	public static extern void QComboBox_Connect_Activated(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_TextActivated")]
+	public static extern void QComboBox_Connect_TextActivated(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_Highlighted")]
+	public static extern void QComboBox_Connect_Highlighted(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_TextHighlighted")]
+	public static extern void QComboBox_Connect_TextHighlighted(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_CurrentIndexChanged")]
+	public static extern void QComboBox_Connect_CurrentIndexChanged(Self* c_this, c_intptr slot);
+	[LinkName("QComboBox_Connect_CurrentTextChanged")]
+	public static extern void QComboBox_Connect_CurrentTextChanged(Self* c_this, c_intptr slot);
 	[LinkName("QComboBox_FocusInEvent")]
 	public static extern void QComboBox_FocusInEvent(Self* c_this, QFocusEvent* e);
 	[LinkName("QComboBox_FocusOutEvent")]

@@ -102,7 +102,7 @@ QTLIBC_API libqt_string QStatusBar_CurrentMessage(const QStatusBar* self);
 QTLIBC_API void QStatusBar_ShowMessage(QStatusBar* self, libqt_string text);
 QTLIBC_API void QStatusBar_ClearMessage(QStatusBar* self);
 QTLIBC_API void QStatusBar_MessageChanged(QStatusBar* self, libqt_string text);
-void QStatusBar_Connect_MessageChanged(QStatusBar* self, intptr_t slot);
+QTLIBC_API void QStatusBar_Connect_MessageChanged(QStatusBar* self, intptr_t slot);
 QTLIBC_API void QStatusBar_ShowEvent(QStatusBar* self, QShowEvent* param1);
 QTLIBC_API void QStatusBar_OnShowEvent(QStatusBar* self, intptr_t slot);
 QTLIBC_API void QStatusBar_QBaseShowEvent(QStatusBar* self, QShowEvent* param1);
