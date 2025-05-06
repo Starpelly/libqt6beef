@@ -102,10 +102,10 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 
 	cflags := strings.Fields(cflagsCombined)
 
-	includeDir := filepath.Join(outDir, includePath)
+	// includeDir := filepath.Join(outDir, includePath)
 	outDir = filepath.Join(outDir, packageName)
 
-	cleanGeneratedFilesInDir(includeDir)
+	// cleanGeneratedFilesInDir(includeDir)
 	cleanGeneratedFilesInDir(outDir)
 
 	var processHeaders []*CppParsedHeader
@@ -309,22 +309,24 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 
 		cmdH.Wait()
 
-		formattedHeader, err := os.ReadFile(outputName + ".h")
-		if err != nil {
-			panic(err)
-		}
+		/*
+			formattedHeader, err := os.ReadFile(outputName + ".h")
+			if err != nil {
+				panic(err)
+			}
 
-		headerInclude := filepath.Join(includeDir, filepath.Base(outputName+".h"))
+			headerInclude := filepath.Join(includeDir, filepath.Base(outputName+".h"))
 
-		err = os.MkdirAll(filepath.Dir(includeDir), 0755)
-		if err != nil {
-			panic(err)
-		}
+			err = os.MkdirAll(filepath.Dir(includeDir), 0755)
+			if err != nil {
+				panic(err)
+			}
 
-		err = os.WriteFile(headerInclude, formattedHeader, 0644)
-		if err != nil {
-			panic(err)
-		}
+			err = os.WriteFile(headerInclude, formattedHeader, 0644)
+			if err != nil {
+				panic(err)
+			}
+		*/
 
 		// zCmd.Wait()
 		/*
