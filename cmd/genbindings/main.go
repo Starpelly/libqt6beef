@@ -103,9 +103,11 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 	cflags := strings.Fields(cflagsCombined)
 
 	// includeDir := filepath.Join(outDir, includePath)
+	libDir := filepath.Join(outDir, "library", packageName)
 	outDir = filepath.Join(outDir, packageName)
 
 	// cleanGeneratedFilesInDir(includeDir)
+	cleanGeneratedFilesInDir(libDir)
 	cleanGeneratedFilesInDir(outDir)
 
 	var processHeaders []*CppParsedHeader
@@ -199,56 +201,12 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 
 		// Emit 3 code files from the intermediate format
 		libName := "lib" + strings.TrimSuffix(filepath.Base(parsed.Filename), `.h`)
-		outputName := filepath.Join(outDir, libName)
+		outputNameLib := filepath.Join(libDir, libName)
+		outputNameBf := filepath.Join(outDir, libName)
 		dirName := strings.TrimPrefix(packageName, "src/")
 		dirName = strings.TrimPrefix(dirName, "src")
 		if dirName != "" {
 			dirName += "/"
-		}
-
-		// For packages where we scan multiple directories, it's possible that
-		// there are filename collisions (e.g. Qt 6 has QtWidgets/qaction.h include
-		// QtGui/qaction.h as a compatibility measure).
-		// If the path exists, disambiguate it
-		var counter = 0
-		for {
-			testName := outputName
-			if counter > 0 {
-				testName += fmt.Sprintf(".%d", counter)
-				*headerList = append(*headerList, dirName+testName+".h")
-			}
-
-			if _, err := os.Stat(testName + ".zig"); err != nil && os.IsNotExist(err) {
-				outputName = testName // Safe
-				*headerList = append(*headerList, dirName+libName+".h")
-				break
-			}
-
-			counter++
-		}
-
-		bindingCppSrc, err := emitBindingCpp(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
-
-		err = os.WriteFile(outputName+".cpp", []byte(bindingCppSrc), 0644)
-		if err != nil {
-			panic(err)
-		}
-
-		bindingHSrc, structdefs, err := emitBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
-
-		for k := range structdefs {
-			qtstructdefs[k] = struct{}{}
-		}
-
-		err = os.WriteFile(outputName+".h", []byte(bindingHSrc), 0644)
-		if err != nil {
-			panic(err)
 		}
 
 		/*
@@ -276,38 +234,106 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 			}
 		*/
 
+		// For packages where we scan multiple directories, it's possible that
+		// there are filename collisions (e.g. Qt 6 has QtWidgets/qaction.h include
+		// QtGui/qaction.h as a compatibility measure).
+		// If the path exists, disambiguate it
+		var counter = 0
+		for {
+			testName := outputNameBf
+			if counter > 0 {
+				testName += fmt.Sprintf(".%d", counter)
+				*headerList = append(*headerList, dirName+testName+".h")
+			}
+
+			if _, err := os.Stat(testName + ".bf"); err != nil && os.IsNotExist(err) {
+				outputNameBf = testName // Safe
+				*headerList = append(*headerList, dirName+libName+".h")
+				break
+			}
+
+			counter++
+		}
+
+		// ------------------------------------------------------------------------------------------------------
+		// Emit library files
+		// ------------------------------------------------------------------------------------------------------
+		bindingCppSrc, err := emitBindingCpp(parsed, filepath.Base(parsed.Filename), packageName)
+		if err != nil {
+			panic(err)
+		}
+
+		err = os.WriteFile(outputNameLib+".cpp", []byte(bindingCppSrc), 0644)
+		if err != nil {
+			panic(err)
+		}
+
+		bindingHSrc, structdefs, err := emitBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
+		if err != nil {
+			panic(err)
+		}
+
+		for k := range structdefs {
+			qtstructdefs[k] = struct{}{}
+		}
+
+		err = os.WriteFile(outputNameLib+".h", []byte(bindingHSrc), 0644)
+		if err != nil {
+			panic(err)
+		}
+
 		bindingHxxSrc, err := emitVirtualBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
 		if err != nil {
 			panic(err)
 		}
 
-		err = os.WriteFile(outputName+".hxx", []byte(bindingHxxSrc), 0644)
+		err = os.WriteFile(outputNameLib+".hxx", []byte(bindingHxxSrc), 0644)
+		if err != nil {
+			panic(err)
+		}
+		// ------------------------------------------------------------------------------------------------------
+		// Emit Beef files
+		// ------------------------------------------------------------------------------------------------------
+
+		bfSrc, err := emitBeef(parsed, filepath.Base(parsed.Filename), packageName)
 		if err != nil {
 			panic(err)
 		}
 
-		cmdCpp := exec.Command("clang-format", "-i", outputName+".cpp")
-		cmdCpp.Stderr = os.Stderr
-		err = cmdCpp.Start()
+		err = os.WriteFile(outputNameBf+".bf", []byte(bfSrc), 0644)
 		if err != nil {
 			panic(err)
 		}
 
-		cmdH := exec.Command("clang-format", "-i", outputName+".h")
-		cmdH.Stderr = os.Stderr
-		err = cmdH.Start()
-		if err != nil {
-			panic(err)
-		}
+		// ------------------------------------------------------------------------------------------------------
+		// Format library files
+		// ------------------------------------------------------------------------------------------------------
+		{
+			cmdCpp := exec.Command("clang-format", "-i", outputNameLib+".cpp")
+			cmdCpp.Stderr = os.Stderr
+			err = cmdCpp.Start()
+			if err != nil {
+				panic(err)
+			}
 
-		cmdHxx := exec.Command("clang-format", "-i", outputName+".hxx")
-		cmdHxx.Stderr = os.Stderr
-		err = cmdHxx.Start()
-		if err != nil {
-			panic(err)
-		}
+			cmdH := exec.Command("clang-format", "-i", outputNameLib+".h")
+			cmdH.Stderr = os.Stderr
+			err = cmdH.Start()
+			if err != nil {
+				panic(err)
+			}
 
-		cmdH.Wait()
+			cmdHxx := exec.Command("clang-format", "-i", outputNameLib+".hxx")
+			cmdHxx.Stderr = os.Stderr
+			err = cmdHxx.Start()
+			if err != nil {
+				panic(err)
+			}
+
+			cmdH.Wait()
+			cmdCpp.Wait()
+			cmdHxx.Wait()
+		}
 
 		/*
 			formattedHeader, err := os.ReadFile(outputName + ".h")
@@ -348,9 +374,6 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 				panic(err)
 			}
 		*/
-
-		cmdCpp.Wait()
-		cmdHxx.Wait()
 	}
 
 	log.Printf("Processing %d file(s) completed", len(includeFiles))

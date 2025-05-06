@@ -5,3 +5,8 @@ cmd/genbindings/genbindings
 zig-out
 build
 build_win
+
+BeefSpace_User.toml
+dist
+recovery
+*.zip

@@ -1,0 +1,5 @@
+FileVersion = 1
+Projects = {Qt-6 = {Path = "."}, Sandbox = {Path = "sandbox"}}
+
+[Workspace]
+StartupProject = "Sandbox"

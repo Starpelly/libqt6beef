@@ -928,7 +928,7 @@ func emitVirtualBindingHeader(src *CppParsedHeader, filename, packageName string
 	bindingInclude := "qtlibc.h"
 
 	if strings.Contains(packageName, `/`) {
-		bindingInclude = "../" + bindingInclude
+		bindingInclude = "" + bindingInclude
 	}
 
 	ret.WriteString(`#pragma once
@@ -1177,7 +1177,7 @@ func emitBindingHeader(src *CppParsedHeader, filename, packageName string) (stri
 	bindingInclude := "qtlibc.h"
 
 	if strings.Contains(packageName, `/`) {
-		bindingInclude = "../" + bindingInclude
+		bindingInclude = "" + bindingInclude
 	}
 
 	ret.WriteString(`#pragma once
