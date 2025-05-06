@@ -23,25 +23,25 @@ typedef struct QMutex QMutex;
 typedef struct QRecursiveMutex QRecursiveMutex;
 #endif
 
-QBasicMutex* QBasicMutex_new();
-void QBasicMutex_Lock(QBasicMutex* self);
-void QBasicMutex_Unlock(QBasicMutex* self);
-bool QBasicMutex_TryLock(QBasicMutex* self);
-bool QBasicMutex_TryLock2(QBasicMutex* self);
-void QBasicMutex_Delete(QBasicMutex* self);
+QTLIBC_API QBasicMutex* QBasicMutex_new();
+QTLIBC_API void QBasicMutex_Lock(QBasicMutex* self);
+QTLIBC_API void QBasicMutex_Unlock(QBasicMutex* self);
+QTLIBC_API bool QBasicMutex_TryLock(QBasicMutex* self);
+QTLIBC_API bool QBasicMutex_TryLock2(QBasicMutex* self);
+QTLIBC_API void QBasicMutex_Delete(QBasicMutex* self);
 
-QMutex* QMutex_new();
-bool QMutex_TryLock(QMutex* self);
-bool QMutex_TryLockWithTimeout(QMutex* self, int timeout);
-void QMutex_Delete(QMutex* self);
+QTLIBC_API QMutex* QMutex_new();
+QTLIBC_API bool QMutex_TryLock(QMutex* self);
+QTLIBC_API bool QMutex_TryLockWithTimeout(QMutex* self, int timeout);
+QTLIBC_API void QMutex_Delete(QMutex* self);
 
-QRecursiveMutex* QRecursiveMutex_new();
-void QRecursiveMutex_Lock(QRecursiveMutex* self);
-bool QRecursiveMutex_TryLock(QRecursiveMutex* self);
-void QRecursiveMutex_Unlock(QRecursiveMutex* self);
-bool QRecursiveMutex_TryLock2(QRecursiveMutex* self);
-bool QRecursiveMutex_TryLock1(QRecursiveMutex* self, int timeout);
-void QRecursiveMutex_Delete(QRecursiveMutex* self);
+QTLIBC_API QRecursiveMutex* QRecursiveMutex_new();
+QTLIBC_API void QRecursiveMutex_Lock(QRecursiveMutex* self);
+QTLIBC_API bool QRecursiveMutex_TryLock(QRecursiveMutex* self);
+QTLIBC_API void QRecursiveMutex_Unlock(QRecursiveMutex* self);
+QTLIBC_API bool QRecursiveMutex_TryLock2(QRecursiveMutex* self);
+QTLIBC_API bool QRecursiveMutex_TryLock1(QRecursiveMutex* self, int timeout);
+QTLIBC_API void QRecursiveMutex_Delete(QRecursiveMutex* self);
 
 #ifdef __cplusplus
 } /* extern C */

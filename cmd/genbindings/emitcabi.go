@@ -1518,15 +1518,15 @@ extern "C" {
 		}
 
 		for i, ctor := range c.Ctors {
-			ret.WriteString(fmt.Sprintf("%s %s_new%s(%s);\n", methodPrefixName+"*", methodPrefixName, maybeSuffix(i), emitParametersCabi(ctor, "")))
+			ret.WriteString(fmt.Sprintf("QTLIBC_API %s %s_new%s(%s);\n", methodPrefixName+"*", methodPrefixName, maybeSuffix(i), emitParametersCabi(ctor, "")))
 		}
 
 		if c.HasTrivialCopyAssign && methodPrefixName != "QCborValueConstRef" && methodPrefixName != "QJsonValueConstRef" {
-			ret.WriteString("void " + methodPrefixName + "_CopyAssign(" + methodPrefixName + "* self, " + methodPrefixName + "* other);\n")
+			ret.WriteString("QTLIBC_API void " + methodPrefixName + "_CopyAssign(" + methodPrefixName + "* self, " + methodPrefixName + "* other);\n")
 		}
 
 		if c.HasTrivialMoveAssign {
-			ret.WriteString("void " + methodPrefixName + "_MoveAssign(" + methodPrefixName + "* self, " + methodPrefixName + "* other);\n")
+			ret.WriteString("QTLIBC_API void " + methodPrefixName + "_MoveAssign(" + methodPrefixName + "* self, " + methodPrefixName + "* other);\n")
 		}
 
 		for _, m := range baseMethods {
@@ -1566,7 +1566,7 @@ extern "C" {
 					fmt.Sprintf("%s %s_%s(%s);\n", returnCabi, methodPrefixName, m.SafeMethodName(), emitParametersCabi(m, maybeConst+methodPrefixName+"*")) +
 					"#endif\n")
 			} else {
-				ret.WriteString(fmt.Sprintf("%s %s_%s(%s);\n", returnCabi, methodPrefixName, m.SafeMethodName(), emitParametersCabi(m, maybeConst+methodPrefixName+"*")))
+				ret.WriteString(fmt.Sprintf("QTLIBC_API %s %s_%s(%s);\n", returnCabi, methodPrefixName, m.SafeMethodName(), emitParametersCabi(m, maybeConst+methodPrefixName+"*")))
 			}
 
 			if m.IsSignal {
@@ -1592,8 +1592,8 @@ extern "C" {
 			}
 
 			if (m.IsVirtual || m.IsPrivate || m.IsProtected) && len(virtualMethods) > 0 && virtualEligible {
-				ret.WriteString("void " + methodPrefixName + "_On" + m.SafeMethodName() + "(" + maybeConst + methodPrefixName + "* self, intptr_t slot);\n")
-				ret.WriteString(fmt.Sprintf("%s %s_QBase%s(%s);\n", returnCabi, methodPrefixName, m.SafeMethodName(), emitParametersCabi(m, maybeConst+methodPrefixName+"*")))
+				ret.WriteString("QTLIBC_API void " + methodPrefixName + "_On" + m.SafeMethodName() + "(" + maybeConst + methodPrefixName + "* self, intptr_t slot);\n")
+				ret.WriteString(fmt.Sprintf("QTLIBC_API %s %s_QBase%s(%s);\n", returnCabi, methodPrefixName, m.SafeMethodName(), emitParametersCabi(m, maybeConst+methodPrefixName+"*")))
 			}
 		}
 		// if filename == "qmetatype.h" {
@@ -1617,17 +1617,17 @@ extern "C" {
 			cppClassName := strings.Replace(c.ClassName, `::`, ``, -1) + "*"
 			maybeConst := ifv(m.IsConst, "const ", "")
 
-			ret.WriteString(m.ReturnType.RenderTypeCabi() + " " + methodPrefixName + "_" + m.SafeMethodName() + "(" +
+			ret.WriteString("QTLIBC_API " + m.ReturnType.RenderTypeCabi() + " " + methodPrefixName + "_" + m.SafeMethodName() + "(" +
 				emitParametersCabi(m, maybeConst+cppClassName) + ");\n")
 
-			ret.WriteString("void " + methodPrefixName + "_On" + m.SafeMethodName() + "(" + maybeConst + methodPrefixName + "* self, intptr_t slot);\n")
-			ret.WriteString(m.ReturnType.RenderTypeCabi() + " " + methodPrefixName + "_QBase" + m.SafeMethodName() + "(" +
+			ret.WriteString("QTLIBC_API void " + methodPrefixName + "_On" + m.SafeMethodName() + "(" + maybeConst + methodPrefixName + "* self, intptr_t slot);\n")
+			ret.WriteString("QTLIBC_API " + m.ReturnType.RenderTypeCabi() + " " + methodPrefixName + "_QBase" + m.SafeMethodName() + "(" +
 				emitParametersCabi(m, maybeConst+cppClassName) + ");\n")
 		}
 
 		// delete
 		if c.CanDelete && (len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0) {
-			ret.WriteString(fmt.Sprintf("void %s_Delete(%s* self);\n", methodPrefixName, methodPrefixName))
+			ret.WriteString(fmt.Sprintf("QTLIBC_API void %s_Delete(%s* self);\n", methodPrefixName, methodPrefixName))
 		}
 
 		ret.WriteString("\n")

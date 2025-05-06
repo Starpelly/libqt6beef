@@ -84,6 +84,20 @@ static libqt_strview qstrview(const char* string) {
     return view;
 }
 
+#define MYLIB_EXPORTS
+
+#if defined(_WIN32) || defined(_WIN64)
+  #ifdef MYLIB_EXPORTS
+    // Building the DLL
+    #define QTLIBC_API __declspec(dllexport)
+  #else
+    // Using the DLL
+    #define QTLIBC_API __declspec(dllimport)
+  #endif
+#else
+  #define QTLIBC_API
+#endif
+
 #ifdef __cplusplus
 }
 #endif

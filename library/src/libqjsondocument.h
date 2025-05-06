@@ -34,38 +34,38 @@ typedef int JsonFormat; // C ABI enum
 typedef int ParseError; // C ABI enum
 #endif
 
-QJsonParseError* QJsonParseError_new(QJsonParseError* other);
-QJsonParseError* QJsonParseError_new2(QJsonParseError* other);
-void QJsonParseError_CopyAssign(QJsonParseError* self, QJsonParseError* other);
-void QJsonParseError_MoveAssign(QJsonParseError* self, QJsonParseError* other);
-libqt_string QJsonParseError_ErrorString(const QJsonParseError* self);
-void QJsonParseError_Delete(QJsonParseError* self);
+QTLIBC_API QJsonParseError* QJsonParseError_new(QJsonParseError* other);
+QTLIBC_API QJsonParseError* QJsonParseError_new2(QJsonParseError* other);
+QTLIBC_API void QJsonParseError_CopyAssign(QJsonParseError* self, QJsonParseError* other);
+QTLIBC_API void QJsonParseError_MoveAssign(QJsonParseError* self, QJsonParseError* other);
+QTLIBC_API libqt_string QJsonParseError_ErrorString(const QJsonParseError* self);
+QTLIBC_API void QJsonParseError_Delete(QJsonParseError* self);
 
-QJsonDocument* QJsonDocument_new();
-QJsonDocument* QJsonDocument_new2(QJsonObject* object);
-QJsonDocument* QJsonDocument_new3(QJsonArray* array);
-QJsonDocument* QJsonDocument_new4(QJsonDocument* other);
-void QJsonDocument_OperatorAssign(QJsonDocument* self, QJsonDocument* other);
-void QJsonDocument_Swap(QJsonDocument* self, QJsonDocument* other);
-QJsonDocument* QJsonDocument_FromVariant(QVariant* variant);
-QVariant* QJsonDocument_ToVariant(const QJsonDocument* self);
-QJsonDocument* QJsonDocument_FromJson(libqt_string json);
-libqt_string QJsonDocument_ToJson(const QJsonDocument* self);
-bool QJsonDocument_IsEmpty(const QJsonDocument* self);
-bool QJsonDocument_IsArray(const QJsonDocument* self);
-bool QJsonDocument_IsObject(const QJsonDocument* self);
-QJsonObject* QJsonDocument_Object(const QJsonDocument* self);
-QJsonArray* QJsonDocument_Array(const QJsonDocument* self);
-void QJsonDocument_SetObject(QJsonDocument* self, QJsonObject* object);
-void QJsonDocument_SetArray(QJsonDocument* self, QJsonArray* array);
-QJsonValue* QJsonDocument_OperatorSubscript(const QJsonDocument* self, libqt_string key);
-QJsonValue* QJsonDocument_OperatorSubscriptWithQsizetype(const QJsonDocument* self, ptrdiff_t i);
-bool QJsonDocument_OperatorEqual(const QJsonDocument* self, QJsonDocument* other);
-bool QJsonDocument_OperatorNotEqual(const QJsonDocument* self, QJsonDocument* other);
-bool QJsonDocument_IsNull(const QJsonDocument* self);
-QJsonDocument* QJsonDocument_FromJson2(libqt_string json, QJsonParseError* errorVal);
-libqt_string QJsonDocument_ToJson1(const QJsonDocument* self, int format);
-void QJsonDocument_Delete(QJsonDocument* self);
+QTLIBC_API QJsonDocument* QJsonDocument_new();
+QTLIBC_API QJsonDocument* QJsonDocument_new2(QJsonObject* object);
+QTLIBC_API QJsonDocument* QJsonDocument_new3(QJsonArray* array);
+QTLIBC_API QJsonDocument* QJsonDocument_new4(QJsonDocument* other);
+QTLIBC_API void QJsonDocument_OperatorAssign(QJsonDocument* self, QJsonDocument* other);
+QTLIBC_API void QJsonDocument_Swap(QJsonDocument* self, QJsonDocument* other);
+QTLIBC_API QJsonDocument* QJsonDocument_FromVariant(QVariant* variant);
+QTLIBC_API QVariant* QJsonDocument_ToVariant(const QJsonDocument* self);
+QTLIBC_API QJsonDocument* QJsonDocument_FromJson(libqt_string json);
+QTLIBC_API libqt_string QJsonDocument_ToJson(const QJsonDocument* self);
+QTLIBC_API bool QJsonDocument_IsEmpty(const QJsonDocument* self);
+QTLIBC_API bool QJsonDocument_IsArray(const QJsonDocument* self);
+QTLIBC_API bool QJsonDocument_IsObject(const QJsonDocument* self);
+QTLIBC_API QJsonObject* QJsonDocument_Object(const QJsonDocument* self);
+QTLIBC_API QJsonArray* QJsonDocument_Array(const QJsonDocument* self);
+QTLIBC_API void QJsonDocument_SetObject(QJsonDocument* self, QJsonObject* object);
+QTLIBC_API void QJsonDocument_SetArray(QJsonDocument* self, QJsonArray* array);
+QTLIBC_API QJsonValue* QJsonDocument_OperatorSubscript(const QJsonDocument* self, libqt_string key);
+QTLIBC_API QJsonValue* QJsonDocument_OperatorSubscriptWithQsizetype(const QJsonDocument* self, ptrdiff_t i);
+QTLIBC_API bool QJsonDocument_OperatorEqual(const QJsonDocument* self, QJsonDocument* other);
+QTLIBC_API bool QJsonDocument_OperatorNotEqual(const QJsonDocument* self, QJsonDocument* other);
+QTLIBC_API bool QJsonDocument_IsNull(const QJsonDocument* self);
+QTLIBC_API QJsonDocument* QJsonDocument_FromJson2(libqt_string json, QJsonParseError* errorVal);
+QTLIBC_API libqt_string QJsonDocument_ToJson1(const QJsonDocument* self, int format);
+QTLIBC_API void QJsonDocument_Delete(QJsonDocument* self);
 
 #ifdef __cplusplus
 } /* extern C */

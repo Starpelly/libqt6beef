@@ -15,11 +15,11 @@ public enum QMainWindow__DockOption
 public struct QMainWindow
 {
 	[LinkName("QMainWindow_new")]
-	public static extern void* QMainWindow_new(QWidget parent);
+	public static extern void* QMainWindow_new(QWidget* parent);
 	[LinkName("QMainWindow_new2")]
 	public static extern void* QMainWindow_new2();
 	[LinkName("QMainWindow_new3")]
-	public static extern void* QMainWindow_new3(QWidget parent, int64 flags);
+	public static extern void* QMainWindow_new3(QWidget* parent, int64 flags);
 	[LinkName("QMainWindow_MetaObject")]
 	public static extern QMetaObject QMainWindow_MetaObject(void* c_this);
 	[LinkName("QMainWindow_Metacast")]

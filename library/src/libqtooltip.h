@@ -26,22 +26,22 @@ typedef struct QToolTip QToolTip;
 typedef struct QWidget QWidget;
 #endif
 
-QToolTip* QToolTip_new(QToolTip* other);
-QToolTip* QToolTip_new2(QToolTip* other);
-void QToolTip_CopyAssign(QToolTip* self, QToolTip* other);
-void QToolTip_MoveAssign(QToolTip* self, QToolTip* other);
-void QToolTip_ShowText(QPoint* pos, libqt_string text);
-void QToolTip_HideText();
-bool QToolTip_IsVisible();
-libqt_string QToolTip_Text();
-QPalette* QToolTip_Palette();
-void QToolTip_SetPalette(QPalette* palette);
-QFont* QToolTip_Font();
-void QToolTip_SetFont(QFont* font);
-void QToolTip_ShowText3(QPoint* pos, libqt_string text, QWidget* w);
-void QToolTip_ShowText4(QPoint* pos, libqt_string text, QWidget* w, QRect* rect);
-void QToolTip_ShowText5(QPoint* pos, libqt_string text, QWidget* w, QRect* rect, int msecShowTime);
-void QToolTip_Delete(QToolTip* self);
+QTLIBC_API QToolTip* QToolTip_new(QToolTip* other);
+QTLIBC_API QToolTip* QToolTip_new2(QToolTip* other);
+QTLIBC_API void QToolTip_CopyAssign(QToolTip* self, QToolTip* other);
+QTLIBC_API void QToolTip_MoveAssign(QToolTip* self, QToolTip* other);
+QTLIBC_API void QToolTip_ShowText(QPoint* pos, libqt_string text);
+QTLIBC_API void QToolTip_HideText();
+QTLIBC_API bool QToolTip_IsVisible();
+QTLIBC_API libqt_string QToolTip_Text();
+QTLIBC_API QPalette* QToolTip_Palette();
+QTLIBC_API void QToolTip_SetPalette(QPalette* palette);
+QTLIBC_API QFont* QToolTip_Font();
+QTLIBC_API void QToolTip_SetFont(QFont* font);
+QTLIBC_API void QToolTip_ShowText3(QPoint* pos, libqt_string text, QWidget* w);
+QTLIBC_API void QToolTip_ShowText4(QPoint* pos, libqt_string text, QWidget* w, QRect* rect);
+QTLIBC_API void QToolTip_ShowText5(QPoint* pos, libqt_string text, QWidget* w, QRect* rect, int msecShowTime);
+QTLIBC_API void QToolTip_Delete(QToolTip* self);
 
 #ifdef __cplusplus
 } /* extern C */

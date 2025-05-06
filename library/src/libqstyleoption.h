@@ -108,129 +108,129 @@ typedef int ViewItemFeatures;   // C ABI QFlags
 typedef int ViewItemPosition;   // C ABI enum
 #endif
 
-QStyleOption* QStyleOption_new();
-QStyleOption* QStyleOption_new2(QStyleOption* other);
-QStyleOption* QStyleOption_new3(int version);
-QStyleOption* QStyleOption_new4(int version, int typeVal);
-void QStyleOption_InitFrom(QStyleOption* self, QWidget* w);
-void QStyleOption_OperatorAssign(QStyleOption* self, QStyleOption* other);
-void QStyleOption_Delete(QStyleOption* self);
+QTLIBC_API QStyleOption* QStyleOption_new();
+QTLIBC_API QStyleOption* QStyleOption_new2(QStyleOption* other);
+QTLIBC_API QStyleOption* QStyleOption_new3(int version);
+QTLIBC_API QStyleOption* QStyleOption_new4(int version, int typeVal);
+QTLIBC_API void QStyleOption_InitFrom(QStyleOption* self, QWidget* w);
+QTLIBC_API void QStyleOption_OperatorAssign(QStyleOption* self, QStyleOption* other);
+QTLIBC_API void QStyleOption_Delete(QStyleOption* self);
 
-QStyleOptionFocusRect* QStyleOptionFocusRect_new();
-QStyleOptionFocusRect* QStyleOptionFocusRect_new2(QStyleOptionFocusRect* other);
-void QStyleOptionFocusRect_Delete(QStyleOptionFocusRect* self);
+QTLIBC_API QStyleOptionFocusRect* QStyleOptionFocusRect_new();
+QTLIBC_API QStyleOptionFocusRect* QStyleOptionFocusRect_new2(QStyleOptionFocusRect* other);
+QTLIBC_API void QStyleOptionFocusRect_Delete(QStyleOptionFocusRect* self);
 
-QStyleOptionFrame* QStyleOptionFrame_new();
-QStyleOptionFrame* QStyleOptionFrame_new2(QStyleOptionFrame* other);
-void QStyleOptionFrame_Delete(QStyleOptionFrame* self);
+QTLIBC_API QStyleOptionFrame* QStyleOptionFrame_new();
+QTLIBC_API QStyleOptionFrame* QStyleOptionFrame_new2(QStyleOptionFrame* other);
+QTLIBC_API void QStyleOptionFrame_Delete(QStyleOptionFrame* self);
 
-QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new();
-QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new2(QStyleOptionTabWidgetFrame* other);
-void QStyleOptionTabWidgetFrame_Delete(QStyleOptionTabWidgetFrame* self);
+QTLIBC_API QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new();
+QTLIBC_API QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new2(QStyleOptionTabWidgetFrame* other);
+QTLIBC_API void QStyleOptionTabWidgetFrame_Delete(QStyleOptionTabWidgetFrame* self);
 
-QStyleOptionTabBarBase* QStyleOptionTabBarBase_new();
-QStyleOptionTabBarBase* QStyleOptionTabBarBase_new2(QStyleOptionTabBarBase* other);
-void QStyleOptionTabBarBase_Delete(QStyleOptionTabBarBase* self);
+QTLIBC_API QStyleOptionTabBarBase* QStyleOptionTabBarBase_new();
+QTLIBC_API QStyleOptionTabBarBase* QStyleOptionTabBarBase_new2(QStyleOptionTabBarBase* other);
+QTLIBC_API void QStyleOptionTabBarBase_Delete(QStyleOptionTabBarBase* self);
 
-QStyleOptionHeader* QStyleOptionHeader_new();
-QStyleOptionHeader* QStyleOptionHeader_new2(QStyleOptionHeader* other);
-void QStyleOptionHeader_Delete(QStyleOptionHeader* self);
+QTLIBC_API QStyleOptionHeader* QStyleOptionHeader_new();
+QTLIBC_API QStyleOptionHeader* QStyleOptionHeader_new2(QStyleOptionHeader* other);
+QTLIBC_API void QStyleOptionHeader_Delete(QStyleOptionHeader* self);
 
-QStyleOptionHeaderV2* QStyleOptionHeaderV2_new();
-QStyleOptionHeaderV2* QStyleOptionHeaderV2_new2(QStyleOptionHeaderV2* other);
-void QStyleOptionHeaderV2_Delete(QStyleOptionHeaderV2* self);
+QTLIBC_API QStyleOptionHeaderV2* QStyleOptionHeaderV2_new();
+QTLIBC_API QStyleOptionHeaderV2* QStyleOptionHeaderV2_new2(QStyleOptionHeaderV2* other);
+QTLIBC_API void QStyleOptionHeaderV2_Delete(QStyleOptionHeaderV2* self);
 
-QStyleOptionButton* QStyleOptionButton_new();
-QStyleOptionButton* QStyleOptionButton_new2(QStyleOptionButton* other);
-void QStyleOptionButton_Delete(QStyleOptionButton* self);
+QTLIBC_API QStyleOptionButton* QStyleOptionButton_new();
+QTLIBC_API QStyleOptionButton* QStyleOptionButton_new2(QStyleOptionButton* other);
+QTLIBC_API void QStyleOptionButton_Delete(QStyleOptionButton* self);
 
-QStyleOptionTab* QStyleOptionTab_new();
-QStyleOptionTab* QStyleOptionTab_new2(QStyleOptionTab* other);
-void QStyleOptionTab_Delete(QStyleOptionTab* self);
+QTLIBC_API QStyleOptionTab* QStyleOptionTab_new();
+QTLIBC_API QStyleOptionTab* QStyleOptionTab_new2(QStyleOptionTab* other);
+QTLIBC_API void QStyleOptionTab_Delete(QStyleOptionTab* self);
 
-QStyleOptionToolBar* QStyleOptionToolBar_new();
-QStyleOptionToolBar* QStyleOptionToolBar_new2(QStyleOptionToolBar* other);
-void QStyleOptionToolBar_Delete(QStyleOptionToolBar* self);
+QTLIBC_API QStyleOptionToolBar* QStyleOptionToolBar_new();
+QTLIBC_API QStyleOptionToolBar* QStyleOptionToolBar_new2(QStyleOptionToolBar* other);
+QTLIBC_API void QStyleOptionToolBar_Delete(QStyleOptionToolBar* self);
 
-QStyleOptionProgressBar* QStyleOptionProgressBar_new();
-QStyleOptionProgressBar* QStyleOptionProgressBar_new2(QStyleOptionProgressBar* other);
-void QStyleOptionProgressBar_Delete(QStyleOptionProgressBar* self);
+QTLIBC_API QStyleOptionProgressBar* QStyleOptionProgressBar_new();
+QTLIBC_API QStyleOptionProgressBar* QStyleOptionProgressBar_new2(QStyleOptionProgressBar* other);
+QTLIBC_API void QStyleOptionProgressBar_Delete(QStyleOptionProgressBar* self);
 
-QStyleOptionMenuItem* QStyleOptionMenuItem_new();
-QStyleOptionMenuItem* QStyleOptionMenuItem_new2(QStyleOptionMenuItem* other);
-void QStyleOptionMenuItem_Delete(QStyleOptionMenuItem* self);
+QTLIBC_API QStyleOptionMenuItem* QStyleOptionMenuItem_new();
+QTLIBC_API QStyleOptionMenuItem* QStyleOptionMenuItem_new2(QStyleOptionMenuItem* other);
+QTLIBC_API void QStyleOptionMenuItem_Delete(QStyleOptionMenuItem* self);
 
-QStyleOptionDockWidget* QStyleOptionDockWidget_new();
-QStyleOptionDockWidget* QStyleOptionDockWidget_new2(QStyleOptionDockWidget* other);
-void QStyleOptionDockWidget_Delete(QStyleOptionDockWidget* self);
+QTLIBC_API QStyleOptionDockWidget* QStyleOptionDockWidget_new();
+QTLIBC_API QStyleOptionDockWidget* QStyleOptionDockWidget_new2(QStyleOptionDockWidget* other);
+QTLIBC_API void QStyleOptionDockWidget_Delete(QStyleOptionDockWidget* self);
 
-QStyleOptionViewItem* QStyleOptionViewItem_new();
-QStyleOptionViewItem* QStyleOptionViewItem_new2(QStyleOptionViewItem* other);
-void QStyleOptionViewItem_Delete(QStyleOptionViewItem* self);
+QTLIBC_API QStyleOptionViewItem* QStyleOptionViewItem_new();
+QTLIBC_API QStyleOptionViewItem* QStyleOptionViewItem_new2(QStyleOptionViewItem* other);
+QTLIBC_API void QStyleOptionViewItem_Delete(QStyleOptionViewItem* self);
 
-QStyleOptionToolBox* QStyleOptionToolBox_new();
-QStyleOptionToolBox* QStyleOptionToolBox_new2(QStyleOptionToolBox* other);
-void QStyleOptionToolBox_Delete(QStyleOptionToolBox* self);
+QTLIBC_API QStyleOptionToolBox* QStyleOptionToolBox_new();
+QTLIBC_API QStyleOptionToolBox* QStyleOptionToolBox_new2(QStyleOptionToolBox* other);
+QTLIBC_API void QStyleOptionToolBox_Delete(QStyleOptionToolBox* self);
 
-QStyleOptionRubberBand* QStyleOptionRubberBand_new();
-QStyleOptionRubberBand* QStyleOptionRubberBand_new2(QStyleOptionRubberBand* other);
-void QStyleOptionRubberBand_Delete(QStyleOptionRubberBand* self);
+QTLIBC_API QStyleOptionRubberBand* QStyleOptionRubberBand_new();
+QTLIBC_API QStyleOptionRubberBand* QStyleOptionRubberBand_new2(QStyleOptionRubberBand* other);
+QTLIBC_API void QStyleOptionRubberBand_Delete(QStyleOptionRubberBand* self);
 
-QStyleOptionComplex* QStyleOptionComplex_new();
-QStyleOptionComplex* QStyleOptionComplex_new2(QStyleOptionComplex* other);
-QStyleOptionComplex* QStyleOptionComplex_new3(int version);
-QStyleOptionComplex* QStyleOptionComplex_new4(int version, int typeVal);
-void QStyleOptionComplex_Delete(QStyleOptionComplex* self);
+QTLIBC_API QStyleOptionComplex* QStyleOptionComplex_new();
+QTLIBC_API QStyleOptionComplex* QStyleOptionComplex_new2(QStyleOptionComplex* other);
+QTLIBC_API QStyleOptionComplex* QStyleOptionComplex_new3(int version);
+QTLIBC_API QStyleOptionComplex* QStyleOptionComplex_new4(int version, int typeVal);
+QTLIBC_API void QStyleOptionComplex_Delete(QStyleOptionComplex* self);
 
-QStyleOptionSlider* QStyleOptionSlider_new();
-QStyleOptionSlider* QStyleOptionSlider_new2(QStyleOptionSlider* other);
-void QStyleOptionSlider_Delete(QStyleOptionSlider* self);
+QTLIBC_API QStyleOptionSlider* QStyleOptionSlider_new();
+QTLIBC_API QStyleOptionSlider* QStyleOptionSlider_new2(QStyleOptionSlider* other);
+QTLIBC_API void QStyleOptionSlider_Delete(QStyleOptionSlider* self);
 
-QStyleOptionSpinBox* QStyleOptionSpinBox_new();
-QStyleOptionSpinBox* QStyleOptionSpinBox_new2(QStyleOptionSpinBox* other);
-void QStyleOptionSpinBox_Delete(QStyleOptionSpinBox* self);
+QTLIBC_API QStyleOptionSpinBox* QStyleOptionSpinBox_new();
+QTLIBC_API QStyleOptionSpinBox* QStyleOptionSpinBox_new2(QStyleOptionSpinBox* other);
+QTLIBC_API void QStyleOptionSpinBox_Delete(QStyleOptionSpinBox* self);
 
-QStyleOptionToolButton* QStyleOptionToolButton_new();
-QStyleOptionToolButton* QStyleOptionToolButton_new2(QStyleOptionToolButton* other);
-void QStyleOptionToolButton_Delete(QStyleOptionToolButton* self);
+QTLIBC_API QStyleOptionToolButton* QStyleOptionToolButton_new();
+QTLIBC_API QStyleOptionToolButton* QStyleOptionToolButton_new2(QStyleOptionToolButton* other);
+QTLIBC_API void QStyleOptionToolButton_Delete(QStyleOptionToolButton* self);
 
-QStyleOptionComboBox* QStyleOptionComboBox_new();
-QStyleOptionComboBox* QStyleOptionComboBox_new2(QStyleOptionComboBox* other);
-void QStyleOptionComboBox_Delete(QStyleOptionComboBox* self);
+QTLIBC_API QStyleOptionComboBox* QStyleOptionComboBox_new();
+QTLIBC_API QStyleOptionComboBox* QStyleOptionComboBox_new2(QStyleOptionComboBox* other);
+QTLIBC_API void QStyleOptionComboBox_Delete(QStyleOptionComboBox* self);
 
-QStyleOptionTitleBar* QStyleOptionTitleBar_new();
-QStyleOptionTitleBar* QStyleOptionTitleBar_new2(QStyleOptionTitleBar* other);
-void QStyleOptionTitleBar_Delete(QStyleOptionTitleBar* self);
+QTLIBC_API QStyleOptionTitleBar* QStyleOptionTitleBar_new();
+QTLIBC_API QStyleOptionTitleBar* QStyleOptionTitleBar_new2(QStyleOptionTitleBar* other);
+QTLIBC_API void QStyleOptionTitleBar_Delete(QStyleOptionTitleBar* self);
 
-QStyleOptionGroupBox* QStyleOptionGroupBox_new();
-QStyleOptionGroupBox* QStyleOptionGroupBox_new2(QStyleOptionGroupBox* other);
-void QStyleOptionGroupBox_Delete(QStyleOptionGroupBox* self);
+QTLIBC_API QStyleOptionGroupBox* QStyleOptionGroupBox_new();
+QTLIBC_API QStyleOptionGroupBox* QStyleOptionGroupBox_new2(QStyleOptionGroupBox* other);
+QTLIBC_API void QStyleOptionGroupBox_Delete(QStyleOptionGroupBox* self);
 
-QStyleOptionSizeGrip* QStyleOptionSizeGrip_new();
-QStyleOptionSizeGrip* QStyleOptionSizeGrip_new2(QStyleOptionSizeGrip* other);
-void QStyleOptionSizeGrip_Delete(QStyleOptionSizeGrip* self);
+QTLIBC_API QStyleOptionSizeGrip* QStyleOptionSizeGrip_new();
+QTLIBC_API QStyleOptionSizeGrip* QStyleOptionSizeGrip_new2(QStyleOptionSizeGrip* other);
+QTLIBC_API void QStyleOptionSizeGrip_Delete(QStyleOptionSizeGrip* self);
 
-QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new();
-QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new2(QStyleOptionGraphicsItem* other);
-double QStyleOptionGraphicsItem_LevelOfDetailFromTransform(QTransform* worldTransform);
-void QStyleOptionGraphicsItem_Delete(QStyleOptionGraphicsItem* self);
+QTLIBC_API QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new();
+QTLIBC_API QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new2(QStyleOptionGraphicsItem* other);
+QTLIBC_API double QStyleOptionGraphicsItem_LevelOfDetailFromTransform(QTransform* worldTransform);
+QTLIBC_API void QStyleOptionGraphicsItem_Delete(QStyleOptionGraphicsItem* self);
 
-QStyleHintReturn* QStyleHintReturn_new();
-QStyleHintReturn* QStyleHintReturn_new2(QStyleHintReturn* param1);
-QStyleHintReturn* QStyleHintReturn_new3(int version);
-QStyleHintReturn* QStyleHintReturn_new4(int version, int typeVal);
-void QStyleHintReturn_OperatorAssign(QStyleHintReturn* self, QStyleHintReturn* param1);
-void QStyleHintReturn_Delete(QStyleHintReturn* self);
+QTLIBC_API QStyleHintReturn* QStyleHintReturn_new();
+QTLIBC_API QStyleHintReturn* QStyleHintReturn_new2(QStyleHintReturn* param1);
+QTLIBC_API QStyleHintReturn* QStyleHintReturn_new3(int version);
+QTLIBC_API QStyleHintReturn* QStyleHintReturn_new4(int version, int typeVal);
+QTLIBC_API void QStyleHintReturn_OperatorAssign(QStyleHintReturn* self, QStyleHintReturn* param1);
+QTLIBC_API void QStyleHintReturn_Delete(QStyleHintReturn* self);
 
-QStyleHintReturnMask* QStyleHintReturnMask_new();
-QStyleHintReturnMask* QStyleHintReturnMask_new2(QStyleHintReturnMask* param1);
-void QStyleHintReturnMask_OperatorAssign(QStyleHintReturnMask* self, QStyleHintReturnMask* param1);
-void QStyleHintReturnMask_Delete(QStyleHintReturnMask* self);
+QTLIBC_API QStyleHintReturnMask* QStyleHintReturnMask_new();
+QTLIBC_API QStyleHintReturnMask* QStyleHintReturnMask_new2(QStyleHintReturnMask* param1);
+QTLIBC_API void QStyleHintReturnMask_OperatorAssign(QStyleHintReturnMask* self, QStyleHintReturnMask* param1);
+QTLIBC_API void QStyleHintReturnMask_Delete(QStyleHintReturnMask* self);
 
-QStyleHintReturnVariant* QStyleHintReturnVariant_new();
-QStyleHintReturnVariant* QStyleHintReturnVariant_new2(QStyleHintReturnVariant* param1);
-void QStyleHintReturnVariant_OperatorAssign(QStyleHintReturnVariant* self, QStyleHintReturnVariant* param1);
-void QStyleHintReturnVariant_Delete(QStyleHintReturnVariant* self);
+QTLIBC_API QStyleHintReturnVariant* QStyleHintReturnVariant_new();
+QTLIBC_API QStyleHintReturnVariant* QStyleHintReturnVariant_new2(QStyleHintReturnVariant* param1);
+QTLIBC_API void QStyleHintReturnVariant_OperatorAssign(QStyleHintReturnVariant* self, QStyleHintReturnVariant* param1);
+QTLIBC_API void QStyleHintReturnVariant_Delete(QStyleHintReturnVariant* self);
 
 #ifdef __cplusplus
 } /* extern C */

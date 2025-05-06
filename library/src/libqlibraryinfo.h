@@ -30,17 +30,17 @@ typedef int LibraryLocation; // C ABI QFlags
 typedef int LibraryPath;     // C ABI enum
 #endif
 
-QLibraryInfo* QLibraryInfo_new(QLibraryInfo* other);
-QLibraryInfo* QLibraryInfo_new2(QLibraryInfo* other);
-void QLibraryInfo_CopyAssign(QLibraryInfo* self, QLibraryInfo* other);
-void QLibraryInfo_MoveAssign(QLibraryInfo* self, QLibraryInfo* other);
-const char* QLibraryInfo_Build();
-bool QLibraryInfo_IsDebugBuild();
-QVersionNumber* QLibraryInfo_Version();
-libqt_string QLibraryInfo_Path(int p);
-libqt_string QLibraryInfo_Location(int location);
-libqt_list /* of libqt_string */ QLibraryInfo_PlatformPluginArguments(libqt_string platformName);
-void QLibraryInfo_Delete(QLibraryInfo* self);
+QTLIBC_API QLibraryInfo* QLibraryInfo_new(QLibraryInfo* other);
+QTLIBC_API QLibraryInfo* QLibraryInfo_new2(QLibraryInfo* other);
+QTLIBC_API void QLibraryInfo_CopyAssign(QLibraryInfo* self, QLibraryInfo* other);
+QTLIBC_API void QLibraryInfo_MoveAssign(QLibraryInfo* self, QLibraryInfo* other);
+QTLIBC_API const char* QLibraryInfo_Build();
+QTLIBC_API bool QLibraryInfo_IsDebugBuild();
+QTLIBC_API QVersionNumber* QLibraryInfo_Version();
+QTLIBC_API libqt_string QLibraryInfo_Path(int p);
+QTLIBC_API libqt_string QLibraryInfo_Location(int location);
+QTLIBC_API libqt_list /* of libqt_string */ QLibraryInfo_PlatformPluginArguments(libqt_string platformName);
+QTLIBC_API void QLibraryInfo_Delete(QLibraryInfo* self);
 
 #ifdef __cplusplus
 } /* extern C */

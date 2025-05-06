@@ -32,16 +32,16 @@ typedef int OvershootPolicy; // C ABI enum
 typedef int ScrollMetric;    // C ABI enum
 #endif
 
-QScrollerProperties* QScrollerProperties_new();
-QScrollerProperties* QScrollerProperties_new2(QScrollerProperties* sp);
-void QScrollerProperties_OperatorAssign(QScrollerProperties* self, QScrollerProperties* sp);
-bool QScrollerProperties_OperatorEqual(const QScrollerProperties* self, QScrollerProperties* sp);
-bool QScrollerProperties_OperatorNotEqual(const QScrollerProperties* self, QScrollerProperties* sp);
-void QScrollerProperties_SetDefaultScrollerProperties(QScrollerProperties* sp);
-void QScrollerProperties_UnsetDefaultScrollerProperties();
-QVariant* QScrollerProperties_ScrollMetric(const QScrollerProperties* self, int metric);
-void QScrollerProperties_SetScrollMetric(QScrollerProperties* self, int metric, QVariant* value);
-void QScrollerProperties_Delete(QScrollerProperties* self);
+QTLIBC_API QScrollerProperties* QScrollerProperties_new();
+QTLIBC_API QScrollerProperties* QScrollerProperties_new2(QScrollerProperties* sp);
+QTLIBC_API void QScrollerProperties_OperatorAssign(QScrollerProperties* self, QScrollerProperties* sp);
+QTLIBC_API bool QScrollerProperties_OperatorEqual(const QScrollerProperties* self, QScrollerProperties* sp);
+QTLIBC_API bool QScrollerProperties_OperatorNotEqual(const QScrollerProperties* self, QScrollerProperties* sp);
+QTLIBC_API void QScrollerProperties_SetDefaultScrollerProperties(QScrollerProperties* sp);
+QTLIBC_API void QScrollerProperties_UnsetDefaultScrollerProperties();
+QTLIBC_API QVariant* QScrollerProperties_ScrollMetric(const QScrollerProperties* self, int metric);
+QTLIBC_API void QScrollerProperties_SetScrollMetric(QScrollerProperties* self, int metric, QVariant* value);
+QTLIBC_API void QScrollerProperties_Delete(QScrollerProperties* self);
 
 #ifdef __cplusplus
 } /* extern C */

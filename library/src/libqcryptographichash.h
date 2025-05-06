@@ -31,16 +31,16 @@ typedef int Algorithm;       // C ABI enum
 typedef void QtGadgetHelper; // C ABI QFlags
 #endif
 
-QCryptographicHash* QCryptographicHash_new(int method);
-void QCryptographicHash_Reset(QCryptographicHash* self);
-void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, ptrdiff_t length);
-void QCryptographicHash_AddDataWithData(QCryptographicHash* self, QByteArrayView* data);
-bool QCryptographicHash_AddDataWithDevice(QCryptographicHash* self, QIODevice* device);
-libqt_string QCryptographicHash_Result(const QCryptographicHash* self);
-QByteArrayView* QCryptographicHash_ResultView(const QCryptographicHash* self);
-libqt_string QCryptographicHash_Hash(QByteArrayView* data, int method);
-int QCryptographicHash_HashLength(int method);
-void QCryptographicHash_Delete(QCryptographicHash* self);
+QTLIBC_API QCryptographicHash* QCryptographicHash_new(int method);
+QTLIBC_API void QCryptographicHash_Reset(QCryptographicHash* self);
+QTLIBC_API void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, ptrdiff_t length);
+QTLIBC_API void QCryptographicHash_AddDataWithData(QCryptographicHash* self, QByteArrayView* data);
+QTLIBC_API bool QCryptographicHash_AddDataWithDevice(QCryptographicHash* self, QIODevice* device);
+QTLIBC_API libqt_string QCryptographicHash_Result(const QCryptographicHash* self);
+QTLIBC_API QByteArrayView* QCryptographicHash_ResultView(const QCryptographicHash* self);
+QTLIBC_API libqt_string QCryptographicHash_Hash(QByteArrayView* data, int method);
+QTLIBC_API int QCryptographicHash_HashLength(int method);
+QTLIBC_API void QCryptographicHash_Delete(QCryptographicHash* self);
 
 #ifdef __cplusplus
 } /* extern C */

@@ -24,23 +24,23 @@ typedef struct QFileInfo QFileInfo;
 typedef struct QIcon QIcon;
 #endif
 
-QFileIconProvider* QFileIconProvider_new();
-QIcon* QFileIconProvider_Icon(const QFileIconProvider* self, int typeVal);
-void QFileIconProvider_OnIcon(const QFileIconProvider* self, intptr_t slot);
-QIcon* QFileIconProvider_QBaseIcon(const QFileIconProvider* self, int typeVal);
-QIcon* QFileIconProvider_IconWithInfo(const QFileIconProvider* self, QFileInfo* info);
-void QFileIconProvider_OnIconWithInfo(const QFileIconProvider* self, intptr_t slot);
-QIcon* QFileIconProvider_QBaseIconWithInfo(const QFileIconProvider* self, QFileInfo* info);
-libqt_string QFileIconProvider_Type(const QFileIconProvider* self, QFileInfo* param1);
-void QFileIconProvider_OnType(const QFileIconProvider* self, intptr_t slot);
-libqt_string QFileIconProvider_QBaseType(const QFileIconProvider* self, QFileInfo* param1);
-void QFileIconProvider_SetOptions(QFileIconProvider* self, int options);
-void QFileIconProvider_OnSetOptions(QFileIconProvider* self, intptr_t slot);
-void QFileIconProvider_QBaseSetOptions(QFileIconProvider* self, int options);
-int QFileIconProvider_Options(const QFileIconProvider* self);
-void QFileIconProvider_OnOptions(const QFileIconProvider* self, intptr_t slot);
-int QFileIconProvider_QBaseOptions(const QFileIconProvider* self);
-void QFileIconProvider_Delete(QFileIconProvider* self);
+QTLIBC_API QFileIconProvider* QFileIconProvider_new();
+QTLIBC_API QIcon* QFileIconProvider_Icon(const QFileIconProvider* self, int typeVal);
+QTLIBC_API void QFileIconProvider_OnIcon(const QFileIconProvider* self, intptr_t slot);
+QTLIBC_API QIcon* QFileIconProvider_QBaseIcon(const QFileIconProvider* self, int typeVal);
+QTLIBC_API QIcon* QFileIconProvider_IconWithInfo(const QFileIconProvider* self, QFileInfo* info);
+QTLIBC_API void QFileIconProvider_OnIconWithInfo(const QFileIconProvider* self, intptr_t slot);
+QTLIBC_API QIcon* QFileIconProvider_QBaseIconWithInfo(const QFileIconProvider* self, QFileInfo* info);
+QTLIBC_API libqt_string QFileIconProvider_Type(const QFileIconProvider* self, QFileInfo* param1);
+QTLIBC_API void QFileIconProvider_OnType(const QFileIconProvider* self, intptr_t slot);
+QTLIBC_API libqt_string QFileIconProvider_QBaseType(const QFileIconProvider* self, QFileInfo* param1);
+QTLIBC_API void QFileIconProvider_SetOptions(QFileIconProvider* self, int options);
+QTLIBC_API void QFileIconProvider_OnSetOptions(QFileIconProvider* self, intptr_t slot);
+QTLIBC_API void QFileIconProvider_QBaseSetOptions(QFileIconProvider* self, int options);
+QTLIBC_API int QFileIconProvider_Options(const QFileIconProvider* self);
+QTLIBC_API void QFileIconProvider_OnOptions(const QFileIconProvider* self, intptr_t slot);
+QTLIBC_API int QFileIconProvider_QBaseOptions(const QFileIconProvider* self);
+QTLIBC_API void QFileIconProvider_Delete(QFileIconProvider* self);
 
 #ifdef __cplusplus
 } /* extern C */

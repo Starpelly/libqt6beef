@@ -7,4 +7,12 @@ StartupObject = "beef_seaqt_5.15.Program"
 DefaultNamespace = "beef_seaqt_5.15"
 
 [Configs.Debug.Win64]
+LibPaths = ["$(ProjectDir)/library/build/lib/Debug/QtBeefLink.lib"]
+PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/library/build/bin/Debug/*.dll\")"]
+
+[Configs.DebugStatic.Win64]
+BeefLibType = "Static"
 LibPaths = ["$(ProjectDir)/library/build/lib/Debug/QtBeefLink.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Core.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Gui.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Widgets.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Network.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Multimedia.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6MultimediaWidgets.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6PrintSupport.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Svg.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6WebChannel.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6WebEngineCore.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Qml.lib", "C:/Qt/6.7.3/msvc2022_64/lib/Qt6Quick.lib"]
+
+[Configs.DebugStatic.Win32]
+BeefLibType = "Static"

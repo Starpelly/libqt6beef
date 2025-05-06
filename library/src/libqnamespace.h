@@ -266,38 +266,38 @@ typedef int WindowType;                       // C ABI enum
 typedef void* HANDLE;                         // C ABI QFlags
 #endif
 
-Disambiguated_t* Disambiguated_t_new(Disambiguated_t* other);
-Disambiguated_t* Disambiguated_t_new2(Disambiguated_t* other);
-Disambiguated_t* Disambiguated_t_new3();
-Disambiguated_t* Disambiguated_t_new4(Disambiguated_t* param1);
-void Disambiguated_t_CopyAssign(Disambiguated_t* self, Disambiguated_t* other);
-void Disambiguated_t_MoveAssign(Disambiguated_t* self, Disambiguated_t* other);
-void Disambiguated_t_Delete(Disambiguated_t* self);
+QTLIBC_API Disambiguated_t* Disambiguated_t_new(Disambiguated_t* other);
+QTLIBC_API Disambiguated_t* Disambiguated_t_new2(Disambiguated_t* other);
+QTLIBC_API Disambiguated_t* Disambiguated_t_new3();
+QTLIBC_API Disambiguated_t* Disambiguated_t_new4(Disambiguated_t* param1);
+QTLIBC_API void Disambiguated_t_CopyAssign(Disambiguated_t* self, Disambiguated_t* other);
+QTLIBC_API void Disambiguated_t_MoveAssign(Disambiguated_t* self, Disambiguated_t* other);
+QTLIBC_API void Disambiguated_t_Delete(Disambiguated_t* self);
 
-QInternal* QInternal_new(QInternal* other);
-QInternal* QInternal_new2(QInternal* other);
-void QInternal_CopyAssign(QInternal* self, QInternal* other);
-void QInternal_MoveAssign(QInternal* self, QInternal* other);
-bool QInternal_ActivateCallbacks(int param1, void** param2);
-void QInternal_Delete(QInternal* self);
+QTLIBC_API QInternal* QInternal_new(QInternal* other);
+QTLIBC_API QInternal* QInternal_new2(QInternal* other);
+QTLIBC_API void QInternal_CopyAssign(QInternal* self, QInternal* other);
+QTLIBC_API void QInternal_MoveAssign(QInternal* self, QInternal* other);
+QTLIBC_API bool QInternal_ActivateCallbacks(int param1, void** param2);
+QTLIBC_API void QInternal_Delete(QInternal* self);
 
-QKeyCombination* QKeyCombination_new(QKeyCombination* other);
-QKeyCombination* QKeyCombination_new2(QKeyCombination* other);
-QKeyCombination* QKeyCombination_new3();
-QKeyCombination* QKeyCombination_new4(int modifiers);
-QKeyCombination* QKeyCombination_new5(int modifiers);
-QKeyCombination* QKeyCombination_new6(QKeyCombination* param1);
-QKeyCombination* QKeyCombination_new7(int key);
-QKeyCombination* QKeyCombination_new8(int modifiers, int key);
-QKeyCombination* QKeyCombination_new9(int modifiers, int key);
-void QKeyCombination_CopyAssign(QKeyCombination* self, QKeyCombination* other);
-void QKeyCombination_MoveAssign(QKeyCombination* self, QKeyCombination* other);
-int QKeyCombination_KeyboardModifiers(const QKeyCombination* self);
-int QKeyCombination_Key(const QKeyCombination* self);
-QKeyCombination* QKeyCombination_FromCombined(int combined);
-int QKeyCombination_ToCombined(const QKeyCombination* self);
-int QKeyCombination_ToInt(const QKeyCombination* self);
-void QKeyCombination_Delete(QKeyCombination* self);
+QTLIBC_API QKeyCombination* QKeyCombination_new(QKeyCombination* other);
+QTLIBC_API QKeyCombination* QKeyCombination_new2(QKeyCombination* other);
+QTLIBC_API QKeyCombination* QKeyCombination_new3();
+QTLIBC_API QKeyCombination* QKeyCombination_new4(int modifiers);
+QTLIBC_API QKeyCombination* QKeyCombination_new5(int modifiers);
+QTLIBC_API QKeyCombination* QKeyCombination_new6(QKeyCombination* param1);
+QTLIBC_API QKeyCombination* QKeyCombination_new7(int key);
+QTLIBC_API QKeyCombination* QKeyCombination_new8(int modifiers, int key);
+QTLIBC_API QKeyCombination* QKeyCombination_new9(int modifiers, int key);
+QTLIBC_API void QKeyCombination_CopyAssign(QKeyCombination* self, QKeyCombination* other);
+QTLIBC_API void QKeyCombination_MoveAssign(QKeyCombination* self, QKeyCombination* other);
+QTLIBC_API int QKeyCombination_KeyboardModifiers(const QKeyCombination* self);
+QTLIBC_API int QKeyCombination_Key(const QKeyCombination* self);
+QTLIBC_API QKeyCombination* QKeyCombination_FromCombined(int combined);
+QTLIBC_API int QKeyCombination_ToCombined(const QKeyCombination* self);
+QTLIBC_API int QKeyCombination_ToInt(const QKeyCombination* self);
+QTLIBC_API void QKeyCombination_Delete(QKeyCombination* self);
 
 #ifdef __cplusplus
 } /* extern C */

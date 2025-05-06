@@ -33,17 +33,17 @@ typedef QPagedPaintDevice::PdfVersion PdfVersion; // C++ enum
 typedef int PdfVersion; // C ABI enum
 #endif
 
-bool QPagedPaintDevice_NewPage(QPagedPaintDevice* self);
-bool QPagedPaintDevice_SetPageLayout(QPagedPaintDevice* self, QPageLayout* pageLayout);
-bool QPagedPaintDevice_SetPageSize(QPagedPaintDevice* self, QPageSize* pageSize);
-bool QPagedPaintDevice_SetPageOrientation(QPagedPaintDevice* self, int orientation);
-bool QPagedPaintDevice_SetPageMargins(QPagedPaintDevice* self, QMarginsF* margins, int units);
-QPageLayout* QPagedPaintDevice_PageLayout(const QPagedPaintDevice* self);
-void QPagedPaintDevice_SetPageRanges(QPagedPaintDevice* self, QPageRanges* ranges);
-QPageRanges* QPagedPaintDevice_PageRanges(const QPagedPaintDevice* self);
-int QPagedPaintDevice_DevType(const QPagedPaintDevice* self);
-QPaintEngine* QPagedPaintDevice_PaintEngine(const QPagedPaintDevice* self);
-void QPagedPaintDevice_Delete(QPagedPaintDevice* self);
+QTLIBC_API bool QPagedPaintDevice_NewPage(QPagedPaintDevice* self);
+QTLIBC_API bool QPagedPaintDevice_SetPageLayout(QPagedPaintDevice* self, QPageLayout* pageLayout);
+QTLIBC_API bool QPagedPaintDevice_SetPageSize(QPagedPaintDevice* self, QPageSize* pageSize);
+QTLIBC_API bool QPagedPaintDevice_SetPageOrientation(QPagedPaintDevice* self, int orientation);
+QTLIBC_API bool QPagedPaintDevice_SetPageMargins(QPagedPaintDevice* self, QMarginsF* margins, int units);
+QTLIBC_API QPageLayout* QPagedPaintDevice_PageLayout(const QPagedPaintDevice* self);
+QTLIBC_API void QPagedPaintDevice_SetPageRanges(QPagedPaintDevice* self, QPageRanges* ranges);
+QTLIBC_API QPageRanges* QPagedPaintDevice_PageRanges(const QPagedPaintDevice* self);
+QTLIBC_API int QPagedPaintDevice_DevType(const QPagedPaintDevice* self);
+QTLIBC_API QPaintEngine* QPagedPaintDevice_PaintEngine(const QPagedPaintDevice* self);
+QTLIBC_API void QPagedPaintDevice_Delete(QPagedPaintDevice* self);
 
 #ifdef __cplusplus
 } /* extern C */

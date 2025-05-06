@@ -23,14 +23,14 @@ typedef struct QObject QObject;
 typedef struct QUrl QUrl;
 #endif
 
-QDesktopServices* QDesktopServices_new(QDesktopServices* other);
-QDesktopServices* QDesktopServices_new2(QDesktopServices* other);
-void QDesktopServices_CopyAssign(QDesktopServices* self, QDesktopServices* other);
-void QDesktopServices_MoveAssign(QDesktopServices* self, QDesktopServices* other);
-bool QDesktopServices_OpenUrl(QUrl* url);
-void QDesktopServices_SetUrlHandler(libqt_string scheme, QObject* receiver, const char* method);
-void QDesktopServices_UnsetUrlHandler(libqt_string scheme);
-void QDesktopServices_Delete(QDesktopServices* self);
+QTLIBC_API QDesktopServices* QDesktopServices_new(QDesktopServices* other);
+QTLIBC_API QDesktopServices* QDesktopServices_new2(QDesktopServices* other);
+QTLIBC_API void QDesktopServices_CopyAssign(QDesktopServices* self, QDesktopServices* other);
+QTLIBC_API void QDesktopServices_MoveAssign(QDesktopServices* self, QDesktopServices* other);
+QTLIBC_API bool QDesktopServices_OpenUrl(QUrl* url);
+QTLIBC_API void QDesktopServices_SetUrlHandler(libqt_string scheme, QObject* receiver, const char* method);
+QTLIBC_API void QDesktopServices_UnsetUrlHandler(libqt_string scheme);
+QTLIBC_API void QDesktopServices_Delete(QDesktopServices* self);
 
 #ifdef __cplusplus
 } /* extern C */

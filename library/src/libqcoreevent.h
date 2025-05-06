@@ -33,57 +33,57 @@ typedef unsigned char Type;  // C ABI enum
 typedef void QtGadgetHelper; // C ABI QFlags
 #endif
 
-QEvent* QEvent_new(int typeVal);
-int QEvent_Type(const QEvent* self);
-bool QEvent_Spontaneous(const QEvent* self);
-void QEvent_SetAccepted(QEvent* self, bool accepted);
-void QEvent_OnSetAccepted(QEvent* self, intptr_t slot);
-void QEvent_QBaseSetAccepted(QEvent* self, bool accepted);
-bool QEvent_IsAccepted(const QEvent* self);
-void QEvent_Accept(QEvent* self);
-void QEvent_Ignore(QEvent* self);
-bool QEvent_IsInputEvent(const QEvent* self);
-bool QEvent_IsPointerEvent(const QEvent* self);
-bool QEvent_IsSinglePointEvent(const QEvent* self);
-int QEvent_RegisterEventType();
-QEvent* QEvent_Clone(const QEvent* self);
-void QEvent_OnClone(const QEvent* self, intptr_t slot);
-QEvent* QEvent_QBaseClone(const QEvent* self);
-int QEvent_RegisterEventType1(int hint);
-void QEvent_Delete(QEvent* self);
+QTLIBC_API QEvent* QEvent_new(int typeVal);
+QTLIBC_API int QEvent_Type(const QEvent* self);
+QTLIBC_API bool QEvent_Spontaneous(const QEvent* self);
+QTLIBC_API void QEvent_SetAccepted(QEvent* self, bool accepted);
+QTLIBC_API void QEvent_OnSetAccepted(QEvent* self, intptr_t slot);
+QTLIBC_API void QEvent_QBaseSetAccepted(QEvent* self, bool accepted);
+QTLIBC_API bool QEvent_IsAccepted(const QEvent* self);
+QTLIBC_API void QEvent_Accept(QEvent* self);
+QTLIBC_API void QEvent_Ignore(QEvent* self);
+QTLIBC_API bool QEvent_IsInputEvent(const QEvent* self);
+QTLIBC_API bool QEvent_IsPointerEvent(const QEvent* self);
+QTLIBC_API bool QEvent_IsSinglePointEvent(const QEvent* self);
+QTLIBC_API int QEvent_RegisterEventType();
+QTLIBC_API QEvent* QEvent_Clone(const QEvent* self);
+QTLIBC_API void QEvent_OnClone(const QEvent* self, intptr_t slot);
+QTLIBC_API QEvent* QEvent_QBaseClone(const QEvent* self);
+QTLIBC_API int QEvent_RegisterEventType1(int hint);
+QTLIBC_API void QEvent_Delete(QEvent* self);
 
-QTimerEvent* QTimerEvent_new(int timerId);
-QTimerEvent* QTimerEvent_Clone(const QTimerEvent* self);
-void QTimerEvent_OnClone(const QTimerEvent* self, intptr_t slot);
-QTimerEvent* QTimerEvent_QBaseClone(const QTimerEvent* self);
-int QTimerEvent_TimerId(const QTimerEvent* self);
-void QTimerEvent_SetAccepted(QTimerEvent* self, bool accepted);
-void QTimerEvent_OnSetAccepted(QTimerEvent* self, intptr_t slot);
-void QTimerEvent_QBaseSetAccepted(QTimerEvent* self, bool accepted);
-void QTimerEvent_Delete(QTimerEvent* self);
+QTLIBC_API QTimerEvent* QTimerEvent_new(int timerId);
+QTLIBC_API QTimerEvent* QTimerEvent_Clone(const QTimerEvent* self);
+QTLIBC_API void QTimerEvent_OnClone(const QTimerEvent* self, intptr_t slot);
+QTLIBC_API QTimerEvent* QTimerEvent_QBaseClone(const QTimerEvent* self);
+QTLIBC_API int QTimerEvent_TimerId(const QTimerEvent* self);
+QTLIBC_API void QTimerEvent_SetAccepted(QTimerEvent* self, bool accepted);
+QTLIBC_API void QTimerEvent_OnSetAccepted(QTimerEvent* self, intptr_t slot);
+QTLIBC_API void QTimerEvent_QBaseSetAccepted(QTimerEvent* self, bool accepted);
+QTLIBC_API void QTimerEvent_Delete(QTimerEvent* self);
 
-QChildEvent* QChildEvent_new(int typeVal, QObject* child);
-QChildEvent* QChildEvent_Clone(const QChildEvent* self);
-void QChildEvent_OnClone(const QChildEvent* self, intptr_t slot);
-QChildEvent* QChildEvent_QBaseClone(const QChildEvent* self);
-QObject* QChildEvent_Child(const QChildEvent* self);
-bool QChildEvent_Added(const QChildEvent* self);
-bool QChildEvent_Polished(const QChildEvent* self);
-bool QChildEvent_Removed(const QChildEvent* self);
-void QChildEvent_SetAccepted(QChildEvent* self, bool accepted);
-void QChildEvent_OnSetAccepted(QChildEvent* self, intptr_t slot);
-void QChildEvent_QBaseSetAccepted(QChildEvent* self, bool accepted);
-void QChildEvent_Delete(QChildEvent* self);
+QTLIBC_API QChildEvent* QChildEvent_new(int typeVal, QObject* child);
+QTLIBC_API QChildEvent* QChildEvent_Clone(const QChildEvent* self);
+QTLIBC_API void QChildEvent_OnClone(const QChildEvent* self, intptr_t slot);
+QTLIBC_API QChildEvent* QChildEvent_QBaseClone(const QChildEvent* self);
+QTLIBC_API QObject* QChildEvent_Child(const QChildEvent* self);
+QTLIBC_API bool QChildEvent_Added(const QChildEvent* self);
+QTLIBC_API bool QChildEvent_Polished(const QChildEvent* self);
+QTLIBC_API bool QChildEvent_Removed(const QChildEvent* self);
+QTLIBC_API void QChildEvent_SetAccepted(QChildEvent* self, bool accepted);
+QTLIBC_API void QChildEvent_OnSetAccepted(QChildEvent* self, intptr_t slot);
+QTLIBC_API void QChildEvent_QBaseSetAccepted(QChildEvent* self, bool accepted);
+QTLIBC_API void QChildEvent_Delete(QChildEvent* self);
 
-QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_new(libqt_string name);
-QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_Clone(const QDynamicPropertyChangeEvent* self);
-void QDynamicPropertyChangeEvent_OnClone(const QDynamicPropertyChangeEvent* self, intptr_t slot);
-QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_QBaseClone(const QDynamicPropertyChangeEvent* self);
-libqt_string QDynamicPropertyChangeEvent_PropertyName(const QDynamicPropertyChangeEvent* self);
-void QDynamicPropertyChangeEvent_SetAccepted(QDynamicPropertyChangeEvent* self, bool accepted);
-void QDynamicPropertyChangeEvent_OnSetAccepted(QDynamicPropertyChangeEvent* self, intptr_t slot);
-void QDynamicPropertyChangeEvent_QBaseSetAccepted(QDynamicPropertyChangeEvent* self, bool accepted);
-void QDynamicPropertyChangeEvent_Delete(QDynamicPropertyChangeEvent* self);
+QTLIBC_API QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_new(libqt_string name);
+QTLIBC_API QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_Clone(const QDynamicPropertyChangeEvent* self);
+QTLIBC_API void QDynamicPropertyChangeEvent_OnClone(const QDynamicPropertyChangeEvent* self, intptr_t slot);
+QTLIBC_API QDynamicPropertyChangeEvent* QDynamicPropertyChangeEvent_QBaseClone(const QDynamicPropertyChangeEvent* self);
+QTLIBC_API libqt_string QDynamicPropertyChangeEvent_PropertyName(const QDynamicPropertyChangeEvent* self);
+QTLIBC_API void QDynamicPropertyChangeEvent_SetAccepted(QDynamicPropertyChangeEvent* self, bool accepted);
+QTLIBC_API void QDynamicPropertyChangeEvent_OnSetAccepted(QDynamicPropertyChangeEvent* self, intptr_t slot);
+QTLIBC_API void QDynamicPropertyChangeEvent_QBaseSetAccepted(QDynamicPropertyChangeEvent* self, bool accepted);
+QTLIBC_API void QDynamicPropertyChangeEvent_Delete(QDynamicPropertyChangeEvent* self);
 
 #ifdef __cplusplus
 } /* extern C */

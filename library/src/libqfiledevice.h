@@ -58,41 +58,41 @@ typedef int Permission;      // C ABI enum
 typedef int Permissions;     // C ABI QFlags
 #endif
 
-QMetaObject* QFileDevice_MetaObject(const QFileDevice* self);
-void* QFileDevice_Metacast(QFileDevice* self, const char* param1);
-int QFileDevice_Metacall(QFileDevice* self, int param1, int param2, void** param3);
-libqt_string QFileDevice_Tr(const char* s);
-int QFileDevice_Error(const QFileDevice* self);
-void QFileDevice_UnsetError(QFileDevice* self);
-void QFileDevice_Close(QFileDevice* self);
-bool QFileDevice_IsSequential(const QFileDevice* self);
-int QFileDevice_Handle(const QFileDevice* self);
-libqt_string QFileDevice_FileName(const QFileDevice* self);
-long long QFileDevice_Pos(const QFileDevice* self);
-bool QFileDevice_Seek(QFileDevice* self, long long offset);
-bool QFileDevice_AtEnd(const QFileDevice* self);
-bool QFileDevice_Flush(QFileDevice* self);
-long long QFileDevice_Size(const QFileDevice* self);
-bool QFileDevice_Resize(QFileDevice* self, long long sz);
-int QFileDevice_Permissions(const QFileDevice* self);
-bool QFileDevice_SetPermissions(QFileDevice* self, int permissionSpec);
-unsigned char* QFileDevice_Map(QFileDevice* self, long long offset, long long size);
-bool QFileDevice_Unmap(QFileDevice* self, unsigned char* address);
-QDateTime* QFileDevice_FileTime(const QFileDevice* self, int time);
-bool QFileDevice_SetFileTime(QFileDevice* self, QDateTime* newDate, int fileTime);
-libqt_string QFileDevice_Tr2(const char* s, const char* c);
-libqt_string QFileDevice_Tr3(const char* s, const char* c, int n);
-unsigned char* QFileDevice_Map3(QFileDevice* self, long long offset, long long size, int flags);
-bool QFileDevice_Open(QFileDevice* self, int mode);
-bool QFileDevice_Reset(QFileDevice* self);
-long long QFileDevice_BytesAvailable(const QFileDevice* self);
-long long QFileDevice_BytesToWrite(const QFileDevice* self);
-bool QFileDevice_CanReadLine(const QFileDevice* self);
-bool QFileDevice_WaitForReadyRead(QFileDevice* self, int msecs);
-bool QFileDevice_WaitForBytesWritten(QFileDevice* self, int msecs);
-bool QFileDevice_Event(QFileDevice* self, QEvent* event);
-bool QFileDevice_EventFilter(QFileDevice* self, QObject* watched, QEvent* event);
-void QFileDevice_Delete(QFileDevice* self);
+QTLIBC_API QMetaObject* QFileDevice_MetaObject(const QFileDevice* self);
+QTLIBC_API void* QFileDevice_Metacast(QFileDevice* self, const char* param1);
+QTLIBC_API int QFileDevice_Metacall(QFileDevice* self, int param1, int param2, void** param3);
+QTLIBC_API libqt_string QFileDevice_Tr(const char* s);
+QTLIBC_API int QFileDevice_Error(const QFileDevice* self);
+QTLIBC_API void QFileDevice_UnsetError(QFileDevice* self);
+QTLIBC_API void QFileDevice_Close(QFileDevice* self);
+QTLIBC_API bool QFileDevice_IsSequential(const QFileDevice* self);
+QTLIBC_API int QFileDevice_Handle(const QFileDevice* self);
+QTLIBC_API libqt_string QFileDevice_FileName(const QFileDevice* self);
+QTLIBC_API long long QFileDevice_Pos(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_Seek(QFileDevice* self, long long offset);
+QTLIBC_API bool QFileDevice_AtEnd(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_Flush(QFileDevice* self);
+QTLIBC_API long long QFileDevice_Size(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_Resize(QFileDevice* self, long long sz);
+QTLIBC_API int QFileDevice_Permissions(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_SetPermissions(QFileDevice* self, int permissionSpec);
+QTLIBC_API unsigned char* QFileDevice_Map(QFileDevice* self, long long offset, long long size);
+QTLIBC_API bool QFileDevice_Unmap(QFileDevice* self, unsigned char* address);
+QTLIBC_API QDateTime* QFileDevice_FileTime(const QFileDevice* self, int time);
+QTLIBC_API bool QFileDevice_SetFileTime(QFileDevice* self, QDateTime* newDate, int fileTime);
+QTLIBC_API libqt_string QFileDevice_Tr2(const char* s, const char* c);
+QTLIBC_API libqt_string QFileDevice_Tr3(const char* s, const char* c, int n);
+QTLIBC_API unsigned char* QFileDevice_Map3(QFileDevice* self, long long offset, long long size, int flags);
+QTLIBC_API bool QFileDevice_Open(QFileDevice* self, int mode);
+QTLIBC_API bool QFileDevice_Reset(QFileDevice* self);
+QTLIBC_API long long QFileDevice_BytesAvailable(const QFileDevice* self);
+QTLIBC_API long long QFileDevice_BytesToWrite(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_CanReadLine(const QFileDevice* self);
+QTLIBC_API bool QFileDevice_WaitForReadyRead(QFileDevice* self, int msecs);
+QTLIBC_API bool QFileDevice_WaitForBytesWritten(QFileDevice* self, int msecs);
+QTLIBC_API bool QFileDevice_Event(QFileDevice* self, QEvent* event);
+QTLIBC_API bool QFileDevice_EventFilter(QFileDevice* self, QObject* watched, QEvent* event);
+QTLIBC_API void QFileDevice_Delete(QFileDevice* self);
 
 #ifdef __cplusplus
 } /* extern C */

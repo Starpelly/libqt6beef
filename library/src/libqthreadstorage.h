@@ -21,11 +21,11 @@ extern "C" {
 typedef struct QThreadStorageData QThreadStorageData;
 #endif
 
-QThreadStorageData* QThreadStorageData_new(QThreadStorageData* param1);
-void** QThreadStorageData_Get(const QThreadStorageData* self);
-void** QThreadStorageData_Set(QThreadStorageData* self, void* p);
-void QThreadStorageData_Finish(void** param1);
-void QThreadStorageData_Delete(QThreadStorageData* self);
+QTLIBC_API QThreadStorageData* QThreadStorageData_new(QThreadStorageData* param1);
+QTLIBC_API void** QThreadStorageData_Get(const QThreadStorageData* self);
+QTLIBC_API void** QThreadStorageData_Set(QThreadStorageData* self, void* p);
+QTLIBC_API void QThreadStorageData_Finish(void** param1);
+QTLIBC_API void QThreadStorageData_Delete(QThreadStorageData* self);
 
 #ifdef __cplusplus
 } /* extern C */

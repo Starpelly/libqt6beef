@@ -21,17 +21,17 @@ extern "C" {
 typedef struct QHashSeed QHashSeed;
 #endif
 
-QHashSeed* QHashSeed_new(QHashSeed* other);
-QHashSeed* QHashSeed_new2(QHashSeed* other);
-QHashSeed* QHashSeed_new3();
-QHashSeed* QHashSeed_new4(size_t d);
-void QHashSeed_CopyAssign(QHashSeed* self, QHashSeed* other);
-void QHashSeed_MoveAssign(QHashSeed* self, QHashSeed* other);
-size_t QHashSeed_ToUnsignedLong(const QHashSeed* self);
-QHashSeed* QHashSeed_GlobalSeed();
-void QHashSeed_SetDeterministicGlobalSeed();
-void QHashSeed_ResetRandomGlobalSeed();
-void QHashSeed_Delete(QHashSeed* self);
+QTLIBC_API QHashSeed* QHashSeed_new(QHashSeed* other);
+QTLIBC_API QHashSeed* QHashSeed_new2(QHashSeed* other);
+QTLIBC_API QHashSeed* QHashSeed_new3();
+QTLIBC_API QHashSeed* QHashSeed_new4(size_t d);
+QTLIBC_API void QHashSeed_CopyAssign(QHashSeed* self, QHashSeed* other);
+QTLIBC_API void QHashSeed_MoveAssign(QHashSeed* self, QHashSeed* other);
+QTLIBC_API size_t QHashSeed_ToUnsignedLong(const QHashSeed* self);
+QTLIBC_API QHashSeed* QHashSeed_GlobalSeed();
+QTLIBC_API void QHashSeed_SetDeterministicGlobalSeed();
+QTLIBC_API void QHashSeed_ResetRandomGlobalSeed();
+QTLIBC_API void QHashSeed_Delete(QHashSeed* self);
 
 #ifdef __cplusplus
 } /* extern C */

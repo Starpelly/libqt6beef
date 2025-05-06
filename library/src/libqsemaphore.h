@@ -22,28 +22,28 @@ typedef struct QSemaphore QSemaphore;
 typedef struct QSemaphoreReleaser QSemaphoreReleaser;
 #endif
 
-QSemaphore* QSemaphore_new();
-QSemaphore* QSemaphore_new2(int n);
-void QSemaphore_Acquire(QSemaphore* self);
-bool QSemaphore_TryAcquire(QSemaphore* self);
-bool QSemaphore_TryAcquire2(QSemaphore* self, int n, int timeout);
-void QSemaphore_Release(QSemaphore* self);
-int QSemaphore_Available(const QSemaphore* self);
-bool QSemaphore_TryAcquire3(QSemaphore* self);
-void QSemaphore_Acquire1(QSemaphore* self, int n);
-bool QSemaphore_TryAcquire1(QSemaphore* self, int n);
-void QSemaphore_Release1(QSemaphore* self, int n);
-void QSemaphore_Delete(QSemaphore* self);
+QTLIBC_API QSemaphore* QSemaphore_new();
+QTLIBC_API QSemaphore* QSemaphore_new2(int n);
+QTLIBC_API void QSemaphore_Acquire(QSemaphore* self);
+QTLIBC_API bool QSemaphore_TryAcquire(QSemaphore* self);
+QTLIBC_API bool QSemaphore_TryAcquire2(QSemaphore* self, int n, int timeout);
+QTLIBC_API void QSemaphore_Release(QSemaphore* self);
+QTLIBC_API int QSemaphore_Available(const QSemaphore* self);
+QTLIBC_API bool QSemaphore_TryAcquire3(QSemaphore* self);
+QTLIBC_API void QSemaphore_Acquire1(QSemaphore* self, int n);
+QTLIBC_API bool QSemaphore_TryAcquire1(QSemaphore* self, int n);
+QTLIBC_API void QSemaphore_Release1(QSemaphore* self, int n);
+QTLIBC_API void QSemaphore_Delete(QSemaphore* self);
 
-QSemaphoreReleaser* QSemaphoreReleaser_new();
-QSemaphoreReleaser* QSemaphoreReleaser_new2(QSemaphore* sem);
-QSemaphoreReleaser* QSemaphoreReleaser_new3(QSemaphore* sem);
-QSemaphoreReleaser* QSemaphoreReleaser_new4(QSemaphore* sem, int n);
-QSemaphoreReleaser* QSemaphoreReleaser_new5(QSemaphore* sem, int n);
-void QSemaphoreReleaser_Swap(QSemaphoreReleaser* self, QSemaphoreReleaser* other);
-QSemaphore* QSemaphoreReleaser_Semaphore(const QSemaphoreReleaser* self);
-QSemaphore* QSemaphoreReleaser_Cancel(QSemaphoreReleaser* self);
-void QSemaphoreReleaser_Delete(QSemaphoreReleaser* self);
+QTLIBC_API QSemaphoreReleaser* QSemaphoreReleaser_new();
+QTLIBC_API QSemaphoreReleaser* QSemaphoreReleaser_new2(QSemaphore* sem);
+QTLIBC_API QSemaphoreReleaser* QSemaphoreReleaser_new3(QSemaphore* sem);
+QTLIBC_API QSemaphoreReleaser* QSemaphoreReleaser_new4(QSemaphore* sem, int n);
+QTLIBC_API QSemaphoreReleaser* QSemaphoreReleaser_new5(QSemaphore* sem, int n);
+QTLIBC_API void QSemaphoreReleaser_Swap(QSemaphoreReleaser* self, QSemaphoreReleaser* other);
+QTLIBC_API QSemaphore* QSemaphoreReleaser_Semaphore(const QSemaphoreReleaser* self);
+QTLIBC_API QSemaphore* QSemaphoreReleaser_Cancel(QSemaphoreReleaser* self);
+QTLIBC_API void QSemaphoreReleaser_Delete(QSemaphoreReleaser* self);
 
 #ifdef __cplusplus
 } /* extern C */

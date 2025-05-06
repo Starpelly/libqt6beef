@@ -58,35 +58,35 @@ typedef unsigned int Id;      // C ABI QFlags
 typedef void QtGadgetHelper;  // C ABI QFlags
 #endif
 
-QAccessible* QAccessible_new(QAccessible* other);
-QAccessible* QAccessible_new2(QAccessible* other);
-void QAccessible_CopyAssign(QAccessible* self, QAccessible* other);
-void QAccessible_MoveAssign(QAccessible* self, QAccessible* other);
-void QAccessible_InstallActivationObserver(QAccessible__ActivationObserver* param1);
-void QAccessible_RemoveActivationObserver(QAccessible__ActivationObserver* param1);
-QAccessibleInterface* QAccessible_QueryAccessibleInterface(QObject* param1);
-unsigned int QAccessible_UniqueId(QAccessibleInterface* iface);
-QAccessibleInterface* QAccessible_AccessibleInterface(unsigned int uniqueId);
-unsigned int QAccessible_RegisterAccessibleInterface(QAccessibleInterface* iface);
-void QAccessible_DeleteAccessibleInterface(unsigned int uniqueId);
-void QAccessible_UpdateAccessibility(QAccessibleEvent* event);
-bool QAccessible_IsActive();
-void QAccessible_SetActive(bool active);
-void QAccessible_SetRootObject(QObject* object);
-void QAccessible_Cleanup();
-libqt_pair /* tuple of int and int */ QAccessible_QAccessibleTextBoundaryHelper(QTextCursor* cursor, int boundaryType);
-void QAccessible_Delete(QAccessible* self);
+QTLIBC_API QAccessible* QAccessible_new(QAccessible* other);
+QTLIBC_API QAccessible* QAccessible_new2(QAccessible* other);
+QTLIBC_API void QAccessible_CopyAssign(QAccessible* self, QAccessible* other);
+QTLIBC_API void QAccessible_MoveAssign(QAccessible* self, QAccessible* other);
+QTLIBC_API void QAccessible_InstallActivationObserver(QAccessible__ActivationObserver* param1);
+QTLIBC_API void QAccessible_RemoveActivationObserver(QAccessible__ActivationObserver* param1);
+QTLIBC_API QAccessibleInterface* QAccessible_QueryAccessibleInterface(QObject* param1);
+QTLIBC_API unsigned int QAccessible_UniqueId(QAccessibleInterface* iface);
+QTLIBC_API QAccessibleInterface* QAccessible_AccessibleInterface(unsigned int uniqueId);
+QTLIBC_API unsigned int QAccessible_RegisterAccessibleInterface(QAccessibleInterface* iface);
+QTLIBC_API void QAccessible_DeleteAccessibleInterface(unsigned int uniqueId);
+QTLIBC_API void QAccessible_UpdateAccessibility(QAccessibleEvent* event);
+QTLIBC_API bool QAccessible_IsActive();
+QTLIBC_API void QAccessible_SetActive(bool active);
+QTLIBC_API void QAccessible_SetRootObject(QObject* object);
+QTLIBC_API void QAccessible_Cleanup();
+QTLIBC_API libqt_pair /* tuple of int and int */ QAccessible_QAccessibleTextBoundaryHelper(QTextCursor* cursor, int boundaryType);
+QTLIBC_API void QAccessible_Delete(QAccessible* self);
 
-QAccessible__State* QAccessible__State_new(QAccessible__State* other);
-QAccessible__State* QAccessible__State_new2(QAccessible__State* other);
-QAccessible__State* QAccessible__State_new3();
-void QAccessible__State_CopyAssign(QAccessible__State* self, QAccessible__State* other);
-void QAccessible__State_MoveAssign(QAccessible__State* self, QAccessible__State* other);
-void QAccessible__State_Delete(QAccessible__State* self);
+QTLIBC_API QAccessible__State* QAccessible__State_new(QAccessible__State* other);
+QTLIBC_API QAccessible__State* QAccessible__State_new2(QAccessible__State* other);
+QTLIBC_API QAccessible__State* QAccessible__State_new3();
+QTLIBC_API void QAccessible__State_CopyAssign(QAccessible__State* self, QAccessible__State* other);
+QTLIBC_API void QAccessible__State_MoveAssign(QAccessible__State* self, QAccessible__State* other);
+QTLIBC_API void QAccessible__State_Delete(QAccessible__State* self);
 
-void QAccessible__ActivationObserver_AccessibilityActiveChanged(QAccessible__ActivationObserver* self, bool active);
-void QAccessible__ActivationObserver_OperatorAssign(QAccessible__ActivationObserver* self, QAccessible__ActivationObserver* param1);
-void QAccessible__ActivationObserver_Delete(QAccessible__ActivationObserver* self);
+QTLIBC_API void QAccessible__ActivationObserver_AccessibilityActiveChanged(QAccessible__ActivationObserver* self, bool active);
+QTLIBC_API void QAccessible__ActivationObserver_OperatorAssign(QAccessible__ActivationObserver* self, QAccessible__ActivationObserver* param1);
+QTLIBC_API void QAccessible__ActivationObserver_Delete(QAccessible__ActivationObserver* self);
 
 #ifdef __cplusplus
 } /* extern C */

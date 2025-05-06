@@ -5,7 +5,7 @@ namespace Qt;
 public struct QPushButton
 {
 	[LinkName("QPushButton_new")]
-	public static extern void* QPushButton_new(QWidget parent);
+	public static extern QPushButton* QPushButton_new(QWidget* parent);
 	[LinkName("QPushButton_new2")]
 	public static extern void* QPushButton_new2();
 	[LinkName("QPushButton_new3")]

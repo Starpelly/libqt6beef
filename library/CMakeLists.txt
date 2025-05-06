@@ -7,6 +7,7 @@ set(CMAKE_SUPPRESS_REGENERATION TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_LINK_WHAT_YOU_USE TRUE) # Helps detect missing symbols
+set(LIBQT_STATIC FALSE)
 
 # Output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -14,9 +15,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Qt build automation
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTORCC ON)
 
 # Source files
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -24,7 +25,13 @@ set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 file(GLOB_RECURSE PROJECT_SOURCES
     ${SOURCE_DIR}/*.cpp
     ${SOURCE_DIR}/*.h
+    ${SOURCE_DIR}/*.hxx
 )
+
+# NOTE FOR ME IN THE MORNING:
+# https://github.com/rcalixte/libqt6zig/blob/master/build.zig
+# Check this build script for any stuff, maybe we can use zig to build it instead of MSVC?
+# Or maybe we can see if it's doing anything special so it can compile...
 
 # Qt modules
 set(QT_MODULES
@@ -46,11 +53,11 @@ set(QT_MODULES
 
 find_package(Qt6 REQUIRED COMPONENTS ${QT_MODULES})
 
-# Build static library
-add_library(QtBeefLink STATIC ${PROJECT_SOURCES})
+# Build library
+add_library(QtBeefLink SHARED ${PROJECT_SOURCES})
 target_include_directories(QtBeefLink PUBLIC ${SOURCE_DIR})
 target_include_directories(QtBeefLink PUBLIC ${INCLUDE_DIR})
-add_definitions(-DQT_STATIC)
+# add_definitions(-DQT_STATIC)
 
 # Link Qt libraries
 foreach(module IN LISTS QT_MODULES)
@@ -66,14 +73,16 @@ install(TARGETS QtBeefLink
 )
 
 # Ensures that the Qt API symbols are properly exported
-if(MSVC)
-    foreach(module IN LISTS QT_MODULES)
-        target_link_options(QtBeefLink PRIVATE /WHOLEARCHIVE:Qt6::${module})
-    endforeach()
-else()
-    foreach(module IN LISTS QT_MODULES)
-        target_link_libraries(QtBeefLink PRIVATE -Wl,--whole-archive Qt6::${module} -Wl,--no-whole-archive)
-    endforeach()
+if(LIBQT_STATIC)
+    if(MSVC)
+        foreach(module IN LISTS QT_MODULES)
+            target_link_options(QtBeefLink PRIVATE /WHOLEARCHIVE:Qt6::${module})
+        endforeach()
+    else()
+        foreach(module IN LISTS QT_MODULES)
+            target_link_libraries(QtBeefLink PRIVATE -Wl,--whole-archive Qt6::${module} -Wl,--no-whole-archive)
+        endforeach()
+    endif()
 endif()
 
 # Optional: Copy Qt DLLs after build (Windows only)

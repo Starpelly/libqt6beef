@@ -24,20 +24,20 @@ typedef struct QTextDocumentFragment QTextDocumentFragment;
 typedef struct QTextDocumentWriter QTextDocumentWriter;
 #endif
 
-QTextDocumentWriter* QTextDocumentWriter_new();
-QTextDocumentWriter* QTextDocumentWriter_new2(QIODevice* device, libqt_string format);
-QTextDocumentWriter* QTextDocumentWriter_new3(libqt_string fileName);
-QTextDocumentWriter* QTextDocumentWriter_new4(libqt_string fileName, libqt_string format);
-void QTextDocumentWriter_SetFormat(QTextDocumentWriter* self, libqt_string format);
-libqt_string QTextDocumentWriter_Format(const QTextDocumentWriter* self);
-void QTextDocumentWriter_SetDevice(QTextDocumentWriter* self, QIODevice* device);
-QIODevice* QTextDocumentWriter_Device(const QTextDocumentWriter* self);
-void QTextDocumentWriter_SetFileName(QTextDocumentWriter* self, libqt_string fileName);
-libqt_string QTextDocumentWriter_FileName(const QTextDocumentWriter* self);
-bool QTextDocumentWriter_Write(QTextDocumentWriter* self, QTextDocument* document);
-bool QTextDocumentWriter_WriteWithFragment(QTextDocumentWriter* self, QTextDocumentFragment* fragment);
-libqt_list /* of libqt_string */ QTextDocumentWriter_SupportedDocumentFormats();
-void QTextDocumentWriter_Delete(QTextDocumentWriter* self);
+QTLIBC_API QTextDocumentWriter* QTextDocumentWriter_new();
+QTLIBC_API QTextDocumentWriter* QTextDocumentWriter_new2(QIODevice* device, libqt_string format);
+QTLIBC_API QTextDocumentWriter* QTextDocumentWriter_new3(libqt_string fileName);
+QTLIBC_API QTextDocumentWriter* QTextDocumentWriter_new4(libqt_string fileName, libqt_string format);
+QTLIBC_API void QTextDocumentWriter_SetFormat(QTextDocumentWriter* self, libqt_string format);
+QTLIBC_API libqt_string QTextDocumentWriter_Format(const QTextDocumentWriter* self);
+QTLIBC_API void QTextDocumentWriter_SetDevice(QTextDocumentWriter* self, QIODevice* device);
+QTLIBC_API QIODevice* QTextDocumentWriter_Device(const QTextDocumentWriter* self);
+QTLIBC_API void QTextDocumentWriter_SetFileName(QTextDocumentWriter* self, libqt_string fileName);
+QTLIBC_API libqt_string QTextDocumentWriter_FileName(const QTextDocumentWriter* self);
+QTLIBC_API bool QTextDocumentWriter_Write(QTextDocumentWriter* self, QTextDocument* document);
+QTLIBC_API bool QTextDocumentWriter_WriteWithFragment(QTextDocumentWriter* self, QTextDocumentFragment* fragment);
+QTLIBC_API libqt_list /* of libqt_string */ QTextDocumentWriter_SupportedDocumentFormats();
+QTLIBC_API void QTextDocumentWriter_Delete(QTextDocumentWriter* self);
 
 #ifdef __cplusplus
 } /* extern C */

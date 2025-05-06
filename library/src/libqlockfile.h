@@ -27,18 +27,18 @@ typedef QLockFile::LockError LockError; // C++ enum
 typedef int LockError; // C ABI enum
 #endif
 
-QLockFile* QLockFile_new(libqt_string fileName);
-libqt_string QLockFile_FileName(const QLockFile* self);
-bool QLockFile_Lock(QLockFile* self);
-bool QLockFile_TryLock(QLockFile* self);
-void QLockFile_Unlock(QLockFile* self);
-void QLockFile_SetStaleLockTime(QLockFile* self, int staleLockTime);
-int QLockFile_StaleLockTime(const QLockFile* self);
-bool QLockFile_IsLocked(const QLockFile* self);
-bool QLockFile_RemoveStaleLockFile(QLockFile* self);
-int QLockFile_Error(const QLockFile* self);
-bool QLockFile_TryLock1(QLockFile* self, int timeout);
-void QLockFile_Delete(QLockFile* self);
+QTLIBC_API QLockFile* QLockFile_new(libqt_string fileName);
+QTLIBC_API libqt_string QLockFile_FileName(const QLockFile* self);
+QTLIBC_API bool QLockFile_Lock(QLockFile* self);
+QTLIBC_API bool QLockFile_TryLock(QLockFile* self);
+QTLIBC_API void QLockFile_Unlock(QLockFile* self);
+QTLIBC_API void QLockFile_SetStaleLockTime(QLockFile* self, int staleLockTime);
+QTLIBC_API int QLockFile_StaleLockTime(const QLockFile* self);
+QTLIBC_API bool QLockFile_IsLocked(const QLockFile* self);
+QTLIBC_API bool QLockFile_RemoveStaleLockFile(QLockFile* self);
+QTLIBC_API int QLockFile_Error(const QLockFile* self);
+QTLIBC_API bool QLockFile_TryLock1(QLockFile* self, int timeout);
+QTLIBC_API void QLockFile_Delete(QLockFile* self);
 
 #ifdef __cplusplus
 } /* extern C */

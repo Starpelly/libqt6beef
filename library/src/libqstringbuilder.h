@@ -21,11 +21,11 @@ extern "C" {
 typedef struct QAbstractConcatenable QAbstractConcatenable;
 #endif
 
-QAbstractConcatenable* QAbstractConcatenable_new(QAbstractConcatenable* other);
-QAbstractConcatenable* QAbstractConcatenable_new2(QAbstractConcatenable* other);
-void QAbstractConcatenable_CopyAssign(QAbstractConcatenable* self, QAbstractConcatenable* other);
-void QAbstractConcatenable_MoveAssign(QAbstractConcatenable* self, QAbstractConcatenable* other);
-void QAbstractConcatenable_Delete(QAbstractConcatenable* self);
+QTLIBC_API QAbstractConcatenable* QAbstractConcatenable_new(QAbstractConcatenable* other);
+QTLIBC_API QAbstractConcatenable* QAbstractConcatenable_new2(QAbstractConcatenable* other);
+QTLIBC_API void QAbstractConcatenable_CopyAssign(QAbstractConcatenable* self, QAbstractConcatenable* other);
+QTLIBC_API void QAbstractConcatenable_MoveAssign(QAbstractConcatenable* self, QAbstractConcatenable* other);
+QTLIBC_API void QAbstractConcatenable_Delete(QAbstractConcatenable* self);
 
 #ifdef __cplusplus
 } /* extern C */

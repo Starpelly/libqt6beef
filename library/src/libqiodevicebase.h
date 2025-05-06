@@ -29,8 +29,8 @@ typedef int OpenMode;     // C ABI QFlags
 typedef int OpenModeFlag; // C ABI enum
 #endif
 
-QIODeviceBase* QIODeviceBase_new(QIODeviceBase* other);
-void QIODeviceBase_CopyAssign(QIODeviceBase* self, QIODeviceBase* other);
+QTLIBC_API QIODeviceBase* QIODeviceBase_new(QIODeviceBase* other);
+QTLIBC_API void QIODeviceBase_CopyAssign(QIODeviceBase* self, QIODeviceBase* other);
 
 #ifdef __cplusplus
 } /* extern C */

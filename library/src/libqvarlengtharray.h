@@ -27,9 +27,9 @@ typedef QVLABaseBase::size_type size_type; // C++ QFlags
 typedef ptrdiff_t size_type; // C ABI QFlags
 #endif
 
-ptrdiff_t QVLABaseBase_Capacity(const QVLABaseBase* self);
-ptrdiff_t QVLABaseBase_Size(const QVLABaseBase* self);
-bool QVLABaseBase_Empty(const QVLABaseBase* self);
+QTLIBC_API ptrdiff_t QVLABaseBase_Capacity(const QVLABaseBase* self);
+QTLIBC_API ptrdiff_t QVLABaseBase_Size(const QVLABaseBase* self);
+QTLIBC_API bool QVLABaseBase_Empty(const QVLABaseBase* self);
 
 #ifdef __cplusplus
 } /* extern C */

@@ -24,18 +24,18 @@ typedef struct QReadWriteLock QReadWriteLock;
 typedef struct QWaitCondition QWaitCondition;
 #endif
 
-QWaitCondition* QWaitCondition_new();
-bool QWaitCondition_Wait(QWaitCondition* self, QMutex* lockedMutex);
-bool QWaitCondition_Wait2(QWaitCondition* self, QMutex* lockedMutex, unsigned long time);
-bool QWaitCondition_WaitWithLockedReadWriteLock(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock);
-bool QWaitCondition_Wait3(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock, unsigned long time);
-void QWaitCondition_WakeOne(QWaitCondition* self);
-void QWaitCondition_WakeAll(QWaitCondition* self);
-void QWaitCondition_NotifyOne(QWaitCondition* self);
-void QWaitCondition_NotifyAll(QWaitCondition* self);
-bool QWaitCondition_Wait22(QWaitCondition* self, QMutex* lockedMutex, QDeadlineTimer* deadline);
-bool QWaitCondition_Wait23(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock, QDeadlineTimer* deadline);
-void QWaitCondition_Delete(QWaitCondition* self);
+QTLIBC_API QWaitCondition* QWaitCondition_new();
+QTLIBC_API bool QWaitCondition_Wait(QWaitCondition* self, QMutex* lockedMutex);
+QTLIBC_API bool QWaitCondition_Wait2(QWaitCondition* self, QMutex* lockedMutex, unsigned long time);
+QTLIBC_API bool QWaitCondition_WaitWithLockedReadWriteLock(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock);
+QTLIBC_API bool QWaitCondition_Wait3(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock, unsigned long time);
+QTLIBC_API void QWaitCondition_WakeOne(QWaitCondition* self);
+QTLIBC_API void QWaitCondition_WakeAll(QWaitCondition* self);
+QTLIBC_API void QWaitCondition_NotifyOne(QWaitCondition* self);
+QTLIBC_API void QWaitCondition_NotifyAll(QWaitCondition* self);
+QTLIBC_API bool QWaitCondition_Wait22(QWaitCondition* self, QMutex* lockedMutex, QDeadlineTimer* deadline);
+QTLIBC_API bool QWaitCondition_Wait23(QWaitCondition* self, QReadWriteLock* lockedReadWriteLock, QDeadlineTimer* deadline);
+QTLIBC_API void QWaitCondition_Delete(QWaitCondition* self);
 
 #ifdef __cplusplus
 } /* extern C */

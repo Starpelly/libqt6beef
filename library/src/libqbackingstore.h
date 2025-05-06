@@ -26,21 +26,21 @@ typedef struct QSize QSize;
 typedef struct QWindow QWindow;
 #endif
 
-QBackingStore* QBackingStore_new(QWindow* window);
-QWindow* QBackingStore_Window(const QBackingStore* self);
-QPaintDevice* QBackingStore_PaintDevice(QBackingStore* self);
-void QBackingStore_Flush(QBackingStore* self, QRegion* region);
-void QBackingStore_Resize(QBackingStore* self, QSize* size);
-QSize* QBackingStore_Size(const QBackingStore* self);
-bool QBackingStore_Scroll(QBackingStore* self, QRegion* area, int dx, int dy);
-void QBackingStore_BeginPaint(QBackingStore* self, QRegion* param1);
-void QBackingStore_EndPaint(QBackingStore* self);
-void QBackingStore_SetStaticContents(QBackingStore* self, QRegion* region);
-QRegion* QBackingStore_StaticContents(const QBackingStore* self);
-bool QBackingStore_HasStaticContents(const QBackingStore* self);
-void QBackingStore_Flush2(QBackingStore* self, QRegion* region, QWindow* window);
-void QBackingStore_Flush3(QBackingStore* self, QRegion* region, QWindow* window, QPoint* offset);
-void QBackingStore_Delete(QBackingStore* self);
+QTLIBC_API QBackingStore* QBackingStore_new(QWindow* window);
+QTLIBC_API QWindow* QBackingStore_Window(const QBackingStore* self);
+QTLIBC_API QPaintDevice* QBackingStore_PaintDevice(QBackingStore* self);
+QTLIBC_API void QBackingStore_Flush(QBackingStore* self, QRegion* region);
+QTLIBC_API void QBackingStore_Resize(QBackingStore* self, QSize* size);
+QTLIBC_API QSize* QBackingStore_Size(const QBackingStore* self);
+QTLIBC_API bool QBackingStore_Scroll(QBackingStore* self, QRegion* area, int dx, int dy);
+QTLIBC_API void QBackingStore_BeginPaint(QBackingStore* self, QRegion* param1);
+QTLIBC_API void QBackingStore_EndPaint(QBackingStore* self);
+QTLIBC_API void QBackingStore_SetStaticContents(QBackingStore* self, QRegion* region);
+QTLIBC_API QRegion* QBackingStore_StaticContents(const QBackingStore* self);
+QTLIBC_API bool QBackingStore_HasStaticContents(const QBackingStore* self);
+QTLIBC_API void QBackingStore_Flush2(QBackingStore* self, QRegion* region, QWindow* window);
+QTLIBC_API void QBackingStore_Flush3(QBackingStore* self, QRegion* region, QWindow* window, QPoint* offset);
+QTLIBC_API void QBackingStore_Delete(QBackingStore* self);
 
 #ifdef __cplusplus
 } /* extern C */

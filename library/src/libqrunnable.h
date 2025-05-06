@@ -21,13 +21,13 @@ extern "C" {
 typedef struct QRunnable QRunnable;
 #endif
 
-QRunnable* QRunnable_new();
-void QRunnable_Run(QRunnable* self);
-void QRunnable_OnRun(QRunnable* self, intptr_t slot);
-void QRunnable_QBaseRun(QRunnable* self);
-bool QRunnable_AutoDelete(const QRunnable* self);
-void QRunnable_SetAutoDelete(QRunnable* self, bool autoDelete);
-void QRunnable_Delete(QRunnable* self);
+QTLIBC_API QRunnable* QRunnable_new();
+QTLIBC_API void QRunnable_Run(QRunnable* self);
+QTLIBC_API void QRunnable_OnRun(QRunnable* self, intptr_t slot);
+QTLIBC_API void QRunnable_QBaseRun(QRunnable* self);
+QTLIBC_API bool QRunnable_AutoDelete(const QRunnable* self);
+QTLIBC_API void QRunnable_SetAutoDelete(QRunnable* self, bool autoDelete);
+QTLIBC_API void QRunnable_Delete(QRunnable* self);
 
 #ifdef __cplusplus
 } /* extern C */

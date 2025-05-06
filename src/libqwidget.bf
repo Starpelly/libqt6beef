@@ -19,7 +19,7 @@ public struct QWidgetData
 public struct QWidget
 {
 	[LinkName("QWidget_new")]
-	public static extern void* QWidget_new(QWidget parent);
+	public static extern QWidget* QWidget_new(QWidget* parent);
 	[LinkName("QWidget_new2")]
 	public static extern void* QWidget_new2();
 	[LinkName("QWidget_new3")]

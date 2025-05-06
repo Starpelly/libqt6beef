@@ -31,31 +31,31 @@ typedef int Position;        // C ABI enum
 typedef void QtGadgetHelper; // C ABI QFlags
 #endif
 
-QCameraFormat* QCameraFormat_new();
-QCameraFormat* QCameraFormat_new2(QCameraFormat* other);
-void QCameraFormat_OperatorAssign(QCameraFormat* self, QCameraFormat* other);
-int QCameraFormat_PixelFormat(const QCameraFormat* self);
-QSize* QCameraFormat_Resolution(const QCameraFormat* self);
-float QCameraFormat_MinFrameRate(const QCameraFormat* self);
-float QCameraFormat_MaxFrameRate(const QCameraFormat* self);
-bool QCameraFormat_IsNull(const QCameraFormat* self);
-bool QCameraFormat_OperatorEqual(const QCameraFormat* self, QCameraFormat* other);
-bool QCameraFormat_OperatorNotEqual(const QCameraFormat* self, QCameraFormat* other);
-void QCameraFormat_Delete(QCameraFormat* self);
+QTLIBC_API QCameraFormat* QCameraFormat_new();
+QTLIBC_API QCameraFormat* QCameraFormat_new2(QCameraFormat* other);
+QTLIBC_API void QCameraFormat_OperatorAssign(QCameraFormat* self, QCameraFormat* other);
+QTLIBC_API int QCameraFormat_PixelFormat(const QCameraFormat* self);
+QTLIBC_API QSize* QCameraFormat_Resolution(const QCameraFormat* self);
+QTLIBC_API float QCameraFormat_MinFrameRate(const QCameraFormat* self);
+QTLIBC_API float QCameraFormat_MaxFrameRate(const QCameraFormat* self);
+QTLIBC_API bool QCameraFormat_IsNull(const QCameraFormat* self);
+QTLIBC_API bool QCameraFormat_OperatorEqual(const QCameraFormat* self, QCameraFormat* other);
+QTLIBC_API bool QCameraFormat_OperatorNotEqual(const QCameraFormat* self, QCameraFormat* other);
+QTLIBC_API void QCameraFormat_Delete(QCameraFormat* self);
 
-QCameraDevice* QCameraDevice_new();
-QCameraDevice* QCameraDevice_new2(QCameraDevice* other);
-void QCameraDevice_OperatorAssign(QCameraDevice* self, QCameraDevice* other);
-bool QCameraDevice_OperatorEqual(const QCameraDevice* self, QCameraDevice* other);
-bool QCameraDevice_OperatorNotEqual(const QCameraDevice* self, QCameraDevice* other);
-bool QCameraDevice_IsNull(const QCameraDevice* self);
-libqt_string QCameraDevice_Id(const QCameraDevice* self);
-libqt_string QCameraDevice_Description(const QCameraDevice* self);
-bool QCameraDevice_IsDefault(const QCameraDevice* self);
-int QCameraDevice_Position(const QCameraDevice* self);
-libqt_list /* of QSize* */ QCameraDevice_PhotoResolutions(const QCameraDevice* self);
-libqt_list /* of QCameraFormat* */ QCameraDevice_VideoFormats(const QCameraDevice* self);
-void QCameraDevice_Delete(QCameraDevice* self);
+QTLIBC_API QCameraDevice* QCameraDevice_new();
+QTLIBC_API QCameraDevice* QCameraDevice_new2(QCameraDevice* other);
+QTLIBC_API void QCameraDevice_OperatorAssign(QCameraDevice* self, QCameraDevice* other);
+QTLIBC_API bool QCameraDevice_OperatorEqual(const QCameraDevice* self, QCameraDevice* other);
+QTLIBC_API bool QCameraDevice_OperatorNotEqual(const QCameraDevice* self, QCameraDevice* other);
+QTLIBC_API bool QCameraDevice_IsNull(const QCameraDevice* self);
+QTLIBC_API libqt_string QCameraDevice_Id(const QCameraDevice* self);
+QTLIBC_API libqt_string QCameraDevice_Description(const QCameraDevice* self);
+QTLIBC_API bool QCameraDevice_IsDefault(const QCameraDevice* self);
+QTLIBC_API int QCameraDevice_Position(const QCameraDevice* self);
+QTLIBC_API libqt_list /* of QSize* */ QCameraDevice_PhotoResolutions(const QCameraDevice* self);
+QTLIBC_API libqt_list /* of QCameraFormat* */ QCameraDevice_VideoFormats(const QCameraDevice* self);
+QTLIBC_API void QCameraDevice_Delete(QCameraDevice* self);
 
 #ifdef __cplusplus
 } /* extern C */

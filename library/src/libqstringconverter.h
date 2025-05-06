@@ -26,23 +26,23 @@ typedef struct QStringDecoder QStringDecoder;
 typedef struct QStringEncoder QStringEncoder;
 #endif
 
-QStringEncoder* QStringEncoder_new();
-QStringEncoder* QStringEncoder_new2(int encoding);
-QStringEncoder* QStringEncoder_new3(const char* name);
-QStringEncoder* QStringEncoder_new4(int encoding, int flags);
-QStringEncoder* QStringEncoder_new5(const char* name, int flags);
-ptrdiff_t QStringEncoder_RequiredSpace(const QStringEncoder* self, ptrdiff_t inputLength);
-void QStringEncoder_Delete(QStringEncoder* self);
+QTLIBC_API QStringEncoder* QStringEncoder_new();
+QTLIBC_API QStringEncoder* QStringEncoder_new2(int encoding);
+QTLIBC_API QStringEncoder* QStringEncoder_new3(const char* name);
+QTLIBC_API QStringEncoder* QStringEncoder_new4(int encoding, int flags);
+QTLIBC_API QStringEncoder* QStringEncoder_new5(const char* name, int flags);
+QTLIBC_API ptrdiff_t QStringEncoder_RequiredSpace(const QStringEncoder* self, ptrdiff_t inputLength);
+QTLIBC_API void QStringEncoder_Delete(QStringEncoder* self);
 
-QStringDecoder* QStringDecoder_new(int encoding);
-QStringDecoder* QStringDecoder_new2();
-QStringDecoder* QStringDecoder_new3(const char* name);
-QStringDecoder* QStringDecoder_new4(int encoding, int flags);
-QStringDecoder* QStringDecoder_new5(const char* name, int f);
-ptrdiff_t QStringDecoder_RequiredSpace(const QStringDecoder* self, ptrdiff_t inputLength);
-QChar* QStringDecoder_AppendToBuffer(QStringDecoder* self, QChar* out, QByteArrayView* ba);
-QStringDecoder* QStringDecoder_DecoderForHtml(QByteArrayView* data);
-void QStringDecoder_Delete(QStringDecoder* self);
+QTLIBC_API QStringDecoder* QStringDecoder_new(int encoding);
+QTLIBC_API QStringDecoder* QStringDecoder_new2();
+QTLIBC_API QStringDecoder* QStringDecoder_new3(const char* name);
+QTLIBC_API QStringDecoder* QStringDecoder_new4(int encoding, int flags);
+QTLIBC_API QStringDecoder* QStringDecoder_new5(const char* name, int f);
+QTLIBC_API ptrdiff_t QStringDecoder_RequiredSpace(const QStringDecoder* self, ptrdiff_t inputLength);
+QTLIBC_API QChar* QStringDecoder_AppendToBuffer(QStringDecoder* self, QChar* out, QByteArrayView* ba);
+QTLIBC_API QStringDecoder* QStringDecoder_DecoderForHtml(QByteArrayView* data);
+QTLIBC_API void QStringDecoder_Delete(QStringDecoder* self);
 
 #ifdef __cplusplus
 } /* extern C */

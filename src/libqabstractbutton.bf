@@ -2,6 +2,19 @@ using System;
 using System.Interop;
 namespace Qt;
 
+[CRepr]
+struct libqt_string
+{
+	int len;
+	char8* data;
+
+	public this(int len, char8* data)
+	{
+		this.len = len;
+		this.data = data;
+	}
+}
+
 public struct QAbstractButton
 {
 	[LinkName("QAbstractButton_new")]
@@ -17,7 +30,7 @@ public struct QAbstractButton
 	[LinkName("QAbstractButton_Tr")]
 	public static extern char8[] QAbstractButton_Tr(char8[] s);
 	[LinkName("QAbstractButton_SetText")]
-	public static extern void QAbstractButton_SetText(void* c_this, char8[] text);
+	public static extern void QAbstractButton_SetText(void* c_this, libqt_string text);
 	[LinkName("QAbstractButton_Text")]
 	public static extern char8[] QAbstractButton_Text(void* c_this);
 	[LinkName("QAbstractButton_SetIcon")]

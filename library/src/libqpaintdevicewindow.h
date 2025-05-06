@@ -63,23 +63,23 @@ typedef struct QWheelEvent QWheelEvent;
 typedef struct QWindow QWindow;
 #endif
 
-QMetaObject* QPaintDeviceWindow_MetaObject(const QPaintDeviceWindow* self);
-void* QPaintDeviceWindow_Metacast(QPaintDeviceWindow* self, const char* param1);
-int QPaintDeviceWindow_Metacall(QPaintDeviceWindow* self, int param1, int param2, void** param3);
-libqt_string QPaintDeviceWindow_Tr(const char* s);
-void QPaintDeviceWindow_Update(QPaintDeviceWindow* self, QRect* rect);
-void QPaintDeviceWindow_UpdateWithRegion(QPaintDeviceWindow* self, QRegion* region);
-void QPaintDeviceWindow_Update2(QPaintDeviceWindow* self);
-libqt_string QPaintDeviceWindow_Tr2(const char* s, const char* c);
-libqt_string QPaintDeviceWindow_Tr3(const char* s, const char* c, int n);
-int QPaintDeviceWindow_SurfaceType(const QPaintDeviceWindow* self);
-QSurfaceFormat* QPaintDeviceWindow_Format(const QPaintDeviceWindow* self);
-QSize* QPaintDeviceWindow_Size(const QPaintDeviceWindow* self);
-QAccessibleInterface* QPaintDeviceWindow_AccessibleRoot(const QPaintDeviceWindow* self);
-QObject* QPaintDeviceWindow_FocusObject(const QPaintDeviceWindow* self);
-bool QPaintDeviceWindow_EventFilter(QPaintDeviceWindow* self, QObject* watched, QEvent* event);
-int QPaintDeviceWindow_DevType(const QPaintDeviceWindow* self);
-void QPaintDeviceWindow_Delete(QPaintDeviceWindow* self);
+QTLIBC_API QMetaObject* QPaintDeviceWindow_MetaObject(const QPaintDeviceWindow* self);
+QTLIBC_API void* QPaintDeviceWindow_Metacast(QPaintDeviceWindow* self, const char* param1);
+QTLIBC_API int QPaintDeviceWindow_Metacall(QPaintDeviceWindow* self, int param1, int param2, void** param3);
+QTLIBC_API libqt_string QPaintDeviceWindow_Tr(const char* s);
+QTLIBC_API void QPaintDeviceWindow_Update(QPaintDeviceWindow* self, QRect* rect);
+QTLIBC_API void QPaintDeviceWindow_UpdateWithRegion(QPaintDeviceWindow* self, QRegion* region);
+QTLIBC_API void QPaintDeviceWindow_Update2(QPaintDeviceWindow* self);
+QTLIBC_API libqt_string QPaintDeviceWindow_Tr2(const char* s, const char* c);
+QTLIBC_API libqt_string QPaintDeviceWindow_Tr3(const char* s, const char* c, int n);
+QTLIBC_API int QPaintDeviceWindow_SurfaceType(const QPaintDeviceWindow* self);
+QTLIBC_API QSurfaceFormat* QPaintDeviceWindow_Format(const QPaintDeviceWindow* self);
+QTLIBC_API QSize* QPaintDeviceWindow_Size(const QPaintDeviceWindow* self);
+QTLIBC_API QAccessibleInterface* QPaintDeviceWindow_AccessibleRoot(const QPaintDeviceWindow* self);
+QTLIBC_API QObject* QPaintDeviceWindow_FocusObject(const QPaintDeviceWindow* self);
+QTLIBC_API bool QPaintDeviceWindow_EventFilter(QPaintDeviceWindow* self, QObject* watched, QEvent* event);
+QTLIBC_API int QPaintDeviceWindow_DevType(const QPaintDeviceWindow* self);
+QTLIBC_API void QPaintDeviceWindow_Delete(QPaintDeviceWindow* self);
 
 #ifdef __cplusplus
 } /* extern C */

@@ -37,17 +37,17 @@ typedef int Flag;     // C ABI enum
 typedef int Flags;    // C ABI QFlags
 #endif
 
-bool QStringConverter_IsValid(const QStringConverter* self);
-void QStringConverter_ResetState(QStringConverter* self);
-bool QStringConverter_HasError(const QStringConverter* self);
-const char* QStringConverter_Name(const QStringConverter* self);
-const char* QStringConverter_NameForEncoding(int e);
+QTLIBC_API bool QStringConverter_IsValid(const QStringConverter* self);
+QTLIBC_API void QStringConverter_ResetState(QStringConverter* self);
+QTLIBC_API bool QStringConverter_HasError(const QStringConverter* self);
+QTLIBC_API const char* QStringConverter_Name(const QStringConverter* self);
+QTLIBC_API const char* QStringConverter_NameForEncoding(int e);
 
-QStringConverterBase__State* QStringConverterBase__State_new();
-QStringConverterBase__State* QStringConverterBase__State_new2(int f);
-void QStringConverterBase__State_Clear(QStringConverterBase__State* self);
-void QStringConverterBase__State_Reset(QStringConverterBase__State* self);
-void QStringConverterBase__State_Delete(QStringConverterBase__State* self);
+QTLIBC_API QStringConverterBase__State* QStringConverterBase__State_new();
+QTLIBC_API QStringConverterBase__State* QStringConverterBase__State_new2(int f);
+QTLIBC_API void QStringConverterBase__State_Clear(QStringConverterBase__State* self);
+QTLIBC_API void QStringConverterBase__State_Reset(QStringConverterBase__State* self);
+QTLIBC_API void QStringConverterBase__State_Delete(QStringConverterBase__State* self);
 
 #ifdef __cplusplus
 } /* extern C */

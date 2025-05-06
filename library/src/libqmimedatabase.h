@@ -31,21 +31,21 @@ typedef QMimeDatabase::MatchMode MatchMode; // C++ enum
 typedef int MatchMode; // C ABI enum
 #endif
 
-QMimeDatabase* QMimeDatabase_new();
-QMimeType* QMimeDatabase_MimeTypeForName(const QMimeDatabase* self, libqt_string nameOrAlias);
-QMimeType* QMimeDatabase_MimeTypeForFile(const QMimeDatabase* self, libqt_string fileName);
-QMimeType* QMimeDatabase_MimeTypeForFileWithFileInfo(const QMimeDatabase* self, QFileInfo* fileInfo);
-libqt_list /* of QMimeType* */ QMimeDatabase_MimeTypesForFileName(const QMimeDatabase* self, libqt_string fileName);
-QMimeType* QMimeDatabase_MimeTypeForData(const QMimeDatabase* self, libqt_string data);
-QMimeType* QMimeDatabase_MimeTypeForDataWithDevice(const QMimeDatabase* self, QIODevice* device);
-QMimeType* QMimeDatabase_MimeTypeForUrl(const QMimeDatabase* self, QUrl* url);
-QMimeType* QMimeDatabase_MimeTypeForFileNameAndData(const QMimeDatabase* self, libqt_string fileName, QIODevice* device);
-QMimeType* QMimeDatabase_MimeTypeForFileNameAndData2(const QMimeDatabase* self, libqt_string fileName, libqt_string data);
-libqt_string QMimeDatabase_SuffixForFileName(const QMimeDatabase* self, libqt_string fileName);
-libqt_list /* of QMimeType* */ QMimeDatabase_AllMimeTypes(const QMimeDatabase* self);
-QMimeType* QMimeDatabase_MimeTypeForFile2(const QMimeDatabase* self, libqt_string fileName, int mode);
-QMimeType* QMimeDatabase_MimeTypeForFile22(const QMimeDatabase* self, QFileInfo* fileInfo, int mode);
-void QMimeDatabase_Delete(QMimeDatabase* self);
+QTLIBC_API QMimeDatabase* QMimeDatabase_new();
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForName(const QMimeDatabase* self, libqt_string nameOrAlias);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFile(const QMimeDatabase* self, libqt_string fileName);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFileWithFileInfo(const QMimeDatabase* self, QFileInfo* fileInfo);
+QTLIBC_API libqt_list /* of QMimeType* */ QMimeDatabase_MimeTypesForFileName(const QMimeDatabase* self, libqt_string fileName);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForData(const QMimeDatabase* self, libqt_string data);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForDataWithDevice(const QMimeDatabase* self, QIODevice* device);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForUrl(const QMimeDatabase* self, QUrl* url);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFileNameAndData(const QMimeDatabase* self, libqt_string fileName, QIODevice* device);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFileNameAndData2(const QMimeDatabase* self, libqt_string fileName, libqt_string data);
+QTLIBC_API libqt_string QMimeDatabase_SuffixForFileName(const QMimeDatabase* self, libqt_string fileName);
+QTLIBC_API libqt_list /* of QMimeType* */ QMimeDatabase_AllMimeTypes(const QMimeDatabase* self);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFile2(const QMimeDatabase* self, libqt_string fileName, int mode);
+QTLIBC_API QMimeType* QMimeDatabase_MimeTypeForFile22(const QMimeDatabase* self, QFileInfo* fileInfo, int mode);
+QTLIBC_API void QMimeDatabase_Delete(QMimeDatabase* self);
 
 #ifdef __cplusplus
 } /* extern C */

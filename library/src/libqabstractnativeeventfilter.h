@@ -21,11 +21,11 @@ extern "C" {
 typedef struct QAbstractNativeEventFilter QAbstractNativeEventFilter;
 #endif
 
-QAbstractNativeEventFilter* QAbstractNativeEventFilter_new();
-bool QAbstractNativeEventFilter_NativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result);
-void QAbstractNativeEventFilter_OnNativeEventFilter(QAbstractNativeEventFilter* self, intptr_t slot);
-bool QAbstractNativeEventFilter_QBaseNativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result);
-void QAbstractNativeEventFilter_Delete(QAbstractNativeEventFilter* self);
+QTLIBC_API QAbstractNativeEventFilter* QAbstractNativeEventFilter_new();
+QTLIBC_API bool QAbstractNativeEventFilter_NativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result);
+QTLIBC_API void QAbstractNativeEventFilter_OnNativeEventFilter(QAbstractNativeEventFilter* self, intptr_t slot);
+QTLIBC_API bool QAbstractNativeEventFilter_QBaseNativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result);
+QTLIBC_API void QAbstractNativeEventFilter_Delete(QAbstractNativeEventFilter* self);
 
 #ifdef __cplusplus
 } /* extern C */

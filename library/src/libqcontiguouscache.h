@@ -21,9 +21,9 @@ extern "C" {
 typedef struct QContiguousCacheData QContiguousCacheData;
 #endif
 
-QContiguousCacheData* QContiguousCacheData_AllocateData(ptrdiff_t size, ptrdiff_t alignment);
-void QContiguousCacheData_FreeData(QContiguousCacheData* data);
-void QContiguousCacheData_Delete(QContiguousCacheData* self);
+QTLIBC_API QContiguousCacheData* QContiguousCacheData_AllocateData(ptrdiff_t size, ptrdiff_t alignment);
+QTLIBC_API void QContiguousCacheData_FreeData(QContiguousCacheData* data);
+QTLIBC_API void QContiguousCacheData_Delete(QContiguousCacheData* self);
 
 #ifdef __cplusplus
 } /* extern C */

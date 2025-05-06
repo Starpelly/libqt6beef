@@ -22,31 +22,31 @@ typedef struct QDir QDir;
 typedef struct QStorageInfo QStorageInfo;
 #endif
 
-QStorageInfo* QStorageInfo_new();
-QStorageInfo* QStorageInfo_new2(libqt_string path);
-QStorageInfo* QStorageInfo_new3(QDir* dir);
-QStorageInfo* QStorageInfo_new4(QStorageInfo* other);
-void QStorageInfo_OperatorAssign(QStorageInfo* self, QStorageInfo* other);
-void QStorageInfo_Swap(QStorageInfo* self, QStorageInfo* other);
-void QStorageInfo_SetPath(QStorageInfo* self, libqt_string path);
-libqt_string QStorageInfo_RootPath(const QStorageInfo* self);
-libqt_string QStorageInfo_Device(const QStorageInfo* self);
-libqt_string QStorageInfo_Subvolume(const QStorageInfo* self);
-libqt_string QStorageInfo_FileSystemType(const QStorageInfo* self);
-libqt_string QStorageInfo_Name(const QStorageInfo* self);
-libqt_string QStorageInfo_DisplayName(const QStorageInfo* self);
-long long QStorageInfo_BytesTotal(const QStorageInfo* self);
-long long QStorageInfo_BytesFree(const QStorageInfo* self);
-long long QStorageInfo_BytesAvailable(const QStorageInfo* self);
-int QStorageInfo_BlockSize(const QStorageInfo* self);
-bool QStorageInfo_IsRoot(const QStorageInfo* self);
-bool QStorageInfo_IsReadOnly(const QStorageInfo* self);
-bool QStorageInfo_IsReady(const QStorageInfo* self);
-bool QStorageInfo_IsValid(const QStorageInfo* self);
-void QStorageInfo_Refresh(QStorageInfo* self);
-libqt_list /* of QStorageInfo* */ QStorageInfo_MountedVolumes();
-QStorageInfo* QStorageInfo_Root();
-void QStorageInfo_Delete(QStorageInfo* self);
+QTLIBC_API QStorageInfo* QStorageInfo_new();
+QTLIBC_API QStorageInfo* QStorageInfo_new2(libqt_string path);
+QTLIBC_API QStorageInfo* QStorageInfo_new3(QDir* dir);
+QTLIBC_API QStorageInfo* QStorageInfo_new4(QStorageInfo* other);
+QTLIBC_API void QStorageInfo_OperatorAssign(QStorageInfo* self, QStorageInfo* other);
+QTLIBC_API void QStorageInfo_Swap(QStorageInfo* self, QStorageInfo* other);
+QTLIBC_API void QStorageInfo_SetPath(QStorageInfo* self, libqt_string path);
+QTLIBC_API libqt_string QStorageInfo_RootPath(const QStorageInfo* self);
+QTLIBC_API libqt_string QStorageInfo_Device(const QStorageInfo* self);
+QTLIBC_API libqt_string QStorageInfo_Subvolume(const QStorageInfo* self);
+QTLIBC_API libqt_string QStorageInfo_FileSystemType(const QStorageInfo* self);
+QTLIBC_API libqt_string QStorageInfo_Name(const QStorageInfo* self);
+QTLIBC_API libqt_string QStorageInfo_DisplayName(const QStorageInfo* self);
+QTLIBC_API long long QStorageInfo_BytesTotal(const QStorageInfo* self);
+QTLIBC_API long long QStorageInfo_BytesFree(const QStorageInfo* self);
+QTLIBC_API long long QStorageInfo_BytesAvailable(const QStorageInfo* self);
+QTLIBC_API int QStorageInfo_BlockSize(const QStorageInfo* self);
+QTLIBC_API bool QStorageInfo_IsRoot(const QStorageInfo* self);
+QTLIBC_API bool QStorageInfo_IsReadOnly(const QStorageInfo* self);
+QTLIBC_API bool QStorageInfo_IsReady(const QStorageInfo* self);
+QTLIBC_API bool QStorageInfo_IsValid(const QStorageInfo* self);
+QTLIBC_API void QStorageInfo_Refresh(QStorageInfo* self);
+QTLIBC_API libqt_list /* of QStorageInfo* */ QStorageInfo_MountedVolumes();
+QTLIBC_API QStorageInfo* QStorageInfo_Root();
+QTLIBC_API void QStorageInfo_Delete(QStorageInfo* self);
 
 #ifdef __cplusplus
 } /* extern C */

@@ -29,12 +29,12 @@ typedef signed char Ordering;     // C ABI enum
 typedef signed char Uncomparable; // C ABI enum
 #endif
 
-QPartialOrdering* QPartialOrdering_new(QPartialOrdering* other);
-QPartialOrdering* QPartialOrdering_new2(QPartialOrdering* other);
-QPartialOrdering* QPartialOrdering_new3(QPartialOrdering* param1);
-void QPartialOrdering_CopyAssign(QPartialOrdering* self, QPartialOrdering* other);
-void QPartialOrdering_MoveAssign(QPartialOrdering* self, QPartialOrdering* other);
-void QPartialOrdering_Delete(QPartialOrdering* self);
+QTLIBC_API QPartialOrdering* QPartialOrdering_new(QPartialOrdering* other);
+QTLIBC_API QPartialOrdering* QPartialOrdering_new2(QPartialOrdering* other);
+QTLIBC_API QPartialOrdering* QPartialOrdering_new3(QPartialOrdering* param1);
+QTLIBC_API void QPartialOrdering_CopyAssign(QPartialOrdering* self, QPartialOrdering* other);
+QTLIBC_API void QPartialOrdering_MoveAssign(QPartialOrdering* self, QPartialOrdering* other);
+QTLIBC_API void QPartialOrdering_Delete(QPartialOrdering* self);
 
 #ifdef __cplusplus
 } /* extern C */

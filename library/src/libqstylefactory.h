@@ -22,13 +22,13 @@ typedef struct QStyle QStyle;
 typedef struct QStyleFactory QStyleFactory;
 #endif
 
-QStyleFactory* QStyleFactory_new(QStyleFactory* other);
-QStyleFactory* QStyleFactory_new2(QStyleFactory* other);
-void QStyleFactory_CopyAssign(QStyleFactory* self, QStyleFactory* other);
-void QStyleFactory_MoveAssign(QStyleFactory* self, QStyleFactory* other);
-libqt_list /* of libqt_string */ QStyleFactory_Keys();
-QStyle* QStyleFactory_Create(libqt_string param1);
-void QStyleFactory_Delete(QStyleFactory* self);
+QTLIBC_API QStyleFactory* QStyleFactory_new(QStyleFactory* other);
+QTLIBC_API QStyleFactory* QStyleFactory_new2(QStyleFactory* other);
+QTLIBC_API void QStyleFactory_CopyAssign(QStyleFactory* self, QStyleFactory* other);
+QTLIBC_API void QStyleFactory_MoveAssign(QStyleFactory* self, QStyleFactory* other);
+QTLIBC_API libqt_list /* of libqt_string */ QStyleFactory_Keys();
+QTLIBC_API QStyle* QStyleFactory_Create(libqt_string param1);
+QTLIBC_API void QStyleFactory_Delete(QStyleFactory* self);
 
 #ifdef __cplusplus
 } /* extern C */

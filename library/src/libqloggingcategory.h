@@ -27,17 +27,17 @@ typedef QLoggingCategory::CategoryFilter CategoryFilter; // C++ QFlags
 
 #endif
 
-QLoggingCategory* QLoggingCategory_new(const char* category);
-bool QLoggingCategory_IsDebugEnabled(const QLoggingCategory* self);
-bool QLoggingCategory_IsInfoEnabled(const QLoggingCategory* self);
-bool QLoggingCategory_IsWarningEnabled(const QLoggingCategory* self);
-bool QLoggingCategory_IsCriticalEnabled(const QLoggingCategory* self);
-const char* QLoggingCategory_CategoryName(const QLoggingCategory* self);
-QLoggingCategory* QLoggingCategory_OperatorCall(QLoggingCategory* self);
-QLoggingCategory* QLoggingCategory_OperatorCall2(const QLoggingCategory* self);
-QLoggingCategory* QLoggingCategory_DefaultCategory();
-void QLoggingCategory_SetFilterRules(libqt_string rules);
-void QLoggingCategory_Delete(QLoggingCategory* self);
+QTLIBC_API QLoggingCategory* QLoggingCategory_new(const char* category);
+QTLIBC_API bool QLoggingCategory_IsDebugEnabled(const QLoggingCategory* self);
+QTLIBC_API bool QLoggingCategory_IsInfoEnabled(const QLoggingCategory* self);
+QTLIBC_API bool QLoggingCategory_IsWarningEnabled(const QLoggingCategory* self);
+QTLIBC_API bool QLoggingCategory_IsCriticalEnabled(const QLoggingCategory* self);
+QTLIBC_API const char* QLoggingCategory_CategoryName(const QLoggingCategory* self);
+QTLIBC_API QLoggingCategory* QLoggingCategory_OperatorCall(QLoggingCategory* self);
+QTLIBC_API QLoggingCategory* QLoggingCategory_OperatorCall2(const QLoggingCategory* self);
+QTLIBC_API QLoggingCategory* QLoggingCategory_DefaultCategory();
+QTLIBC_API void QLoggingCategory_SetFilterRules(libqt_string rules);
+QTLIBC_API void QLoggingCategory_Delete(QLoggingCategory* self);
 
 #ifdef __cplusplus
 } /* extern C */

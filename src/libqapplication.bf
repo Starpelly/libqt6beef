@@ -5,7 +5,7 @@ namespace Qt;
 public struct QApplication
 {
 	[LinkName("QApplication_new")]
-	public static extern void* QApplication_new(int32 argc, char8[] argv);
+	public static extern void* QApplication_new(int32* argc, char8[] argv);
 	[LinkName("QApplication_new2")]
 	public static extern void* QApplication_new2(int32 argc, char8[] argv, int32 param3);
 	[LinkName("QApplication_MetaObject")]

@@ -30,29 +30,29 @@ typedef long long difference_type; // C ABI QFlags
 typedef ptrdiff_t size_type;       // C ABI QFlags
 #endif
 
-QAnyStringView* QAnyStringView_new(char* other);
-QAnyStringView* QAnyStringView_new2(char* other);
-QAnyStringView* QAnyStringView_new3();
-QAnyStringView* QAnyStringView_new4(libqt_string str);
-QAnyStringView* QAnyStringView_new5(libqt_string str);
-QAnyStringView* QAnyStringView_new6(QChar* c);
-QAnyStringView* QAnyStringView_new7(char* param1);
-void QAnyStringView_CopyAssign(QAnyStringView* self, QAnyStringView* other);
-void QAnyStringView_MoveAssign(QAnyStringView* self, QAnyStringView* other);
-libqt_string QAnyStringView_ToString(const QAnyStringView* self);
-ptrdiff_t QAnyStringView_Size(const QAnyStringView* self);
-const void* QAnyStringView_Data(const QAnyStringView* self);
-int QAnyStringView_Compare(char* lhs, char* rhs);
-bool QAnyStringView_Equal(char* lhs, char* rhs);
-QChar* QAnyStringView_Front(const QAnyStringView* self);
-QChar* QAnyStringView_Back(const QAnyStringView* self);
-bool QAnyStringView_Empty(const QAnyStringView* self);
-ptrdiff_t QAnyStringView_SizeBytes(const QAnyStringView* self);
-bool QAnyStringView_IsNull(const QAnyStringView* self);
-bool QAnyStringView_IsEmpty(const QAnyStringView* self);
-ptrdiff_t QAnyStringView_Length(const QAnyStringView* self);
-int QAnyStringView_Compare3(char* lhs, char* rhs, int cs);
-void QAnyStringView_Delete(QAnyStringView* self);
+QTLIBC_API QAnyStringView* QAnyStringView_new(char* other);
+QTLIBC_API QAnyStringView* QAnyStringView_new2(char* other);
+QTLIBC_API QAnyStringView* QAnyStringView_new3();
+QTLIBC_API QAnyStringView* QAnyStringView_new4(libqt_string str);
+QTLIBC_API QAnyStringView* QAnyStringView_new5(libqt_string str);
+QTLIBC_API QAnyStringView* QAnyStringView_new6(QChar* c);
+QTLIBC_API QAnyStringView* QAnyStringView_new7(char* param1);
+QTLIBC_API void QAnyStringView_CopyAssign(QAnyStringView* self, QAnyStringView* other);
+QTLIBC_API void QAnyStringView_MoveAssign(QAnyStringView* self, QAnyStringView* other);
+QTLIBC_API libqt_string QAnyStringView_ToString(const QAnyStringView* self);
+QTLIBC_API ptrdiff_t QAnyStringView_Size(const QAnyStringView* self);
+QTLIBC_API const void* QAnyStringView_Data(const QAnyStringView* self);
+QTLIBC_API int QAnyStringView_Compare(char* lhs, char* rhs);
+QTLIBC_API bool QAnyStringView_Equal(char* lhs, char* rhs);
+QTLIBC_API QChar* QAnyStringView_Front(const QAnyStringView* self);
+QTLIBC_API QChar* QAnyStringView_Back(const QAnyStringView* self);
+QTLIBC_API bool QAnyStringView_Empty(const QAnyStringView* self);
+QTLIBC_API ptrdiff_t QAnyStringView_SizeBytes(const QAnyStringView* self);
+QTLIBC_API bool QAnyStringView_IsNull(const QAnyStringView* self);
+QTLIBC_API bool QAnyStringView_IsEmpty(const QAnyStringView* self);
+QTLIBC_API ptrdiff_t QAnyStringView_Length(const QAnyStringView* self);
+QTLIBC_API int QAnyStringView_Compare3(char* lhs, char* rhs, int cs);
+QTLIBC_API void QAnyStringView_Delete(QAnyStringView* self);
 
 #ifdef __cplusplus
 } /* extern C */

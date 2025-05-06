@@ -37,9 +37,9 @@ typedef unsigned long long QCborTag;             // C ABI enum
 typedef void QtGadgetHelper;                     // C ABI QFlags
 #endif
 
-int QCborError_ToQCborError__Code(const QCborError* self);
-libqt_string QCborError_ToString(const QCborError* self);
-void QCborError_Delete(QCborError* self);
+QTLIBC_API int QCborError_ToQCborError__Code(const QCborError* self);
+QTLIBC_API libqt_string QCborError_ToString(const QCborError* self);
+QTLIBC_API void QCborError_Delete(QCborError* self);
 
 #ifdef __cplusplus
 } /* extern C */

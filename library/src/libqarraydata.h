@@ -35,16 +35,16 @@ typedef int GrowthPosition;                // C ABI enum
 typedef int QContainerImplHelperCutResult; // C ABI enum
 #endif
 
-ptrdiff_t QArrayData_AllocatedCapacity(QArrayData* self);
-ptrdiff_t QArrayData_ConstAllocatedCapacity(const QArrayData* self);
-bool QArrayData_Ref(QArrayData* self);
-bool QArrayData_Deref(QArrayData* self);
-bool QArrayData_IsShared(const QArrayData* self);
-bool QArrayData_NeedsDetach(const QArrayData* self);
-ptrdiff_t QArrayData_DetachCapacity(const QArrayData* self, ptrdiff_t newSize);
-libqt_pair /* tuple of QArrayData* and void* */ QArrayData_ReallocateUnaligned(QArrayData* data, void* dataPointer, ptrdiff_t objectSize, ptrdiff_t newCapacity, int option);
-void QArrayData_Deallocate(QArrayData* data, ptrdiff_t objectSize, ptrdiff_t alignment);
-void QArrayData_Delete(QArrayData* self);
+QTLIBC_API ptrdiff_t QArrayData_AllocatedCapacity(QArrayData* self);
+QTLIBC_API ptrdiff_t QArrayData_ConstAllocatedCapacity(const QArrayData* self);
+QTLIBC_API bool QArrayData_Ref(QArrayData* self);
+QTLIBC_API bool QArrayData_Deref(QArrayData* self);
+QTLIBC_API bool QArrayData_IsShared(const QArrayData* self);
+QTLIBC_API bool QArrayData_NeedsDetach(const QArrayData* self);
+QTLIBC_API ptrdiff_t QArrayData_DetachCapacity(const QArrayData* self, ptrdiff_t newSize);
+QTLIBC_API libqt_pair /* tuple of QArrayData* and void* */ QArrayData_ReallocateUnaligned(QArrayData* data, void* dataPointer, ptrdiff_t objectSize, ptrdiff_t newCapacity, int option);
+QTLIBC_API void QArrayData_Deallocate(QArrayData* data, ptrdiff_t objectSize, ptrdiff_t alignment);
+QTLIBC_API void QArrayData_Delete(QArrayData* self);
 
 #ifdef __cplusplus
 } /* extern C */

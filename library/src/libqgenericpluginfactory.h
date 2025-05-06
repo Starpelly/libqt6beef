@@ -22,13 +22,13 @@ typedef struct QGenericPluginFactory QGenericPluginFactory;
 typedef struct QObject QObject;
 #endif
 
-QGenericPluginFactory* QGenericPluginFactory_new(QGenericPluginFactory* other);
-QGenericPluginFactory* QGenericPluginFactory_new2(QGenericPluginFactory* other);
-void QGenericPluginFactory_CopyAssign(QGenericPluginFactory* self, QGenericPluginFactory* other);
-void QGenericPluginFactory_MoveAssign(QGenericPluginFactory* self, QGenericPluginFactory* other);
-libqt_list /* of libqt_string */ QGenericPluginFactory_Keys();
-QObject* QGenericPluginFactory_Create(libqt_string param1, libqt_string param2);
-void QGenericPluginFactory_Delete(QGenericPluginFactory* self);
+QTLIBC_API QGenericPluginFactory* QGenericPluginFactory_new(QGenericPluginFactory* other);
+QTLIBC_API QGenericPluginFactory* QGenericPluginFactory_new2(QGenericPluginFactory* other);
+QTLIBC_API void QGenericPluginFactory_CopyAssign(QGenericPluginFactory* self, QGenericPluginFactory* other);
+QTLIBC_API void QGenericPluginFactory_MoveAssign(QGenericPluginFactory* self, QGenericPluginFactory* other);
+QTLIBC_API libqt_list /* of libqt_string */ QGenericPluginFactory_Keys();
+QTLIBC_API QObject* QGenericPluginFactory_Create(libqt_string param1, libqt_string param2);
+QTLIBC_API void QGenericPluginFactory_Delete(QGenericPluginFactory* self);
 
 #ifdef __cplusplus
 } /* extern C */

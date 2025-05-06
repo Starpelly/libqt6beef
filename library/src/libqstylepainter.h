@@ -55,19 +55,19 @@ typedef struct QTransform QTransform;
 typedef struct QWidget QWidget;
 #endif
 
-QStylePainter* QStylePainter_new(QWidget* w);
-QStylePainter* QStylePainter_new2();
-QStylePainter* QStylePainter_new3(QPaintDevice* pd, QWidget* w);
-bool QStylePainter_Begin(QStylePainter* self, QWidget* w);
-bool QStylePainter_Begin2(QStylePainter* self, QPaintDevice* pd, QWidget* w);
-void QStylePainter_DrawPrimitive(QStylePainter* self, int pe, QStyleOption* opt);
-void QStylePainter_DrawControl(QStylePainter* self, int ce, QStyleOption* opt);
-void QStylePainter_DrawComplexControl(QStylePainter* self, int cc, QStyleOptionComplex* opt);
-void QStylePainter_DrawItemText(QStylePainter* self, QRect* r, int flags, QPalette* pal, bool enabled, libqt_string text);
-void QStylePainter_DrawItemPixmap(QStylePainter* self, QRect* r, int flags, QPixmap* pixmap);
-QStyle* QStylePainter_Style(const QStylePainter* self);
-void QStylePainter_DrawItemText6(QStylePainter* self, QRect* r, int flags, QPalette* pal, bool enabled, libqt_string text, int textRole);
-void QStylePainter_Delete(QStylePainter* self);
+QTLIBC_API QStylePainter* QStylePainter_new(QWidget* w);
+QTLIBC_API QStylePainter* QStylePainter_new2();
+QTLIBC_API QStylePainter* QStylePainter_new3(QPaintDevice* pd, QWidget* w);
+QTLIBC_API bool QStylePainter_Begin(QStylePainter* self, QWidget* w);
+QTLIBC_API bool QStylePainter_Begin2(QStylePainter* self, QPaintDevice* pd, QWidget* w);
+QTLIBC_API void QStylePainter_DrawPrimitive(QStylePainter* self, int pe, QStyleOption* opt);
+QTLIBC_API void QStylePainter_DrawControl(QStylePainter* self, int ce, QStyleOption* opt);
+QTLIBC_API void QStylePainter_DrawComplexControl(QStylePainter* self, int cc, QStyleOptionComplex* opt);
+QTLIBC_API void QStylePainter_DrawItemText(QStylePainter* self, QRect* r, int flags, QPalette* pal, bool enabled, libqt_string text);
+QTLIBC_API void QStylePainter_DrawItemPixmap(QStylePainter* self, QRect* r, int flags, QPixmap* pixmap);
+QTLIBC_API QStyle* QStylePainter_Style(const QStylePainter* self);
+QTLIBC_API void QStylePainter_DrawItemText6(QStylePainter* self, QRect* r, int flags, QPalette* pal, bool enabled, libqt_string text, int textRole);
+QTLIBC_API void QStylePainter_Delete(QStylePainter* self);
 
 #ifdef __cplusplus
 } /* extern C */
