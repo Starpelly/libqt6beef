@@ -1,12 +1,13 @@
 #include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
+#include <QAnyStringView>
 #include <QApplication>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QClipboard>
 #include <QCoreApplication>
 #include <QCursor>
-#include <QDesktopWidget>
 #include <QEvent>
 #include <QFont>
 #include <QFontMetrics>
@@ -18,12 +19,10 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPalette>
 #include <QPoint>
 #include <QScreen>
 #include <QSessionManager>
-#include <QSize>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -92,18 +91,6 @@ libqt_string QApplication_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QApplication_TrUtf8(const char* s) {
-    QString _ret = QApplication::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QStyle* QApplication_Style() {
     return QApplication::style();
 }
@@ -115,14 +102,6 @@ void QApplication_SetStyle(QStyle* style) {
 QStyle* QApplication_SetStyleWithStyle(libqt_string style) {
     QString style_QString = QString::fromUtf8(style.data, style.len);
     return QApplication::setStyle(style_QString);
-}
-
-int QApplication_ColorSpec() {
-    return QApplication::colorSpec();
-}
-
-void QApplication_SetColorSpec(int colorSpec) {
-    QApplication::setColorSpec(static_cast<int>(colorSpec));
 }
 
 QPalette* QApplication_Palette(QWidget* param1) {
@@ -157,14 +136,6 @@ QFontMetrics* QApplication_FontMetrics() {
     return new QFontMetrics(QApplication::fontMetrics());
 }
 
-void QApplication_SetWindowIcon(QIcon* icon) {
-    QApplication::setWindowIcon(*icon);
-}
-
-QIcon* QApplication_WindowIcon() {
-    return new QIcon(QApplication::windowIcon());
-}
-
 libqt_list /* of QWidget* */ QApplication_AllWidgets() {
     QWidgetList _ret = QApplication::allWidgets();
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -189,10 +160,6 @@ libqt_list /* of QWidget* */ QApplication_TopLevelWidgets() {
     _out.len = _ret.length();
     _out.data = static_cast<void*>(_arr);
     return _out;
-}
-
-QDesktopWidget* QApplication_Desktop() {
-    return QApplication::desktop();
 }
 
 QWidget* QApplication_ActivePopupWidget() {
@@ -269,14 +236,6 @@ void QApplication_SetWheelScrollLines(int wheelScrollLines) {
 
 int QApplication_WheelScrollLines() {
     return QApplication::wheelScrollLines();
-}
-
-void QApplication_SetGlobalStrut(QSize* globalStrut) {
-    QApplication::setGlobalStrut(*globalStrut);
-}
-
-QSize* QApplication_GlobalStrut() {
-    return new QSize(QApplication::globalStrut());
 }
 
 void QApplication_SetStartDragTime(int ms) {
@@ -367,30 +326,6 @@ libqt_string QApplication_Tr2(const char* s, const char* c) {
 
 libqt_string QApplication_Tr3(const char* s, const char* c, int n) {
     QString _ret = QApplication::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QApplication_TrUtf82(const char* s, const char* c) {
-    QString _ret = QApplication::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QApplication_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QApplication::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -622,6 +557,32 @@ void QApplication_QBaseDisconnectNotify(QApplication* self, QMetaMethod* signal)
 void QApplication_OnDisconnectNotify(QApplication* self, intptr_t slot) {
     if (auto* vqapplication = dynamic_cast<VirtualQApplication*>(self)) {
         vqapplication->setQApplication_DisconnectNotify_Callback(reinterpret_cast<VirtualQApplication::QApplication_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void* QApplication_ResolveInterface(const QApplication* self, const char* name, int revision) {
+    if (auto* vqapplication = const_cast<VirtualQApplication*>(dynamic_cast<const VirtualQApplication*>(self))) {
+        return vqapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Base class handler implementation
+void* QApplication_QBaseResolveInterface(const QApplication* self, const char* name, int revision) {
+    if (auto* vqapplication = const_cast<VirtualQApplication*>(dynamic_cast<const VirtualQApplication*>(self))) {
+        vqapplication->setQApplication_ResolveInterface_IsBase(true);
+        return vqapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QApplication_OnResolveInterface(const QApplication* self, intptr_t slot) {
+    if (auto* vqapplication = const_cast<VirtualQApplication*>(dynamic_cast<const VirtualQApplication*>(self))) {
+        vqapplication->setQApplication_ResolveInterface_Callback(reinterpret_cast<VirtualQApplication::QApplication_ResolveInterface_Callback>(slot));
     }
 }
 

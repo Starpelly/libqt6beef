@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -6,7 +8,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QOffscreenSurface>
 #include <QScreen>
 #include <QSize>
@@ -22,16 +23,16 @@
 #include "libqoffscreensurface.h"
 #include "libqoffscreensurface.hxx"
 
-QOffscreenSurface* QOffscreenSurface_new(QScreen* screen, QObject* parent) {
-    return new VirtualQOffscreenSurface(screen, parent);
-}
-
-QOffscreenSurface* QOffscreenSurface_new2() {
+QOffscreenSurface* QOffscreenSurface_new() {
     return new VirtualQOffscreenSurface();
 }
 
-QOffscreenSurface* QOffscreenSurface_new3(QScreen* screen) {
+QOffscreenSurface* QOffscreenSurface_new2(QScreen* screen) {
     return new VirtualQOffscreenSurface(screen);
+}
+
+QOffscreenSurface* QOffscreenSurface_new3(QScreen* screen, QObject* parent) {
+    return new VirtualQOffscreenSurface(screen, parent);
 }
 
 QMetaObject* QOffscreenSurface_MetaObject(const QOffscreenSurface* self) {
@@ -79,18 +80,6 @@ libqt_string QOffscreenSurface_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QOffscreenSurface_TrUtf8(const char* s) {
-    QString _ret = QOffscreenSurface::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QOffscreenSurface_Create(QOffscreenSurface* self) {
     self->create();
 }
@@ -119,14 +108,6 @@ void QOffscreenSurface_SetScreen(QOffscreenSurface* self, QScreen* screen) {
     self->setScreen(screen);
 }
 
-void* QOffscreenSurface_NativeHandle(const QOffscreenSurface* self) {
-    return self->nativeHandle();
-}
-
-void QOffscreenSurface_SetNativeHandle(QOffscreenSurface* self, void* handle) {
-    self->setNativeHandle(handle);
-}
-
 void QOffscreenSurface_ScreenChanged(QOffscreenSurface* self, QScreen* screen) {
     self->screenChanged(screen);
 }
@@ -153,30 +134,6 @@ libqt_string QOffscreenSurface_Tr2(const char* s, const char* c) {
 
 libqt_string QOffscreenSurface_Tr3(const char* s, const char* c, int n) {
     QString _ret = QOffscreenSurface::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QOffscreenSurface_TrUtf82(const char* s, const char* c) {
-    QString _ret = QOffscreenSurface::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QOffscreenSurface_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QOffscreenSurface::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -444,6 +401,32 @@ void QOffscreenSurface_QBaseDisconnectNotify(QOffscreenSurface* self, QMetaMetho
 void QOffscreenSurface_OnDisconnectNotify(QOffscreenSurface* self, intptr_t slot) {
     if (auto* vqoffscreensurface = dynamic_cast<VirtualQOffscreenSurface*>(self)) {
         vqoffscreensurface->setQOffscreenSurface_DisconnectNotify_Callback(reinterpret_cast<VirtualQOffscreenSurface::QOffscreenSurface_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void* QOffscreenSurface_ResolveInterface(const QOffscreenSurface* self, const char* name, int revision) {
+    if (auto* vqoffscreensurface = const_cast<VirtualQOffscreenSurface*>(dynamic_cast<const VirtualQOffscreenSurface*>(self))) {
+        return vqoffscreensurface->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqoffscreensurface->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Base class handler implementation
+void* QOffscreenSurface_QBaseResolveInterface(const QOffscreenSurface* self, const char* name, int revision) {
+    if (auto* vqoffscreensurface = const_cast<VirtualQOffscreenSurface*>(dynamic_cast<const VirtualQOffscreenSurface*>(self))) {
+        vqoffscreensurface->setQOffscreenSurface_ResolveInterface_IsBase(true);
+        return vqoffscreensurface->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqoffscreensurface->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QOffscreenSurface_OnResolveInterface(const QOffscreenSurface* self, intptr_t slot) {
+    if (auto* vqoffscreensurface = const_cast<VirtualQOffscreenSurface*>(dynamic_cast<const VirtualQOffscreenSurface*>(self))) {
+        vqoffscreensurface->setQOffscreenSurface_ResolveInterface_Callback(reinterpret_cast<VirtualQOffscreenSurface::QOffscreenSurface_ResolveInterface_Callback>(slot));
     }
 }
 

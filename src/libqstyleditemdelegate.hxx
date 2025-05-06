@@ -30,7 +30,7 @@ class VirtualQStyledItemDelegate : public QStyledItemDelegate {
     using QStyledItemDelegate_EditorEvent_Callback = bool (*)(QStyledItemDelegate*, QEvent*, QAbstractItemModel*, const QStyleOptionViewItem&, const QModelIndex&);
     using QStyledItemDelegate_DestroyEditor_Callback = void (*)(const QStyledItemDelegate*, QWidget*, const QModelIndex&);
     using QStyledItemDelegate_HelpEvent_Callback = bool (*)(QStyledItemDelegate*, QHelpEvent*, QAbstractItemView*, const QStyleOptionViewItem&, const QModelIndex&);
-    using QStyledItemDelegate_PaintingRoles_Callback = QVector<int> (*)();
+    using QStyledItemDelegate_PaintingRoles_Callback = QList<int> (*)();
     using QStyledItemDelegate_Event_Callback = bool (*)(QStyledItemDelegate*, QEvent*);
     using QStyledItemDelegate_TimerEvent_Callback = void (*)(QStyledItemDelegate*, QTimerEvent*);
     using QStyledItemDelegate_ChildEvent_Callback = void (*)(QStyledItemDelegate*, QChildEvent*);
@@ -335,7 +335,7 @@ class VirtualQStyledItemDelegate : public QStyledItemDelegate {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QVector<int> paintingRoles() const override {
+    virtual QList<int> paintingRoles() const override {
         if (qstyleditemdelegate_paintingroles_isbase) {
             qstyleditemdelegate_paintingroles_isbase = false;
             return QStyledItemDelegate::paintingRoles();

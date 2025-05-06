@@ -19,31 +19,33 @@ class VirtualQUdpSocket : public QUdpSocket {
     // Virtual class public types (including callbacks)
     using QUdpSocket_Metacall_Callback = int (*)(QUdpSocket*, QMetaObject::Call, int, void**);
     using QUdpSocket_Resume_Callback = void (*)();
-    using QUdpSocket_ConnectToHost_Callback = void (*)(QUdpSocket*, const QString&, quint16, QIODevice::OpenMode, QAbstractSocket::NetworkLayerProtocol);
+    using QUdpSocket_Bind_Callback = bool (*)(QUdpSocket*, const QHostAddress&, quint16, QAbstractSocket::BindMode);
+    using QUdpSocket_ConnectToHost_Callback = void (*)(QUdpSocket*, const QString&, quint16, QIODeviceBase::OpenMode, QAbstractSocket::NetworkLayerProtocol);
     using QUdpSocket_DisconnectFromHost_Callback = void (*)();
     using QUdpSocket_BytesAvailable_Callback = qint64 (*)();
     using QUdpSocket_BytesToWrite_Callback = qint64 (*)();
-    using QUdpSocket_CanReadLine_Callback = bool (*)();
     using QUdpSocket_SetReadBufferSize_Callback = void (*)(QUdpSocket*, qint64);
     using QUdpSocket_SocketDescriptor_Callback = qintptr (*)();
-    using QUdpSocket_SetSocketDescriptor_Callback = bool (*)(QUdpSocket*, qintptr, QAbstractSocket::SocketState, QIODevice::OpenMode);
+    using QUdpSocket_SetSocketDescriptor_Callback = bool (*)(QUdpSocket*, qintptr, QAbstractSocket::SocketState, QIODeviceBase::OpenMode);
     using QUdpSocket_SetSocketOption_Callback = void (*)(QUdpSocket*, QAbstractSocket::SocketOption, const QVariant&);
     using QUdpSocket_SocketOption_Callback = QVariant (*)(QUdpSocket*, QAbstractSocket::SocketOption);
     using QUdpSocket_Close_Callback = void (*)();
     using QUdpSocket_IsSequential_Callback = bool (*)();
-    using QUdpSocket_AtEnd_Callback = bool (*)();
     using QUdpSocket_WaitForConnected_Callback = bool (*)(QUdpSocket*, int);
     using QUdpSocket_WaitForReadyRead_Callback = bool (*)(QUdpSocket*, int);
     using QUdpSocket_WaitForBytesWritten_Callback = bool (*)(QUdpSocket*, int);
     using QUdpSocket_WaitForDisconnected_Callback = bool (*)(QUdpSocket*, int);
     using QUdpSocket_ReadData_Callback = qint64 (*)(QUdpSocket*, char*, qint64);
     using QUdpSocket_ReadLineData_Callback = qint64 (*)(QUdpSocket*, char*, qint64);
+    using QUdpSocket_SkipData_Callback = qint64 (*)(QUdpSocket*, qint64);
     using QUdpSocket_WriteData_Callback = qint64 (*)(QUdpSocket*, const char*, qint64);
-    using QUdpSocket_Open_Callback = bool (*)(QUdpSocket*, QIODevice::OpenMode);
+    using QUdpSocket_Open_Callback = bool (*)(QUdpSocket*, QIODeviceBase::OpenMode);
     using QUdpSocket_Pos_Callback = qint64 (*)();
     using QUdpSocket_Size_Callback = qint64 (*)();
     using QUdpSocket_Seek_Callback = bool (*)(QUdpSocket*, qint64);
+    using QUdpSocket_AtEnd_Callback = bool (*)();
     using QUdpSocket_Reset_Callback = bool (*)();
+    using QUdpSocket_CanReadLine_Callback = bool (*)();
     using QUdpSocket_Event_Callback = bool (*)(QUdpSocket*, QEvent*);
     using QUdpSocket_EventFilter_Callback = bool (*)(QUdpSocket*, QObject*, QEvent*);
     using QUdpSocket_TimerEvent_Callback = void (*)(QUdpSocket*, QTimerEvent*);
@@ -58,7 +60,7 @@ class VirtualQUdpSocket : public QUdpSocket {
     using QUdpSocket_SetPeerPort_Callback = void (*)(QUdpSocket*, quint16);
     using QUdpSocket_SetPeerAddress_Callback = void (*)(QUdpSocket*, const QHostAddress&);
     using QUdpSocket_SetPeerName_Callback = void (*)(QUdpSocket*, const QString&);
-    using QUdpSocket_SetOpenMode_Callback = void (*)(QUdpSocket*, QIODevice::OpenMode);
+    using QUdpSocket_SetOpenMode_Callback = void (*)(QUdpSocket*, QIODeviceBase::OpenMode);
     using QUdpSocket_SetErrorString_Callback = void (*)(QUdpSocket*, const QString&);
     using QUdpSocket_Sender_Callback = QObject* (*)();
     using QUdpSocket_SenderSignalIndex_Callback = int (*)();
@@ -69,11 +71,11 @@ class VirtualQUdpSocket : public QUdpSocket {
     // Instance callback storage
     QUdpSocket_Metacall_Callback qudpsocket_metacall_callback = nullptr;
     QUdpSocket_Resume_Callback qudpsocket_resume_callback = nullptr;
+    QUdpSocket_Bind_Callback qudpsocket_bind_callback = nullptr;
     QUdpSocket_ConnectToHost_Callback qudpsocket_connecttohost_callback = nullptr;
     QUdpSocket_DisconnectFromHost_Callback qudpsocket_disconnectfromhost_callback = nullptr;
     QUdpSocket_BytesAvailable_Callback qudpsocket_bytesavailable_callback = nullptr;
     QUdpSocket_BytesToWrite_Callback qudpsocket_bytestowrite_callback = nullptr;
-    QUdpSocket_CanReadLine_Callback qudpsocket_canreadline_callback = nullptr;
     QUdpSocket_SetReadBufferSize_Callback qudpsocket_setreadbuffersize_callback = nullptr;
     QUdpSocket_SocketDescriptor_Callback qudpsocket_socketdescriptor_callback = nullptr;
     QUdpSocket_SetSocketDescriptor_Callback qudpsocket_setsocketdescriptor_callback = nullptr;
@@ -81,19 +83,21 @@ class VirtualQUdpSocket : public QUdpSocket {
     QUdpSocket_SocketOption_Callback qudpsocket_socketoption_callback = nullptr;
     QUdpSocket_Close_Callback qudpsocket_close_callback = nullptr;
     QUdpSocket_IsSequential_Callback qudpsocket_issequential_callback = nullptr;
-    QUdpSocket_AtEnd_Callback qudpsocket_atend_callback = nullptr;
     QUdpSocket_WaitForConnected_Callback qudpsocket_waitforconnected_callback = nullptr;
     QUdpSocket_WaitForReadyRead_Callback qudpsocket_waitforreadyread_callback = nullptr;
     QUdpSocket_WaitForBytesWritten_Callback qudpsocket_waitforbyteswritten_callback = nullptr;
     QUdpSocket_WaitForDisconnected_Callback qudpsocket_waitfordisconnected_callback = nullptr;
     QUdpSocket_ReadData_Callback qudpsocket_readdata_callback = nullptr;
     QUdpSocket_ReadLineData_Callback qudpsocket_readlinedata_callback = nullptr;
+    QUdpSocket_SkipData_Callback qudpsocket_skipdata_callback = nullptr;
     QUdpSocket_WriteData_Callback qudpsocket_writedata_callback = nullptr;
     QUdpSocket_Open_Callback qudpsocket_open_callback = nullptr;
     QUdpSocket_Pos_Callback qudpsocket_pos_callback = nullptr;
     QUdpSocket_Size_Callback qudpsocket_size_callback = nullptr;
     QUdpSocket_Seek_Callback qudpsocket_seek_callback = nullptr;
+    QUdpSocket_AtEnd_Callback qudpsocket_atend_callback = nullptr;
     QUdpSocket_Reset_Callback qudpsocket_reset_callback = nullptr;
+    QUdpSocket_CanReadLine_Callback qudpsocket_canreadline_callback = nullptr;
     QUdpSocket_Event_Callback qudpsocket_event_callback = nullptr;
     QUdpSocket_EventFilter_Callback qudpsocket_eventfilter_callback = nullptr;
     QUdpSocket_TimerEvent_Callback qudpsocket_timerevent_callback = nullptr;
@@ -118,11 +122,11 @@ class VirtualQUdpSocket : public QUdpSocket {
     // Instance base flags
     mutable bool qudpsocket_metacall_isbase = false;
     mutable bool qudpsocket_resume_isbase = false;
+    mutable bool qudpsocket_bind_isbase = false;
     mutable bool qudpsocket_connecttohost_isbase = false;
     mutable bool qudpsocket_disconnectfromhost_isbase = false;
     mutable bool qudpsocket_bytesavailable_isbase = false;
     mutable bool qudpsocket_bytestowrite_isbase = false;
-    mutable bool qudpsocket_canreadline_isbase = false;
     mutable bool qudpsocket_setreadbuffersize_isbase = false;
     mutable bool qudpsocket_socketdescriptor_isbase = false;
     mutable bool qudpsocket_setsocketdescriptor_isbase = false;
@@ -130,19 +134,21 @@ class VirtualQUdpSocket : public QUdpSocket {
     mutable bool qudpsocket_socketoption_isbase = false;
     mutable bool qudpsocket_close_isbase = false;
     mutable bool qudpsocket_issequential_isbase = false;
-    mutable bool qudpsocket_atend_isbase = false;
     mutable bool qudpsocket_waitforconnected_isbase = false;
     mutable bool qudpsocket_waitforreadyread_isbase = false;
     mutable bool qudpsocket_waitforbyteswritten_isbase = false;
     mutable bool qudpsocket_waitfordisconnected_isbase = false;
     mutable bool qudpsocket_readdata_isbase = false;
     mutable bool qudpsocket_readlinedata_isbase = false;
+    mutable bool qudpsocket_skipdata_isbase = false;
     mutable bool qudpsocket_writedata_isbase = false;
     mutable bool qudpsocket_open_isbase = false;
     mutable bool qudpsocket_pos_isbase = false;
     mutable bool qudpsocket_size_isbase = false;
     mutable bool qudpsocket_seek_isbase = false;
+    mutable bool qudpsocket_atend_isbase = false;
     mutable bool qudpsocket_reset_isbase = false;
+    mutable bool qudpsocket_canreadline_isbase = false;
     mutable bool qudpsocket_event_isbase = false;
     mutable bool qudpsocket_eventfilter_isbase = false;
     mutable bool qudpsocket_timerevent_isbase = false;
@@ -171,11 +177,11 @@ class VirtualQUdpSocket : public QUdpSocket {
     ~VirtualQUdpSocket() {
         qudpsocket_metacall_callback = nullptr;
         qudpsocket_resume_callback = nullptr;
+        qudpsocket_bind_callback = nullptr;
         qudpsocket_connecttohost_callback = nullptr;
         qudpsocket_disconnectfromhost_callback = nullptr;
         qudpsocket_bytesavailable_callback = nullptr;
         qudpsocket_bytestowrite_callback = nullptr;
-        qudpsocket_canreadline_callback = nullptr;
         qudpsocket_setreadbuffersize_callback = nullptr;
         qudpsocket_socketdescriptor_callback = nullptr;
         qudpsocket_setsocketdescriptor_callback = nullptr;
@@ -183,19 +189,21 @@ class VirtualQUdpSocket : public QUdpSocket {
         qudpsocket_socketoption_callback = nullptr;
         qudpsocket_close_callback = nullptr;
         qudpsocket_issequential_callback = nullptr;
-        qudpsocket_atend_callback = nullptr;
         qudpsocket_waitforconnected_callback = nullptr;
         qudpsocket_waitforreadyread_callback = nullptr;
         qudpsocket_waitforbyteswritten_callback = nullptr;
         qudpsocket_waitfordisconnected_callback = nullptr;
         qudpsocket_readdata_callback = nullptr;
         qudpsocket_readlinedata_callback = nullptr;
+        qudpsocket_skipdata_callback = nullptr;
         qudpsocket_writedata_callback = nullptr;
         qudpsocket_open_callback = nullptr;
         qudpsocket_pos_callback = nullptr;
         qudpsocket_size_callback = nullptr;
         qudpsocket_seek_callback = nullptr;
+        qudpsocket_atend_callback = nullptr;
         qudpsocket_reset_callback = nullptr;
+        qudpsocket_canreadline_callback = nullptr;
         qudpsocket_event_callback = nullptr;
         qudpsocket_eventfilter_callback = nullptr;
         qudpsocket_timerevent_callback = nullptr;
@@ -221,11 +229,11 @@ class VirtualQUdpSocket : public QUdpSocket {
     // Callback setters
     void setQUdpSocket_Metacall_Callback(QUdpSocket_Metacall_Callback cb) { qudpsocket_metacall_callback = cb; }
     void setQUdpSocket_Resume_Callback(QUdpSocket_Resume_Callback cb) { qudpsocket_resume_callback = cb; }
+    void setQUdpSocket_Bind_Callback(QUdpSocket_Bind_Callback cb) { qudpsocket_bind_callback = cb; }
     void setQUdpSocket_ConnectToHost_Callback(QUdpSocket_ConnectToHost_Callback cb) { qudpsocket_connecttohost_callback = cb; }
     void setQUdpSocket_DisconnectFromHost_Callback(QUdpSocket_DisconnectFromHost_Callback cb) { qudpsocket_disconnectfromhost_callback = cb; }
     void setQUdpSocket_BytesAvailable_Callback(QUdpSocket_BytesAvailable_Callback cb) { qudpsocket_bytesavailable_callback = cb; }
     void setQUdpSocket_BytesToWrite_Callback(QUdpSocket_BytesToWrite_Callback cb) { qudpsocket_bytestowrite_callback = cb; }
-    void setQUdpSocket_CanReadLine_Callback(QUdpSocket_CanReadLine_Callback cb) { qudpsocket_canreadline_callback = cb; }
     void setQUdpSocket_SetReadBufferSize_Callback(QUdpSocket_SetReadBufferSize_Callback cb) { qudpsocket_setreadbuffersize_callback = cb; }
     void setQUdpSocket_SocketDescriptor_Callback(QUdpSocket_SocketDescriptor_Callback cb) { qudpsocket_socketdescriptor_callback = cb; }
     void setQUdpSocket_SetSocketDescriptor_Callback(QUdpSocket_SetSocketDescriptor_Callback cb) { qudpsocket_setsocketdescriptor_callback = cb; }
@@ -233,19 +241,21 @@ class VirtualQUdpSocket : public QUdpSocket {
     void setQUdpSocket_SocketOption_Callback(QUdpSocket_SocketOption_Callback cb) { qudpsocket_socketoption_callback = cb; }
     void setQUdpSocket_Close_Callback(QUdpSocket_Close_Callback cb) { qudpsocket_close_callback = cb; }
     void setQUdpSocket_IsSequential_Callback(QUdpSocket_IsSequential_Callback cb) { qudpsocket_issequential_callback = cb; }
-    void setQUdpSocket_AtEnd_Callback(QUdpSocket_AtEnd_Callback cb) { qudpsocket_atend_callback = cb; }
     void setQUdpSocket_WaitForConnected_Callback(QUdpSocket_WaitForConnected_Callback cb) { qudpsocket_waitforconnected_callback = cb; }
     void setQUdpSocket_WaitForReadyRead_Callback(QUdpSocket_WaitForReadyRead_Callback cb) { qudpsocket_waitforreadyread_callback = cb; }
     void setQUdpSocket_WaitForBytesWritten_Callback(QUdpSocket_WaitForBytesWritten_Callback cb) { qudpsocket_waitforbyteswritten_callback = cb; }
     void setQUdpSocket_WaitForDisconnected_Callback(QUdpSocket_WaitForDisconnected_Callback cb) { qudpsocket_waitfordisconnected_callback = cb; }
     void setQUdpSocket_ReadData_Callback(QUdpSocket_ReadData_Callback cb) { qudpsocket_readdata_callback = cb; }
     void setQUdpSocket_ReadLineData_Callback(QUdpSocket_ReadLineData_Callback cb) { qudpsocket_readlinedata_callback = cb; }
+    void setQUdpSocket_SkipData_Callback(QUdpSocket_SkipData_Callback cb) { qudpsocket_skipdata_callback = cb; }
     void setQUdpSocket_WriteData_Callback(QUdpSocket_WriteData_Callback cb) { qudpsocket_writedata_callback = cb; }
     void setQUdpSocket_Open_Callback(QUdpSocket_Open_Callback cb) { qudpsocket_open_callback = cb; }
     void setQUdpSocket_Pos_Callback(QUdpSocket_Pos_Callback cb) { qudpsocket_pos_callback = cb; }
     void setQUdpSocket_Size_Callback(QUdpSocket_Size_Callback cb) { qudpsocket_size_callback = cb; }
     void setQUdpSocket_Seek_Callback(QUdpSocket_Seek_Callback cb) { qudpsocket_seek_callback = cb; }
+    void setQUdpSocket_AtEnd_Callback(QUdpSocket_AtEnd_Callback cb) { qudpsocket_atend_callback = cb; }
     void setQUdpSocket_Reset_Callback(QUdpSocket_Reset_Callback cb) { qudpsocket_reset_callback = cb; }
+    void setQUdpSocket_CanReadLine_Callback(QUdpSocket_CanReadLine_Callback cb) { qudpsocket_canreadline_callback = cb; }
     void setQUdpSocket_Event_Callback(QUdpSocket_Event_Callback cb) { qudpsocket_event_callback = cb; }
     void setQUdpSocket_EventFilter_Callback(QUdpSocket_EventFilter_Callback cb) { qudpsocket_eventfilter_callback = cb; }
     void setQUdpSocket_TimerEvent_Callback(QUdpSocket_TimerEvent_Callback cb) { qudpsocket_timerevent_callback = cb; }
@@ -270,11 +280,11 @@ class VirtualQUdpSocket : public QUdpSocket {
     // Base flag setters
     void setQUdpSocket_Metacall_IsBase(bool value) const { qudpsocket_metacall_isbase = value; }
     void setQUdpSocket_Resume_IsBase(bool value) const { qudpsocket_resume_isbase = value; }
+    void setQUdpSocket_Bind_IsBase(bool value) const { qudpsocket_bind_isbase = value; }
     void setQUdpSocket_ConnectToHost_IsBase(bool value) const { qudpsocket_connecttohost_isbase = value; }
     void setQUdpSocket_DisconnectFromHost_IsBase(bool value) const { qudpsocket_disconnectfromhost_isbase = value; }
     void setQUdpSocket_BytesAvailable_IsBase(bool value) const { qudpsocket_bytesavailable_isbase = value; }
     void setQUdpSocket_BytesToWrite_IsBase(bool value) const { qudpsocket_bytestowrite_isbase = value; }
-    void setQUdpSocket_CanReadLine_IsBase(bool value) const { qudpsocket_canreadline_isbase = value; }
     void setQUdpSocket_SetReadBufferSize_IsBase(bool value) const { qudpsocket_setreadbuffersize_isbase = value; }
     void setQUdpSocket_SocketDescriptor_IsBase(bool value) const { qudpsocket_socketdescriptor_isbase = value; }
     void setQUdpSocket_SetSocketDescriptor_IsBase(bool value) const { qudpsocket_setsocketdescriptor_isbase = value; }
@@ -282,19 +292,21 @@ class VirtualQUdpSocket : public QUdpSocket {
     void setQUdpSocket_SocketOption_IsBase(bool value) const { qudpsocket_socketoption_isbase = value; }
     void setQUdpSocket_Close_IsBase(bool value) const { qudpsocket_close_isbase = value; }
     void setQUdpSocket_IsSequential_IsBase(bool value) const { qudpsocket_issequential_isbase = value; }
-    void setQUdpSocket_AtEnd_IsBase(bool value) const { qudpsocket_atend_isbase = value; }
     void setQUdpSocket_WaitForConnected_IsBase(bool value) const { qudpsocket_waitforconnected_isbase = value; }
     void setQUdpSocket_WaitForReadyRead_IsBase(bool value) const { qudpsocket_waitforreadyread_isbase = value; }
     void setQUdpSocket_WaitForBytesWritten_IsBase(bool value) const { qudpsocket_waitforbyteswritten_isbase = value; }
     void setQUdpSocket_WaitForDisconnected_IsBase(bool value) const { qudpsocket_waitfordisconnected_isbase = value; }
     void setQUdpSocket_ReadData_IsBase(bool value) const { qudpsocket_readdata_isbase = value; }
     void setQUdpSocket_ReadLineData_IsBase(bool value) const { qudpsocket_readlinedata_isbase = value; }
+    void setQUdpSocket_SkipData_IsBase(bool value) const { qudpsocket_skipdata_isbase = value; }
     void setQUdpSocket_WriteData_IsBase(bool value) const { qudpsocket_writedata_isbase = value; }
     void setQUdpSocket_Open_IsBase(bool value) const { qudpsocket_open_isbase = value; }
     void setQUdpSocket_Pos_IsBase(bool value) const { qudpsocket_pos_isbase = value; }
     void setQUdpSocket_Size_IsBase(bool value) const { qudpsocket_size_isbase = value; }
     void setQUdpSocket_Seek_IsBase(bool value) const { qudpsocket_seek_isbase = value; }
+    void setQUdpSocket_AtEnd_IsBase(bool value) const { qudpsocket_atend_isbase = value; }
     void setQUdpSocket_Reset_IsBase(bool value) const { qudpsocket_reset_isbase = value; }
+    void setQUdpSocket_CanReadLine_IsBase(bool value) const { qudpsocket_canreadline_isbase = value; }
     void setQUdpSocket_Event_IsBase(bool value) const { qudpsocket_event_isbase = value; }
     void setQUdpSocket_EventFilter_IsBase(bool value) const { qudpsocket_eventfilter_isbase = value; }
     void setQUdpSocket_TimerEvent_IsBase(bool value) const { qudpsocket_timerevent_isbase = value; }
@@ -341,7 +353,19 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void connectToHost(const QString& hostName, quint16 port, QIODevice::OpenMode mode, QAbstractSocket::NetworkLayerProtocol protocol) override {
+    virtual bool bind(const QHostAddress& address, quint16 port, QAbstractSocket::BindMode mode) override {
+        if (qudpsocket_bind_isbase) {
+            qudpsocket_bind_isbase = false;
+            return QUdpSocket::bind(address, port, mode);
+        } else if (qudpsocket_bind_callback != nullptr) {
+            return qudpsocket_bind_callback(this, address, port, mode);
+        } else {
+            return QUdpSocket::bind(address, port, mode);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void connectToHost(const QString& hostName, quint16 port, QIODeviceBase::OpenMode mode, QAbstractSocket::NetworkLayerProtocol protocol) override {
         if (qudpsocket_connecttohost_isbase) {
             qudpsocket_connecttohost_isbase = false;
             QUdpSocket::connectToHost(hostName, port, mode, protocol);
@@ -389,18 +413,6 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool canReadLine() const override {
-        if (qudpsocket_canreadline_isbase) {
-            qudpsocket_canreadline_isbase = false;
-            return QUdpSocket::canReadLine();
-        } else if (qudpsocket_canreadline_callback != nullptr) {
-            return qudpsocket_canreadline_callback();
-        } else {
-            return QUdpSocket::canReadLine();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void setReadBufferSize(qint64 size) override {
         if (qudpsocket_setreadbuffersize_isbase) {
             qudpsocket_setreadbuffersize_isbase = false;
@@ -425,7 +437,7 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODevice::OpenMode openMode) override {
+    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODeviceBase::OpenMode openMode) override {
         if (qudpsocket_setsocketdescriptor_isbase) {
             qudpsocket_setsocketdescriptor_isbase = false;
             return QUdpSocket::setSocketDescriptor(socketDescriptor, state, openMode);
@@ -481,18 +493,6 @@ class VirtualQUdpSocket : public QUdpSocket {
             return qudpsocket_issequential_callback();
         } else {
             return QUdpSocket::isSequential();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool atEnd() const override {
-        if (qudpsocket_atend_isbase) {
-            qudpsocket_atend_isbase = false;
-            return QUdpSocket::atEnd();
-        } else if (qudpsocket_atend_callback != nullptr) {
-            return qudpsocket_atend_callback();
-        } else {
-            return QUdpSocket::atEnd();
         }
     }
 
@@ -569,6 +569,18 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual qint64 skipData(qint64 maxSize) override {
+        if (qudpsocket_skipdata_isbase) {
+            qudpsocket_skipdata_isbase = false;
+            return QUdpSocket::skipData(maxSize);
+        } else if (qudpsocket_skipdata_callback != nullptr) {
+            return qudpsocket_skipdata_callback(this, maxSize);
+        } else {
+            return QUdpSocket::skipData(maxSize);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual qint64 writeData(const char* data, qint64 lenVal) override {
         if (qudpsocket_writedata_isbase) {
             qudpsocket_writedata_isbase = false;
@@ -581,7 +593,7 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODevice::OpenMode mode) override {
+    virtual bool open(QIODeviceBase::OpenMode mode) override {
         if (qudpsocket_open_isbase) {
             qudpsocket_open_isbase = false;
             return QUdpSocket::open(mode);
@@ -629,6 +641,18 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual bool atEnd() const override {
+        if (qudpsocket_atend_isbase) {
+            qudpsocket_atend_isbase = false;
+            return QUdpSocket::atEnd();
+        } else if (qudpsocket_atend_callback != nullptr) {
+            return qudpsocket_atend_callback();
+        } else {
+            return QUdpSocket::atEnd();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool reset() override {
         if (qudpsocket_reset_isbase) {
             qudpsocket_reset_isbase = false;
@@ -637,6 +661,18 @@ class VirtualQUdpSocket : public QUdpSocket {
             return qudpsocket_reset_callback();
         } else {
             return QUdpSocket::reset();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool canReadLine() const override {
+        if (qudpsocket_canreadline_isbase) {
+            qudpsocket_canreadline_isbase = false;
+            return QUdpSocket::canReadLine();
+        } else if (qudpsocket_canreadline_callback != nullptr) {
+            return qudpsocket_canreadline_callback();
+        } else {
+            return QUdpSocket::canReadLine();
         }
     }
 
@@ -809,7 +845,7 @@ class VirtualQUdpSocket : public QUdpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODevice::OpenMode openMode) {
+    void setOpenMode(QIODeviceBase::OpenMode openMode) {
         if (qudpsocket_setopenmode_isbase) {
             qudpsocket_setopenmode_isbase = false;
             QUdpSocket::setOpenMode(openMode);

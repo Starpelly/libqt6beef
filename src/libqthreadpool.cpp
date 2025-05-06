@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -6,7 +8,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QRunnable>
 #include <QString>
 #include <QByteArray>
@@ -72,18 +73,6 @@ libqt_string QThreadPool_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QThreadPool_TrUtf8(const char* s) {
-    QString _ret = QThreadPool::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QThreadPool* QThreadPool_GlobalInstance() {
     return QThreadPool::globalInstance();
 }
@@ -94,6 +83,10 @@ void QThreadPool_Start(QThreadPool* self, QRunnable* runnable) {
 
 bool QThreadPool_TryStart(QThreadPool* self, QRunnable* runnable) {
     return self->tryStart(runnable);
+}
+
+void QThreadPool_StartOnReservedThread(QThreadPool* self, QRunnable* runnable) {
+    self->startOnReservedThread(runnable);
 }
 
 int QThreadPool_ExpiryTimeout(const QThreadPool* self) {
@@ -124,6 +117,14 @@ unsigned int QThreadPool_StackSize(const QThreadPool* self) {
     return static_cast<unsigned int>(self->stackSize());
 }
 
+void QThreadPool_SetThreadPriority(QThreadPool* self, int priority) {
+    self->setThreadPriority(static_cast<QThread::Priority>(priority));
+}
+
+int QThreadPool_ThreadPriority(const QThreadPool* self) {
+    return static_cast<int>(self->threadPriority());
+}
+
 void QThreadPool_ReserveThread(QThreadPool* self) {
     self->reserveThread();
 }
@@ -144,10 +145,6 @@ bool QThreadPool_Contains(const QThreadPool* self, QThread* thread) {
     return self->contains(thread);
 }
 
-void QThreadPool_Cancel(QThreadPool* self, QRunnable* runnable) {
-    self->cancel(runnable);
-}
-
 bool QThreadPool_TryTake(QThreadPool* self, QRunnable* runnable) {
     return self->tryTake(runnable);
 }
@@ -166,30 +163,6 @@ libqt_string QThreadPool_Tr2(const char* s, const char* c) {
 
 libqt_string QThreadPool_Tr3(const char* s, const char* c, int n) {
     QString _ret = QThreadPool::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QThreadPool_TrUtf82(const char* s, const char* c) {
-    QString _ret = QThreadPool::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QThreadPool_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QThreadPool::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

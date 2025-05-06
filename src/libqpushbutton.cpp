@@ -1,7 +1,9 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QButtonGroup>
 #include <QByteArray>
@@ -13,6 +15,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,7 +39,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,6 +46,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QPushButton>
 #include <QRect>
 #include <QRegion>
@@ -141,18 +144,6 @@ libqt_string QPushButton_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QPushButton_TrUtf8(const char* s) {
-    QString _ret = QPushButton::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 bool QPushButton_AutoDefault(const QPushButton* self) {
     return self->autoDefault();
 }
@@ -203,30 +194,6 @@ libqt_string QPushButton_Tr2(const char* s, const char* c) {
 
 libqt_string QPushButton_Tr3(const char* s, const char* c, int n) {
     QString _ret = QPushButton::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPushButton_TrUtf82(const char* s, const char* c) {
-    QString _ret = QPushButton::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPushButton_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QPushButton::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -420,6 +387,58 @@ void QPushButton_OnFocusOutEvent(QPushButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QPushButton_MouseMoveEvent(QPushButton* self, QMouseEvent* param1) {
+    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
+        vqpushbutton->mouseMoveEvent(param1);
+    } else {
+        vqpushbutton->mouseMoveEvent(param1);
+    }
+}
+
+// Base class handler implementation
+void QPushButton_QBaseMouseMoveEvent(QPushButton* self, QMouseEvent* param1) {
+    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
+        vqpushbutton->setQPushButton_MouseMoveEvent_IsBase(true);
+        vqpushbutton->mouseMoveEvent(param1);
+    } else {
+        vqpushbutton->mouseMoveEvent(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPushButton_OnMouseMoveEvent(QPushButton* self, intptr_t slot) {
+    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
+        vqpushbutton->setQPushButton_MouseMoveEvent_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_MouseMoveEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QPushButton_InitStyleOption(const QPushButton* self, QStyleOptionButton* option) {
+    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
+        vqpushbutton->initStyleOption(option);
+    } else {
+        vqpushbutton->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QPushButton_QBaseInitStyleOption(const QPushButton* self, QStyleOptionButton* option) {
+    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
+        vqpushbutton->setQPushButton_InitStyleOption_IsBase(true);
+        vqpushbutton->initStyleOption(option);
+    } else {
+        vqpushbutton->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPushButton_OnInitStyleOption(const QPushButton* self, intptr_t slot) {
+    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
+        vqpushbutton->setQPushButton_InitStyleOption_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QPushButton_HitButton(const QPushButton* self, QPoint* pos) {
     if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
         return vqpushbutton->hitButton(*pos);
@@ -572,32 +591,6 @@ void QPushButton_QBaseMouseReleaseEvent(QPushButton* self, QMouseEvent* e) {
 void QPushButton_OnMouseReleaseEvent(QPushButton* self, intptr_t slot) {
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
         vqpushbutton->setQPushButton_MouseReleaseEvent_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_MouseReleaseEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QPushButton_MouseMoveEvent(QPushButton* self, QMouseEvent* e) {
-    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
-        vqpushbutton->mouseMoveEvent(e);
-    } else {
-        vqpushbutton->mouseMoveEvent(e);
-    }
-}
-
-// Base class handler implementation
-void QPushButton_QBaseMouseMoveEvent(QPushButton* self, QMouseEvent* e) {
-    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
-        vqpushbutton->setQPushButton_MouseMoveEvent_IsBase(true);
-        vqpushbutton->mouseMoveEvent(e);
-    } else {
-        vqpushbutton->mouseMoveEvent(e);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPushButton_OnMouseMoveEvent(QPushButton* self, intptr_t slot) {
-    if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
-        vqpushbutton->setQPushButton_MouseMoveEvent_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_MouseMoveEvent_Callback>(slot));
     }
 }
 
@@ -836,7 +829,7 @@ void QPushButton_OnWheelEvent(QPushButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QPushButton_EnterEvent(QPushButton* self, QEvent* event) {
+void QPushButton_EnterEvent(QPushButton* self, QEnterEvent* event) {
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
         vqpushbutton->enterEvent(event);
     } else {
@@ -845,7 +838,7 @@ void QPushButton_EnterEvent(QPushButton* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QPushButton_QBaseEnterEvent(QPushButton* self, QEvent* event) {
+void QPushButton_QBaseEnterEvent(QPushButton* self, QEnterEvent* event) {
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
         vqpushbutton->setQPushButton_EnterEvent_IsBase(true);
         vqpushbutton->enterEvent(event);
@@ -1200,23 +1193,23 @@ void QPushButton_OnHideEvent(QPushButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QPushButton_NativeEvent(QPushButton* self, libqt_string eventType, void* message, long* result) {
+bool QPushButton_NativeEvent(QPushButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
-        return vqpushbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqpushbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqpushbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqpushbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QPushButton_QBaseNativeEvent(QPushButton* self, libqt_string eventType, void* message, long* result) {
+bool QPushButton_QBaseNativeEvent(QPushButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
         vqpushbutton->setQPushButton_NativeEvent_IsBase(true);
-        return vqpushbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqpushbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqpushbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqpushbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1536,32 +1529,6 @@ void QPushButton_QBaseDisconnectNotify(QPushButton* self, QMetaMethod* signal) {
 void QPushButton_OnDisconnectNotify(QPushButton* self, intptr_t slot) {
     if (auto* vqpushbutton = dynamic_cast<VirtualQPushButton*>(self)) {
         vqpushbutton->setQPushButton_DisconnectNotify_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QPushButton_InitStyleOption(const QPushButton* self, QStyleOptionButton* option) {
-    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
-        vqpushbutton->initStyleOption(option);
-    } else {
-        vqpushbutton->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QPushButton_QBaseInitStyleOption(const QPushButton* self, QStyleOptionButton* option) {
-    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
-        vqpushbutton->setQPushButton_InitStyleOption_IsBase(true);
-        vqpushbutton->initStyleOption(option);
-    } else {
-        vqpushbutton->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPushButton_OnInitStyleOption(const QPushButton* self, intptr_t slot) {
-    if (auto* vqpushbutton = const_cast<VirtualQPushButton*>(dynamic_cast<const VirtualQPushButton*>(self))) {
-        vqpushbutton->setQPushButton_InitStyleOption_Callback(reinterpret_cast<VirtualQPushButton::QPushButton_InitStyleOption_Callback>(slot));
     }
 }
 

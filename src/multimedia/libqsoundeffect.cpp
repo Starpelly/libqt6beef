@@ -1,4 +1,6 @@
-#include <QAudioDeviceInfo>
+#include <QAnyStringView>
+#include <QAudioDevice>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -7,7 +9,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QSoundEffect>
 #include <QString>
 #include <QByteArray>
@@ -24,7 +25,7 @@ QSoundEffect* QSoundEffect_new() {
     return new VirtualQSoundEffect();
 }
 
-QSoundEffect* QSoundEffect_new2(QAudioDeviceInfo* audioDevice) {
+QSoundEffect* QSoundEffect_new2(QAudioDevice* audioDevice) {
     return new VirtualQSoundEffect(*audioDevice);
 }
 
@@ -32,7 +33,7 @@ QSoundEffect* QSoundEffect_new3(QObject* parent) {
     return new VirtualQSoundEffect(parent);
 }
 
-QSoundEffect* QSoundEffect_new4(QAudioDeviceInfo* audioDevice, QObject* parent) {
+QSoundEffect* QSoundEffect_new4(QAudioDevice* audioDevice, QObject* parent) {
     return new VirtualQSoundEffect(*audioDevice, parent);
 }
 
@@ -71,18 +72,6 @@ int QSoundEffect_QBaseMetacall(QSoundEffect* self, int param1, int param2, void*
 
 libqt_string QSoundEffect_Tr(const char* s) {
     QString _ret = QSoundEffect::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSoundEffect_TrUtf8(const char* s) {
-    QString _ret = QSoundEffect::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -134,12 +123,20 @@ void QSoundEffect_SetLoopCount(QSoundEffect* self, int loopCount) {
     self->setLoopCount(static_cast<int>(loopCount));
 }
 
-double QSoundEffect_Volume(const QSoundEffect* self) {
-    return static_cast<double>(self->volume());
+QAudioDevice* QSoundEffect_AudioDevice(QSoundEffect* self) {
+    return new QAudioDevice(self->audioDevice());
 }
 
-void QSoundEffect_SetVolume(QSoundEffect* self, double volume) {
-    self->setVolume(static_cast<qreal>(volume));
+void QSoundEffect_SetAudioDevice(QSoundEffect* self, QAudioDevice* device) {
+    self->setAudioDevice(*device);
+}
+
+float QSoundEffect_Volume(const QSoundEffect* self) {
+    return self->volume();
+}
+
+void QSoundEffect_SetVolume(QSoundEffect* self, float volume) {
+    self->setVolume(static_cast<float>(volume));
 }
 
 bool QSoundEffect_IsMuted(const QSoundEffect* self) {
@@ -160,23 +157,6 @@ bool QSoundEffect_IsPlaying(const QSoundEffect* self) {
 
 int QSoundEffect_Status(const QSoundEffect* self) {
     return static_cast<int>(self->status());
-}
-
-libqt_string QSoundEffect_Category(const QSoundEffect* self) {
-    QString _ret = self->category();
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QSoundEffect_SetCategory(QSoundEffect* self, libqt_string category) {
-    QString category_QString = QString::fromUtf8(category.data, category.len);
-    self->setCategory(category_QString);
 }
 
 void QSoundEffect_SourceChanged(QSoundEffect* self) {
@@ -267,13 +247,13 @@ void QSoundEffect_Connect_StatusChanged(QSoundEffect* self, intptr_t slot) {
     });
 }
 
-void QSoundEffect_CategoryChanged(QSoundEffect* self) {
-    self->categoryChanged();
+void QSoundEffect_AudioDeviceChanged(QSoundEffect* self) {
+    self->audioDeviceChanged();
 }
 
-void QSoundEffect_Connect_CategoryChanged(QSoundEffect* self, intptr_t slot) {
+void QSoundEffect_Connect_AudioDeviceChanged(QSoundEffect* self, intptr_t slot) {
     void (*slotFunc)(QSoundEffect*) = reinterpret_cast<void (*)(QSoundEffect*)>(slot);
-    QSoundEffect::connect(self, &QSoundEffect::categoryChanged, [self, slotFunc]() {
+    QSoundEffect::connect(self, &QSoundEffect::audioDeviceChanged, [self, slotFunc]() {
         slotFunc(self);
     });
 }
@@ -300,30 +280,6 @@ libqt_string QSoundEffect_Tr2(const char* s, const char* c) {
 
 libqt_string QSoundEffect_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSoundEffect::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSoundEffect_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSoundEffect::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSoundEffect_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSoundEffect::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

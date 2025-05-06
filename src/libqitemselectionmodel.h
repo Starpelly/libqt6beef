@@ -22,6 +22,8 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QItemSelection QItemSelection;
@@ -32,7 +34,6 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QModelIndex QModelIndex;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -48,10 +49,9 @@ typedef int SelectionFlags; // C ABI QFlags
 #endif
 
 QItemSelectionRange* QItemSelectionRange_new();
-QItemSelectionRange* QItemSelectionRange_new2(QItemSelectionRange* other);
-QItemSelectionRange* QItemSelectionRange_new3(QModelIndex* topL, QModelIndex* bottomR);
-QItemSelectionRange* QItemSelectionRange_new4(QModelIndex* index);
-void QItemSelectionRange_OperatorAssign(QItemSelectionRange* self, QItemSelectionRange* other);
+QItemSelectionRange* QItemSelectionRange_new2(QModelIndex* topL, QModelIndex* bottomR);
+QItemSelectionRange* QItemSelectionRange_new3(QModelIndex* index);
+QItemSelectionRange* QItemSelectionRange_new4(QItemSelectionRange* param1);
 void QItemSelectionRange_Swap(QItemSelectionRange* self, QItemSelectionRange* other);
 int QItemSelectionRange_Top(const QItemSelectionRange* self);
 int QItemSelectionRange_Left(const QItemSelectionRange* self);
@@ -69,7 +69,6 @@ bool QItemSelectionRange_Intersects(const QItemSelectionRange* self, QItemSelect
 QItemSelectionRange* QItemSelectionRange_Intersected(const QItemSelectionRange* self, QItemSelectionRange* other);
 bool QItemSelectionRange_OperatorEqual(const QItemSelectionRange* self, QItemSelectionRange* other);
 bool QItemSelectionRange_OperatorNotEqual(const QItemSelectionRange* self, QItemSelectionRange* other);
-bool QItemSelectionRange_OperatorLesser(const QItemSelectionRange* self, QItemSelectionRange* other);
 bool QItemSelectionRange_IsValid(const QItemSelectionRange* self);
 bool QItemSelectionRange_IsEmpty(const QItemSelectionRange* self);
 libqt_list /* of QModelIndex* */ QItemSelectionRange_Indexes(const QItemSelectionRange* self);
@@ -84,7 +83,6 @@ int QItemSelectionModel_Metacall(QItemSelectionModel* self, int param1, int para
 void QItemSelectionModel_OnMetacall(QItemSelectionModel* self, intptr_t slot);
 int QItemSelectionModel_QBaseMetacall(QItemSelectionModel* self, int param1, int param2, void** param3);
 libqt_string QItemSelectionModel_Tr(const char* s);
-libqt_string QItemSelectionModel_TrUtf8(const char* s);
 QModelIndex* QItemSelectionModel_CurrentIndex(const QItemSelectionModel* self);
 bool QItemSelectionModel_IsSelected(const QItemSelectionModel* self, QModelIndex* index);
 bool QItemSelectionModel_IsRowSelected(const QItemSelectionModel* self, int row);
@@ -130,8 +128,6 @@ void QItemSelectionModel_ModelChanged(QItemSelectionModel* self, QAbstractItemMo
 void QItemSelectionModel_Connect_ModelChanged(QItemSelectionModel* self, intptr_t slot);
 libqt_string QItemSelectionModel_Tr2(const char* s, const char* c);
 libqt_string QItemSelectionModel_Tr3(const char* s, const char* c, int n);
-libqt_string QItemSelectionModel_TrUtf82(const char* s, const char* c);
-libqt_string QItemSelectionModel_TrUtf83(const char* s, const char* c, int n);
 bool QItemSelectionModel_IsRowSelected2(const QItemSelectionModel* self, int row, QModelIndex* parent);
 bool QItemSelectionModel_IsColumnSelected2(const QItemSelectionModel* self, int column, QModelIndex* parent);
 bool QItemSelectionModel_RowIntersectsSelection2(const QItemSelectionModel* self, int row, QModelIndex* parent);
@@ -176,14 +172,14 @@ void QItemSelectionModel_OnIsSignalConnected(const QItemSelectionModel* self, in
 bool QItemSelectionModel_QBaseIsSignalConnected(const QItemSelectionModel* self, QMetaMethod* signal);
 void QItemSelectionModel_Delete(QItemSelectionModel* self);
 
-QItemSelection* QItemSelection_new();
-QItemSelection* QItemSelection_new2(QModelIndex* topLeft, QModelIndex* bottomRight);
+QItemSelection* QItemSelection_new(QModelIndex* topLeft, QModelIndex* bottomRight);
+QItemSelection* QItemSelection_new2();
+QItemSelection* QItemSelection_new3(QItemSelection* param1);
 void QItemSelection_Select(QItemSelection* self, QModelIndex* topLeft, QModelIndex* bottomRight);
 bool QItemSelection_Contains(const QItemSelection* self, QModelIndex* index);
 libqt_list /* of QModelIndex* */ QItemSelection_Indexes(const QItemSelection* self);
 void QItemSelection_Merge(QItemSelection* self, QItemSelection* other, int command);
 void QItemSelection_Split(QItemSelectionRange* range, QItemSelectionRange* other, QItemSelection* result);
-void QItemSelection_OperatorAssign(QItemSelection* self, QItemSelection* param1);
 void QItemSelection_Delete(QItemSelection* self);
 
 #ifdef __cplusplus

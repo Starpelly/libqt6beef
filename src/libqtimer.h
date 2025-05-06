@@ -21,13 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimer QTimer;
 typedef struct QTimerEvent QTimerEvent;
@@ -42,7 +43,6 @@ int QTimer_Metacall(QTimer* self, int param1, int param2, void** param3);
 void QTimer_OnMetacall(QTimer* self, intptr_t slot);
 int QTimer_QBaseMetacall(QTimer* self, int param1, int param2, void** param3);
 libqt_string QTimer_Tr(const char* s);
-libqt_string QTimer_TrUtf8(const char* s);
 bool QTimer_IsActive(const QTimer* self);
 int QTimer_TimerId(const QTimer* self);
 void QTimer_SetInterval(QTimer* self, int msec);
@@ -60,8 +60,6 @@ void QTimer_OnTimerEvent(QTimer* self, intptr_t slot);
 void QTimer_QBaseTimerEvent(QTimer* self, QTimerEvent* param1);
 libqt_string QTimer_Tr2(const char* s, const char* c);
 libqt_string QTimer_Tr3(const char* s, const char* c, int n);
-libqt_string QTimer_TrUtf82(const char* s, const char* c);
-libqt_string QTimer_TrUtf83(const char* s, const char* c, int n);
 bool QTimer_Event(QTimer* self, QEvent* event);
 void QTimer_OnEvent(QTimer* self, intptr_t slot);
 bool QTimer_QBaseEvent(QTimer* self, QEvent* event);

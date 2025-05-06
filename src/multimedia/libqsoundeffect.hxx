@@ -61,9 +61,9 @@ class VirtualQSoundEffect : public QSoundEffect {
 
   public:
     VirtualQSoundEffect() : QSoundEffect(){};
-    VirtualQSoundEffect(const QAudioDeviceInfo& audioDevice) : QSoundEffect(audioDevice){};
+    VirtualQSoundEffect(const QAudioDevice& audioDevice) : QSoundEffect(audioDevice){};
     VirtualQSoundEffect(QObject* parent) : QSoundEffect(parent){};
-    VirtualQSoundEffect(const QAudioDeviceInfo& audioDevice, QObject* parent) : QSoundEffect(audioDevice, parent){};
+    VirtualQSoundEffect(const QAudioDevice& audioDevice, QObject* parent) : QSoundEffect(audioDevice, parent){};
 
     ~VirtualQSoundEffect() {
         qsoundeffect_metacall_callback = nullptr;

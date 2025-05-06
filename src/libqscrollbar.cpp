@@ -1,7 +1,9 @@
 #include <QAbstractSlider>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -12,6 +14,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -127,18 +130,6 @@ libqt_string QScrollBar_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QScrollBar_TrUtf8(const char* s) {
-    QString _ret = QScrollBar::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QScrollBar_Tr2(const char* s, const char* c) {
     QString _ret = QScrollBar::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -153,30 +144,6 @@ libqt_string QScrollBar_Tr2(const char* s, const char* c) {
 
 libqt_string QScrollBar_Tr3(const char* s, const char* c, int n) {
     QString _ret = QScrollBar::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QScrollBar_TrUtf82(const char* s, const char* c) {
-    QString _ret = QScrollBar::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QScrollBar_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QScrollBar::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -444,6 +411,32 @@ void QScrollBar_QBaseContextMenuEvent(QScrollBar* self, QContextMenuEvent* param
 void QScrollBar_OnContextMenuEvent(QScrollBar* self, intptr_t slot) {
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
         vqscrollbar->setQScrollBar_ContextMenuEvent_Callback(reinterpret_cast<VirtualQScrollBar::QScrollBar_ContextMenuEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QScrollBar_InitStyleOption(const QScrollBar* self, QStyleOptionSlider* option) {
+    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
+        vqscrollbar->initStyleOption(option);
+    } else {
+        vqscrollbar->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QScrollBar_QBaseInitStyleOption(const QScrollBar* self, QStyleOptionSlider* option) {
+    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
+        vqscrollbar->setQScrollBar_InitStyleOption_IsBase(true);
+        vqscrollbar->initStyleOption(option);
+    } else {
+        vqscrollbar->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QScrollBar_OnInitStyleOption(const QScrollBar* self, intptr_t slot) {
+    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
+        vqscrollbar->setQScrollBar_InitStyleOption_Callback(reinterpret_cast<VirtualQScrollBar::QScrollBar_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -786,7 +779,7 @@ void QScrollBar_OnFocusOutEvent(QScrollBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QScrollBar_EnterEvent(QScrollBar* self, QEvent* event) {
+void QScrollBar_EnterEvent(QScrollBar* self, QEnterEvent* event) {
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
         vqscrollbar->enterEvent(event);
     } else {
@@ -795,7 +788,7 @@ void QScrollBar_EnterEvent(QScrollBar* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QScrollBar_QBaseEnterEvent(QScrollBar* self, QEvent* event) {
+void QScrollBar_QBaseEnterEvent(QScrollBar* self, QEnterEvent* event) {
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
         vqscrollbar->setQScrollBar_EnterEvent_IsBase(true);
         vqscrollbar->enterEvent(event);
@@ -1098,23 +1091,23 @@ void QScrollBar_OnShowEvent(QScrollBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QScrollBar_NativeEvent(QScrollBar* self, libqt_string eventType, void* message, long* result) {
+bool QScrollBar_NativeEvent(QScrollBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
-        return vqscrollbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqscrollbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QScrollBar_QBaseNativeEvent(QScrollBar* self, libqt_string eventType, void* message, long* result) {
+bool QScrollBar_QBaseNativeEvent(QScrollBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
         vqscrollbar->setQScrollBar_NativeEvent_IsBase(true);
-        return vqscrollbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqscrollbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1434,32 +1427,6 @@ void QScrollBar_QBaseDisconnectNotify(QScrollBar* self, QMetaMethod* signal) {
 void QScrollBar_OnDisconnectNotify(QScrollBar* self, intptr_t slot) {
     if (auto* vqscrollbar = dynamic_cast<VirtualQScrollBar*>(self)) {
         vqscrollbar->setQScrollBar_DisconnectNotify_Callback(reinterpret_cast<VirtualQScrollBar::QScrollBar_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QScrollBar_InitStyleOption(const QScrollBar* self, QStyleOptionSlider* option) {
-    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
-        vqscrollbar->initStyleOption(option);
-    } else {
-        vqscrollbar->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QScrollBar_QBaseInitStyleOption(const QScrollBar* self, QStyleOptionSlider* option) {
-    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
-        vqscrollbar->setQScrollBar_InitStyleOption_IsBase(true);
-        vqscrollbar->initStyleOption(option);
-    } else {
-        vqscrollbar->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QScrollBar_OnInitStyleOption(const QScrollBar* self, intptr_t slot) {
-    if (auto* vqscrollbar = const_cast<VirtualQScrollBar*>(dynamic_cast<const VirtualQScrollBar*>(self))) {
-        vqscrollbar->setQScrollBar_InitStyleOption_Callback(reinterpret_cast<VirtualQScrollBar::QScrollBar_InitStyleOption_Callback>(slot));
     }
 }
 

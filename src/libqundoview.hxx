@@ -29,7 +29,7 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_SetRootIndex_Callback = void (*)(QUndoView*, const QModelIndex&);
     using QUndoView_Event_Callback = bool (*)(QUndoView*, QEvent*);
     using QUndoView_ScrollContentsBy_Callback = void (*)(QUndoView*, int, int);
-    using QUndoView_DataChanged_Callback = void (*)(QUndoView*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
+    using QUndoView_DataChanged_Callback = void (*)(QUndoView*, const QModelIndex&, const QModelIndex&, const QList<int>&);
     using QUndoView_RowsInserted_Callback = void (*)(QUndoView*, const QModelIndex&, int, int);
     using QUndoView_RowsAboutToBeRemoved_Callback = void (*)(QUndoView*, const QModelIndex&, int, int);
     using QUndoView_MouseMoveEvent_Callback = void (*)(QUndoView*, QMouseEvent*);
@@ -41,7 +41,7 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_DragLeaveEvent_Callback = void (*)(QUndoView*, QDragLeaveEvent*);
     using QUndoView_DropEvent_Callback = void (*)(QUndoView*, QDropEvent*);
     using QUndoView_StartDrag_Callback = void (*)(QUndoView*, Qt::DropActions);
-    using QUndoView_ViewOptions_Callback = QStyleOptionViewItem (*)();
+    using QUndoView_InitViewItemOption_Callback = void (*)(const QUndoView*, QStyleOptionViewItem*);
     using QUndoView_PaintEvent_Callback = void (*)(QUndoView*, QPaintEvent*);
     using QUndoView_HorizontalOffset_Callback = int (*)();
     using QUndoView_VerticalOffset_Callback = int (*)();
@@ -59,6 +59,7 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_KeyboardSearch_Callback = void (*)(QUndoView*, const QString&);
     using QUndoView_SizeHintForRow_Callback = int (*)(const QUndoView*, int);
     using QUndoView_SizeHintForColumn_Callback = int (*)(const QUndoView*, int);
+    using QUndoView_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QUndoView*, const QModelIndex&);
     using QUndoView_InputMethodQuery_Callback = QVariant (*)(const QUndoView*, Qt::InputMethodQuery);
     using QUndoView_SelectAll_Callback = void (*)();
     using QUndoView_UpdateEditorData_Callback = void (*)();
@@ -87,13 +88,14 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_SetupViewport_Callback = void (*)(QUndoView*, QWidget*);
     using QUndoView_ContextMenuEvent_Callback = void (*)(QUndoView*, QContextMenuEvent*);
     using QUndoView_ChangeEvent_Callback = void (*)(QUndoView*, QEvent*);
+    using QUndoView_InitStyleOption_Callback = void (*)(const QUndoView*, QStyleOptionFrame*);
     using QUndoView_DevType_Callback = int (*)();
     using QUndoView_SetVisible_Callback = void (*)(QUndoView*, bool);
     using QUndoView_HeightForWidth_Callback = int (*)(const QUndoView*, int);
     using QUndoView_HasHeightForWidth_Callback = bool (*)();
     using QUndoView_PaintEngine_Callback = QPaintEngine* (*)();
     using QUndoView_KeyReleaseEvent_Callback = void (*)(QUndoView*, QKeyEvent*);
-    using QUndoView_EnterEvent_Callback = void (*)(QUndoView*, QEvent*);
+    using QUndoView_EnterEvent_Callback = void (*)(QUndoView*, QEnterEvent*);
     using QUndoView_LeaveEvent_Callback = void (*)(QUndoView*, QEvent*);
     using QUndoView_MoveEvent_Callback = void (*)(QUndoView*, QMoveEvent*);
     using QUndoView_CloseEvent_Callback = void (*)(QUndoView*, QCloseEvent*);
@@ -101,7 +103,7 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_ActionEvent_Callback = void (*)(QUndoView*, QActionEvent*);
     using QUndoView_ShowEvent_Callback = void (*)(QUndoView*, QShowEvent*);
     using QUndoView_HideEvent_Callback = void (*)(QUndoView*, QHideEvent*);
-    using QUndoView_NativeEvent_Callback = bool (*)(QUndoView*, const QByteArray&, void*, long*);
+    using QUndoView_NativeEvent_Callback = bool (*)(QUndoView*, const QByteArray&, void*, qintptr*);
     using QUndoView_Metric_Callback = int (*)(const QUndoView*, QPaintDevice::PaintDeviceMetric);
     using QUndoView_InitPainter_Callback = void (*)(const QUndoView*, QPainter*);
     using QUndoView_Redirected_Callback = QPaintDevice* (*)(const QUndoView*, QPoint*);
@@ -114,10 +116,6 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_ContentsSize_Callback = QSize (*)();
     using QUndoView_RectForIndex_Callback = QRect (*)(const QUndoView*, const QModelIndex&);
     using QUndoView_SetPositionForIndex_Callback = void (*)(QUndoView*, const QPoint&, const QModelIndex&);
-    using QUndoView_SetHorizontalStepsPerItem_Callback = void (*)(QUndoView*, int);
-    using QUndoView_HorizontalStepsPerItem_Callback = int (*)();
-    using QUndoView_SetVerticalStepsPerItem_Callback = void (*)(QUndoView*, int);
-    using QUndoView_VerticalStepsPerItem_Callback = int (*)();
     using QUndoView_State_Callback = QAbstractItemView::State (*)();
     using QUndoView_SetState_Callback = void (*)(QUndoView*, int);
     using QUndoView_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -132,7 +130,6 @@ class VirtualQUndoView : public QUndoView {
     using QUndoView_SetViewportMargins_Callback = void (*)(QUndoView*, int, int, int, int);
     using QUndoView_ViewportMargins_Callback = QMargins (*)();
     using QUndoView_DrawFrame_Callback = void (*)(QUndoView*, QPainter*);
-    using QUndoView_InitStyleOption_Callback = void (*)(const QUndoView*, QStyleOptionFrame*);
     using QUndoView_UpdateMicroFocus_Callback = void (*)();
     using QUndoView_Create_Callback = void (*)();
     using QUndoView_Destroy_Callback = void (*)();
@@ -166,7 +163,7 @@ class VirtualQUndoView : public QUndoView {
     QUndoView_DragLeaveEvent_Callback qundoview_dragleaveevent_callback = nullptr;
     QUndoView_DropEvent_Callback qundoview_dropevent_callback = nullptr;
     QUndoView_StartDrag_Callback qundoview_startdrag_callback = nullptr;
-    QUndoView_ViewOptions_Callback qundoview_viewoptions_callback = nullptr;
+    QUndoView_InitViewItemOption_Callback qundoview_initviewitemoption_callback = nullptr;
     QUndoView_PaintEvent_Callback qundoview_paintevent_callback = nullptr;
     QUndoView_HorizontalOffset_Callback qundoview_horizontaloffset_callback = nullptr;
     QUndoView_VerticalOffset_Callback qundoview_verticaloffset_callback = nullptr;
@@ -184,6 +181,7 @@ class VirtualQUndoView : public QUndoView {
     QUndoView_KeyboardSearch_Callback qundoview_keyboardsearch_callback = nullptr;
     QUndoView_SizeHintForRow_Callback qundoview_sizehintforrow_callback = nullptr;
     QUndoView_SizeHintForColumn_Callback qundoview_sizehintforcolumn_callback = nullptr;
+    QUndoView_ItemDelegateForIndex_Callback qundoview_itemdelegateforindex_callback = nullptr;
     QUndoView_InputMethodQuery_Callback qundoview_inputmethodquery_callback = nullptr;
     QUndoView_SelectAll_Callback qundoview_selectall_callback = nullptr;
     QUndoView_UpdateEditorData_Callback qundoview_updateeditordata_callback = nullptr;
@@ -212,6 +210,7 @@ class VirtualQUndoView : public QUndoView {
     QUndoView_SetupViewport_Callback qundoview_setupviewport_callback = nullptr;
     QUndoView_ContextMenuEvent_Callback qundoview_contextmenuevent_callback = nullptr;
     QUndoView_ChangeEvent_Callback qundoview_changeevent_callback = nullptr;
+    QUndoView_InitStyleOption_Callback qundoview_initstyleoption_callback = nullptr;
     QUndoView_DevType_Callback qundoview_devtype_callback = nullptr;
     QUndoView_SetVisible_Callback qundoview_setvisible_callback = nullptr;
     QUndoView_HeightForWidth_Callback qundoview_heightforwidth_callback = nullptr;
@@ -239,10 +238,6 @@ class VirtualQUndoView : public QUndoView {
     QUndoView_ContentsSize_Callback qundoview_contentssize_callback = nullptr;
     QUndoView_RectForIndex_Callback qundoview_rectforindex_callback = nullptr;
     QUndoView_SetPositionForIndex_Callback qundoview_setpositionforindex_callback = nullptr;
-    QUndoView_SetHorizontalStepsPerItem_Callback qundoview_sethorizontalstepsperitem_callback = nullptr;
-    QUndoView_HorizontalStepsPerItem_Callback qundoview_horizontalstepsperitem_callback = nullptr;
-    QUndoView_SetVerticalStepsPerItem_Callback qundoview_setverticalstepsperitem_callback = nullptr;
-    QUndoView_VerticalStepsPerItem_Callback qundoview_verticalstepsperitem_callback = nullptr;
     QUndoView_State_Callback qundoview_state_callback = nullptr;
     QUndoView_SetState_Callback qundoview_setstate_callback = nullptr;
     QUndoView_ScheduleDelayedItemsLayout_Callback qundoview_scheduledelayeditemslayout_callback = nullptr;
@@ -257,7 +252,6 @@ class VirtualQUndoView : public QUndoView {
     QUndoView_SetViewportMargins_Callback qundoview_setviewportmargins_callback = nullptr;
     QUndoView_ViewportMargins_Callback qundoview_viewportmargins_callback = nullptr;
     QUndoView_DrawFrame_Callback qundoview_drawframe_callback = nullptr;
-    QUndoView_InitStyleOption_Callback qundoview_initstyleoption_callback = nullptr;
     QUndoView_UpdateMicroFocus_Callback qundoview_updatemicrofocus_callback = nullptr;
     QUndoView_Create_Callback qundoview_create_callback = nullptr;
     QUndoView_Destroy_Callback qundoview_destroy_callback = nullptr;
@@ -290,7 +284,7 @@ class VirtualQUndoView : public QUndoView {
     mutable bool qundoview_dragleaveevent_isbase = false;
     mutable bool qundoview_dropevent_isbase = false;
     mutable bool qundoview_startdrag_isbase = false;
-    mutable bool qundoview_viewoptions_isbase = false;
+    mutable bool qundoview_initviewitemoption_isbase = false;
     mutable bool qundoview_paintevent_isbase = false;
     mutable bool qundoview_horizontaloffset_isbase = false;
     mutable bool qundoview_verticaloffset_isbase = false;
@@ -308,6 +302,7 @@ class VirtualQUndoView : public QUndoView {
     mutable bool qundoview_keyboardsearch_isbase = false;
     mutable bool qundoview_sizehintforrow_isbase = false;
     mutable bool qundoview_sizehintforcolumn_isbase = false;
+    mutable bool qundoview_itemdelegateforindex_isbase = false;
     mutable bool qundoview_inputmethodquery_isbase = false;
     mutable bool qundoview_selectall_isbase = false;
     mutable bool qundoview_updateeditordata_isbase = false;
@@ -336,6 +331,7 @@ class VirtualQUndoView : public QUndoView {
     mutable bool qundoview_setupviewport_isbase = false;
     mutable bool qundoview_contextmenuevent_isbase = false;
     mutable bool qundoview_changeevent_isbase = false;
+    mutable bool qundoview_initstyleoption_isbase = false;
     mutable bool qundoview_devtype_isbase = false;
     mutable bool qundoview_setvisible_isbase = false;
     mutable bool qundoview_heightforwidth_isbase = false;
@@ -363,10 +359,6 @@ class VirtualQUndoView : public QUndoView {
     mutable bool qundoview_contentssize_isbase = false;
     mutable bool qundoview_rectforindex_isbase = false;
     mutable bool qundoview_setpositionforindex_isbase = false;
-    mutable bool qundoview_sethorizontalstepsperitem_isbase = false;
-    mutable bool qundoview_horizontalstepsperitem_isbase = false;
-    mutable bool qundoview_setverticalstepsperitem_isbase = false;
-    mutable bool qundoview_verticalstepsperitem_isbase = false;
     mutable bool qundoview_state_isbase = false;
     mutable bool qundoview_setstate_isbase = false;
     mutable bool qundoview_scheduledelayeditemslayout_isbase = false;
@@ -381,7 +373,6 @@ class VirtualQUndoView : public QUndoView {
     mutable bool qundoview_setviewportmargins_isbase = false;
     mutable bool qundoview_viewportmargins_isbase = false;
     mutable bool qundoview_drawframe_isbase = false;
-    mutable bool qundoview_initstyleoption_isbase = false;
     mutable bool qundoview_updatemicrofocus_isbase = false;
     mutable bool qundoview_create_isbase = false;
     mutable bool qundoview_destroy_isbase = false;
@@ -422,7 +413,7 @@ class VirtualQUndoView : public QUndoView {
         qundoview_dragleaveevent_callback = nullptr;
         qundoview_dropevent_callback = nullptr;
         qundoview_startdrag_callback = nullptr;
-        qundoview_viewoptions_callback = nullptr;
+        qundoview_initviewitemoption_callback = nullptr;
         qundoview_paintevent_callback = nullptr;
         qundoview_horizontaloffset_callback = nullptr;
         qundoview_verticaloffset_callback = nullptr;
@@ -440,6 +431,7 @@ class VirtualQUndoView : public QUndoView {
         qundoview_keyboardsearch_callback = nullptr;
         qundoview_sizehintforrow_callback = nullptr;
         qundoview_sizehintforcolumn_callback = nullptr;
+        qundoview_itemdelegateforindex_callback = nullptr;
         qundoview_inputmethodquery_callback = nullptr;
         qundoview_selectall_callback = nullptr;
         qundoview_updateeditordata_callback = nullptr;
@@ -468,6 +460,7 @@ class VirtualQUndoView : public QUndoView {
         qundoview_setupviewport_callback = nullptr;
         qundoview_contextmenuevent_callback = nullptr;
         qundoview_changeevent_callback = nullptr;
+        qundoview_initstyleoption_callback = nullptr;
         qundoview_devtype_callback = nullptr;
         qundoview_setvisible_callback = nullptr;
         qundoview_heightforwidth_callback = nullptr;
@@ -495,10 +488,6 @@ class VirtualQUndoView : public QUndoView {
         qundoview_contentssize_callback = nullptr;
         qundoview_rectforindex_callback = nullptr;
         qundoview_setpositionforindex_callback = nullptr;
-        qundoview_sethorizontalstepsperitem_callback = nullptr;
-        qundoview_horizontalstepsperitem_callback = nullptr;
-        qundoview_setverticalstepsperitem_callback = nullptr;
-        qundoview_verticalstepsperitem_callback = nullptr;
         qundoview_state_callback = nullptr;
         qundoview_setstate_callback = nullptr;
         qundoview_scheduledelayeditemslayout_callback = nullptr;
@@ -513,7 +502,6 @@ class VirtualQUndoView : public QUndoView {
         qundoview_setviewportmargins_callback = nullptr;
         qundoview_viewportmargins_callback = nullptr;
         qundoview_drawframe_callback = nullptr;
-        qundoview_initstyleoption_callback = nullptr;
         qundoview_updatemicrofocus_callback = nullptr;
         qundoview_create_callback = nullptr;
         qundoview_destroy_callback = nullptr;
@@ -547,7 +535,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_DragLeaveEvent_Callback(QUndoView_DragLeaveEvent_Callback cb) { qundoview_dragleaveevent_callback = cb; }
     void setQUndoView_DropEvent_Callback(QUndoView_DropEvent_Callback cb) { qundoview_dropevent_callback = cb; }
     void setQUndoView_StartDrag_Callback(QUndoView_StartDrag_Callback cb) { qundoview_startdrag_callback = cb; }
-    void setQUndoView_ViewOptions_Callback(QUndoView_ViewOptions_Callback cb) { qundoview_viewoptions_callback = cb; }
+    void setQUndoView_InitViewItemOption_Callback(QUndoView_InitViewItemOption_Callback cb) { qundoview_initviewitemoption_callback = cb; }
     void setQUndoView_PaintEvent_Callback(QUndoView_PaintEvent_Callback cb) { qundoview_paintevent_callback = cb; }
     void setQUndoView_HorizontalOffset_Callback(QUndoView_HorizontalOffset_Callback cb) { qundoview_horizontaloffset_callback = cb; }
     void setQUndoView_VerticalOffset_Callback(QUndoView_VerticalOffset_Callback cb) { qundoview_verticaloffset_callback = cb; }
@@ -565,6 +553,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_KeyboardSearch_Callback(QUndoView_KeyboardSearch_Callback cb) { qundoview_keyboardsearch_callback = cb; }
     void setQUndoView_SizeHintForRow_Callback(QUndoView_SizeHintForRow_Callback cb) { qundoview_sizehintforrow_callback = cb; }
     void setQUndoView_SizeHintForColumn_Callback(QUndoView_SizeHintForColumn_Callback cb) { qundoview_sizehintforcolumn_callback = cb; }
+    void setQUndoView_ItemDelegateForIndex_Callback(QUndoView_ItemDelegateForIndex_Callback cb) { qundoview_itemdelegateforindex_callback = cb; }
     void setQUndoView_InputMethodQuery_Callback(QUndoView_InputMethodQuery_Callback cb) { qundoview_inputmethodquery_callback = cb; }
     void setQUndoView_SelectAll_Callback(QUndoView_SelectAll_Callback cb) { qundoview_selectall_callback = cb; }
     void setQUndoView_UpdateEditorData_Callback(QUndoView_UpdateEditorData_Callback cb) { qundoview_updateeditordata_callback = cb; }
@@ -593,6 +582,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_SetupViewport_Callback(QUndoView_SetupViewport_Callback cb) { qundoview_setupviewport_callback = cb; }
     void setQUndoView_ContextMenuEvent_Callback(QUndoView_ContextMenuEvent_Callback cb) { qundoview_contextmenuevent_callback = cb; }
     void setQUndoView_ChangeEvent_Callback(QUndoView_ChangeEvent_Callback cb) { qundoview_changeevent_callback = cb; }
+    void setQUndoView_InitStyleOption_Callback(QUndoView_InitStyleOption_Callback cb) { qundoview_initstyleoption_callback = cb; }
     void setQUndoView_DevType_Callback(QUndoView_DevType_Callback cb) { qundoview_devtype_callback = cb; }
     void setQUndoView_SetVisible_Callback(QUndoView_SetVisible_Callback cb) { qundoview_setvisible_callback = cb; }
     void setQUndoView_HeightForWidth_Callback(QUndoView_HeightForWidth_Callback cb) { qundoview_heightforwidth_callback = cb; }
@@ -620,10 +610,6 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_ContentsSize_Callback(QUndoView_ContentsSize_Callback cb) { qundoview_contentssize_callback = cb; }
     void setQUndoView_RectForIndex_Callback(QUndoView_RectForIndex_Callback cb) { qundoview_rectforindex_callback = cb; }
     void setQUndoView_SetPositionForIndex_Callback(QUndoView_SetPositionForIndex_Callback cb) { qundoview_setpositionforindex_callback = cb; }
-    void setQUndoView_SetHorizontalStepsPerItem_Callback(QUndoView_SetHorizontalStepsPerItem_Callback cb) { qundoview_sethorizontalstepsperitem_callback = cb; }
-    void setQUndoView_HorizontalStepsPerItem_Callback(QUndoView_HorizontalStepsPerItem_Callback cb) { qundoview_horizontalstepsperitem_callback = cb; }
-    void setQUndoView_SetVerticalStepsPerItem_Callback(QUndoView_SetVerticalStepsPerItem_Callback cb) { qundoview_setverticalstepsperitem_callback = cb; }
-    void setQUndoView_VerticalStepsPerItem_Callback(QUndoView_VerticalStepsPerItem_Callback cb) { qundoview_verticalstepsperitem_callback = cb; }
     void setQUndoView_State_Callback(QUndoView_State_Callback cb) { qundoview_state_callback = cb; }
     void setQUndoView_SetState_Callback(QUndoView_SetState_Callback cb) { qundoview_setstate_callback = cb; }
     void setQUndoView_ScheduleDelayedItemsLayout_Callback(QUndoView_ScheduleDelayedItemsLayout_Callback cb) { qundoview_scheduledelayeditemslayout_callback = cb; }
@@ -638,7 +624,6 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_SetViewportMargins_Callback(QUndoView_SetViewportMargins_Callback cb) { qundoview_setviewportmargins_callback = cb; }
     void setQUndoView_ViewportMargins_Callback(QUndoView_ViewportMargins_Callback cb) { qundoview_viewportmargins_callback = cb; }
     void setQUndoView_DrawFrame_Callback(QUndoView_DrawFrame_Callback cb) { qundoview_drawframe_callback = cb; }
-    void setQUndoView_InitStyleOption_Callback(QUndoView_InitStyleOption_Callback cb) { qundoview_initstyleoption_callback = cb; }
     void setQUndoView_UpdateMicroFocus_Callback(QUndoView_UpdateMicroFocus_Callback cb) { qundoview_updatemicrofocus_callback = cb; }
     void setQUndoView_Create_Callback(QUndoView_Create_Callback cb) { qundoview_create_callback = cb; }
     void setQUndoView_Destroy_Callback(QUndoView_Destroy_Callback cb) { qundoview_destroy_callback = cb; }
@@ -671,7 +656,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_DragLeaveEvent_IsBase(bool value) const { qundoview_dragleaveevent_isbase = value; }
     void setQUndoView_DropEvent_IsBase(bool value) const { qundoview_dropevent_isbase = value; }
     void setQUndoView_StartDrag_IsBase(bool value) const { qundoview_startdrag_isbase = value; }
-    void setQUndoView_ViewOptions_IsBase(bool value) const { qundoview_viewoptions_isbase = value; }
+    void setQUndoView_InitViewItemOption_IsBase(bool value) const { qundoview_initviewitemoption_isbase = value; }
     void setQUndoView_PaintEvent_IsBase(bool value) const { qundoview_paintevent_isbase = value; }
     void setQUndoView_HorizontalOffset_IsBase(bool value) const { qundoview_horizontaloffset_isbase = value; }
     void setQUndoView_VerticalOffset_IsBase(bool value) const { qundoview_verticaloffset_isbase = value; }
@@ -689,6 +674,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_KeyboardSearch_IsBase(bool value) const { qundoview_keyboardsearch_isbase = value; }
     void setQUndoView_SizeHintForRow_IsBase(bool value) const { qundoview_sizehintforrow_isbase = value; }
     void setQUndoView_SizeHintForColumn_IsBase(bool value) const { qundoview_sizehintforcolumn_isbase = value; }
+    void setQUndoView_ItemDelegateForIndex_IsBase(bool value) const { qundoview_itemdelegateforindex_isbase = value; }
     void setQUndoView_InputMethodQuery_IsBase(bool value) const { qundoview_inputmethodquery_isbase = value; }
     void setQUndoView_SelectAll_IsBase(bool value) const { qundoview_selectall_isbase = value; }
     void setQUndoView_UpdateEditorData_IsBase(bool value) const { qundoview_updateeditordata_isbase = value; }
@@ -717,6 +703,7 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_SetupViewport_IsBase(bool value) const { qundoview_setupviewport_isbase = value; }
     void setQUndoView_ContextMenuEvent_IsBase(bool value) const { qundoview_contextmenuevent_isbase = value; }
     void setQUndoView_ChangeEvent_IsBase(bool value) const { qundoview_changeevent_isbase = value; }
+    void setQUndoView_InitStyleOption_IsBase(bool value) const { qundoview_initstyleoption_isbase = value; }
     void setQUndoView_DevType_IsBase(bool value) const { qundoview_devtype_isbase = value; }
     void setQUndoView_SetVisible_IsBase(bool value) const { qundoview_setvisible_isbase = value; }
     void setQUndoView_HeightForWidth_IsBase(bool value) const { qundoview_heightforwidth_isbase = value; }
@@ -744,10 +731,6 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_ContentsSize_IsBase(bool value) const { qundoview_contentssize_isbase = value; }
     void setQUndoView_RectForIndex_IsBase(bool value) const { qundoview_rectforindex_isbase = value; }
     void setQUndoView_SetPositionForIndex_IsBase(bool value) const { qundoview_setpositionforindex_isbase = value; }
-    void setQUndoView_SetHorizontalStepsPerItem_IsBase(bool value) const { qundoview_sethorizontalstepsperitem_isbase = value; }
-    void setQUndoView_HorizontalStepsPerItem_IsBase(bool value) const { qundoview_horizontalstepsperitem_isbase = value; }
-    void setQUndoView_SetVerticalStepsPerItem_IsBase(bool value) const { qundoview_setverticalstepsperitem_isbase = value; }
-    void setQUndoView_VerticalStepsPerItem_IsBase(bool value) const { qundoview_verticalstepsperitem_isbase = value; }
     void setQUndoView_State_IsBase(bool value) const { qundoview_state_isbase = value; }
     void setQUndoView_SetState_IsBase(bool value) const { qundoview_setstate_isbase = value; }
     void setQUndoView_ScheduleDelayedItemsLayout_IsBase(bool value) const { qundoview_scheduledelayeditemslayout_isbase = value; }
@@ -762,7 +745,6 @@ class VirtualQUndoView : public QUndoView {
     void setQUndoView_SetViewportMargins_IsBase(bool value) const { qundoview_setviewportmargins_isbase = value; }
     void setQUndoView_ViewportMargins_IsBase(bool value) const { qundoview_viewportmargins_isbase = value; }
     void setQUndoView_DrawFrame_IsBase(bool value) const { qundoview_drawframe_isbase = value; }
-    void setQUndoView_InitStyleOption_IsBase(bool value) const { qundoview_initstyleoption_isbase = value; }
     void setQUndoView_UpdateMicroFocus_IsBase(bool value) const { qundoview_updatemicrofocus_isbase = value; }
     void setQUndoView_Create_IsBase(bool value) const { qundoview_create_isbase = value; }
     void setQUndoView_Destroy_IsBase(bool value) const { qundoview_destroy_isbase = value; }
@@ -882,7 +864,7 @@ class VirtualQUndoView : public QUndoView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
         if (qundoview_datachanged_isbase) {
             qundoview_datachanged_isbase = false;
             QUndoView::dataChanged(topLeft, bottomRight, roles);
@@ -1026,14 +1008,14 @@ class VirtualQUndoView : public QUndoView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QStyleOptionViewItem viewOptions() const override {
-        if (qundoview_viewoptions_isbase) {
-            qundoview_viewoptions_isbase = false;
-            return QUndoView::viewOptions();
-        } else if (qundoview_viewoptions_callback != nullptr) {
-            return qundoview_viewoptions_callback();
+    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
+        if (qundoview_initviewitemoption_isbase) {
+            qundoview_initviewitemoption_isbase = false;
+            QUndoView::initViewItemOption(option);
+        } else if (qundoview_initviewitemoption_callback != nullptr) {
+            qundoview_initviewitemoption_callback(this, option);
         } else {
-            return QUndoView::viewOptions();
+            QUndoView::initViewItemOption(option);
         }
     }
 
@@ -1238,6 +1220,18 @@ class VirtualQUndoView : public QUndoView {
             return qundoview_sizehintforcolumn_callback(this, column);
         } else {
             return QUndoView::sizeHintForColumn(column);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
+        if (qundoview_itemdelegateforindex_isbase) {
+            qundoview_itemdelegateforindex_isbase = false;
+            return QUndoView::itemDelegateForIndex(index);
+        } else if (qundoview_itemdelegateforindex_callback != nullptr) {
+            return qundoview_itemdelegateforindex_callback(this, index);
+        } else {
+            return QUndoView::itemDelegateForIndex(index);
         }
     }
 
@@ -1578,6 +1572,18 @@ class VirtualQUndoView : public QUndoView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qundoview_initstyleoption_isbase) {
+            qundoview_initstyleoption_isbase = false;
+            QUndoView::initStyleOption(option);
+        } else if (qundoview_initstyleoption_callback != nullptr) {
+            qundoview_initstyleoption_callback(this, option);
+        } else {
+            QUndoView::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qundoview_devtype_isbase) {
             qundoview_devtype_isbase = false;
@@ -1650,7 +1656,7 @@ class VirtualQUndoView : public QUndoView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qundoview_enterevent_isbase) {
             qundoview_enterevent_isbase = false;
             QUndoView::enterEvent(event);
@@ -1746,7 +1752,7 @@ class VirtualQUndoView : public QUndoView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qundoview_nativeevent_isbase) {
             qundoview_nativeevent_isbase = false;
             return QUndoView::nativeEvent(eventType, message, result);
@@ -1898,54 +1904,6 @@ class VirtualQUndoView : public QUndoView {
             qundoview_setpositionforindex_callback(this, position, index);
         } else {
             QUndoView::setPositionForIndex(position, index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setHorizontalStepsPerItem(int steps) {
-        if (qundoview_sethorizontalstepsperitem_isbase) {
-            qundoview_sethorizontalstepsperitem_isbase = false;
-            QUndoView::setHorizontalStepsPerItem(steps);
-        } else if (qundoview_sethorizontalstepsperitem_callback != nullptr) {
-            qundoview_sethorizontalstepsperitem_callback(this, steps);
-        } else {
-            QUndoView::setHorizontalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int horizontalStepsPerItem() const {
-        if (qundoview_horizontalstepsperitem_isbase) {
-            qundoview_horizontalstepsperitem_isbase = false;
-            return QUndoView::horizontalStepsPerItem();
-        } else if (qundoview_horizontalstepsperitem_callback != nullptr) {
-            return qundoview_horizontalstepsperitem_callback();
-        } else {
-            return QUndoView::horizontalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setVerticalStepsPerItem(int steps) {
-        if (qundoview_setverticalstepsperitem_isbase) {
-            qundoview_setverticalstepsperitem_isbase = false;
-            QUndoView::setVerticalStepsPerItem(steps);
-        } else if (qundoview_setverticalstepsperitem_callback != nullptr) {
-            qundoview_setverticalstepsperitem_callback(this, steps);
-        } else {
-            QUndoView::setVerticalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int verticalStepsPerItem() const {
-        if (qundoview_verticalstepsperitem_isbase) {
-            qundoview_verticalstepsperitem_isbase = false;
-            return QUndoView::verticalStepsPerItem();
-        } else if (qundoview_verticalstepsperitem_callback != nullptr) {
-            return qundoview_verticalstepsperitem_callback();
-        } else {
-            return QUndoView::verticalStepsPerItem();
         }
     }
 
@@ -2114,18 +2072,6 @@ class VirtualQUndoView : public QUndoView {
             qundoview_drawframe_callback(this, param1);
         } else {
             QUndoView::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qundoview_initstyleoption_isbase) {
-            qundoview_initstyleoption_isbase = false;
-            QUndoView::initStyleOption(option);
-        } else if (qundoview_initstyleoption_callback != nullptr) {
-            qundoview_initstyleoption_callback(this, option);
-        } else {
-            QUndoView::initStyleOption(option);
         }
     }
 

@@ -36,7 +36,7 @@ class VirtualQSplashScreen : public QSplashScreen {
     using QSplashScreen_KeyReleaseEvent_Callback = void (*)(QSplashScreen*, QKeyEvent*);
     using QSplashScreen_FocusInEvent_Callback = void (*)(QSplashScreen*, QFocusEvent*);
     using QSplashScreen_FocusOutEvent_Callback = void (*)(QSplashScreen*, QFocusEvent*);
-    using QSplashScreen_EnterEvent_Callback = void (*)(QSplashScreen*, QEvent*);
+    using QSplashScreen_EnterEvent_Callback = void (*)(QSplashScreen*, QEnterEvent*);
     using QSplashScreen_LeaveEvent_Callback = void (*)(QSplashScreen*, QEvent*);
     using QSplashScreen_PaintEvent_Callback = void (*)(QSplashScreen*, QPaintEvent*);
     using QSplashScreen_MoveEvent_Callback = void (*)(QSplashScreen*, QMoveEvent*);
@@ -51,7 +51,7 @@ class VirtualQSplashScreen : public QSplashScreen {
     using QSplashScreen_DropEvent_Callback = void (*)(QSplashScreen*, QDropEvent*);
     using QSplashScreen_ShowEvent_Callback = void (*)(QSplashScreen*, QShowEvent*);
     using QSplashScreen_HideEvent_Callback = void (*)(QSplashScreen*, QHideEvent*);
-    using QSplashScreen_NativeEvent_Callback = bool (*)(QSplashScreen*, const QByteArray&, void*, long*);
+    using QSplashScreen_NativeEvent_Callback = bool (*)(QSplashScreen*, const QByteArray&, void*, qintptr*);
     using QSplashScreen_ChangeEvent_Callback = void (*)(QSplashScreen*, QEvent*);
     using QSplashScreen_Metric_Callback = int (*)(const QSplashScreen*, QPaintDevice::PaintDeviceMetric);
     using QSplashScreen_InitPainter_Callback = void (*)(const QSplashScreen*, QPainter*);
@@ -198,15 +198,12 @@ class VirtualQSplashScreen : public QSplashScreen {
     mutable bool qsplashscreen_issignalconnected_isbase = false;
 
   public:
-    VirtualQSplashScreen(QWidget* parent) : QSplashScreen(parent){};
     VirtualQSplashScreen() : QSplashScreen(){};
     VirtualQSplashScreen(QScreen* screen) : QSplashScreen(screen){};
     VirtualQSplashScreen(const QPixmap& pixmap) : QSplashScreen(pixmap){};
     VirtualQSplashScreen(const QPixmap& pixmap, Qt::WindowFlags f) : QSplashScreen(pixmap, f){};
     VirtualQSplashScreen(QScreen* screen, const QPixmap& pixmap) : QSplashScreen(screen, pixmap){};
     VirtualQSplashScreen(QScreen* screen, const QPixmap& pixmap, Qt::WindowFlags f) : QSplashScreen(screen, pixmap, f){};
-    VirtualQSplashScreen(QWidget* parent, const QPixmap& pixmap) : QSplashScreen(parent, pixmap){};
-    VirtualQSplashScreen(QWidget* parent, const QPixmap& pixmap, Qt::WindowFlags f) : QSplashScreen(parent, pixmap, f){};
 
     ~VirtualQSplashScreen() {
         qsplashscreen_metacall_callback = nullptr;
@@ -618,7 +615,7 @@ class VirtualQSplashScreen : public QSplashScreen {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qsplashscreen_enterevent_isbase) {
             qsplashscreen_enterevent_isbase = false;
             QSplashScreen::enterEvent(event);
@@ -798,7 +795,7 @@ class VirtualQSplashScreen : public QSplashScreen {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qsplashscreen_nativeevent_isbase) {
             qsplashscreen_nativeevent_isbase = false;
             return QSplashScreen::nativeEvent(eventType, message, result);

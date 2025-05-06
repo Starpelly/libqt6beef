@@ -1,7 +1,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,6 +15,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,7 +41,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPagedPaintDevice>
 #include <QPaintDevice>
 #include <QPaintEngine>
@@ -47,8 +49,8 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
-#include <QRegExp>
 #include <QRegion>
 #include <QRegularExpression>
 #include <QResizeEvent>
@@ -123,18 +125,6 @@ int QTextBrowser_QBaseMetacall(QTextBrowser* self, int param1, int param2, void*
 
 libqt_string QTextBrowser_Tr(const char* s) {
     QString _ret = QTextBrowser::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTextBrowser_TrUtf8(const char* s) {
-    QString _ret = QTextBrowser::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -237,8 +227,8 @@ void QTextBrowser_SetOpenLinks(QTextBrowser* self, bool open) {
     self->setOpenLinks(open);
 }
 
-void QTextBrowser_SetSource2(QTextBrowser* self, QUrl* name, int typeVal) {
-    self->setSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
+void QTextBrowser_SetSource(QTextBrowser* self, QUrl* name) {
+    self->setSource(*name);
 }
 
 void QTextBrowser_BackwardAvailable(QTextBrowser* self, bool param1) {
@@ -304,27 +294,6 @@ void QTextBrowser_Connect_Highlighted(QTextBrowser* self, intptr_t slot) {
     });
 }
 
-void QTextBrowser_HighlightedWithQString(QTextBrowser* self, libqt_string param1) {
-    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
-    self->highlighted(param1_QString);
-}
-
-void QTextBrowser_Connect_HighlightedWithQString(QTextBrowser* self, intptr_t slot) {
-    void (*slotFunc)(QTextBrowser*, libqt_string) = reinterpret_cast<void (*)(QTextBrowser*, libqt_string)>(slot);
-    QTextBrowser::connect(self, &QTextBrowser::highlighted, [self, slotFunc](const QString& param1) {
-        const QString param1_ret = param1;
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray param1_b = param1_ret.toUtf8();
-        libqt_string param1_str;
-        param1_str.len = param1_b.length();
-        param1_str.data = static_cast<char*>(malloc((param1_str.len + 1) * sizeof(char)));
-        memcpy(param1_str.data, param1_b.data(), param1_str.len);
-        param1_str.data[param1_str.len] = '\0';
-        libqt_string sigval1 = param1_str;
-        slotFunc(self, sigval1);
-    });
-}
-
 void QTextBrowser_AnchorClicked(QTextBrowser* self, QUrl* param1) {
     self->anchorClicked(*param1);
 }
@@ -363,28 +332,8 @@ libqt_string QTextBrowser_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QTextBrowser_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTextBrowser::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTextBrowser_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTextBrowser::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
+void QTextBrowser_SetSource2(QTextBrowser* self, QUrl* name, int typeVal) {
+    self->setSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
 }
 
 // Derived class handler implementation
@@ -410,32 +359,6 @@ QVariant* QTextBrowser_QBaseLoadResource(QTextBrowser* self, int typeVal, QUrl* 
 void QTextBrowser_OnLoadResource(QTextBrowser* self, intptr_t slot) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->setQTextBrowser_LoadResource_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_LoadResource_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTextBrowser_SetSource(QTextBrowser* self, QUrl* name) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setSource(*name);
-    } else {
-        vqtextbrowser->setSource(*name);
-    }
-}
-
-// Base class handler implementation
-void QTextBrowser_QBaseSetSource(QTextBrowser* self, QUrl* name) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_SetSource_IsBase(true);
-        vqtextbrowser->setSource(*name);
-    } else {
-        vqtextbrowser->setSource(*name);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTextBrowser_OnSetSource(QTextBrowser* self, intptr_t slot) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_SetSource_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_SetSource_Callback>(slot));
     }
 }
 
@@ -748,6 +671,32 @@ void QTextBrowser_QBasePaintEvent(QTextBrowser* self, QPaintEvent* e) {
 void QTextBrowser_OnPaintEvent(QTextBrowser* self, intptr_t slot) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->setQTextBrowser_PaintEvent_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_PaintEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTextBrowser_DoSetSource(QTextBrowser* self, QUrl* name, int typeVal) {
+    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
+        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
+    } else {
+        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
+    }
+}
+
+// Base class handler implementation
+void QTextBrowser_QBaseDoSetSource(QTextBrowser* self, QUrl* name, int typeVal) {
+    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
+        vqtextbrowser->setQTextBrowser_DoSetSource_IsBase(true);
+        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
+    } else {
+        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTextBrowser_OnDoSetSource(QTextBrowser* self, intptr_t slot) {
+    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
+        vqtextbrowser->setQTextBrowser_DoSetSource_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_DoSetSource_Callback>(slot));
     }
 }
 
@@ -1426,6 +1375,32 @@ void QTextBrowser_OnViewportSizeHint(const QTextBrowser* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QTextBrowser_InitStyleOption(const QTextBrowser* self, QStyleOptionFrame* option) {
+    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
+        vqtextbrowser->initStyleOption(option);
+    } else {
+        vqtextbrowser->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QTextBrowser_QBaseInitStyleOption(const QTextBrowser* self, QStyleOptionFrame* option) {
+    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
+        vqtextbrowser->setQTextBrowser_InitStyleOption_IsBase(true);
+        vqtextbrowser->initStyleOption(option);
+    } else {
+        vqtextbrowser->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTextBrowser_OnInitStyleOption(const QTextBrowser* self, intptr_t slot) {
+    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
+        vqtextbrowser->setQTextBrowser_InitStyleOption_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QTextBrowser_DevType(const QTextBrowser* self) {
     if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
         return vqtextbrowser->devType();
@@ -1556,7 +1531,7 @@ void QTextBrowser_OnPaintEngine(const QTextBrowser* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTextBrowser_EnterEvent(QTextBrowser* self, QEvent* event) {
+void QTextBrowser_EnterEvent(QTextBrowser* self, QEnterEvent* event) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->enterEvent(event);
     } else {
@@ -1565,7 +1540,7 @@ void QTextBrowser_EnterEvent(QTextBrowser* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QTextBrowser_QBaseEnterEvent(QTextBrowser* self, QEvent* event) {
+void QTextBrowser_QBaseEnterEvent(QTextBrowser* self, QEnterEvent* event) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->setQTextBrowser_EnterEvent_IsBase(true);
         vqtextbrowser->enterEvent(event);
@@ -1738,23 +1713,23 @@ void QTextBrowser_OnHideEvent(QTextBrowser* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTextBrowser_NativeEvent(QTextBrowser* self, libqt_string eventType, void* message, long* result) {
+bool QTextBrowser_NativeEvent(QTextBrowser* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QTextBrowser_QBaseNativeEvent(QTextBrowser* self, libqt_string eventType, void* message, long* result) {
+bool QTextBrowser_QBaseNativeEvent(QTextBrowser* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->setQTextBrowser_NativeEvent_IsBase(true);
-        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtextbrowser->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1974,58 +1949,6 @@ void QTextBrowser_OnDisconnectNotify(QTextBrowser* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTextBrowser_DoSetSource(QTextBrowser* self, QUrl* name) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->doSetSource(*name);
-    } else {
-        vqtextbrowser->doSetSource(*name);
-    }
-}
-
-// Base class handler implementation
-void QTextBrowser_QBaseDoSetSource(QTextBrowser* self, QUrl* name) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_DoSetSource_IsBase(true);
-        vqtextbrowser->doSetSource(*name);
-    } else {
-        vqtextbrowser->doSetSource(*name);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTextBrowser_OnDoSetSource(QTextBrowser* self, intptr_t slot) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_DoSetSource_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_DoSetSource_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTextBrowser_DoSetSource2(QTextBrowser* self, QUrl* name, int typeVal) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
-    } else {
-        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
-    }
-}
-
-// Base class handler implementation
-void QTextBrowser_QBaseDoSetSource2(QTextBrowser* self, QUrl* name, int typeVal) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_DoSetSource2_IsBase(true);
-        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
-    } else {
-        vqtextbrowser->doSetSource(*name, static_cast<QTextDocument::ResourceType>(typeVal));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTextBrowser_OnDoSetSource2(QTextBrowser* self, intptr_t slot) {
-    if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
-        vqtextbrowser->setQTextBrowser_DoSetSource2_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_DoSetSource2_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QTextBrowser_ZoomInF(QTextBrowser* self, float range) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->zoomInF(static_cast<float>(range));
@@ -2124,32 +2047,6 @@ void QTextBrowser_QBaseDrawFrame(QTextBrowser* self, QPainter* param1) {
 void QTextBrowser_OnDrawFrame(QTextBrowser* self, intptr_t slot) {
     if (auto* vqtextbrowser = dynamic_cast<VirtualQTextBrowser*>(self)) {
         vqtextbrowser->setQTextBrowser_DrawFrame_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTextBrowser_InitStyleOption(const QTextBrowser* self, QStyleOptionFrame* option) {
-    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
-        vqtextbrowser->initStyleOption(option);
-    } else {
-        vqtextbrowser->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTextBrowser_QBaseInitStyleOption(const QTextBrowser* self, QStyleOptionFrame* option) {
-    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
-        vqtextbrowser->setQTextBrowser_InitStyleOption_IsBase(true);
-        vqtextbrowser->initStyleOption(option);
-    } else {
-        vqtextbrowser->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTextBrowser_OnInitStyleOption(const QTextBrowser* self, intptr_t slot) {
-    if (auto* vqtextbrowser = const_cast<VirtualQTextBrowser*>(dynamic_cast<const VirtualQTextBrowser*>(self))) {
-        vqtextbrowser->setQTextBrowser_InitStyleOption_Callback(reinterpret_cast<VirtualQTextBrowser::QTextBrowser_InitStyleOption_Callback>(slot));
     }
 }
 

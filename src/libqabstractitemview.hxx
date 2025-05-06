@@ -29,12 +29,13 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_IndexAt_Callback = QModelIndex (*)(const QAbstractItemView*, const QPoint&);
     using QAbstractItemView_SizeHintForRow_Callback = int (*)(const QAbstractItemView*, int);
     using QAbstractItemView_SizeHintForColumn_Callback = int (*)(const QAbstractItemView*, int);
+    using QAbstractItemView_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QAbstractItemView*, const QModelIndex&);
     using QAbstractItemView_InputMethodQuery_Callback = QVariant (*)(const QAbstractItemView*, Qt::InputMethodQuery);
     using QAbstractItemView_Reset_Callback = void (*)();
     using QAbstractItemView_SetRootIndex_Callback = void (*)(QAbstractItemView*, const QModelIndex&);
     using QAbstractItemView_DoItemsLayout_Callback = void (*)();
     using QAbstractItemView_SelectAll_Callback = void (*)();
-    using QAbstractItemView_DataChanged_Callback = void (*)(QAbstractItemView*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
+    using QAbstractItemView_DataChanged_Callback = void (*)(QAbstractItemView*, const QModelIndex&, const QModelIndex&, const QList<int>&);
     using QAbstractItemView_RowsInserted_Callback = void (*)(QAbstractItemView*, const QModelIndex&, int, int);
     using QAbstractItemView_RowsAboutToBeRemoved_Callback = void (*)(QAbstractItemView*, const QModelIndex&, int, int);
     using QAbstractItemView_SelectionChanged_Callback = void (*)(QAbstractItemView*, const QItemSelection&, const QItemSelection&);
@@ -59,7 +60,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_Edit2_Callback = bool (*)(QAbstractItemView*, const QModelIndex&, QAbstractItemView::EditTrigger, QEvent*);
     using QAbstractItemView_SelectionCommand_Callback = QItemSelectionModel::SelectionFlags (*)(const QAbstractItemView*, const QModelIndex&, const QEvent*);
     using QAbstractItemView_StartDrag_Callback = void (*)(QAbstractItemView*, Qt::DropActions);
-    using QAbstractItemView_ViewOptions_Callback = QStyleOptionViewItem (*)();
+    using QAbstractItemView_InitViewItemOption_Callback = void (*)(const QAbstractItemView*, QStyleOptionViewItem*);
     using QAbstractItemView_FocusNextPrevChild_Callback = bool (*)(QAbstractItemView*, bool);
     using QAbstractItemView_Event_Callback = bool (*)(QAbstractItemView*, QEvent*);
     using QAbstractItemView_ViewportEvent_Callback = bool (*)(QAbstractItemView*, QEvent*);
@@ -87,13 +88,14 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_ContextMenuEvent_Callback = void (*)(QAbstractItemView*, QContextMenuEvent*);
     using QAbstractItemView_ScrollContentsBy_Callback = void (*)(QAbstractItemView*, int, int);
     using QAbstractItemView_ChangeEvent_Callback = void (*)(QAbstractItemView*, QEvent*);
+    using QAbstractItemView_InitStyleOption_Callback = void (*)(const QAbstractItemView*, QStyleOptionFrame*);
     using QAbstractItemView_DevType_Callback = int (*)();
     using QAbstractItemView_SetVisible_Callback = void (*)(QAbstractItemView*, bool);
     using QAbstractItemView_HeightForWidth_Callback = int (*)(const QAbstractItemView*, int);
     using QAbstractItemView_HasHeightForWidth_Callback = bool (*)();
     using QAbstractItemView_PaintEngine_Callback = QPaintEngine* (*)();
     using QAbstractItemView_KeyReleaseEvent_Callback = void (*)(QAbstractItemView*, QKeyEvent*);
-    using QAbstractItemView_EnterEvent_Callback = void (*)(QAbstractItemView*, QEvent*);
+    using QAbstractItemView_EnterEvent_Callback = void (*)(QAbstractItemView*, QEnterEvent*);
     using QAbstractItemView_LeaveEvent_Callback = void (*)(QAbstractItemView*, QEvent*);
     using QAbstractItemView_MoveEvent_Callback = void (*)(QAbstractItemView*, QMoveEvent*);
     using QAbstractItemView_CloseEvent_Callback = void (*)(QAbstractItemView*, QCloseEvent*);
@@ -101,7 +103,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_ActionEvent_Callback = void (*)(QAbstractItemView*, QActionEvent*);
     using QAbstractItemView_ShowEvent_Callback = void (*)(QAbstractItemView*, QShowEvent*);
     using QAbstractItemView_HideEvent_Callback = void (*)(QAbstractItemView*, QHideEvent*);
-    using QAbstractItemView_NativeEvent_Callback = bool (*)(QAbstractItemView*, const QByteArray&, void*, long*);
+    using QAbstractItemView_NativeEvent_Callback = bool (*)(QAbstractItemView*, const QByteArray&, void*, qintptr*);
     using QAbstractItemView_Metric_Callback = int (*)(const QAbstractItemView*, QPaintDevice::PaintDeviceMetric);
     using QAbstractItemView_InitPainter_Callback = void (*)(const QAbstractItemView*, QPainter*);
     using QAbstractItemView_Redirected_Callback = QPaintDevice* (*)(const QAbstractItemView*, QPoint*);
@@ -110,10 +112,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_CustomEvent_Callback = void (*)(QAbstractItemView*, QEvent*);
     using QAbstractItemView_ConnectNotify_Callback = void (*)(QAbstractItemView*, const QMetaMethod&);
     using QAbstractItemView_DisconnectNotify_Callback = void (*)(QAbstractItemView*, const QMetaMethod&);
-    using QAbstractItemView_SetHorizontalStepsPerItem_Callback = void (*)(QAbstractItemView*, int);
-    using QAbstractItemView_HorizontalStepsPerItem_Callback = int (*)();
-    using QAbstractItemView_SetVerticalStepsPerItem_Callback = void (*)(QAbstractItemView*, int);
-    using QAbstractItemView_VerticalStepsPerItem_Callback = int (*)();
     using QAbstractItemView_State_Callback = QAbstractItemView::State (*)();
     using QAbstractItemView_SetState_Callback = void (*)(QAbstractItemView*, int);
     using QAbstractItemView_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -128,7 +126,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     using QAbstractItemView_SetViewportMargins_Callback = void (*)(QAbstractItemView*, int, int, int, int);
     using QAbstractItemView_ViewportMargins_Callback = QMargins (*)();
     using QAbstractItemView_DrawFrame_Callback = void (*)(QAbstractItemView*, QPainter*);
-    using QAbstractItemView_InitStyleOption_Callback = void (*)(const QAbstractItemView*, QStyleOptionFrame*);
     using QAbstractItemView_UpdateMicroFocus_Callback = void (*)();
     using QAbstractItemView_Create_Callback = void (*)();
     using QAbstractItemView_Destroy_Callback = void (*)();
@@ -150,6 +147,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     QAbstractItemView_IndexAt_Callback qabstractitemview_indexat_callback = nullptr;
     QAbstractItemView_SizeHintForRow_Callback qabstractitemview_sizehintforrow_callback = nullptr;
     QAbstractItemView_SizeHintForColumn_Callback qabstractitemview_sizehintforcolumn_callback = nullptr;
+    QAbstractItemView_ItemDelegateForIndex_Callback qabstractitemview_itemdelegateforindex_callback = nullptr;
     QAbstractItemView_InputMethodQuery_Callback qabstractitemview_inputmethodquery_callback = nullptr;
     QAbstractItemView_Reset_Callback qabstractitemview_reset_callback = nullptr;
     QAbstractItemView_SetRootIndex_Callback qabstractitemview_setrootindex_callback = nullptr;
@@ -180,7 +178,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     QAbstractItemView_Edit2_Callback qabstractitemview_edit2_callback = nullptr;
     QAbstractItemView_SelectionCommand_Callback qabstractitemview_selectioncommand_callback = nullptr;
     QAbstractItemView_StartDrag_Callback qabstractitemview_startdrag_callback = nullptr;
-    QAbstractItemView_ViewOptions_Callback qabstractitemview_viewoptions_callback = nullptr;
+    QAbstractItemView_InitViewItemOption_Callback qabstractitemview_initviewitemoption_callback = nullptr;
     QAbstractItemView_FocusNextPrevChild_Callback qabstractitemview_focusnextprevchild_callback = nullptr;
     QAbstractItemView_Event_Callback qabstractitemview_event_callback = nullptr;
     QAbstractItemView_ViewportEvent_Callback qabstractitemview_viewportevent_callback = nullptr;
@@ -208,6 +206,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     QAbstractItemView_ContextMenuEvent_Callback qabstractitemview_contextmenuevent_callback = nullptr;
     QAbstractItemView_ScrollContentsBy_Callback qabstractitemview_scrollcontentsby_callback = nullptr;
     QAbstractItemView_ChangeEvent_Callback qabstractitemview_changeevent_callback = nullptr;
+    QAbstractItemView_InitStyleOption_Callback qabstractitemview_initstyleoption_callback = nullptr;
     QAbstractItemView_DevType_Callback qabstractitemview_devtype_callback = nullptr;
     QAbstractItemView_SetVisible_Callback qabstractitemview_setvisible_callback = nullptr;
     QAbstractItemView_HeightForWidth_Callback qabstractitemview_heightforwidth_callback = nullptr;
@@ -231,10 +230,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     QAbstractItemView_CustomEvent_Callback qabstractitemview_customevent_callback = nullptr;
     QAbstractItemView_ConnectNotify_Callback qabstractitemview_connectnotify_callback = nullptr;
     QAbstractItemView_DisconnectNotify_Callback qabstractitemview_disconnectnotify_callback = nullptr;
-    QAbstractItemView_SetHorizontalStepsPerItem_Callback qabstractitemview_sethorizontalstepsperitem_callback = nullptr;
-    QAbstractItemView_HorizontalStepsPerItem_Callback qabstractitemview_horizontalstepsperitem_callback = nullptr;
-    QAbstractItemView_SetVerticalStepsPerItem_Callback qabstractitemview_setverticalstepsperitem_callback = nullptr;
-    QAbstractItemView_VerticalStepsPerItem_Callback qabstractitemview_verticalstepsperitem_callback = nullptr;
     QAbstractItemView_State_Callback qabstractitemview_state_callback = nullptr;
     QAbstractItemView_SetState_Callback qabstractitemview_setstate_callback = nullptr;
     QAbstractItemView_ScheduleDelayedItemsLayout_Callback qabstractitemview_scheduledelayeditemslayout_callback = nullptr;
@@ -249,7 +244,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     QAbstractItemView_SetViewportMargins_Callback qabstractitemview_setviewportmargins_callback = nullptr;
     QAbstractItemView_ViewportMargins_Callback qabstractitemview_viewportmargins_callback = nullptr;
     QAbstractItemView_DrawFrame_Callback qabstractitemview_drawframe_callback = nullptr;
-    QAbstractItemView_InitStyleOption_Callback qabstractitemview_initstyleoption_callback = nullptr;
     QAbstractItemView_UpdateMicroFocus_Callback qabstractitemview_updatemicrofocus_callback = nullptr;
     QAbstractItemView_Create_Callback qabstractitemview_create_callback = nullptr;
     QAbstractItemView_Destroy_Callback qabstractitemview_destroy_callback = nullptr;
@@ -270,6 +264,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     mutable bool qabstractitemview_indexat_isbase = false;
     mutable bool qabstractitemview_sizehintforrow_isbase = false;
     mutable bool qabstractitemview_sizehintforcolumn_isbase = false;
+    mutable bool qabstractitemview_itemdelegateforindex_isbase = false;
     mutable bool qabstractitemview_inputmethodquery_isbase = false;
     mutable bool qabstractitemview_reset_isbase = false;
     mutable bool qabstractitemview_setrootindex_isbase = false;
@@ -300,7 +295,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     mutable bool qabstractitemview_edit2_isbase = false;
     mutable bool qabstractitemview_selectioncommand_isbase = false;
     mutable bool qabstractitemview_startdrag_isbase = false;
-    mutable bool qabstractitemview_viewoptions_isbase = false;
+    mutable bool qabstractitemview_initviewitemoption_isbase = false;
     mutable bool qabstractitemview_focusnextprevchild_isbase = false;
     mutable bool qabstractitemview_event_isbase = false;
     mutable bool qabstractitemview_viewportevent_isbase = false;
@@ -328,6 +323,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     mutable bool qabstractitemview_contextmenuevent_isbase = false;
     mutable bool qabstractitemview_scrollcontentsby_isbase = false;
     mutable bool qabstractitemview_changeevent_isbase = false;
+    mutable bool qabstractitemview_initstyleoption_isbase = false;
     mutable bool qabstractitemview_devtype_isbase = false;
     mutable bool qabstractitemview_setvisible_isbase = false;
     mutable bool qabstractitemview_heightforwidth_isbase = false;
@@ -351,10 +347,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     mutable bool qabstractitemview_customevent_isbase = false;
     mutable bool qabstractitemview_connectnotify_isbase = false;
     mutable bool qabstractitemview_disconnectnotify_isbase = false;
-    mutable bool qabstractitemview_sethorizontalstepsperitem_isbase = false;
-    mutable bool qabstractitemview_horizontalstepsperitem_isbase = false;
-    mutable bool qabstractitemview_setverticalstepsperitem_isbase = false;
-    mutable bool qabstractitemview_verticalstepsperitem_isbase = false;
     mutable bool qabstractitemview_state_isbase = false;
     mutable bool qabstractitemview_setstate_isbase = false;
     mutable bool qabstractitemview_scheduledelayeditemslayout_isbase = false;
@@ -369,7 +361,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     mutable bool qabstractitemview_setviewportmargins_isbase = false;
     mutable bool qabstractitemview_viewportmargins_isbase = false;
     mutable bool qabstractitemview_drawframe_isbase = false;
-    mutable bool qabstractitemview_initstyleoption_isbase = false;
     mutable bool qabstractitemview_updatemicrofocus_isbase = false;
     mutable bool qabstractitemview_create_isbase = false;
     mutable bool qabstractitemview_destroy_isbase = false;
@@ -394,6 +385,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
         qabstractitemview_indexat_callback = nullptr;
         qabstractitemview_sizehintforrow_callback = nullptr;
         qabstractitemview_sizehintforcolumn_callback = nullptr;
+        qabstractitemview_itemdelegateforindex_callback = nullptr;
         qabstractitemview_inputmethodquery_callback = nullptr;
         qabstractitemview_reset_callback = nullptr;
         qabstractitemview_setrootindex_callback = nullptr;
@@ -424,7 +416,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
         qabstractitemview_edit2_callback = nullptr;
         qabstractitemview_selectioncommand_callback = nullptr;
         qabstractitemview_startdrag_callback = nullptr;
-        qabstractitemview_viewoptions_callback = nullptr;
+        qabstractitemview_initviewitemoption_callback = nullptr;
         qabstractitemview_focusnextprevchild_callback = nullptr;
         qabstractitemview_event_callback = nullptr;
         qabstractitemview_viewportevent_callback = nullptr;
@@ -452,6 +444,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
         qabstractitemview_contextmenuevent_callback = nullptr;
         qabstractitemview_scrollcontentsby_callback = nullptr;
         qabstractitemview_changeevent_callback = nullptr;
+        qabstractitemview_initstyleoption_callback = nullptr;
         qabstractitemview_devtype_callback = nullptr;
         qabstractitemview_setvisible_callback = nullptr;
         qabstractitemview_heightforwidth_callback = nullptr;
@@ -475,10 +468,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
         qabstractitemview_customevent_callback = nullptr;
         qabstractitemview_connectnotify_callback = nullptr;
         qabstractitemview_disconnectnotify_callback = nullptr;
-        qabstractitemview_sethorizontalstepsperitem_callback = nullptr;
-        qabstractitemview_horizontalstepsperitem_callback = nullptr;
-        qabstractitemview_setverticalstepsperitem_callback = nullptr;
-        qabstractitemview_verticalstepsperitem_callback = nullptr;
         qabstractitemview_state_callback = nullptr;
         qabstractitemview_setstate_callback = nullptr;
         qabstractitemview_scheduledelayeditemslayout_callback = nullptr;
@@ -493,7 +482,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
         qabstractitemview_setviewportmargins_callback = nullptr;
         qabstractitemview_viewportmargins_callback = nullptr;
         qabstractitemview_drawframe_callback = nullptr;
-        qabstractitemview_initstyleoption_callback = nullptr;
         qabstractitemview_updatemicrofocus_callback = nullptr;
         qabstractitemview_create_callback = nullptr;
         qabstractitemview_destroy_callback = nullptr;
@@ -515,6 +503,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_IndexAt_Callback(QAbstractItemView_IndexAt_Callback cb) { qabstractitemview_indexat_callback = cb; }
     void setQAbstractItemView_SizeHintForRow_Callback(QAbstractItemView_SizeHintForRow_Callback cb) { qabstractitemview_sizehintforrow_callback = cb; }
     void setQAbstractItemView_SizeHintForColumn_Callback(QAbstractItemView_SizeHintForColumn_Callback cb) { qabstractitemview_sizehintforcolumn_callback = cb; }
+    void setQAbstractItemView_ItemDelegateForIndex_Callback(QAbstractItemView_ItemDelegateForIndex_Callback cb) { qabstractitemview_itemdelegateforindex_callback = cb; }
     void setQAbstractItemView_InputMethodQuery_Callback(QAbstractItemView_InputMethodQuery_Callback cb) { qabstractitemview_inputmethodquery_callback = cb; }
     void setQAbstractItemView_Reset_Callback(QAbstractItemView_Reset_Callback cb) { qabstractitemview_reset_callback = cb; }
     void setQAbstractItemView_SetRootIndex_Callback(QAbstractItemView_SetRootIndex_Callback cb) { qabstractitemview_setrootindex_callback = cb; }
@@ -545,7 +534,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_Edit2_Callback(QAbstractItemView_Edit2_Callback cb) { qabstractitemview_edit2_callback = cb; }
     void setQAbstractItemView_SelectionCommand_Callback(QAbstractItemView_SelectionCommand_Callback cb) { qabstractitemview_selectioncommand_callback = cb; }
     void setQAbstractItemView_StartDrag_Callback(QAbstractItemView_StartDrag_Callback cb) { qabstractitemview_startdrag_callback = cb; }
-    void setQAbstractItemView_ViewOptions_Callback(QAbstractItemView_ViewOptions_Callback cb) { qabstractitemview_viewoptions_callback = cb; }
+    void setQAbstractItemView_InitViewItemOption_Callback(QAbstractItemView_InitViewItemOption_Callback cb) { qabstractitemview_initviewitemoption_callback = cb; }
     void setQAbstractItemView_FocusNextPrevChild_Callback(QAbstractItemView_FocusNextPrevChild_Callback cb) { qabstractitemview_focusnextprevchild_callback = cb; }
     void setQAbstractItemView_Event_Callback(QAbstractItemView_Event_Callback cb) { qabstractitemview_event_callback = cb; }
     void setQAbstractItemView_ViewportEvent_Callback(QAbstractItemView_ViewportEvent_Callback cb) { qabstractitemview_viewportevent_callback = cb; }
@@ -573,6 +562,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_ContextMenuEvent_Callback(QAbstractItemView_ContextMenuEvent_Callback cb) { qabstractitemview_contextmenuevent_callback = cb; }
     void setQAbstractItemView_ScrollContentsBy_Callback(QAbstractItemView_ScrollContentsBy_Callback cb) { qabstractitemview_scrollcontentsby_callback = cb; }
     void setQAbstractItemView_ChangeEvent_Callback(QAbstractItemView_ChangeEvent_Callback cb) { qabstractitemview_changeevent_callback = cb; }
+    void setQAbstractItemView_InitStyleOption_Callback(QAbstractItemView_InitStyleOption_Callback cb) { qabstractitemview_initstyleoption_callback = cb; }
     void setQAbstractItemView_DevType_Callback(QAbstractItemView_DevType_Callback cb) { qabstractitemview_devtype_callback = cb; }
     void setQAbstractItemView_SetVisible_Callback(QAbstractItemView_SetVisible_Callback cb) { qabstractitemview_setvisible_callback = cb; }
     void setQAbstractItemView_HeightForWidth_Callback(QAbstractItemView_HeightForWidth_Callback cb) { qabstractitemview_heightforwidth_callback = cb; }
@@ -596,10 +586,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_CustomEvent_Callback(QAbstractItemView_CustomEvent_Callback cb) { qabstractitemview_customevent_callback = cb; }
     void setQAbstractItemView_ConnectNotify_Callback(QAbstractItemView_ConnectNotify_Callback cb) { qabstractitemview_connectnotify_callback = cb; }
     void setQAbstractItemView_DisconnectNotify_Callback(QAbstractItemView_DisconnectNotify_Callback cb) { qabstractitemview_disconnectnotify_callback = cb; }
-    void setQAbstractItemView_SetHorizontalStepsPerItem_Callback(QAbstractItemView_SetHorizontalStepsPerItem_Callback cb) { qabstractitemview_sethorizontalstepsperitem_callback = cb; }
-    void setQAbstractItemView_HorizontalStepsPerItem_Callback(QAbstractItemView_HorizontalStepsPerItem_Callback cb) { qabstractitemview_horizontalstepsperitem_callback = cb; }
-    void setQAbstractItemView_SetVerticalStepsPerItem_Callback(QAbstractItemView_SetVerticalStepsPerItem_Callback cb) { qabstractitemview_setverticalstepsperitem_callback = cb; }
-    void setQAbstractItemView_VerticalStepsPerItem_Callback(QAbstractItemView_VerticalStepsPerItem_Callback cb) { qabstractitemview_verticalstepsperitem_callback = cb; }
     void setQAbstractItemView_State_Callback(QAbstractItemView_State_Callback cb) { qabstractitemview_state_callback = cb; }
     void setQAbstractItemView_SetState_Callback(QAbstractItemView_SetState_Callback cb) { qabstractitemview_setstate_callback = cb; }
     void setQAbstractItemView_ScheduleDelayedItemsLayout_Callback(QAbstractItemView_ScheduleDelayedItemsLayout_Callback cb) { qabstractitemview_scheduledelayeditemslayout_callback = cb; }
@@ -614,7 +600,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_SetViewportMargins_Callback(QAbstractItemView_SetViewportMargins_Callback cb) { qabstractitemview_setviewportmargins_callback = cb; }
     void setQAbstractItemView_ViewportMargins_Callback(QAbstractItemView_ViewportMargins_Callback cb) { qabstractitemview_viewportmargins_callback = cb; }
     void setQAbstractItemView_DrawFrame_Callback(QAbstractItemView_DrawFrame_Callback cb) { qabstractitemview_drawframe_callback = cb; }
-    void setQAbstractItemView_InitStyleOption_Callback(QAbstractItemView_InitStyleOption_Callback cb) { qabstractitemview_initstyleoption_callback = cb; }
     void setQAbstractItemView_UpdateMicroFocus_Callback(QAbstractItemView_UpdateMicroFocus_Callback cb) { qabstractitemview_updatemicrofocus_callback = cb; }
     void setQAbstractItemView_Create_Callback(QAbstractItemView_Create_Callback cb) { qabstractitemview_create_callback = cb; }
     void setQAbstractItemView_Destroy_Callback(QAbstractItemView_Destroy_Callback cb) { qabstractitemview_destroy_callback = cb; }
@@ -635,6 +620,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_IndexAt_IsBase(bool value) const { qabstractitemview_indexat_isbase = value; }
     void setQAbstractItemView_SizeHintForRow_IsBase(bool value) const { qabstractitemview_sizehintforrow_isbase = value; }
     void setQAbstractItemView_SizeHintForColumn_IsBase(bool value) const { qabstractitemview_sizehintforcolumn_isbase = value; }
+    void setQAbstractItemView_ItemDelegateForIndex_IsBase(bool value) const { qabstractitemview_itemdelegateforindex_isbase = value; }
     void setQAbstractItemView_InputMethodQuery_IsBase(bool value) const { qabstractitemview_inputmethodquery_isbase = value; }
     void setQAbstractItemView_Reset_IsBase(bool value) const { qabstractitemview_reset_isbase = value; }
     void setQAbstractItemView_SetRootIndex_IsBase(bool value) const { qabstractitemview_setrootindex_isbase = value; }
@@ -665,7 +651,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_Edit2_IsBase(bool value) const { qabstractitemview_edit2_isbase = value; }
     void setQAbstractItemView_SelectionCommand_IsBase(bool value) const { qabstractitemview_selectioncommand_isbase = value; }
     void setQAbstractItemView_StartDrag_IsBase(bool value) const { qabstractitemview_startdrag_isbase = value; }
-    void setQAbstractItemView_ViewOptions_IsBase(bool value) const { qabstractitemview_viewoptions_isbase = value; }
+    void setQAbstractItemView_InitViewItemOption_IsBase(bool value) const { qabstractitemview_initviewitemoption_isbase = value; }
     void setQAbstractItemView_FocusNextPrevChild_IsBase(bool value) const { qabstractitemview_focusnextprevchild_isbase = value; }
     void setQAbstractItemView_Event_IsBase(bool value) const { qabstractitemview_event_isbase = value; }
     void setQAbstractItemView_ViewportEvent_IsBase(bool value) const { qabstractitemview_viewportevent_isbase = value; }
@@ -693,6 +679,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_ContextMenuEvent_IsBase(bool value) const { qabstractitemview_contextmenuevent_isbase = value; }
     void setQAbstractItemView_ScrollContentsBy_IsBase(bool value) const { qabstractitemview_scrollcontentsby_isbase = value; }
     void setQAbstractItemView_ChangeEvent_IsBase(bool value) const { qabstractitemview_changeevent_isbase = value; }
+    void setQAbstractItemView_InitStyleOption_IsBase(bool value) const { qabstractitemview_initstyleoption_isbase = value; }
     void setQAbstractItemView_DevType_IsBase(bool value) const { qabstractitemview_devtype_isbase = value; }
     void setQAbstractItemView_SetVisible_IsBase(bool value) const { qabstractitemview_setvisible_isbase = value; }
     void setQAbstractItemView_HeightForWidth_IsBase(bool value) const { qabstractitemview_heightforwidth_isbase = value; }
@@ -716,10 +703,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_CustomEvent_IsBase(bool value) const { qabstractitemview_customevent_isbase = value; }
     void setQAbstractItemView_ConnectNotify_IsBase(bool value) const { qabstractitemview_connectnotify_isbase = value; }
     void setQAbstractItemView_DisconnectNotify_IsBase(bool value) const { qabstractitemview_disconnectnotify_isbase = value; }
-    void setQAbstractItemView_SetHorizontalStepsPerItem_IsBase(bool value) const { qabstractitemview_sethorizontalstepsperitem_isbase = value; }
-    void setQAbstractItemView_HorizontalStepsPerItem_IsBase(bool value) const { qabstractitemview_horizontalstepsperitem_isbase = value; }
-    void setQAbstractItemView_SetVerticalStepsPerItem_IsBase(bool value) const { qabstractitemview_setverticalstepsperitem_isbase = value; }
-    void setQAbstractItemView_VerticalStepsPerItem_IsBase(bool value) const { qabstractitemview_verticalstepsperitem_isbase = value; }
     void setQAbstractItemView_State_IsBase(bool value) const { qabstractitemview_state_isbase = value; }
     void setQAbstractItemView_SetState_IsBase(bool value) const { qabstractitemview_setstate_isbase = value; }
     void setQAbstractItemView_ScheduleDelayedItemsLayout_IsBase(bool value) const { qabstractitemview_scheduledelayeditemslayout_isbase = value; }
@@ -734,7 +717,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     void setQAbstractItemView_SetViewportMargins_IsBase(bool value) const { qabstractitemview_setviewportmargins_isbase = value; }
     void setQAbstractItemView_ViewportMargins_IsBase(bool value) const { qabstractitemview_viewportmargins_isbase = value; }
     void setQAbstractItemView_DrawFrame_IsBase(bool value) const { qabstractitemview_drawframe_isbase = value; }
-    void setQAbstractItemView_InitStyleOption_IsBase(bool value) const { qabstractitemview_initstyleoption_isbase = value; }
     void setQAbstractItemView_UpdateMicroFocus_IsBase(bool value) const { qabstractitemview_updatemicrofocus_isbase = value; }
     void setQAbstractItemView_Create_IsBase(bool value) const { qabstractitemview_create_isbase = value; }
     void setQAbstractItemView_Destroy_IsBase(bool value) const { qabstractitemview_destroy_isbase = value; }
@@ -833,6 +815,18 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
+        if (qabstractitemview_itemdelegateforindex_isbase) {
+            qabstractitemview_itemdelegateforindex_isbase = false;
+            return QAbstractItemView::itemDelegateForIndex(index);
+        } else if (qabstractitemview_itemdelegateforindex_callback != nullptr) {
+            return qabstractitemview_itemdelegateforindex_callback(this, index);
+        } else {
+            return QAbstractItemView::itemDelegateForIndex(index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery query) const override {
         if (qabstractitemview_inputmethodquery_isbase) {
             qabstractitemview_inputmethodquery_isbase = false;
@@ -893,7 +887,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
         if (qabstractitemview_datachanged_isbase) {
             qabstractitemview_datachanged_isbase = false;
             QAbstractItemView::dataChanged(topLeft, bottomRight, roles);
@@ -1151,14 +1145,14 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QStyleOptionViewItem viewOptions() const override {
-        if (qabstractitemview_viewoptions_isbase) {
-            qabstractitemview_viewoptions_isbase = false;
-            return QAbstractItemView::viewOptions();
-        } else if (qabstractitemview_viewoptions_callback != nullptr) {
-            return qabstractitemview_viewoptions_callback();
+    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
+        if (qabstractitemview_initviewitemoption_isbase) {
+            qabstractitemview_initviewitemoption_isbase = false;
+            QAbstractItemView::initViewItemOption(option);
+        } else if (qabstractitemview_initviewitemoption_callback != nullptr) {
+            qabstractitemview_initviewitemoption_callback(this, option);
         } else {
-            return QAbstractItemView::viewOptions();
+            QAbstractItemView::initViewItemOption(option);
         }
     }
 
@@ -1487,6 +1481,18 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qabstractitemview_initstyleoption_isbase) {
+            qabstractitemview_initstyleoption_isbase = false;
+            QAbstractItemView::initStyleOption(option);
+        } else if (qabstractitemview_initstyleoption_callback != nullptr) {
+            qabstractitemview_initstyleoption_callback(this, option);
+        } else {
+            QAbstractItemView::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qabstractitemview_devtype_isbase) {
             qabstractitemview_devtype_isbase = false;
@@ -1559,7 +1565,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qabstractitemview_enterevent_isbase) {
             qabstractitemview_enterevent_isbase = false;
             QAbstractItemView::enterEvent(event);
@@ -1655,7 +1661,7 @@ class VirtualQAbstractItemView : public QAbstractItemView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qabstractitemview_nativeevent_isbase) {
             qabstractitemview_nativeevent_isbase = false;
             return QAbstractItemView::nativeEvent(eventType, message, result);
@@ -1759,54 +1765,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
             qabstractitemview_disconnectnotify_callback(this, signal);
         } else {
             QAbstractItemView::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setHorizontalStepsPerItem(int steps) {
-        if (qabstractitemview_sethorizontalstepsperitem_isbase) {
-            qabstractitemview_sethorizontalstepsperitem_isbase = false;
-            QAbstractItemView::setHorizontalStepsPerItem(steps);
-        } else if (qabstractitemview_sethorizontalstepsperitem_callback != nullptr) {
-            qabstractitemview_sethorizontalstepsperitem_callback(this, steps);
-        } else {
-            QAbstractItemView::setHorizontalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int horizontalStepsPerItem() const {
-        if (qabstractitemview_horizontalstepsperitem_isbase) {
-            qabstractitemview_horizontalstepsperitem_isbase = false;
-            return QAbstractItemView::horizontalStepsPerItem();
-        } else if (qabstractitemview_horizontalstepsperitem_callback != nullptr) {
-            return qabstractitemview_horizontalstepsperitem_callback();
-        } else {
-            return QAbstractItemView::horizontalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setVerticalStepsPerItem(int steps) {
-        if (qabstractitemview_setverticalstepsperitem_isbase) {
-            qabstractitemview_setverticalstepsperitem_isbase = false;
-            QAbstractItemView::setVerticalStepsPerItem(steps);
-        } else if (qabstractitemview_setverticalstepsperitem_callback != nullptr) {
-            qabstractitemview_setverticalstepsperitem_callback(this, steps);
-        } else {
-            QAbstractItemView::setVerticalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int verticalStepsPerItem() const {
-        if (qabstractitemview_verticalstepsperitem_isbase) {
-            qabstractitemview_verticalstepsperitem_isbase = false;
-            return QAbstractItemView::verticalStepsPerItem();
-        } else if (qabstractitemview_verticalstepsperitem_callback != nullptr) {
-            return qabstractitemview_verticalstepsperitem_callback();
-        } else {
-            return QAbstractItemView::verticalStepsPerItem();
         }
     }
 
@@ -1975,18 +1933,6 @@ class VirtualQAbstractItemView : public QAbstractItemView {
             qabstractitemview_drawframe_callback(this, param1);
         } else {
             QAbstractItemView::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qabstractitemview_initstyleoption_isbase) {
-            qabstractitemview_initstyleoption_isbase = false;
-            QAbstractItemView::initStyleOption(option);
-        } else if (qabstractitemview_initstyleoption_callback != nullptr) {
-            qabstractitemview_initstyleoption_callback(this, option);
-        } else {
-            QAbstractItemView::initStyleOption(option);
         }
     }
 

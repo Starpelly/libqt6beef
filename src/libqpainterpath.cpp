@@ -148,22 +148,6 @@ void QPainterPath_AddRoundedRect2(QPainterPath* self, double x, double y, double
     self->addRoundedRect(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<qreal>(xRadius), static_cast<qreal>(yRadius));
 }
 
-void QPainterPath_AddRoundRect(QPainterPath* self, QRectF* rect, int xRnd, int yRnd) {
-    self->addRoundRect(*rect, static_cast<int>(xRnd), static_cast<int>(yRnd));
-}
-
-void QPainterPath_AddRoundRect2(QPainterPath* self, double x, double y, double w, double h, int xRnd, int yRnd) {
-    self->addRoundRect(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<int>(xRnd), static_cast<int>(yRnd));
-}
-
-void QPainterPath_AddRoundRect3(QPainterPath* self, QRectF* rect, int roundness) {
-    self->addRoundRect(*rect, static_cast<int>(roundness));
-}
-
-void QPainterPath_AddRoundRect4(QPainterPath* self, double x, double y, double w, double h, int roundness) {
-    self->addRoundRect(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<int>(roundness));
-}
-
 void QPainterPath_ConnectPath(QPainterPath* self, QPainterPath* path) {
     self->connectPath(*path);
 }
@@ -270,10 +254,6 @@ QPainterPath* QPainterPath_Intersected(const QPainterPath* self, QPainterPath* r
 
 QPainterPath* QPainterPath_Subtracted(const QPainterPath* self, QPainterPath* r) {
     return new QPainterPath(self->subtracted(*r));
-}
-
-QPainterPath* QPainterPath_SubtractedInverted(const QPainterPath* self, QPainterPath* r) {
-    return new QPainterPath(self->subtractedInverted(*r));
 }
 
 QPainterPath* QPainterPath_Simplified(const QPainterPath* self) {
@@ -389,7 +369,7 @@ void QPainterPathStroker_SetDashPattern(QPainterPathStroker* self, int dashPatte
 }
 
 void QPainterPathStroker_SetDashPatternWithDashPattern(QPainterPathStroker* self, libqt_list /* of double */ dashPattern) {
-    QVector<qreal> dashPattern_QList;
+    QList<qreal> dashPattern_QList;
     dashPattern_QList.reserve(dashPattern.len);
     double* dashPattern_arr = static_cast<double*>(dashPattern.data);
     for (size_t i = 0; i < dashPattern.len; ++i) {
@@ -399,7 +379,7 @@ void QPainterPathStroker_SetDashPatternWithDashPattern(QPainterPathStroker* self
 }
 
 libqt_list /* of double */ QPainterPathStroker_DashPattern(const QPainterPathStroker* self) {
-    QVector<qreal> _ret = self->dashPattern();
+    QList<qreal> _ret = self->dashPattern();
     // Convert QList<> from C++ memory to manually-managed C memory
     double* _arr = static_cast<double*>(malloc(sizeof(double) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

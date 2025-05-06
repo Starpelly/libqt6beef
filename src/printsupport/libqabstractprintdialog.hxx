@@ -45,7 +45,7 @@ class VirtualQAbstractPrintDialog : public QAbstractPrintDialog {
     using QAbstractPrintDialog_KeyReleaseEvent_Callback = void (*)(QAbstractPrintDialog*, QKeyEvent*);
     using QAbstractPrintDialog_FocusInEvent_Callback = void (*)(QAbstractPrintDialog*, QFocusEvent*);
     using QAbstractPrintDialog_FocusOutEvent_Callback = void (*)(QAbstractPrintDialog*, QFocusEvent*);
-    using QAbstractPrintDialog_EnterEvent_Callback = void (*)(QAbstractPrintDialog*, QEvent*);
+    using QAbstractPrintDialog_EnterEvent_Callback = void (*)(QAbstractPrintDialog*, QEnterEvent*);
     using QAbstractPrintDialog_LeaveEvent_Callback = void (*)(QAbstractPrintDialog*, QEvent*);
     using QAbstractPrintDialog_PaintEvent_Callback = void (*)(QAbstractPrintDialog*, QPaintEvent*);
     using QAbstractPrintDialog_MoveEvent_Callback = void (*)(QAbstractPrintDialog*, QMoveEvent*);
@@ -56,7 +56,7 @@ class VirtualQAbstractPrintDialog : public QAbstractPrintDialog {
     using QAbstractPrintDialog_DragLeaveEvent_Callback = void (*)(QAbstractPrintDialog*, QDragLeaveEvent*);
     using QAbstractPrintDialog_DropEvent_Callback = void (*)(QAbstractPrintDialog*, QDropEvent*);
     using QAbstractPrintDialog_HideEvent_Callback = void (*)(QAbstractPrintDialog*, QHideEvent*);
-    using QAbstractPrintDialog_NativeEvent_Callback = bool (*)(QAbstractPrintDialog*, const QByteArray&, void*, long*);
+    using QAbstractPrintDialog_NativeEvent_Callback = bool (*)(QAbstractPrintDialog*, const QByteArray&, void*, qintptr*);
     using QAbstractPrintDialog_ChangeEvent_Callback = void (*)(QAbstractPrintDialog*, QEvent*);
     using QAbstractPrintDialog_Metric_Callback = int (*)(const QAbstractPrintDialog*, QPaintDevice::PaintDeviceMetric);
     using QAbstractPrintDialog_InitPainter_Callback = void (*)(const QAbstractPrintDialog*, QPainter*);
@@ -749,7 +749,7 @@ class VirtualQAbstractPrintDialog : public QAbstractPrintDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qabstractprintdialog_enterevent_isbase) {
             qabstractprintdialog_enterevent_isbase = false;
             QAbstractPrintDialog::enterEvent(event);
@@ -881,7 +881,7 @@ class VirtualQAbstractPrintDialog : public QAbstractPrintDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qabstractprintdialog_nativeevent_isbase) {
             qabstractprintdialog_nativeevent_isbase = false;
             return QAbstractPrintDialog::nativeEvent(eventType, message, result);

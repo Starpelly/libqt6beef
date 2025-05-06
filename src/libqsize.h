@@ -52,6 +52,7 @@ QSize* QSize_OperatorPlusAssign(QSize* self, QSize* param1);
 QSize* QSize_OperatorMinusAssign(QSize* self, QSize* param1);
 QSize* QSize_OperatorMultiplyAssign(QSize* self, double c);
 QSize* QSize_OperatorDivideAssign(QSize* self, double c);
+QSizeF* QSize_ToSizeF(const QSize* self);
 void QSize_Delete(QSize* self);
 
 QSizeF* QSizeF_new(QSizeF* other);

@@ -126,6 +126,10 @@ QSize* QSize_OperatorDivideAssign(QSize* self, double c) {
     return &_ret;
 }
 
+QSizeF* QSize_ToSizeF(const QSize* self) {
+    return new QSizeF(self->toSizeF());
+}
+
 void QSize_Delete(QSize* self) {
     delete self;
 }

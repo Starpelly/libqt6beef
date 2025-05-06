@@ -21,6 +21,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     using QFocusFrame_Event_Callback = bool (*)(QFocusFrame*, QEvent*);
     using QFocusFrame_EventFilter_Callback = bool (*)(QFocusFrame*, QObject*, QEvent*);
     using QFocusFrame_PaintEvent_Callback = void (*)(QFocusFrame*, QPaintEvent*);
+    using QFocusFrame_InitStyleOption_Callback = void (*)(const QFocusFrame*, QStyleOption*);
     using QFocusFrame_DevType_Callback = int (*)();
     using QFocusFrame_SetVisible_Callback = void (*)(QFocusFrame*, bool);
     using QFocusFrame_SizeHint_Callback = QSize (*)();
@@ -37,7 +38,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     using QFocusFrame_KeyReleaseEvent_Callback = void (*)(QFocusFrame*, QKeyEvent*);
     using QFocusFrame_FocusInEvent_Callback = void (*)(QFocusFrame*, QFocusEvent*);
     using QFocusFrame_FocusOutEvent_Callback = void (*)(QFocusFrame*, QFocusEvent*);
-    using QFocusFrame_EnterEvent_Callback = void (*)(QFocusFrame*, QEvent*);
+    using QFocusFrame_EnterEvent_Callback = void (*)(QFocusFrame*, QEnterEvent*);
     using QFocusFrame_LeaveEvent_Callback = void (*)(QFocusFrame*, QEvent*);
     using QFocusFrame_MoveEvent_Callback = void (*)(QFocusFrame*, QMoveEvent*);
     using QFocusFrame_ResizeEvent_Callback = void (*)(QFocusFrame*, QResizeEvent*);
@@ -51,7 +52,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     using QFocusFrame_DropEvent_Callback = void (*)(QFocusFrame*, QDropEvent*);
     using QFocusFrame_ShowEvent_Callback = void (*)(QFocusFrame*, QShowEvent*);
     using QFocusFrame_HideEvent_Callback = void (*)(QFocusFrame*, QHideEvent*);
-    using QFocusFrame_NativeEvent_Callback = bool (*)(QFocusFrame*, const QByteArray&, void*, long*);
+    using QFocusFrame_NativeEvent_Callback = bool (*)(QFocusFrame*, const QByteArray&, void*, qintptr*);
     using QFocusFrame_ChangeEvent_Callback = void (*)(QFocusFrame*, QEvent*);
     using QFocusFrame_Metric_Callback = int (*)(const QFocusFrame*, QPaintDevice::PaintDeviceMetric);
     using QFocusFrame_InitPainter_Callback = void (*)(const QFocusFrame*, QPainter*);
@@ -65,7 +66,6 @@ class VirtualQFocusFrame : public QFocusFrame {
     using QFocusFrame_CustomEvent_Callback = void (*)(QFocusFrame*, QEvent*);
     using QFocusFrame_ConnectNotify_Callback = void (*)(QFocusFrame*, const QMetaMethod&);
     using QFocusFrame_DisconnectNotify_Callback = void (*)(QFocusFrame*, const QMetaMethod&);
-    using QFocusFrame_InitStyleOption_Callback = void (*)(const QFocusFrame*, QStyleOption*);
     using QFocusFrame_UpdateMicroFocus_Callback = void (*)();
     using QFocusFrame_Create_Callback = void (*)();
     using QFocusFrame_Destroy_Callback = void (*)();
@@ -82,6 +82,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     QFocusFrame_Event_Callback qfocusframe_event_callback = nullptr;
     QFocusFrame_EventFilter_Callback qfocusframe_eventfilter_callback = nullptr;
     QFocusFrame_PaintEvent_Callback qfocusframe_paintevent_callback = nullptr;
+    QFocusFrame_InitStyleOption_Callback qfocusframe_initstyleoption_callback = nullptr;
     QFocusFrame_DevType_Callback qfocusframe_devtype_callback = nullptr;
     QFocusFrame_SetVisible_Callback qfocusframe_setvisible_callback = nullptr;
     QFocusFrame_SizeHint_Callback qfocusframe_sizehint_callback = nullptr;
@@ -126,7 +127,6 @@ class VirtualQFocusFrame : public QFocusFrame {
     QFocusFrame_CustomEvent_Callback qfocusframe_customevent_callback = nullptr;
     QFocusFrame_ConnectNotify_Callback qfocusframe_connectnotify_callback = nullptr;
     QFocusFrame_DisconnectNotify_Callback qfocusframe_disconnectnotify_callback = nullptr;
-    QFocusFrame_InitStyleOption_Callback qfocusframe_initstyleoption_callback = nullptr;
     QFocusFrame_UpdateMicroFocus_Callback qfocusframe_updatemicrofocus_callback = nullptr;
     QFocusFrame_Create_Callback qfocusframe_create_callback = nullptr;
     QFocusFrame_Destroy_Callback qfocusframe_destroy_callback = nullptr;
@@ -142,6 +142,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     mutable bool qfocusframe_event_isbase = false;
     mutable bool qfocusframe_eventfilter_isbase = false;
     mutable bool qfocusframe_paintevent_isbase = false;
+    mutable bool qfocusframe_initstyleoption_isbase = false;
     mutable bool qfocusframe_devtype_isbase = false;
     mutable bool qfocusframe_setvisible_isbase = false;
     mutable bool qfocusframe_sizehint_isbase = false;
@@ -186,7 +187,6 @@ class VirtualQFocusFrame : public QFocusFrame {
     mutable bool qfocusframe_customevent_isbase = false;
     mutable bool qfocusframe_connectnotify_isbase = false;
     mutable bool qfocusframe_disconnectnotify_isbase = false;
-    mutable bool qfocusframe_initstyleoption_isbase = false;
     mutable bool qfocusframe_updatemicrofocus_isbase = false;
     mutable bool qfocusframe_create_isbase = false;
     mutable bool qfocusframe_destroy_isbase = false;
@@ -206,6 +206,7 @@ class VirtualQFocusFrame : public QFocusFrame {
         qfocusframe_event_callback = nullptr;
         qfocusframe_eventfilter_callback = nullptr;
         qfocusframe_paintevent_callback = nullptr;
+        qfocusframe_initstyleoption_callback = nullptr;
         qfocusframe_devtype_callback = nullptr;
         qfocusframe_setvisible_callback = nullptr;
         qfocusframe_sizehint_callback = nullptr;
@@ -250,7 +251,6 @@ class VirtualQFocusFrame : public QFocusFrame {
         qfocusframe_customevent_callback = nullptr;
         qfocusframe_connectnotify_callback = nullptr;
         qfocusframe_disconnectnotify_callback = nullptr;
-        qfocusframe_initstyleoption_callback = nullptr;
         qfocusframe_updatemicrofocus_callback = nullptr;
         qfocusframe_create_callback = nullptr;
         qfocusframe_destroy_callback = nullptr;
@@ -267,6 +267,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     void setQFocusFrame_Event_Callback(QFocusFrame_Event_Callback cb) { qfocusframe_event_callback = cb; }
     void setQFocusFrame_EventFilter_Callback(QFocusFrame_EventFilter_Callback cb) { qfocusframe_eventfilter_callback = cb; }
     void setQFocusFrame_PaintEvent_Callback(QFocusFrame_PaintEvent_Callback cb) { qfocusframe_paintevent_callback = cb; }
+    void setQFocusFrame_InitStyleOption_Callback(QFocusFrame_InitStyleOption_Callback cb) { qfocusframe_initstyleoption_callback = cb; }
     void setQFocusFrame_DevType_Callback(QFocusFrame_DevType_Callback cb) { qfocusframe_devtype_callback = cb; }
     void setQFocusFrame_SetVisible_Callback(QFocusFrame_SetVisible_Callback cb) { qfocusframe_setvisible_callback = cb; }
     void setQFocusFrame_SizeHint_Callback(QFocusFrame_SizeHint_Callback cb) { qfocusframe_sizehint_callback = cb; }
@@ -311,7 +312,6 @@ class VirtualQFocusFrame : public QFocusFrame {
     void setQFocusFrame_CustomEvent_Callback(QFocusFrame_CustomEvent_Callback cb) { qfocusframe_customevent_callback = cb; }
     void setQFocusFrame_ConnectNotify_Callback(QFocusFrame_ConnectNotify_Callback cb) { qfocusframe_connectnotify_callback = cb; }
     void setQFocusFrame_DisconnectNotify_Callback(QFocusFrame_DisconnectNotify_Callback cb) { qfocusframe_disconnectnotify_callback = cb; }
-    void setQFocusFrame_InitStyleOption_Callback(QFocusFrame_InitStyleOption_Callback cb) { qfocusframe_initstyleoption_callback = cb; }
     void setQFocusFrame_UpdateMicroFocus_Callback(QFocusFrame_UpdateMicroFocus_Callback cb) { qfocusframe_updatemicrofocus_callback = cb; }
     void setQFocusFrame_Create_Callback(QFocusFrame_Create_Callback cb) { qfocusframe_create_callback = cb; }
     void setQFocusFrame_Destroy_Callback(QFocusFrame_Destroy_Callback cb) { qfocusframe_destroy_callback = cb; }
@@ -327,6 +327,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     void setQFocusFrame_Event_IsBase(bool value) const { qfocusframe_event_isbase = value; }
     void setQFocusFrame_EventFilter_IsBase(bool value) const { qfocusframe_eventfilter_isbase = value; }
     void setQFocusFrame_PaintEvent_IsBase(bool value) const { qfocusframe_paintevent_isbase = value; }
+    void setQFocusFrame_InitStyleOption_IsBase(bool value) const { qfocusframe_initstyleoption_isbase = value; }
     void setQFocusFrame_DevType_IsBase(bool value) const { qfocusframe_devtype_isbase = value; }
     void setQFocusFrame_SetVisible_IsBase(bool value) const { qfocusframe_setvisible_isbase = value; }
     void setQFocusFrame_SizeHint_IsBase(bool value) const { qfocusframe_sizehint_isbase = value; }
@@ -371,7 +372,6 @@ class VirtualQFocusFrame : public QFocusFrame {
     void setQFocusFrame_CustomEvent_IsBase(bool value) const { qfocusframe_customevent_isbase = value; }
     void setQFocusFrame_ConnectNotify_IsBase(bool value) const { qfocusframe_connectnotify_isbase = value; }
     void setQFocusFrame_DisconnectNotify_IsBase(bool value) const { qfocusframe_disconnectnotify_isbase = value; }
-    void setQFocusFrame_InitStyleOption_IsBase(bool value) const { qfocusframe_initstyleoption_isbase = value; }
     void setQFocusFrame_UpdateMicroFocus_IsBase(bool value) const { qfocusframe_updatemicrofocus_isbase = value; }
     void setQFocusFrame_Create_IsBase(bool value) const { qfocusframe_create_isbase = value; }
     void setQFocusFrame_Destroy_IsBase(bool value) const { qfocusframe_destroy_isbase = value; }
@@ -427,6 +427,18 @@ class VirtualQFocusFrame : public QFocusFrame {
             qfocusframe_paintevent_callback(this, param1);
         } else {
             QFocusFrame::paintEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOption* option) const override {
+        if (qfocusframe_initstyleoption_isbase) {
+            qfocusframe_initstyleoption_isbase = false;
+            QFocusFrame::initStyleOption(option);
+        } else if (qfocusframe_initstyleoption_callback != nullptr) {
+            qfocusframe_initstyleoption_callback(this, option);
+        } else {
+            QFocusFrame::initStyleOption(option);
         }
     }
 
@@ -623,7 +635,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qfocusframe_enterevent_isbase) {
             qfocusframe_enterevent_isbase = false;
             QFocusFrame::enterEvent(event);
@@ -791,7 +803,7 @@ class VirtualQFocusFrame : public QFocusFrame {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qfocusframe_nativeevent_isbase) {
             qfocusframe_nativeevent_isbase = false;
             return QFocusFrame::nativeEvent(eventType, message, result);
@@ -955,18 +967,6 @@ class VirtualQFocusFrame : public QFocusFrame {
             qfocusframe_disconnectnotify_callback(this, signal);
         } else {
             QFocusFrame::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOption* option) const {
-        if (qfocusframe_initstyleoption_isbase) {
-            qfocusframe_initstyleoption_isbase = false;
-            QFocusFrame::initStyleOption(option);
-        } else if (qfocusframe_initstyleoption_callback != nullptr) {
-            qfocusframe_initstyleoption_callback(this, option);
-        } else {
-            QFocusFrame::initStyleOption(option);
         }
     }
 

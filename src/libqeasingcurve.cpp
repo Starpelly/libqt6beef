@@ -66,7 +66,7 @@ void QEasingCurve_AddTCBSegment(QEasingCurve* self, QPointF* nextPoint, double t
 }
 
 libqt_list /* of QPointF* */ QEasingCurve_ToCubicSpline(const QEasingCurve* self) {
-    QVector<QPointF> _ret = self->toCubicSpline();
+    QList<QPointF> _ret = self->toCubicSpline();
     // Convert QList<> from C++ memory to manually-managed C memory
     QPointF** _arr = static_cast<QPointF**>(malloc(sizeof(QPointF*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

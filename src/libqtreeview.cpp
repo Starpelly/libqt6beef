@@ -4,7 +4,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,6 +17,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -42,7 +45,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -50,6 +52,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -119,18 +122,6 @@ int QTreeView_QBaseMetacall(QTreeView* self, int param1, int param2, void** para
 
 libqt_string QTreeView_Tr(const char* s) {
     QString _ret = QTreeView::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTreeView_TrUtf8(const char* s) {
-    QString _ret = QTreeView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -353,11 +344,7 @@ void QTreeView_ResizeColumnToContents(QTreeView* self, int column) {
     self->resizeColumnToContents(static_cast<int>(column));
 }
 
-void QTreeView_SortByColumn(QTreeView* self, int column) {
-    self->sortByColumn(static_cast<int>(column));
-}
-
-void QTreeView_SortByColumn2(QTreeView* self, int column, int order) {
+void QTreeView_SortByColumn(QTreeView* self, int column, int order) {
     self->sortByColumn(static_cast<int>(column), static_cast<Qt::SortOrder>(order));
 }
 
@@ -391,30 +378,6 @@ libqt_string QTreeView_Tr2(const char* s, const char* c) {
 
 libqt_string QTreeView_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTreeView::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTreeView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTreeView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTreeView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTreeView::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -667,7 +630,7 @@ void QTreeView_OnReset(QTreeView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QTreeView_DataChanged(QTreeView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -682,7 +645,7 @@ void QTreeView_DataChanged(QTreeView* self, QModelIndex* topLeft, QModelIndex* b
 
 // Base class handler implementation
 void QTreeView_QBaseDataChanged(QTreeView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1018,6 +981,32 @@ libqt_list /* of QModelIndex* */ QTreeView_QBaseSelectedIndexes(const QTreeView*
 void QTreeView_OnSelectedIndexes(const QTreeView* self, intptr_t slot) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
         vqtreeview->setQTreeView_SelectedIndexes_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_SelectedIndexes_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTreeView_ChangeEvent(QTreeView* self, QEvent* event) {
+    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
+        vqtreeview->changeEvent(event);
+    } else {
+        vqtreeview->changeEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QTreeView_QBaseChangeEvent(QTreeView* self, QEvent* event) {
+    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
+        vqtreeview->setQTreeView_ChangeEvent_IsBase(true);
+        vqtreeview->changeEvent(event);
+    } else {
+        vqtreeview->changeEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTreeView_OnChangeEvent(QTreeView* self, intptr_t slot) {
+    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
+        vqtreeview->setQTreeView_ChangeEvent_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_ChangeEvent_Callback>(slot));
     }
 }
 
@@ -1514,6 +1503,32 @@ void QTreeView_OnSizeHintForRow(const QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+QAbstractItemDelegate* QTreeView_ItemDelegateForIndex(const QTreeView* self, QModelIndex* index) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        return vqtreeview->itemDelegateForIndex(*index);
+    } else {
+        return vqtreeview->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QTreeView_QBaseItemDelegateForIndex(const QTreeView* self, QModelIndex* index) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        vqtreeview->setQTreeView_ItemDelegateForIndex_IsBase(true);
+        return vqtreeview->itemDelegateForIndex(*index);
+    } else {
+        return vqtreeview->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTreeView_OnItemDelegateForIndex(const QTreeView* self, intptr_t slot) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        vqtreeview->setQTreeView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_ItemDelegateForIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QVariant* QTreeView_InputMethodQuery(const QTreeView* self, int query) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
         return new QVariant(vqtreeview->inputMethodQuery(static_cast<Qt::InputMethodQuery>(query)));
@@ -1800,26 +1815,28 @@ void QTreeView_OnStartDrag(QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QTreeView_ViewOptions(const QTreeView* self) {
+void QTreeView_InitViewItemOption(const QTreeView* self, QStyleOptionViewItem* option) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        return new QStyleOptionViewItem(vqtreeview->viewOptions());
+        vqtreeview->initViewItemOption(option);
+    } else {
+        vqtreeview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QTreeView_QBaseViewOptions(const QTreeView* self) {
+void QTreeView_QBaseInitViewItemOption(const QTreeView* self, QStyleOptionViewItem* option) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqtreeview->viewOptions());
+        vqtreeview->setQTreeView_InitViewItemOption_IsBase(true);
+        vqtreeview->initViewItemOption(option);
+    } else {
+        vqtreeview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QTreeView_OnViewOptions(const QTreeView* self, intptr_t slot) {
+void QTreeView_OnInitViewItemOption(const QTreeView* self, intptr_t slot) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_ViewOptions_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_ViewOptions_Callback>(slot));
+        vqtreeview->setQTreeView_InitViewItemOption_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -2214,28 +2231,28 @@ void QTreeView_OnContextMenuEvent(QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTreeView_ChangeEvent(QTreeView* self, QEvent* param1) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->changeEvent(param1);
+void QTreeView_InitStyleOption(const QTreeView* self, QStyleOptionFrame* option) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        vqtreeview->initStyleOption(option);
     } else {
-        vqtreeview->changeEvent(param1);
+        vqtreeview->initStyleOption(option);
     }
 }
 
 // Base class handler implementation
-void QTreeView_QBaseChangeEvent(QTreeView* self, QEvent* param1) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_ChangeEvent_IsBase(true);
-        vqtreeview->changeEvent(param1);
+void QTreeView_QBaseInitStyleOption(const QTreeView* self, QStyleOptionFrame* option) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        vqtreeview->setQTreeView_InitStyleOption_IsBase(true);
+        vqtreeview->initStyleOption(option);
     } else {
-        vqtreeview->changeEvent(param1);
+        vqtreeview->initStyleOption(option);
     }
 }
 
 // Auxiliary method to allow providing re-implementation
-void QTreeView_OnChangeEvent(QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_ChangeEvent_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_ChangeEvent_Callback>(slot));
+void QTreeView_OnInitStyleOption(const QTreeView* self, intptr_t slot) {
+    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
+        vqtreeview->setQTreeView_InitStyleOption_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -2396,7 +2413,7 @@ void QTreeView_OnKeyReleaseEvent(QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTreeView_EnterEvent(QTreeView* self, QEvent* event) {
+void QTreeView_EnterEvent(QTreeView* self, QEnterEvent* event) {
     if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
         vqtreeview->enterEvent(event);
     } else {
@@ -2405,7 +2422,7 @@ void QTreeView_EnterEvent(QTreeView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QTreeView_QBaseEnterEvent(QTreeView* self, QEvent* event) {
+void QTreeView_QBaseEnterEvent(QTreeView* self, QEnterEvent* event) {
     if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
         vqtreeview->setQTreeView_EnterEvent_IsBase(true);
         vqtreeview->enterEvent(event);
@@ -2604,23 +2621,23 @@ void QTreeView_OnHideEvent(QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTreeView_NativeEvent(QTreeView* self, libqt_string eventType, void* message, long* result) {
+bool QTreeView_NativeEvent(QTreeView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        return vqtreeview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtreeview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtreeview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtreeview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QTreeView_QBaseNativeEvent(QTreeView* self, libqt_string eventType, void* message, long* result) {
+bool QTreeView_QBaseNativeEvent(QTreeView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
         vqtreeview->setQTreeView_NativeEvent_IsBase(true);
-        return vqtreeview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtreeview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtreeview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtreeview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -3048,110 +3065,6 @@ void QTreeView_OnRowHeight(const QTreeView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTreeView_SetHorizontalStepsPerItem(QTreeView* self, int steps) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtreeview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QTreeView_QBaseSetHorizontalStepsPerItem(QTreeView* self, int steps) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_SetHorizontalStepsPerItem_IsBase(true);
-        vqtreeview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtreeview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTreeView_OnSetHorizontalStepsPerItem(QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QTreeView_HorizontalStepsPerItem(const QTreeView* self) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        return vqtreeview->horizontalStepsPerItem();
-    } else {
-        return vqtreeview->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QTreeView_QBaseHorizontalStepsPerItem(const QTreeView* self) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_HorizontalStepsPerItem_IsBase(true);
-        return vqtreeview->horizontalStepsPerItem();
-    } else {
-        return vqtreeview->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTreeView_OnHorizontalStepsPerItem(const QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTreeView_SetVerticalStepsPerItem(QTreeView* self, int steps) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtreeview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QTreeView_QBaseSetVerticalStepsPerItem(QTreeView* self, int steps) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_SetVerticalStepsPerItem_IsBase(true);
-        vqtreeview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtreeview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTreeView_OnSetVerticalStepsPerItem(QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
-        vqtreeview->setQTreeView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QTreeView_VerticalStepsPerItem(const QTreeView* self) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        return vqtreeview->verticalStepsPerItem();
-    } else {
-        return vqtreeview->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QTreeView_QBaseVerticalStepsPerItem(const QTreeView* self) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_VerticalStepsPerItem_IsBase(true);
-        return vqtreeview->verticalStepsPerItem();
-    } else {
-        return vqtreeview->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTreeView_OnVerticalStepsPerItem(const QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_VerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QTreeView_State(const QTreeView* self) {
     if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
         return static_cast<int>(vqtreeview->state());
@@ -3508,32 +3421,6 @@ void QTreeView_QBaseDrawFrame(QTreeView* self, QPainter* param1) {
 void QTreeView_OnDrawFrame(QTreeView* self, intptr_t slot) {
     if (auto* vqtreeview = dynamic_cast<VirtualQTreeView*>(self)) {
         vqtreeview->setQTreeView_DrawFrame_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTreeView_InitStyleOption(const QTreeView* self, QStyleOptionFrame* option) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->initStyleOption(option);
-    } else {
-        vqtreeview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTreeView_QBaseInitStyleOption(const QTreeView* self, QStyleOptionFrame* option) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_InitStyleOption_IsBase(true);
-        vqtreeview->initStyleOption(option);
-    } else {
-        vqtreeview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTreeView_OnInitStyleOption(const QTreeView* self, intptr_t slot) {
-    if (auto* vqtreeview = const_cast<VirtualQTreeView*>(dynamic_cast<const VirtualQTreeView*>(self))) {
-        vqtreeview->setQTreeView_InitStyleOption_Callback(reinterpret_cast<VirtualQTreeView::QTreeView_InitStyleOption_Callback>(slot));
     }
 }
 

@@ -4,7 +4,6 @@
 #include <QString>
 #include <QByteArray>
 #include <cstring>
-#include <QTextCodec>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextDocumentWriter>
@@ -78,14 +77,6 @@ bool QTextDocumentWriter_Write(QTextDocumentWriter* self, QTextDocument* documen
 
 bool QTextDocumentWriter_WriteWithFragment(QTextDocumentWriter* self, QTextDocumentFragment* fragment) {
     return self->write(*fragment);
-}
-
-void QTextDocumentWriter_SetCodec(QTextDocumentWriter* self, QTextCodec* codec) {
-    self->setCodec(codec);
-}
-
-QTextCodec* QTextDocumentWriter_Codec(const QTextDocumentWriter* self) {
-    return self->codec();
 }
 
 libqt_list /* of libqt_string */ QTextDocumentWriter_SupportedDocumentFormats() {

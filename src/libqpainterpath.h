@@ -70,10 +70,6 @@ void QPainterPath_AddPath(QPainterPath* self, QPainterPath* path);
 void QPainterPath_AddRegion(QPainterPath* self, QRegion* region);
 void QPainterPath_AddRoundedRect(QPainterPath* self, QRectF* rect, double xRadius, double yRadius);
 void QPainterPath_AddRoundedRect2(QPainterPath* self, double x, double y, double w, double h, double xRadius, double yRadius);
-void QPainterPath_AddRoundRect(QPainterPath* self, QRectF* rect, int xRnd, int yRnd);
-void QPainterPath_AddRoundRect2(QPainterPath* self, double x, double y, double w, double h, int xRnd, int yRnd);
-void QPainterPath_AddRoundRect3(QPainterPath* self, QRectF* rect, int roundness);
-void QPainterPath_AddRoundRect4(QPainterPath* self, double x, double y, double w, double h, int roundness);
 void QPainterPath_ConnectPath(QPainterPath* self, QPainterPath* path);
 bool QPainterPath_Contains(const QPainterPath* self, QPointF* pt);
 bool QPainterPath_ContainsWithRect(const QPainterPath* self, QRectF* rect);
@@ -101,7 +97,6 @@ bool QPainterPath_ContainsWithQPainterPath(const QPainterPath* self, QPainterPat
 QPainterPath* QPainterPath_United(const QPainterPath* self, QPainterPath* r);
 QPainterPath* QPainterPath_Intersected(const QPainterPath* self, QPainterPath* r);
 QPainterPath* QPainterPath_Subtracted(const QPainterPath* self, QPainterPath* r);
-QPainterPath* QPainterPath_SubtractedInverted(const QPainterPath* self, QPainterPath* r);
 QPainterPath* QPainterPath_Simplified(const QPainterPath* self);
 bool QPainterPath_OperatorEqual(const QPainterPath* self, QPainterPath* other);
 bool QPainterPath_OperatorNotEqual(const QPainterPath* self, QPainterPath* other);

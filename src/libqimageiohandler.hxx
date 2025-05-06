@@ -17,7 +17,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
 
   public:
     // Virtual class public types (including callbacks)
-    using QImageIOHandler_Name_Callback = QByteArray (*)();
     using QImageIOHandler_CanRead_Callback = bool (*)();
     using QImageIOHandler_Read_Callback = bool (*)(QImageIOHandler*, QImage*);
     using QImageIOHandler_Write_Callback = bool (*)(QImageIOHandler*, const QImage&);
@@ -34,7 +33,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
 
   protected:
     // Instance callback storage
-    QImageIOHandler_Name_Callback qimageiohandler_name_callback = nullptr;
     QImageIOHandler_CanRead_Callback qimageiohandler_canread_callback = nullptr;
     QImageIOHandler_Read_Callback qimageiohandler_read_callback = nullptr;
     QImageIOHandler_Write_Callback qimageiohandler_write_callback = nullptr;
@@ -50,7 +48,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
     QImageIOHandler_CurrentImageRect_Callback qimageiohandler_currentimagerect_callback = nullptr;
 
     // Instance base flags
-    mutable bool qimageiohandler_name_isbase = false;
     mutable bool qimageiohandler_canread_isbase = false;
     mutable bool qimageiohandler_read_isbase = false;
     mutable bool qimageiohandler_write_isbase = false;
@@ -69,7 +66,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
     VirtualQImageIOHandler() : QImageIOHandler(){};
 
     ~VirtualQImageIOHandler() {
-        qimageiohandler_name_callback = nullptr;
         qimageiohandler_canread_callback = nullptr;
         qimageiohandler_read_callback = nullptr;
         qimageiohandler_write_callback = nullptr;
@@ -86,7 +82,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
     }
 
     // Callback setters
-    void setQImageIOHandler_Name_Callback(QImageIOHandler_Name_Callback cb) { qimageiohandler_name_callback = cb; }
     void setQImageIOHandler_CanRead_Callback(QImageIOHandler_CanRead_Callback cb) { qimageiohandler_canread_callback = cb; }
     void setQImageIOHandler_Read_Callback(QImageIOHandler_Read_Callback cb) { qimageiohandler_read_callback = cb; }
     void setQImageIOHandler_Write_Callback(QImageIOHandler_Write_Callback cb) { qimageiohandler_write_callback = cb; }
@@ -102,7 +97,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
     void setQImageIOHandler_CurrentImageRect_Callback(QImageIOHandler_CurrentImageRect_Callback cb) { qimageiohandler_currentimagerect_callback = cb; }
 
     // Base flag setters
-    void setQImageIOHandler_Name_IsBase(bool value) const { qimageiohandler_name_isbase = value; }
     void setQImageIOHandler_CanRead_IsBase(bool value) const { qimageiohandler_canread_isbase = value; }
     void setQImageIOHandler_Read_IsBase(bool value) const { qimageiohandler_read_isbase = value; }
     void setQImageIOHandler_Write_IsBase(bool value) const { qimageiohandler_write_isbase = value; }
@@ -116,18 +110,6 @@ class VirtualQImageIOHandler : public QImageIOHandler {
     void setQImageIOHandler_NextImageDelay_IsBase(bool value) const { qimageiohandler_nextimagedelay_isbase = value; }
     void setQImageIOHandler_CurrentImageNumber_IsBase(bool value) const { qimageiohandler_currentimagenumber_isbase = value; }
     void setQImageIOHandler_CurrentImageRect_IsBase(bool value) const { qimageiohandler_currentimagerect_isbase = value; }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QByteArray name() const override {
-        if (qimageiohandler_name_isbase) {
-            qimageiohandler_name_isbase = false;
-            return QImageIOHandler::name();
-        } else if (qimageiohandler_name_callback != nullptr) {
-            return qimageiohandler_name_callback();
-        } else {
-            return QImageIOHandler::name();
-        }
-    }
 
     // Virtual method for C ABI access and custom callback
     virtual bool canRead() const override {

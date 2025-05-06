@@ -36,7 +36,7 @@ class VirtualQSvgWidget : public QSvgWidget {
     using QSvgWidget_KeyReleaseEvent_Callback = void (*)(QSvgWidget*, QKeyEvent*);
     using QSvgWidget_FocusInEvent_Callback = void (*)(QSvgWidget*, QFocusEvent*);
     using QSvgWidget_FocusOutEvent_Callback = void (*)(QSvgWidget*, QFocusEvent*);
-    using QSvgWidget_EnterEvent_Callback = void (*)(QSvgWidget*, QEvent*);
+    using QSvgWidget_EnterEvent_Callback = void (*)(QSvgWidget*, QEnterEvent*);
     using QSvgWidget_LeaveEvent_Callback = void (*)(QSvgWidget*, QEvent*);
     using QSvgWidget_MoveEvent_Callback = void (*)(QSvgWidget*, QMoveEvent*);
     using QSvgWidget_ResizeEvent_Callback = void (*)(QSvgWidget*, QResizeEvent*);
@@ -50,7 +50,7 @@ class VirtualQSvgWidget : public QSvgWidget {
     using QSvgWidget_DropEvent_Callback = void (*)(QSvgWidget*, QDropEvent*);
     using QSvgWidget_ShowEvent_Callback = void (*)(QSvgWidget*, QShowEvent*);
     using QSvgWidget_HideEvent_Callback = void (*)(QSvgWidget*, QHideEvent*);
-    using QSvgWidget_NativeEvent_Callback = bool (*)(QSvgWidget*, const QByteArray&, void*, long*);
+    using QSvgWidget_NativeEvent_Callback = bool (*)(QSvgWidget*, const QByteArray&, void*, qintptr*);
     using QSvgWidget_ChangeEvent_Callback = void (*)(QSvgWidget*, QEvent*);
     using QSvgWidget_Metric_Callback = int (*)(const QSvgWidget*, QPaintDevice::PaintDeviceMetric);
     using QSvgWidget_InitPainter_Callback = void (*)(const QSvgWidget*, QPainter*);
@@ -607,7 +607,7 @@ class VirtualQSvgWidget : public QSvgWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qsvgwidget_enterevent_isbase) {
             qsvgwidget_enterevent_isbase = false;
             QSvgWidget::enterEvent(event);
@@ -775,7 +775,7 @@ class VirtualQSvgWidget : public QSvgWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qsvgwidget_nativeevent_isbase) {
             qsvgwidget_nativeevent_isbase = false;
             return QSvgWidget::nativeEvent(eventType, message, result);

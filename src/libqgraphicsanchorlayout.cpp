@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -11,7 +13,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QRectF>
 #include <QSizeF>
 #include <QSizePolicy>
@@ -39,18 +40,6 @@ int QGraphicsAnchor_Metacall(QGraphicsAnchor* self, int param1, int param2, void
 
 libqt_string QGraphicsAnchor_Tr(const char* s) {
     QString _ret = QGraphicsAnchor::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsAnchor_TrUtf8(const char* s) {
-    QString _ret = QGraphicsAnchor::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -95,30 +84,6 @@ libqt_string QGraphicsAnchor_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsAnchor_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsAnchor::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsAnchor_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGraphicsAnchor::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsAnchor_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGraphicsAnchor::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -418,6 +383,32 @@ void QGraphicsAnchorLayout_QBaseWidgetEvent(QGraphicsAnchorLayout* self, QEvent*
 void QGraphicsAnchorLayout_OnWidgetEvent(QGraphicsAnchorLayout* self, intptr_t slot) {
     if (auto* vqgraphicsanchorlayout = dynamic_cast<VirtualQGraphicsAnchorLayout*>(self)) {
         vqgraphicsanchorlayout->setQGraphicsAnchorLayout_WidgetEvent_Callback(reinterpret_cast<VirtualQGraphicsAnchorLayout::QGraphicsAnchorLayout_WidgetEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QGraphicsAnchorLayout_IsEmpty(const QGraphicsAnchorLayout* self) {
+    if (auto* vqgraphicsanchorlayout = const_cast<VirtualQGraphicsAnchorLayout*>(dynamic_cast<const VirtualQGraphicsAnchorLayout*>(self))) {
+        return vqgraphicsanchorlayout->isEmpty();
+    } else {
+        return vqgraphicsanchorlayout->isEmpty();
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsAnchorLayout_QBaseIsEmpty(const QGraphicsAnchorLayout* self) {
+    if (auto* vqgraphicsanchorlayout = const_cast<VirtualQGraphicsAnchorLayout*>(dynamic_cast<const VirtualQGraphicsAnchorLayout*>(self))) {
+        vqgraphicsanchorlayout->setQGraphicsAnchorLayout_IsEmpty_IsBase(true);
+        return vqgraphicsanchorlayout->isEmpty();
+    } else {
+        return vqgraphicsanchorlayout->isEmpty();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsAnchorLayout_OnIsEmpty(const QGraphicsAnchorLayout* self, intptr_t slot) {
+    if (auto* vqgraphicsanchorlayout = const_cast<VirtualQGraphicsAnchorLayout*>(dynamic_cast<const VirtualQGraphicsAnchorLayout*>(self))) {
+        vqgraphicsanchorlayout->setQGraphicsAnchorLayout_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsAnchorLayout::QGraphicsAnchorLayout_IsEmpty_Callback>(slot));
     }
 }
 

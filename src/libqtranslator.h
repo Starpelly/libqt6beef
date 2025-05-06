@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QLocale QLocale;
@@ -28,7 +30,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QTranslator QTranslator;
@@ -43,7 +44,6 @@ int QTranslator_Metacall(QTranslator* self, int param1, int param2, void** param
 void QTranslator_OnMetacall(QTranslator* self, intptr_t slot);
 int QTranslator_QBaseMetacall(QTranslator* self, int param1, int param2, void** param3);
 libqt_string QTranslator_Tr(const char* s);
-libqt_string QTranslator_TrUtf8(const char* s);
 libqt_string QTranslator_Translate(const QTranslator* self, const char* context, const char* sourceText, const char* disambiguation, int n);
 void QTranslator_OnTranslate(const QTranslator* self, intptr_t slot);
 libqt_string QTranslator_QBaseTranslate(const QTranslator* self, const char* context, const char* sourceText, const char* disambiguation, int n);
@@ -57,8 +57,6 @@ bool QTranslator_Load2(QTranslator* self, QLocale* locale, libqt_string filename
 bool QTranslator_Load3(QTranslator* self, const unsigned char* data, int lenVal);
 libqt_string QTranslator_Tr2(const char* s, const char* c);
 libqt_string QTranslator_Tr3(const char* s, const char* c, int n);
-libqt_string QTranslator_TrUtf82(const char* s, const char* c);
-libqt_string QTranslator_TrUtf83(const char* s, const char* c, int n);
 bool QTranslator_Load22(QTranslator* self, libqt_string filename, libqt_string directory);
 bool QTranslator_Load32(QTranslator* self, libqt_string filename, libqt_string directory, libqt_string search_delimiters);
 bool QTranslator_Load4(QTranslator* self, libqt_string filename, libqt_string directory, libqt_string search_delimiters, libqt_string suffix);

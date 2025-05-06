@@ -1,3 +1,4 @@
+#include <QColorSpace>
 #include <QPair>
 #include <QSurfaceFormat>
 #include <qsurfaceformat.h>
@@ -145,23 +146,15 @@ void QSurfaceFormat_SetStereo(QSurfaceFormat* self, bool enable) {
     self->setStereo(enable);
 }
 
-void QSurfaceFormat_SetOption(QSurfaceFormat* self, int opt) {
-    self->setOption(static_cast<QSurfaceFormat::FormatOptions>(opt));
-}
-
-bool QSurfaceFormat_TestOption(const QSurfaceFormat* self, int opt) {
-    return self->testOption(static_cast<QSurfaceFormat::FormatOptions>(opt));
-}
-
 void QSurfaceFormat_SetOptions(QSurfaceFormat* self, int options) {
     self->setOptions(static_cast<QSurfaceFormat::FormatOptions>(options));
 }
 
-void QSurfaceFormat_SetOptionWithOption(QSurfaceFormat* self, int option) {
+void QSurfaceFormat_SetOption(QSurfaceFormat* self, int option) {
     self->setOption(static_cast<QSurfaceFormat::FormatOption>(option));
 }
 
-bool QSurfaceFormat_TestOptionWithOption(const QSurfaceFormat* self, int option) {
+bool QSurfaceFormat_TestOption(const QSurfaceFormat* self, int option) {
     return self->testOption(static_cast<QSurfaceFormat::FormatOption>(option));
 }
 
@@ -177,11 +170,17 @@ void QSurfaceFormat_SetSwapInterval(QSurfaceFormat* self, int interval) {
     self->setSwapInterval(static_cast<int>(interval));
 }
 
-int QSurfaceFormat_ColorSpace(const QSurfaceFormat* self) {
-    return static_cast<int>(self->colorSpace());
+QColorSpace* QSurfaceFormat_ColorSpace(const QSurfaceFormat* self) {
+    const QColorSpace& _ret = self->colorSpace();
+    // Cast returned reference into pointer
+    return const_cast<QColorSpace*>(&_ret);
 }
 
-void QSurfaceFormat_SetColorSpace(QSurfaceFormat* self, int colorSpace) {
+void QSurfaceFormat_SetColorSpace(QSurfaceFormat* self, QColorSpace* colorSpace) {
+    self->setColorSpace(*colorSpace);
+}
+
+void QSurfaceFormat_SetColorSpaceWithColorSpace(QSurfaceFormat* self, int colorSpace) {
     self->setColorSpace(static_cast<QSurfaceFormat::ColorSpace>(colorSpace));
 }
 

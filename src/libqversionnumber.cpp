@@ -1,7 +1,9 @@
+#include <QAnyStringView>
 #include <QList>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
+#include <QTypeRevision>
 #include <QVersionNumber>
 #include <qversionnumber.h>
 #include "libqversionnumber.h"
@@ -12,7 +14,7 @@ QVersionNumber* QVersionNumber_new() {
 }
 
 QVersionNumber* QVersionNumber_new2(libqt_list /* of int */ seg) {
-    QVector<int> seg_QList;
+    QList<int> seg_QList;
     seg_QList.reserve(seg.len);
     int* seg_arr = static_cast<int*>(seg.data);
     for (size_t i = 0; i < seg.len; ++i) {
@@ -31,6 +33,10 @@ QVersionNumber* QVersionNumber_new4(int maj, int min) {
 
 QVersionNumber* QVersionNumber_new5(int maj, int min, int mic) {
     return new QVersionNumber(static_cast<int>(maj), static_cast<int>(min), static_cast<int>(mic));
+}
+
+QVersionNumber* QVersionNumber_new6(QVersionNumber* param1) {
+    return new QVersionNumber(*param1);
 }
 
 bool QVersionNumber_IsNull(const QVersionNumber* self) {
@@ -58,7 +64,7 @@ QVersionNumber* QVersionNumber_Normalized(const QVersionNumber* self) {
 }
 
 libqt_list /* of int */ QVersionNumber_Segments(const QVersionNumber* self) {
-    QVector<int> _ret = self->segments();
+    QList<int> _ret = self->segments();
     // Convert QList<> from C++ memory to manually-managed C memory
     int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -70,12 +76,12 @@ libqt_list /* of int */ QVersionNumber_Segments(const QVersionNumber* self) {
     return _out;
 }
 
-int QVersionNumber_SegmentAt(const QVersionNumber* self, int index) {
-    return self->segmentAt(static_cast<int>(index));
+int QVersionNumber_SegmentAt(const QVersionNumber* self, ptrdiff_t index) {
+    return self->segmentAt((qsizetype)(index));
 }
 
-int QVersionNumber_SegmentCount(const QVersionNumber* self) {
-    return self->segmentCount();
+ptrdiff_t QVersionNumber_SegmentCount(const QVersionNumber* self) {
+    return static_cast<ptrdiff_t>(self->segmentCount());
 }
 
 bool QVersionNumber_IsPrefixOf(const QVersionNumber* self, QVersionNumber* other) {
@@ -102,16 +108,66 @@ libqt_string QVersionNumber_ToString(const QVersionNumber* self) {
     return _str;
 }
 
-QVersionNumber* QVersionNumber_FromString(libqt_string stringVal) {
-    QString stringVal_QString = QString::fromUtf8(stringVal.data, stringVal.len);
-    return new QVersionNumber(QVersionNumber::fromString(stringVal_QString));
+QVersionNumber* QVersionNumber_FromString(char* stringVal) {
+    return new QVersionNumber(QVersionNumber::fromString(QAnyStringView(stringVal)));
 }
 
-QVersionNumber* QVersionNumber_FromString22(libqt_string stringVal, int* suffixIndex) {
-    QString stringVal_QString = QString::fromUtf8(stringVal.data, stringVal.len);
-    return new QVersionNumber(QVersionNumber::fromString(stringVal_QString, static_cast<int*>(suffixIndex)));
+QVersionNumber* QVersionNumber_FromString2(char* stringVal, ptrdiff_t* suffixIndex) {
+    return new QVersionNumber(QVersionNumber::fromString(QAnyStringView(stringVal), (qsizetype*)(suffixIndex)));
 }
 
 void QVersionNumber_Delete(QVersionNumber* self) {
+    delete self;
+}
+
+QTypeRevision* QTypeRevision_new(QTypeRevision* other) {
+    return new QTypeRevision(*other);
+}
+
+QTypeRevision* QTypeRevision_new2(QTypeRevision* other) {
+    return new QTypeRevision(std::move(*other));
+}
+
+QTypeRevision* QTypeRevision_new3() {
+    return new QTypeRevision();
+}
+
+QTypeRevision* QTypeRevision_new4(QTypeRevision* param1) {
+    return new QTypeRevision(*param1);
+}
+
+void QTypeRevision_CopyAssign(QTypeRevision* self, QTypeRevision* other) {
+    *self = *other;
+}
+
+void QTypeRevision_MoveAssign(QTypeRevision* self, QTypeRevision* other) {
+    *self = std::move(*other);
+}
+
+QTypeRevision* QTypeRevision_Zero() {
+    return new QTypeRevision(QTypeRevision::zero());
+}
+
+bool QTypeRevision_HasMajorVersion(const QTypeRevision* self) {
+    return self->hasMajorVersion();
+}
+
+unsigned char QTypeRevision_MajorVersion(const QTypeRevision* self) {
+    return static_cast<unsigned char>(self->majorVersion());
+}
+
+bool QTypeRevision_HasMinorVersion(const QTypeRevision* self) {
+    return self->hasMinorVersion();
+}
+
+unsigned char QTypeRevision_MinorVersion(const QTypeRevision* self) {
+    return static_cast<unsigned char>(self->minorVersion());
+}
+
+bool QTypeRevision_IsValid(const QTypeRevision* self) {
+    return self->isValid();
+}
+
+void QTypeRevision_Delete(QTypeRevision* self) {
     delete self;
 }

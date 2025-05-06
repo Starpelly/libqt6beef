@@ -17,16 +17,12 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QIconEngine__AvailableSizesArgument)
-typedef QIconEngine::AvailableSizesArgument QIconEngine__AvailableSizesArgument;
-#endif
 #if defined(WORKAROUND_INNER_CLASS_DEFINITION_QIconEngine__ScaledPixmapArgument)
 typedef QIconEngine::ScaledPixmapArgument QIconEngine__ScaledPixmapArgument;
 #endif
 #else
 typedef struct QDataStream QDataStream;
 typedef struct QIconEngine QIconEngine;
-typedef struct QIconEngine__AvailableSizesArgument QIconEngine__AvailableSizesArgument;
 typedef struct QIconEngine__ScaledPixmapArgument QIconEngine__ScaledPixmapArgument;
 typedef struct QPainter QPainter;
 typedef struct QPixmap QPixmap;
@@ -41,7 +37,6 @@ typedef int IconEngineHook; // C ABI enum
 #endif
 
 QIconEngine* QIconEngine_new();
-QIconEngine* QIconEngine_new2(QIconEngine* other);
 void QIconEngine_Paint(QIconEngine* self, QPainter* painter, QRect* rect, int mode, int state);
 void QIconEngine_OnPaint(QIconEngine* self, intptr_t slot);
 void QIconEngine_QBasePaint(QIconEngine* self, QPainter* painter, QRect* rect, int mode, int state);
@@ -69,22 +64,22 @@ bool QIconEngine_QBaseRead(QIconEngine* self, QDataStream* in);
 bool QIconEngine_Write(const QIconEngine* self, QDataStream* out);
 void QIconEngine_OnWrite(const QIconEngine* self, intptr_t slot);
 bool QIconEngine_QBaseWrite(const QIconEngine* self, QDataStream* out);
-libqt_list /* of QSize* */ QIconEngine_AvailableSizes(const QIconEngine* self, int mode, int state);
-void QIconEngine_OnAvailableSizes(const QIconEngine* self, intptr_t slot);
-libqt_list /* of QSize* */ QIconEngine_QBaseAvailableSizes(const QIconEngine* self, int mode, int state);
-libqt_string QIconEngine_IconName(const QIconEngine* self);
-void QIconEngine_OnIconName(const QIconEngine* self, intptr_t slot);
-libqt_string QIconEngine_QBaseIconName(const QIconEngine* self);
-bool QIconEngine_IsNull(const QIconEngine* self);
+libqt_list /* of QSize* */ QIconEngine_AvailableSizes(QIconEngine* self, int mode, int state);
+void QIconEngine_OnAvailableSizes(QIconEngine* self, intptr_t slot);
+libqt_list /* of QSize* */ QIconEngine_QBaseAvailableSizes(QIconEngine* self, int mode, int state);
+libqt_string QIconEngine_IconName(QIconEngine* self);
+void QIconEngine_OnIconName(QIconEngine* self, intptr_t slot);
+libqt_string QIconEngine_QBaseIconName(QIconEngine* self);
+bool QIconEngine_IsNull(QIconEngine* self);
+void QIconEngine_OnIsNull(QIconEngine* self, intptr_t slot);
+bool QIconEngine_QBaseIsNull(QIconEngine* self);
 QPixmap* QIconEngine_ScaledPixmap(QIconEngine* self, QSize* size, int mode, int state, double scale);
+void QIconEngine_OnScaledPixmap(QIconEngine* self, intptr_t slot);
+QPixmap* QIconEngine_QBaseScaledPixmap(QIconEngine* self, QSize* size, int mode, int state, double scale);
 void QIconEngine_VirtualHook(QIconEngine* self, int id, void* data);
 void QIconEngine_OnVirtualHook(QIconEngine* self, intptr_t slot);
 void QIconEngine_QBaseVirtualHook(QIconEngine* self, int id, void* data);
 void QIconEngine_Delete(QIconEngine* self);
-
-QIconEngine__AvailableSizesArgument* QIconEngine__AvailableSizesArgument_new(QIconEngine__AvailableSizesArgument* param1);
-void QIconEngine__AvailableSizesArgument_OperatorAssign(QIconEngine__AvailableSizesArgument* self, QIconEngine__AvailableSizesArgument* param1);
-void QIconEngine__AvailableSizesArgument_Delete(QIconEngine__AvailableSizesArgument* self);
 
 QIconEngine__ScaledPixmapArgument* QIconEngine__ScaledPixmapArgument_new(QIconEngine__ScaledPixmapArgument* param1);
 void QIconEngine__ScaledPixmapArgument_OperatorAssign(QIconEngine__ScaledPixmapArgument* self, QIconEngine__ScaledPixmapArgument* param1);

@@ -4,7 +4,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,6 +17,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -42,7 +45,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -50,6 +52,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -119,18 +122,6 @@ int QTableView_QBaseMetacall(QTableView* self, int param1, int param2, void** pa
 
 libqt_string QTableView_Tr(const char* s) {
     QString _ret = QTableView::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTableView_TrUtf8(const char* s) {
-    QString _ret = QTableView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -297,11 +288,7 @@ void QTableView_ResizeColumnsToContents(QTableView* self) {
     self->resizeColumnsToContents();
 }
 
-void QTableView_SortByColumn(QTableView* self, int column) {
-    self->sortByColumn(static_cast<int>(column));
-}
-
-void QTableView_SortByColumn2(QTableView* self, int column, int order) {
+void QTableView_SortByColumn(QTableView* self, int column, int order) {
     self->sortByColumn(static_cast<int>(column), static_cast<Qt::SortOrder>(order));
 }
 
@@ -323,30 +310,6 @@ libqt_string QTableView_Tr2(const char* s, const char* c) {
 
 libqt_string QTableView_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTableView::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTableView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTableView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTableView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTableView::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -566,26 +529,28 @@ void QTableView_OnScrollContentsBy(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QTableView_ViewOptions(const QTableView* self) {
+void QTableView_InitViewItemOption(const QTableView* self, QStyleOptionViewItem* option) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        return new QStyleOptionViewItem(vqtableview->viewOptions());
+        vqtableview->initViewItemOption(option);
+    } else {
+        vqtableview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QTableView_QBaseViewOptions(const QTableView* self) {
+void QTableView_QBaseInitViewItemOption(const QTableView* self, QStyleOptionViewItem* option) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqtableview->viewOptions());
+        vqtableview->setQTableView_InitViewItemOption_IsBase(true);
+        vqtableview->initViewItemOption(option);
+    } else {
+        vqtableview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QTableView_OnViewOptions(const QTableView* self, intptr_t slot) {
+void QTableView_OnInitViewItemOption(const QTableView* self, intptr_t slot) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_ViewOptions_Callback(reinterpret_cast<VirtualQTableView::QTableView_ViewOptions_Callback>(slot));
+        vqtableview->setQTableView_InitViewItemOption_Callback(reinterpret_cast<VirtualQTableView::QTableView_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -1090,6 +1055,32 @@ void QTableView_OnKeyboardSearch(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+QAbstractItemDelegate* QTableView_ItemDelegateForIndex(const QTableView* self, QModelIndex* index) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        return vqtableview->itemDelegateForIndex(*index);
+    } else {
+        return vqtableview->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QTableView_QBaseItemDelegateForIndex(const QTableView* self, QModelIndex* index) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        vqtableview->setQTableView_ItemDelegateForIndex_IsBase(true);
+        return vqtableview->itemDelegateForIndex(*index);
+    } else {
+        return vqtableview->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTableView_OnItemDelegateForIndex(const QTableView* self, intptr_t slot) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        vqtableview->setQTableView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQTableView::QTableView_ItemDelegateForIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QVariant* QTableView_InputMethodQuery(const QTableView* self, int query) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
         return new QVariant(vqtableview->inputMethodQuery(static_cast<Qt::InputMethodQuery>(query)));
@@ -1169,7 +1160,7 @@ void QTableView_OnSelectAll(QTableView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QTableView_DataChanged(QTableView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1184,7 +1175,7 @@ void QTableView_DataChanged(QTableView* self, QModelIndex* topLeft, QModelIndex*
 
 // Base class handler implementation
 void QTableView_QBaseDataChanged(QTableView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -2116,6 +2107,32 @@ void QTableView_OnChangeEvent(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QTableView_InitStyleOption(const QTableView* self, QStyleOptionFrame* option) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        vqtableview->initStyleOption(option);
+    } else {
+        vqtableview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QTableView_QBaseInitStyleOption(const QTableView* self, QStyleOptionFrame* option) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        vqtableview->setQTableView_InitStyleOption_IsBase(true);
+        vqtableview->initStyleOption(option);
+    } else {
+        vqtableview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTableView_OnInitStyleOption(const QTableView* self, intptr_t slot) {
+    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
+        vqtableview->setQTableView_InitStyleOption_Callback(reinterpret_cast<VirtualQTableView::QTableView_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QTableView_DevType(const QTableView* self) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
         return vqtableview->devType();
@@ -2272,7 +2289,7 @@ void QTableView_OnKeyReleaseEvent(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTableView_EnterEvent(QTableView* self, QEvent* event) {
+void QTableView_EnterEvent(QTableView* self, QEnterEvent* event) {
     if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
         vqtableview->enterEvent(event);
     } else {
@@ -2281,7 +2298,7 @@ void QTableView_EnterEvent(QTableView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QTableView_QBaseEnterEvent(QTableView* self, QEvent* event) {
+void QTableView_QBaseEnterEvent(QTableView* self, QEnterEvent* event) {
     if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
         vqtableview->setQTableView_EnterEvent_IsBase(true);
         vqtableview->enterEvent(event);
@@ -2480,23 +2497,23 @@ void QTableView_OnHideEvent(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTableView_NativeEvent(QTableView* self, libqt_string eventType, void* message, long* result) {
+bool QTableView_NativeEvent(QTableView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        return vqtableview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtableview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtableview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtableview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QTableView_QBaseNativeEvent(QTableView* self, libqt_string eventType, void* message, long* result) {
+bool QTableView_QBaseNativeEvent(QTableView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
         vqtableview->setQTableView_NativeEvent_IsBase(true);
-        return vqtableview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtableview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtableview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtableview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -2872,110 +2889,6 @@ void QTableView_OnColumnCountChanged(QTableView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTableView_SetHorizontalStepsPerItem(QTableView* self, int steps) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtableview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QTableView_QBaseSetHorizontalStepsPerItem(QTableView* self, int steps) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setQTableView_SetHorizontalStepsPerItem_IsBase(true);
-        vqtableview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtableview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTableView_OnSetHorizontalStepsPerItem(QTableView* self, intptr_t slot) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setQTableView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQTableView::QTableView_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QTableView_HorizontalStepsPerItem(const QTableView* self) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        return vqtableview->horizontalStepsPerItem();
-    } else {
-        return vqtableview->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QTableView_QBaseHorizontalStepsPerItem(const QTableView* self) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_HorizontalStepsPerItem_IsBase(true);
-        return vqtableview->horizontalStepsPerItem();
-    } else {
-        return vqtableview->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTableView_OnHorizontalStepsPerItem(const QTableView* self, intptr_t slot) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQTableView::QTableView_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTableView_SetVerticalStepsPerItem(QTableView* self, int steps) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtableview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QTableView_QBaseSetVerticalStepsPerItem(QTableView* self, int steps) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setQTableView_SetVerticalStepsPerItem_IsBase(true);
-        vqtableview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqtableview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTableView_OnSetVerticalStepsPerItem(QTableView* self, intptr_t slot) {
-    if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
-        vqtableview->setQTableView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQTableView::QTableView_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QTableView_VerticalStepsPerItem(const QTableView* self) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        return vqtableview->verticalStepsPerItem();
-    } else {
-        return vqtableview->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QTableView_QBaseVerticalStepsPerItem(const QTableView* self) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_VerticalStepsPerItem_IsBase(true);
-        return vqtableview->verticalStepsPerItem();
-    } else {
-        return vqtableview->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTableView_OnVerticalStepsPerItem(const QTableView* self, intptr_t slot) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQTableView::QTableView_VerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QTableView_State(const QTableView* self) {
     if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
         return static_cast<int>(vqtableview->state());
@@ -3332,32 +3245,6 @@ void QTableView_QBaseDrawFrame(QTableView* self, QPainter* param1) {
 void QTableView_OnDrawFrame(QTableView* self, intptr_t slot) {
     if (auto* vqtableview = dynamic_cast<VirtualQTableView*>(self)) {
         vqtableview->setQTableView_DrawFrame_Callback(reinterpret_cast<VirtualQTableView::QTableView_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTableView_InitStyleOption(const QTableView* self, QStyleOptionFrame* option) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->initStyleOption(option);
-    } else {
-        vqtableview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTableView_QBaseInitStyleOption(const QTableView* self, QStyleOptionFrame* option) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_InitStyleOption_IsBase(true);
-        vqtableview->initStyleOption(option);
-    } else {
-        vqtableview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTableView_OnInitStyleOption(const QTableView* self, intptr_t slot) {
-    if (auto* vqtableview = const_cast<VirtualQTableView*>(dynamic_cast<const VirtualQTableView*>(self))) {
-        vqtableview->setQTableView_InitStyleOption_Callback(reinterpret_cast<VirtualQTableView::QTableView_InitStyleOption_Callback>(slot));
     }
 }
 

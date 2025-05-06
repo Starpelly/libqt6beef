@@ -1,5 +1,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
@@ -13,8 +15,8 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
+#include <QModelRoleDataSpan>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -80,18 +82,6 @@ libqt_string QIdentityProxyModel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QIdentityProxyModel_TrUtf8(const char* s) {
-    QString _ret = QIdentityProxyModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QIdentityProxyModel_Tr2(const char* s, const char* c) {
     QString _ret = QIdentityProxyModel::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -106,30 +96,6 @@ libqt_string QIdentityProxyModel_Tr2(const char* s, const char* c) {
 
 libqt_string QIdentityProxyModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QIdentityProxyModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QIdentityProxyModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QIdentityProxyModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QIdentityProxyModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QIdentityProxyModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -947,6 +913,32 @@ void QIdentityProxyModel_OnSetHeaderData(QIdentityProxyModel* self, intptr_t slo
 }
 
 // Derived class handler implementation
+bool QIdentityProxyModel_ClearItemData(QIdentityProxyModel* self, QModelIndex* index) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        return vqidentityproxymodel->clearItemData(*index);
+    } else {
+        return vqidentityproxymodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QIdentityProxyModel_QBaseClearItemData(QIdentityProxyModel* self, QModelIndex* index) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        vqidentityproxymodel->setQIdentityProxyModel_ClearItemData_IsBase(true);
+        return vqidentityproxymodel->clearItemData(*index);
+    } else {
+        return vqidentityproxymodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QIdentityProxyModel_OnClearItemData(QIdentityProxyModel* self, intptr_t slot) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        vqidentityproxymodel->setQIdentityProxyModel_ClearItemData_Callback(reinterpret_cast<VirtualQIdentityProxyModel::QIdentityProxyModel_ClearItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QModelIndex* QIdentityProxyModel_Buddy(const QIdentityProxyModel* self, QModelIndex* index) {
     if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
         return new QModelIndex(vqidentityproxymodel->buddy(*index));
@@ -1419,6 +1411,58 @@ void QIdentityProxyModel_OnRoleNames(const QIdentityProxyModel* self, intptr_t s
 }
 
 // Derived class handler implementation
+void QIdentityProxyModel_MultiData(const QIdentityProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        vqidentityproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqidentityproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QIdentityProxyModel_QBaseMultiData(const QIdentityProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        vqidentityproxymodel->setQIdentityProxyModel_MultiData_IsBase(true);
+        vqidentityproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqidentityproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QIdentityProxyModel_OnMultiData(const QIdentityProxyModel* self, intptr_t slot) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        vqidentityproxymodel->setQIdentityProxyModel_MultiData_Callback(reinterpret_cast<VirtualQIdentityProxyModel::QIdentityProxyModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QIdentityProxyModel_ResetInternalData(QIdentityProxyModel* self) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        vqidentityproxymodel->resetInternalData();
+    } else {
+        vqidentityproxymodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QIdentityProxyModel_QBaseResetInternalData(QIdentityProxyModel* self) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        vqidentityproxymodel->setQIdentityProxyModel_ResetInternalData_IsBase(true);
+        vqidentityproxymodel->resetInternalData();
+    } else {
+        vqidentityproxymodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QIdentityProxyModel_OnResetInternalData(QIdentityProxyModel* self, intptr_t slot) {
+    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
+        vqidentityproxymodel->setQIdentityProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQIdentityProxyModel::QIdentityProxyModel_ResetInternalData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QIdentityProxyModel_Event(QIdentityProxyModel* self, QEvent* event) {
     if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
         return vqidentityproxymodel->event(event);
@@ -1601,28 +1645,26 @@ void QIdentityProxyModel_OnDisconnectNotify(QIdentityProxyModel* self, intptr_t 
 }
 
 // Derived class handler implementation
-void QIdentityProxyModel_ResetInternalData(QIdentityProxyModel* self) {
-    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
-        vqidentityproxymodel->resetInternalData();
-    } else {
-        vqidentityproxymodel->resetInternalData();
+QModelIndex* QIdentityProxyModel_CreateSourceIndex(const QIdentityProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        return new QModelIndex(vqidentityproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
     }
+    return {};
 }
 
 // Base class handler implementation
-void QIdentityProxyModel_QBaseResetInternalData(QIdentityProxyModel* self) {
-    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
-        vqidentityproxymodel->setQIdentityProxyModel_ResetInternalData_IsBase(true);
-        vqidentityproxymodel->resetInternalData();
-    } else {
-        vqidentityproxymodel->resetInternalData();
+QModelIndex* QIdentityProxyModel_QBaseCreateSourceIndex(const QIdentityProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        vqidentityproxymodel->setQIdentityProxyModel_CreateSourceIndex_IsBase(true);
+        return new QModelIndex(vqidentityproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
     }
+    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QIdentityProxyModel_OnResetInternalData(QIdentityProxyModel* self, intptr_t slot) {
-    if (auto* vqidentityproxymodel = dynamic_cast<VirtualQIdentityProxyModel*>(self)) {
-        vqidentityproxymodel->setQIdentityProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQIdentityProxyModel::QIdentityProxyModel_ResetInternalData_Callback>(slot));
+void QIdentityProxyModel_OnCreateSourceIndex(const QIdentityProxyModel* self, intptr_t slot) {
+    if (auto* vqidentityproxymodel = const_cast<VirtualQIdentityProxyModel*>(dynamic_cast<const VirtualQIdentityProxyModel*>(self))) {
+        vqidentityproxymodel->setQIdentityProxyModel_CreateSourceIndex_Callback(reinterpret_cast<VirtualQIdentityProxyModel::QIdentityProxyModel_CreateSourceIndex_Callback>(slot));
     }
 }
 

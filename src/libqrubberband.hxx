@@ -24,6 +24,7 @@ class VirtualQRubberBand : public QRubberBand {
     using QRubberBand_ShowEvent_Callback = void (*)(QRubberBand*, QShowEvent*);
     using QRubberBand_ResizeEvent_Callback = void (*)(QRubberBand*, QResizeEvent*);
     using QRubberBand_MoveEvent_Callback = void (*)(QRubberBand*, QMoveEvent*);
+    using QRubberBand_InitStyleOption_Callback = void (*)(const QRubberBand*, QStyleOptionRubberBand*);
     using QRubberBand_DevType_Callback = int (*)();
     using QRubberBand_SetVisible_Callback = void (*)(QRubberBand*, bool);
     using QRubberBand_SizeHint_Callback = QSize (*)();
@@ -40,7 +41,7 @@ class VirtualQRubberBand : public QRubberBand {
     using QRubberBand_KeyReleaseEvent_Callback = void (*)(QRubberBand*, QKeyEvent*);
     using QRubberBand_FocusInEvent_Callback = void (*)(QRubberBand*, QFocusEvent*);
     using QRubberBand_FocusOutEvent_Callback = void (*)(QRubberBand*, QFocusEvent*);
-    using QRubberBand_EnterEvent_Callback = void (*)(QRubberBand*, QEvent*);
+    using QRubberBand_EnterEvent_Callback = void (*)(QRubberBand*, QEnterEvent*);
     using QRubberBand_LeaveEvent_Callback = void (*)(QRubberBand*, QEvent*);
     using QRubberBand_CloseEvent_Callback = void (*)(QRubberBand*, QCloseEvent*);
     using QRubberBand_ContextMenuEvent_Callback = void (*)(QRubberBand*, QContextMenuEvent*);
@@ -51,7 +52,7 @@ class VirtualQRubberBand : public QRubberBand {
     using QRubberBand_DragLeaveEvent_Callback = void (*)(QRubberBand*, QDragLeaveEvent*);
     using QRubberBand_DropEvent_Callback = void (*)(QRubberBand*, QDropEvent*);
     using QRubberBand_HideEvent_Callback = void (*)(QRubberBand*, QHideEvent*);
-    using QRubberBand_NativeEvent_Callback = bool (*)(QRubberBand*, const QByteArray&, void*, long*);
+    using QRubberBand_NativeEvent_Callback = bool (*)(QRubberBand*, const QByteArray&, void*, qintptr*);
     using QRubberBand_Metric_Callback = int (*)(const QRubberBand*, QPaintDevice::PaintDeviceMetric);
     using QRubberBand_InitPainter_Callback = void (*)(const QRubberBand*, QPainter*);
     using QRubberBand_Redirected_Callback = QPaintDevice* (*)(const QRubberBand*, QPoint*);
@@ -65,7 +66,6 @@ class VirtualQRubberBand : public QRubberBand {
     using QRubberBand_CustomEvent_Callback = void (*)(QRubberBand*, QEvent*);
     using QRubberBand_ConnectNotify_Callback = void (*)(QRubberBand*, const QMetaMethod&);
     using QRubberBand_DisconnectNotify_Callback = void (*)(QRubberBand*, const QMetaMethod&);
-    using QRubberBand_InitStyleOption_Callback = void (*)(const QRubberBand*, QStyleOptionRubberBand*);
     using QRubberBand_UpdateMicroFocus_Callback = void (*)();
     using QRubberBand_Create_Callback = void (*)();
     using QRubberBand_Destroy_Callback = void (*)();
@@ -85,6 +85,7 @@ class VirtualQRubberBand : public QRubberBand {
     QRubberBand_ShowEvent_Callback qrubberband_showevent_callback = nullptr;
     QRubberBand_ResizeEvent_Callback qrubberband_resizeevent_callback = nullptr;
     QRubberBand_MoveEvent_Callback qrubberband_moveevent_callback = nullptr;
+    QRubberBand_InitStyleOption_Callback qrubberband_initstyleoption_callback = nullptr;
     QRubberBand_DevType_Callback qrubberband_devtype_callback = nullptr;
     QRubberBand_SetVisible_Callback qrubberband_setvisible_callback = nullptr;
     QRubberBand_SizeHint_Callback qrubberband_sizehint_callback = nullptr;
@@ -126,7 +127,6 @@ class VirtualQRubberBand : public QRubberBand {
     QRubberBand_CustomEvent_Callback qrubberband_customevent_callback = nullptr;
     QRubberBand_ConnectNotify_Callback qrubberband_connectnotify_callback = nullptr;
     QRubberBand_DisconnectNotify_Callback qrubberband_disconnectnotify_callback = nullptr;
-    QRubberBand_InitStyleOption_Callback qrubberband_initstyleoption_callback = nullptr;
     QRubberBand_UpdateMicroFocus_Callback qrubberband_updatemicrofocus_callback = nullptr;
     QRubberBand_Create_Callback qrubberband_create_callback = nullptr;
     QRubberBand_Destroy_Callback qrubberband_destroy_callback = nullptr;
@@ -145,6 +145,7 @@ class VirtualQRubberBand : public QRubberBand {
     mutable bool qrubberband_showevent_isbase = false;
     mutable bool qrubberband_resizeevent_isbase = false;
     mutable bool qrubberband_moveevent_isbase = false;
+    mutable bool qrubberband_initstyleoption_isbase = false;
     mutable bool qrubberband_devtype_isbase = false;
     mutable bool qrubberband_setvisible_isbase = false;
     mutable bool qrubberband_sizehint_isbase = false;
@@ -186,7 +187,6 @@ class VirtualQRubberBand : public QRubberBand {
     mutable bool qrubberband_customevent_isbase = false;
     mutable bool qrubberband_connectnotify_isbase = false;
     mutable bool qrubberband_disconnectnotify_isbase = false;
-    mutable bool qrubberband_initstyleoption_isbase = false;
     mutable bool qrubberband_updatemicrofocus_isbase = false;
     mutable bool qrubberband_create_isbase = false;
     mutable bool qrubberband_destroy_isbase = false;
@@ -209,6 +209,7 @@ class VirtualQRubberBand : public QRubberBand {
         qrubberband_showevent_callback = nullptr;
         qrubberband_resizeevent_callback = nullptr;
         qrubberband_moveevent_callback = nullptr;
+        qrubberband_initstyleoption_callback = nullptr;
         qrubberband_devtype_callback = nullptr;
         qrubberband_setvisible_callback = nullptr;
         qrubberband_sizehint_callback = nullptr;
@@ -250,7 +251,6 @@ class VirtualQRubberBand : public QRubberBand {
         qrubberband_customevent_callback = nullptr;
         qrubberband_connectnotify_callback = nullptr;
         qrubberband_disconnectnotify_callback = nullptr;
-        qrubberband_initstyleoption_callback = nullptr;
         qrubberband_updatemicrofocus_callback = nullptr;
         qrubberband_create_callback = nullptr;
         qrubberband_destroy_callback = nullptr;
@@ -270,6 +270,7 @@ class VirtualQRubberBand : public QRubberBand {
     void setQRubberBand_ShowEvent_Callback(QRubberBand_ShowEvent_Callback cb) { qrubberband_showevent_callback = cb; }
     void setQRubberBand_ResizeEvent_Callback(QRubberBand_ResizeEvent_Callback cb) { qrubberband_resizeevent_callback = cb; }
     void setQRubberBand_MoveEvent_Callback(QRubberBand_MoveEvent_Callback cb) { qrubberband_moveevent_callback = cb; }
+    void setQRubberBand_InitStyleOption_Callback(QRubberBand_InitStyleOption_Callback cb) { qrubberband_initstyleoption_callback = cb; }
     void setQRubberBand_DevType_Callback(QRubberBand_DevType_Callback cb) { qrubberband_devtype_callback = cb; }
     void setQRubberBand_SetVisible_Callback(QRubberBand_SetVisible_Callback cb) { qrubberband_setvisible_callback = cb; }
     void setQRubberBand_SizeHint_Callback(QRubberBand_SizeHint_Callback cb) { qrubberband_sizehint_callback = cb; }
@@ -311,7 +312,6 @@ class VirtualQRubberBand : public QRubberBand {
     void setQRubberBand_CustomEvent_Callback(QRubberBand_CustomEvent_Callback cb) { qrubberband_customevent_callback = cb; }
     void setQRubberBand_ConnectNotify_Callback(QRubberBand_ConnectNotify_Callback cb) { qrubberband_connectnotify_callback = cb; }
     void setQRubberBand_DisconnectNotify_Callback(QRubberBand_DisconnectNotify_Callback cb) { qrubberband_disconnectnotify_callback = cb; }
-    void setQRubberBand_InitStyleOption_Callback(QRubberBand_InitStyleOption_Callback cb) { qrubberband_initstyleoption_callback = cb; }
     void setQRubberBand_UpdateMicroFocus_Callback(QRubberBand_UpdateMicroFocus_Callback cb) { qrubberband_updatemicrofocus_callback = cb; }
     void setQRubberBand_Create_Callback(QRubberBand_Create_Callback cb) { qrubberband_create_callback = cb; }
     void setQRubberBand_Destroy_Callback(QRubberBand_Destroy_Callback cb) { qrubberband_destroy_callback = cb; }
@@ -330,6 +330,7 @@ class VirtualQRubberBand : public QRubberBand {
     void setQRubberBand_ShowEvent_IsBase(bool value) const { qrubberband_showevent_isbase = value; }
     void setQRubberBand_ResizeEvent_IsBase(bool value) const { qrubberband_resizeevent_isbase = value; }
     void setQRubberBand_MoveEvent_IsBase(bool value) const { qrubberband_moveevent_isbase = value; }
+    void setQRubberBand_InitStyleOption_IsBase(bool value) const { qrubberband_initstyleoption_isbase = value; }
     void setQRubberBand_DevType_IsBase(bool value) const { qrubberband_devtype_isbase = value; }
     void setQRubberBand_SetVisible_IsBase(bool value) const { qrubberband_setvisible_isbase = value; }
     void setQRubberBand_SizeHint_IsBase(bool value) const { qrubberband_sizehint_isbase = value; }
@@ -371,7 +372,6 @@ class VirtualQRubberBand : public QRubberBand {
     void setQRubberBand_CustomEvent_IsBase(bool value) const { qrubberband_customevent_isbase = value; }
     void setQRubberBand_ConnectNotify_IsBase(bool value) const { qrubberband_connectnotify_isbase = value; }
     void setQRubberBand_DisconnectNotify_IsBase(bool value) const { qrubberband_disconnectnotify_isbase = value; }
-    void setQRubberBand_InitStyleOption_IsBase(bool value) const { qrubberband_initstyleoption_isbase = value; }
     void setQRubberBand_UpdateMicroFocus_IsBase(bool value) const { qrubberband_updatemicrofocus_isbase = value; }
     void setQRubberBand_Create_IsBase(bool value) const { qrubberband_create_isbase = value; }
     void setQRubberBand_Destroy_IsBase(bool value) const { qrubberband_destroy_isbase = value; }
@@ -463,6 +463,18 @@ class VirtualQRubberBand : public QRubberBand {
             qrubberband_moveevent_callback(this, param1);
         } else {
             QRubberBand::moveEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionRubberBand* option) const override {
+        if (qrubberband_initstyleoption_isbase) {
+            qrubberband_initstyleoption_isbase = false;
+            QRubberBand::initStyleOption(option);
+        } else if (qrubberband_initstyleoption_callback != nullptr) {
+            qrubberband_initstyleoption_callback(this, option);
+        } else {
+            QRubberBand::initStyleOption(option);
         }
     }
 
@@ -659,7 +671,7 @@ class VirtualQRubberBand : public QRubberBand {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qrubberband_enterevent_isbase) {
             qrubberband_enterevent_isbase = false;
             QRubberBand::enterEvent(event);
@@ -791,7 +803,7 @@ class VirtualQRubberBand : public QRubberBand {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qrubberband_nativeevent_isbase) {
             qrubberband_nativeevent_isbase = false;
             return QRubberBand::nativeEvent(eventType, message, result);
@@ -955,18 +967,6 @@ class VirtualQRubberBand : public QRubberBand {
             qrubberband_disconnectnotify_callback(this, signal);
         } else {
             QRubberBand::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionRubberBand* option) const {
-        if (qrubberband_initstyleoption_isbase) {
-            qrubberband_initstyleoption_isbase = false;
-            QRubberBand::initStyleOption(option);
-        } else if (qrubberband_initstyleoption_callback != nullptr) {
-            qrubberband_initstyleoption_callback(this, option);
-        } else {
-            QRubberBand::initStyleOption(option);
         }
     }
 

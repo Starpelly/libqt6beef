@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -33,7 +36,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -41,6 +43,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -118,18 +121,6 @@ libqt_string QRubberBand_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QRubberBand_TrUtf8(const char* s) {
-    QString _ret = QRubberBand::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 int QRubberBand_Shape(const QRubberBand* self) {
     return static_cast<int>(self->shape());
 }
@@ -172,30 +163,6 @@ libqt_string QRubberBand_Tr2(const char* s, const char* c) {
 
 libqt_string QRubberBand_Tr3(const char* s, const char* c, int n) {
     QString _ret = QRubberBand::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRubberBand_TrUtf82(const char* s, const char* c) {
-    QString _ret = QRubberBand::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRubberBand_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QRubberBand::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -359,6 +326,32 @@ void QRubberBand_QBaseMoveEvent(QRubberBand* self, QMoveEvent* param1) {
 void QRubberBand_OnMoveEvent(QRubberBand* self, intptr_t slot) {
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
         vqrubberband->setQRubberBand_MoveEvent_Callback(reinterpret_cast<VirtualQRubberBand::QRubberBand_MoveEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRubberBand_InitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option) {
+    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
+        vqrubberband->initStyleOption(option);
+    } else {
+        vqrubberband->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QRubberBand_QBaseInitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option) {
+    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
+        vqrubberband->setQRubberBand_InitStyleOption_IsBase(true);
+        vqrubberband->initStyleOption(option);
+    } else {
+        vqrubberband->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRubberBand_OnInitStyleOption(const QRubberBand* self, intptr_t slot) {
+    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
+        vqrubberband->setQRubberBand_InitStyleOption_Callback(reinterpret_cast<VirtualQRubberBand::QRubberBand_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -779,7 +772,7 @@ void QRubberBand_OnFocusOutEvent(QRubberBand* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QRubberBand_EnterEvent(QRubberBand* self, QEvent* event) {
+void QRubberBand_EnterEvent(QRubberBand* self, QEnterEvent* event) {
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
         vqrubberband->enterEvent(event);
     } else {
@@ -788,7 +781,7 @@ void QRubberBand_EnterEvent(QRubberBand* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QRubberBand_QBaseEnterEvent(QRubberBand* self, QEvent* event) {
+void QRubberBand_QBaseEnterEvent(QRubberBand* self, QEnterEvent* event) {
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
         vqrubberband->setQRubberBand_EnterEvent_IsBase(true);
         vqrubberband->enterEvent(event);
@@ -1065,23 +1058,23 @@ void QRubberBand_OnHideEvent(QRubberBand* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QRubberBand_NativeEvent(QRubberBand* self, libqt_string eventType, void* message, long* result) {
+bool QRubberBand_NativeEvent(QRubberBand* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
-        return vqrubberband->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrubberband->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqrubberband->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrubberband->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QRubberBand_QBaseNativeEvent(QRubberBand* self, libqt_string eventType, void* message, long* result) {
+bool QRubberBand_QBaseNativeEvent(QRubberBand* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
         vqrubberband->setQRubberBand_NativeEvent_IsBase(true);
-        return vqrubberband->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrubberband->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqrubberband->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrubberband->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1427,32 +1420,6 @@ void QRubberBand_QBaseDisconnectNotify(QRubberBand* self, QMetaMethod* signal) {
 void QRubberBand_OnDisconnectNotify(QRubberBand* self, intptr_t slot) {
     if (auto* vqrubberband = dynamic_cast<VirtualQRubberBand*>(self)) {
         vqrubberband->setQRubberBand_DisconnectNotify_Callback(reinterpret_cast<VirtualQRubberBand::QRubberBand_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QRubberBand_InitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option) {
-    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
-        vqrubberband->initStyleOption(option);
-    } else {
-        vqrubberband->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QRubberBand_QBaseInitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option) {
-    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
-        vqrubberband->setQRubberBand_InitStyleOption_IsBase(true);
-        vqrubberband->initStyleOption(option);
-    } else {
-        vqrubberband->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QRubberBand_OnInitStyleOption(const QRubberBand* self, intptr_t slot) {
-    if (auto* vqrubberband = const_cast<VirtualQRubberBand*>(dynamic_cast<const VirtualQRubberBand*>(self))) {
-        vqrubberband->setQRubberBand_InitStyleOption_Callback(reinterpret_cast<VirtualQRubberBand::QRubberBand_InitStyleOption_Callback>(slot));
     }
 }
 

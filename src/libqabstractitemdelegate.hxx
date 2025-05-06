@@ -27,7 +27,7 @@ class VirtualQAbstractItemDelegate : public QAbstractItemDelegate {
     using QAbstractItemDelegate_UpdateEditorGeometry_Callback = void (*)(const QAbstractItemDelegate*, QWidget*, const QStyleOptionViewItem&, const QModelIndex&);
     using QAbstractItemDelegate_EditorEvent_Callback = bool (*)(QAbstractItemDelegate*, QEvent*, QAbstractItemModel*, const QStyleOptionViewItem&, const QModelIndex&);
     using QAbstractItemDelegate_HelpEvent_Callback = bool (*)(QAbstractItemDelegate*, QHelpEvent*, QAbstractItemView*, const QStyleOptionViewItem&, const QModelIndex&);
-    using QAbstractItemDelegate_PaintingRoles_Callback = QVector<int> (*)();
+    using QAbstractItemDelegate_PaintingRoles_Callback = QList<int> (*)();
     using QAbstractItemDelegate_Event_Callback = bool (*)(QAbstractItemDelegate*, QEvent*);
     using QAbstractItemDelegate_EventFilter_Callback = bool (*)(QAbstractItemDelegate*, QObject*, QEvent*);
     using QAbstractItemDelegate_TimerEvent_Callback = void (*)(QAbstractItemDelegate*, QTimerEvent*);
@@ -273,7 +273,7 @@ class VirtualQAbstractItemDelegate : public QAbstractItemDelegate {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QVector<int> paintingRoles() const override {
+    virtual QList<int> paintingRoles() const override {
         if (qabstractitemdelegate_paintingroles_isbase) {
             qabstractitemdelegate_paintingroles_isbase = false;
             return QAbstractItemDelegate::paintingRoles();

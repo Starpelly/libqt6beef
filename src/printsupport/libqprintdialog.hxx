@@ -45,7 +45,7 @@ class VirtualQPrintDialog : public QPrintDialog {
     using QPrintDialog_KeyReleaseEvent_Callback = void (*)(QPrintDialog*, QKeyEvent*);
     using QPrintDialog_FocusInEvent_Callback = void (*)(QPrintDialog*, QFocusEvent*);
     using QPrintDialog_FocusOutEvent_Callback = void (*)(QPrintDialog*, QFocusEvent*);
-    using QPrintDialog_EnterEvent_Callback = void (*)(QPrintDialog*, QEvent*);
+    using QPrintDialog_EnterEvent_Callback = void (*)(QPrintDialog*, QEnterEvent*);
     using QPrintDialog_LeaveEvent_Callback = void (*)(QPrintDialog*, QEvent*);
     using QPrintDialog_PaintEvent_Callback = void (*)(QPrintDialog*, QPaintEvent*);
     using QPrintDialog_MoveEvent_Callback = void (*)(QPrintDialog*, QMoveEvent*);
@@ -56,7 +56,7 @@ class VirtualQPrintDialog : public QPrintDialog {
     using QPrintDialog_DragLeaveEvent_Callback = void (*)(QPrintDialog*, QDragLeaveEvent*);
     using QPrintDialog_DropEvent_Callback = void (*)(QPrintDialog*, QDropEvent*);
     using QPrintDialog_HideEvent_Callback = void (*)(QPrintDialog*, QHideEvent*);
-    using QPrintDialog_NativeEvent_Callback = bool (*)(QPrintDialog*, const QByteArray&, void*, long*);
+    using QPrintDialog_NativeEvent_Callback = bool (*)(QPrintDialog*, const QByteArray&, void*, qintptr*);
     using QPrintDialog_ChangeEvent_Callback = void (*)(QPrintDialog*, QEvent*);
     using QPrintDialog_Metric_Callback = int (*)(const QPrintDialog*, QPaintDevice::PaintDeviceMetric);
     using QPrintDialog_InitPainter_Callback = void (*)(const QPrintDialog*, QPainter*);
@@ -751,7 +751,7 @@ class VirtualQPrintDialog : public QPrintDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qprintdialog_enterevent_isbase) {
             qprintdialog_enterevent_isbase = false;
             QPrintDialog::enterEvent(event);
@@ -883,7 +883,7 @@ class VirtualQPrintDialog : public QPrintDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qprintdialog_nativeevent_isbase) {
             qprintdialog_nativeevent_isbase = false;
             return QPrintDialog::nativeEvent(eventType, message, result);

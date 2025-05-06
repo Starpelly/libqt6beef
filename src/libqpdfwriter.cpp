@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -8,17 +10,15 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPageLayout>
+#include <QPageRanges>
 #include <QPageSize>
 #include <QPagedPaintDevice>
-#define WORKAROUND_INNER_CLASS_DEFINITION_QPagedPaintDevice__Margins
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPainter>
 #include <QPdfWriter>
 #include <QPoint>
-#include <QSizeF>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -73,18 +73,6 @@ int QPdfWriter_QBaseMetacall(QPdfWriter* self, int param1, int param2, void** pa
 
 libqt_string QPdfWriter_Tr(const char* s) {
     QString _ret = QPdfWriter::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPdfWriter_TrUtf8(const char* s) {
-    QString _ret = QPdfWriter::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -190,60 +178,11 @@ libqt_string QPdfWriter_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QPdfWriter_TrUtf82(const char* s, const char* c) {
-    QString _ret = QPdfWriter::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPdfWriter_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QPdfWriter::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QPdfWriter_AddFileAttachment3(QPdfWriter* self, libqt_string fileName, libqt_string data, libqt_string mimeType) {
     QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
     QByteArray data_QByteArray(data.data, data.len);
     QString mimeType_QString = QString::fromUtf8(mimeType.data, mimeType.len);
     self->addFileAttachment(fileName_QString, data_QByteArray, mimeType_QString);
-}
-
-void QPdfWriter_SetPageSizeWithSize(QPdfWriter* self, int size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        self->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    } else {
-        self->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    }
-}
-
-// Subclass method to allow providing a virtual method re-implementation
-void QPdfWriter_OnSetPageSizeWithSize(QPdfWriter* self, intptr_t slot) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSizeWithSize_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageSizeWithSize_Callback>(slot));
-    }
-}
-
-// Virtual base class handler implementation
-void QPdfWriter_QBaseSetPageSizeWithSize(QPdfWriter* self, int size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSizeWithSize_IsBase(true);
-        vqpdfwriter->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    } else {
-        self->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    }
 }
 
 // Derived class handler implementation
@@ -269,84 +208,6 @@ bool QPdfWriter_QBaseNewPage(QPdfWriter* self) {
 void QPdfWriter_OnNewPage(QPdfWriter* self, intptr_t slot) {
     if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
         vqpdfwriter->setQPdfWriter_NewPage_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_NewPage_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QPdfWriter_SetPageSize(QPdfWriter* self, int size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    } else {
-        vqpdfwriter->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    }
-}
-
-// Base class handler implementation
-void QPdfWriter_QBaseSetPageSize(QPdfWriter* self, int size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSize_IsBase(true);
-        vqpdfwriter->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    } else {
-        vqpdfwriter->setPageSize(static_cast<QPagedPaintDevice::PageSize>(size));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPdfWriter_OnSetPageSize(QPdfWriter* self, intptr_t slot) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSize_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageSize_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QPdfWriter_SetPageSizeMM(QPdfWriter* self, QSizeF* size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setPageSizeMM(*size);
-    } else {
-        vqpdfwriter->setPageSizeMM(*size);
-    }
-}
-
-// Base class handler implementation
-void QPdfWriter_QBaseSetPageSizeMM(QPdfWriter* self, QSizeF* size) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSizeMM_IsBase(true);
-        vqpdfwriter->setPageSizeMM(*size);
-    } else {
-        vqpdfwriter->setPageSizeMM(*size);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPdfWriter_OnSetPageSizeMM(QPdfWriter* self, intptr_t slot) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetPageSizeMM_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageSizeMM_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QPdfWriter_SetMargins(QPdfWriter* self, QPagedPaintDevice__Margins* m) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setMargins(*m);
-    } else {
-        vqpdfwriter->setMargins(*m);
-    }
-}
-
-// Base class handler implementation
-void QPdfWriter_QBaseSetMargins(QPdfWriter* self, QPagedPaintDevice__Margins* m) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetMargins_IsBase(true);
-        vqpdfwriter->setMargins(*m);
-    } else {
-        vqpdfwriter->setMargins(*m);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPdfWriter_OnSetMargins(QPdfWriter* self, intptr_t slot) {
-    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
-        vqpdfwriter->setQPdfWriter_SetMargins_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetMargins_Callback>(slot));
     }
 }
 
@@ -585,6 +446,136 @@ void QPdfWriter_OnDisconnectNotify(QPdfWriter* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QPdfWriter_SetPageLayout(QPdfWriter* self, QPageLayout* pageLayout) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        return vqpdfwriter->setPageLayout(*pageLayout);
+    } else {
+        return vqpdfwriter->setPageLayout(*pageLayout);
+    }
+}
+
+// Base class handler implementation
+bool QPdfWriter_QBaseSetPageLayout(QPdfWriter* self, QPageLayout* pageLayout) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageLayout_IsBase(true);
+        return vqpdfwriter->setPageLayout(*pageLayout);
+    } else {
+        return vqpdfwriter->setPageLayout(*pageLayout);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPdfWriter_OnSetPageLayout(QPdfWriter* self, intptr_t slot) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageLayout_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageLayout_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QPdfWriter_SetPageSize(QPdfWriter* self, QPageSize* pageSize) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        return vqpdfwriter->setPageSize(*pageSize);
+    } else {
+        return vqpdfwriter->setPageSize(*pageSize);
+    }
+}
+
+// Base class handler implementation
+bool QPdfWriter_QBaseSetPageSize(QPdfWriter* self, QPageSize* pageSize) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageSize_IsBase(true);
+        return vqpdfwriter->setPageSize(*pageSize);
+    } else {
+        return vqpdfwriter->setPageSize(*pageSize);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPdfWriter_OnSetPageSize(QPdfWriter* self, intptr_t slot) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageSize_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageSize_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QPdfWriter_SetPageOrientation(QPdfWriter* self, int orientation) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        return vqpdfwriter->setPageOrientation(static_cast<QPageLayout::Orientation>(orientation));
+    } else {
+        return vqpdfwriter->setPageOrientation(static_cast<QPageLayout::Orientation>(orientation));
+    }
+}
+
+// Base class handler implementation
+bool QPdfWriter_QBaseSetPageOrientation(QPdfWriter* self, int orientation) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageOrientation_IsBase(true);
+        return vqpdfwriter->setPageOrientation(static_cast<QPageLayout::Orientation>(orientation));
+    } else {
+        return vqpdfwriter->setPageOrientation(static_cast<QPageLayout::Orientation>(orientation));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPdfWriter_OnSetPageOrientation(QPdfWriter* self, intptr_t slot) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageOrientation_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageOrientation_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QPdfWriter_SetPageMargins(QPdfWriter* self, QMarginsF* margins, int units) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        return vqpdfwriter->setPageMargins(*margins, static_cast<QPageLayout::Unit>(units));
+    } else {
+        return vqpdfwriter->setPageMargins(*margins, static_cast<QPageLayout::Unit>(units));
+    }
+}
+
+// Base class handler implementation
+bool QPdfWriter_QBaseSetPageMargins(QPdfWriter* self, QMarginsF* margins, int units) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageMargins_IsBase(true);
+        return vqpdfwriter->setPageMargins(*margins, static_cast<QPageLayout::Unit>(units));
+    } else {
+        return vqpdfwriter->setPageMargins(*margins, static_cast<QPageLayout::Unit>(units));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPdfWriter_OnSetPageMargins(QPdfWriter* self, intptr_t slot) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageMargins_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageMargins_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QPdfWriter_SetPageRanges(QPdfWriter* self, QPageRanges* ranges) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setPageRanges(*ranges);
+    } else {
+        vqpdfwriter->setPageRanges(*ranges);
+    }
+}
+
+// Base class handler implementation
+void QPdfWriter_QBaseSetPageRanges(QPdfWriter* self, QPageRanges* ranges) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageRanges_IsBase(true);
+        vqpdfwriter->setPageRanges(*ranges);
+    } else {
+        vqpdfwriter->setPageRanges(*ranges);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPdfWriter_OnSetPageRanges(QPdfWriter* self, intptr_t slot) {
+    if (auto* vqpdfwriter = dynamic_cast<VirtualQPdfWriter*>(self)) {
+        vqpdfwriter->setQPdfWriter_SetPageRanges_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_SetPageRanges_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QPdfWriter_DevType(const QPdfWriter* self) {
     if (auto* vqpdfwriter = const_cast<VirtualQPdfWriter*>(dynamic_cast<const VirtualQPdfWriter*>(self))) {
         return vqpdfwriter->devType();
@@ -789,30 +780,6 @@ bool QPdfWriter_QBaseIsSignalConnected(const QPdfWriter* self, QMetaMethod* sign
 void QPdfWriter_OnIsSignalConnected(const QPdfWriter* self, intptr_t slot) {
     if (auto* vqpdfwriter = const_cast<VirtualQPdfWriter*>(dynamic_cast<const VirtualQPdfWriter*>(self))) {
         vqpdfwriter->setQPdfWriter_IsSignalConnected_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_IsSignalConnected_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QPageLayout* QPdfWriter_DevicePageLayout(const QPdfWriter* self) {
-    if (auto* vqpdfwriter = const_cast<VirtualQPdfWriter*>(dynamic_cast<const VirtualQPdfWriter*>(self))) {
-        return new QPageLayout(vqpdfwriter->devicePageLayout());
-    }
-    return {};
-}
-
-// Base class handler implementation
-QPageLayout* QPdfWriter_QBaseDevicePageLayout(const QPdfWriter* self) {
-    if (auto* vqpdfwriter = const_cast<VirtualQPdfWriter*>(dynamic_cast<const VirtualQPdfWriter*>(self))) {
-        vqpdfwriter->setQPdfWriter_DevicePageLayout_IsBase(true);
-        return new QPageLayout(vqpdfwriter->devicePageLayout());
-    }
-    return {};
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPdfWriter_OnDevicePageLayout(const QPdfWriter* self, intptr_t slot) {
-    if (auto* vqpdfwriter = const_cast<VirtualQPdfWriter*>(dynamic_cast<const VirtualQPdfWriter*>(self))) {
-        vqpdfwriter->setQPdfWriter_DevicePageLayout_Callback(reinterpret_cast<VirtualQPdfWriter::QPdfWriter_DevicePageLayout_Callback>(slot));
     }
 }
 

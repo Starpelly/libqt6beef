@@ -1,5 +1,7 @@
 #include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QClipboard>
@@ -15,7 +17,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPalette>
 #include <QPoint>
 #include <QScreen>
@@ -76,18 +77,6 @@ int QGuiApplication_QBaseMetacall(QGuiApplication* self, int param1, int param2,
 
 libqt_string QGuiApplication_Tr(const char* s) {
     QString _ret = QGuiApplication::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGuiApplication_TrUtf8(const char* s) {
-    QString _ret = QGuiApplication::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -355,14 +344,6 @@ bool QGuiApplication_IsSavingSession(const QGuiApplication* self) {
     return self->isSavingSession();
 }
 
-bool QGuiApplication_IsFallbackSessionManagementEnabled() {
-    return QGuiApplication::isFallbackSessionManagementEnabled();
-}
-
-void QGuiApplication_SetFallbackSessionManagementEnabled(bool fallbackSessionManagementEnabled) {
-    QGuiApplication::setFallbackSessionManagementEnabled(fallbackSessionManagementEnabled);
-}
-
 void QGuiApplication_Sync() {
     QGuiApplication::sync();
 }
@@ -501,6 +482,17 @@ void QGuiApplication_Connect_SaveStateRequest(QGuiApplication* self, intptr_t sl
     });
 }
 
+void QGuiApplication_ApplicationDisplayNameChanged(QGuiApplication* self) {
+    self->applicationDisplayNameChanged();
+}
+
+void QGuiApplication_Connect_ApplicationDisplayNameChanged(QGuiApplication* self, intptr_t slot) {
+    void (*slotFunc)(QGuiApplication*) = reinterpret_cast<void (*)(QGuiApplication*)>(slot);
+    QGuiApplication::connect(self, &QGuiApplication::applicationDisplayNameChanged, [self, slotFunc]() {
+        slotFunc(self);
+    });
+}
+
 void QGuiApplication_PaletteChanged(QGuiApplication* self, QPalette* pal) {
     self->paletteChanged(*pal);
 }
@@ -512,17 +504,6 @@ void QGuiApplication_Connect_PaletteChanged(QGuiApplication* self, intptr_t slot
         // Cast returned reference into pointer
         QPalette* sigval1 = const_cast<QPalette*>(&pal_ret);
         slotFunc(self, sigval1);
-    });
-}
-
-void QGuiApplication_ApplicationDisplayNameChanged(QGuiApplication* self) {
-    self->applicationDisplayNameChanged();
-}
-
-void QGuiApplication_Connect_ApplicationDisplayNameChanged(QGuiApplication* self, intptr_t slot) {
-    void (*slotFunc)(QGuiApplication*) = reinterpret_cast<void (*)(QGuiApplication*)>(slot);
-    QGuiApplication::connect(self, &QGuiApplication::applicationDisplayNameChanged, [self, slotFunc]() {
-        slotFunc(self);
     });
 }
 
@@ -554,30 +535,6 @@ libqt_string QGuiApplication_Tr2(const char* s, const char* c) {
 
 libqt_string QGuiApplication_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGuiApplication::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGuiApplication_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGuiApplication::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGuiApplication_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGuiApplication::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -793,6 +750,32 @@ void QGuiApplication_QBaseDisconnectNotify(QGuiApplication* self, QMetaMethod* s
 void QGuiApplication_OnDisconnectNotify(QGuiApplication* self, intptr_t slot) {
     if (auto* vqguiapplication = dynamic_cast<VirtualQGuiApplication*>(self)) {
         vqguiapplication->setQGuiApplication_DisconnectNotify_Callback(reinterpret_cast<VirtualQGuiApplication::QGuiApplication_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void* QGuiApplication_ResolveInterface(const QGuiApplication* self, const char* name, int revision) {
+    if (auto* vqguiapplication = const_cast<VirtualQGuiApplication*>(dynamic_cast<const VirtualQGuiApplication*>(self))) {
+        return vqguiapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqguiapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Base class handler implementation
+void* QGuiApplication_QBaseResolveInterface(const QGuiApplication* self, const char* name, int revision) {
+    if (auto* vqguiapplication = const_cast<VirtualQGuiApplication*>(dynamic_cast<const VirtualQGuiApplication*>(self))) {
+        vqguiapplication->setQGuiApplication_ResolveInterface_IsBase(true);
+        return vqguiapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqguiapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGuiApplication_OnResolveInterface(const QGuiApplication* self, intptr_t slot) {
+    if (auto* vqguiapplication = const_cast<VirtualQGuiApplication*>(dynamic_cast<const VirtualQGuiApplication*>(self))) {
+        vqguiapplication->setQGuiApplication_ResolveInterface_Callback(reinterpret_cast<VirtualQGuiApplication::QGuiApplication_ResolveInterface_Callback>(slot));
     }
 }
 

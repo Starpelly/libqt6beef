@@ -21,7 +21,9 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QApplication QApplication;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCommonStyle QCommonStyle;
 typedef struct QEvent QEvent;
@@ -31,7 +33,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
@@ -58,7 +59,6 @@ int QProxyStyle_Metacall(QProxyStyle* self, int param1, int param2, void** param
 void QProxyStyle_OnMetacall(QProxyStyle* self, intptr_t slot);
 int QProxyStyle_QBaseMetacall(QProxyStyle* self, int param1, int param2, void** param3);
 libqt_string QProxyStyle_Tr(const char* s);
-libqt_string QProxyStyle_TrUtf8(const char* s);
 QStyle* QProxyStyle_BaseStyle(const QProxyStyle* self);
 void QProxyStyle_SetBaseStyle(QProxyStyle* self, QStyle* style);
 void QProxyStyle_DrawPrimitive(const QProxyStyle* self, int element, QStyleOption* option, QPainter* painter, QWidget* widget);
@@ -135,8 +135,6 @@ void QProxyStyle_OnEvent(QProxyStyle* self, intptr_t slot);
 bool QProxyStyle_QBaseEvent(QProxyStyle* self, QEvent* e);
 libqt_string QProxyStyle_Tr2(const char* s, const char* c);
 libqt_string QProxyStyle_Tr3(const char* s, const char* c, int n);
-libqt_string QProxyStyle_TrUtf82(const char* s, const char* c);
-libqt_string QProxyStyle_TrUtf83(const char* s, const char* c, int n);
 bool QProxyStyle_EventFilter(QProxyStyle* self, QObject* watched, QEvent* event);
 void QProxyStyle_OnEventFilter(QProxyStyle* self, intptr_t slot);
 bool QProxyStyle_QBaseEventFilter(QProxyStyle* self, QObject* watched, QEvent* event);

@@ -18,6 +18,7 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
+typedef struct QKeyCombination QKeyCombination;
 typedef struct QKeySequence QKeySequence;
 typedef struct QVariant QVariant;
 #endif
@@ -38,12 +39,16 @@ typedef void QtGadgetHelper; // C ABI QFlags
 QKeySequence* QKeySequence_new();
 QKeySequence* QKeySequence_new2(libqt_string key);
 QKeySequence* QKeySequence_new3(int k1);
-QKeySequence* QKeySequence_new4(QKeySequence* ks);
-QKeySequence* QKeySequence_new5(int key);
-QKeySequence* QKeySequence_new6(libqt_string key, int format);
-QKeySequence* QKeySequence_new7(int k1, int k2);
-QKeySequence* QKeySequence_new8(int k1, int k2, int k3);
-QKeySequence* QKeySequence_new9(int k1, int k2, int k3, int k4);
+QKeySequence* QKeySequence_new4(QKeyCombination* k1);
+QKeySequence* QKeySequence_new5(QKeySequence* ks);
+QKeySequence* QKeySequence_new6(int key);
+QKeySequence* QKeySequence_new7(libqt_string key, int format);
+QKeySequence* QKeySequence_new8(int k1, int k2);
+QKeySequence* QKeySequence_new9(int k1, int k2, int k3);
+QKeySequence* QKeySequence_new10(int k1, int k2, int k3, int k4);
+QKeySequence* QKeySequence_new11(QKeyCombination* k1, QKeyCombination* k2);
+QKeySequence* QKeySequence_new12(QKeyCombination* k1, QKeyCombination* k2, QKeyCombination* k3);
+QKeySequence* QKeySequence_new13(QKeyCombination* k1, QKeyCombination* k2, QKeyCombination* k3, QKeyCombination* k4);
 int QKeySequence_Count(const QKeySequence* self);
 bool QKeySequence_IsEmpty(const QKeySequence* self);
 libqt_string QKeySequence_ToString(const QKeySequence* self);
@@ -54,7 +59,7 @@ int QKeySequence_Matches(const QKeySequence* self, QKeySequence* seq);
 QKeySequence* QKeySequence_Mnemonic(libqt_string text);
 libqt_list /* of QKeySequence* */ QKeySequence_KeyBindings(int key);
 QVariant* QKeySequence_ToQVariant(const QKeySequence* self);
-int QKeySequence_OperatorSubscript(const QKeySequence* self, unsigned int i);
+QKeyCombination* QKeySequence_OperatorSubscript(const QKeySequence* self, unsigned int i);
 void QKeySequence_OperatorAssign(QKeySequence* self, QKeySequence* other);
 void QKeySequence_Swap(QKeySequence* self, QKeySequence* other);
 bool QKeySequence_OperatorEqual(const QKeySequence* self, QKeySequence* other);

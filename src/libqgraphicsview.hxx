@@ -49,19 +49,20 @@ class VirtualQGraphicsView : public QGraphicsView {
     using QGraphicsView_EventFilter_Callback = bool (*)(QGraphicsView*, QObject*, QEvent*);
     using QGraphicsView_ViewportSizeHint_Callback = QSize (*)();
     using QGraphicsView_ChangeEvent_Callback = void (*)(QGraphicsView*, QEvent*);
+    using QGraphicsView_InitStyleOption_Callback = void (*)(const QGraphicsView*, QStyleOptionFrame*);
     using QGraphicsView_DevType_Callback = int (*)();
     using QGraphicsView_SetVisible_Callback = void (*)(QGraphicsView*, bool);
     using QGraphicsView_HeightForWidth_Callback = int (*)(const QGraphicsView*, int);
     using QGraphicsView_HasHeightForWidth_Callback = bool (*)();
     using QGraphicsView_PaintEngine_Callback = QPaintEngine* (*)();
-    using QGraphicsView_EnterEvent_Callback = void (*)(QGraphicsView*, QEvent*);
+    using QGraphicsView_EnterEvent_Callback = void (*)(QGraphicsView*, QEnterEvent*);
     using QGraphicsView_LeaveEvent_Callback = void (*)(QGraphicsView*, QEvent*);
     using QGraphicsView_MoveEvent_Callback = void (*)(QGraphicsView*, QMoveEvent*);
     using QGraphicsView_CloseEvent_Callback = void (*)(QGraphicsView*, QCloseEvent*);
     using QGraphicsView_TabletEvent_Callback = void (*)(QGraphicsView*, QTabletEvent*);
     using QGraphicsView_ActionEvent_Callback = void (*)(QGraphicsView*, QActionEvent*);
     using QGraphicsView_HideEvent_Callback = void (*)(QGraphicsView*, QHideEvent*);
-    using QGraphicsView_NativeEvent_Callback = bool (*)(QGraphicsView*, const QByteArray&, void*, long*);
+    using QGraphicsView_NativeEvent_Callback = bool (*)(QGraphicsView*, const QByteArray&, void*, qintptr*);
     using QGraphicsView_Metric_Callback = int (*)(const QGraphicsView*, QPaintDevice::PaintDeviceMetric);
     using QGraphicsView_InitPainter_Callback = void (*)(const QGraphicsView*, QPainter*);
     using QGraphicsView_Redirected_Callback = QPaintDevice* (*)(const QGraphicsView*, QPoint*);
@@ -74,7 +75,6 @@ class VirtualQGraphicsView : public QGraphicsView {
     using QGraphicsView_SetViewportMargins_Callback = void (*)(QGraphicsView*, int, int, int, int);
     using QGraphicsView_ViewportMargins_Callback = QMargins (*)();
     using QGraphicsView_DrawFrame_Callback = void (*)(QGraphicsView*, QPainter*);
-    using QGraphicsView_InitStyleOption_Callback = void (*)(const QGraphicsView*, QStyleOptionFrame*);
     using QGraphicsView_UpdateMicroFocus_Callback = void (*)();
     using QGraphicsView_Create_Callback = void (*)();
     using QGraphicsView_Destroy_Callback = void (*)();
@@ -119,6 +119,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     QGraphicsView_EventFilter_Callback qgraphicsview_eventfilter_callback = nullptr;
     QGraphicsView_ViewportSizeHint_Callback qgraphicsview_viewportsizehint_callback = nullptr;
     QGraphicsView_ChangeEvent_Callback qgraphicsview_changeevent_callback = nullptr;
+    QGraphicsView_InitStyleOption_Callback qgraphicsview_initstyleoption_callback = nullptr;
     QGraphicsView_DevType_Callback qgraphicsview_devtype_callback = nullptr;
     QGraphicsView_SetVisible_Callback qgraphicsview_setvisible_callback = nullptr;
     QGraphicsView_HeightForWidth_Callback qgraphicsview_heightforwidth_callback = nullptr;
@@ -144,7 +145,6 @@ class VirtualQGraphicsView : public QGraphicsView {
     QGraphicsView_SetViewportMargins_Callback qgraphicsview_setviewportmargins_callback = nullptr;
     QGraphicsView_ViewportMargins_Callback qgraphicsview_viewportmargins_callback = nullptr;
     QGraphicsView_DrawFrame_Callback qgraphicsview_drawframe_callback = nullptr;
-    QGraphicsView_InitStyleOption_Callback qgraphicsview_initstyleoption_callback = nullptr;
     QGraphicsView_UpdateMicroFocus_Callback qgraphicsview_updatemicrofocus_callback = nullptr;
     QGraphicsView_Create_Callback qgraphicsview_create_callback = nullptr;
     QGraphicsView_Destroy_Callback qgraphicsview_destroy_callback = nullptr;
@@ -188,6 +188,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     mutable bool qgraphicsview_eventfilter_isbase = false;
     mutable bool qgraphicsview_viewportsizehint_isbase = false;
     mutable bool qgraphicsview_changeevent_isbase = false;
+    mutable bool qgraphicsview_initstyleoption_isbase = false;
     mutable bool qgraphicsview_devtype_isbase = false;
     mutable bool qgraphicsview_setvisible_isbase = false;
     mutable bool qgraphicsview_heightforwidth_isbase = false;
@@ -213,7 +214,6 @@ class VirtualQGraphicsView : public QGraphicsView {
     mutable bool qgraphicsview_setviewportmargins_isbase = false;
     mutable bool qgraphicsview_viewportmargins_isbase = false;
     mutable bool qgraphicsview_drawframe_isbase = false;
-    mutable bool qgraphicsview_initstyleoption_isbase = false;
     mutable bool qgraphicsview_updatemicrofocus_isbase = false;
     mutable bool qgraphicsview_create_isbase = false;
     mutable bool qgraphicsview_destroy_isbase = false;
@@ -263,6 +263,7 @@ class VirtualQGraphicsView : public QGraphicsView {
         qgraphicsview_eventfilter_callback = nullptr;
         qgraphicsview_viewportsizehint_callback = nullptr;
         qgraphicsview_changeevent_callback = nullptr;
+        qgraphicsview_initstyleoption_callback = nullptr;
         qgraphicsview_devtype_callback = nullptr;
         qgraphicsview_setvisible_callback = nullptr;
         qgraphicsview_heightforwidth_callback = nullptr;
@@ -288,7 +289,6 @@ class VirtualQGraphicsView : public QGraphicsView {
         qgraphicsview_setviewportmargins_callback = nullptr;
         qgraphicsview_viewportmargins_callback = nullptr;
         qgraphicsview_drawframe_callback = nullptr;
-        qgraphicsview_initstyleoption_callback = nullptr;
         qgraphicsview_updatemicrofocus_callback = nullptr;
         qgraphicsview_create_callback = nullptr;
         qgraphicsview_destroy_callback = nullptr;
@@ -333,6 +333,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     void setQGraphicsView_EventFilter_Callback(QGraphicsView_EventFilter_Callback cb) { qgraphicsview_eventfilter_callback = cb; }
     void setQGraphicsView_ViewportSizeHint_Callback(QGraphicsView_ViewportSizeHint_Callback cb) { qgraphicsview_viewportsizehint_callback = cb; }
     void setQGraphicsView_ChangeEvent_Callback(QGraphicsView_ChangeEvent_Callback cb) { qgraphicsview_changeevent_callback = cb; }
+    void setQGraphicsView_InitStyleOption_Callback(QGraphicsView_InitStyleOption_Callback cb) { qgraphicsview_initstyleoption_callback = cb; }
     void setQGraphicsView_DevType_Callback(QGraphicsView_DevType_Callback cb) { qgraphicsview_devtype_callback = cb; }
     void setQGraphicsView_SetVisible_Callback(QGraphicsView_SetVisible_Callback cb) { qgraphicsview_setvisible_callback = cb; }
     void setQGraphicsView_HeightForWidth_Callback(QGraphicsView_HeightForWidth_Callback cb) { qgraphicsview_heightforwidth_callback = cb; }
@@ -358,7 +359,6 @@ class VirtualQGraphicsView : public QGraphicsView {
     void setQGraphicsView_SetViewportMargins_Callback(QGraphicsView_SetViewportMargins_Callback cb) { qgraphicsview_setviewportmargins_callback = cb; }
     void setQGraphicsView_ViewportMargins_Callback(QGraphicsView_ViewportMargins_Callback cb) { qgraphicsview_viewportmargins_callback = cb; }
     void setQGraphicsView_DrawFrame_Callback(QGraphicsView_DrawFrame_Callback cb) { qgraphicsview_drawframe_callback = cb; }
-    void setQGraphicsView_InitStyleOption_Callback(QGraphicsView_InitStyleOption_Callback cb) { qgraphicsview_initstyleoption_callback = cb; }
     void setQGraphicsView_UpdateMicroFocus_Callback(QGraphicsView_UpdateMicroFocus_Callback cb) { qgraphicsview_updatemicrofocus_callback = cb; }
     void setQGraphicsView_Create_Callback(QGraphicsView_Create_Callback cb) { qgraphicsview_create_callback = cb; }
     void setQGraphicsView_Destroy_Callback(QGraphicsView_Destroy_Callback cb) { qgraphicsview_destroy_callback = cb; }
@@ -402,6 +402,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     void setQGraphicsView_EventFilter_IsBase(bool value) const { qgraphicsview_eventfilter_isbase = value; }
     void setQGraphicsView_ViewportSizeHint_IsBase(bool value) const { qgraphicsview_viewportsizehint_isbase = value; }
     void setQGraphicsView_ChangeEvent_IsBase(bool value) const { qgraphicsview_changeevent_isbase = value; }
+    void setQGraphicsView_InitStyleOption_IsBase(bool value) const { qgraphicsview_initstyleoption_isbase = value; }
     void setQGraphicsView_DevType_IsBase(bool value) const { qgraphicsview_devtype_isbase = value; }
     void setQGraphicsView_SetVisible_IsBase(bool value) const { qgraphicsview_setvisible_isbase = value; }
     void setQGraphicsView_HeightForWidth_IsBase(bool value) const { qgraphicsview_heightforwidth_isbase = value; }
@@ -427,7 +428,6 @@ class VirtualQGraphicsView : public QGraphicsView {
     void setQGraphicsView_SetViewportMargins_IsBase(bool value) const { qgraphicsview_setviewportmargins_isbase = value; }
     void setQGraphicsView_ViewportMargins_IsBase(bool value) const { qgraphicsview_viewportmargins_isbase = value; }
     void setQGraphicsView_DrawFrame_IsBase(bool value) const { qgraphicsview_drawframe_isbase = value; }
-    void setQGraphicsView_InitStyleOption_IsBase(bool value) const { qgraphicsview_initstyleoption_isbase = value; }
     void setQGraphicsView_UpdateMicroFocus_IsBase(bool value) const { qgraphicsview_updatemicrofocus_isbase = value; }
     void setQGraphicsView_Create_IsBase(bool value) const { qgraphicsview_create_isbase = value; }
     void setQGraphicsView_Destroy_IsBase(bool value) const { qgraphicsview_destroy_isbase = value; }
@@ -823,6 +823,18 @@ class VirtualQGraphicsView : public QGraphicsView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qgraphicsview_initstyleoption_isbase) {
+            qgraphicsview_initstyleoption_isbase = false;
+            QGraphicsView::initStyleOption(option);
+        } else if (qgraphicsview_initstyleoption_callback != nullptr) {
+            qgraphicsview_initstyleoption_callback(this, option);
+        } else {
+            QGraphicsView::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qgraphicsview_devtype_isbase) {
             qgraphicsview_devtype_isbase = false;
@@ -883,7 +895,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qgraphicsview_enterevent_isbase) {
             qgraphicsview_enterevent_isbase = false;
             QGraphicsView::enterEvent(event);
@@ -967,7 +979,7 @@ class VirtualQGraphicsView : public QGraphicsView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qgraphicsview_nativeevent_isbase) {
             qgraphicsview_nativeevent_isbase = false;
             return QGraphicsView::nativeEvent(eventType, message, result);
@@ -1119,18 +1131,6 @@ class VirtualQGraphicsView : public QGraphicsView {
             qgraphicsview_drawframe_callback(this, param1);
         } else {
             QGraphicsView::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qgraphicsview_initstyleoption_isbase) {
-            qgraphicsview_initstyleoption_isbase = false;
-            QGraphicsView::initStyleOption(option);
-        } else if (qgraphicsview_initstyleoption_callback != nullptr) {
-            qgraphicsview_initstyleoption_callback(this, option);
-        } else {
-            QGraphicsView::initStyleOption(option);
         }
     }
 

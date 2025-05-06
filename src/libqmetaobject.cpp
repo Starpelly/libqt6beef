@@ -7,7 +7,9 @@
 #include <QMetaMethod>
 #include <QMetaObject>
 #include <QMetaProperty>
+#include <QMetaType>
 #include <QObject>
+#include <QUntypedBindable>
 #include <QVariant>
 #include <qmetaobject.h>
 #include "libqmetaobject.h"
@@ -65,12 +67,20 @@ int QMetaMethod_ReturnType(const QMetaMethod* self) {
     return self->returnType();
 }
 
+QMetaType* QMetaMethod_ReturnMetaType(const QMetaMethod* self) {
+    return new QMetaType(self->returnMetaType());
+}
+
 int QMetaMethod_ParameterCount(const QMetaMethod* self) {
     return self->parameterCount();
 }
 
 int QMetaMethod_ParameterType(const QMetaMethod* self, int index) {
     return self->parameterType(static_cast<int>(index));
+}
+
+QMetaType* QMetaMethod_ParameterMetaType(const QMetaMethod* self, int index) {
+    return new QMetaType(self->parameterMetaType(static_cast<int>(index)));
 }
 
 void QMetaMethod_GetParameterTypes(const QMetaMethod* self, int* types) {
@@ -94,6 +104,16 @@ libqt_list /* of libqt_string */ QMetaMethod_ParameterTypes(const QMetaMethod* s
     _out.len = _ret.length();
     _out.data = static_cast<void*>(_arr);
     return _out;
+}
+
+libqt_string QMetaMethod_ParameterTypeName(const QMetaMethod* self, int index) {
+    QByteArray _qb = self->parameterTypeName(static_cast<int>(index));
+    libqt_string _str;
+    _str.len = _qb.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _qb.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 libqt_list /* of libqt_string */ QMetaMethod_ParameterNames(const QMetaMethod* self) {
@@ -135,8 +155,16 @@ int QMetaMethod_MethodIndex(const QMetaMethod* self) {
     return self->methodIndex();
 }
 
+int QMetaMethod_RelativeMethodIndex(const QMetaMethod* self) {
+    return self->relativeMethodIndex();
+}
+
 int QMetaMethod_Revision(const QMetaMethod* self) {
     return self->revision();
+}
+
+bool QMetaMethod_IsConst(const QMetaMethod* self) {
+    return self->isConst();
 }
 
 QMetaObject* QMetaMethod_EnclosingMetaObject(const QMetaMethod* self) {
@@ -427,6 +455,10 @@ QMetaEnum* QMetaEnum_new3() {
     return new QMetaEnum();
 }
 
+QMetaEnum* QMetaEnum_new4(QMetaEnum* param1) {
+    return new QMetaEnum(*param1);
+}
+
 void QMetaEnum_CopyAssign(QMetaEnum* self, QMetaEnum* other) {
     *self = *other;
 }
@@ -545,6 +577,14 @@ int QMetaProperty_UserType(const QMetaProperty* self) {
     return self->userType();
 }
 
+int QMetaProperty_TypeId(const QMetaProperty* self) {
+    return self->typeId();
+}
+
+QMetaType* QMetaProperty_MetaType(const QMetaProperty* self) {
+    return new QMetaType(self->metaType());
+}
+
 int QMetaProperty_PropertyIndex(const QMetaProperty* self) {
     return self->propertyIndex();
 }
@@ -577,10 +617,6 @@ bool QMetaProperty_IsStored(const QMetaProperty* self) {
     return self->isStored();
 }
 
-bool QMetaProperty_IsEditable(const QMetaProperty* self) {
-    return self->isEditable();
-}
-
 bool QMetaProperty_IsUser(const QMetaProperty* self) {
     return self->isUser();
 }
@@ -595,6 +631,10 @@ bool QMetaProperty_IsFinal(const QMetaProperty* self) {
 
 bool QMetaProperty_IsRequired(const QMetaProperty* self) {
     return self->isRequired();
+}
+
+bool QMetaProperty_IsBindable(const QMetaProperty* self) {
+    return self->isBindable();
 }
 
 bool QMetaProperty_IsFlagType(const QMetaProperty* self) {
@@ -637,6 +677,10 @@ bool QMetaProperty_Reset(const QMetaProperty* self, QObject* obj) {
     return self->reset(obj);
 }
 
+QUntypedBindable* QMetaProperty_Bindable(const QMetaProperty* self, QObject* object) {
+    return new QUntypedBindable(self->bindable(object));
+}
+
 QVariant* QMetaProperty_ReadOnGadget(const QMetaProperty* self, const void* gadget) {
     return new QVariant(self->readOnGadget(gadget));
 }
@@ -653,32 +697,16 @@ bool QMetaProperty_HasStdCppSet(const QMetaProperty* self) {
     return self->hasStdCppSet();
 }
 
+bool QMetaProperty_IsAlias(const QMetaProperty* self) {
+    return self->isAlias();
+}
+
 bool QMetaProperty_IsValid(const QMetaProperty* self) {
     return self->isValid();
 }
 
 QMetaObject* QMetaProperty_EnclosingMetaObject(const QMetaProperty* self) {
     return (QMetaObject*)self->enclosingMetaObject();
-}
-
-bool QMetaProperty_IsDesignable1(const QMetaProperty* self, QObject* obj) {
-    return self->isDesignable(obj);
-}
-
-bool QMetaProperty_IsScriptable1(const QMetaProperty* self, QObject* obj) {
-    return self->isScriptable(obj);
-}
-
-bool QMetaProperty_IsStored1(const QMetaProperty* self, QObject* obj) {
-    return self->isStored(obj);
-}
-
-bool QMetaProperty_IsEditable1(const QMetaProperty* self, QObject* obj) {
-    return self->isEditable(obj);
-}
-
-bool QMetaProperty_IsUser1(const QMetaProperty* self, QObject* obj) {
-    return self->isUser(obj);
 }
 
 void QMetaProperty_Delete(QMetaProperty* self) {

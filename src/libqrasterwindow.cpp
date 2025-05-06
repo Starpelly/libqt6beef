@@ -1,6 +1,9 @@
 #include <QAccessibleInterface>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
+#include <QCloseEvent>
 #include <QCursor>
 #include <QEvent>
 #include <QExposeEvent>
@@ -16,13 +19,13 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintDeviceWindow>
 #include <QPaintEngine>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPoint>
+#include <QPointF>
 #include <QRasterWindow>
 #include <QRect>
 #include <QRegion>
@@ -99,18 +102,6 @@ libqt_string QRasterWindow_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QRasterWindow_TrUtf8(const char* s) {
-    QString _ret = QRasterWindow::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QRasterWindow_Tr2(const char* s, const char* c) {
     QString _ret = QRasterWindow::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -125,30 +116,6 @@ libqt_string QRasterWindow_Tr2(const char* s, const char* c) {
 
 libqt_string QRasterWindow_Tr3(const char* s, const char* c, int n) {
     QString _ret = QRasterWindow::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRasterWindow_TrUtf82(const char* s, const char* c) {
-    QString _ret = QRasterWindow::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRasterWindow_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QRasterWindow::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -212,32 +179,6 @@ void QRasterWindow_OnRedirected(const QRasterWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QRasterWindow_PaintEvent(QRasterWindow* self, QPaintEvent* event) {
-    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
-        vqrasterwindow->paintEvent(event);
-    } else {
-        vqrasterwindow->paintEvent(event);
-    }
-}
-
-// Base class handler implementation
-void QRasterWindow_QBasePaintEvent(QRasterWindow* self, QPaintEvent* event) {
-    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
-        vqrasterwindow->setQRasterWindow_PaintEvent_IsBase(true);
-        vqrasterwindow->paintEvent(event);
-    } else {
-        vqrasterwindow->paintEvent(event);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QRasterWindow_OnPaintEvent(QRasterWindow* self, intptr_t slot) {
-    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
-        vqrasterwindow->setQRasterWindow_PaintEvent_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QRasterWindow_ExposeEvent(QRasterWindow* self, QExposeEvent* param1) {
     if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
         vqrasterwindow->exposeEvent(param1);
@@ -260,6 +201,32 @@ void QRasterWindow_QBaseExposeEvent(QRasterWindow* self, QExposeEvent* param1) {
 void QRasterWindow_OnExposeEvent(QRasterWindow* self, intptr_t slot) {
     if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
         vqrasterwindow->setQRasterWindow_ExposeEvent_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_ExposeEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRasterWindow_PaintEvent(QRasterWindow* self, QPaintEvent* event) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->paintEvent(event);
+    } else {
+        vqrasterwindow->paintEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QRasterWindow_QBasePaintEvent(QRasterWindow* self, QPaintEvent* event) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->setQRasterWindow_PaintEvent_IsBase(true);
+        vqrasterwindow->paintEvent(event);
+    } else {
+        vqrasterwindow->paintEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRasterWindow_OnPaintEvent(QRasterWindow* self, intptr_t slot) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->setQRasterWindow_PaintEvent_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_PaintEvent_Callback>(slot));
     }
 }
 
@@ -576,6 +543,32 @@ void QRasterWindow_OnHideEvent(QRasterWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QRasterWindow_CloseEvent(QRasterWindow* self, QCloseEvent* param1) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->closeEvent(param1);
+    } else {
+        vqrasterwindow->closeEvent(param1);
+    }
+}
+
+// Base class handler implementation
+void QRasterWindow_QBaseCloseEvent(QRasterWindow* self, QCloseEvent* param1) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->setQRasterWindow_CloseEvent_IsBase(true);
+        vqrasterwindow->closeEvent(param1);
+    } else {
+        vqrasterwindow->closeEvent(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRasterWindow_OnCloseEvent(QRasterWindow* self, intptr_t slot) {
+    if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
+        vqrasterwindow->setQRasterWindow_CloseEvent_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_CloseEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QRasterWindow_KeyPressEvent(QRasterWindow* self, QKeyEvent* param1) {
     if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
         vqrasterwindow->keyPressEvent(param1);
@@ -810,23 +803,23 @@ void QRasterWindow_OnTabletEvent(QRasterWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QRasterWindow_NativeEvent(QRasterWindow* self, libqt_string eventType, void* message, long* result) {
+bool QRasterWindow_NativeEvent(QRasterWindow* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
-        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QRasterWindow_QBaseNativeEvent(QRasterWindow* self, libqt_string eventType, void* message, long* result) {
+bool QRasterWindow_QBaseNativeEvent(QRasterWindow* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqrasterwindow = dynamic_cast<VirtualQRasterWindow*>(self)) {
         vqrasterwindow->setQRasterWindow_NativeEvent_IsBase(true);
-        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqrasterwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1068,6 +1061,32 @@ QPainter* QRasterWindow_QBaseSharedPainter(const QRasterWindow* self) {
 void QRasterWindow_OnSharedPainter(const QRasterWindow* self, intptr_t slot) {
     if (auto* vqrasterwindow = const_cast<VirtualQRasterWindow*>(dynamic_cast<const VirtualQRasterWindow*>(self))) {
         vqrasterwindow->setQRasterWindow_SharedPainter_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_SharedPainter_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void* QRasterWindow_ResolveInterface(const QRasterWindow* self, const char* name, int revision) {
+    if (auto* vqrasterwindow = const_cast<VirtualQRasterWindow*>(dynamic_cast<const VirtualQRasterWindow*>(self))) {
+        return vqrasterwindow->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqrasterwindow->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Base class handler implementation
+void* QRasterWindow_QBaseResolveInterface(const QRasterWindow* self, const char* name, int revision) {
+    if (auto* vqrasterwindow = const_cast<VirtualQRasterWindow*>(dynamic_cast<const VirtualQRasterWindow*>(self))) {
+        vqrasterwindow->setQRasterWindow_ResolveInterface_IsBase(true);
+        return vqrasterwindow->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqrasterwindow->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRasterWindow_OnResolveInterface(const QRasterWindow* self, intptr_t slot) {
+    if (auto* vqrasterwindow = const_cast<VirtualQRasterWindow*>(dynamic_cast<const VirtualQRasterWindow*>(self))) {
+        vqrasterwindow->setQRasterWindow_ResolveInterface_Callback(reinterpret_cast<VirtualQRasterWindow::QRasterWindow_ResolveInterface_Callback>(slot));
     }
 }
 

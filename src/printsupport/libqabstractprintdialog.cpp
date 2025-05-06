@@ -1,7 +1,9 @@
 #include <QAbstractPrintDialog>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,6 +15,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -35,7 +38,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,6 +45,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QPrinter>
 #include <QRect>
 #include <QRegion>
@@ -119,34 +122,6 @@ libqt_string QAbstractPrintDialog_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QAbstractPrintDialog_TrUtf8(const char* s) {
-    QString _ret = QAbstractPrintDialog::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QAbstractPrintDialog_AddEnabledOption(QAbstractPrintDialog* self, int option) {
-    self->addEnabledOption(static_cast<QAbstractPrintDialog::PrintDialogOption>(option));
-}
-
-void QAbstractPrintDialog_SetEnabledOptions(QAbstractPrintDialog* self, int options) {
-    self->setEnabledOptions(static_cast<QAbstractPrintDialog::PrintDialogOptions>(options));
-}
-
-int QAbstractPrintDialog_EnabledOptions(const QAbstractPrintDialog* self) {
-    return static_cast<int>(self->enabledOptions());
-}
-
-bool QAbstractPrintDialog_IsOptionEnabled(const QAbstractPrintDialog* self, int option) {
-    return self->isOptionEnabled(static_cast<QAbstractPrintDialog::PrintDialogOption>(option));
-}
-
 void QAbstractPrintDialog_SetOptionTabs(QAbstractPrintDialog* self, libqt_list /* of QWidget* */ tabs) {
     QList<QWidget*> tabs_QList;
     tabs_QList.reserve(tabs.len);
@@ -207,30 +182,6 @@ libqt_string QAbstractPrintDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractPrintDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractPrintDialog::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractPrintDialog_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractPrintDialog::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractPrintDialog_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractPrintDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -944,7 +895,7 @@ void QAbstractPrintDialog_OnFocusOutEvent(QAbstractPrintDialog* self, intptr_t s
 }
 
 // Derived class handler implementation
-void QAbstractPrintDialog_EnterEvent(QAbstractPrintDialog* self, QEvent* event) {
+void QAbstractPrintDialog_EnterEvent(QAbstractPrintDialog* self, QEnterEvent* event) {
     if (auto* vqabstractprintdialog = dynamic_cast<VirtualQAbstractPrintDialog*>(self)) {
         vqabstractprintdialog->enterEvent(event);
     } else {
@@ -953,7 +904,7 @@ void QAbstractPrintDialog_EnterEvent(QAbstractPrintDialog* self, QEvent* event) 
 }
 
 // Base class handler implementation
-void QAbstractPrintDialog_QBaseEnterEvent(QAbstractPrintDialog* self, QEvent* event) {
+void QAbstractPrintDialog_QBaseEnterEvent(QAbstractPrintDialog* self, QEnterEvent* event) {
     if (auto* vqabstractprintdialog = dynamic_cast<VirtualQAbstractPrintDialog*>(self)) {
         vqabstractprintdialog->setQAbstractPrintDialog_EnterEvent_IsBase(true);
         vqabstractprintdialog->enterEvent(event);
@@ -1230,23 +1181,23 @@ void QAbstractPrintDialog_OnHideEvent(QAbstractPrintDialog* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-bool QAbstractPrintDialog_NativeEvent(QAbstractPrintDialog* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractPrintDialog_NativeEvent(QAbstractPrintDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractprintdialog = dynamic_cast<VirtualQAbstractPrintDialog*>(self)) {
-        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractPrintDialog_QBaseNativeEvent(QAbstractPrintDialog* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractPrintDialog_QBaseNativeEvent(QAbstractPrintDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractprintdialog = dynamic_cast<VirtualQAbstractPrintDialog*>(self)) {
         vqabstractprintdialog->setQAbstractPrintDialog_NativeEvent_IsBase(true);
-        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractprintdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

@@ -19,7 +19,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     // Virtual class public types (including callbacks)
     using QTemporaryFile_Metacall_Callback = int (*)(QTemporaryFile*, QMetaObject::Call, int, void**);
     using QTemporaryFile_FileName_Callback = QString (*)();
-    using QTemporaryFile_OpenWithFlags_Callback = bool (*)(QTemporaryFile*, QIODevice::OpenMode);
+    using QTemporaryFile_OpenWithFlags_Callback = bool (*)(QTemporaryFile*, QIODeviceBase::OpenMode);
     using QTemporaryFile_Size_Callback = qint64 (*)();
     using QTemporaryFile_Resize_Callback = bool (*)(QTemporaryFile*, qint64);
     using QTemporaryFile_Permissions_Callback = QFileDevice::Permissions (*)();
@@ -38,6 +38,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     using QTemporaryFile_CanReadLine_Callback = bool (*)();
     using QTemporaryFile_WaitForReadyRead_Callback = bool (*)(QTemporaryFile*, int);
     using QTemporaryFile_WaitForBytesWritten_Callback = bool (*)(QTemporaryFile*, int);
+    using QTemporaryFile_SkipData_Callback = qint64 (*)(QTemporaryFile*, qint64);
     using QTemporaryFile_Event_Callback = bool (*)(QTemporaryFile*, QEvent*);
     using QTemporaryFile_EventFilter_Callback = bool (*)(QTemporaryFile*, QObject*, QEvent*);
     using QTemporaryFile_TimerEvent_Callback = void (*)(QTemporaryFile*, QTimerEvent*);
@@ -45,7 +46,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     using QTemporaryFile_CustomEvent_Callback = void (*)(QTemporaryFile*, QEvent*);
     using QTemporaryFile_ConnectNotify_Callback = void (*)(QTemporaryFile*, const QMetaMethod&);
     using QTemporaryFile_DisconnectNotify_Callback = void (*)(QTemporaryFile*, const QMetaMethod&);
-    using QTemporaryFile_SetOpenMode_Callback = void (*)(QTemporaryFile*, QIODevice::OpenMode);
+    using QTemporaryFile_SetOpenMode_Callback = void (*)(QTemporaryFile*, QIODeviceBase::OpenMode);
     using QTemporaryFile_SetErrorString_Callback = void (*)(QTemporaryFile*, const QString&);
     using QTemporaryFile_Sender_Callback = QObject* (*)();
     using QTemporaryFile_SenderSignalIndex_Callback = int (*)();
@@ -75,6 +76,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     QTemporaryFile_CanReadLine_Callback qtemporaryfile_canreadline_callback = nullptr;
     QTemporaryFile_WaitForReadyRead_Callback qtemporaryfile_waitforreadyread_callback = nullptr;
     QTemporaryFile_WaitForBytesWritten_Callback qtemporaryfile_waitforbyteswritten_callback = nullptr;
+    QTemporaryFile_SkipData_Callback qtemporaryfile_skipdata_callback = nullptr;
     QTemporaryFile_Event_Callback qtemporaryfile_event_callback = nullptr;
     QTemporaryFile_EventFilter_Callback qtemporaryfile_eventfilter_callback = nullptr;
     QTemporaryFile_TimerEvent_Callback qtemporaryfile_timerevent_callback = nullptr;
@@ -111,6 +113,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     mutable bool qtemporaryfile_canreadline_isbase = false;
     mutable bool qtemporaryfile_waitforreadyread_isbase = false;
     mutable bool qtemporaryfile_waitforbyteswritten_isbase = false;
+    mutable bool qtemporaryfile_skipdata_isbase = false;
     mutable bool qtemporaryfile_event_isbase = false;
     mutable bool qtemporaryfile_eventfilter_isbase = false;
     mutable bool qtemporaryfile_timerevent_isbase = false;
@@ -153,6 +156,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
         qtemporaryfile_canreadline_callback = nullptr;
         qtemporaryfile_waitforreadyread_callback = nullptr;
         qtemporaryfile_waitforbyteswritten_callback = nullptr;
+        qtemporaryfile_skipdata_callback = nullptr;
         qtemporaryfile_event_callback = nullptr;
         qtemporaryfile_eventfilter_callback = nullptr;
         qtemporaryfile_timerevent_callback = nullptr;
@@ -190,6 +194,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     void setQTemporaryFile_CanReadLine_Callback(QTemporaryFile_CanReadLine_Callback cb) { qtemporaryfile_canreadline_callback = cb; }
     void setQTemporaryFile_WaitForReadyRead_Callback(QTemporaryFile_WaitForReadyRead_Callback cb) { qtemporaryfile_waitforreadyread_callback = cb; }
     void setQTemporaryFile_WaitForBytesWritten_Callback(QTemporaryFile_WaitForBytesWritten_Callback cb) { qtemporaryfile_waitforbyteswritten_callback = cb; }
+    void setQTemporaryFile_SkipData_Callback(QTemporaryFile_SkipData_Callback cb) { qtemporaryfile_skipdata_callback = cb; }
     void setQTemporaryFile_Event_Callback(QTemporaryFile_Event_Callback cb) { qtemporaryfile_event_callback = cb; }
     void setQTemporaryFile_EventFilter_Callback(QTemporaryFile_EventFilter_Callback cb) { qtemporaryfile_eventfilter_callback = cb; }
     void setQTemporaryFile_TimerEvent_Callback(QTemporaryFile_TimerEvent_Callback cb) { qtemporaryfile_timerevent_callback = cb; }
@@ -226,6 +231,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     void setQTemporaryFile_CanReadLine_IsBase(bool value) const { qtemporaryfile_canreadline_isbase = value; }
     void setQTemporaryFile_WaitForReadyRead_IsBase(bool value) const { qtemporaryfile_waitforreadyread_isbase = value; }
     void setQTemporaryFile_WaitForBytesWritten_IsBase(bool value) const { qtemporaryfile_waitforbyteswritten_isbase = value; }
+    void setQTemporaryFile_SkipData_IsBase(bool value) const { qtemporaryfile_skipdata_isbase = value; }
     void setQTemporaryFile_Event_IsBase(bool value) const { qtemporaryfile_event_isbase = value; }
     void setQTemporaryFile_EventFilter_IsBase(bool value) const { qtemporaryfile_eventfilter_isbase = value; }
     void setQTemporaryFile_TimerEvent_IsBase(bool value) const { qtemporaryfile_timerevent_isbase = value; }
@@ -265,7 +271,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODevice::OpenMode flags) override {
+    virtual bool open(QIODeviceBase::OpenMode flags) override {
         if (qtemporaryfile_openwithflags_isbase) {
             qtemporaryfile_openwithflags_isbase = false;
             return QTemporaryFile::open(flags);
@@ -493,6 +499,18 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual qint64 skipData(qint64 maxSize) override {
+        if (qtemporaryfile_skipdata_isbase) {
+            qtemporaryfile_skipdata_isbase = false;
+            return QTemporaryFile::skipData(maxSize);
+        } else if (qtemporaryfile_skipdata_callback != nullptr) {
+            return qtemporaryfile_skipdata_callback(this, maxSize);
+        } else {
+            return QTemporaryFile::skipData(maxSize);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool event(QEvent* event) override {
         if (qtemporaryfile_event_isbase) {
             qtemporaryfile_event_isbase = false;
@@ -577,7 +595,7 @@ class VirtualQTemporaryFile : public QTemporaryFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODevice::OpenMode openMode) {
+    void setOpenMode(QIODeviceBase::OpenMode openMode) {
         if (qtemporaryfile_setopenmode_isbase) {
             qtemporaryfile_setopenmode_isbase = false;
             QTemporaryFile::setOpenMode(openMode);

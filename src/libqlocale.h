@@ -19,7 +19,6 @@ extern "C" {
 #ifdef __cplusplus
 #else
 typedef struct QCalendar QCalendar;
-typedef struct QChar QChar;
 typedef struct QDate QDate;
 typedef struct QDateTime QDateTime;
 typedef struct QLocale QLocale;
@@ -34,42 +33,51 @@ typedef QLocale::DataSizeFormats DataSizeFormats;                           // C
 typedef QLocale::FloatingPointPrecisionOption FloatingPointPrecisionOption; // C++ enum
 typedef QLocale::FormatType FormatType;                                     // C++ enum
 typedef QLocale::Language Language;                                         // C++ enum
+typedef QLocale::LanguageCodeType LanguageCodeType;                         // C++ enum
+typedef QLocale::LanguageCodeTypes LanguageCodeTypes;                       // C++ QFlags
 typedef QLocale::MeasurementSystem MeasurementSystem;                       // C++ enum
 typedef QLocale::NumberOption NumberOption;                                 // C++ enum
 typedef QLocale::NumberOptions NumberOptions;                               // C++ QFlags
 typedef QLocale::QtGadgetHelper QtGadgetHelper;                             // C++ QFlags
 typedef QLocale::QuotationStyle QuotationStyle;                             // C++ enum
 typedef QLocale::Script Script;                                             // C++ enum
+typedef QLocale::Territory Territory;                                       // C++ QFlags
 #else
-typedef int Country;                      // C ABI enum
 typedef int CurrencySymbolFormat;         // C ABI enum
 typedef int DataSizeFormat;               // C ABI enum
 typedef int DataSizeFormats;              // C ABI QFlags
 typedef int FloatingPointPrecisionOption; // C ABI enum
 typedef int FormatType;                   // C ABI enum
-typedef int Language;                     // C ABI enum
+typedef int LanguageCodeType;             // C ABI enum
+typedef int LanguageCodeTypes;            // C ABI QFlags
 typedef int MeasurementSystem;            // C ABI enum
 typedef int NumberOption;                 // C ABI enum
 typedef int NumberOptions;                // C ABI QFlags
 typedef int QuotationStyle;               // C ABI enum
 typedef int Script;                       // C ABI enum
+typedef uint16_t Country;                 // C ABI enum
+typedef uint16_t Language;                // C ABI enum
+typedef uint16_t Territory;               // C ABI QFlags
 typedef void QtGadgetHelper;              // C ABI QFlags
 #endif
 
 QLocale* QLocale_new();
 QLocale* QLocale_new2(libqt_string name);
-QLocale* QLocale_new3(int language);
-QLocale* QLocale_new4(int language, int script, int country);
+QLocale* QLocale_new3(uint16_t language, uint16_t territory);
+QLocale* QLocale_new4(uint16_t language);
 QLocale* QLocale_new5(QLocale* other);
-QLocale* QLocale_new6(int language, int country);
+QLocale* QLocale_new6(uint16_t language, uint16_t script);
+QLocale* QLocale_new7(uint16_t language, uint16_t script, uint16_t territory);
 void QLocale_OperatorAssign(QLocale* self, QLocale* other);
 void QLocale_Swap(QLocale* self, QLocale* other);
-int QLocale_Language(const QLocale* self);
-int QLocale_Script(const QLocale* self);
-int QLocale_Country(const QLocale* self);
+uint16_t QLocale_Language(const QLocale* self);
+uint16_t QLocale_Script(const QLocale* self);
+uint16_t QLocale_Territory(const QLocale* self);
+uint16_t QLocale_Country(const QLocale* self);
 libqt_string QLocale_Name(const QLocale* self);
 libqt_string QLocale_Bcp47Name(const QLocale* self);
 libqt_string QLocale_NativeLanguageName(const QLocale* self);
+libqt_string QLocale_NativeTerritoryName(const QLocale* self);
 libqt_string QLocale_NativeCountryName(const QLocale* self);
 int16_t QLocale_ToShort(const QLocale* self, libqt_string s);
 uint16_t QLocale_ToUShort(const QLocale* self, libqt_string s);
@@ -89,10 +97,10 @@ libqt_string QLocale_ToStringWithShort(const QLocale* self, int16_t i);
 libqt_string QLocale_ToStringWithUshort(const QLocale* self, uint16_t i);
 libqt_string QLocale_ToStringWithInt(const QLocale* self, int i);
 libqt_string QLocale_ToStringWithUint(const QLocale* self, unsigned int i);
-libqt_string QLocale_ToStringWithDouble(const QLocale* self, double i);
-libqt_string QLocale_ToStringWithFloat(const QLocale* self, float i);
-libqt_string QLocale_ToString2(const QLocale* self, QDate* date, libqt_string formatStr);
-libqt_string QLocale_ToString3(const QLocale* self, QTime* time, libqt_string formatStr);
+libqt_string QLocale_ToStringWithDouble(const QLocale* self, double f);
+libqt_string QLocale_ToStringWithFloat(const QLocale* self, float f);
+libqt_string QLocale_ToString2(const QLocale* self, QDate* date, libqt_string format);
+libqt_string QLocale_ToString3(const QLocale* self, QTime* time, libqt_string format);
 libqt_string QLocale_ToString4(const QLocale* self, QDateTime* dateTime, libqt_string format);
 libqt_string QLocale_ToStringWithDate(const QLocale* self, QDate* date);
 libqt_string QLocale_ToStringWithTime(const QLocale* self, QTime* time);
@@ -112,15 +120,13 @@ QDate* QLocale_ToDate3(const QLocale* self, libqt_string stringVal, int format, 
 QDateTime* QLocale_ToDateTime3(const QLocale* self, libqt_string stringVal, int format, QCalendar* cal);
 QDate* QLocale_ToDate4(const QLocale* self, libqt_string stringVal, libqt_string format, QCalendar* cal);
 QDateTime* QLocale_ToDateTime4(const QLocale* self, libqt_string stringVal, libqt_string format, QCalendar* cal);
-QTime* QLocale_ToTime3(const QLocale* self, libqt_string stringVal, int format, QCalendar* cal);
-QTime* QLocale_ToTime4(const QLocale* self, libqt_string stringVal, libqt_string format, QCalendar* cal);
-QChar* QLocale_DecimalPoint(const QLocale* self);
-QChar* QLocale_GroupSeparator(const QLocale* self);
-QChar* QLocale_Percent(const QLocale* self);
-QChar* QLocale_ZeroDigit(const QLocale* self);
-QChar* QLocale_NegativeSign(const QLocale* self);
-QChar* QLocale_PositiveSign(const QLocale* self);
-QChar* QLocale_Exponential(const QLocale* self);
+libqt_string QLocale_DecimalPoint(const QLocale* self);
+libqt_string QLocale_GroupSeparator(const QLocale* self);
+libqt_string QLocale_Percent(const QLocale* self);
+libqt_string QLocale_ZeroDigit(const QLocale* self);
+libqt_string QLocale_NegativeSign(const QLocale* self);
+libqt_string QLocale_PositiveSign(const QLocale* self);
+libqt_string QLocale_Exponential(const QLocale* self);
 libqt_string QLocale_MonthName(const QLocale* self, int param1);
 libqt_string QLocale_StandaloneMonthName(const QLocale* self, int param1);
 libqt_string QLocale_DayName(const QLocale* self, int param1);
@@ -137,27 +143,27 @@ libqt_string QLocale_ToLower(const QLocale* self, libqt_string str);
 libqt_string QLocale_CurrencySymbol(const QLocale* self);
 libqt_string QLocale_ToCurrencyString(const QLocale* self, long long param1);
 libqt_string QLocale_ToCurrencyStringWithUnsignedlonglong(const QLocale* self, unsigned long long param1);
-libqt_string QLocale_ToCurrencyStringWithShort(const QLocale* self, int16_t param1);
-libqt_string QLocale_ToCurrencyStringWithUnsignedshort(const QLocale* self, uint16_t param1);
-libqt_string QLocale_ToCurrencyStringWithInt(const QLocale* self, int param1);
-libqt_string QLocale_ToCurrencyStringWithUnsignedint(const QLocale* self, unsigned int param1);
+libqt_string QLocale_ToCurrencyStringWithShort(const QLocale* self, int16_t i);
+libqt_string QLocale_ToCurrencyStringWithUshort(const QLocale* self, uint16_t i);
+libqt_string QLocale_ToCurrencyStringWithInt(const QLocale* self, int i);
+libqt_string QLocale_ToCurrencyStringWithUint(const QLocale* self, unsigned int i);
 libqt_string QLocale_ToCurrencyStringWithDouble(const QLocale* self, double param1);
-libqt_string QLocale_ToCurrencyString2(const QLocale* self, double param1, libqt_string symbol, int precision);
 libqt_string QLocale_ToCurrencyStringWithFloat(const QLocale* self, float i);
-libqt_string QLocale_ToCurrencyString3(const QLocale* self, float i, libqt_string symbol, int precision);
-libqt_string QLocale_FormattedDataSize(QLocale* self, long long bytes);
-libqt_string QLocale_FormattedDataSizeWithBytes(const QLocale* self, long long bytes);
+libqt_string QLocale_FormattedDataSize(const QLocale* self, long long bytes);
 libqt_list /* of libqt_string */ QLocale_UiLanguages(const QLocale* self);
-bool QLocale_OperatorEqual(const QLocale* self, QLocale* other);
-bool QLocale_OperatorNotEqual(const QLocale* self, QLocale* other);
-libqt_string QLocale_LanguageToString(int language);
-libqt_string QLocale_CountryToString(int country);
-libqt_string QLocale_ScriptToString(int script);
+libqt_string QLocale_LanguageToCode(uint16_t language);
+libqt_string QLocale_TerritoryToCode(uint16_t territory);
+libqt_string QLocale_CountryToCode(uint16_t country);
+libqt_string QLocale_ScriptToCode(uint16_t script);
+libqt_string QLocale_LanguageToString(uint16_t language);
+libqt_string QLocale_TerritoryToString(uint16_t territory);
+libqt_string QLocale_CountryToString(uint16_t country);
+libqt_string QLocale_ScriptToString(uint16_t script);
 void QLocale_SetDefault(QLocale* locale);
 QLocale* QLocale_C();
 QLocale* QLocale_System();
-libqt_list /* of QLocale* */ QLocale_MatchingLocales(int language, int script, int country);
-libqt_list /* of int */ QLocale_CountriesForLanguage(int lang);
+libqt_list /* of QLocale* */ QLocale_MatchingLocales(uint16_t language, uint16_t script, uint16_t territory);
+libqt_list /* of uint16_t */ QLocale_CountriesForLanguage(uint16_t lang);
 void QLocale_SetNumberOptions(QLocale* self, int options);
 int QLocale_NumberOptions(const QLocale* self);
 libqt_string QLocale_QuoteString(const QLocale* self, libqt_string str);
@@ -172,10 +178,10 @@ long long QLocale_ToLongLong2(const QLocale* self, libqt_string s, bool* ok);
 unsigned long long QLocale_ToULongLong2(const QLocale* self, libqt_string s, bool* ok);
 float QLocale_ToFloat2(const QLocale* self, libqt_string s, bool* ok);
 double QLocale_ToDouble2(const QLocale* self, libqt_string s, bool* ok);
-libqt_string QLocale_ToString22(const QLocale* self, double i, char f);
-libqt_string QLocale_ToString32(const QLocale* self, double i, char f, int prec);
-libqt_string QLocale_ToString23(const QLocale* self, float i, char f);
-libqt_string QLocale_ToString33(const QLocale* self, float i, char f, int prec);
+libqt_string QLocale_ToString22(const QLocale* self, double f, char format);
+libqt_string QLocale_ToString32(const QLocale* self, double f, char format, int precision);
+libqt_string QLocale_ToString23(const QLocale* self, float f, char format);
+libqt_string QLocale_ToString33(const QLocale* self, float f, char format, int precision);
 libqt_string QLocale_ToString24(const QLocale* self, QDate* date, int format);
 libqt_string QLocale_ToString25(const QLocale* self, QTime* time, int format);
 libqt_string QLocale_ToString26(const QLocale* self, QDateTime* dateTime, int format);
@@ -190,18 +196,19 @@ libqt_string QLocale_StandaloneMonthName2(const QLocale* self, int param1, int f
 libqt_string QLocale_DayName2(const QLocale* self, int param1, int format);
 libqt_string QLocale_StandaloneDayName2(const QLocale* self, int param1, int format);
 libqt_string QLocale_CurrencySymbol1(const QLocale* self, int param1);
-libqt_string QLocale_ToCurrencyString22(const QLocale* self, long long param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString23(const QLocale* self, unsigned long long param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString24(const QLocale* self, int16_t param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString25(const QLocale* self, uint16_t param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString26(const QLocale* self, int param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString27(const QLocale* self, unsigned int param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString28(const QLocale* self, double param1, libqt_string symbol);
-libqt_string QLocale_ToCurrencyString29(const QLocale* self, float i, libqt_string symbol);
-libqt_string QLocale_FormattedDataSize2(QLocale* self, long long bytes, int precision);
-libqt_string QLocale_FormattedDataSize3(QLocale* self, long long bytes, int precision, int format);
-libqt_string QLocale_FormattedDataSize22(const QLocale* self, long long bytes, int precision);
-libqt_string QLocale_FormattedDataSize32(const QLocale* self, long long bytes, int precision, int format);
+libqt_string QLocale_ToCurrencyString2(const QLocale* self, long long param1, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString22(const QLocale* self, unsigned long long param1, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString23(const QLocale* self, int16_t i, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString24(const QLocale* self, uint16_t i, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString25(const QLocale* self, int i, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString26(const QLocale* self, unsigned int i, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString27(const QLocale* self, double param1, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString3(const QLocale* self, double param1, libqt_string symbol, int precision);
+libqt_string QLocale_ToCurrencyString28(const QLocale* self, float i, libqt_string symbol);
+libqt_string QLocale_ToCurrencyString32(const QLocale* self, float i, libqt_string symbol, int precision);
+libqt_string QLocale_FormattedDataSize2(const QLocale* self, long long bytes, int precision);
+libqt_string QLocale_FormattedDataSize3(const QLocale* self, long long bytes, int precision, int format);
+libqt_string QLocale_LanguageToCode2(uint16_t language, int codeTypes);
 libqt_string QLocale_QuoteString2(const QLocale* self, libqt_string str, int style);
 void QLocale_Delete(QLocale* self);
 

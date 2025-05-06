@@ -1,7 +1,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QBrush>
 #include <QByteArray>
@@ -13,6 +15,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -33,14 +36,12 @@
 #include <QList>
 #include <QLocale>
 #include <QMargins>
-#include <QMatrix>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -127,18 +128,6 @@ int QGraphicsView_QBaseMetacall(QGraphicsView* self, int param1, int param2, voi
 
 libqt_string QGraphicsView_Tr(const char* s) {
     QString _ret = QGraphicsView::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsView_TrUtf8(const char* s) {
-    QString _ret = QGraphicsView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -263,18 +252,6 @@ void QGraphicsView_SetSceneRect(QGraphicsView* self, QRectF* rect) {
 
 void QGraphicsView_SetSceneRect2(QGraphicsView* self, double x, double y, double w, double h) {
     self->setSceneRect(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h));
-}
-
-QMatrix* QGraphicsView_Matrix(const QGraphicsView* self) {
-    return new QMatrix(self->matrix());
-}
-
-void QGraphicsView_SetMatrix(QGraphicsView* self, QMatrix* matrix) {
-    self->setMatrix(*matrix);
-}
-
-void QGraphicsView_ResetMatrix(QGraphicsView* self) {
-    self->resetMatrix();
 }
 
 QTransform* QGraphicsView_Transform(const QGraphicsView* self) {
@@ -535,40 +512,12 @@ libqt_string QGraphicsView_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QGraphicsView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGraphicsView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGraphicsView::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QGraphicsView_SetRenderHint2(QGraphicsView* self, int hint, bool enabled) {
     self->setRenderHint(static_cast<QPainter::RenderHint>(hint), enabled);
 }
 
 void QGraphicsView_SetOptimizationFlag2(QGraphicsView* self, int flag, bool enabled) {
     self->setOptimizationFlag(static_cast<QGraphicsView::OptimizationFlag>(flag), enabled);
-}
-
-void QGraphicsView_SetMatrix2(QGraphicsView* self, QMatrix* matrix, bool combine) {
-    self->setMatrix(*matrix, combine);
 }
 
 void QGraphicsView_SetTransform2(QGraphicsView* self, QTransform* matrix, bool combine) {
@@ -1475,6 +1424,32 @@ void QGraphicsView_OnChangeEvent(QGraphicsView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QGraphicsView_InitStyleOption(const QGraphicsView* self, QStyleOptionFrame* option) {
+    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
+        vqgraphicsview->initStyleOption(option);
+    } else {
+        vqgraphicsview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QGraphicsView_QBaseInitStyleOption(const QGraphicsView* self, QStyleOptionFrame* option) {
+    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
+        vqgraphicsview->setQGraphicsView_InitStyleOption_IsBase(true);
+        vqgraphicsview->initStyleOption(option);
+    } else {
+        vqgraphicsview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsView_OnInitStyleOption(const QGraphicsView* self, intptr_t slot) {
+    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
+        vqgraphicsview->setQGraphicsView_InitStyleOption_Callback(reinterpret_cast<VirtualQGraphicsView::QGraphicsView_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QGraphicsView_DevType(const QGraphicsView* self) {
     if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
         return vqgraphicsview->devType();
@@ -1605,7 +1580,7 @@ void QGraphicsView_OnPaintEngine(const QGraphicsView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QGraphicsView_EnterEvent(QGraphicsView* self, QEvent* event) {
+void QGraphicsView_EnterEvent(QGraphicsView* self, QEnterEvent* event) {
     if (auto* vqgraphicsview = dynamic_cast<VirtualQGraphicsView*>(self)) {
         vqgraphicsview->enterEvent(event);
     } else {
@@ -1614,7 +1589,7 @@ void QGraphicsView_EnterEvent(QGraphicsView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QGraphicsView_QBaseEnterEvent(QGraphicsView* self, QEvent* event) {
+void QGraphicsView_QBaseEnterEvent(QGraphicsView* self, QEnterEvent* event) {
     if (auto* vqgraphicsview = dynamic_cast<VirtualQGraphicsView*>(self)) {
         vqgraphicsview->setQGraphicsView_EnterEvent_IsBase(true);
         vqgraphicsview->enterEvent(event);
@@ -1787,23 +1762,23 @@ void QGraphicsView_OnHideEvent(QGraphicsView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QGraphicsView_NativeEvent(QGraphicsView* self, libqt_string eventType, void* message, long* result) {
+bool QGraphicsView_NativeEvent(QGraphicsView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqgraphicsview = dynamic_cast<VirtualQGraphicsView*>(self)) {
-        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QGraphicsView_QBaseNativeEvent(QGraphicsView* self, libqt_string eventType, void* message, long* result) {
+bool QGraphicsView_QBaseNativeEvent(QGraphicsView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqgraphicsview = dynamic_cast<VirtualQGraphicsView*>(self)) {
         vqgraphicsview->setQGraphicsView_NativeEvent_IsBase(true);
-        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgraphicsview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -2121,32 +2096,6 @@ void QGraphicsView_QBaseDrawFrame(QGraphicsView* self, QPainter* param1) {
 void QGraphicsView_OnDrawFrame(QGraphicsView* self, intptr_t slot) {
     if (auto* vqgraphicsview = dynamic_cast<VirtualQGraphicsView*>(self)) {
         vqgraphicsview->setQGraphicsView_DrawFrame_Callback(reinterpret_cast<VirtualQGraphicsView::QGraphicsView_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QGraphicsView_InitStyleOption(const QGraphicsView* self, QStyleOptionFrame* option) {
-    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
-        vqgraphicsview->initStyleOption(option);
-    } else {
-        vqgraphicsview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QGraphicsView_QBaseInitStyleOption(const QGraphicsView* self, QStyleOptionFrame* option) {
-    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
-        vqgraphicsview->setQGraphicsView_InitStyleOption_IsBase(true);
-        vqgraphicsview->initStyleOption(option);
-    } else {
-        vqgraphicsview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGraphicsView_OnInitStyleOption(const QGraphicsView* self, intptr_t slot) {
-    if (auto* vqgraphicsview = const_cast<VirtualQGraphicsView*>(dynamic_cast<const VirtualQGraphicsView*>(self))) {
-        vqgraphicsview->setQGraphicsView_InitStyleOption_Callback(reinterpret_cast<VirtualQGraphicsView::QGraphicsView_InitStyleOption_Callback>(slot));
     }
 }
 

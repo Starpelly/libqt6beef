@@ -35,19 +35,19 @@ QTimeZone* QTimeZone_new5(QTimeZone* other) {
     return new QTimeZone(*other);
 }
 
-QTimeZone* QTimeZone_new6(libqt_string zoneId, int offsetSeconds, libqt_string name, libqt_string abbreviation, int country) {
+QTimeZone* QTimeZone_new6(libqt_string zoneId, int offsetSeconds, libqt_string name, libqt_string abbreviation, uint16_t territory) {
     QByteArray zoneId_QByteArray(zoneId.data, zoneId.len);
     QString name_QString = QString::fromUtf8(name.data, name.len);
     QString abbreviation_QString = QString::fromUtf8(abbreviation.data, abbreviation.len);
-    return new QTimeZone(zoneId_QByteArray, static_cast<int>(offsetSeconds), name_QString, abbreviation_QString, static_cast<QLocale::Country>(country));
+    return new QTimeZone(zoneId_QByteArray, static_cast<int>(offsetSeconds), name_QString, abbreviation_QString, static_cast<QLocale::Territory>(territory));
 }
 
-QTimeZone* QTimeZone_new7(libqt_string zoneId, int offsetSeconds, libqt_string name, libqt_string abbreviation, int country, libqt_string comment) {
+QTimeZone* QTimeZone_new7(libqt_string zoneId, int offsetSeconds, libqt_string name, libqt_string abbreviation, uint16_t territory, libqt_string comment) {
     QByteArray zoneId_QByteArray(zoneId.data, zoneId.len);
     QString name_QString = QString::fromUtf8(name.data, name.len);
     QString abbreviation_QString = QString::fromUtf8(abbreviation.data, abbreviation.len);
     QString comment_QString = QString::fromUtf8(comment.data, comment.len);
-    return new QTimeZone(zoneId_QByteArray, static_cast<int>(offsetSeconds), name_QString, abbreviation_QString, static_cast<QLocale::Country>(country), comment_QString);
+    return new QTimeZone(zoneId_QByteArray, static_cast<int>(offsetSeconds), name_QString, abbreviation_QString, static_cast<QLocale::Territory>(territory), comment_QString);
 }
 
 void QTimeZone_OperatorAssign(QTimeZone* self, QTimeZone* other) {
@@ -72,8 +72,12 @@ libqt_string QTimeZone_Id(const QTimeZone* self) {
     return _str;
 }
 
-int QTimeZone_Country(const QTimeZone* self) {
-    return static_cast<int>(self->country());
+uint16_t QTimeZone_Territory(const QTimeZone* self) {
+    return static_cast<uint16_t>(self->territory());
+}
+
+uint16_t QTimeZone_Country(const QTimeZone* self) {
+    return static_cast<uint16_t>(self->country());
 }
 
 libqt_string QTimeZone_Comment(const QTimeZone* self) {
@@ -215,8 +219,8 @@ libqt_list /* of libqt_string */ QTimeZone_AvailableTimeZoneIds() {
     return _out;
 }
 
-libqt_list /* of libqt_string */ QTimeZone_AvailableTimeZoneIdsWithCountry(int country) {
-    QList<QByteArray> _ret = QTimeZone::availableTimeZoneIds(static_cast<QLocale::Country>(country));
+libqt_list /* of libqt_string */ QTimeZone_AvailableTimeZoneIdsWithTerritory(uint16_t territory) {
+    QList<QByteArray> _ret = QTimeZone::availableTimeZoneIds(static_cast<QLocale::Territory>(territory));
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_string* _arr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -275,9 +279,9 @@ libqt_string QTimeZone_WindowsIdToDefaultIanaId(libqt_string windowsId) {
     return _str;
 }
 
-libqt_string QTimeZone_WindowsIdToDefaultIanaId2(libqt_string windowsId, int country) {
+libqt_string QTimeZone_WindowsIdToDefaultIanaId2(libqt_string windowsId, uint16_t territory) {
     QByteArray windowsId_QByteArray(windowsId.data, windowsId.len);
-    QByteArray _qb = QTimeZone::windowsIdToDefaultIanaId(windowsId_QByteArray, static_cast<QLocale::Country>(country));
+    QByteArray _qb = QTimeZone::windowsIdToDefaultIanaId(windowsId_QByteArray, static_cast<QLocale::Territory>(territory));
     libqt_string _str;
     _str.len = _qb.length();
     _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
@@ -306,9 +310,9 @@ libqt_list /* of libqt_string */ QTimeZone_WindowsIdToIanaIds(libqt_string windo
     return _out;
 }
 
-libqt_list /* of libqt_string */ QTimeZone_WindowsIdToIanaIds2(libqt_string windowsId, int country) {
+libqt_list /* of libqt_string */ QTimeZone_WindowsIdToIanaIds2(libqt_string windowsId, uint16_t territory) {
     QByteArray windowsId_QByteArray(windowsId.data, windowsId.len);
-    QList<QByteArray> _ret = QTimeZone::windowsIdToIanaIds(windowsId_QByteArray, static_cast<QLocale::Country>(country));
+    QList<QByteArray> _ret = QTimeZone::windowsIdToIanaIds(windowsId_QByteArray, static_cast<QLocale::Territory>(territory));
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_string* _arr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

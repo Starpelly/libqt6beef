@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIcon QIcon;
@@ -29,7 +31,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QRect QRect;
 typedef struct QSystemTrayIcon QSystemTrayIcon;
 typedef struct QThread QThread;
@@ -55,7 +56,6 @@ int QSystemTrayIcon_Metacall(QSystemTrayIcon* self, int param1, int param2, void
 void QSystemTrayIcon_OnMetacall(QSystemTrayIcon* self, intptr_t slot);
 int QSystemTrayIcon_QBaseMetacall(QSystemTrayIcon* self, int param1, int param2, void** param3);
 libqt_string QSystemTrayIcon_Tr(const char* s);
-libqt_string QSystemTrayIcon_TrUtf8(const char* s);
 void QSystemTrayIcon_SetContextMenu(QSystemTrayIcon* self, QMenu* menu);
 QMenu* QSystemTrayIcon_ContextMenu(const QSystemTrayIcon* self);
 QIcon* QSystemTrayIcon_Icon(const QSystemTrayIcon* self);
@@ -80,8 +80,6 @@ void QSystemTrayIcon_OnEvent(QSystemTrayIcon* self, intptr_t slot);
 bool QSystemTrayIcon_QBaseEvent(QSystemTrayIcon* self, QEvent* event);
 libqt_string QSystemTrayIcon_Tr2(const char* s, const char* c);
 libqt_string QSystemTrayIcon_Tr3(const char* s, const char* c, int n);
-libqt_string QSystemTrayIcon_TrUtf82(const char* s, const char* c);
-libqt_string QSystemTrayIcon_TrUtf83(const char* s, const char* c, int n);
 void QSystemTrayIcon_ShowMessage4(QSystemTrayIcon* self, libqt_string title, libqt_string msg, QIcon* icon, int msecs);
 void QSystemTrayIcon_ShowMessage3(QSystemTrayIcon* self, libqt_string title, libqt_string msg, int icon);
 void QSystemTrayIcon_ShowMessage42(QSystemTrayIcon* self, libqt_string title, libqt_string msg, int icon, int msecs);

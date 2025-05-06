@@ -46,7 +46,7 @@ class VirtualQColorDialog : public QColorDialog {
     using QColorDialog_KeyReleaseEvent_Callback = void (*)(QColorDialog*, QKeyEvent*);
     using QColorDialog_FocusInEvent_Callback = void (*)(QColorDialog*, QFocusEvent*);
     using QColorDialog_FocusOutEvent_Callback = void (*)(QColorDialog*, QFocusEvent*);
-    using QColorDialog_EnterEvent_Callback = void (*)(QColorDialog*, QEvent*);
+    using QColorDialog_EnterEvent_Callback = void (*)(QColorDialog*, QEnterEvent*);
     using QColorDialog_LeaveEvent_Callback = void (*)(QColorDialog*, QEvent*);
     using QColorDialog_PaintEvent_Callback = void (*)(QColorDialog*, QPaintEvent*);
     using QColorDialog_MoveEvent_Callback = void (*)(QColorDialog*, QMoveEvent*);
@@ -57,7 +57,7 @@ class VirtualQColorDialog : public QColorDialog {
     using QColorDialog_DragLeaveEvent_Callback = void (*)(QColorDialog*, QDragLeaveEvent*);
     using QColorDialog_DropEvent_Callback = void (*)(QColorDialog*, QDropEvent*);
     using QColorDialog_HideEvent_Callback = void (*)(QColorDialog*, QHideEvent*);
-    using QColorDialog_NativeEvent_Callback = bool (*)(QColorDialog*, const QByteArray&, void*, long*);
+    using QColorDialog_NativeEvent_Callback = bool (*)(QColorDialog*, const QByteArray&, void*, qintptr*);
     using QColorDialog_Metric_Callback = int (*)(const QColorDialog*, QPaintDevice::PaintDeviceMetric);
     using QColorDialog_InitPainter_Callback = void (*)(const QColorDialog*, QPainter*);
     using QColorDialog_Redirected_Callback = QPaintDevice* (*)(const QColorDialog*, QPoint*);
@@ -763,7 +763,7 @@ class VirtualQColorDialog : public QColorDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qcolordialog_enterevent_isbase) {
             qcolordialog_enterevent_isbase = false;
             QColorDialog::enterEvent(event);
@@ -895,7 +895,7 @@ class VirtualQColorDialog : public QColorDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qcolordialog_nativeevent_isbase) {
             qcolordialog_nativeevent_isbase = false;
             return QColorDialog::nativeEvent(eventType, message, result);

@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -12,6 +14,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -109,18 +112,6 @@ int QTabBar_QBaseMetacall(QTabBar* self, int param1, int param2, void** param3) 
 
 libqt_string QTabBar_Tr(const char* s) {
     QString _ret = QTabBar::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTabBar_TrUtf8(const char* s) {
-    QString _ret = QTabBar::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -466,30 +457,6 @@ libqt_string QTabBar_Tr2(const char* s, const char* c) {
 
 libqt_string QTabBar_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTabBar::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTabBar_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTabBar::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTabBar_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTabBar::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -887,6 +854,32 @@ void QTabBar_OnMouseReleaseEvent(QTabBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QTabBar_MouseDoubleClickEvent(QTabBar* self, QMouseEvent* param1) {
+    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
+        vqtabbar->mouseDoubleClickEvent(param1);
+    } else {
+        vqtabbar->mouseDoubleClickEvent(param1);
+    }
+}
+
+// Base class handler implementation
+void QTabBar_QBaseMouseDoubleClickEvent(QTabBar* self, QMouseEvent* param1) {
+    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
+        vqtabbar->setQTabBar_MouseDoubleClickEvent_IsBase(true);
+        vqtabbar->mouseDoubleClickEvent(param1);
+    } else {
+        vqtabbar->mouseDoubleClickEvent(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTabBar_OnMouseDoubleClickEvent(QTabBar* self, intptr_t slot) {
+    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
+        vqtabbar->setQTabBar_MouseDoubleClickEvent_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_MouseDoubleClickEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QTabBar_WheelEvent(QTabBar* self, QWheelEvent* event) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->wheelEvent(event);
@@ -987,6 +980,32 @@ void QTabBar_QBaseTimerEvent(QTabBar* self, QTimerEvent* event) {
 void QTabBar_OnTimerEvent(QTabBar* self, intptr_t slot) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->setQTabBar_TimerEvent_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_TimerEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTabBar_InitStyleOption(const QTabBar* self, QStyleOptionTab* option, int tabIndex) {
+    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
+        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
+    } else {
+        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
+    }
+}
+
+// Base class handler implementation
+void QTabBar_QBaseInitStyleOption(const QTabBar* self, QStyleOptionTab* option, int tabIndex) {
+    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
+        vqtabbar->setQTabBar_InitStyleOption_IsBase(true);
+        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
+    } else {
+        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTabBar_OnInitStyleOption(const QTabBar* self, intptr_t slot) {
+    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
+        vqtabbar->setQTabBar_InitStyleOption_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -1121,32 +1140,6 @@ void QTabBar_OnPaintEngine(const QTabBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTabBar_MouseDoubleClickEvent(QTabBar* self, QMouseEvent* event) {
-    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
-        vqtabbar->mouseDoubleClickEvent(event);
-    } else {
-        vqtabbar->mouseDoubleClickEvent(event);
-    }
-}
-
-// Base class handler implementation
-void QTabBar_QBaseMouseDoubleClickEvent(QTabBar* self, QMouseEvent* event) {
-    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
-        vqtabbar->setQTabBar_MouseDoubleClickEvent_IsBase(true);
-        vqtabbar->mouseDoubleClickEvent(event);
-    } else {
-        vqtabbar->mouseDoubleClickEvent(event);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTabBar_OnMouseDoubleClickEvent(QTabBar* self, intptr_t slot) {
-    if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
-        vqtabbar->setQTabBar_MouseDoubleClickEvent_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_MouseDoubleClickEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QTabBar_KeyReleaseEvent(QTabBar* self, QKeyEvent* event) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->keyReleaseEvent(event);
@@ -1225,7 +1218,7 @@ void QTabBar_OnFocusOutEvent(QTabBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTabBar_EnterEvent(QTabBar* self, QEvent* event) {
+void QTabBar_EnterEvent(QTabBar* self, QEnterEvent* event) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->enterEvent(event);
     } else {
@@ -1234,7 +1227,7 @@ void QTabBar_EnterEvent(QTabBar* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QTabBar_QBaseEnterEvent(QTabBar* self, QEvent* event) {
+void QTabBar_QBaseEnterEvent(QTabBar* self, QEnterEvent* event) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->setQTabBar_EnterEvent_IsBase(true);
         vqtabbar->enterEvent(event);
@@ -1511,23 +1504,23 @@ void QTabBar_OnDropEvent(QTabBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTabBar_NativeEvent(QTabBar* self, libqt_string eventType, void* message, long* result) {
+bool QTabBar_NativeEvent(QTabBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
-        return vqtabbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtabbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtabbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtabbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QTabBar_QBaseNativeEvent(QTabBar* self, libqt_string eventType, void* message, long* result) {
+bool QTabBar_QBaseNativeEvent(QTabBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->setQTabBar_NativeEvent_IsBase(true);
-        return vqtabbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtabbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqtabbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqtabbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1847,32 +1840,6 @@ void QTabBar_QBaseDisconnectNotify(QTabBar* self, QMetaMethod* signal) {
 void QTabBar_OnDisconnectNotify(QTabBar* self, intptr_t slot) {
     if (auto* vqtabbar = dynamic_cast<VirtualQTabBar*>(self)) {
         vqtabbar->setQTabBar_DisconnectNotify_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTabBar_InitStyleOption(const QTabBar* self, QStyleOptionTab* option, int tabIndex) {
-    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
-        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
-    } else {
-        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
-    }
-}
-
-// Base class handler implementation
-void QTabBar_QBaseInitStyleOption(const QTabBar* self, QStyleOptionTab* option, int tabIndex) {
-    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
-        vqtabbar->setQTabBar_InitStyleOption_IsBase(true);
-        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
-    } else {
-        vqtabbar->initStyleOption(option, static_cast<int>(tabIndex));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTabBar_OnInitStyleOption(const QTabBar* self, intptr_t slot) {
-    if (auto* vqtabbar = const_cast<VirtualQTabBar*>(dynamic_cast<const VirtualQTabBar*>(self))) {
-        vqtabbar->setQTabBar_InitStyleOption_Callback(reinterpret_cast<VirtualQTabBar::QTabBar_InitStyleOption_Callback>(slot));
     }
 }
 

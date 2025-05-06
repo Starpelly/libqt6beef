@@ -43,10 +43,11 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_KeyboardSearch_Callback = void (*)(QColumnView*, const QString&);
     using QColumnView_SizeHintForRow_Callback = int (*)(const QColumnView*, int);
     using QColumnView_SizeHintForColumn_Callback = int (*)(const QColumnView*, int);
+    using QColumnView_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QColumnView*, const QModelIndex&);
     using QColumnView_InputMethodQuery_Callback = QVariant (*)(const QColumnView*, Qt::InputMethodQuery);
     using QColumnView_Reset_Callback = void (*)();
     using QColumnView_DoItemsLayout_Callback = void (*)();
-    using QColumnView_DataChanged_Callback = void (*)(QColumnView*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
+    using QColumnView_DataChanged_Callback = void (*)(QColumnView*, const QModelIndex&, const QModelIndex&, const QList<int>&);
     using QColumnView_RowsAboutToBeRemoved_Callback = void (*)(QColumnView*, const QModelIndex&, int, int);
     using QColumnView_SelectionChanged_Callback = void (*)(QColumnView*, const QItemSelection&, const QItemSelection&);
     using QColumnView_UpdateEditorData_Callback = void (*)();
@@ -63,7 +64,7 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_Edit2_Callback = bool (*)(QColumnView*, const QModelIndex&, QAbstractItemView::EditTrigger, QEvent*);
     using QColumnView_SelectionCommand_Callback = QItemSelectionModel::SelectionFlags (*)(const QColumnView*, const QModelIndex&, const QEvent*);
     using QColumnView_StartDrag_Callback = void (*)(QColumnView*, Qt::DropActions);
-    using QColumnView_ViewOptions_Callback = QStyleOptionViewItem (*)();
+    using QColumnView_InitViewItemOption_Callback = void (*)(const QColumnView*, QStyleOptionViewItem*);
     using QColumnView_FocusNextPrevChild_Callback = bool (*)(QColumnView*, bool);
     using QColumnView_Event_Callback = bool (*)(QColumnView*, QEvent*);
     using QColumnView_ViewportEvent_Callback = bool (*)(QColumnView*, QEvent*);
@@ -88,13 +89,14 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_WheelEvent_Callback = void (*)(QColumnView*, QWheelEvent*);
     using QColumnView_ContextMenuEvent_Callback = void (*)(QColumnView*, QContextMenuEvent*);
     using QColumnView_ChangeEvent_Callback = void (*)(QColumnView*, QEvent*);
+    using QColumnView_InitStyleOption_Callback = void (*)(const QColumnView*, QStyleOptionFrame*);
     using QColumnView_DevType_Callback = int (*)();
     using QColumnView_SetVisible_Callback = void (*)(QColumnView*, bool);
     using QColumnView_HeightForWidth_Callback = int (*)(const QColumnView*, int);
     using QColumnView_HasHeightForWidth_Callback = bool (*)();
     using QColumnView_PaintEngine_Callback = QPaintEngine* (*)();
     using QColumnView_KeyReleaseEvent_Callback = void (*)(QColumnView*, QKeyEvent*);
-    using QColumnView_EnterEvent_Callback = void (*)(QColumnView*, QEvent*);
+    using QColumnView_EnterEvent_Callback = void (*)(QColumnView*, QEnterEvent*);
     using QColumnView_LeaveEvent_Callback = void (*)(QColumnView*, QEvent*);
     using QColumnView_MoveEvent_Callback = void (*)(QColumnView*, QMoveEvent*);
     using QColumnView_CloseEvent_Callback = void (*)(QColumnView*, QCloseEvent*);
@@ -102,7 +104,7 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_ActionEvent_Callback = void (*)(QColumnView*, QActionEvent*);
     using QColumnView_ShowEvent_Callback = void (*)(QColumnView*, QShowEvent*);
     using QColumnView_HideEvent_Callback = void (*)(QColumnView*, QHideEvent*);
-    using QColumnView_NativeEvent_Callback = bool (*)(QColumnView*, const QByteArray&, void*, long*);
+    using QColumnView_NativeEvent_Callback = bool (*)(QColumnView*, const QByteArray&, void*, qintptr*);
     using QColumnView_Metric_Callback = int (*)(const QColumnView*, QPaintDevice::PaintDeviceMetric);
     using QColumnView_InitPainter_Callback = void (*)(const QColumnView*, QPainter*);
     using QColumnView_Redirected_Callback = QPaintDevice* (*)(const QColumnView*, QPoint*);
@@ -112,10 +114,6 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_ConnectNotify_Callback = void (*)(QColumnView*, const QMetaMethod&);
     using QColumnView_DisconnectNotify_Callback = void (*)(QColumnView*, const QMetaMethod&);
     using QColumnView_InitializeColumn_Callback = void (*)(const QColumnView*, QAbstractItemView*);
-    using QColumnView_SetHorizontalStepsPerItem_Callback = void (*)(QColumnView*, int);
-    using QColumnView_HorizontalStepsPerItem_Callback = int (*)();
-    using QColumnView_SetVerticalStepsPerItem_Callback = void (*)(QColumnView*, int);
-    using QColumnView_VerticalStepsPerItem_Callback = int (*)();
     using QColumnView_State_Callback = QAbstractItemView::State (*)();
     using QColumnView_SetState_Callback = void (*)(QColumnView*, int);
     using QColumnView_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -130,7 +128,6 @@ class VirtualQColumnView : public QColumnView {
     using QColumnView_SetViewportMargins_Callback = void (*)(QColumnView*, int, int, int, int);
     using QColumnView_ViewportMargins_Callback = QMargins (*)();
     using QColumnView_DrawFrame_Callback = void (*)(QColumnView*, QPainter*);
-    using QColumnView_InitStyleOption_Callback = void (*)(const QColumnView*, QStyleOptionFrame*);
     using QColumnView_UpdateMicroFocus_Callback = void (*)();
     using QColumnView_Create_Callback = void (*)();
     using QColumnView_Destroy_Callback = void (*)();
@@ -166,6 +163,7 @@ class VirtualQColumnView : public QColumnView {
     QColumnView_KeyboardSearch_Callback qcolumnview_keyboardsearch_callback = nullptr;
     QColumnView_SizeHintForRow_Callback qcolumnview_sizehintforrow_callback = nullptr;
     QColumnView_SizeHintForColumn_Callback qcolumnview_sizehintforcolumn_callback = nullptr;
+    QColumnView_ItemDelegateForIndex_Callback qcolumnview_itemdelegateforindex_callback = nullptr;
     QColumnView_InputMethodQuery_Callback qcolumnview_inputmethodquery_callback = nullptr;
     QColumnView_Reset_Callback qcolumnview_reset_callback = nullptr;
     QColumnView_DoItemsLayout_Callback qcolumnview_doitemslayout_callback = nullptr;
@@ -186,7 +184,7 @@ class VirtualQColumnView : public QColumnView {
     QColumnView_Edit2_Callback qcolumnview_edit2_callback = nullptr;
     QColumnView_SelectionCommand_Callback qcolumnview_selectioncommand_callback = nullptr;
     QColumnView_StartDrag_Callback qcolumnview_startdrag_callback = nullptr;
-    QColumnView_ViewOptions_Callback qcolumnview_viewoptions_callback = nullptr;
+    QColumnView_InitViewItemOption_Callback qcolumnview_initviewitemoption_callback = nullptr;
     QColumnView_FocusNextPrevChild_Callback qcolumnview_focusnextprevchild_callback = nullptr;
     QColumnView_Event_Callback qcolumnview_event_callback = nullptr;
     QColumnView_ViewportEvent_Callback qcolumnview_viewportevent_callback = nullptr;
@@ -211,6 +209,7 @@ class VirtualQColumnView : public QColumnView {
     QColumnView_WheelEvent_Callback qcolumnview_wheelevent_callback = nullptr;
     QColumnView_ContextMenuEvent_Callback qcolumnview_contextmenuevent_callback = nullptr;
     QColumnView_ChangeEvent_Callback qcolumnview_changeevent_callback = nullptr;
+    QColumnView_InitStyleOption_Callback qcolumnview_initstyleoption_callback = nullptr;
     QColumnView_DevType_Callback qcolumnview_devtype_callback = nullptr;
     QColumnView_SetVisible_Callback qcolumnview_setvisible_callback = nullptr;
     QColumnView_HeightForWidth_Callback qcolumnview_heightforwidth_callback = nullptr;
@@ -235,10 +234,6 @@ class VirtualQColumnView : public QColumnView {
     QColumnView_ConnectNotify_Callback qcolumnview_connectnotify_callback = nullptr;
     QColumnView_DisconnectNotify_Callback qcolumnview_disconnectnotify_callback = nullptr;
     QColumnView_InitializeColumn_Callback qcolumnview_initializecolumn_callback = nullptr;
-    QColumnView_SetHorizontalStepsPerItem_Callback qcolumnview_sethorizontalstepsperitem_callback = nullptr;
-    QColumnView_HorizontalStepsPerItem_Callback qcolumnview_horizontalstepsperitem_callback = nullptr;
-    QColumnView_SetVerticalStepsPerItem_Callback qcolumnview_setverticalstepsperitem_callback = nullptr;
-    QColumnView_VerticalStepsPerItem_Callback qcolumnview_verticalstepsperitem_callback = nullptr;
     QColumnView_State_Callback qcolumnview_state_callback = nullptr;
     QColumnView_SetState_Callback qcolumnview_setstate_callback = nullptr;
     QColumnView_ScheduleDelayedItemsLayout_Callback qcolumnview_scheduledelayeditemslayout_callback = nullptr;
@@ -253,7 +248,6 @@ class VirtualQColumnView : public QColumnView {
     QColumnView_SetViewportMargins_Callback qcolumnview_setviewportmargins_callback = nullptr;
     QColumnView_ViewportMargins_Callback qcolumnview_viewportmargins_callback = nullptr;
     QColumnView_DrawFrame_Callback qcolumnview_drawframe_callback = nullptr;
-    QColumnView_InitStyleOption_Callback qcolumnview_initstyleoption_callback = nullptr;
     QColumnView_UpdateMicroFocus_Callback qcolumnview_updatemicrofocus_callback = nullptr;
     QColumnView_Create_Callback qcolumnview_create_callback = nullptr;
     QColumnView_Destroy_Callback qcolumnview_destroy_callback = nullptr;
@@ -288,6 +282,7 @@ class VirtualQColumnView : public QColumnView {
     mutable bool qcolumnview_keyboardsearch_isbase = false;
     mutable bool qcolumnview_sizehintforrow_isbase = false;
     mutable bool qcolumnview_sizehintforcolumn_isbase = false;
+    mutable bool qcolumnview_itemdelegateforindex_isbase = false;
     mutable bool qcolumnview_inputmethodquery_isbase = false;
     mutable bool qcolumnview_reset_isbase = false;
     mutable bool qcolumnview_doitemslayout_isbase = false;
@@ -308,7 +303,7 @@ class VirtualQColumnView : public QColumnView {
     mutable bool qcolumnview_edit2_isbase = false;
     mutable bool qcolumnview_selectioncommand_isbase = false;
     mutable bool qcolumnview_startdrag_isbase = false;
-    mutable bool qcolumnview_viewoptions_isbase = false;
+    mutable bool qcolumnview_initviewitemoption_isbase = false;
     mutable bool qcolumnview_focusnextprevchild_isbase = false;
     mutable bool qcolumnview_event_isbase = false;
     mutable bool qcolumnview_viewportevent_isbase = false;
@@ -333,6 +328,7 @@ class VirtualQColumnView : public QColumnView {
     mutable bool qcolumnview_wheelevent_isbase = false;
     mutable bool qcolumnview_contextmenuevent_isbase = false;
     mutable bool qcolumnview_changeevent_isbase = false;
+    mutable bool qcolumnview_initstyleoption_isbase = false;
     mutable bool qcolumnview_devtype_isbase = false;
     mutable bool qcolumnview_setvisible_isbase = false;
     mutable bool qcolumnview_heightforwidth_isbase = false;
@@ -357,10 +353,6 @@ class VirtualQColumnView : public QColumnView {
     mutable bool qcolumnview_connectnotify_isbase = false;
     mutable bool qcolumnview_disconnectnotify_isbase = false;
     mutable bool qcolumnview_initializecolumn_isbase = false;
-    mutable bool qcolumnview_sethorizontalstepsperitem_isbase = false;
-    mutable bool qcolumnview_horizontalstepsperitem_isbase = false;
-    mutable bool qcolumnview_setverticalstepsperitem_isbase = false;
-    mutable bool qcolumnview_verticalstepsperitem_isbase = false;
     mutable bool qcolumnview_state_isbase = false;
     mutable bool qcolumnview_setstate_isbase = false;
     mutable bool qcolumnview_scheduledelayeditemslayout_isbase = false;
@@ -375,7 +367,6 @@ class VirtualQColumnView : public QColumnView {
     mutable bool qcolumnview_setviewportmargins_isbase = false;
     mutable bool qcolumnview_viewportmargins_isbase = false;
     mutable bool qcolumnview_drawframe_isbase = false;
-    mutable bool qcolumnview_initstyleoption_isbase = false;
     mutable bool qcolumnview_updatemicrofocus_isbase = false;
     mutable bool qcolumnview_create_isbase = false;
     mutable bool qcolumnview_destroy_isbase = false;
@@ -414,6 +405,7 @@ class VirtualQColumnView : public QColumnView {
         qcolumnview_keyboardsearch_callback = nullptr;
         qcolumnview_sizehintforrow_callback = nullptr;
         qcolumnview_sizehintforcolumn_callback = nullptr;
+        qcolumnview_itemdelegateforindex_callback = nullptr;
         qcolumnview_inputmethodquery_callback = nullptr;
         qcolumnview_reset_callback = nullptr;
         qcolumnview_doitemslayout_callback = nullptr;
@@ -434,7 +426,7 @@ class VirtualQColumnView : public QColumnView {
         qcolumnview_edit2_callback = nullptr;
         qcolumnview_selectioncommand_callback = nullptr;
         qcolumnview_startdrag_callback = nullptr;
-        qcolumnview_viewoptions_callback = nullptr;
+        qcolumnview_initviewitemoption_callback = nullptr;
         qcolumnview_focusnextprevchild_callback = nullptr;
         qcolumnview_event_callback = nullptr;
         qcolumnview_viewportevent_callback = nullptr;
@@ -459,6 +451,7 @@ class VirtualQColumnView : public QColumnView {
         qcolumnview_wheelevent_callback = nullptr;
         qcolumnview_contextmenuevent_callback = nullptr;
         qcolumnview_changeevent_callback = nullptr;
+        qcolumnview_initstyleoption_callback = nullptr;
         qcolumnview_devtype_callback = nullptr;
         qcolumnview_setvisible_callback = nullptr;
         qcolumnview_heightforwidth_callback = nullptr;
@@ -483,10 +476,6 @@ class VirtualQColumnView : public QColumnView {
         qcolumnview_connectnotify_callback = nullptr;
         qcolumnview_disconnectnotify_callback = nullptr;
         qcolumnview_initializecolumn_callback = nullptr;
-        qcolumnview_sethorizontalstepsperitem_callback = nullptr;
-        qcolumnview_horizontalstepsperitem_callback = nullptr;
-        qcolumnview_setverticalstepsperitem_callback = nullptr;
-        qcolumnview_verticalstepsperitem_callback = nullptr;
         qcolumnview_state_callback = nullptr;
         qcolumnview_setstate_callback = nullptr;
         qcolumnview_scheduledelayeditemslayout_callback = nullptr;
@@ -501,7 +490,6 @@ class VirtualQColumnView : public QColumnView {
         qcolumnview_setviewportmargins_callback = nullptr;
         qcolumnview_viewportmargins_callback = nullptr;
         qcolumnview_drawframe_callback = nullptr;
-        qcolumnview_initstyleoption_callback = nullptr;
         qcolumnview_updatemicrofocus_callback = nullptr;
         qcolumnview_create_callback = nullptr;
         qcolumnview_destroy_callback = nullptr;
@@ -537,6 +525,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_KeyboardSearch_Callback(QColumnView_KeyboardSearch_Callback cb) { qcolumnview_keyboardsearch_callback = cb; }
     void setQColumnView_SizeHintForRow_Callback(QColumnView_SizeHintForRow_Callback cb) { qcolumnview_sizehintforrow_callback = cb; }
     void setQColumnView_SizeHintForColumn_Callback(QColumnView_SizeHintForColumn_Callback cb) { qcolumnview_sizehintforcolumn_callback = cb; }
+    void setQColumnView_ItemDelegateForIndex_Callback(QColumnView_ItemDelegateForIndex_Callback cb) { qcolumnview_itemdelegateforindex_callback = cb; }
     void setQColumnView_InputMethodQuery_Callback(QColumnView_InputMethodQuery_Callback cb) { qcolumnview_inputmethodquery_callback = cb; }
     void setQColumnView_Reset_Callback(QColumnView_Reset_Callback cb) { qcolumnview_reset_callback = cb; }
     void setQColumnView_DoItemsLayout_Callback(QColumnView_DoItemsLayout_Callback cb) { qcolumnview_doitemslayout_callback = cb; }
@@ -557,7 +546,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_Edit2_Callback(QColumnView_Edit2_Callback cb) { qcolumnview_edit2_callback = cb; }
     void setQColumnView_SelectionCommand_Callback(QColumnView_SelectionCommand_Callback cb) { qcolumnview_selectioncommand_callback = cb; }
     void setQColumnView_StartDrag_Callback(QColumnView_StartDrag_Callback cb) { qcolumnview_startdrag_callback = cb; }
-    void setQColumnView_ViewOptions_Callback(QColumnView_ViewOptions_Callback cb) { qcolumnview_viewoptions_callback = cb; }
+    void setQColumnView_InitViewItemOption_Callback(QColumnView_InitViewItemOption_Callback cb) { qcolumnview_initviewitemoption_callback = cb; }
     void setQColumnView_FocusNextPrevChild_Callback(QColumnView_FocusNextPrevChild_Callback cb) { qcolumnview_focusnextprevchild_callback = cb; }
     void setQColumnView_Event_Callback(QColumnView_Event_Callback cb) { qcolumnview_event_callback = cb; }
     void setQColumnView_ViewportEvent_Callback(QColumnView_ViewportEvent_Callback cb) { qcolumnview_viewportevent_callback = cb; }
@@ -582,6 +571,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_WheelEvent_Callback(QColumnView_WheelEvent_Callback cb) { qcolumnview_wheelevent_callback = cb; }
     void setQColumnView_ContextMenuEvent_Callback(QColumnView_ContextMenuEvent_Callback cb) { qcolumnview_contextmenuevent_callback = cb; }
     void setQColumnView_ChangeEvent_Callback(QColumnView_ChangeEvent_Callback cb) { qcolumnview_changeevent_callback = cb; }
+    void setQColumnView_InitStyleOption_Callback(QColumnView_InitStyleOption_Callback cb) { qcolumnview_initstyleoption_callback = cb; }
     void setQColumnView_DevType_Callback(QColumnView_DevType_Callback cb) { qcolumnview_devtype_callback = cb; }
     void setQColumnView_SetVisible_Callback(QColumnView_SetVisible_Callback cb) { qcolumnview_setvisible_callback = cb; }
     void setQColumnView_HeightForWidth_Callback(QColumnView_HeightForWidth_Callback cb) { qcolumnview_heightforwidth_callback = cb; }
@@ -606,10 +596,6 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_ConnectNotify_Callback(QColumnView_ConnectNotify_Callback cb) { qcolumnview_connectnotify_callback = cb; }
     void setQColumnView_DisconnectNotify_Callback(QColumnView_DisconnectNotify_Callback cb) { qcolumnview_disconnectnotify_callback = cb; }
     void setQColumnView_InitializeColumn_Callback(QColumnView_InitializeColumn_Callback cb) { qcolumnview_initializecolumn_callback = cb; }
-    void setQColumnView_SetHorizontalStepsPerItem_Callback(QColumnView_SetHorizontalStepsPerItem_Callback cb) { qcolumnview_sethorizontalstepsperitem_callback = cb; }
-    void setQColumnView_HorizontalStepsPerItem_Callback(QColumnView_HorizontalStepsPerItem_Callback cb) { qcolumnview_horizontalstepsperitem_callback = cb; }
-    void setQColumnView_SetVerticalStepsPerItem_Callback(QColumnView_SetVerticalStepsPerItem_Callback cb) { qcolumnview_setverticalstepsperitem_callback = cb; }
-    void setQColumnView_VerticalStepsPerItem_Callback(QColumnView_VerticalStepsPerItem_Callback cb) { qcolumnview_verticalstepsperitem_callback = cb; }
     void setQColumnView_State_Callback(QColumnView_State_Callback cb) { qcolumnview_state_callback = cb; }
     void setQColumnView_SetState_Callback(QColumnView_SetState_Callback cb) { qcolumnview_setstate_callback = cb; }
     void setQColumnView_ScheduleDelayedItemsLayout_Callback(QColumnView_ScheduleDelayedItemsLayout_Callback cb) { qcolumnview_scheduledelayeditemslayout_callback = cb; }
@@ -624,7 +610,6 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_SetViewportMargins_Callback(QColumnView_SetViewportMargins_Callback cb) { qcolumnview_setviewportmargins_callback = cb; }
     void setQColumnView_ViewportMargins_Callback(QColumnView_ViewportMargins_Callback cb) { qcolumnview_viewportmargins_callback = cb; }
     void setQColumnView_DrawFrame_Callback(QColumnView_DrawFrame_Callback cb) { qcolumnview_drawframe_callback = cb; }
-    void setQColumnView_InitStyleOption_Callback(QColumnView_InitStyleOption_Callback cb) { qcolumnview_initstyleoption_callback = cb; }
     void setQColumnView_UpdateMicroFocus_Callback(QColumnView_UpdateMicroFocus_Callback cb) { qcolumnview_updatemicrofocus_callback = cb; }
     void setQColumnView_Create_Callback(QColumnView_Create_Callback cb) { qcolumnview_create_callback = cb; }
     void setQColumnView_Destroy_Callback(QColumnView_Destroy_Callback cb) { qcolumnview_destroy_callback = cb; }
@@ -659,6 +644,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_KeyboardSearch_IsBase(bool value) const { qcolumnview_keyboardsearch_isbase = value; }
     void setQColumnView_SizeHintForRow_IsBase(bool value) const { qcolumnview_sizehintforrow_isbase = value; }
     void setQColumnView_SizeHintForColumn_IsBase(bool value) const { qcolumnview_sizehintforcolumn_isbase = value; }
+    void setQColumnView_ItemDelegateForIndex_IsBase(bool value) const { qcolumnview_itemdelegateforindex_isbase = value; }
     void setQColumnView_InputMethodQuery_IsBase(bool value) const { qcolumnview_inputmethodquery_isbase = value; }
     void setQColumnView_Reset_IsBase(bool value) const { qcolumnview_reset_isbase = value; }
     void setQColumnView_DoItemsLayout_IsBase(bool value) const { qcolumnview_doitemslayout_isbase = value; }
@@ -679,7 +665,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_Edit2_IsBase(bool value) const { qcolumnview_edit2_isbase = value; }
     void setQColumnView_SelectionCommand_IsBase(bool value) const { qcolumnview_selectioncommand_isbase = value; }
     void setQColumnView_StartDrag_IsBase(bool value) const { qcolumnview_startdrag_isbase = value; }
-    void setQColumnView_ViewOptions_IsBase(bool value) const { qcolumnview_viewoptions_isbase = value; }
+    void setQColumnView_InitViewItemOption_IsBase(bool value) const { qcolumnview_initviewitemoption_isbase = value; }
     void setQColumnView_FocusNextPrevChild_IsBase(bool value) const { qcolumnview_focusnextprevchild_isbase = value; }
     void setQColumnView_Event_IsBase(bool value) const { qcolumnview_event_isbase = value; }
     void setQColumnView_ViewportEvent_IsBase(bool value) const { qcolumnview_viewportevent_isbase = value; }
@@ -704,6 +690,7 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_WheelEvent_IsBase(bool value) const { qcolumnview_wheelevent_isbase = value; }
     void setQColumnView_ContextMenuEvent_IsBase(bool value) const { qcolumnview_contextmenuevent_isbase = value; }
     void setQColumnView_ChangeEvent_IsBase(bool value) const { qcolumnview_changeevent_isbase = value; }
+    void setQColumnView_InitStyleOption_IsBase(bool value) const { qcolumnview_initstyleoption_isbase = value; }
     void setQColumnView_DevType_IsBase(bool value) const { qcolumnview_devtype_isbase = value; }
     void setQColumnView_SetVisible_IsBase(bool value) const { qcolumnview_setvisible_isbase = value; }
     void setQColumnView_HeightForWidth_IsBase(bool value) const { qcolumnview_heightforwidth_isbase = value; }
@@ -728,10 +715,6 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_ConnectNotify_IsBase(bool value) const { qcolumnview_connectnotify_isbase = value; }
     void setQColumnView_DisconnectNotify_IsBase(bool value) const { qcolumnview_disconnectnotify_isbase = value; }
     void setQColumnView_InitializeColumn_IsBase(bool value) const { qcolumnview_initializecolumn_isbase = value; }
-    void setQColumnView_SetHorizontalStepsPerItem_IsBase(bool value) const { qcolumnview_sethorizontalstepsperitem_isbase = value; }
-    void setQColumnView_HorizontalStepsPerItem_IsBase(bool value) const { qcolumnview_horizontalstepsperitem_isbase = value; }
-    void setQColumnView_SetVerticalStepsPerItem_IsBase(bool value) const { qcolumnview_setverticalstepsperitem_isbase = value; }
-    void setQColumnView_VerticalStepsPerItem_IsBase(bool value) const { qcolumnview_verticalstepsperitem_isbase = value; }
     void setQColumnView_State_IsBase(bool value) const { qcolumnview_state_isbase = value; }
     void setQColumnView_SetState_IsBase(bool value) const { qcolumnview_setstate_isbase = value; }
     void setQColumnView_ScheduleDelayedItemsLayout_IsBase(bool value) const { qcolumnview_scheduledelayeditemslayout_isbase = value; }
@@ -746,7 +729,6 @@ class VirtualQColumnView : public QColumnView {
     void setQColumnView_SetViewportMargins_IsBase(bool value) const { qcolumnview_setviewportmargins_isbase = value; }
     void setQColumnView_ViewportMargins_IsBase(bool value) const { qcolumnview_viewportmargins_isbase = value; }
     void setQColumnView_DrawFrame_IsBase(bool value) const { qcolumnview_drawframe_isbase = value; }
-    void setQColumnView_InitStyleOption_IsBase(bool value) const { qcolumnview_initstyleoption_isbase = value; }
     void setQColumnView_UpdateMicroFocus_IsBase(bool value) const { qcolumnview_updatemicrofocus_isbase = value; }
     void setQColumnView_Create_IsBase(bool value) const { qcolumnview_create_isbase = value; }
     void setQColumnView_Destroy_IsBase(bool value) const { qcolumnview_destroy_isbase = value; }
@@ -1034,6 +1016,18 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
+        if (qcolumnview_itemdelegateforindex_isbase) {
+            qcolumnview_itemdelegateforindex_isbase = false;
+            return QColumnView::itemDelegateForIndex(index);
+        } else if (qcolumnview_itemdelegateforindex_callback != nullptr) {
+            return qcolumnview_itemdelegateforindex_callback(this, index);
+        } else {
+            return QColumnView::itemDelegateForIndex(index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery query) const override {
         if (qcolumnview_inputmethodquery_isbase) {
             qcolumnview_inputmethodquery_isbase = false;
@@ -1070,7 +1064,7 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
         if (qcolumnview_datachanged_isbase) {
             qcolumnview_datachanged_isbase = false;
             QColumnView::dataChanged(topLeft, bottomRight, roles);
@@ -1274,14 +1268,14 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QStyleOptionViewItem viewOptions() const override {
-        if (qcolumnview_viewoptions_isbase) {
-            qcolumnview_viewoptions_isbase = false;
-            return QColumnView::viewOptions();
-        } else if (qcolumnview_viewoptions_callback != nullptr) {
-            return qcolumnview_viewoptions_callback();
+    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
+        if (qcolumnview_initviewitemoption_isbase) {
+            qcolumnview_initviewitemoption_isbase = false;
+            QColumnView::initViewItemOption(option);
+        } else if (qcolumnview_initviewitemoption_callback != nullptr) {
+            qcolumnview_initviewitemoption_callback(this, option);
         } else {
-            return QColumnView::viewOptions();
+            QColumnView::initViewItemOption(option);
         }
     }
 
@@ -1574,6 +1568,18 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qcolumnview_initstyleoption_isbase) {
+            qcolumnview_initstyleoption_isbase = false;
+            QColumnView::initStyleOption(option);
+        } else if (qcolumnview_initstyleoption_callback != nullptr) {
+            qcolumnview_initstyleoption_callback(this, option);
+        } else {
+            QColumnView::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qcolumnview_devtype_isbase) {
             qcolumnview_devtype_isbase = false;
@@ -1646,7 +1652,7 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qcolumnview_enterevent_isbase) {
             qcolumnview_enterevent_isbase = false;
             QColumnView::enterEvent(event);
@@ -1742,7 +1748,7 @@ class VirtualQColumnView : public QColumnView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qcolumnview_nativeevent_isbase) {
             qcolumnview_nativeevent_isbase = false;
             return QColumnView::nativeEvent(eventType, message, result);
@@ -1858,54 +1864,6 @@ class VirtualQColumnView : public QColumnView {
             qcolumnview_initializecolumn_callback(this, column);
         } else {
             QColumnView::initializeColumn(column);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setHorizontalStepsPerItem(int steps) {
-        if (qcolumnview_sethorizontalstepsperitem_isbase) {
-            qcolumnview_sethorizontalstepsperitem_isbase = false;
-            QColumnView::setHorizontalStepsPerItem(steps);
-        } else if (qcolumnview_sethorizontalstepsperitem_callback != nullptr) {
-            qcolumnview_sethorizontalstepsperitem_callback(this, steps);
-        } else {
-            QColumnView::setHorizontalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int horizontalStepsPerItem() const {
-        if (qcolumnview_horizontalstepsperitem_isbase) {
-            qcolumnview_horizontalstepsperitem_isbase = false;
-            return QColumnView::horizontalStepsPerItem();
-        } else if (qcolumnview_horizontalstepsperitem_callback != nullptr) {
-            return qcolumnview_horizontalstepsperitem_callback();
-        } else {
-            return QColumnView::horizontalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setVerticalStepsPerItem(int steps) {
-        if (qcolumnview_setverticalstepsperitem_isbase) {
-            qcolumnview_setverticalstepsperitem_isbase = false;
-            QColumnView::setVerticalStepsPerItem(steps);
-        } else if (qcolumnview_setverticalstepsperitem_callback != nullptr) {
-            qcolumnview_setverticalstepsperitem_callback(this, steps);
-        } else {
-            QColumnView::setVerticalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int verticalStepsPerItem() const {
-        if (qcolumnview_verticalstepsperitem_isbase) {
-            qcolumnview_verticalstepsperitem_isbase = false;
-            return QColumnView::verticalStepsPerItem();
-        } else if (qcolumnview_verticalstepsperitem_callback != nullptr) {
-            return qcolumnview_verticalstepsperitem_callback();
-        } else {
-            return QColumnView::verticalStepsPerItem();
         }
     }
 
@@ -2074,18 +2032,6 @@ class VirtualQColumnView : public QColumnView {
             qcolumnview_drawframe_callback(this, param1);
         } else {
             QColumnView::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qcolumnview_initstyleoption_isbase) {
-            qcolumnview_initstyleoption_isbase = false;
-            QColumnView::initStyleOption(option);
-        } else if (qcolumnview_initstyleoption_callback != nullptr) {
-            qcolumnview_initstyleoption_callback(this, option);
-        } else {
-            QColumnView::initStyleOption(option);
         }
     }
 

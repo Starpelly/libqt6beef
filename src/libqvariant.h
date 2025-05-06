@@ -17,17 +17,7 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QAssociativeIterable__const_iterator)
-typedef QAssociativeIterable::const_iterator QAssociativeIterable__const_iterator;
-#endif
-#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QSequentialIterable__const_iterator)
-typedef QSequentialIterable::const_iterator QSequentialIterable__const_iterator;
-#endif
-#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QVariant__Handler)
-typedef QVariant::Handler QVariant__Handler;
-#endif
 #else
-typedef struct QAssociativeIterable__const_iterator QAssociativeIterable__const_iterator;
 typedef struct QBitArray QBitArray;
 typedef struct QChar QChar;
 typedef struct QDataStream QDataStream;
@@ -41,92 +31,84 @@ typedef struct QJsonValue QJsonValue;
 typedef struct QLine QLine;
 typedef struct QLineF QLineF;
 typedef struct QLocale QLocale;
+typedef struct QMetaType QMetaType;
 typedef struct QModelIndex QModelIndex;
+typedef struct QPartialOrdering QPartialOrdering;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QPoint QPoint;
 typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRectF QRectF;
-typedef struct QRegExp QRegExp;
 typedef struct QRegularExpression QRegularExpression;
-typedef struct QSequentialIterable__const_iterator QSequentialIterable__const_iterator;
 typedef struct QSize QSize;
 typedef struct QSizeF QSizeF;
 typedef struct QTime QTime;
 typedef struct QUrl QUrl;
 typedef struct QUuid QUuid;
 typedef struct QVariant QVariant;
-typedef struct QVariantComparisonHelper QVariantComparisonHelper;
-typedef struct QVariant__Handler QVariant__Handler;
+typedef struct QVariantConstPointer QVariantConstPointer;
 #endif
 
 #ifdef __cplusplus
-typedef QVariant::DataPtr DataPtr;             // C++ QFlags
-typedef QVariant::Type Type;                   // C++ enum
-typedef QVariant::f_canConvert f_canConvert;   // C++ QFlags
-typedef QVariant::f_clear f_clear;             // C++ QFlags
-typedef QVariant::f_compare f_compare;         // C++ QFlags
-typedef QVariant::f_construct f_construct;     // C++ QFlags
-typedef QVariant::f_convert f_convert;         // C++ QFlags
-typedef QVariant::f_debugStream f_debugStream; // C++ QFlags
-typedef QVariant::f_load f_load;               // C++ QFlags
-typedef QVariant::f_null f_null;               // C++ QFlags
-typedef QVariant::f_save f_save;               // C++ QFlags
+typedef QVariant::DataPtr DataPtr; // C++ QFlags
+typedef QVariant::Type Type;       // C++ enum
 #else
 typedef unsigned char Type; // C ABI enum
 #endif
 
 QVariant* QVariant_new();
-QVariant* QVariant_new2(int typeVal);
-QVariant* QVariant_new3(int typeId, const void* copyVal);
-QVariant* QVariant_new4(int typeId, const void* copyVal, unsigned int flags);
-QVariant* QVariant_new5(QVariant* other);
-QVariant* QVariant_new6(QDataStream* s);
-QVariant* QVariant_new7(int i);
-QVariant* QVariant_new8(unsigned int ui);
-QVariant* QVariant_new9(long long ll);
-QVariant* QVariant_new10(unsigned long long ull);
-QVariant* QVariant_new11(bool b);
-QVariant* QVariant_new12(double d);
-QVariant* QVariant_new13(float f);
-QVariant* QVariant_new14(const char* str);
-QVariant* QVariant_new15(libqt_string bytearray);
-QVariant* QVariant_new16(QBitArray* bitarray);
-QVariant* QVariant_new17(libqt_string stringVal);
-QVariant* QVariant_new18(libqt_list /* of libqt_string */ stringlist);
-QVariant* QVariant_new19(QChar* qchar);
-QVariant* QVariant_new20(QDate* date);
-QVariant* QVariant_new21(QTime* time);
-QVariant* QVariant_new22(QDateTime* datetime);
-QVariant* QVariant_new23(libqt_map /* of libqt_string to QVariant* */ mapVal);
-QVariant* QVariant_new24(libqt_map /* of libqt_string to QVariant* */ hash);
-QVariant* QVariant_new25(QSize* size);
-QVariant* QVariant_new26(QSizeF* size);
-QVariant* QVariant_new27(QPoint* pt);
-QVariant* QVariant_new28(QPointF* pt);
-QVariant* QVariant_new29(QLine* line);
-QVariant* QVariant_new30(QLineF* line);
-QVariant* QVariant_new31(QRect* rect);
-QVariant* QVariant_new32(QRectF* rect);
-QVariant* QVariant_new33(QLocale* locale);
-QVariant* QVariant_new34(QRegExp* regExp);
-QVariant* QVariant_new35(QRegularExpression* re);
-QVariant* QVariant_new36(QEasingCurve* easing);
-QVariant* QVariant_new37(QUuid* uuid);
-QVariant* QVariant_new38(QUrl* url);
-QVariant* QVariant_new39(QJsonValue* jsonValue);
-QVariant* QVariant_new40(QJsonObject* jsonObject);
-QVariant* QVariant_new41(QJsonArray* jsonArray);
-QVariant* QVariant_new42(QJsonDocument* jsonDocument);
-QVariant* QVariant_new43(QModelIndex* modelIndex);
-QVariant* QVariant_new44(QPersistentModelIndex* modelIndex);
+QVariant* QVariant_new2(QMetaType* typeVal);
+QVariant* QVariant_new3(QVariant* other);
+QVariant* QVariant_new4(int i);
+QVariant* QVariant_new5(unsigned int ui);
+QVariant* QVariant_new6(long long ll);
+QVariant* QVariant_new7(unsigned long long ull);
+QVariant* QVariant_new8(bool b);
+QVariant* QVariant_new9(double d);
+QVariant* QVariant_new10(float f);
+QVariant* QVariant_new11(const char* str);
+QVariant* QVariant_new12(libqt_string bytearray);
+QVariant* QVariant_new13(QBitArray* bitarray);
+QVariant* QVariant_new14(libqt_string stringVal);
+QVariant* QVariant_new15(libqt_list /* of libqt_string */ stringlist);
+QVariant* QVariant_new16(QChar* qchar);
+QVariant* QVariant_new17(QDate* date);
+QVariant* QVariant_new18(QTime* time);
+QVariant* QVariant_new19(QDateTime* datetime);
+QVariant* QVariant_new20(libqt_map /* of libqt_string to QVariant* */ mapVal);
+QVariant* QVariant_new21(libqt_map /* of libqt_string to QVariant* */ hash);
+QVariant* QVariant_new22(QSize* size);
+QVariant* QVariant_new23(QSizeF* size);
+QVariant* QVariant_new24(QPoint* pt);
+QVariant* QVariant_new25(QPointF* pt);
+QVariant* QVariant_new26(QLine* line);
+QVariant* QVariant_new27(QLineF* line);
+QVariant* QVariant_new28(QRect* rect);
+QVariant* QVariant_new29(QRectF* rect);
+QVariant* QVariant_new30(QLocale* locale);
+QVariant* QVariant_new31(QRegularExpression* re);
+QVariant* QVariant_new32(QEasingCurve* easing);
+QVariant* QVariant_new33(QUuid* uuid);
+QVariant* QVariant_new34(QUrl* url);
+QVariant* QVariant_new35(QJsonValue* jsonValue);
+QVariant* QVariant_new36(QJsonObject* jsonObject);
+QVariant* QVariant_new37(QJsonArray* jsonArray);
+QVariant* QVariant_new38(QJsonDocument* jsonDocument);
+QVariant* QVariant_new39(QModelIndex* modelIndex);
+QVariant* QVariant_new40(QPersistentModelIndex* modelIndex);
+QVariant* QVariant_new41(int typeVal);
+QVariant* QVariant_new42(QMetaType* typeVal, const void* copyVal);
 void QVariant_OperatorAssign(QVariant* self, QVariant* other);
 void QVariant_Swap(QVariant* self, QVariant* other);
-int QVariant_Type(const QVariant* self);
 int QVariant_UserType(const QVariant* self);
+int QVariant_TypeId(const QVariant* self);
 const char* QVariant_TypeName(const QVariant* self);
-bool QVariant_CanConvert(const QVariant* self, int targetTypeId);
-bool QVariant_Convert(QVariant* self, int targetTypeId);
+QMetaType* QVariant_MetaType(const QVariant* self);
+bool QVariant_CanConvert(const QVariant* self, QMetaType* targetType);
+bool QVariant_Convert(QVariant* self, QMetaType* typeVal);
+bool QVariant_CanView(const QVariant* self, QMetaType* targetType);
+bool QVariant_CanConvertWithTargetTypeId(const QVariant* self, int targetTypeId);
+bool QVariant_ConvertWithTargetTypeId(QVariant* self, int targetTypeId);
 bool QVariant_IsValid(const QVariant* self);
 bool QVariant_IsNull(const QVariant* self);
 void QVariant_Clear(QVariant* self);
@@ -159,7 +141,6 @@ QLine* QVariant_ToLine(const QVariant* self);
 QLineF* QVariant_ToLineF(const QVariant* self);
 QRectF* QVariant_ToRectF(const QVariant* self);
 QLocale* QVariant_ToLocale(const QVariant* self);
-QRegExp* QVariant_ToRegExp(const QVariant* self);
 QRegularExpression* QVariant_ToRegularExpression(const QVariant* self);
 QEasingCurve* QVariant_ToEasingCurve(const QVariant* self);
 QUuid* QVariant_ToUuid(const QVariant* self);
@@ -172,17 +153,14 @@ QModelIndex* QVariant_ToModelIndex(const QVariant* self);
 QPersistentModelIndex* QVariant_ToPersistentModelIndex(const QVariant* self);
 void QVariant_Load(QVariant* self, QDataStream* ds);
 void QVariant_Save(const QVariant* self, QDataStream* ds);
+int QVariant_Type(const QVariant* self);
 const char* QVariant_TypeToName(int typeId);
 int QVariant_NameToType(const char* name);
 void* QVariant_Data(QVariant* self);
 const void* QVariant_ConstData(const QVariant* self);
 const void* QVariant_Data2(const QVariant* self);
-bool QVariant_OperatorEqual(const QVariant* self, QVariant* v);
-bool QVariant_OperatorNotEqual(const QVariant* self, QVariant* v);
-bool QVariant_OperatorLesser(const QVariant* self, QVariant* v);
-bool QVariant_OperatorLesserOrEqual(const QVariant* self, QVariant* v);
-bool QVariant_OperatorGreater(const QVariant* self, QVariant* v);
-bool QVariant_OperatorGreaterOrEqual(const QVariant* self, QVariant* v);
+void QVariant_SetValue(QVariant* self, QVariant* avalue);
+QPartialOrdering* QVariant_Compare(QVariant* lhs, QVariant* rhs);
 int QVariant_ToInt1(const QVariant* self, bool* ok);
 unsigned int QVariant_ToUInt1(const QVariant* self, bool* ok);
 long long QVariant_ToLongLong1(const QVariant* self, bool* ok);
@@ -192,45 +170,12 @@ float QVariant_ToFloat1(const QVariant* self, bool* ok);
 double QVariant_ToReal1(const QVariant* self, bool* ok);
 void QVariant_Delete(QVariant* self);
 
-QVariantComparisonHelper* QVariantComparisonHelper_new(QVariantComparisonHelper* other);
-QVariantComparisonHelper* QVariantComparisonHelper_new2(QVariantComparisonHelper* other);
-QVariantComparisonHelper* QVariantComparisonHelper_new3(QVariant* varVal);
-QVariantComparisonHelper* QVariantComparisonHelper_new4(QVariantComparisonHelper* param1);
-void QVariantComparisonHelper_CopyAssign(QVariantComparisonHelper* self, QVariantComparisonHelper* other);
-void QVariantComparisonHelper_MoveAssign(QVariantComparisonHelper* self, QVariantComparisonHelper* other);
-void QVariantComparisonHelper_Delete(QVariantComparisonHelper* self);
-
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_new(QSequentialIterable__const_iterator* other);
-void QSequentialIterable__const_iterator_OperatorAssign(QSequentialIterable__const_iterator* self, QSequentialIterable__const_iterator* other);
-QVariant* QSequentialIterable__const_iterator_OperatorMultiply(const QSequentialIterable__const_iterator* self);
-bool QSequentialIterable__const_iterator_OperatorEqual(const QSequentialIterable__const_iterator* self, QSequentialIterable__const_iterator* o);
-bool QSequentialIterable__const_iterator_OperatorNotEqual(const QSequentialIterable__const_iterator* self, QSequentialIterable__const_iterator* o);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorPlusPlus(QSequentialIterable__const_iterator* self);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorPlusPlusWithInt(QSequentialIterable__const_iterator* self, int param1);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorMinusMinus(QSequentialIterable__const_iterator* self);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorMinusMinusWithInt(QSequentialIterable__const_iterator* self, int param1);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorPlusAssign(QSequentialIterable__const_iterator* self, int j);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorMinusAssign(QSequentialIterable__const_iterator* self, int j);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorPlus(const QSequentialIterable__const_iterator* self, int j);
-QSequentialIterable__const_iterator* QSequentialIterable__const_iterator_OperatorMinus(const QSequentialIterable__const_iterator* self, int j);
-void QSequentialIterable__const_iterator_Delete(QSequentialIterable__const_iterator* self);
-
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_new(QAssociativeIterable__const_iterator* other);
-void QAssociativeIterable__const_iterator_OperatorAssign(QAssociativeIterable__const_iterator* self, QAssociativeIterable__const_iterator* other);
-QVariant* QAssociativeIterable__const_iterator_Key(const QAssociativeIterable__const_iterator* self);
-QVariant* QAssociativeIterable__const_iterator_Value(const QAssociativeIterable__const_iterator* self);
-QVariant* QAssociativeIterable__const_iterator_OperatorMultiply(const QAssociativeIterable__const_iterator* self);
-bool QAssociativeIterable__const_iterator_OperatorEqual(const QAssociativeIterable__const_iterator* self, QAssociativeIterable__const_iterator* o);
-bool QAssociativeIterable__const_iterator_OperatorNotEqual(const QAssociativeIterable__const_iterator* self, QAssociativeIterable__const_iterator* o);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorPlusPlus(QAssociativeIterable__const_iterator* self);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorPlusPlusWithInt(QAssociativeIterable__const_iterator* self, int param1);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorMinusMinus(QAssociativeIterable__const_iterator* self);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorMinusMinusWithInt(QAssociativeIterable__const_iterator* self, int param1);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorPlusAssign(QAssociativeIterable__const_iterator* self, int j);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorMinusAssign(QAssociativeIterable__const_iterator* self, int j);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorPlus(const QAssociativeIterable__const_iterator* self, int j);
-QAssociativeIterable__const_iterator* QAssociativeIterable__const_iterator_OperatorMinus(const QAssociativeIterable__const_iterator* self, int j);
-void QAssociativeIterable__const_iterator_Delete(QAssociativeIterable__const_iterator* self);
+QVariantConstPointer* QVariantConstPointer_new(QVariant* variant);
+QVariantConstPointer* QVariantConstPointer_new2(QVariantConstPointer* param1);
+QVariant* QVariantConstPointer_OperatorMultiply(const QVariantConstPointer* self);
+QVariant* QVariantConstPointer_OperatorMinusGreater(const QVariantConstPointer* self);
+void QVariantConstPointer_OperatorAssign(QVariantConstPointer* self, QVariantConstPointer* param1);
+void QVariantConstPointer_Delete(QVariantConstPointer* self);
 
 #ifdef __cplusplus
 } /* extern C */

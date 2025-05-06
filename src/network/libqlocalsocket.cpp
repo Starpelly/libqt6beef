@@ -1,14 +1,16 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QIODevice>
+#include <QIODeviceBase>
 #include <QList>
 #include <QLocalSocket>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -62,18 +64,6 @@ int QLocalSocket_QBaseMetacall(QLocalSocket* self, int param1, int param2, void*
 
 libqt_string QLocalSocket_Tr(const char* s) {
     QString _ret = QLocalSocket::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QLocalSocket_TrUtf8(const char* s) {
-    QString _ret = QLocalSocket::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -159,6 +149,14 @@ intptr_t QLocalSocket_SocketDescriptor(const QLocalSocket* self) {
     return (intptr_t)(_ret);
 }
 
+void QLocalSocket_SetSocketOptions(QLocalSocket* self, int option) {
+    self->setSocketOptions(static_cast<QLocalSocket::SocketOptions>(option));
+}
+
+int QLocalSocket_SocketOptions(const QLocalSocket* self) {
+    return static_cast<int>(self->socketOptions());
+}
+
 int QLocalSocket_State(const QLocalSocket* self) {
     return static_cast<int>(self->state());
 }
@@ -190,18 +188,6 @@ void QLocalSocket_Connect_Disconnected(QLocalSocket* self, intptr_t slot) {
     void (*slotFunc)(QLocalSocket*) = reinterpret_cast<void (*)(QLocalSocket*)>(slot);
     QLocalSocket::connect(self, &QLocalSocket::disconnected, [self, slotFunc]() {
         slotFunc(self);
-    });
-}
-
-void QLocalSocket_ErrorWithSocketError(QLocalSocket* self, int socketError) {
-    self->error(static_cast<QLocalSocket::LocalSocketError>(socketError));
-}
-
-void QLocalSocket_Connect_ErrorWithSocketError(QLocalSocket* self, intptr_t slot) {
-    void (*slotFunc)(QLocalSocket*, int) = reinterpret_cast<void (*)(QLocalSocket*, int)>(slot);
-    QLocalSocket::connect(self, &QLocalSocket::error, [self, slotFunc](QLocalSocket::LocalSocketError socketError) {
-        int sigval1 = static_cast<int>(socketError);
-        slotFunc(self, sigval1);
     });
 }
 
@@ -253,37 +239,13 @@ libqt_string QLocalSocket_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QLocalSocket_TrUtf82(const char* s, const char* c) {
-    QString _ret = QLocalSocket::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QLocalSocket_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QLocalSocket::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QLocalSocket_ConnectToServer1(QLocalSocket* self, int openMode) {
-    self->connectToServer(static_cast<QIODevice::OpenMode>(openMode));
+    self->connectToServer(static_cast<QIODeviceBase::OpenMode>(openMode));
 }
 
 void QLocalSocket_ConnectToServer2(QLocalSocket* self, libqt_string name, int openMode) {
     QString name_QString = QString::fromUtf8(name.data, name.len);
-    self->connectToServer(name_QString, static_cast<QIODevice::OpenMode>(openMode));
+    self->connectToServer(name_QString, static_cast<QIODeviceBase::OpenMode>(openMode));
 }
 
 bool QLocalSocket_SetSocketDescriptor2(QLocalSocket* self, intptr_t socketDescriptor, int socketState) {
@@ -291,7 +253,7 @@ bool QLocalSocket_SetSocketDescriptor2(QLocalSocket* self, intptr_t socketDescri
 }
 
 bool QLocalSocket_SetSocketDescriptor3(QLocalSocket* self, intptr_t socketDescriptor, int socketState, int openMode) {
-    return self->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QLocalSocket::LocalSocketState>(socketState), static_cast<QIODevice::OpenMode>(openMode));
+    return self->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QLocalSocket::LocalSocketState>(socketState), static_cast<QIODeviceBase::OpenMode>(openMode));
 }
 
 bool QLocalSocket_WaitForConnected1(QLocalSocket* self, int msecs) {
@@ -409,9 +371,9 @@ void QLocalSocket_OnCanReadLine(const QLocalSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QLocalSocket_Open(QLocalSocket* self, int openMode) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
-        return vqlocalsocket->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqlocalsocket->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqlocalsocket->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqlocalsocket->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -419,9 +381,9 @@ bool QLocalSocket_Open(QLocalSocket* self, int openMode) {
 bool QLocalSocket_QBaseOpen(QLocalSocket* self, int openMode) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
         vqlocalsocket->setQLocalSocket_Open_IsBase(true);
-        return vqlocalsocket->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqlocalsocket->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqlocalsocket->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqlocalsocket->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -533,6 +495,58 @@ long long QLocalSocket_QBaseReadData(QLocalSocket* self, char* param1, long long
 void QLocalSocket_OnReadData(QLocalSocket* self, intptr_t slot) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
         vqlocalsocket->setQLocalSocket_ReadData_Callback(reinterpret_cast<VirtualQLocalSocket::QLocalSocket_ReadData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+long long QLocalSocket_ReadLineData(QLocalSocket* self, char* data, long long maxSize) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QLocalSocket_QBaseReadLineData(QLocalSocket* self, char* data, long long maxSize) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        vqlocalsocket->setQLocalSocket_ReadLineData_IsBase(true);
+        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLocalSocket_OnReadLineData(QLocalSocket* self, intptr_t slot) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        vqlocalsocket->setQLocalSocket_ReadLineData_Callback(reinterpret_cast<VirtualQLocalSocket::QLocalSocket_ReadLineData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+long long QLocalSocket_SkipData(QLocalSocket* self, long long maxSize) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        return static_cast<long long>(vqlocalsocket->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqlocalsocket->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QLocalSocket_QBaseSkipData(QLocalSocket* self, long long maxSize) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        vqlocalsocket->setQLocalSocket_SkipData_IsBase(true);
+        return static_cast<long long>(vqlocalsocket->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqlocalsocket->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLocalSocket_OnSkipData(QLocalSocket* self, intptr_t slot) {
+    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
+        vqlocalsocket->setQLocalSocket_SkipData_Callback(reinterpret_cast<VirtualQLocalSocket::QLocalSocket_SkipData_Callback>(slot));
     }
 }
 
@@ -689,32 +703,6 @@ bool QLocalSocket_QBaseReset(QLocalSocket* self) {
 void QLocalSocket_OnReset(QLocalSocket* self, intptr_t slot) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
         vqlocalsocket->setQLocalSocket_Reset_Callback(reinterpret_cast<VirtualQLocalSocket::QLocalSocket_Reset_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-long long QLocalSocket_ReadLineData(QLocalSocket* self, char* data, long long maxlen) {
-    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
-        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxlen)));
-    } else {
-        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxlen)));
-    }
-}
-
-// Base class handler implementation
-long long QLocalSocket_QBaseReadLineData(QLocalSocket* self, char* data, long long maxlen) {
-    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
-        vqlocalsocket->setQLocalSocket_ReadLineData_IsBase(true);
-        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxlen)));
-    } else {
-        return static_cast<long long>(vqlocalsocket->readLineData(data, static_cast<qint64>(maxlen)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLocalSocket_OnReadLineData(QLocalSocket* self, intptr_t slot) {
-    if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
-        vqlocalsocket->setQLocalSocket_ReadLineData_Callback(reinterpret_cast<VirtualQLocalSocket::QLocalSocket_ReadLineData_Callback>(slot));
     }
 }
 
@@ -903,9 +891,9 @@ void QLocalSocket_OnDisconnectNotify(QLocalSocket* self, intptr_t slot) {
 // Derived class handler implementation
 void QLocalSocket_SetOpenMode(QLocalSocket* self, int openMode) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
-        vqlocalsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqlocalsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqlocalsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqlocalsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -913,9 +901,9 @@ void QLocalSocket_SetOpenMode(QLocalSocket* self, int openMode) {
 void QLocalSocket_QBaseSetOpenMode(QLocalSocket* self, int openMode) {
     if (auto* vqlocalsocket = dynamic_cast<VirtualQLocalSocket*>(self)) {
         vqlocalsocket->setQLocalSocket_SetOpenMode_IsBase(true);
-        vqlocalsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqlocalsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqlocalsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqlocalsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 

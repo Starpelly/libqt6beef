@@ -1,4 +1,6 @@
 #include <QAbstractItemModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QConcatenateTablesProxyModel>
@@ -11,8 +13,8 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
+#include <QModelRoleDataSpan>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -78,18 +80,6 @@ libqt_string QConcatenateTablesProxyModel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QConcatenateTablesProxyModel_TrUtf8(const char* s) {
-    QString _ret = QConcatenateTablesProxyModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_list /* of QAbstractItemModel* */ QConcatenateTablesProxyModel_SourceModels(const QConcatenateTablesProxyModel* self) {
     QList<QAbstractItemModel*> _ret = self->sourceModels();
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -133,30 +123,6 @@ libqt_string QConcatenateTablesProxyModel_Tr2(const char* s, const char* c) {
 
 libqt_string QConcatenateTablesProxyModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QConcatenateTablesProxyModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QConcatenateTablesProxyModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QConcatenateTablesProxyModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QConcatenateTablesProxyModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QConcatenateTablesProxyModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -784,6 +750,32 @@ void QConcatenateTablesProxyModel_OnSetHeaderData(QConcatenateTablesProxyModel* 
 }
 
 // Derived class handler implementation
+bool QConcatenateTablesProxyModel_ClearItemData(QConcatenateTablesProxyModel* self, QModelIndex* index) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        return vqconcatenatetablesproxymodel->clearItemData(*index);
+    } else {
+        return vqconcatenatetablesproxymodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QConcatenateTablesProxyModel_QBaseClearItemData(QConcatenateTablesProxyModel* self, QModelIndex* index) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ClearItemData_IsBase(true);
+        return vqconcatenatetablesproxymodel->clearItemData(*index);
+    } else {
+        return vqconcatenatetablesproxymodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QConcatenateTablesProxyModel_OnClearItemData(QConcatenateTablesProxyModel* self, intptr_t slot) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ClearItemData_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_ClearItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QConcatenateTablesProxyModel_SupportedDropActions(const QConcatenateTablesProxyModel* self) {
     if (auto* vqconcatenatetablesproxymodel = const_cast<VirtualQConcatenateTablesProxyModel*>(dynamic_cast<const VirtualQConcatenateTablesProxyModel*>(self))) {
         return static_cast<int>(vqconcatenatetablesproxymodel->supportedDropActions());
@@ -1264,6 +1256,32 @@ void QConcatenateTablesProxyModel_OnRoleNames(const QConcatenateTablesProxyModel
 }
 
 // Derived class handler implementation
+void QConcatenateTablesProxyModel_MultiData(const QConcatenateTablesProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqconcatenatetablesproxymodel = const_cast<VirtualQConcatenateTablesProxyModel*>(dynamic_cast<const VirtualQConcatenateTablesProxyModel*>(self))) {
+        vqconcatenatetablesproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqconcatenatetablesproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QConcatenateTablesProxyModel_QBaseMultiData(const QConcatenateTablesProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqconcatenatetablesproxymodel = const_cast<VirtualQConcatenateTablesProxyModel*>(dynamic_cast<const VirtualQConcatenateTablesProxyModel*>(self))) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_MultiData_IsBase(true);
+        vqconcatenatetablesproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqconcatenatetablesproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QConcatenateTablesProxyModel_OnMultiData(const QConcatenateTablesProxyModel* self, intptr_t slot) {
+    if (auto* vqconcatenatetablesproxymodel = const_cast<VirtualQConcatenateTablesProxyModel*>(dynamic_cast<const VirtualQConcatenateTablesProxyModel*>(self))) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_MultiData_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QConcatenateTablesProxyModel_Submit(QConcatenateTablesProxyModel* self) {
     if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
         return vqconcatenatetablesproxymodel->submit();
@@ -1312,6 +1330,32 @@ void QConcatenateTablesProxyModel_QBaseRevert(QConcatenateTablesProxyModel* self
 void QConcatenateTablesProxyModel_OnRevert(QConcatenateTablesProxyModel* self, intptr_t slot) {
     if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
         vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_Revert_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_Revert_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QConcatenateTablesProxyModel_ResetInternalData(QConcatenateTablesProxyModel* self) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        vqconcatenatetablesproxymodel->resetInternalData();
+    } else {
+        vqconcatenatetablesproxymodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QConcatenateTablesProxyModel_QBaseResetInternalData(QConcatenateTablesProxyModel* self) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ResetInternalData_IsBase(true);
+        vqconcatenatetablesproxymodel->resetInternalData();
+    } else {
+        vqconcatenatetablesproxymodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QConcatenateTablesProxyModel_OnResetInternalData(QConcatenateTablesProxyModel* self, intptr_t slot) {
+    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
+        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1494,32 +1538,6 @@ void QConcatenateTablesProxyModel_QBaseDisconnectNotify(QConcatenateTablesProxyM
 void QConcatenateTablesProxyModel_OnDisconnectNotify(QConcatenateTablesProxyModel* self, intptr_t slot) {
     if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
         vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QConcatenateTablesProxyModel_ResetInternalData(QConcatenateTablesProxyModel* self) {
-    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
-        vqconcatenatetablesproxymodel->resetInternalData();
-    } else {
-        vqconcatenatetablesproxymodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QConcatenateTablesProxyModel_QBaseResetInternalData(QConcatenateTablesProxyModel* self) {
-    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
-        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ResetInternalData_IsBase(true);
-        vqconcatenatetablesproxymodel->resetInternalData();
-    } else {
-        vqconcatenatetablesproxymodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QConcatenateTablesProxyModel_OnResetInternalData(QConcatenateTablesProxyModel* self, intptr_t slot) {
-    if (auto* vqconcatenatetablesproxymodel = dynamic_cast<VirtualQConcatenateTablesProxyModel*>(self)) {
-        vqconcatenatetablesproxymodel->setQConcatenateTablesProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQConcatenateTablesProxyModel::QConcatenateTablesProxyModel_ResetInternalData_Callback>(slot));
     }
 }
 

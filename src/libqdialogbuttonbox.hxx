@@ -36,7 +36,7 @@ class VirtualQDialogButtonBox : public QDialogButtonBox {
     using QDialogButtonBox_KeyReleaseEvent_Callback = void (*)(QDialogButtonBox*, QKeyEvent*);
     using QDialogButtonBox_FocusInEvent_Callback = void (*)(QDialogButtonBox*, QFocusEvent*);
     using QDialogButtonBox_FocusOutEvent_Callback = void (*)(QDialogButtonBox*, QFocusEvent*);
-    using QDialogButtonBox_EnterEvent_Callback = void (*)(QDialogButtonBox*, QEvent*);
+    using QDialogButtonBox_EnterEvent_Callback = void (*)(QDialogButtonBox*, QEnterEvent*);
     using QDialogButtonBox_LeaveEvent_Callback = void (*)(QDialogButtonBox*, QEvent*);
     using QDialogButtonBox_PaintEvent_Callback = void (*)(QDialogButtonBox*, QPaintEvent*);
     using QDialogButtonBox_MoveEvent_Callback = void (*)(QDialogButtonBox*, QMoveEvent*);
@@ -51,7 +51,7 @@ class VirtualQDialogButtonBox : public QDialogButtonBox {
     using QDialogButtonBox_DropEvent_Callback = void (*)(QDialogButtonBox*, QDropEvent*);
     using QDialogButtonBox_ShowEvent_Callback = void (*)(QDialogButtonBox*, QShowEvent*);
     using QDialogButtonBox_HideEvent_Callback = void (*)(QDialogButtonBox*, QHideEvent*);
-    using QDialogButtonBox_NativeEvent_Callback = bool (*)(QDialogButtonBox*, const QByteArray&, void*, long*);
+    using QDialogButtonBox_NativeEvent_Callback = bool (*)(QDialogButtonBox*, const QByteArray&, void*, qintptr*);
     using QDialogButtonBox_Metric_Callback = int (*)(const QDialogButtonBox*, QPaintDevice::PaintDeviceMetric);
     using QDialogButtonBox_InitPainter_Callback = void (*)(const QDialogButtonBox*, QPainter*);
     using QDialogButtonBox_Redirected_Callback = QPaintDevice* (*)(const QDialogButtonBox*, QPoint*);
@@ -611,7 +611,7 @@ class VirtualQDialogButtonBox : public QDialogButtonBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qdialogbuttonbox_enterevent_isbase) {
             qdialogbuttonbox_enterevent_isbase = false;
             QDialogButtonBox::enterEvent(event);
@@ -791,7 +791,7 @@ class VirtualQDialogButtonBox : public QDialogButtonBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qdialogbuttonbox_nativeevent_isbase) {
             qdialogbuttonbox_nativeevent_isbase = false;
             return QDialogButtonBox::nativeEvent(eventType, message, result);

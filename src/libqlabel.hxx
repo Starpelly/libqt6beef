@@ -32,6 +32,7 @@ class VirtualQLabel : public QLabel {
     using QLabel_FocusInEvent_Callback = void (*)(QLabel*, QFocusEvent*);
     using QLabel_FocusOutEvent_Callback = void (*)(QLabel*, QFocusEvent*);
     using QLabel_FocusNextPrevChild_Callback = bool (*)(QLabel*, bool);
+    using QLabel_InitStyleOption_Callback = void (*)(const QLabel*, QStyleOptionFrame*);
     using QLabel_DevType_Callback = int (*)();
     using QLabel_SetVisible_Callback = void (*)(QLabel*, bool);
     using QLabel_HasHeightForWidth_Callback = bool (*)();
@@ -39,7 +40,7 @@ class VirtualQLabel : public QLabel {
     using QLabel_MouseDoubleClickEvent_Callback = void (*)(QLabel*, QMouseEvent*);
     using QLabel_WheelEvent_Callback = void (*)(QLabel*, QWheelEvent*);
     using QLabel_KeyReleaseEvent_Callback = void (*)(QLabel*, QKeyEvent*);
-    using QLabel_EnterEvent_Callback = void (*)(QLabel*, QEvent*);
+    using QLabel_EnterEvent_Callback = void (*)(QLabel*, QEnterEvent*);
     using QLabel_LeaveEvent_Callback = void (*)(QLabel*, QEvent*);
     using QLabel_MoveEvent_Callback = void (*)(QLabel*, QMoveEvent*);
     using QLabel_ResizeEvent_Callback = void (*)(QLabel*, QResizeEvent*);
@@ -52,7 +53,7 @@ class VirtualQLabel : public QLabel {
     using QLabel_DropEvent_Callback = void (*)(QLabel*, QDropEvent*);
     using QLabel_ShowEvent_Callback = void (*)(QLabel*, QShowEvent*);
     using QLabel_HideEvent_Callback = void (*)(QLabel*, QHideEvent*);
-    using QLabel_NativeEvent_Callback = bool (*)(QLabel*, const QByteArray&, void*, long*);
+    using QLabel_NativeEvent_Callback = bool (*)(QLabel*, const QByteArray&, void*, qintptr*);
     using QLabel_Metric_Callback = int (*)(const QLabel*, QPaintDevice::PaintDeviceMetric);
     using QLabel_InitPainter_Callback = void (*)(const QLabel*, QPainter*);
     using QLabel_Redirected_Callback = QPaintDevice* (*)(const QLabel*, QPoint*);
@@ -66,7 +67,6 @@ class VirtualQLabel : public QLabel {
     using QLabel_ConnectNotify_Callback = void (*)(QLabel*, const QMetaMethod&);
     using QLabel_DisconnectNotify_Callback = void (*)(QLabel*, const QMetaMethod&);
     using QLabel_DrawFrame_Callback = void (*)(QLabel*, QPainter*);
-    using QLabel_InitStyleOption_Callback = void (*)(const QLabel*, QStyleOptionFrame*);
     using QLabel_UpdateMicroFocus_Callback = void (*)();
     using QLabel_Create_Callback = void (*)();
     using QLabel_Destroy_Callback = void (*)();
@@ -94,6 +94,7 @@ class VirtualQLabel : public QLabel {
     QLabel_FocusInEvent_Callback qlabel_focusinevent_callback = nullptr;
     QLabel_FocusOutEvent_Callback qlabel_focusoutevent_callback = nullptr;
     QLabel_FocusNextPrevChild_Callback qlabel_focusnextprevchild_callback = nullptr;
+    QLabel_InitStyleOption_Callback qlabel_initstyleoption_callback = nullptr;
     QLabel_DevType_Callback qlabel_devtype_callback = nullptr;
     QLabel_SetVisible_Callback qlabel_setvisible_callback = nullptr;
     QLabel_HasHeightForWidth_Callback qlabel_hasheightforwidth_callback = nullptr;
@@ -128,7 +129,6 @@ class VirtualQLabel : public QLabel {
     QLabel_ConnectNotify_Callback qlabel_connectnotify_callback = nullptr;
     QLabel_DisconnectNotify_Callback qlabel_disconnectnotify_callback = nullptr;
     QLabel_DrawFrame_Callback qlabel_drawframe_callback = nullptr;
-    QLabel_InitStyleOption_Callback qlabel_initstyleoption_callback = nullptr;
     QLabel_UpdateMicroFocus_Callback qlabel_updatemicrofocus_callback = nullptr;
     QLabel_Create_Callback qlabel_create_callback = nullptr;
     QLabel_Destroy_Callback qlabel_destroy_callback = nullptr;
@@ -155,6 +155,7 @@ class VirtualQLabel : public QLabel {
     mutable bool qlabel_focusinevent_isbase = false;
     mutable bool qlabel_focusoutevent_isbase = false;
     mutable bool qlabel_focusnextprevchild_isbase = false;
+    mutable bool qlabel_initstyleoption_isbase = false;
     mutable bool qlabel_devtype_isbase = false;
     mutable bool qlabel_setvisible_isbase = false;
     mutable bool qlabel_hasheightforwidth_isbase = false;
@@ -189,7 +190,6 @@ class VirtualQLabel : public QLabel {
     mutable bool qlabel_connectnotify_isbase = false;
     mutable bool qlabel_disconnectnotify_isbase = false;
     mutable bool qlabel_drawframe_isbase = false;
-    mutable bool qlabel_initstyleoption_isbase = false;
     mutable bool qlabel_updatemicrofocus_isbase = false;
     mutable bool qlabel_create_isbase = false;
     mutable bool qlabel_destroy_isbase = false;
@@ -224,6 +224,7 @@ class VirtualQLabel : public QLabel {
         qlabel_focusinevent_callback = nullptr;
         qlabel_focusoutevent_callback = nullptr;
         qlabel_focusnextprevchild_callback = nullptr;
+        qlabel_initstyleoption_callback = nullptr;
         qlabel_devtype_callback = nullptr;
         qlabel_setvisible_callback = nullptr;
         qlabel_hasheightforwidth_callback = nullptr;
@@ -258,7 +259,6 @@ class VirtualQLabel : public QLabel {
         qlabel_connectnotify_callback = nullptr;
         qlabel_disconnectnotify_callback = nullptr;
         qlabel_drawframe_callback = nullptr;
-        qlabel_initstyleoption_callback = nullptr;
         qlabel_updatemicrofocus_callback = nullptr;
         qlabel_create_callback = nullptr;
         qlabel_destroy_callback = nullptr;
@@ -286,6 +286,7 @@ class VirtualQLabel : public QLabel {
     void setQLabel_FocusInEvent_Callback(QLabel_FocusInEvent_Callback cb) { qlabel_focusinevent_callback = cb; }
     void setQLabel_FocusOutEvent_Callback(QLabel_FocusOutEvent_Callback cb) { qlabel_focusoutevent_callback = cb; }
     void setQLabel_FocusNextPrevChild_Callback(QLabel_FocusNextPrevChild_Callback cb) { qlabel_focusnextprevchild_callback = cb; }
+    void setQLabel_InitStyleOption_Callback(QLabel_InitStyleOption_Callback cb) { qlabel_initstyleoption_callback = cb; }
     void setQLabel_DevType_Callback(QLabel_DevType_Callback cb) { qlabel_devtype_callback = cb; }
     void setQLabel_SetVisible_Callback(QLabel_SetVisible_Callback cb) { qlabel_setvisible_callback = cb; }
     void setQLabel_HasHeightForWidth_Callback(QLabel_HasHeightForWidth_Callback cb) { qlabel_hasheightforwidth_callback = cb; }
@@ -320,7 +321,6 @@ class VirtualQLabel : public QLabel {
     void setQLabel_ConnectNotify_Callback(QLabel_ConnectNotify_Callback cb) { qlabel_connectnotify_callback = cb; }
     void setQLabel_DisconnectNotify_Callback(QLabel_DisconnectNotify_Callback cb) { qlabel_disconnectnotify_callback = cb; }
     void setQLabel_DrawFrame_Callback(QLabel_DrawFrame_Callback cb) { qlabel_drawframe_callback = cb; }
-    void setQLabel_InitStyleOption_Callback(QLabel_InitStyleOption_Callback cb) { qlabel_initstyleoption_callback = cb; }
     void setQLabel_UpdateMicroFocus_Callback(QLabel_UpdateMicroFocus_Callback cb) { qlabel_updatemicrofocus_callback = cb; }
     void setQLabel_Create_Callback(QLabel_Create_Callback cb) { qlabel_create_callback = cb; }
     void setQLabel_Destroy_Callback(QLabel_Destroy_Callback cb) { qlabel_destroy_callback = cb; }
@@ -347,6 +347,7 @@ class VirtualQLabel : public QLabel {
     void setQLabel_FocusInEvent_IsBase(bool value) const { qlabel_focusinevent_isbase = value; }
     void setQLabel_FocusOutEvent_IsBase(bool value) const { qlabel_focusoutevent_isbase = value; }
     void setQLabel_FocusNextPrevChild_IsBase(bool value) const { qlabel_focusnextprevchild_isbase = value; }
+    void setQLabel_InitStyleOption_IsBase(bool value) const { qlabel_initstyleoption_isbase = value; }
     void setQLabel_DevType_IsBase(bool value) const { qlabel_devtype_isbase = value; }
     void setQLabel_SetVisible_IsBase(bool value) const { qlabel_setvisible_isbase = value; }
     void setQLabel_HasHeightForWidth_IsBase(bool value) const { qlabel_hasheightforwidth_isbase = value; }
@@ -381,7 +382,6 @@ class VirtualQLabel : public QLabel {
     void setQLabel_ConnectNotify_IsBase(bool value) const { qlabel_connectnotify_isbase = value; }
     void setQLabel_DisconnectNotify_IsBase(bool value) const { qlabel_disconnectnotify_isbase = value; }
     void setQLabel_DrawFrame_IsBase(bool value) const { qlabel_drawframe_isbase = value; }
-    void setQLabel_InitStyleOption_IsBase(bool value) const { qlabel_initstyleoption_isbase = value; }
     void setQLabel_UpdateMicroFocus_IsBase(bool value) const { qlabel_updatemicrofocus_isbase = value; }
     void setQLabel_Create_IsBase(bool value) const { qlabel_create_isbase = value; }
     void setQLabel_Destroy_IsBase(bool value) const { qlabel_destroy_isbase = value; }
@@ -573,6 +573,18 @@ class VirtualQLabel : public QLabel {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qlabel_initstyleoption_isbase) {
+            qlabel_initstyleoption_isbase = false;
+            QLabel::initStyleOption(option);
+        } else if (qlabel_initstyleoption_callback != nullptr) {
+            qlabel_initstyleoption_callback(this, option);
+        } else {
+            QLabel::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qlabel_devtype_isbase) {
             qlabel_devtype_isbase = false;
@@ -657,7 +669,7 @@ class VirtualQLabel : public QLabel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qlabel_enterevent_isbase) {
             qlabel_enterevent_isbase = false;
             QLabel::enterEvent(event);
@@ -813,7 +825,7 @@ class VirtualQLabel : public QLabel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qlabel_nativeevent_isbase) {
             qlabel_nativeevent_isbase = false;
             return QLabel::nativeEvent(eventType, message, result);
@@ -977,18 +989,6 @@ class VirtualQLabel : public QLabel {
             qlabel_drawframe_callback(this, param1);
         } else {
             QLabel::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qlabel_initstyleoption_isbase) {
-            qlabel_initstyleoption_isbase = false;
-            QLabel::initStyleOption(option);
-        } else if (qlabel_initstyleoption_callback != nullptr) {
-            qlabel_initstyleoption_callback(this, option);
-        } else {
-            QLabel::initStyleOption(option);
         }
     }
 

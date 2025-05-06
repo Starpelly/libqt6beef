@@ -25,6 +25,7 @@ class VirtualQLineEdit : public QLineEdit {
     using QLineEdit_MouseReleaseEvent_Callback = void (*)(QLineEdit*, QMouseEvent*);
     using QLineEdit_MouseDoubleClickEvent_Callback = void (*)(QLineEdit*, QMouseEvent*);
     using QLineEdit_KeyPressEvent_Callback = void (*)(QLineEdit*, QKeyEvent*);
+    using QLineEdit_KeyReleaseEvent_Callback = void (*)(QLineEdit*, QKeyEvent*);
     using QLineEdit_FocusInEvent_Callback = void (*)(QLineEdit*, QFocusEvent*);
     using QLineEdit_FocusOutEvent_Callback = void (*)(QLineEdit*, QFocusEvent*);
     using QLineEdit_PaintEvent_Callback = void (*)(QLineEdit*, QPaintEvent*);
@@ -35,7 +36,9 @@ class VirtualQLineEdit : public QLineEdit {
     using QLineEdit_ChangeEvent_Callback = void (*)(QLineEdit*, QEvent*);
     using QLineEdit_ContextMenuEvent_Callback = void (*)(QLineEdit*, QContextMenuEvent*);
     using QLineEdit_InputMethodEvent_Callback = void (*)(QLineEdit*, QInputMethodEvent*);
+    using QLineEdit_InitStyleOption_Callback = void (*)(const QLineEdit*, QStyleOptionFrame*);
     using QLineEdit_InputMethodQuery_Callback = QVariant (*)(const QLineEdit*, Qt::InputMethodQuery);
+    using QLineEdit_TimerEvent_Callback = void (*)(QLineEdit*, QTimerEvent*);
     using QLineEdit_Event_Callback = bool (*)(QLineEdit*, QEvent*);
     using QLineEdit_DevType_Callback = int (*)();
     using QLineEdit_SetVisible_Callback = void (*)(QLineEdit*, bool);
@@ -43,8 +46,7 @@ class VirtualQLineEdit : public QLineEdit {
     using QLineEdit_HasHeightForWidth_Callback = bool (*)();
     using QLineEdit_PaintEngine_Callback = QPaintEngine* (*)();
     using QLineEdit_WheelEvent_Callback = void (*)(QLineEdit*, QWheelEvent*);
-    using QLineEdit_KeyReleaseEvent_Callback = void (*)(QLineEdit*, QKeyEvent*);
-    using QLineEdit_EnterEvent_Callback = void (*)(QLineEdit*, QEvent*);
+    using QLineEdit_EnterEvent_Callback = void (*)(QLineEdit*, QEnterEvent*);
     using QLineEdit_LeaveEvent_Callback = void (*)(QLineEdit*, QEvent*);
     using QLineEdit_MoveEvent_Callback = void (*)(QLineEdit*, QMoveEvent*);
     using QLineEdit_ResizeEvent_Callback = void (*)(QLineEdit*, QResizeEvent*);
@@ -53,19 +55,17 @@ class VirtualQLineEdit : public QLineEdit {
     using QLineEdit_ActionEvent_Callback = void (*)(QLineEdit*, QActionEvent*);
     using QLineEdit_ShowEvent_Callback = void (*)(QLineEdit*, QShowEvent*);
     using QLineEdit_HideEvent_Callback = void (*)(QLineEdit*, QHideEvent*);
-    using QLineEdit_NativeEvent_Callback = bool (*)(QLineEdit*, const QByteArray&, void*, long*);
+    using QLineEdit_NativeEvent_Callback = bool (*)(QLineEdit*, const QByteArray&, void*, qintptr*);
     using QLineEdit_Metric_Callback = int (*)(const QLineEdit*, QPaintDevice::PaintDeviceMetric);
     using QLineEdit_InitPainter_Callback = void (*)(const QLineEdit*, QPainter*);
     using QLineEdit_Redirected_Callback = QPaintDevice* (*)(const QLineEdit*, QPoint*);
     using QLineEdit_SharedPainter_Callback = QPainter* (*)();
     using QLineEdit_FocusNextPrevChild_Callback = bool (*)(QLineEdit*, bool);
     using QLineEdit_EventFilter_Callback = bool (*)(QLineEdit*, QObject*, QEvent*);
-    using QLineEdit_TimerEvent_Callback = void (*)(QLineEdit*, QTimerEvent*);
     using QLineEdit_ChildEvent_Callback = void (*)(QLineEdit*, QChildEvent*);
     using QLineEdit_CustomEvent_Callback = void (*)(QLineEdit*, QEvent*);
     using QLineEdit_ConnectNotify_Callback = void (*)(QLineEdit*, const QMetaMethod&);
     using QLineEdit_DisconnectNotify_Callback = void (*)(QLineEdit*, const QMetaMethod&);
-    using QLineEdit_InitStyleOption_Callback = void (*)(const QLineEdit*, QStyleOptionFrame*);
     using QLineEdit_CursorRect_Callback = QRect (*)();
     using QLineEdit_UpdateMicroFocus_Callback = void (*)();
     using QLineEdit_Create_Callback = void (*)();
@@ -87,6 +87,7 @@ class VirtualQLineEdit : public QLineEdit {
     QLineEdit_MouseReleaseEvent_Callback qlineedit_mousereleaseevent_callback = nullptr;
     QLineEdit_MouseDoubleClickEvent_Callback qlineedit_mousedoubleclickevent_callback = nullptr;
     QLineEdit_KeyPressEvent_Callback qlineedit_keypressevent_callback = nullptr;
+    QLineEdit_KeyReleaseEvent_Callback qlineedit_keyreleaseevent_callback = nullptr;
     QLineEdit_FocusInEvent_Callback qlineedit_focusinevent_callback = nullptr;
     QLineEdit_FocusOutEvent_Callback qlineedit_focusoutevent_callback = nullptr;
     QLineEdit_PaintEvent_Callback qlineedit_paintevent_callback = nullptr;
@@ -97,7 +98,9 @@ class VirtualQLineEdit : public QLineEdit {
     QLineEdit_ChangeEvent_Callback qlineedit_changeevent_callback = nullptr;
     QLineEdit_ContextMenuEvent_Callback qlineedit_contextmenuevent_callback = nullptr;
     QLineEdit_InputMethodEvent_Callback qlineedit_inputmethodevent_callback = nullptr;
+    QLineEdit_InitStyleOption_Callback qlineedit_initstyleoption_callback = nullptr;
     QLineEdit_InputMethodQuery_Callback qlineedit_inputmethodquery_callback = nullptr;
+    QLineEdit_TimerEvent_Callback qlineedit_timerevent_callback = nullptr;
     QLineEdit_Event_Callback qlineedit_event_callback = nullptr;
     QLineEdit_DevType_Callback qlineedit_devtype_callback = nullptr;
     QLineEdit_SetVisible_Callback qlineedit_setvisible_callback = nullptr;
@@ -105,7 +108,6 @@ class VirtualQLineEdit : public QLineEdit {
     QLineEdit_HasHeightForWidth_Callback qlineedit_hasheightforwidth_callback = nullptr;
     QLineEdit_PaintEngine_Callback qlineedit_paintengine_callback = nullptr;
     QLineEdit_WheelEvent_Callback qlineedit_wheelevent_callback = nullptr;
-    QLineEdit_KeyReleaseEvent_Callback qlineedit_keyreleaseevent_callback = nullptr;
     QLineEdit_EnterEvent_Callback qlineedit_enterevent_callback = nullptr;
     QLineEdit_LeaveEvent_Callback qlineedit_leaveevent_callback = nullptr;
     QLineEdit_MoveEvent_Callback qlineedit_moveevent_callback = nullptr;
@@ -122,12 +124,10 @@ class VirtualQLineEdit : public QLineEdit {
     QLineEdit_SharedPainter_Callback qlineedit_sharedpainter_callback = nullptr;
     QLineEdit_FocusNextPrevChild_Callback qlineedit_focusnextprevchild_callback = nullptr;
     QLineEdit_EventFilter_Callback qlineedit_eventfilter_callback = nullptr;
-    QLineEdit_TimerEvent_Callback qlineedit_timerevent_callback = nullptr;
     QLineEdit_ChildEvent_Callback qlineedit_childevent_callback = nullptr;
     QLineEdit_CustomEvent_Callback qlineedit_customevent_callback = nullptr;
     QLineEdit_ConnectNotify_Callback qlineedit_connectnotify_callback = nullptr;
     QLineEdit_DisconnectNotify_Callback qlineedit_disconnectnotify_callback = nullptr;
-    QLineEdit_InitStyleOption_Callback qlineedit_initstyleoption_callback = nullptr;
     QLineEdit_CursorRect_Callback qlineedit_cursorrect_callback = nullptr;
     QLineEdit_UpdateMicroFocus_Callback qlineedit_updatemicrofocus_callback = nullptr;
     QLineEdit_Create_Callback qlineedit_create_callback = nullptr;
@@ -148,6 +148,7 @@ class VirtualQLineEdit : public QLineEdit {
     mutable bool qlineedit_mousereleaseevent_isbase = false;
     mutable bool qlineedit_mousedoubleclickevent_isbase = false;
     mutable bool qlineedit_keypressevent_isbase = false;
+    mutable bool qlineedit_keyreleaseevent_isbase = false;
     mutable bool qlineedit_focusinevent_isbase = false;
     mutable bool qlineedit_focusoutevent_isbase = false;
     mutable bool qlineedit_paintevent_isbase = false;
@@ -158,7 +159,9 @@ class VirtualQLineEdit : public QLineEdit {
     mutable bool qlineedit_changeevent_isbase = false;
     mutable bool qlineedit_contextmenuevent_isbase = false;
     mutable bool qlineedit_inputmethodevent_isbase = false;
+    mutable bool qlineedit_initstyleoption_isbase = false;
     mutable bool qlineedit_inputmethodquery_isbase = false;
+    mutable bool qlineedit_timerevent_isbase = false;
     mutable bool qlineedit_event_isbase = false;
     mutable bool qlineedit_devtype_isbase = false;
     mutable bool qlineedit_setvisible_isbase = false;
@@ -166,7 +169,6 @@ class VirtualQLineEdit : public QLineEdit {
     mutable bool qlineedit_hasheightforwidth_isbase = false;
     mutable bool qlineedit_paintengine_isbase = false;
     mutable bool qlineedit_wheelevent_isbase = false;
-    mutable bool qlineedit_keyreleaseevent_isbase = false;
     mutable bool qlineedit_enterevent_isbase = false;
     mutable bool qlineedit_leaveevent_isbase = false;
     mutable bool qlineedit_moveevent_isbase = false;
@@ -183,12 +185,10 @@ class VirtualQLineEdit : public QLineEdit {
     mutable bool qlineedit_sharedpainter_isbase = false;
     mutable bool qlineedit_focusnextprevchild_isbase = false;
     mutable bool qlineedit_eventfilter_isbase = false;
-    mutable bool qlineedit_timerevent_isbase = false;
     mutable bool qlineedit_childevent_isbase = false;
     mutable bool qlineedit_customevent_isbase = false;
     mutable bool qlineedit_connectnotify_isbase = false;
     mutable bool qlineedit_disconnectnotify_isbase = false;
-    mutable bool qlineedit_initstyleoption_isbase = false;
     mutable bool qlineedit_cursorrect_isbase = false;
     mutable bool qlineedit_updatemicrofocus_isbase = false;
     mutable bool qlineedit_create_isbase = false;
@@ -215,6 +215,7 @@ class VirtualQLineEdit : public QLineEdit {
         qlineedit_mousereleaseevent_callback = nullptr;
         qlineedit_mousedoubleclickevent_callback = nullptr;
         qlineedit_keypressevent_callback = nullptr;
+        qlineedit_keyreleaseevent_callback = nullptr;
         qlineedit_focusinevent_callback = nullptr;
         qlineedit_focusoutevent_callback = nullptr;
         qlineedit_paintevent_callback = nullptr;
@@ -225,7 +226,9 @@ class VirtualQLineEdit : public QLineEdit {
         qlineedit_changeevent_callback = nullptr;
         qlineedit_contextmenuevent_callback = nullptr;
         qlineedit_inputmethodevent_callback = nullptr;
+        qlineedit_initstyleoption_callback = nullptr;
         qlineedit_inputmethodquery_callback = nullptr;
+        qlineedit_timerevent_callback = nullptr;
         qlineedit_event_callback = nullptr;
         qlineedit_devtype_callback = nullptr;
         qlineedit_setvisible_callback = nullptr;
@@ -233,7 +236,6 @@ class VirtualQLineEdit : public QLineEdit {
         qlineedit_hasheightforwidth_callback = nullptr;
         qlineedit_paintengine_callback = nullptr;
         qlineedit_wheelevent_callback = nullptr;
-        qlineedit_keyreleaseevent_callback = nullptr;
         qlineedit_enterevent_callback = nullptr;
         qlineedit_leaveevent_callback = nullptr;
         qlineedit_moveevent_callback = nullptr;
@@ -250,12 +252,10 @@ class VirtualQLineEdit : public QLineEdit {
         qlineedit_sharedpainter_callback = nullptr;
         qlineedit_focusnextprevchild_callback = nullptr;
         qlineedit_eventfilter_callback = nullptr;
-        qlineedit_timerevent_callback = nullptr;
         qlineedit_childevent_callback = nullptr;
         qlineedit_customevent_callback = nullptr;
         qlineedit_connectnotify_callback = nullptr;
         qlineedit_disconnectnotify_callback = nullptr;
-        qlineedit_initstyleoption_callback = nullptr;
         qlineedit_cursorrect_callback = nullptr;
         qlineedit_updatemicrofocus_callback = nullptr;
         qlineedit_create_callback = nullptr;
@@ -277,6 +277,7 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_MouseReleaseEvent_Callback(QLineEdit_MouseReleaseEvent_Callback cb) { qlineedit_mousereleaseevent_callback = cb; }
     void setQLineEdit_MouseDoubleClickEvent_Callback(QLineEdit_MouseDoubleClickEvent_Callback cb) { qlineedit_mousedoubleclickevent_callback = cb; }
     void setQLineEdit_KeyPressEvent_Callback(QLineEdit_KeyPressEvent_Callback cb) { qlineedit_keypressevent_callback = cb; }
+    void setQLineEdit_KeyReleaseEvent_Callback(QLineEdit_KeyReleaseEvent_Callback cb) { qlineedit_keyreleaseevent_callback = cb; }
     void setQLineEdit_FocusInEvent_Callback(QLineEdit_FocusInEvent_Callback cb) { qlineedit_focusinevent_callback = cb; }
     void setQLineEdit_FocusOutEvent_Callback(QLineEdit_FocusOutEvent_Callback cb) { qlineedit_focusoutevent_callback = cb; }
     void setQLineEdit_PaintEvent_Callback(QLineEdit_PaintEvent_Callback cb) { qlineedit_paintevent_callback = cb; }
@@ -287,7 +288,9 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_ChangeEvent_Callback(QLineEdit_ChangeEvent_Callback cb) { qlineedit_changeevent_callback = cb; }
     void setQLineEdit_ContextMenuEvent_Callback(QLineEdit_ContextMenuEvent_Callback cb) { qlineedit_contextmenuevent_callback = cb; }
     void setQLineEdit_InputMethodEvent_Callback(QLineEdit_InputMethodEvent_Callback cb) { qlineedit_inputmethodevent_callback = cb; }
+    void setQLineEdit_InitStyleOption_Callback(QLineEdit_InitStyleOption_Callback cb) { qlineedit_initstyleoption_callback = cb; }
     void setQLineEdit_InputMethodQuery_Callback(QLineEdit_InputMethodQuery_Callback cb) { qlineedit_inputmethodquery_callback = cb; }
+    void setQLineEdit_TimerEvent_Callback(QLineEdit_TimerEvent_Callback cb) { qlineedit_timerevent_callback = cb; }
     void setQLineEdit_Event_Callback(QLineEdit_Event_Callback cb) { qlineedit_event_callback = cb; }
     void setQLineEdit_DevType_Callback(QLineEdit_DevType_Callback cb) { qlineedit_devtype_callback = cb; }
     void setQLineEdit_SetVisible_Callback(QLineEdit_SetVisible_Callback cb) { qlineedit_setvisible_callback = cb; }
@@ -295,7 +298,6 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_HasHeightForWidth_Callback(QLineEdit_HasHeightForWidth_Callback cb) { qlineedit_hasheightforwidth_callback = cb; }
     void setQLineEdit_PaintEngine_Callback(QLineEdit_PaintEngine_Callback cb) { qlineedit_paintengine_callback = cb; }
     void setQLineEdit_WheelEvent_Callback(QLineEdit_WheelEvent_Callback cb) { qlineedit_wheelevent_callback = cb; }
-    void setQLineEdit_KeyReleaseEvent_Callback(QLineEdit_KeyReleaseEvent_Callback cb) { qlineedit_keyreleaseevent_callback = cb; }
     void setQLineEdit_EnterEvent_Callback(QLineEdit_EnterEvent_Callback cb) { qlineedit_enterevent_callback = cb; }
     void setQLineEdit_LeaveEvent_Callback(QLineEdit_LeaveEvent_Callback cb) { qlineedit_leaveevent_callback = cb; }
     void setQLineEdit_MoveEvent_Callback(QLineEdit_MoveEvent_Callback cb) { qlineedit_moveevent_callback = cb; }
@@ -312,12 +314,10 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_SharedPainter_Callback(QLineEdit_SharedPainter_Callback cb) { qlineedit_sharedpainter_callback = cb; }
     void setQLineEdit_FocusNextPrevChild_Callback(QLineEdit_FocusNextPrevChild_Callback cb) { qlineedit_focusnextprevchild_callback = cb; }
     void setQLineEdit_EventFilter_Callback(QLineEdit_EventFilter_Callback cb) { qlineedit_eventfilter_callback = cb; }
-    void setQLineEdit_TimerEvent_Callback(QLineEdit_TimerEvent_Callback cb) { qlineedit_timerevent_callback = cb; }
     void setQLineEdit_ChildEvent_Callback(QLineEdit_ChildEvent_Callback cb) { qlineedit_childevent_callback = cb; }
     void setQLineEdit_CustomEvent_Callback(QLineEdit_CustomEvent_Callback cb) { qlineedit_customevent_callback = cb; }
     void setQLineEdit_ConnectNotify_Callback(QLineEdit_ConnectNotify_Callback cb) { qlineedit_connectnotify_callback = cb; }
     void setQLineEdit_DisconnectNotify_Callback(QLineEdit_DisconnectNotify_Callback cb) { qlineedit_disconnectnotify_callback = cb; }
-    void setQLineEdit_InitStyleOption_Callback(QLineEdit_InitStyleOption_Callback cb) { qlineedit_initstyleoption_callback = cb; }
     void setQLineEdit_CursorRect_Callback(QLineEdit_CursorRect_Callback cb) { qlineedit_cursorrect_callback = cb; }
     void setQLineEdit_UpdateMicroFocus_Callback(QLineEdit_UpdateMicroFocus_Callback cb) { qlineedit_updatemicrofocus_callback = cb; }
     void setQLineEdit_Create_Callback(QLineEdit_Create_Callback cb) { qlineedit_create_callback = cb; }
@@ -338,6 +338,7 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_MouseReleaseEvent_IsBase(bool value) const { qlineedit_mousereleaseevent_isbase = value; }
     void setQLineEdit_MouseDoubleClickEvent_IsBase(bool value) const { qlineedit_mousedoubleclickevent_isbase = value; }
     void setQLineEdit_KeyPressEvent_IsBase(bool value) const { qlineedit_keypressevent_isbase = value; }
+    void setQLineEdit_KeyReleaseEvent_IsBase(bool value) const { qlineedit_keyreleaseevent_isbase = value; }
     void setQLineEdit_FocusInEvent_IsBase(bool value) const { qlineedit_focusinevent_isbase = value; }
     void setQLineEdit_FocusOutEvent_IsBase(bool value) const { qlineedit_focusoutevent_isbase = value; }
     void setQLineEdit_PaintEvent_IsBase(bool value) const { qlineedit_paintevent_isbase = value; }
@@ -348,7 +349,9 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_ChangeEvent_IsBase(bool value) const { qlineedit_changeevent_isbase = value; }
     void setQLineEdit_ContextMenuEvent_IsBase(bool value) const { qlineedit_contextmenuevent_isbase = value; }
     void setQLineEdit_InputMethodEvent_IsBase(bool value) const { qlineedit_inputmethodevent_isbase = value; }
+    void setQLineEdit_InitStyleOption_IsBase(bool value) const { qlineedit_initstyleoption_isbase = value; }
     void setQLineEdit_InputMethodQuery_IsBase(bool value) const { qlineedit_inputmethodquery_isbase = value; }
+    void setQLineEdit_TimerEvent_IsBase(bool value) const { qlineedit_timerevent_isbase = value; }
     void setQLineEdit_Event_IsBase(bool value) const { qlineedit_event_isbase = value; }
     void setQLineEdit_DevType_IsBase(bool value) const { qlineedit_devtype_isbase = value; }
     void setQLineEdit_SetVisible_IsBase(bool value) const { qlineedit_setvisible_isbase = value; }
@@ -356,7 +359,6 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_HasHeightForWidth_IsBase(bool value) const { qlineedit_hasheightforwidth_isbase = value; }
     void setQLineEdit_PaintEngine_IsBase(bool value) const { qlineedit_paintengine_isbase = value; }
     void setQLineEdit_WheelEvent_IsBase(bool value) const { qlineedit_wheelevent_isbase = value; }
-    void setQLineEdit_KeyReleaseEvent_IsBase(bool value) const { qlineedit_keyreleaseevent_isbase = value; }
     void setQLineEdit_EnterEvent_IsBase(bool value) const { qlineedit_enterevent_isbase = value; }
     void setQLineEdit_LeaveEvent_IsBase(bool value) const { qlineedit_leaveevent_isbase = value; }
     void setQLineEdit_MoveEvent_IsBase(bool value) const { qlineedit_moveevent_isbase = value; }
@@ -373,12 +375,10 @@ class VirtualQLineEdit : public QLineEdit {
     void setQLineEdit_SharedPainter_IsBase(bool value) const { qlineedit_sharedpainter_isbase = value; }
     void setQLineEdit_FocusNextPrevChild_IsBase(bool value) const { qlineedit_focusnextprevchild_isbase = value; }
     void setQLineEdit_EventFilter_IsBase(bool value) const { qlineedit_eventfilter_isbase = value; }
-    void setQLineEdit_TimerEvent_IsBase(bool value) const { qlineedit_timerevent_isbase = value; }
     void setQLineEdit_ChildEvent_IsBase(bool value) const { qlineedit_childevent_isbase = value; }
     void setQLineEdit_CustomEvent_IsBase(bool value) const { qlineedit_customevent_isbase = value; }
     void setQLineEdit_ConnectNotify_IsBase(bool value) const { qlineedit_connectnotify_isbase = value; }
     void setQLineEdit_DisconnectNotify_IsBase(bool value) const { qlineedit_disconnectnotify_isbase = value; }
-    void setQLineEdit_InitStyleOption_IsBase(bool value) const { qlineedit_initstyleoption_isbase = value; }
     void setQLineEdit_CursorRect_IsBase(bool value) const { qlineedit_cursorrect_isbase = value; }
     void setQLineEdit_UpdateMicroFocus_IsBase(bool value) const { qlineedit_updatemicrofocus_isbase = value; }
     void setQLineEdit_Create_IsBase(bool value) const { qlineedit_create_isbase = value; }
@@ -483,6 +483,18 @@ class VirtualQLineEdit : public QLineEdit {
             qlineedit_keypressevent_callback(this, param1);
         } else {
             QLineEdit::keyPressEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void keyReleaseEvent(QKeyEvent* param1) override {
+        if (qlineedit_keyreleaseevent_isbase) {
+            qlineedit_keyreleaseevent_isbase = false;
+            QLineEdit::keyReleaseEvent(param1);
+        } else if (qlineedit_keyreleaseevent_callback != nullptr) {
+            qlineedit_keyreleaseevent_callback(this, param1);
+        } else {
+            QLineEdit::keyReleaseEvent(param1);
         }
     }
 
@@ -607,6 +619,18 @@ class VirtualQLineEdit : public QLineEdit {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qlineedit_initstyleoption_isbase) {
+            qlineedit_initstyleoption_isbase = false;
+            QLineEdit::initStyleOption(option);
+        } else if (qlineedit_initstyleoption_callback != nullptr) {
+            qlineedit_initstyleoption_callback(this, option);
+        } else {
+            QLineEdit::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery param1) const override {
         if (qlineedit_inputmethodquery_isbase) {
             qlineedit_inputmethodquery_isbase = false;
@@ -615,6 +639,18 @@ class VirtualQLineEdit : public QLineEdit {
             return qlineedit_inputmethodquery_callback(this, param1);
         } else {
             return QLineEdit::inputMethodQuery(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void timerEvent(QTimerEvent* param1) override {
+        if (qlineedit_timerevent_isbase) {
+            qlineedit_timerevent_isbase = false;
+            QLineEdit::timerEvent(param1);
+        } else if (qlineedit_timerevent_callback != nullptr) {
+            qlineedit_timerevent_callback(this, param1);
+        } else {
+            QLineEdit::timerEvent(param1);
         }
     }
 
@@ -703,19 +739,7 @@ class VirtualQLineEdit : public QLineEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void keyReleaseEvent(QKeyEvent* event) override {
-        if (qlineedit_keyreleaseevent_isbase) {
-            qlineedit_keyreleaseevent_isbase = false;
-            QLineEdit::keyReleaseEvent(event);
-        } else if (qlineedit_keyreleaseevent_callback != nullptr) {
-            qlineedit_keyreleaseevent_callback(this, event);
-        } else {
-            QLineEdit::keyReleaseEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qlineedit_enterevent_isbase) {
             qlineedit_enterevent_isbase = false;
             QLineEdit::enterEvent(event);
@@ -823,7 +847,7 @@ class VirtualQLineEdit : public QLineEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qlineedit_nativeevent_isbase) {
             qlineedit_nativeevent_isbase = false;
             return QLineEdit::nativeEvent(eventType, message, result);
@@ -907,18 +931,6 @@ class VirtualQLineEdit : public QLineEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void timerEvent(QTimerEvent* event) override {
-        if (qlineedit_timerevent_isbase) {
-            qlineedit_timerevent_isbase = false;
-            QLineEdit::timerEvent(event);
-        } else if (qlineedit_timerevent_callback != nullptr) {
-            qlineedit_timerevent_callback(this, event);
-        } else {
-            QLineEdit::timerEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void childEvent(QChildEvent* event) override {
         if (qlineedit_childevent_isbase) {
             qlineedit_childevent_isbase = false;
@@ -963,18 +975,6 @@ class VirtualQLineEdit : public QLineEdit {
             qlineedit_disconnectnotify_callback(this, signal);
         } else {
             QLineEdit::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qlineedit_initstyleoption_isbase) {
-            qlineedit_initstyleoption_isbase = false;
-            QLineEdit::initStyleOption(option);
-        } else if (qlineedit_initstyleoption_callback != nullptr) {
-            qlineedit_initstyleoption_callback(this, option);
-        } else {
-            QLineEdit::initStyleOption(option);
         }
     }
 

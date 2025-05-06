@@ -278,6 +278,11 @@ void QTextCursor_InsertHtml(QTextCursor* self, libqt_string html) {
     self->insertHtml(html_QString);
 }
 
+void QTextCursor_InsertMarkdown(QTextCursor* self, libqt_string markdown) {
+    QString markdown_QString = QString::fromUtf8(markdown.data, markdown.len);
+    self->insertMarkdown(markdown_QString);
+}
+
 void QTextCursor_InsertImage(QTextCursor* self, QTextImageFormat* format, int alignment) {
     self->insertImage(*format, static_cast<QTextFrameFormat::Position>(alignment));
 }
@@ -357,6 +362,11 @@ bool QTextCursor_MovePosition2(QTextCursor* self, int op, int param2) {
 
 bool QTextCursor_MovePosition3(QTextCursor* self, int op, int param2, int n) {
     return self->movePosition(static_cast<QTextCursor::MoveOperation>(op), static_cast<QTextCursor::MoveMode>(param2), static_cast<int>(n));
+}
+
+void QTextCursor_InsertMarkdown2(QTextCursor* self, libqt_string markdown, int features) {
+    QString markdown_QString = QString::fromUtf8(markdown.data, markdown.len);
+    self->insertMarkdown(markdown_QString, static_cast<QTextDocument::MarkdownFeatures>(features));
 }
 
 void QTextCursor_InsertImage2(QTextCursor* self, QImage* image, libqt_string name) {

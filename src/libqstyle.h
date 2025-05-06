@@ -21,7 +21,9 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QApplication QApplication;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QFontMetrics QFontMetrics;
@@ -30,7 +32,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
@@ -84,7 +85,7 @@ int QStyle_Metacall(QStyle* self, int param1, int param2, void** param3);
 void QStyle_OnMetacall(QStyle* self, intptr_t slot);
 int QStyle_QBaseMetacall(QStyle* self, int param1, int param2, void** param3);
 libqt_string QStyle_Tr(const char* s);
-libqt_string QStyle_TrUtf8(const char* s);
+libqt_string QStyle_Name(const QStyle* self);
 void QStyle_Polish(QStyle* self, QWidget* widget);
 void QStyle_OnPolish(QStyle* self, intptr_t slot);
 void QStyle_QBasePolish(QStyle* self, QWidget* widget);
@@ -164,8 +165,6 @@ int QStyle_CombinedLayoutSpacing(const QStyle* self, int controls1, int controls
 QStyle* QStyle_Proxy(const QStyle* self);
 libqt_string QStyle_Tr2(const char* s, const char* c);
 libqt_string QStyle_Tr3(const char* s, const char* c, int n);
-libqt_string QStyle_TrUtf82(const char* s, const char* c);
-libqt_string QStyle_TrUtf83(const char* s, const char* c, int n);
 int QStyle_SliderPositionFromValue5(int min, int max, int val, int space, bool upsideDown);
 int QStyle_SliderValueFromPosition5(int min, int max, int pos, int space, bool upsideDown);
 int QStyle_CombinedLayoutSpacing4(const QStyle* self, int controls1, int controls2, int orientation, QStyleOption* option);

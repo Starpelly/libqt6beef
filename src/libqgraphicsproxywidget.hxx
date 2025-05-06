@@ -82,6 +82,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
     using QGraphicsProxyWidget_SupportsExtension_Callback = bool (*)(const QGraphicsProxyWidget*, int);
     using QGraphicsProxyWidget_SetExtension_Callback = void (*)(QGraphicsProxyWidget*, int, const QVariant&);
     using QGraphicsProxyWidget_Extension_Callback = QVariant (*)(const QGraphicsProxyWidget*, const QVariant&);
+    using QGraphicsProxyWidget_IsEmpty_Callback = bool (*)();
     using QGraphicsProxyWidget_NewProxyWidget_Callback = QGraphicsProxyWidget* (*)(QGraphicsProxyWidget*, const QWidget*);
     using QGraphicsProxyWidget_UpdateMicroFocus_Callback = void (*)();
     using QGraphicsProxyWidget_Sender_Callback = QObject* (*)();
@@ -160,6 +161,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
     QGraphicsProxyWidget_SupportsExtension_Callback qgraphicsproxywidget_supportsextension_callback = nullptr;
     QGraphicsProxyWidget_SetExtension_Callback qgraphicsproxywidget_setextension_callback = nullptr;
     QGraphicsProxyWidget_Extension_Callback qgraphicsproxywidget_extension_callback = nullptr;
+    QGraphicsProxyWidget_IsEmpty_Callback qgraphicsproxywidget_isempty_callback = nullptr;
     QGraphicsProxyWidget_NewProxyWidget_Callback qgraphicsproxywidget_newproxywidget_callback = nullptr;
     QGraphicsProxyWidget_UpdateMicroFocus_Callback qgraphicsproxywidget_updatemicrofocus_callback = nullptr;
     QGraphicsProxyWidget_Sender_Callback qgraphicsproxywidget_sender_callback = nullptr;
@@ -237,6 +239,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
     mutable bool qgraphicsproxywidget_supportsextension_isbase = false;
     mutable bool qgraphicsproxywidget_setextension_isbase = false;
     mutable bool qgraphicsproxywidget_extension_isbase = false;
+    mutable bool qgraphicsproxywidget_isempty_isbase = false;
     mutable bool qgraphicsproxywidget_newproxywidget_isbase = false;
     mutable bool qgraphicsproxywidget_updatemicrofocus_isbase = false;
     mutable bool qgraphicsproxywidget_sender_isbase = false;
@@ -319,6 +322,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
         qgraphicsproxywidget_supportsextension_callback = nullptr;
         qgraphicsproxywidget_setextension_callback = nullptr;
         qgraphicsproxywidget_extension_callback = nullptr;
+        qgraphicsproxywidget_isempty_callback = nullptr;
         qgraphicsproxywidget_newproxywidget_callback = nullptr;
         qgraphicsproxywidget_updatemicrofocus_callback = nullptr;
         qgraphicsproxywidget_sender_callback = nullptr;
@@ -397,6 +401,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
     void setQGraphicsProxyWidget_SupportsExtension_Callback(QGraphicsProxyWidget_SupportsExtension_Callback cb) { qgraphicsproxywidget_supportsextension_callback = cb; }
     void setQGraphicsProxyWidget_SetExtension_Callback(QGraphicsProxyWidget_SetExtension_Callback cb) { qgraphicsproxywidget_setextension_callback = cb; }
     void setQGraphicsProxyWidget_Extension_Callback(QGraphicsProxyWidget_Extension_Callback cb) { qgraphicsproxywidget_extension_callback = cb; }
+    void setQGraphicsProxyWidget_IsEmpty_Callback(QGraphicsProxyWidget_IsEmpty_Callback cb) { qgraphicsproxywidget_isempty_callback = cb; }
     void setQGraphicsProxyWidget_NewProxyWidget_Callback(QGraphicsProxyWidget_NewProxyWidget_Callback cb) { qgraphicsproxywidget_newproxywidget_callback = cb; }
     void setQGraphicsProxyWidget_UpdateMicroFocus_Callback(QGraphicsProxyWidget_UpdateMicroFocus_Callback cb) { qgraphicsproxywidget_updatemicrofocus_callback = cb; }
     void setQGraphicsProxyWidget_Sender_Callback(QGraphicsProxyWidget_Sender_Callback cb) { qgraphicsproxywidget_sender_callback = cb; }
@@ -474,6 +479,7 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
     void setQGraphicsProxyWidget_SupportsExtension_IsBase(bool value) const { qgraphicsproxywidget_supportsextension_isbase = value; }
     void setQGraphicsProxyWidget_SetExtension_IsBase(bool value) const { qgraphicsproxywidget_setextension_isbase = value; }
     void setQGraphicsProxyWidget_Extension_IsBase(bool value) const { qgraphicsproxywidget_extension_isbase = value; }
+    void setQGraphicsProxyWidget_IsEmpty_IsBase(bool value) const { qgraphicsproxywidget_isempty_isbase = value; }
     void setQGraphicsProxyWidget_NewProxyWidget_IsBase(bool value) const { qgraphicsproxywidget_newproxywidget_isbase = value; }
     void setQGraphicsProxyWidget_UpdateMicroFocus_IsBase(bool value) const { qgraphicsproxywidget_updatemicrofocus_isbase = value; }
     void setQGraphicsProxyWidget_Sender_IsBase(bool value) const { qgraphicsproxywidget_sender_isbase = value; }
@@ -1251,6 +1257,18 @@ class VirtualQGraphicsProxyWidget : public QGraphicsProxyWidget {
             return qgraphicsproxywidget_extension_callback(this, variant);
         } else {
             return QGraphicsProxyWidget::extension(variant);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool isEmpty() const override {
+        if (qgraphicsproxywidget_isempty_isbase) {
+            qgraphicsproxywidget_isempty_isbase = false;
+            return QGraphicsProxyWidget::isEmpty();
+        } else if (qgraphicsproxywidget_isempty_callback != nullptr) {
+            return qgraphicsproxywidget_isempty_callback();
+        } else {
+            return QGraphicsProxyWidget::isEmpty();
         }
     }
 

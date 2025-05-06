@@ -82,6 +82,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
     using QGraphicsWidget_SupportsExtension_Callback = bool (*)(const QGraphicsWidget*, int);
     using QGraphicsWidget_SetExtension_Callback = void (*)(QGraphicsWidget*, int, const QVariant&);
     using QGraphicsWidget_Extension_Callback = QVariant (*)(const QGraphicsWidget*, const QVariant&);
+    using QGraphicsWidget_IsEmpty_Callback = bool (*)();
     using QGraphicsWidget_UpdateMicroFocus_Callback = void (*)();
     using QGraphicsWidget_Sender_Callback = QObject* (*)();
     using QGraphicsWidget_SenderSignalIndex_Callback = int (*)();
@@ -159,6 +160,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
     QGraphicsWidget_SupportsExtension_Callback qgraphicswidget_supportsextension_callback = nullptr;
     QGraphicsWidget_SetExtension_Callback qgraphicswidget_setextension_callback = nullptr;
     QGraphicsWidget_Extension_Callback qgraphicswidget_extension_callback = nullptr;
+    QGraphicsWidget_IsEmpty_Callback qgraphicswidget_isempty_callback = nullptr;
     QGraphicsWidget_UpdateMicroFocus_Callback qgraphicswidget_updatemicrofocus_callback = nullptr;
     QGraphicsWidget_Sender_Callback qgraphicswidget_sender_callback = nullptr;
     QGraphicsWidget_SenderSignalIndex_Callback qgraphicswidget_sendersignalindex_callback = nullptr;
@@ -235,6 +237,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
     mutable bool qgraphicswidget_supportsextension_isbase = false;
     mutable bool qgraphicswidget_setextension_isbase = false;
     mutable bool qgraphicswidget_extension_isbase = false;
+    mutable bool qgraphicswidget_isempty_isbase = false;
     mutable bool qgraphicswidget_updatemicrofocus_isbase = false;
     mutable bool qgraphicswidget_sender_isbase = false;
     mutable bool qgraphicswidget_sendersignalindex_isbase = false;
@@ -316,6 +319,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
         qgraphicswidget_supportsextension_callback = nullptr;
         qgraphicswidget_setextension_callback = nullptr;
         qgraphicswidget_extension_callback = nullptr;
+        qgraphicswidget_isempty_callback = nullptr;
         qgraphicswidget_updatemicrofocus_callback = nullptr;
         qgraphicswidget_sender_callback = nullptr;
         qgraphicswidget_sendersignalindex_callback = nullptr;
@@ -393,6 +397,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
     void setQGraphicsWidget_SupportsExtension_Callback(QGraphicsWidget_SupportsExtension_Callback cb) { qgraphicswidget_supportsextension_callback = cb; }
     void setQGraphicsWidget_SetExtension_Callback(QGraphicsWidget_SetExtension_Callback cb) { qgraphicswidget_setextension_callback = cb; }
     void setQGraphicsWidget_Extension_Callback(QGraphicsWidget_Extension_Callback cb) { qgraphicswidget_extension_callback = cb; }
+    void setQGraphicsWidget_IsEmpty_Callback(QGraphicsWidget_IsEmpty_Callback cb) { qgraphicswidget_isempty_callback = cb; }
     void setQGraphicsWidget_UpdateMicroFocus_Callback(QGraphicsWidget_UpdateMicroFocus_Callback cb) { qgraphicswidget_updatemicrofocus_callback = cb; }
     void setQGraphicsWidget_Sender_Callback(QGraphicsWidget_Sender_Callback cb) { qgraphicswidget_sender_callback = cb; }
     void setQGraphicsWidget_SenderSignalIndex_Callback(QGraphicsWidget_SenderSignalIndex_Callback cb) { qgraphicswidget_sendersignalindex_callback = cb; }
@@ -469,6 +474,7 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
     void setQGraphicsWidget_SupportsExtension_IsBase(bool value) const { qgraphicswidget_supportsextension_isbase = value; }
     void setQGraphicsWidget_SetExtension_IsBase(bool value) const { qgraphicswidget_setextension_isbase = value; }
     void setQGraphicsWidget_Extension_IsBase(bool value) const { qgraphicswidget_extension_isbase = value; }
+    void setQGraphicsWidget_IsEmpty_IsBase(bool value) const { qgraphicswidget_isempty_isbase = value; }
     void setQGraphicsWidget_UpdateMicroFocus_IsBase(bool value) const { qgraphicswidget_updatemicrofocus_isbase = value; }
     void setQGraphicsWidget_Sender_IsBase(bool value) const { qgraphicswidget_sender_isbase = value; }
     void setQGraphicsWidget_SenderSignalIndex_IsBase(bool value) const { qgraphicswidget_sendersignalindex_isbase = value; }
@@ -1245,6 +1251,18 @@ class VirtualQGraphicsWidget : public QGraphicsWidget {
             return qgraphicswidget_extension_callback(this, variant);
         } else {
             return QGraphicsWidget::extension(variant);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool isEmpty() const override {
+        if (qgraphicswidget_isempty_isbase) {
+            qgraphicswidget_isempty_isbase = false;
+            return QGraphicsWidget::isEmpty();
+        } else if (qgraphicswidget_isempty_callback != nullptr) {
+            return qgraphicswidget_isempty_callback();
+        } else {
+            return QGraphicsWidget::isEmpty();
         }
     }
 

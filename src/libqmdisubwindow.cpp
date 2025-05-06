@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,7 +39,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,6 +46,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -113,18 +116,6 @@ int QMdiSubWindow_QBaseMetacall(QMdiSubWindow* self, int param1, int param2, voi
 
 libqt_string QMdiSubWindow_Tr(const char* s) {
     QString _ret = QMdiSubWindow::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QMdiSubWindow_TrUtf8(const char* s) {
-    QString _ret = QMdiSubWindow::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -237,30 +228,6 @@ libqt_string QMdiSubWindow_Tr2(const char* s, const char* c) {
 
 libqt_string QMdiSubWindow_Tr3(const char* s, const char* c, int n) {
     QString _ret = QMdiSubWindow::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QMdiSubWindow_TrUtf82(const char* s, const char* c) {
-    QString _ret = QMdiSubWindow::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QMdiSubWindow_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QMdiSubWindow::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1030,7 +997,7 @@ void QMdiSubWindow_OnKeyReleaseEvent(QMdiSubWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QMdiSubWindow_EnterEvent(QMdiSubWindow* self, QEvent* event) {
+void QMdiSubWindow_EnterEvent(QMdiSubWindow* self, QEnterEvent* event) {
     if (auto* vqmdisubwindow = dynamic_cast<VirtualQMdiSubWindow*>(self)) {
         vqmdisubwindow->enterEvent(event);
     } else {
@@ -1039,7 +1006,7 @@ void QMdiSubWindow_EnterEvent(QMdiSubWindow* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QMdiSubWindow_QBaseEnterEvent(QMdiSubWindow* self, QEvent* event) {
+void QMdiSubWindow_QBaseEnterEvent(QMdiSubWindow* self, QEnterEvent* event) {
     if (auto* vqmdisubwindow = dynamic_cast<VirtualQMdiSubWindow*>(self)) {
         vqmdisubwindow->setQMdiSubWindow_EnterEvent_IsBase(true);
         vqmdisubwindow->enterEvent(event);
@@ -1212,23 +1179,23 @@ void QMdiSubWindow_OnDropEvent(QMdiSubWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QMdiSubWindow_NativeEvent(QMdiSubWindow* self, libqt_string eventType, void* message, long* result) {
+bool QMdiSubWindow_NativeEvent(QMdiSubWindow* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmdisubwindow = dynamic_cast<VirtualQMdiSubWindow*>(self)) {
-        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QMdiSubWindow_QBaseNativeEvent(QMdiSubWindow* self, libqt_string eventType, void* message, long* result) {
+bool QMdiSubWindow_QBaseNativeEvent(QMdiSubWindow* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmdisubwindow = dynamic_cast<VirtualQMdiSubWindow*>(self)) {
         vqmdisubwindow->setQMdiSubWindow_NativeEvent_IsBase(true);
-        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqmdisubwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

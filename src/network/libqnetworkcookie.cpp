@@ -61,6 +61,14 @@ void QNetworkCookie_SetHttpOnly(QNetworkCookie* self, bool enable) {
     self->setHttpOnly(enable);
 }
 
+int QNetworkCookie_SameSitePolicy(const QNetworkCookie* self) {
+    return static_cast<int>(self->sameSitePolicy());
+}
+
+void QNetworkCookie_SetSameSitePolicy(QNetworkCookie* self, int sameSite) {
+    self->setSameSitePolicy(static_cast<QNetworkCookie::SameSite>(sameSite));
+}
+
 bool QNetworkCookie_IsSessionCookie(const QNetworkCookie* self) {
     return self->isSessionCookie();
 }

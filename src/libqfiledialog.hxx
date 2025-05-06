@@ -46,7 +46,7 @@ class VirtualQFileDialog : public QFileDialog {
     using QFileDialog_KeyReleaseEvent_Callback = void (*)(QFileDialog*, QKeyEvent*);
     using QFileDialog_FocusInEvent_Callback = void (*)(QFileDialog*, QFocusEvent*);
     using QFileDialog_FocusOutEvent_Callback = void (*)(QFileDialog*, QFocusEvent*);
-    using QFileDialog_EnterEvent_Callback = void (*)(QFileDialog*, QEvent*);
+    using QFileDialog_EnterEvent_Callback = void (*)(QFileDialog*, QEnterEvent*);
     using QFileDialog_LeaveEvent_Callback = void (*)(QFileDialog*, QEvent*);
     using QFileDialog_PaintEvent_Callback = void (*)(QFileDialog*, QPaintEvent*);
     using QFileDialog_MoveEvent_Callback = void (*)(QFileDialog*, QMoveEvent*);
@@ -57,7 +57,7 @@ class VirtualQFileDialog : public QFileDialog {
     using QFileDialog_DragLeaveEvent_Callback = void (*)(QFileDialog*, QDragLeaveEvent*);
     using QFileDialog_DropEvent_Callback = void (*)(QFileDialog*, QDropEvent*);
     using QFileDialog_HideEvent_Callback = void (*)(QFileDialog*, QHideEvent*);
-    using QFileDialog_NativeEvent_Callback = bool (*)(QFileDialog*, const QByteArray&, void*, long*);
+    using QFileDialog_NativeEvent_Callback = bool (*)(QFileDialog*, const QByteArray&, void*, qintptr*);
     using QFileDialog_Metric_Callback = int (*)(const QFileDialog*, QPaintDevice::PaintDeviceMetric);
     using QFileDialog_InitPainter_Callback = void (*)(const QFileDialog*, QPainter*);
     using QFileDialog_Redirected_Callback = QPaintDevice* (*)(const QFileDialog*, QPoint*);
@@ -765,7 +765,7 @@ class VirtualQFileDialog : public QFileDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qfiledialog_enterevent_isbase) {
             qfiledialog_enterevent_isbase = false;
             QFileDialog::enterEvent(event);
@@ -897,7 +897,7 @@ class VirtualQFileDialog : public QFileDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qfiledialog_nativeevent_isbase) {
             qfiledialog_nativeevent_isbase = false;
             return QFileDialog::nativeEvent(eventType, message, result);

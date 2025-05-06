@@ -21,15 +21,17 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
+typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QLocalSocket QLocalSocket;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -38,9 +40,13 @@ typedef struct QVariant QVariant;
 #ifdef __cplusplus
 typedef QLocalSocket::LocalSocketError LocalSocketError; // C++ enum
 typedef QLocalSocket::LocalSocketState LocalSocketState; // C++ enum
+typedef QLocalSocket::SocketOption SocketOption;         // C++ enum
+typedef QLocalSocket::SocketOptions SocketOptions;       // C++ QFlags
 #else
 typedef int LocalSocketError; // C ABI enum
 typedef int LocalSocketState; // C ABI enum
+typedef int SocketOption;     // C ABI enum
+typedef int SocketOptions;    // C ABI QFlags
 #endif
 
 QLocalSocket* QLocalSocket_new();
@@ -51,7 +57,6 @@ int QLocalSocket_Metacall(QLocalSocket* self, int param1, int param2, void** par
 void QLocalSocket_OnMetacall(QLocalSocket* self, intptr_t slot);
 int QLocalSocket_QBaseMetacall(QLocalSocket* self, int param1, int param2, void** param3);
 libqt_string QLocalSocket_Tr(const char* s);
-libqt_string QLocalSocket_TrUtf8(const char* s);
 void QLocalSocket_ConnectToServer(QLocalSocket* self);
 void QLocalSocket_ConnectToServerWithName(QLocalSocket* self, libqt_string name);
 void QLocalSocket_DisconnectFromServer(QLocalSocket* self);
@@ -84,6 +89,8 @@ long long QLocalSocket_ReadBufferSize(const QLocalSocket* self);
 void QLocalSocket_SetReadBufferSize(QLocalSocket* self, long long size);
 bool QLocalSocket_SetSocketDescriptor(QLocalSocket* self, intptr_t socketDescriptor);
 intptr_t QLocalSocket_SocketDescriptor(const QLocalSocket* self);
+void QLocalSocket_SetSocketOptions(QLocalSocket* self, int option);
+int QLocalSocket_SocketOptions(const QLocalSocket* self);
 int QLocalSocket_State(const QLocalSocket* self);
 bool QLocalSocket_WaitForBytesWritten(QLocalSocket* self, int msecs);
 void QLocalSocket_OnWaitForBytesWritten(QLocalSocket* self, intptr_t slot);
@@ -97,8 +104,6 @@ void QLocalSocket_Connected(QLocalSocket* self);
 void QLocalSocket_Connect_Connected(QLocalSocket* self, intptr_t slot);
 void QLocalSocket_Disconnected(QLocalSocket* self);
 void QLocalSocket_Connect_Disconnected(QLocalSocket* self, intptr_t slot);
-void QLocalSocket_ErrorWithSocketError(QLocalSocket* self, int socketError);
-void QLocalSocket_Connect_ErrorWithSocketError(QLocalSocket* self, intptr_t slot);
 void QLocalSocket_ErrorOccurred(QLocalSocket* self, int socketError);
 void QLocalSocket_Connect_ErrorOccurred(QLocalSocket* self, intptr_t slot);
 void QLocalSocket_StateChanged(QLocalSocket* self, int socketState);
@@ -106,13 +111,17 @@ void QLocalSocket_Connect_StateChanged(QLocalSocket* self, intptr_t slot);
 long long QLocalSocket_ReadData(QLocalSocket* self, char* param1, long long param2);
 void QLocalSocket_OnReadData(QLocalSocket* self, intptr_t slot);
 long long QLocalSocket_QBaseReadData(QLocalSocket* self, char* param1, long long param2);
+long long QLocalSocket_ReadLineData(QLocalSocket* self, char* data, long long maxSize);
+void QLocalSocket_OnReadLineData(QLocalSocket* self, intptr_t slot);
+long long QLocalSocket_QBaseReadLineData(QLocalSocket* self, char* data, long long maxSize);
+long long QLocalSocket_SkipData(QLocalSocket* self, long long maxSize);
+void QLocalSocket_OnSkipData(QLocalSocket* self, intptr_t slot);
+long long QLocalSocket_QBaseSkipData(QLocalSocket* self, long long maxSize);
 long long QLocalSocket_WriteData(QLocalSocket* self, const char* param1, long long param2);
 void QLocalSocket_OnWriteData(QLocalSocket* self, intptr_t slot);
 long long QLocalSocket_QBaseWriteData(QLocalSocket* self, const char* param1, long long param2);
 libqt_string QLocalSocket_Tr2(const char* s, const char* c);
 libqt_string QLocalSocket_Tr3(const char* s, const char* c, int n);
-libqt_string QLocalSocket_TrUtf82(const char* s, const char* c);
-libqt_string QLocalSocket_TrUtf83(const char* s, const char* c, int n);
 void QLocalSocket_ConnectToServer1(QLocalSocket* self, int openMode);
 void QLocalSocket_ConnectToServer2(QLocalSocket* self, libqt_string name, int openMode);
 bool QLocalSocket_SetSocketDescriptor2(QLocalSocket* self, intptr_t socketDescriptor, int socketState);
@@ -134,9 +143,6 @@ bool QLocalSocket_QBaseAtEnd(const QLocalSocket* self);
 bool QLocalSocket_Reset(QLocalSocket* self);
 void QLocalSocket_OnReset(QLocalSocket* self, intptr_t slot);
 bool QLocalSocket_QBaseReset(QLocalSocket* self);
-long long QLocalSocket_ReadLineData(QLocalSocket* self, char* data, long long maxlen);
-void QLocalSocket_OnReadLineData(QLocalSocket* self, intptr_t slot);
-long long QLocalSocket_QBaseReadLineData(QLocalSocket* self, char* data, long long maxlen);
 bool QLocalSocket_Event(QLocalSocket* self, QEvent* event);
 void QLocalSocket_OnEvent(QLocalSocket* self, intptr_t slot);
 bool QLocalSocket_QBaseEvent(QLocalSocket* self, QEvent* event);

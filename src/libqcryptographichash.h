@@ -18,6 +18,7 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
+typedef struct QByteArrayView QByteArrayView;
 typedef struct QCryptographicHash QCryptographicHash;
 typedef struct QIODevice QIODevice;
 #endif
@@ -32,11 +33,12 @@ typedef void QtGadgetHelper; // C ABI QFlags
 
 QCryptographicHash* QCryptographicHash_new(int method);
 void QCryptographicHash_Reset(QCryptographicHash* self);
-void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, int length);
-void QCryptographicHash_AddDataWithData(QCryptographicHash* self, libqt_string data);
+void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, ptrdiff_t length);
+void QCryptographicHash_AddDataWithData(QCryptographicHash* self, QByteArrayView* data);
 bool QCryptographicHash_AddDataWithDevice(QCryptographicHash* self, QIODevice* device);
 libqt_string QCryptographicHash_Result(const QCryptographicHash* self);
-libqt_string QCryptographicHash_Hash(libqt_string data, int method);
+QByteArrayView* QCryptographicHash_ResultView(const QCryptographicHash* self);
+libqt_string QCryptographicHash_Hash(QByteArrayView* data, int method);
 int QCryptographicHash_HashLength(int method);
 void QCryptographicHash_Delete(QCryptographicHash* self);
 

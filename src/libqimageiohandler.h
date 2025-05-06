@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
@@ -31,8 +33,8 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QRect QRect;
+typedef struct QSize QSize;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -58,9 +60,6 @@ QIODevice* QImageIOHandler_Device(const QImageIOHandler* self);
 void QImageIOHandler_SetFormat(QImageIOHandler* self, libqt_string format);
 void QImageIOHandler_SetFormatWithFormat(const QImageIOHandler* self, libqt_string format);
 libqt_string QImageIOHandler_Format(const QImageIOHandler* self);
-libqt_string QImageIOHandler_Name(const QImageIOHandler* self);
-void QImageIOHandler_OnName(const QImageIOHandler* self, intptr_t slot);
-libqt_string QImageIOHandler_QBaseName(const QImageIOHandler* self);
 bool QImageIOHandler_CanRead(const QImageIOHandler* self);
 void QImageIOHandler_OnCanRead(const QImageIOHandler* self, intptr_t slot);
 bool QImageIOHandler_QBaseCanRead(const QImageIOHandler* self);
@@ -100,6 +99,7 @@ int QImageIOHandler_QBaseCurrentImageNumber(const QImageIOHandler* self);
 QRect* QImageIOHandler_CurrentImageRect(const QImageIOHandler* self);
 void QImageIOHandler_OnCurrentImageRect(const QImageIOHandler* self, intptr_t slot);
 QRect* QImageIOHandler_QBaseCurrentImageRect(const QImageIOHandler* self);
+bool QImageIOHandler_AllocateImage(QSize* size, int format, QImage* image);
 void QImageIOHandler_Delete(QImageIOHandler* self);
 
 QImageIOPlugin* QImageIOPlugin_new();
@@ -110,7 +110,6 @@ int QImageIOPlugin_Metacall(QImageIOPlugin* self, int param1, int param2, void**
 void QImageIOPlugin_OnMetacall(QImageIOPlugin* self, intptr_t slot);
 int QImageIOPlugin_QBaseMetacall(QImageIOPlugin* self, int param1, int param2, void** param3);
 libqt_string QImageIOPlugin_Tr(const char* s);
-libqt_string QImageIOPlugin_TrUtf8(const char* s);
 int QImageIOPlugin_Capabilities(const QImageIOPlugin* self, QIODevice* device, libqt_string format);
 void QImageIOPlugin_OnCapabilities(const QImageIOPlugin* self, intptr_t slot);
 int QImageIOPlugin_QBaseCapabilities(const QImageIOPlugin* self, QIODevice* device, libqt_string format);
@@ -119,8 +118,6 @@ void QImageIOPlugin_OnCreate(const QImageIOPlugin* self, intptr_t slot);
 QImageIOHandler* QImageIOPlugin_QBaseCreate(const QImageIOPlugin* self, QIODevice* device, libqt_string format);
 libqt_string QImageIOPlugin_Tr2(const char* s, const char* c);
 libqt_string QImageIOPlugin_Tr3(const char* s, const char* c, int n);
-libqt_string QImageIOPlugin_TrUtf82(const char* s, const char* c);
-libqt_string QImageIOPlugin_TrUtf83(const char* s, const char* c, int n);
 bool QImageIOPlugin_Event(QImageIOPlugin* self, QEvent* event);
 void QImageIOPlugin_OnEvent(QImageIOPlugin* self, intptr_t slot);
 bool QImageIOPlugin_QBaseEvent(QImageIOPlugin* self, QEvent* event);

@@ -23,13 +23,14 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QParallelAnimationGroup QParallelAnimationGroup;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -44,7 +45,6 @@ int QParallelAnimationGroup_Metacall(QParallelAnimationGroup* self, int param1, 
 void QParallelAnimationGroup_OnMetacall(QParallelAnimationGroup* self, intptr_t slot);
 int QParallelAnimationGroup_QBaseMetacall(QParallelAnimationGroup* self, int param1, int param2, void** param3);
 libqt_string QParallelAnimationGroup_Tr(const char* s);
-libqt_string QParallelAnimationGroup_TrUtf8(const char* s);
 int QParallelAnimationGroup_Duration(const QParallelAnimationGroup* self);
 void QParallelAnimationGroup_OnDuration(const QParallelAnimationGroup* self, intptr_t slot);
 int QParallelAnimationGroup_QBaseDuration(const QParallelAnimationGroup* self);
@@ -62,8 +62,6 @@ void QParallelAnimationGroup_OnUpdateDirection(QParallelAnimationGroup* self, in
 void QParallelAnimationGroup_QBaseUpdateDirection(QParallelAnimationGroup* self, int direction);
 libqt_string QParallelAnimationGroup_Tr2(const char* s, const char* c);
 libqt_string QParallelAnimationGroup_Tr3(const char* s, const char* c, int n);
-libqt_string QParallelAnimationGroup_TrUtf82(const char* s, const char* c);
-libqt_string QParallelAnimationGroup_TrUtf83(const char* s, const char* c, int n);
 bool QParallelAnimationGroup_EventFilter(QParallelAnimationGroup* self, QObject* watched, QEvent* event);
 void QParallelAnimationGroup_OnEventFilter(QParallelAnimationGroup* self, intptr_t slot);
 bool QParallelAnimationGroup_QBaseEventFilter(QParallelAnimationGroup* self, QObject* watched, QEvent* event);

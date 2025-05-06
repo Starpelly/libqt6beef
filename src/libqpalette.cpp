@@ -226,18 +226,6 @@ QBrush* QPalette_PlaceholderText(const QPalette* self) {
     return const_cast<QBrush*>(&_ret);
 }
 
-QBrush* QPalette_Foreground(const QPalette* self) {
-    const QBrush& _ret = self->foreground();
-    // Cast returned reference into pointer
-    return const_cast<QBrush*>(&_ret);
-}
-
-QBrush* QPalette_Background(const QPalette* self) {
-    const QBrush& _ret = self->background();
-    // Cast returned reference into pointer
-    return const_cast<QBrush*>(&_ret);
-}
-
 bool QPalette_OperatorEqual(const QPalette* self, QPalette* p) {
     return (*self == *p);
 }
@@ -254,16 +242,16 @@ long long QPalette_CacheKey(const QPalette* self) {
     return static_cast<long long>(self->cacheKey());
 }
 
-QPalette* QPalette_Resolve(const QPalette* self, QPalette* param1) {
-    return new QPalette(self->resolve(*param1));
+QPalette* QPalette_Resolve(const QPalette* self, QPalette* other) {
+    return new QPalette(self->resolve(*other));
 }
 
-unsigned int QPalette_Resolve2(const QPalette* self) {
-    return static_cast<unsigned int>(self->resolve());
+unsigned long long QPalette_ResolveMask(const QPalette* self) {
+    return static_cast<unsigned long long>(self->resolveMask());
 }
 
-void QPalette_ResolveWithMask(QPalette* self, unsigned int mask) {
-    self->resolve(static_cast<uint>(mask));
+void QPalette_SetResolveMask(QPalette* self, unsigned long long mask) {
+    self->setResolveMask(static_cast<QPalette::ResolveMask>(mask));
 }
 
 void QPalette_Delete(QPalette* self) {

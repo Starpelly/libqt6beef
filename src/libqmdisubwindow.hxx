@@ -47,14 +47,14 @@ class VirtualQMdiSubWindow : public QMdiSubWindow {
     using QMdiSubWindow_PaintEngine_Callback = QPaintEngine* (*)();
     using QMdiSubWindow_WheelEvent_Callback = void (*)(QMdiSubWindow*, QWheelEvent*);
     using QMdiSubWindow_KeyReleaseEvent_Callback = void (*)(QMdiSubWindow*, QKeyEvent*);
-    using QMdiSubWindow_EnterEvent_Callback = void (*)(QMdiSubWindow*, QEvent*);
+    using QMdiSubWindow_EnterEvent_Callback = void (*)(QMdiSubWindow*, QEnterEvent*);
     using QMdiSubWindow_TabletEvent_Callback = void (*)(QMdiSubWindow*, QTabletEvent*);
     using QMdiSubWindow_ActionEvent_Callback = void (*)(QMdiSubWindow*, QActionEvent*);
     using QMdiSubWindow_DragEnterEvent_Callback = void (*)(QMdiSubWindow*, QDragEnterEvent*);
     using QMdiSubWindow_DragMoveEvent_Callback = void (*)(QMdiSubWindow*, QDragMoveEvent*);
     using QMdiSubWindow_DragLeaveEvent_Callback = void (*)(QMdiSubWindow*, QDragLeaveEvent*);
     using QMdiSubWindow_DropEvent_Callback = void (*)(QMdiSubWindow*, QDropEvent*);
-    using QMdiSubWindow_NativeEvent_Callback = bool (*)(QMdiSubWindow*, const QByteArray&, void*, long*);
+    using QMdiSubWindow_NativeEvent_Callback = bool (*)(QMdiSubWindow*, const QByteArray&, void*, qintptr*);
     using QMdiSubWindow_Metric_Callback = int (*)(const QMdiSubWindow*, QPaintDevice::PaintDeviceMetric);
     using QMdiSubWindow_InitPainter_Callback = void (*)(const QMdiSubWindow*, QPainter*);
     using QMdiSubWindow_Redirected_Callback = QPaintDevice* (*)(const QMdiSubWindow*, QPoint*);
@@ -738,7 +738,7 @@ class VirtualQMdiSubWindow : public QMdiSubWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qmdisubwindow_enterevent_isbase) {
             qmdisubwindow_enterevent_isbase = false;
             QMdiSubWindow::enterEvent(event);
@@ -822,7 +822,7 @@ class VirtualQMdiSubWindow : public QMdiSubWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qmdisubwindow_nativeevent_isbase) {
             qmdisubwindow_nativeevent_isbase = false;
             return QMdiSubWindow::nativeEvent(eventType, message, result);

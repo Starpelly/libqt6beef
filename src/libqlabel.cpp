@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,7 +39,6 @@
 #include <QMoveEvent>
 #include <QMovie>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,6 +47,7 @@
 #include <QPicture>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -140,18 +143,6 @@ libqt_string QLabel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QLabel_TrUtf8(const char* s) {
-    QString _ret = QLabel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QLabel_Text(const QLabel* self) {
     QString _ret = self->text();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -164,20 +155,20 @@ libqt_string QLabel_Text(const QLabel* self) {
     return _str;
 }
 
-QPixmap* QLabel_Pixmap(const QLabel* self) {
-    return (QPixmap*)self->pixmap();
-}
-
-QPixmap* QLabel_PixmapWithQtReturnByValueConstant(const QLabel* self, int param1) {
+QPixmap* QLabel_Pixmap(const QLabel* self, int param1) {
     return new QPixmap(self->pixmap(static_cast<Qt::ReturnByValueConstant>(param1)));
 }
 
-QPicture* QLabel_Picture(const QLabel* self) {
-    return (QPicture*)self->picture();
+QPixmap* QLabel_Pixmap2(const QLabel* self) {
+    return new QPixmap(self->pixmap());
 }
 
-QPicture* QLabel_PictureWithQtReturnByValueConstant(const QLabel* self, int param1) {
+QPicture* QLabel_Picture(const QLabel* self, int param1) {
     return new QPicture(self->picture(static_cast<Qt::ReturnByValueConstant>(param1)));
+}
+
+QPicture* QLabel_Picture2(const QLabel* self) {
+    return new QPicture(self->picture());
 }
 
 QMovie* QLabel_Movie(const QLabel* self) {
@@ -365,30 +356,6 @@ libqt_string QLabel_Tr2(const char* s, const char* c) {
 
 libqt_string QLabel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QLabel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QLabel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QLabel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QLabel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QLabel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -764,6 +731,32 @@ void QLabel_OnFocusNextPrevChild(QLabel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QLabel_InitStyleOption(const QLabel* self, QStyleOptionFrame* option) {
+    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
+        vqlabel->initStyleOption(option);
+    } else {
+        vqlabel->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QLabel_QBaseInitStyleOption(const QLabel* self, QStyleOptionFrame* option) {
+    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
+        vqlabel->setQLabel_InitStyleOption_IsBase(true);
+        vqlabel->initStyleOption(option);
+    } else {
+        vqlabel->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLabel_OnInitStyleOption(const QLabel* self, intptr_t slot) {
+    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
+        vqlabel->setQLabel_InitStyleOption_Callback(reinterpret_cast<VirtualQLabel::QLabel_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QLabel_DevType(const QLabel* self) {
     if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
         return vqlabel->devType();
@@ -946,7 +939,7 @@ void QLabel_OnKeyReleaseEvent(QLabel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QLabel_EnterEvent(QLabel* self, QEvent* event) {
+void QLabel_EnterEvent(QLabel* self, QEnterEvent* event) {
     if (auto* vqlabel = dynamic_cast<VirtualQLabel*>(self)) {
         vqlabel->enterEvent(event);
     } else {
@@ -955,7 +948,7 @@ void QLabel_EnterEvent(QLabel* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QLabel_QBaseEnterEvent(QLabel* self, QEvent* event) {
+void QLabel_QBaseEnterEvent(QLabel* self, QEnterEvent* event) {
     if (auto* vqlabel = dynamic_cast<VirtualQLabel*>(self)) {
         vqlabel->setQLabel_EnterEvent_IsBase(true);
         vqlabel->enterEvent(event);
@@ -1284,23 +1277,23 @@ void QLabel_OnHideEvent(QLabel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QLabel_NativeEvent(QLabel* self, libqt_string eventType, void* message, long* result) {
+bool QLabel_NativeEvent(QLabel* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlabel = dynamic_cast<VirtualQLabel*>(self)) {
-        return vqlabel->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlabel->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqlabel->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlabel->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QLabel_QBaseNativeEvent(QLabel* self, libqt_string eventType, void* message, long* result) {
+bool QLabel_QBaseNativeEvent(QLabel* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlabel = dynamic_cast<VirtualQLabel*>(self)) {
         vqlabel->setQLabel_NativeEvent_IsBase(true);
-        return vqlabel->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlabel->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqlabel->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlabel->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1646,32 +1639,6 @@ void QLabel_QBaseDrawFrame(QLabel* self, QPainter* param1) {
 void QLabel_OnDrawFrame(QLabel* self, intptr_t slot) {
     if (auto* vqlabel = dynamic_cast<VirtualQLabel*>(self)) {
         vqlabel->setQLabel_DrawFrame_Callback(reinterpret_cast<VirtualQLabel::QLabel_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QLabel_InitStyleOption(const QLabel* self, QStyleOptionFrame* option) {
-    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
-        vqlabel->initStyleOption(option);
-    } else {
-        vqlabel->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QLabel_QBaseInitStyleOption(const QLabel* self, QStyleOptionFrame* option) {
-    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
-        vqlabel->setQLabel_InitStyleOption_IsBase(true);
-        vqlabel->initStyleOption(option);
-    } else {
-        vqlabel->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLabel_OnInitStyleOption(const QLabel* self, intptr_t slot) {
-    if (auto* vqlabel = const_cast<VirtualQLabel*>(dynamic_cast<const VirtualQLabel*>(self))) {
-        vqlabel->setQLabel_InitStyleOption_Callback(reinterpret_cast<VirtualQLabel::QLabel_InitStyleOption_Callback>(slot));
     }
 }
 

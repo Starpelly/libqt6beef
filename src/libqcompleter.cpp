@@ -1,5 +1,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCompleter>
@@ -10,7 +12,6 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QModelIndex>
 #include <QObject>
-#include <QObjectUserData>
 #include <QRect>
 #include <QString>
 #include <QByteArray>
@@ -96,18 +97,6 @@ int QCompleter_QBaseMetacall(QCompleter* self, int param1, int param2, void** pa
 
 libqt_string QCompleter_Tr(const char* s) {
     QString _ret = QCompleter::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCompleter_TrUtf8(const char* s) {
-    QString _ret = QCompleter::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -291,30 +280,6 @@ libqt_string QCompleter_Tr2(const char* s, const char* c) {
 
 libqt_string QCompleter_Tr3(const char* s, const char* c, int n) {
     QString _ret = QCompleter::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCompleter_TrUtf82(const char* s, const char* c) {
-    QString _ret = QCompleter::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCompleter_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QCompleter::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

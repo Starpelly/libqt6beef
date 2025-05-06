@@ -1,8 +1,11 @@
+#include <QAbstractFileIconProvider>
 #include <QAbstractItemDelegate>
 #include <QAbstractProxyModel>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,9 +18,9 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFileDialog>
-#include <QFileIconProvider>
 #include <QFocusEvent>
 #include <QFont>
 #include <QFontInfo>
@@ -39,7 +42,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -47,6 +49,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -145,18 +148,6 @@ libqt_string QFileDialog_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QFileDialog_TrUtf8(const char* s) {
-    QString _ret = QFileDialog::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QFileDialog_SetDirectory(QFileDialog* self, libqt_string directory) {
     QString directory_QString = QString::fromUtf8(directory.data, directory.len);
     self->setDirectory(directory_QString);
@@ -219,14 +210,6 @@ libqt_list /* of QUrl* */ QFileDialog_SelectedUrls(const QFileDialog* self) {
     _out.len = _ret.length();
     _out.data = static_cast<void*>(_arr);
     return _out;
-}
-
-void QFileDialog_SetNameFilterDetailsVisible(QFileDialog* self, bool enabled) {
-    self->setNameFilterDetailsVisible(enabled);
-}
-
-bool QFileDialog_IsNameFilterDetailsVisible(const QFileDialog* self) {
-    return self->isNameFilterDetailsVisible();
 }
 
 void QFileDialog_SetNameFilter(QFileDialog* self, libqt_string filter) {
@@ -364,22 +347,6 @@ int QFileDialog_AcceptMode(const QFileDialog* self) {
     return static_cast<int>(self->acceptMode());
 }
 
-void QFileDialog_SetReadOnly(QFileDialog* self, bool enabled) {
-    self->setReadOnly(enabled);
-}
-
-bool QFileDialog_IsReadOnly(const QFileDialog* self) {
-    return self->isReadOnly();
-}
-
-void QFileDialog_SetResolveSymlinks(QFileDialog* self, bool enabled) {
-    self->setResolveSymlinks(enabled);
-}
-
-bool QFileDialog_ResolveSymlinks(const QFileDialog* self) {
-    return self->resolveSymlinks();
-}
-
 void QFileDialog_SetSidebarUrls(QFileDialog* self, libqt_list /* of QUrl* */ urls) {
     QList<QUrl> urls_QList;
     urls_QList.reserve(urls.len);
@@ -416,14 +383,6 @@ libqt_string QFileDialog_SaveState(const QFileDialog* self) {
 bool QFileDialog_RestoreState(QFileDialog* self, libqt_string state) {
     QByteArray state_QByteArray(state.data, state.len);
     return self->restoreState(state_QByteArray);
-}
-
-void QFileDialog_SetConfirmOverwrite(QFileDialog* self, bool enabled) {
-    self->setConfirmOverwrite(enabled);
-}
-
-bool QFileDialog_ConfirmOverwrite(const QFileDialog* self) {
-    return self->confirmOverwrite();
 }
 
 void QFileDialog_SetDefaultSuffix(QFileDialog* self, libqt_string suffix) {
@@ -483,11 +442,11 @@ QAbstractItemDelegate* QFileDialog_ItemDelegate(const QFileDialog* self) {
     return self->itemDelegate();
 }
 
-void QFileDialog_SetIconProvider(QFileDialog* self, QFileIconProvider* provider) {
+void QFileDialog_SetIconProvider(QFileDialog* self, QAbstractFileIconProvider* provider) {
     self->setIconProvider(provider);
 }
 
-QFileIconProvider* QFileDialog_IconProvider(const QFileDialog* self) {
+QAbstractFileIconProvider* QFileDialog_IconProvider(const QFileDialog* self) {
     return self->iconProvider();
 }
 
@@ -855,30 +814,6 @@ libqt_string QFileDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QFileDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFileDialog::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QFileDialog_TrUtf82(const char* s, const char* c) {
-    QString _ret = QFileDialog::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QFileDialog_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QFileDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -2000,7 +1935,7 @@ void QFileDialog_OnFocusOutEvent(QFileDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFileDialog_EnterEvent(QFileDialog* self, QEvent* event) {
+void QFileDialog_EnterEvent(QFileDialog* self, QEnterEvent* event) {
     if (auto* vqfiledialog = dynamic_cast<VirtualQFileDialog*>(self)) {
         vqfiledialog->enterEvent(event);
     } else {
@@ -2009,7 +1944,7 @@ void QFileDialog_EnterEvent(QFileDialog* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QFileDialog_QBaseEnterEvent(QFileDialog* self, QEvent* event) {
+void QFileDialog_QBaseEnterEvent(QFileDialog* self, QEnterEvent* event) {
     if (auto* vqfiledialog = dynamic_cast<VirtualQFileDialog*>(self)) {
         vqfiledialog->setQFileDialog_EnterEvent_IsBase(true);
         vqfiledialog->enterEvent(event);
@@ -2286,23 +2221,23 @@ void QFileDialog_OnHideEvent(QFileDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QFileDialog_NativeEvent(QFileDialog* self, libqt_string eventType, void* message, long* result) {
+bool QFileDialog_NativeEvent(QFileDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfiledialog = dynamic_cast<VirtualQFileDialog*>(self)) {
-        return vqfiledialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqfiledialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqfiledialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqfiledialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QFileDialog_QBaseNativeEvent(QFileDialog* self, libqt_string eventType, void* message, long* result) {
+bool QFileDialog_QBaseNativeEvent(QFileDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfiledialog = dynamic_cast<VirtualQFileDialog*>(self)) {
         vqfiledialog->setQFileDialog_NativeEvent_IsBase(true);
-        return vqfiledialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqfiledialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqfiledialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqfiledialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

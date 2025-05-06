@@ -1,26 +1,24 @@
 #include <QAction>
 #include <QActionGroup>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QFont>
-#include <QGraphicsWidget>
 #include <QIcon>
 #include <QKeySequence>
 #include <QList>
-#include <QMenu>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
 #include <QThread>
 #include <QTimerEvent>
 #include <QVariant>
-#include <QWidget>
 #include <qaction.h>
 #include "libqaction.h"
 #include "libqaction.hxx"
@@ -98,16 +96,17 @@ libqt_string QAction_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QAction_TrUtf8(const char* s) {
-    QString _ret = QAction::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
+libqt_list /* of QObject* */ QAction_AssociatedObjects(const QAction* self) {
+    QList<QObject*> _ret = self->associatedObjects();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QObject** _arr = static_cast<QObject**>(malloc(sizeof(QObject*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = _ret[i];
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 void QAction_SetActionGroup(QAction* self, QActionGroup* group) {
@@ -219,14 +218,6 @@ int QAction_Priority(const QAction* self) {
     return static_cast<int>(self->priority());
 }
 
-QMenu* QAction_Menu(const QAction* self) {
-    return self->menu();
-}
-
-void QAction_SetMenu(QAction* self, QMenu* menu) {
-    self->setMenu(menu);
-}
-
 void QAction_SetSeparator(QAction* self, bool b) {
     self->setSeparator(b);
 }
@@ -326,10 +317,6 @@ void QAction_Activate(QAction* self, int event) {
     self->activate(static_cast<QAction::ActionEvent>(event));
 }
 
-bool QAction_ShowStatusText(QAction* self) {
-    return self->showStatusText();
-}
-
 void QAction_SetMenuRole(QAction* self, int menuRole) {
     self->setMenuRole(static_cast<QAction::MenuRole>(menuRole));
 }
@@ -354,34 +341,8 @@ bool QAction_IsShortcutVisibleInContextMenu(const QAction* self) {
     return self->isShortcutVisibleInContextMenu();
 }
 
-QWidget* QAction_ParentWidget(const QAction* self) {
-    return self->parentWidget();
-}
-
-libqt_list /* of QWidget* */ QAction_AssociatedWidgets(const QAction* self) {
-    QList<QWidget*> _ret = self->associatedWidgets();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    QWidget** _arr = static_cast<QWidget**>(malloc(sizeof(QWidget*) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = _ret[i];
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-libqt_list /* of QGraphicsWidget* */ QAction_AssociatedGraphicsWidgets(const QAction* self) {
-    QList<QGraphicsWidget*> _ret = self->associatedGraphicsWidgets();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    QGraphicsWidget** _arr = static_cast<QGraphicsWidget**>(malloc(sizeof(QGraphicsWidget*) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = _ret[i];
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
+bool QAction_ShowStatusText(QAction* self) {
+    return self->showStatusText();
 }
 
 void QAction_Trigger(QAction* self) {
@@ -404,6 +365,10 @@ void QAction_SetEnabled(QAction* self, bool enabled) {
     self->setEnabled(enabled);
 }
 
+void QAction_ResetEnabled(QAction* self) {
+    self->resetEnabled();
+}
+
 void QAction_SetDisabled(QAction* self, bool b) {
     self->setDisabled(b);
 }
@@ -419,6 +384,41 @@ void QAction_Changed(QAction* self) {
 void QAction_Connect_Changed(QAction* self, intptr_t slot) {
     void (*slotFunc)(QAction*) = reinterpret_cast<void (*)(QAction*)>(slot);
     QAction::connect(self, &QAction::changed, [self, slotFunc]() {
+        slotFunc(self);
+    });
+}
+
+void QAction_EnabledChanged(QAction* self, bool enabled) {
+    self->enabledChanged(enabled);
+}
+
+void QAction_Connect_EnabledChanged(QAction* self, intptr_t slot) {
+    void (*slotFunc)(QAction*, bool) = reinterpret_cast<void (*)(QAction*, bool)>(slot);
+    QAction::connect(self, &QAction::enabledChanged, [self, slotFunc](bool enabled) {
+        bool sigval1 = enabled;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QAction_CheckableChanged(QAction* self, bool checkable) {
+    self->checkableChanged(checkable);
+}
+
+void QAction_Connect_CheckableChanged(QAction* self, intptr_t slot) {
+    void (*slotFunc)(QAction*, bool) = reinterpret_cast<void (*)(QAction*, bool)>(slot);
+    QAction::connect(self, &QAction::checkableChanged, [self, slotFunc](bool checkable) {
+        bool sigval1 = checkable;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QAction_VisibleChanged(QAction* self) {
+    self->visibleChanged();
+}
+
+void QAction_Connect_VisibleChanged(QAction* self, intptr_t slot) {
+    void (*slotFunc)(QAction*) = reinterpret_cast<void (*)(QAction*)>(slot);
+    QAction::connect(self, &QAction::visibleChanged, [self, slotFunc]() {
         slotFunc(self);
     });
 }
@@ -481,32 +481,8 @@ libqt_string QAction_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QAction_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAction::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAction_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAction::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-bool QAction_ShowStatusText1(QAction* self, QWidget* widget) {
-    return self->showStatusText(widget);
+bool QAction_ShowStatusText1(QAction* self, QObject* object) {
+    return self->showStatusText(object);
 }
 
 void QAction_Triggered1(QAction* self, bool checked) {

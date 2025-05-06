@@ -28,6 +28,7 @@ class VirtualQGroupBox : public QGroupBox {
     using QGroupBox_MousePressEvent_Callback = void (*)(QGroupBox*, QMouseEvent*);
     using QGroupBox_MouseMoveEvent_Callback = void (*)(QGroupBox*, QMouseEvent*);
     using QGroupBox_MouseReleaseEvent_Callback = void (*)(QGroupBox*, QMouseEvent*);
+    using QGroupBox_InitStyleOption_Callback = void (*)(const QGroupBox*, QStyleOptionGroupBox*);
     using QGroupBox_DevType_Callback = int (*)();
     using QGroupBox_SetVisible_Callback = void (*)(QGroupBox*, bool);
     using QGroupBox_SizeHint_Callback = QSize (*)();
@@ -39,7 +40,7 @@ class VirtualQGroupBox : public QGroupBox {
     using QGroupBox_KeyPressEvent_Callback = void (*)(QGroupBox*, QKeyEvent*);
     using QGroupBox_KeyReleaseEvent_Callback = void (*)(QGroupBox*, QKeyEvent*);
     using QGroupBox_FocusOutEvent_Callback = void (*)(QGroupBox*, QFocusEvent*);
-    using QGroupBox_EnterEvent_Callback = void (*)(QGroupBox*, QEvent*);
+    using QGroupBox_EnterEvent_Callback = void (*)(QGroupBox*, QEnterEvent*);
     using QGroupBox_LeaveEvent_Callback = void (*)(QGroupBox*, QEvent*);
     using QGroupBox_MoveEvent_Callback = void (*)(QGroupBox*, QMoveEvent*);
     using QGroupBox_CloseEvent_Callback = void (*)(QGroupBox*, QCloseEvent*);
@@ -52,7 +53,7 @@ class VirtualQGroupBox : public QGroupBox {
     using QGroupBox_DropEvent_Callback = void (*)(QGroupBox*, QDropEvent*);
     using QGroupBox_ShowEvent_Callback = void (*)(QGroupBox*, QShowEvent*);
     using QGroupBox_HideEvent_Callback = void (*)(QGroupBox*, QHideEvent*);
-    using QGroupBox_NativeEvent_Callback = bool (*)(QGroupBox*, const QByteArray&, void*, long*);
+    using QGroupBox_NativeEvent_Callback = bool (*)(QGroupBox*, const QByteArray&, void*, qintptr*);
     using QGroupBox_Metric_Callback = int (*)(const QGroupBox*, QPaintDevice::PaintDeviceMetric);
     using QGroupBox_InitPainter_Callback = void (*)(const QGroupBox*, QPainter*);
     using QGroupBox_Redirected_Callback = QPaintDevice* (*)(const QGroupBox*, QPoint*);
@@ -65,7 +66,6 @@ class VirtualQGroupBox : public QGroupBox {
     using QGroupBox_CustomEvent_Callback = void (*)(QGroupBox*, QEvent*);
     using QGroupBox_ConnectNotify_Callback = void (*)(QGroupBox*, const QMetaMethod&);
     using QGroupBox_DisconnectNotify_Callback = void (*)(QGroupBox*, const QMetaMethod&);
-    using QGroupBox_InitStyleOption_Callback = void (*)(const QGroupBox*, QStyleOptionGroupBox*);
     using QGroupBox_UpdateMicroFocus_Callback = void (*)();
     using QGroupBox_Create_Callback = void (*)();
     using QGroupBox_Destroy_Callback = void (*)();
@@ -89,6 +89,7 @@ class VirtualQGroupBox : public QGroupBox {
     QGroupBox_MousePressEvent_Callback qgroupbox_mousepressevent_callback = nullptr;
     QGroupBox_MouseMoveEvent_Callback qgroupbox_mousemoveevent_callback = nullptr;
     QGroupBox_MouseReleaseEvent_Callback qgroupbox_mousereleaseevent_callback = nullptr;
+    QGroupBox_InitStyleOption_Callback qgroupbox_initstyleoption_callback = nullptr;
     QGroupBox_DevType_Callback qgroupbox_devtype_callback = nullptr;
     QGroupBox_SetVisible_Callback qgroupbox_setvisible_callback = nullptr;
     QGroupBox_SizeHint_Callback qgroupbox_sizehint_callback = nullptr;
@@ -126,7 +127,6 @@ class VirtualQGroupBox : public QGroupBox {
     QGroupBox_CustomEvent_Callback qgroupbox_customevent_callback = nullptr;
     QGroupBox_ConnectNotify_Callback qgroupbox_connectnotify_callback = nullptr;
     QGroupBox_DisconnectNotify_Callback qgroupbox_disconnectnotify_callback = nullptr;
-    QGroupBox_InitStyleOption_Callback qgroupbox_initstyleoption_callback = nullptr;
     QGroupBox_UpdateMicroFocus_Callback qgroupbox_updatemicrofocus_callback = nullptr;
     QGroupBox_Create_Callback qgroupbox_create_callback = nullptr;
     QGroupBox_Destroy_Callback qgroupbox_destroy_callback = nullptr;
@@ -149,6 +149,7 @@ class VirtualQGroupBox : public QGroupBox {
     mutable bool qgroupbox_mousepressevent_isbase = false;
     mutable bool qgroupbox_mousemoveevent_isbase = false;
     mutable bool qgroupbox_mousereleaseevent_isbase = false;
+    mutable bool qgroupbox_initstyleoption_isbase = false;
     mutable bool qgroupbox_devtype_isbase = false;
     mutable bool qgroupbox_setvisible_isbase = false;
     mutable bool qgroupbox_sizehint_isbase = false;
@@ -186,7 +187,6 @@ class VirtualQGroupBox : public QGroupBox {
     mutable bool qgroupbox_customevent_isbase = false;
     mutable bool qgroupbox_connectnotify_isbase = false;
     mutable bool qgroupbox_disconnectnotify_isbase = false;
-    mutable bool qgroupbox_initstyleoption_isbase = false;
     mutable bool qgroupbox_updatemicrofocus_isbase = false;
     mutable bool qgroupbox_create_isbase = false;
     mutable bool qgroupbox_destroy_isbase = false;
@@ -215,6 +215,7 @@ class VirtualQGroupBox : public QGroupBox {
         qgroupbox_mousepressevent_callback = nullptr;
         qgroupbox_mousemoveevent_callback = nullptr;
         qgroupbox_mousereleaseevent_callback = nullptr;
+        qgroupbox_initstyleoption_callback = nullptr;
         qgroupbox_devtype_callback = nullptr;
         qgroupbox_setvisible_callback = nullptr;
         qgroupbox_sizehint_callback = nullptr;
@@ -252,7 +253,6 @@ class VirtualQGroupBox : public QGroupBox {
         qgroupbox_customevent_callback = nullptr;
         qgroupbox_connectnotify_callback = nullptr;
         qgroupbox_disconnectnotify_callback = nullptr;
-        qgroupbox_initstyleoption_callback = nullptr;
         qgroupbox_updatemicrofocus_callback = nullptr;
         qgroupbox_create_callback = nullptr;
         qgroupbox_destroy_callback = nullptr;
@@ -276,6 +276,7 @@ class VirtualQGroupBox : public QGroupBox {
     void setQGroupBox_MousePressEvent_Callback(QGroupBox_MousePressEvent_Callback cb) { qgroupbox_mousepressevent_callback = cb; }
     void setQGroupBox_MouseMoveEvent_Callback(QGroupBox_MouseMoveEvent_Callback cb) { qgroupbox_mousemoveevent_callback = cb; }
     void setQGroupBox_MouseReleaseEvent_Callback(QGroupBox_MouseReleaseEvent_Callback cb) { qgroupbox_mousereleaseevent_callback = cb; }
+    void setQGroupBox_InitStyleOption_Callback(QGroupBox_InitStyleOption_Callback cb) { qgroupbox_initstyleoption_callback = cb; }
     void setQGroupBox_DevType_Callback(QGroupBox_DevType_Callback cb) { qgroupbox_devtype_callback = cb; }
     void setQGroupBox_SetVisible_Callback(QGroupBox_SetVisible_Callback cb) { qgroupbox_setvisible_callback = cb; }
     void setQGroupBox_SizeHint_Callback(QGroupBox_SizeHint_Callback cb) { qgroupbox_sizehint_callback = cb; }
@@ -313,7 +314,6 @@ class VirtualQGroupBox : public QGroupBox {
     void setQGroupBox_CustomEvent_Callback(QGroupBox_CustomEvent_Callback cb) { qgroupbox_customevent_callback = cb; }
     void setQGroupBox_ConnectNotify_Callback(QGroupBox_ConnectNotify_Callback cb) { qgroupbox_connectnotify_callback = cb; }
     void setQGroupBox_DisconnectNotify_Callback(QGroupBox_DisconnectNotify_Callback cb) { qgroupbox_disconnectnotify_callback = cb; }
-    void setQGroupBox_InitStyleOption_Callback(QGroupBox_InitStyleOption_Callback cb) { qgroupbox_initstyleoption_callback = cb; }
     void setQGroupBox_UpdateMicroFocus_Callback(QGroupBox_UpdateMicroFocus_Callback cb) { qgroupbox_updatemicrofocus_callback = cb; }
     void setQGroupBox_Create_Callback(QGroupBox_Create_Callback cb) { qgroupbox_create_callback = cb; }
     void setQGroupBox_Destroy_Callback(QGroupBox_Destroy_Callback cb) { qgroupbox_destroy_callback = cb; }
@@ -336,6 +336,7 @@ class VirtualQGroupBox : public QGroupBox {
     void setQGroupBox_MousePressEvent_IsBase(bool value) const { qgroupbox_mousepressevent_isbase = value; }
     void setQGroupBox_MouseMoveEvent_IsBase(bool value) const { qgroupbox_mousemoveevent_isbase = value; }
     void setQGroupBox_MouseReleaseEvent_IsBase(bool value) const { qgroupbox_mousereleaseevent_isbase = value; }
+    void setQGroupBox_InitStyleOption_IsBase(bool value) const { qgroupbox_initstyleoption_isbase = value; }
     void setQGroupBox_DevType_IsBase(bool value) const { qgroupbox_devtype_isbase = value; }
     void setQGroupBox_SetVisible_IsBase(bool value) const { qgroupbox_setvisible_isbase = value; }
     void setQGroupBox_SizeHint_IsBase(bool value) const { qgroupbox_sizehint_isbase = value; }
@@ -373,7 +374,6 @@ class VirtualQGroupBox : public QGroupBox {
     void setQGroupBox_CustomEvent_IsBase(bool value) const { qgroupbox_customevent_isbase = value; }
     void setQGroupBox_ConnectNotify_IsBase(bool value) const { qgroupbox_connectnotify_isbase = value; }
     void setQGroupBox_DisconnectNotify_IsBase(bool value) const { qgroupbox_disconnectnotify_isbase = value; }
-    void setQGroupBox_InitStyleOption_IsBase(bool value) const { qgroupbox_initstyleoption_isbase = value; }
     void setQGroupBox_UpdateMicroFocus_IsBase(bool value) const { qgroupbox_updatemicrofocus_isbase = value; }
     void setQGroupBox_Create_IsBase(bool value) const { qgroupbox_create_isbase = value; }
     void setQGroupBox_Destroy_IsBase(bool value) const { qgroupbox_destroy_isbase = value; }
@@ -517,6 +517,18 @@ class VirtualQGroupBox : public QGroupBox {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionGroupBox* option) const override {
+        if (qgroupbox_initstyleoption_isbase) {
+            qgroupbox_initstyleoption_isbase = false;
+            QGroupBox::initStyleOption(option);
+        } else if (qgroupbox_initstyleoption_callback != nullptr) {
+            qgroupbox_initstyleoption_callback(this, option);
+        } else {
+            QGroupBox::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qgroupbox_devtype_isbase) {
             qgroupbox_devtype_isbase = false;
@@ -649,7 +661,7 @@ class VirtualQGroupBox : public QGroupBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qgroupbox_enterevent_isbase) {
             qgroupbox_enterevent_isbase = false;
             QGroupBox::enterEvent(event);
@@ -805,7 +817,7 @@ class VirtualQGroupBox : public QGroupBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qgroupbox_nativeevent_isbase) {
             qgroupbox_nativeevent_isbase = false;
             return QGroupBox::nativeEvent(eventType, message, result);
@@ -957,18 +969,6 @@ class VirtualQGroupBox : public QGroupBox {
             qgroupbox_disconnectnotify_callback(this, signal);
         } else {
             QGroupBox::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionGroupBox* option) const {
-        if (qgroupbox_initstyleoption_isbase) {
-            qgroupbox_initstyleoption_isbase = false;
-            QGroupBox::initStyleOption(option);
-        } else if (qgroupbox_initstyleoption_callback != nullptr) {
-            qgroupbox_initstyleoption_callback(this, option);
-        } else {
-            QGroupBox::initStyleOption(option);
         }
     }
 

@@ -23,12 +23,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractEventDispatcher QAbstractEventDispatcher;
 typedef struct QAbstractNativeEventFilter QAbstractNativeEventFilter;
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QApplication QApplication;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QClipboard QClipboard;
 typedef struct QCoreApplication QCoreApplication;
 typedef struct QCursor QCursor;
-typedef struct QDesktopWidget QDesktopWidget;
 typedef struct QEvent QEvent;
 typedef struct QFont QFont;
 typedef struct QFontMetrics QFontMetrics;
@@ -39,12 +40,10 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPalette QPalette;
 typedef struct QPoint QPoint;
 typedef struct QScreen QScreen;
 typedef struct QSessionManager QSessionManager;
-typedef struct QSize QSize;
 typedef struct QStyle QStyle;
 typedef struct QStyleHints QStyleHints;
 typedef struct QThread QThread;
@@ -55,12 +54,6 @@ typedef struct QWidget QWidget;
 typedef struct QWindow QWindow;
 #endif
 
-#ifdef __cplusplus
-typedef QApplication::ColorSpec ColorSpec; // C++ enum
-#else
-typedef int ColorSpec; // C ABI enum
-#endif
-
 QApplication* QApplication_new(int* argc, char** argv);
 QApplication* QApplication_new2(int* argc, char** argv, int param3);
 QMetaObject* QApplication_MetaObject(const QApplication* self);
@@ -69,12 +62,9 @@ int QApplication_Metacall(QApplication* self, int param1, int param2, void** par
 void QApplication_OnMetacall(QApplication* self, intptr_t slot);
 int QApplication_QBaseMetacall(QApplication* self, int param1, int param2, void** param3);
 libqt_string QApplication_Tr(const char* s);
-libqt_string QApplication_TrUtf8(const char* s);
 QStyle* QApplication_Style();
 void QApplication_SetStyle(QStyle* style);
 QStyle* QApplication_SetStyleWithStyle(libqt_string style);
-int QApplication_ColorSpec();
-void QApplication_SetColorSpec(int colorSpec);
 QPalette* QApplication_Palette(QWidget* param1);
 QPalette* QApplication_PaletteWithClassName(const char* className);
 void QApplication_SetPalette(QPalette* param1);
@@ -83,11 +73,8 @@ QFont* QApplication_FontWithQWidget(QWidget* param1);
 QFont* QApplication_FontWithClassName(const char* className);
 void QApplication_SetFont(QFont* param1);
 QFontMetrics* QApplication_FontMetrics();
-void QApplication_SetWindowIcon(QIcon* icon);
-QIcon* QApplication_WindowIcon();
 libqt_list /* of QWidget* */ QApplication_AllWidgets();
 libqt_list /* of QWidget* */ QApplication_TopLevelWidgets();
-QDesktopWidget* QApplication_Desktop();
 QWidget* QApplication_ActivePopupWidget();
 QWidget* QApplication_ActiveModalWidget();
 QWidget* QApplication_FocusWidget();
@@ -107,8 +94,6 @@ void QApplication_SetKeyboardInputInterval(int keyboardInputInterval);
 int QApplication_KeyboardInputInterval();
 void QApplication_SetWheelScrollLines(int wheelScrollLines);
 int QApplication_WheelScrollLines();
-void QApplication_SetGlobalStrut(QSize* globalStrut);
-QSize* QApplication_GlobalStrut();
 void QApplication_SetStartDragTime(int ms);
 int QApplication_StartDragTime();
 void QApplication_SetStartDragDistance(int l);
@@ -132,8 +117,6 @@ void QApplication_OnEvent(QApplication* self, intptr_t slot);
 bool QApplication_QBaseEvent(QApplication* self, QEvent* param1);
 libqt_string QApplication_Tr2(const char* s, const char* c);
 libqt_string QApplication_Tr3(const char* s, const char* c, int n);
-libqt_string QApplication_TrUtf82(const char* s, const char* c);
-libqt_string QApplication_TrUtf83(const char* s, const char* c, int n);
 void QApplication_SetPalette2(QPalette* param1, const char* className);
 void QApplication_SetFont2(QFont* param1, const char* className);
 void QApplication_Alert2(QWidget* widget, int duration);
@@ -156,6 +139,9 @@ void QApplication_QBaseConnectNotify(QApplication* self, QMetaMethod* signal);
 void QApplication_DisconnectNotify(QApplication* self, QMetaMethod* signal);
 void QApplication_OnDisconnectNotify(QApplication* self, intptr_t slot);
 void QApplication_QBaseDisconnectNotify(QApplication* self, QMetaMethod* signal);
+void* QApplication_ResolveInterface(const QApplication* self, const char* name, int revision);
+void QApplication_OnResolveInterface(const QApplication* self, intptr_t slot);
+void* QApplication_QBaseResolveInterface(const QApplication* self, const char* name, int revision);
 QObject* QApplication_Sender(const QApplication* self);
 void QApplication_OnSender(const QApplication* self, intptr_t slot);
 QObject* QApplication_QBaseSender(const QApplication* self);

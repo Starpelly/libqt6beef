@@ -1,5 +1,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
@@ -12,10 +14,9 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
+#include <QModelRoleDataSpan>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPersistentModelIndex>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <QSize>
 #include <QSortFilterProxyModel>
@@ -80,22 +81,6 @@ libqt_string QSortFilterProxyModel_Tr(const char* s) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
-}
-
-libqt_string QSortFilterProxyModel_TrUtf8(const char* s) {
-    QString _ret = QSortFilterProxyModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-QRegExp* QSortFilterProxyModel_FilterRegExp(const QSortFilterProxyModel* self) {
-    return new QRegExp(self->filterRegExp());
 }
 
 QRegularExpression* QSortFilterProxyModel_FilterRegularExpression(const QSortFilterProxyModel* self) {
@@ -174,13 +159,12 @@ void QSortFilterProxyModel_SetRecursiveFilteringEnabled(QSortFilterProxyModel* s
     self->setRecursiveFilteringEnabled(recursive);
 }
 
-void QSortFilterProxyModel_SetFilterRegExp(QSortFilterProxyModel* self, libqt_string pattern) {
-    QString pattern_QString = QString::fromUtf8(pattern.data, pattern.len);
-    self->setFilterRegExp(pattern_QString);
+bool QSortFilterProxyModel_AutoAcceptChildRows(const QSortFilterProxyModel* self) {
+    return self->autoAcceptChildRows();
 }
 
-void QSortFilterProxyModel_SetFilterRegExpWithRegExp(QSortFilterProxyModel* self, QRegExp* regExp) {
-    self->setFilterRegExp(*regExp);
+void QSortFilterProxyModel_SetAutoAcceptChildRows(QSortFilterProxyModel* self, bool accept) {
+    self->setAutoAcceptChildRows(accept);
 }
 
 void QSortFilterProxyModel_SetFilterRegularExpression(QSortFilterProxyModel* self, libqt_string pattern) {
@@ -200,10 +184,6 @@ void QSortFilterProxyModel_SetFilterWildcard(QSortFilterProxyModel* self, libqt_
 void QSortFilterProxyModel_SetFilterFixedString(QSortFilterProxyModel* self, libqt_string pattern) {
     QString pattern_QString = QString::fromUtf8(pattern.data, pattern.len);
     self->setFilterFixedString(pattern_QString);
-}
-
-void QSortFilterProxyModel_Clear(QSortFilterProxyModel* self) {
-    self->clear();
 }
 
 void QSortFilterProxyModel_Invalidate(QSortFilterProxyModel* self) {
@@ -294,6 +274,18 @@ void QSortFilterProxyModel_Connect_RecursiveFilteringEnabledChanged(QSortFilterP
     });
 }
 
+void QSortFilterProxyModel_AutoAcceptChildRowsChanged(QSortFilterProxyModel* self, bool autoAcceptChildRows) {
+    self->autoAcceptChildRowsChanged(autoAcceptChildRows);
+}
+
+void QSortFilterProxyModel_Connect_AutoAcceptChildRowsChanged(QSortFilterProxyModel* self, intptr_t slot) {
+    void (*slotFunc)(QSortFilterProxyModel*, bool) = reinterpret_cast<void (*)(QSortFilterProxyModel*, bool)>(slot);
+    QSortFilterProxyModel::connect(self, &QSortFilterProxyModel::autoAcceptChildRowsChanged, [self, slotFunc](bool autoAcceptChildRows) {
+        bool sigval1 = autoAcceptChildRows;
+        slotFunc(self, sigval1);
+    });
+}
+
 libqt_string QSortFilterProxyModel_Tr2(const char* s, const char* c) {
     QString _ret = QSortFilterProxyModel::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -308,30 +300,6 @@ libqt_string QSortFilterProxyModel_Tr2(const char* s, const char* c) {
 
 libqt_string QSortFilterProxyModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSortFilterProxyModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSortFilterProxyModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSortFilterProxyModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSortFilterProxyModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSortFilterProxyModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1489,6 +1457,32 @@ void QSortFilterProxyModel_OnSetItemData(QSortFilterProxyModel* self, intptr_t s
 }
 
 // Derived class handler implementation
+bool QSortFilterProxyModel_ClearItemData(QSortFilterProxyModel* self, QModelIndex* index) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        return vqsortfilterproxymodel->clearItemData(*index);
+    } else {
+        return vqsortfilterproxymodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QSortFilterProxyModel_QBaseClearItemData(QSortFilterProxyModel* self, QModelIndex* index) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_ClearItemData_IsBase(true);
+        return vqsortfilterproxymodel->clearItemData(*index);
+    } else {
+        return vqsortfilterproxymodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnClearItemData(QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_ClearItemData_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_ClearItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QSortFilterProxyModel_CanDropMimeData(const QSortFilterProxyModel* self, QMimeData* data, int action, int row, int column, QModelIndex* parent) {
     if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
         return vqsortfilterproxymodel->canDropMimeData(data, static_cast<Qt::DropAction>(action), static_cast<int>(row), static_cast<int>(column), *parent);
@@ -1537,58 +1531,6 @@ int QSortFilterProxyModel_QBaseSupportedDragActions(const QSortFilterProxyModel*
 void QSortFilterProxyModel_OnSupportedDragActions(const QSortFilterProxyModel* self, intptr_t slot) {
     if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
         vqsortfilterproxymodel->setQSortFilterProxyModel_SupportedDragActions_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_SupportedDragActions_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QSortFilterProxyModel_MoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    } else {
-        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    }
-}
-
-// Base class handler implementation
-bool QSortFilterProxyModel_QBaseMoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveRows_IsBase(true);
-        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    } else {
-        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSortFilterProxyModel_OnMoveRows(QSortFilterProxyModel* self, intptr_t slot) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveRows_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_MoveRows_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QSortFilterProxyModel_MoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    } else {
-        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    }
-}
-
-// Base class handler implementation
-bool QSortFilterProxyModel_QBaseMoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveColumns_IsBase(true);
-        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    } else {
-        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSortFilterProxyModel_OnMoveColumns(QSortFilterProxyModel* self, intptr_t slot) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveColumns_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_MoveColumns_Callback>(slot));
     }
 }
 
@@ -1695,6 +1637,110 @@ libqt_map /* of int to libqt_string */ QSortFilterProxyModel_QBaseRoleNames(cons
 void QSortFilterProxyModel_OnRoleNames(const QSortFilterProxyModel* self, intptr_t slot) {
     if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
         vqsortfilterproxymodel->setQSortFilterProxyModel_RoleNames_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_RoleNames_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QSortFilterProxyModel_MoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    } else {
+        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    }
+}
+
+// Base class handler implementation
+bool QSortFilterProxyModel_QBaseMoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveRows_IsBase(true);
+        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    } else {
+        return vqsortfilterproxymodel->moveRows(*sourceParent, static_cast<int>(sourceRow), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnMoveRows(QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveRows_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_MoveRows_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QSortFilterProxyModel_MoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    } else {
+        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    }
+}
+
+// Base class handler implementation
+bool QSortFilterProxyModel_QBaseMoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveColumns_IsBase(true);
+        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    } else {
+        return vqsortfilterproxymodel->moveColumns(*sourceParent, static_cast<int>(sourceColumn), static_cast<int>(count), *destinationParent, static_cast<int>(destinationChild));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnMoveColumns(QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MoveColumns_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_MoveColumns_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QSortFilterProxyModel_MultiData(const QSortFilterProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        vqsortfilterproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqsortfilterproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QSortFilterProxyModel_QBaseMultiData(const QSortFilterProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MultiData_IsBase(true);
+        vqsortfilterproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqsortfilterproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnMultiData(const QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_MultiData_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QSortFilterProxyModel_ResetInternalData(QSortFilterProxyModel* self) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->resetInternalData();
+    } else {
+        vqsortfilterproxymodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QSortFilterProxyModel_QBaseResetInternalData(QSortFilterProxyModel* self) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_ResetInternalData_IsBase(true);
+        vqsortfilterproxymodel->resetInternalData();
+    } else {
+        vqsortfilterproxymodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnResetInternalData(QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1881,32 +1927,6 @@ void QSortFilterProxyModel_OnDisconnectNotify(QSortFilterProxyModel* self, intpt
 }
 
 // Derived class handler implementation
-void QSortFilterProxyModel_FilterChanged(QSortFilterProxyModel* self) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->filterChanged();
-    } else {
-        vqsortfilterproxymodel->filterChanged();
-    }
-}
-
-// Base class handler implementation
-void QSortFilterProxyModel_QBaseFilterChanged(QSortFilterProxyModel* self) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_FilterChanged_IsBase(true);
-        vqsortfilterproxymodel->filterChanged();
-    } else {
-        vqsortfilterproxymodel->filterChanged();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSortFilterProxyModel_OnFilterChanged(QSortFilterProxyModel* self, intptr_t slot) {
-    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_FilterChanged_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_FilterChanged_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QSortFilterProxyModel_InvalidateFilter(QSortFilterProxyModel* self) {
     if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
         vqsortfilterproxymodel->invalidateFilter();
@@ -1933,28 +1953,78 @@ void QSortFilterProxyModel_OnInvalidateFilter(QSortFilterProxyModel* self, intpt
 }
 
 // Derived class handler implementation
-void QSortFilterProxyModel_ResetInternalData(QSortFilterProxyModel* self) {
+void QSortFilterProxyModel_InvalidateRowsFilter(QSortFilterProxyModel* self) {
     if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->resetInternalData();
+        vqsortfilterproxymodel->invalidateRowsFilter();
     } else {
-        vqsortfilterproxymodel->resetInternalData();
+        vqsortfilterproxymodel->invalidateRowsFilter();
     }
 }
 
 // Base class handler implementation
-void QSortFilterProxyModel_QBaseResetInternalData(QSortFilterProxyModel* self) {
+void QSortFilterProxyModel_QBaseInvalidateRowsFilter(QSortFilterProxyModel* self) {
     if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_ResetInternalData_IsBase(true);
-        vqsortfilterproxymodel->resetInternalData();
+        vqsortfilterproxymodel->setQSortFilterProxyModel_InvalidateRowsFilter_IsBase(true);
+        vqsortfilterproxymodel->invalidateRowsFilter();
     } else {
-        vqsortfilterproxymodel->resetInternalData();
+        vqsortfilterproxymodel->invalidateRowsFilter();
     }
 }
 
 // Auxiliary method to allow providing re-implementation
-void QSortFilterProxyModel_OnResetInternalData(QSortFilterProxyModel* self, intptr_t slot) {
+void QSortFilterProxyModel_OnInvalidateRowsFilter(QSortFilterProxyModel* self, intptr_t slot) {
     if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
-        vqsortfilterproxymodel->setQSortFilterProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_ResetInternalData_Callback>(slot));
+        vqsortfilterproxymodel->setQSortFilterProxyModel_InvalidateRowsFilter_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_InvalidateRowsFilter_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QSortFilterProxyModel_InvalidateColumnsFilter(QSortFilterProxyModel* self) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->invalidateColumnsFilter();
+    } else {
+        vqsortfilterproxymodel->invalidateColumnsFilter();
+    }
+}
+
+// Base class handler implementation
+void QSortFilterProxyModel_QBaseInvalidateColumnsFilter(QSortFilterProxyModel* self) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_InvalidateColumnsFilter_IsBase(true);
+        vqsortfilterproxymodel->invalidateColumnsFilter();
+    } else {
+        vqsortfilterproxymodel->invalidateColumnsFilter();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnInvalidateColumnsFilter(QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = dynamic_cast<VirtualQSortFilterProxyModel*>(self)) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_InvalidateColumnsFilter_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_InvalidateColumnsFilter_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QModelIndex* QSortFilterProxyModel_CreateSourceIndex(const QSortFilterProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        return new QModelIndex(vqsortfilterproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
+    }
+    return {};
+}
+
+// Base class handler implementation
+QModelIndex* QSortFilterProxyModel_QBaseCreateSourceIndex(const QSortFilterProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_CreateSourceIndex_IsBase(true);
+        return new QModelIndex(vqsortfilterproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
+    }
+    return {};
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSortFilterProxyModel_OnCreateSourceIndex(const QSortFilterProxyModel* self, intptr_t slot) {
+    if (auto* vqsortfilterproxymodel = const_cast<VirtualQSortFilterProxyModel*>(dynamic_cast<const VirtualQSortFilterProxyModel*>(self))) {
+        vqsortfilterproxymodel->setQSortFilterProxyModel_CreateSourceIndex_Callback(reinterpret_cast<VirtualQSortFilterProxyModel::QSortFilterProxyModel_CreateSourceIndex_Callback>(slot));
     }
 }
 

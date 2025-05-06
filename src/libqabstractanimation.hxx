@@ -327,7 +327,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
     using QAnimationDriver_ConnectNotify_Callback = void (*)(QAnimationDriver*, const QMetaMethod&);
     using QAnimationDriver_DisconnectNotify_Callback = void (*)(QAnimationDriver*, const QMetaMethod&);
     using QAnimationDriver_AdvanceAnimation_Callback = void (*)();
-    using QAnimationDriver_AdvanceAnimation1_Callback = void (*)(QAnimationDriver*, qint64);
     using QAnimationDriver_Sender_Callback = QObject* (*)();
     using QAnimationDriver_SenderSignalIndex_Callback = int (*)();
     using QAnimationDriver_Receivers_Callback = int (*)(const QAnimationDriver*, const char*);
@@ -348,7 +347,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
     QAnimationDriver_ConnectNotify_Callback qanimationdriver_connectnotify_callback = nullptr;
     QAnimationDriver_DisconnectNotify_Callback qanimationdriver_disconnectnotify_callback = nullptr;
     QAnimationDriver_AdvanceAnimation_Callback qanimationdriver_advanceanimation_callback = nullptr;
-    QAnimationDriver_AdvanceAnimation1_Callback qanimationdriver_advanceanimation1_callback = nullptr;
     QAnimationDriver_Sender_Callback qanimationdriver_sender_callback = nullptr;
     QAnimationDriver_SenderSignalIndex_Callback qanimationdriver_sendersignalindex_callback = nullptr;
     QAnimationDriver_Receivers_Callback qanimationdriver_receivers_callback = nullptr;
@@ -368,7 +366,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
     mutable bool qanimationdriver_connectnotify_isbase = false;
     mutable bool qanimationdriver_disconnectnotify_isbase = false;
     mutable bool qanimationdriver_advanceanimation_isbase = false;
-    mutable bool qanimationdriver_advanceanimation1_isbase = false;
     mutable bool qanimationdriver_sender_isbase = false;
     mutable bool qanimationdriver_sendersignalindex_isbase = false;
     mutable bool qanimationdriver_receivers_isbase = false;
@@ -392,7 +389,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
         qanimationdriver_connectnotify_callback = nullptr;
         qanimationdriver_disconnectnotify_callback = nullptr;
         qanimationdriver_advanceanimation_callback = nullptr;
-        qanimationdriver_advanceanimation1_callback = nullptr;
         qanimationdriver_sender_callback = nullptr;
         qanimationdriver_sendersignalindex_callback = nullptr;
         qanimationdriver_receivers_callback = nullptr;
@@ -413,7 +409,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
     void setQAnimationDriver_ConnectNotify_Callback(QAnimationDriver_ConnectNotify_Callback cb) { qanimationdriver_connectnotify_callback = cb; }
     void setQAnimationDriver_DisconnectNotify_Callback(QAnimationDriver_DisconnectNotify_Callback cb) { qanimationdriver_disconnectnotify_callback = cb; }
     void setQAnimationDriver_AdvanceAnimation_Callback(QAnimationDriver_AdvanceAnimation_Callback cb) { qanimationdriver_advanceanimation_callback = cb; }
-    void setQAnimationDriver_AdvanceAnimation1_Callback(QAnimationDriver_AdvanceAnimation1_Callback cb) { qanimationdriver_advanceanimation1_callback = cb; }
     void setQAnimationDriver_Sender_Callback(QAnimationDriver_Sender_Callback cb) { qanimationdriver_sender_callback = cb; }
     void setQAnimationDriver_SenderSignalIndex_Callback(QAnimationDriver_SenderSignalIndex_Callback cb) { qanimationdriver_sendersignalindex_callback = cb; }
     void setQAnimationDriver_Receivers_Callback(QAnimationDriver_Receivers_Callback cb) { qanimationdriver_receivers_callback = cb; }
@@ -433,7 +428,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
     void setQAnimationDriver_ConnectNotify_IsBase(bool value) const { qanimationdriver_connectnotify_isbase = value; }
     void setQAnimationDriver_DisconnectNotify_IsBase(bool value) const { qanimationdriver_disconnectnotify_isbase = value; }
     void setQAnimationDriver_AdvanceAnimation_IsBase(bool value) const { qanimationdriver_advanceanimation_isbase = value; }
-    void setQAnimationDriver_AdvanceAnimation1_IsBase(bool value) const { qanimationdriver_advanceanimation1_isbase = value; }
     void setQAnimationDriver_Sender_IsBase(bool value) const { qanimationdriver_sender_isbase = value; }
     void setQAnimationDriver_SenderSignalIndex_IsBase(bool value) const { qanimationdriver_sendersignalindex_isbase = value; }
     void setQAnimationDriver_Receivers_IsBase(bool value) const { qanimationdriver_receivers_isbase = value; }
@@ -592,18 +586,6 @@ class VirtualQAnimationDriver : public QAnimationDriver {
             qanimationdriver_advanceanimation_callback();
         } else {
             QAnimationDriver::advanceAnimation();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void advanceAnimation(qint64 timeStep) {
-        if (qanimationdriver_advanceanimation1_isbase) {
-            qanimationdriver_advanceanimation1_isbase = false;
-            QAnimationDriver::advanceAnimation(timeStep);
-        } else if (qanimationdriver_advanceanimation1_callback != nullptr) {
-            qanimationdriver_advanceanimation1_callback(this, timeStep);
-        } else {
-            QAnimationDriver::advanceAnimation(timeStep);
         }
     }
 

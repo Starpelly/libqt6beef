@@ -71,14 +71,6 @@ long long QElapsedTimer_SecsTo(const QElapsedTimer* self, QElapsedTimer* other) 
     return static_cast<long long>(self->secsTo(*other));
 }
 
-bool QElapsedTimer_OperatorEqual(const QElapsedTimer* self, QElapsedTimer* other) {
-    return (*self == *other);
-}
-
-bool QElapsedTimer_OperatorNotEqual(const QElapsedTimer* self, QElapsedTimer* other) {
-    return (*self != *other);
-}
-
 void QElapsedTimer_Delete(QElapsedTimer* self) {
     delete self;
 }

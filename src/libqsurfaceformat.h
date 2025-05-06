@@ -18,6 +18,7 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
+typedef struct QColorSpace QColorSpace;
 typedef struct QSurfaceFormat QSurfaceFormat;
 #endif
 
@@ -72,16 +73,15 @@ libqt_pair /* tuple of int and int */ QSurfaceFormat_Version(const QSurfaceForma
 void QSurfaceFormat_SetVersion(QSurfaceFormat* self, int major, int minor);
 bool QSurfaceFormat_Stereo(const QSurfaceFormat* self);
 void QSurfaceFormat_SetStereo(QSurfaceFormat* self, bool enable);
-void QSurfaceFormat_SetOption(QSurfaceFormat* self, int opt);
-bool QSurfaceFormat_TestOption(const QSurfaceFormat* self, int opt);
 void QSurfaceFormat_SetOptions(QSurfaceFormat* self, int options);
-void QSurfaceFormat_SetOptionWithOption(QSurfaceFormat* self, int option);
-bool QSurfaceFormat_TestOptionWithOption(const QSurfaceFormat* self, int option);
+void QSurfaceFormat_SetOption(QSurfaceFormat* self, int option);
+bool QSurfaceFormat_TestOption(const QSurfaceFormat* self, int option);
 int QSurfaceFormat_Options(const QSurfaceFormat* self);
 int QSurfaceFormat_SwapInterval(const QSurfaceFormat* self);
 void QSurfaceFormat_SetSwapInterval(QSurfaceFormat* self, int interval);
-int QSurfaceFormat_ColorSpace(const QSurfaceFormat* self);
-void QSurfaceFormat_SetColorSpace(QSurfaceFormat* self, int colorSpace);
+QColorSpace* QSurfaceFormat_ColorSpace(const QSurfaceFormat* self);
+void QSurfaceFormat_SetColorSpace(QSurfaceFormat* self, QColorSpace* colorSpace);
+void QSurfaceFormat_SetColorSpaceWithColorSpace(QSurfaceFormat* self, int colorSpace);
 void QSurfaceFormat_SetDefaultFormat(QSurfaceFormat* format);
 QSurfaceFormat* QSurfaceFormat_DefaultFormat();
 void QSurfaceFormat_SetOption2(QSurfaceFormat* self, int option, bool on);

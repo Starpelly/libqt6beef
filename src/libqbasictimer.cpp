@@ -4,16 +4,8 @@
 #include "libqbasictimer.h"
 #include "libqbasictimer.hxx"
 
-QBasicTimer* QBasicTimer_new(QBasicTimer* param1) {
-    return new QBasicTimer(*param1);
-}
-
-QBasicTimer* QBasicTimer_new2() {
+QBasicTimer* QBasicTimer_new() {
     return new QBasicTimer();
-}
-
-void QBasicTimer_OperatorAssign(QBasicTimer* self, QBasicTimer* param1) {
-    self->operator=(*param1);
 }
 
 void QBasicTimer_Swap(QBasicTimer* self, QBasicTimer* other) {

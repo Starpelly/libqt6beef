@@ -1,6 +1,5 @@
 #include <QBasicMutex>
 #include <QMutex>
-#include <QMutexLocker>
 #include <QRecursiveMutex>
 #include <qmutex.h>
 #include "libqmutex.h"
@@ -26,14 +25,6 @@ bool QBasicMutex_TryLock2(QBasicMutex* self) {
     return self->try_lock();
 }
 
-bool QBasicMutex_IsRecursive(QBasicMutex* self) {
-    return self->isRecursive();
-}
-
-bool QBasicMutex_IsRecursive2(const QBasicMutex* self) {
-    return self->isRecursive();
-}
-
 void QBasicMutex_Delete(QBasicMutex* self) {
     delete self;
 }
@@ -42,31 +33,11 @@ QMutex* QMutex_new() {
     return new QMutex();
 }
 
-QMutex* QMutex_new2(int mode) {
-    return new QMutex(static_cast<QMutex::RecursionMode>(mode));
-}
-
-void QMutex_Lock(QMutex* self) {
-    self->lock();
-}
-
 bool QMutex_TryLock(QMutex* self) {
-    return self->tryLock();
-}
-
-void QMutex_Unlock(QMutex* self) {
-    self->unlock();
-}
-
-bool QMutex_TryLock2(QMutex* self) {
     return self->try_lock();
 }
 
-bool QMutex_IsRecursive(const QMutex* self) {
-    return self->isRecursive();
-}
-
-bool QMutex_TryLock1(QMutex* self, int timeout) {
+bool QMutex_TryLockWithTimeout(QMutex* self, int timeout) {
     return self->tryLock(static_cast<int>(timeout));
 }
 
@@ -78,30 +49,26 @@ QRecursiveMutex* QRecursiveMutex_new() {
     return new QRecursiveMutex();
 }
 
-void QRecursiveMutex_Delete(QRecursiveMutex* self) {
-    delete self;
+void QRecursiveMutex_Lock(QRecursiveMutex* self) {
+    self->lock();
 }
 
-QMutexLocker* QMutexLocker_new(QBasicMutex* m) {
-    return new QMutexLocker(m);
+bool QRecursiveMutex_TryLock(QRecursiveMutex* self) {
+    return self->tryLock();
 }
 
-QMutexLocker* QMutexLocker_new2(QRecursiveMutex* m) {
-    return new QMutexLocker(m);
-}
-
-void QMutexLocker_Unlock(QMutexLocker* self) {
+void QRecursiveMutex_Unlock(QRecursiveMutex* self) {
     self->unlock();
 }
 
-void QMutexLocker_Relock(QMutexLocker* self) {
-    self->relock();
+bool QRecursiveMutex_TryLock2(QRecursiveMutex* self) {
+    return self->try_lock();
 }
 
-QMutex* QMutexLocker_Mutex(const QMutexLocker* self) {
-    return self->mutex();
+bool QRecursiveMutex_TryLock1(QRecursiveMutex* self, int timeout) {
+    return self->tryLock(static_cast<int>(timeout));
 }
 
-void QMutexLocker_Delete(QMutexLocker* self) {
+void QRecursiveMutex_Delete(QRecursiveMutex* self) {
     delete self;
 }

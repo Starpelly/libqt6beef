@@ -1,5 +1,7 @@
 #include <QAbstractItemDelegate>
 #include <QAbstractItemModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataWidgetMapper>
@@ -10,7 +12,6 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QModelIndex>
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -65,18 +66,6 @@ int QDataWidgetMapper_QBaseMetacall(QDataWidgetMapper* self, int param1, int par
 
 libqt_string QDataWidgetMapper_Tr(const char* s) {
     QString _ret = QDataWidgetMapper::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QDataWidgetMapper_TrUtf8(const char* s) {
-    QString _ret = QDataWidgetMapper::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -220,30 +209,6 @@ libqt_string QDataWidgetMapper_Tr2(const char* s, const char* c) {
 
 libqt_string QDataWidgetMapper_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDataWidgetMapper::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QDataWidgetMapper_TrUtf82(const char* s, const char* c) {
-    QString _ret = QDataWidgetMapper::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QDataWidgetMapper_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QDataWidgetMapper::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -2,6 +2,7 @@
 #include <QAccessibleActionInterface>
 #include <QAccessibleApplication>
 #include <QAccessibleEditableTextInterface>
+#include <QAccessibleHyperlinkInterface>
 #include <QAccessibleImageInterface>
 #include <QAccessibleInterface>
 #include <QAccessibleObject>
@@ -48,20 +49,20 @@ QWindow* QAccessibleObject_Window(const QAccessibleObject* self) {
 }
 
 libqt_list /* of libqt_pair  tuple of QAccessibleInterface* and int  */ QAccessibleObject_Relations(const QAccessibleObject* self, int match) {
-    QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = self->relations(static_cast<QAccessible::Relation>(match));
+    QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = self->relations(static_cast<QAccessible::Relation>(match));
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
-        QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
+        QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
         // Convert QPair<> from C++ memory to manually-managed C memory
-        QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-        int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
-        *_vv_first = _vv_ret.first;
-        *_vv_second = static_cast<int>(_vv_ret.second);
-        libqt_pair _vv_out;
-        _vv_out.first = static_cast<void*>(_vv_first);
-        _vv_out.second = static_cast<void*>(_vv_second);
-        _arr[i] = _vv_out;
+        QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+        int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
+        *_lv_first = _lv_ret.first;
+        *_lv_second = static_cast<int>(_lv_ret.second);
+        libqt_pair _lv_out;
+        _lv_out.first = static_cast<void*>(_lv_first);
+        _lv_out.second = static_cast<void*>(_lv_second);
+        _arr[i] = _lv_out;
     }
     libqt_list _out;
     _out.len = _ret.length();
@@ -530,40 +531,40 @@ void QAccessibleApplication_OnChildAt(const QAccessibleApplication* self, intptr
 // Derived class handler implementation
 libqt_list /* of libqt_pair  tuple of QAccessibleInterface* and int  */ QAccessibleApplication_Relations(const QAccessibleApplication* self, int match) {
     if (auto* vqaccessibleapplication = const_cast<VirtualQAccessibleApplication*>(dynamic_cast<const VirtualQAccessibleApplication*>(self))) {
-        QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
+        QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
         // Convert QList<> from C++ memory to manually-managed C memory
         libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
-            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
+            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
             // Convert QPair<> from C++ memory to manually-managed C memory
-            QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-            int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
-            *_vv_first = _vv_ret.first;
-            *_vv_second = static_cast<int>(_vv_ret.second);
-            libqt_pair _vv_out;
-            _vv_out.first = static_cast<void*>(_vv_first);
-            _vv_out.second = static_cast<void*>(_vv_second);
-            _arr[i] = _vv_out;
+            QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+            int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
+            *_lv_first = _lv_ret.first;
+            *_lv_second = static_cast<int>(_lv_ret.second);
+            libqt_pair _lv_out;
+            _lv_out.first = static_cast<void*>(_lv_first);
+            _lv_out.second = static_cast<void*>(_lv_second);
+            _arr[i] = _lv_out;
         }
         libqt_list _out;
         _out.len = _ret.length();
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
+        QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
         // Convert QList<> from C++ memory to manually-managed C memory
         libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
-            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
+            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
             // Convert QPair<> from C++ memory to manually-managed C memory
-            QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-            int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
-            *_vv_first = _vv_ret.first;
-            *_vv_second = static_cast<int>(_vv_ret.second);
-            libqt_pair _vv_out;
-            _vv_out.first = static_cast<void*>(_vv_first);
-            _vv_out.second = static_cast<void*>(_vv_second);
-            _arr[i] = _vv_out;
+            QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+            int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
+            *_lv_first = _lv_ret.first;
+            *_lv_second = static_cast<int>(_lv_ret.second);
+            libqt_pair _lv_out;
+            _lv_out.first = static_cast<void*>(_lv_first);
+            _lv_out.second = static_cast<void*>(_lv_second);
+            _arr[i] = _lv_out;
         }
         libqt_list _out;
         _out.len = _ret.length();
@@ -576,40 +577,40 @@ libqt_list /* of libqt_pair  tuple of QAccessibleInterface* and int  */ QAccessi
 libqt_list /* of libqt_pair  tuple of QAccessibleInterface* and int  */ QAccessibleApplication_QBaseRelations(const QAccessibleApplication* self, int match) {
     if (auto* vqaccessibleapplication = const_cast<VirtualQAccessibleApplication*>(dynamic_cast<const VirtualQAccessibleApplication*>(self))) {
         vqaccessibleapplication->setQAccessibleApplication_Relations_IsBase(true);
-        QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
+        QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
         // Convert QList<> from C++ memory to manually-managed C memory
         libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
-            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
+            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
             // Convert QPair<> from C++ memory to manually-managed C memory
-            QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-            int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
-            *_vv_first = _vv_ret.first;
-            *_vv_second = static_cast<int>(_vv_ret.second);
-            libqt_pair _vv_out;
-            _vv_out.first = static_cast<void*>(_vv_first);
-            _vv_out.second = static_cast<void*>(_vv_second);
-            _arr[i] = _vv_out;
+            QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+            int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
+            *_lv_first = _lv_ret.first;
+            *_lv_second = static_cast<int>(_lv_ret.second);
+            libqt_pair _lv_out;
+            _lv_out.first = static_cast<void*>(_lv_first);
+            _lv_out.second = static_cast<void*>(_lv_second);
+            _arr[i] = _lv_out;
         }
         libqt_list _out;
         _out.len = _ret.length();
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
+        QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = vqaccessibleapplication->relations(static_cast<QAccessible::Relation>(match));
         // Convert QList<> from C++ memory to manually-managed C memory
         libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
-            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
+            QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
             // Convert QPair<> from C++ memory to manually-managed C memory
-            QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-            int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
-            *_vv_first = _vv_ret.first;
-            *_vv_second = static_cast<int>(_vv_ret.second);
-            libqt_pair _vv_out;
-            _vv_out.first = static_cast<void*>(_vv_first);
-            _vv_out.second = static_cast<void*>(_vv_second);
-            _arr[i] = _vv_out;
+            QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+            int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
+            *_lv_first = _lv_ret.first;
+            *_lv_second = static_cast<int>(_lv_ret.second);
+            libqt_pair _lv_out;
+            _lv_out.first = static_cast<void*>(_lv_first);
+            _lv_out.second = static_cast<void*>(_lv_second);
+            _arr[i] = _lv_out;
         }
         libqt_list _out;
         _out.len = _ret.length();

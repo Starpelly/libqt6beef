@@ -22,6 +22,8 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAction QAction;
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
 typedef struct QCursor QCursor;
@@ -50,12 +52,10 @@ typedef struct QInputMethodEvent QInputMethodEvent;
 typedef struct QKeyEvent QKeyEvent;
 typedef struct QKeySequence QKeySequence;
 typedef struct QMarginsF QMarginsF;
-typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPalette QPalette;
@@ -85,7 +85,6 @@ int QGraphicsProxyWidget_Metacall(QGraphicsProxyWidget* self, int param1, int pa
 void QGraphicsProxyWidget_OnMetacall(QGraphicsProxyWidget* self, intptr_t slot);
 int QGraphicsProxyWidget_QBaseMetacall(QGraphicsProxyWidget* self, int param1, int param2, void** param3);
 libqt_string QGraphicsProxyWidget_Tr(const char* s);
-libqt_string QGraphicsProxyWidget_TrUtf8(const char* s);
 void QGraphicsProxyWidget_SetWidget(QGraphicsProxyWidget* self, QWidget* widget);
 QWidget* QGraphicsProxyWidget_Widget(const QGraphicsProxyWidget* self);
 QRectF* QGraphicsProxyWidget_SubWidgetRect(const QGraphicsProxyWidget* self, QWidget* widget);
@@ -188,8 +187,6 @@ void QGraphicsProxyWidget_OnResizeEvent(QGraphicsProxyWidget* self, intptr_t slo
 void QGraphicsProxyWidget_QBaseResizeEvent(QGraphicsProxyWidget* self, QGraphicsSceneResizeEvent* event);
 libqt_string QGraphicsProxyWidget_Tr2(const char* s, const char* c);
 libqt_string QGraphicsProxyWidget_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsProxyWidget_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsProxyWidget_TrUtf83(const char* s, const char* c, int n);
 void QGraphicsProxyWidget_GetContentsMargins(const QGraphicsProxyWidget* self, double* left, double* top, double* right, double* bottom);
 void QGraphicsProxyWidget_OnGetContentsMargins(const QGraphicsProxyWidget* self, intptr_t slot);
 void QGraphicsProxyWidget_QBaseGetContentsMargins(const QGraphicsProxyWidget* self, double* left, double* top, double* right, double* bottom);
@@ -271,6 +268,9 @@ bool QGraphicsProxyWidget_QBaseSceneEventFilter(QGraphicsProxyWidget* self, QGra
 void QGraphicsProxyWidget_SetExtension(QGraphicsProxyWidget* self, int extension, QVariant* variant);
 void QGraphicsProxyWidget_OnSetExtension(QGraphicsProxyWidget* self, intptr_t slot);
 void QGraphicsProxyWidget_QBaseSetExtension(QGraphicsProxyWidget* self, int extension, QVariant* variant);
+bool QGraphicsProxyWidget_IsEmpty(const QGraphicsProxyWidget* self);
+void QGraphicsProxyWidget_OnIsEmpty(const QGraphicsProxyWidget* self, intptr_t slot);
+bool QGraphicsProxyWidget_QBaseIsEmpty(const QGraphicsProxyWidget* self);
 void QGraphicsProxyWidget_InitStyleOption(const QGraphicsProxyWidget* self, QStyleOption* option);
 void QGraphicsProxyWidget_OnInitStyleOption(const QGraphicsProxyWidget* self, intptr_t slot);
 void QGraphicsProxyWidget_QBaseInitStyleOption(const QGraphicsProxyWidget* self, QStyleOption* option);

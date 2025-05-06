@@ -1,11 +1,13 @@
 #include <QImage>
-#include <QMap>
+#include <QPainter>
+#include <QRectF>
 #include <QSize>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
-#include <QVariant>
 #include <QVideoFrame>
+#define WORKAROUND_INNER_CLASS_DEFINITION_QVideoFrame__PaintOptions
+#include <QVideoFrameFormat>
 #include <qvideoframe.h>
 #include "libqvideoframe.h"
 #include "libqvideoframe.hxx"
@@ -14,16 +16,16 @@ QVideoFrame* QVideoFrame_new() {
     return new QVideoFrame();
 }
 
-QVideoFrame* QVideoFrame_new2(int bytes, QSize* size, int bytesPerLine, int format) {
-    return new QVideoFrame(static_cast<int>(bytes), *size, static_cast<int>(bytesPerLine), static_cast<QVideoFrame::PixelFormat>(format));
+QVideoFrame* QVideoFrame_new2(QVideoFrameFormat* format) {
+    return new QVideoFrame(*format);
 }
 
-QVideoFrame* QVideoFrame_new3(QImage* image) {
-    return new QVideoFrame(*image);
-}
-
-QVideoFrame* QVideoFrame_new4(QVideoFrame* other) {
+QVideoFrame* QVideoFrame_new3(QVideoFrame* other) {
     return new QVideoFrame(*other);
+}
+
+void QVideoFrame_Swap(QVideoFrame* self, QVideoFrame* other) {
+    self->swap(*other);
 }
 
 void QVideoFrame_OperatorAssign(QVideoFrame* self, QVideoFrame* other) {
@@ -46,6 +48,10 @@ int QVideoFrame_PixelFormat(const QVideoFrame* self) {
     return static_cast<int>(self->pixelFormat());
 }
 
+QVideoFrameFormat* QVideoFrame_SurfaceFormat(const QVideoFrame* self) {
+    return new QVideoFrameFormat(self->surfaceFormat());
+}
+
 int QVideoFrame_HandleType(const QVideoFrame* self) {
     return static_cast<int>(self->handleType());
 }
@@ -60,14 +66,6 @@ int QVideoFrame_Width(const QVideoFrame* self) {
 
 int QVideoFrame_Height(const QVideoFrame* self) {
     return self->height();
-}
-
-int QVideoFrame_FieldType(const QVideoFrame* self) {
-    return static_cast<int>(self->fieldType());
-}
-
-void QVideoFrame_SetFieldType(QVideoFrame* self, int fieldType) {
-    self->setFieldType(static_cast<QVideoFrame::FieldType>(fieldType));
 }
 
 bool QVideoFrame_IsMapped(const QVideoFrame* self) {
@@ -87,47 +85,31 @@ int QVideoFrame_MapMode(const QVideoFrame* self) {
 }
 
 bool QVideoFrame_Map(QVideoFrame* self, int mode) {
-    return self->map(static_cast<QAbstractVideoBuffer::MapMode>(mode));
+    return self->map(static_cast<QVideoFrame::MapMode>(mode));
 }
 
 void QVideoFrame_Unmap(QVideoFrame* self) {
     self->unmap();
 }
 
-int QVideoFrame_BytesPerLine(const QVideoFrame* self) {
-    return self->bytesPerLine();
-}
-
-int QVideoFrame_BytesPerLineWithPlane(const QVideoFrame* self, int plane) {
+int QVideoFrame_BytesPerLine(const QVideoFrame* self, int plane) {
     return self->bytesPerLine(static_cast<int>(plane));
 }
 
-unsigned char* QVideoFrame_Bits(QVideoFrame* self) {
-    return static_cast<unsigned char*>(self->bits());
-}
-
-unsigned char* QVideoFrame_BitsWithPlane(QVideoFrame* self, int plane) {
+unsigned char* QVideoFrame_Bits(QVideoFrame* self, int plane) {
     return static_cast<unsigned char*>(self->bits(static_cast<int>(plane)));
 }
 
-const unsigned char* QVideoFrame_Bits2(const QVideoFrame* self) {
-    return static_cast<const unsigned char*>(self->bits());
-}
-
-const unsigned char* QVideoFrame_Bits3(const QVideoFrame* self, int plane) {
+const unsigned char* QVideoFrame_BitsWithPlane(const QVideoFrame* self, int plane) {
     return static_cast<const unsigned char*>(self->bits(static_cast<int>(plane)));
 }
 
-int QVideoFrame_MappedBytes(const QVideoFrame* self) {
-    return self->mappedBytes();
+int QVideoFrame_MappedBytes(const QVideoFrame* self, int plane) {
+    return self->mappedBytes(static_cast<int>(plane));
 }
 
 int QVideoFrame_PlaneCount(const QVideoFrame* self) {
     return self->planeCount();
-}
-
-QVariant* QVideoFrame_Handle(const QVideoFrame* self) {
-    return new QVariant(self->handle());
 }
 
 long long QVideoFrame_StartTime(const QVideoFrame* self) {
@@ -146,54 +128,67 @@ void QVideoFrame_SetEndTime(QVideoFrame* self, long long time) {
     self->setEndTime(static_cast<qint64>(time));
 }
 
-libqt_map /* of libqt_string to QVariant* */ QVideoFrame_AvailableMetaData(const QVideoFrame* self) {
-    QVariantMap _ret = self->availableMetaData();
-    // Convert QMap<> from C++ memory to manually-managed C memory
-    libqt_string* _karr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
-    QVariant** _varr = static_cast<QVariant**>(malloc(sizeof(QVariant*) * _ret.size()));
-    int _ctr = 0;
-    for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
-        QString _mapkey_ret = _itr->first;
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray _mapkey_b = _mapkey_ret.toUtf8();
-        libqt_string _mapkey_str;
-        _mapkey_str.len = _mapkey_b.length();
-        _mapkey_str.data = static_cast<char*>(malloc((_mapkey_str.len + 1) * sizeof(char)));
-        memcpy(_mapkey_str.data, _mapkey_b.data(), _mapkey_str.len);
-        _mapkey_str.data[_mapkey_str.len] = '\0';
-        _karr[_ctr] = _mapkey_str;
-        _varr[_ctr] = new QVariant(_itr->second);
-        _ctr++;
-    }
-    libqt_map _out;
-    _out.len = _ret.size();
-    _out.keys = static_cast<void*>(_karr);
-    _out.values = static_cast<void*>(_varr);
-    return _out;
+void QVideoFrame_SetRotationAngle(QVideoFrame* self, int rotationAngle) {
+    self->setRotationAngle(static_cast<QVideoFrame::RotationAngle>(rotationAngle));
 }
 
-QVariant* QVideoFrame_MetaData(const QVideoFrame* self, libqt_string key) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return new QVariant(self->metaData(key_QString));
+int QVideoFrame_RotationAngle(const QVideoFrame* self) {
+    return static_cast<int>(self->rotationAngle());
 }
 
-void QVideoFrame_SetMetaData(QVideoFrame* self, libqt_string key, QVariant* value) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    self->setMetaData(key_QString, *value);
+void QVideoFrame_SetMirrored(QVideoFrame* self, bool mirrored) {
+    self->setMirrored(mirrored);
 }
 
-QImage* QVideoFrame_Image(const QVideoFrame* self) {
-    return new QImage(self->image());
+bool QVideoFrame_Mirrored(const QVideoFrame* self) {
+    return self->mirrored();
 }
 
-int QVideoFrame_PixelFormatFromImageFormat(int format) {
-    return static_cast<int>(QVideoFrame::pixelFormatFromImageFormat(static_cast<QImage::Format>(format)));
+QImage* QVideoFrame_ToImage(const QVideoFrame* self) {
+    return new QImage(self->toImage());
 }
 
-int QVideoFrame_ImageFormatFromPixelFormat(int format) {
-    return static_cast<int>(QVideoFrame::imageFormatFromPixelFormat(static_cast<QVideoFrame::PixelFormat>(format)));
+libqt_string QVideoFrame_SubtitleText(const QVideoFrame* self) {
+    QString _ret = self->subtitleText();
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+void QVideoFrame_SetSubtitleText(QVideoFrame* self, libqt_string text) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    self->setSubtitleText(text_QString);
+}
+
+void QVideoFrame_Paint(QVideoFrame* self, QPainter* painter, QRectF* rect, QVideoFrame__PaintOptions* options) {
+    self->paint(painter, *rect, *options);
 }
 
 void QVideoFrame_Delete(QVideoFrame* self) {
+    delete self;
+}
+
+QVideoFrame__PaintOptions* QVideoFrame__PaintOptions_new(QVideoFrame__PaintOptions* other) {
+    return new QVideoFrame::PaintOptions(*other);
+}
+
+QVideoFrame__PaintOptions* QVideoFrame__PaintOptions_new2(QVideoFrame__PaintOptions* other) {
+    return new QVideoFrame::PaintOptions(std::move(*other));
+}
+
+void QVideoFrame__PaintOptions_CopyAssign(QVideoFrame__PaintOptions* self, QVideoFrame__PaintOptions* other) {
+    *self = *other;
+}
+
+void QVideoFrame__PaintOptions_MoveAssign(QVideoFrame__PaintOptions* self, QVideoFrame__PaintOptions* other) {
+    *self = std::move(*other);
+}
+
+void QVideoFrame__PaintOptions_Delete(QVideoFrame__PaintOptions* self) {
     delete self;
 }

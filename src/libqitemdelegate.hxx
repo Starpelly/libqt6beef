@@ -32,7 +32,7 @@ class VirtualQItemDelegate : public QItemDelegate {
     using QItemDelegate_EditorEvent_Callback = bool (*)(QItemDelegate*, QEvent*, QAbstractItemModel*, const QStyleOptionViewItem&, const QModelIndex&);
     using QItemDelegate_DestroyEditor_Callback = void (*)(const QItemDelegate*, QWidget*, const QModelIndex&);
     using QItemDelegate_HelpEvent_Callback = bool (*)(QItemDelegate*, QHelpEvent*, QAbstractItemView*, const QStyleOptionViewItem&, const QModelIndex&);
-    using QItemDelegate_PaintingRoles_Callback = QVector<int> (*)();
+    using QItemDelegate_PaintingRoles_Callback = QList<int> (*)();
     using QItemDelegate_Event_Callback = bool (*)(QItemDelegate*, QEvent*);
     using QItemDelegate_TimerEvent_Callback = void (*)(QItemDelegate*, QTimerEvent*);
     using QItemDelegate_ChildEvent_Callback = void (*)(QItemDelegate*, QChildEvent*);
@@ -44,7 +44,6 @@ class VirtualQItemDelegate : public QItemDelegate {
     using QItemDelegate_Rect_Callback = QRect (*)(const QItemDelegate*, const QStyleOptionViewItem&, const QModelIndex&, int);
     using QItemDelegate_SetOptions_Callback = QStyleOptionViewItem (*)(const QItemDelegate*, const QModelIndex&, const QStyleOptionViewItem&);
     using QItemDelegate_Decoration_Callback = QPixmap (*)(const QItemDelegate*, const QStyleOptionViewItem&, const QVariant&);
-    using QItemDelegate_Selected_Callback = QPixmap* (*)(const QItemDelegate*, const QPixmap&, const QPalette&, bool);
     using QItemDelegate_DoCheck_Callback = QRect (*)(const QItemDelegate*, const QStyleOptionViewItem&, const QRect&, const QVariant&);
     using QItemDelegate_TextRectangle_Callback = QRect (*)(const QItemDelegate*, QPainter*, const QRect&, const QFont&, const QString&);
     using QItemDelegate_Sender_Callback = QObject* (*)();
@@ -81,7 +80,6 @@ class VirtualQItemDelegate : public QItemDelegate {
     QItemDelegate_Rect_Callback qitemdelegate_rect_callback = nullptr;
     QItemDelegate_SetOptions_Callback qitemdelegate_setoptions_callback = nullptr;
     QItemDelegate_Decoration_Callback qitemdelegate_decoration_callback = nullptr;
-    QItemDelegate_Selected_Callback qitemdelegate_selected_callback = nullptr;
     QItemDelegate_DoCheck_Callback qitemdelegate_docheck_callback = nullptr;
     QItemDelegate_TextRectangle_Callback qitemdelegate_textrectangle_callback = nullptr;
     QItemDelegate_Sender_Callback qitemdelegate_sender_callback = nullptr;
@@ -117,7 +115,6 @@ class VirtualQItemDelegate : public QItemDelegate {
     mutable bool qitemdelegate_rect_isbase = false;
     mutable bool qitemdelegate_setoptions_isbase = false;
     mutable bool qitemdelegate_decoration_isbase = false;
-    mutable bool qitemdelegate_selected_isbase = false;
     mutable bool qitemdelegate_docheck_isbase = false;
     mutable bool qitemdelegate_textrectangle_isbase = false;
     mutable bool qitemdelegate_sender_isbase = false;
@@ -157,7 +154,6 @@ class VirtualQItemDelegate : public QItemDelegate {
         qitemdelegate_rect_callback = nullptr;
         qitemdelegate_setoptions_callback = nullptr;
         qitemdelegate_decoration_callback = nullptr;
-        qitemdelegate_selected_callback = nullptr;
         qitemdelegate_docheck_callback = nullptr;
         qitemdelegate_textrectangle_callback = nullptr;
         qitemdelegate_sender_callback = nullptr;
@@ -194,7 +190,6 @@ class VirtualQItemDelegate : public QItemDelegate {
     void setQItemDelegate_Rect_Callback(QItemDelegate_Rect_Callback cb) { qitemdelegate_rect_callback = cb; }
     void setQItemDelegate_SetOptions_Callback(QItemDelegate_SetOptions_Callback cb) { qitemdelegate_setoptions_callback = cb; }
     void setQItemDelegate_Decoration_Callback(QItemDelegate_Decoration_Callback cb) { qitemdelegate_decoration_callback = cb; }
-    void setQItemDelegate_Selected_Callback(QItemDelegate_Selected_Callback cb) { qitemdelegate_selected_callback = cb; }
     void setQItemDelegate_DoCheck_Callback(QItemDelegate_DoCheck_Callback cb) { qitemdelegate_docheck_callback = cb; }
     void setQItemDelegate_TextRectangle_Callback(QItemDelegate_TextRectangle_Callback cb) { qitemdelegate_textrectangle_callback = cb; }
     void setQItemDelegate_Sender_Callback(QItemDelegate_Sender_Callback cb) { qitemdelegate_sender_callback = cb; }
@@ -230,7 +225,6 @@ class VirtualQItemDelegate : public QItemDelegate {
     void setQItemDelegate_Rect_IsBase(bool value) const { qitemdelegate_rect_isbase = value; }
     void setQItemDelegate_SetOptions_IsBase(bool value) const { qitemdelegate_setoptions_isbase = value; }
     void setQItemDelegate_Decoration_IsBase(bool value) const { qitemdelegate_decoration_isbase = value; }
-    void setQItemDelegate_Selected_IsBase(bool value) const { qitemdelegate_selected_isbase = value; }
     void setQItemDelegate_DoCheck_IsBase(bool value) const { qitemdelegate_docheck_isbase = value; }
     void setQItemDelegate_TextRectangle_IsBase(bool value) const { qitemdelegate_textrectangle_isbase = value; }
     void setQItemDelegate_Sender_IsBase(bool value) const { qitemdelegate_sender_isbase = value; }
@@ -419,7 +413,7 @@ class VirtualQItemDelegate : public QItemDelegate {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QVector<int> paintingRoles() const override {
+    virtual QList<int> paintingRoles() const override {
         if (qitemdelegate_paintingroles_isbase) {
             qitemdelegate_paintingroles_isbase = false;
             return QItemDelegate::paintingRoles();
@@ -559,18 +553,6 @@ class VirtualQItemDelegate : public QItemDelegate {
             return qitemdelegate_decoration_callback(this, option, variant);
         } else {
             return QItemDelegate::decoration(option, variant);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    QPixmap* selected(const QPixmap& pixmap, const QPalette& palette, bool enabled) const {
-        if (qitemdelegate_selected_isbase) {
-            qitemdelegate_selected_isbase = false;
-            return QItemDelegate::selected(pixmap, palette, enabled);
-        } else if (qitemdelegate_selected_callback != nullptr) {
-            return qitemdelegate_selected_callback(this, pixmap, palette, enabled);
-        } else {
-            return QItemDelegate::selected(pixmap, palette, enabled);
         }
     }
 

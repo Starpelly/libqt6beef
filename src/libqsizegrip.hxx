@@ -40,7 +40,7 @@ class VirtualQSizeGrip : public QSizeGrip {
     using QSizeGrip_KeyReleaseEvent_Callback = void (*)(QSizeGrip*, QKeyEvent*);
     using QSizeGrip_FocusInEvent_Callback = void (*)(QSizeGrip*, QFocusEvent*);
     using QSizeGrip_FocusOutEvent_Callback = void (*)(QSizeGrip*, QFocusEvent*);
-    using QSizeGrip_EnterEvent_Callback = void (*)(QSizeGrip*, QEvent*);
+    using QSizeGrip_EnterEvent_Callback = void (*)(QSizeGrip*, QEnterEvent*);
     using QSizeGrip_LeaveEvent_Callback = void (*)(QSizeGrip*, QEvent*);
     using QSizeGrip_ResizeEvent_Callback = void (*)(QSizeGrip*, QResizeEvent*);
     using QSizeGrip_CloseEvent_Callback = void (*)(QSizeGrip*, QCloseEvent*);
@@ -51,7 +51,7 @@ class VirtualQSizeGrip : public QSizeGrip {
     using QSizeGrip_DragMoveEvent_Callback = void (*)(QSizeGrip*, QDragMoveEvent*);
     using QSizeGrip_DragLeaveEvent_Callback = void (*)(QSizeGrip*, QDragLeaveEvent*);
     using QSizeGrip_DropEvent_Callback = void (*)(QSizeGrip*, QDropEvent*);
-    using QSizeGrip_NativeEvent_Callback = bool (*)(QSizeGrip*, const QByteArray&, void*, long*);
+    using QSizeGrip_NativeEvent_Callback = bool (*)(QSizeGrip*, const QByteArray&, void*, qintptr*);
     using QSizeGrip_ChangeEvent_Callback = void (*)(QSizeGrip*, QEvent*);
     using QSizeGrip_Metric_Callback = int (*)(const QSizeGrip*, QPaintDevice::PaintDeviceMetric);
     using QSizeGrip_InitPainter_Callback = void (*)(const QSizeGrip*, QPainter*);
@@ -652,7 +652,7 @@ class VirtualQSizeGrip : public QSizeGrip {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qsizegrip_enterevent_isbase) {
             qsizegrip_enterevent_isbase = false;
             QSizeGrip::enterEvent(event);
@@ -784,7 +784,7 @@ class VirtualQSizeGrip : public QSizeGrip {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qsizegrip_nativeevent_isbase) {
             qsizegrip_nativeevent_isbase = false;
             return QSizeGrip::nativeEvent(eventType, message, result);

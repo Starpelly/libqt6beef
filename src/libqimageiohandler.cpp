@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -10,8 +12,8 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QRect>
+#include <QSize>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -54,54 +56,8 @@ libqt_string QImageIOHandler_Format(const QImageIOHandler* self) {
     return _str;
 }
 
-// Derived class handler implementation
-libqt_string QImageIOHandler_Name(const QImageIOHandler* self) {
-    if (auto* vqimageiohandler = const_cast<VirtualQImageIOHandler*>(dynamic_cast<const VirtualQImageIOHandler*>(self))) {
-        QByteArray _qb = vqimageiohandler->name();
-        libqt_string _str;
-        _str.len = _qb.length();
-        _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-        memcpy(_str.data, _qb.data(), _str.len);
-        _str.data[_str.len] = '\0';
-        return _str;
-    } else {
-        QByteArray _qb = vqimageiohandler->name();
-        libqt_string _str;
-        _str.len = _qb.length();
-        _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-        memcpy(_str.data, _qb.data(), _str.len);
-        _str.data[_str.len] = '\0';
-        return _str;
-    }
-}
-
-// Base class handler implementation
-libqt_string QImageIOHandler_QBaseName(const QImageIOHandler* self) {
-    if (auto* vqimageiohandler = const_cast<VirtualQImageIOHandler*>(dynamic_cast<const VirtualQImageIOHandler*>(self))) {
-        vqimageiohandler->setQImageIOHandler_Name_IsBase(true);
-        QByteArray _qb = vqimageiohandler->name();
-        libqt_string _str;
-        _str.len = _qb.length();
-        _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-        memcpy(_str.data, _qb.data(), _str.len);
-        _str.data[_str.len] = '\0';
-        return _str;
-    } else {
-        QByteArray _qb = vqimageiohandler->name();
-        libqt_string _str;
-        _str.len = _qb.length();
-        _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-        memcpy(_str.data, _qb.data(), _str.len);
-        _str.data[_str.len] = '\0';
-        return _str;
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QImageIOHandler_OnName(const QImageIOHandler* self, intptr_t slot) {
-    if (auto* vqimageiohandler = const_cast<VirtualQImageIOHandler*>(dynamic_cast<const VirtualQImageIOHandler*>(self))) {
-        vqimageiohandler->setQImageIOHandler_Name_Callback(reinterpret_cast<VirtualQImageIOHandler::QImageIOHandler_Name_Callback>(slot));
-    }
+bool QImageIOHandler_AllocateImage(QSize* size, int format, QImage* image) {
+    return QImageIOHandler::allocateImage(*size, static_cast<QImage::Format>(format), image);
 }
 
 // Derived class handler implementation
@@ -499,18 +455,6 @@ libqt_string QImageIOPlugin_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QImageIOPlugin_TrUtf8(const char* s) {
-    QString _ret = QImageIOPlugin::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QImageIOPlugin_Tr2(const char* s, const char* c) {
     QString _ret = QImageIOPlugin::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -525,30 +469,6 @@ libqt_string QImageIOPlugin_Tr2(const char* s, const char* c) {
 
 libqt_string QImageIOPlugin_Tr3(const char* s, const char* c, int n) {
     QString _ret = QImageIOPlugin::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QImageIOPlugin_TrUtf82(const char* s, const char* c) {
-    QString _ret = QImageIOPlugin::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QImageIOPlugin_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QImageIOPlugin::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

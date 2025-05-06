@@ -95,8 +95,8 @@ int QFontInfo_StyleHint(const QFontInfo* self) {
     return static_cast<int>(self->styleHint());
 }
 
-bool QFontInfo_RawMode(const QFontInfo* self) {
-    return self->rawMode();
+int QFontInfo_LegacyWeight(const QFontInfo* self) {
+    return self->legacyWeight();
 }
 
 bool QFontInfo_ExactMatch(const QFontInfo* self) {

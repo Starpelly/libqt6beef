@@ -82,9 +82,6 @@ QTextOption* QTextLayout_TextOption(const QTextLayout* self);
 void QTextLayout_SetPreeditArea(QTextLayout* self, int position, libqt_string text);
 int QTextLayout_PreeditAreaPosition(const QTextLayout* self);
 libqt_string QTextLayout_PreeditAreaText(const QTextLayout* self);
-void QTextLayout_SetAdditionalFormats(QTextLayout* self, libqt_list /* of QTextLayout__FormatRange* */ overrides);
-libqt_list /* of QTextLayout__FormatRange* */ QTextLayout_AdditionalFormats(const QTextLayout* self);
-void QTextLayout_ClearAdditionalFormats(QTextLayout* self);
 void QTextLayout_SetFormats(QTextLayout* self, libqt_list /* of QTextLayout__FormatRange* */ overrides);
 libqt_list /* of QTextLayout__FormatRange* */ QTextLayout_Formats(const QTextLayout* self);
 void QTextLayout_ClearFormats(QTextLayout* self);
@@ -152,15 +149,18 @@ QPointF* QTextLine_Position(const QTextLine* self);
 int QTextLine_TextStart(const QTextLine* self);
 int QTextLine_TextLength(const QTextLine* self);
 int QTextLine_LineNumber(const QTextLine* self);
-void QTextLine_Draw(const QTextLine* self, QPainter* p, QPointF* point);
+void QTextLine_Draw(const QTextLine* self, QPainter* painter, QPointF* position);
 libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns(const QTextLine* self);
 double QTextLine_CursorToX2(const QTextLine* self, int* cursorPos, int edge);
 double QTextLine_CursorToX22(const QTextLine* self, int cursorPos, int edge);
 int QTextLine_XToCursor2(const QTextLine* self, double x, int param2);
-void QTextLine_Draw3(const QTextLine* self, QPainter* p, QPointF* point, QTextLayout__FormatRange* selection);
 libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns1(const QTextLine* self, int from);
 libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns2(const QTextLine* self, int from, int length);
 void QTextLine_Delete(QTextLine* self);
+
+QTextLayout__FormatRange* QTextLayout__FormatRange_new(QTextLayout__FormatRange* param1);
+void QTextLayout__FormatRange_OperatorAssign(QTextLayout__FormatRange* self, QTextLayout__FormatRange* param1);
+void QTextLayout__FormatRange_Delete(QTextLayout__FormatRange* self);
 
 #ifdef __cplusplus
 } /* extern C */

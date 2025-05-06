@@ -1,4 +1,6 @@
 #include <QAbstractNetworkCache>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -10,7 +12,6 @@
 #include <QNetworkCacheMetaData>
 #include <QNetworkDiskCache>
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -75,18 +76,6 @@ libqt_string QNetworkDiskCache_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QNetworkDiskCache_TrUtf8(const char* s) {
-    QString _ret = QNetworkDiskCache::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QNetworkDiskCache_CacheDirectory(const QNetworkDiskCache* self) {
     QString _ret = self->cacheDirectory();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -131,30 +120,6 @@ libqt_string QNetworkDiskCache_Tr2(const char* s, const char* c) {
 
 libqt_string QNetworkDiskCache_Tr3(const char* s, const char* c, int n) {
     QString _ret = QNetworkDiskCache::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QNetworkDiskCache_TrUtf82(const char* s, const char* c) {
-    QString _ret = QNetworkDiskCache::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QNetworkDiskCache_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QNetworkDiskCache::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

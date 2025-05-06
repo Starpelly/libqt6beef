@@ -25,18 +25,6 @@ libqt_string QCommandLineParser_Tr(const char* sourceText) {
     return _str;
 }
 
-libqt_string QCommandLineParser_TrUtf8(const char* sourceText) {
-    QString _ret = QCommandLineParser::trUtf8(sourceText);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QCommandLineParser_SetSingleDashWordOptionMode(QCommandLineParser* self, int parsingMode) {
     self->setSingleDashWordOptionMode(static_cast<QCommandLineParser::SingleDashWordOptionMode>(parsingMode));
 }
@@ -272,6 +260,14 @@ libqt_list /* of libqt_string */ QCommandLineParser_UnknownOptionNames(const QCo
     return _out;
 }
 
+void QCommandLineParser_ShowVersion(QCommandLineParser* self) {
+    self->showVersion();
+}
+
+void QCommandLineParser_ShowHelp(QCommandLineParser* self) {
+    self->showHelp();
+}
+
 libqt_string QCommandLineParser_HelpText(const QCommandLineParser* self) {
     QString _ret = self->helpText();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -308,35 +304,15 @@ libqt_string QCommandLineParser_Tr3(const char* sourceText, const char* disambig
     return _str;
 }
 
-libqt_string QCommandLineParser_TrUtf82(const char* sourceText, const char* disambiguation) {
-    QString _ret = QCommandLineParser::trUtf8(sourceText, disambiguation);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCommandLineParser_TrUtf83(const char* sourceText, const char* disambiguation, int n) {
-    QString _ret = QCommandLineParser::trUtf8(sourceText, disambiguation, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QCommandLineParser_AddPositionalArgument3(QCommandLineParser* self, libqt_string name, libqt_string description, libqt_string syntax) {
     QString name_QString = QString::fromUtf8(name.data, name.len);
     QString description_QString = QString::fromUtf8(description.data, description.len);
     QString syntax_QString = QString::fromUtf8(syntax.data, syntax.len);
     self->addPositionalArgument(name_QString, description_QString, syntax_QString);
+}
+
+void QCommandLineParser_ShowHelp1(QCommandLineParser* self, int exitCode) {
+    self->showHelp(static_cast<int>(exitCode));
 }
 
 void QCommandLineParser_Delete(QCommandLineParser* self) {

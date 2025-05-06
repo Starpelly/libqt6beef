@@ -46,7 +46,7 @@ class VirtualQProgressDialog : public QProgressDialog {
     using QProgressDialog_KeyReleaseEvent_Callback = void (*)(QProgressDialog*, QKeyEvent*);
     using QProgressDialog_FocusInEvent_Callback = void (*)(QProgressDialog*, QFocusEvent*);
     using QProgressDialog_FocusOutEvent_Callback = void (*)(QProgressDialog*, QFocusEvent*);
-    using QProgressDialog_EnterEvent_Callback = void (*)(QProgressDialog*, QEvent*);
+    using QProgressDialog_EnterEvent_Callback = void (*)(QProgressDialog*, QEnterEvent*);
     using QProgressDialog_LeaveEvent_Callback = void (*)(QProgressDialog*, QEvent*);
     using QProgressDialog_PaintEvent_Callback = void (*)(QProgressDialog*, QPaintEvent*);
     using QProgressDialog_MoveEvent_Callback = void (*)(QProgressDialog*, QMoveEvent*);
@@ -57,7 +57,7 @@ class VirtualQProgressDialog : public QProgressDialog {
     using QProgressDialog_DragLeaveEvent_Callback = void (*)(QProgressDialog*, QDragLeaveEvent*);
     using QProgressDialog_DropEvent_Callback = void (*)(QProgressDialog*, QDropEvent*);
     using QProgressDialog_HideEvent_Callback = void (*)(QProgressDialog*, QHideEvent*);
-    using QProgressDialog_NativeEvent_Callback = bool (*)(QProgressDialog*, const QByteArray&, void*, long*);
+    using QProgressDialog_NativeEvent_Callback = bool (*)(QProgressDialog*, const QByteArray&, void*, qintptr*);
     using QProgressDialog_Metric_Callback = int (*)(const QProgressDialog*, QPaintDevice::PaintDeviceMetric);
     using QProgressDialog_InitPainter_Callback = void (*)(const QProgressDialog*, QPainter*);
     using QProgressDialog_Redirected_Callback = QPaintDevice* (*)(const QProgressDialog*, QPoint*);
@@ -771,7 +771,7 @@ class VirtualQProgressDialog : public QProgressDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qprogressdialog_enterevent_isbase) {
             qprogressdialog_enterevent_isbase = false;
             QProgressDialog::enterEvent(event);
@@ -903,7 +903,7 @@ class VirtualQProgressDialog : public QProgressDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qprogressdialog_nativeevent_isbase) {
             qprogressdialog_nativeevent_isbase = false;
             return QProgressDialog::nativeEvent(eventType, message, result);

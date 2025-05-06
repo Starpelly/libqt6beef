@@ -1,5 +1,7 @@
 #include <QAbstractAnimation>
 #include <QAnimationGroup>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -8,7 +10,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPauseAnimation>
 #include <QSequentialAnimationGroup>
 #include <QString>
@@ -74,18 +75,6 @@ libqt_string QSequentialAnimationGroup_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QSequentialAnimationGroup_TrUtf8(const char* s) {
-    QString _ret = QSequentialAnimationGroup::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QPauseAnimation* QSequentialAnimationGroup_AddPause(QSequentialAnimationGroup* self, int msecs) {
     return self->addPause(static_cast<int>(msecs));
 }
@@ -124,30 +113,6 @@ libqt_string QSequentialAnimationGroup_Tr2(const char* s, const char* c) {
 
 libqt_string QSequentialAnimationGroup_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSequentialAnimationGroup::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSequentialAnimationGroup_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSequentialAnimationGroup::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSequentialAnimationGroup_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSequentialAnimationGroup::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -22,6 +22,7 @@ class VirtualQDockWidget : public QDockWidget {
     using QDockWidget_CloseEvent_Callback = void (*)(QDockWidget*, QCloseEvent*);
     using QDockWidget_PaintEvent_Callback = void (*)(QDockWidget*, QPaintEvent*);
     using QDockWidget_Event_Callback = bool (*)(QDockWidget*, QEvent*);
+    using QDockWidget_InitStyleOption_Callback = void (*)(const QDockWidget*, QStyleOptionDockWidget*);
     using QDockWidget_DevType_Callback = int (*)();
     using QDockWidget_SetVisible_Callback = void (*)(QDockWidget*, bool);
     using QDockWidget_SizeHint_Callback = QSize (*)();
@@ -38,7 +39,7 @@ class VirtualQDockWidget : public QDockWidget {
     using QDockWidget_KeyReleaseEvent_Callback = void (*)(QDockWidget*, QKeyEvent*);
     using QDockWidget_FocusInEvent_Callback = void (*)(QDockWidget*, QFocusEvent*);
     using QDockWidget_FocusOutEvent_Callback = void (*)(QDockWidget*, QFocusEvent*);
-    using QDockWidget_EnterEvent_Callback = void (*)(QDockWidget*, QEvent*);
+    using QDockWidget_EnterEvent_Callback = void (*)(QDockWidget*, QEnterEvent*);
     using QDockWidget_LeaveEvent_Callback = void (*)(QDockWidget*, QEvent*);
     using QDockWidget_MoveEvent_Callback = void (*)(QDockWidget*, QMoveEvent*);
     using QDockWidget_ResizeEvent_Callback = void (*)(QDockWidget*, QResizeEvent*);
@@ -51,7 +52,7 @@ class VirtualQDockWidget : public QDockWidget {
     using QDockWidget_DropEvent_Callback = void (*)(QDockWidget*, QDropEvent*);
     using QDockWidget_ShowEvent_Callback = void (*)(QDockWidget*, QShowEvent*);
     using QDockWidget_HideEvent_Callback = void (*)(QDockWidget*, QHideEvent*);
-    using QDockWidget_NativeEvent_Callback = bool (*)(QDockWidget*, const QByteArray&, void*, long*);
+    using QDockWidget_NativeEvent_Callback = bool (*)(QDockWidget*, const QByteArray&, void*, qintptr*);
     using QDockWidget_Metric_Callback = int (*)(const QDockWidget*, QPaintDevice::PaintDeviceMetric);
     using QDockWidget_InitPainter_Callback = void (*)(const QDockWidget*, QPainter*);
     using QDockWidget_Redirected_Callback = QPaintDevice* (*)(const QDockWidget*, QPoint*);
@@ -65,7 +66,6 @@ class VirtualQDockWidget : public QDockWidget {
     using QDockWidget_CustomEvent_Callback = void (*)(QDockWidget*, QEvent*);
     using QDockWidget_ConnectNotify_Callback = void (*)(QDockWidget*, const QMetaMethod&);
     using QDockWidget_DisconnectNotify_Callback = void (*)(QDockWidget*, const QMetaMethod&);
-    using QDockWidget_InitStyleOption_Callback = void (*)(const QDockWidget*, QStyleOptionDockWidget*);
     using QDockWidget_UpdateMicroFocus_Callback = void (*)();
     using QDockWidget_Create_Callback = void (*)();
     using QDockWidget_Destroy_Callback = void (*)();
@@ -83,6 +83,7 @@ class VirtualQDockWidget : public QDockWidget {
     QDockWidget_CloseEvent_Callback qdockwidget_closeevent_callback = nullptr;
     QDockWidget_PaintEvent_Callback qdockwidget_paintevent_callback = nullptr;
     QDockWidget_Event_Callback qdockwidget_event_callback = nullptr;
+    QDockWidget_InitStyleOption_Callback qdockwidget_initstyleoption_callback = nullptr;
     QDockWidget_DevType_Callback qdockwidget_devtype_callback = nullptr;
     QDockWidget_SetVisible_Callback qdockwidget_setvisible_callback = nullptr;
     QDockWidget_SizeHint_Callback qdockwidget_sizehint_callback = nullptr;
@@ -126,7 +127,6 @@ class VirtualQDockWidget : public QDockWidget {
     QDockWidget_CustomEvent_Callback qdockwidget_customevent_callback = nullptr;
     QDockWidget_ConnectNotify_Callback qdockwidget_connectnotify_callback = nullptr;
     QDockWidget_DisconnectNotify_Callback qdockwidget_disconnectnotify_callback = nullptr;
-    QDockWidget_InitStyleOption_Callback qdockwidget_initstyleoption_callback = nullptr;
     QDockWidget_UpdateMicroFocus_Callback qdockwidget_updatemicrofocus_callback = nullptr;
     QDockWidget_Create_Callback qdockwidget_create_callback = nullptr;
     QDockWidget_Destroy_Callback qdockwidget_destroy_callback = nullptr;
@@ -143,6 +143,7 @@ class VirtualQDockWidget : public QDockWidget {
     mutable bool qdockwidget_closeevent_isbase = false;
     mutable bool qdockwidget_paintevent_isbase = false;
     mutable bool qdockwidget_event_isbase = false;
+    mutable bool qdockwidget_initstyleoption_isbase = false;
     mutable bool qdockwidget_devtype_isbase = false;
     mutable bool qdockwidget_setvisible_isbase = false;
     mutable bool qdockwidget_sizehint_isbase = false;
@@ -186,7 +187,6 @@ class VirtualQDockWidget : public QDockWidget {
     mutable bool qdockwidget_customevent_isbase = false;
     mutable bool qdockwidget_connectnotify_isbase = false;
     mutable bool qdockwidget_disconnectnotify_isbase = false;
-    mutable bool qdockwidget_initstyleoption_isbase = false;
     mutable bool qdockwidget_updatemicrofocus_isbase = false;
     mutable bool qdockwidget_create_isbase = false;
     mutable bool qdockwidget_destroy_isbase = false;
@@ -211,6 +211,7 @@ class VirtualQDockWidget : public QDockWidget {
         qdockwidget_closeevent_callback = nullptr;
         qdockwidget_paintevent_callback = nullptr;
         qdockwidget_event_callback = nullptr;
+        qdockwidget_initstyleoption_callback = nullptr;
         qdockwidget_devtype_callback = nullptr;
         qdockwidget_setvisible_callback = nullptr;
         qdockwidget_sizehint_callback = nullptr;
@@ -254,7 +255,6 @@ class VirtualQDockWidget : public QDockWidget {
         qdockwidget_customevent_callback = nullptr;
         qdockwidget_connectnotify_callback = nullptr;
         qdockwidget_disconnectnotify_callback = nullptr;
-        qdockwidget_initstyleoption_callback = nullptr;
         qdockwidget_updatemicrofocus_callback = nullptr;
         qdockwidget_create_callback = nullptr;
         qdockwidget_destroy_callback = nullptr;
@@ -272,6 +272,7 @@ class VirtualQDockWidget : public QDockWidget {
     void setQDockWidget_CloseEvent_Callback(QDockWidget_CloseEvent_Callback cb) { qdockwidget_closeevent_callback = cb; }
     void setQDockWidget_PaintEvent_Callback(QDockWidget_PaintEvent_Callback cb) { qdockwidget_paintevent_callback = cb; }
     void setQDockWidget_Event_Callback(QDockWidget_Event_Callback cb) { qdockwidget_event_callback = cb; }
+    void setQDockWidget_InitStyleOption_Callback(QDockWidget_InitStyleOption_Callback cb) { qdockwidget_initstyleoption_callback = cb; }
     void setQDockWidget_DevType_Callback(QDockWidget_DevType_Callback cb) { qdockwidget_devtype_callback = cb; }
     void setQDockWidget_SetVisible_Callback(QDockWidget_SetVisible_Callback cb) { qdockwidget_setvisible_callback = cb; }
     void setQDockWidget_SizeHint_Callback(QDockWidget_SizeHint_Callback cb) { qdockwidget_sizehint_callback = cb; }
@@ -315,7 +316,6 @@ class VirtualQDockWidget : public QDockWidget {
     void setQDockWidget_CustomEvent_Callback(QDockWidget_CustomEvent_Callback cb) { qdockwidget_customevent_callback = cb; }
     void setQDockWidget_ConnectNotify_Callback(QDockWidget_ConnectNotify_Callback cb) { qdockwidget_connectnotify_callback = cb; }
     void setQDockWidget_DisconnectNotify_Callback(QDockWidget_DisconnectNotify_Callback cb) { qdockwidget_disconnectnotify_callback = cb; }
-    void setQDockWidget_InitStyleOption_Callback(QDockWidget_InitStyleOption_Callback cb) { qdockwidget_initstyleoption_callback = cb; }
     void setQDockWidget_UpdateMicroFocus_Callback(QDockWidget_UpdateMicroFocus_Callback cb) { qdockwidget_updatemicrofocus_callback = cb; }
     void setQDockWidget_Create_Callback(QDockWidget_Create_Callback cb) { qdockwidget_create_callback = cb; }
     void setQDockWidget_Destroy_Callback(QDockWidget_Destroy_Callback cb) { qdockwidget_destroy_callback = cb; }
@@ -332,6 +332,7 @@ class VirtualQDockWidget : public QDockWidget {
     void setQDockWidget_CloseEvent_IsBase(bool value) const { qdockwidget_closeevent_isbase = value; }
     void setQDockWidget_PaintEvent_IsBase(bool value) const { qdockwidget_paintevent_isbase = value; }
     void setQDockWidget_Event_IsBase(bool value) const { qdockwidget_event_isbase = value; }
+    void setQDockWidget_InitStyleOption_IsBase(bool value) const { qdockwidget_initstyleoption_isbase = value; }
     void setQDockWidget_DevType_IsBase(bool value) const { qdockwidget_devtype_isbase = value; }
     void setQDockWidget_SetVisible_IsBase(bool value) const { qdockwidget_setvisible_isbase = value; }
     void setQDockWidget_SizeHint_IsBase(bool value) const { qdockwidget_sizehint_isbase = value; }
@@ -375,7 +376,6 @@ class VirtualQDockWidget : public QDockWidget {
     void setQDockWidget_CustomEvent_IsBase(bool value) const { qdockwidget_customevent_isbase = value; }
     void setQDockWidget_ConnectNotify_IsBase(bool value) const { qdockwidget_connectnotify_isbase = value; }
     void setQDockWidget_DisconnectNotify_IsBase(bool value) const { qdockwidget_disconnectnotify_isbase = value; }
-    void setQDockWidget_InitStyleOption_IsBase(bool value) const { qdockwidget_initstyleoption_isbase = value; }
     void setQDockWidget_UpdateMicroFocus_IsBase(bool value) const { qdockwidget_updatemicrofocus_isbase = value; }
     void setQDockWidget_Create_IsBase(bool value) const { qdockwidget_create_isbase = value; }
     void setQDockWidget_Destroy_IsBase(bool value) const { qdockwidget_destroy_isbase = value; }
@@ -443,6 +443,18 @@ class VirtualQDockWidget : public QDockWidget {
             return qdockwidget_event_callback(this, event);
         } else {
             return QDockWidget::event(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionDockWidget* option) const override {
+        if (qdockwidget_initstyleoption_isbase) {
+            qdockwidget_initstyleoption_isbase = false;
+            QDockWidget::initStyleOption(option);
+        } else if (qdockwidget_initstyleoption_callback != nullptr) {
+            qdockwidget_initstyleoption_callback(this, option);
+        } else {
+            QDockWidget::initStyleOption(option);
         }
     }
 
@@ -639,7 +651,7 @@ class VirtualQDockWidget : public QDockWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qdockwidget_enterevent_isbase) {
             qdockwidget_enterevent_isbase = false;
             QDockWidget::enterEvent(event);
@@ -795,7 +807,7 @@ class VirtualQDockWidget : public QDockWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qdockwidget_nativeevent_isbase) {
             qdockwidget_nativeevent_isbase = false;
             return QDockWidget::nativeEvent(eventType, message, result);
@@ -959,18 +971,6 @@ class VirtualQDockWidget : public QDockWidget {
             qdockwidget_disconnectnotify_callback(this, signal);
         } else {
             QDockWidget::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionDockWidget* option) const {
-        if (qdockwidget_initstyleoption_isbase) {
-            qdockwidget_initstyleoption_isbase = false;
-            QDockWidget::initStyleOption(option);
-        } else if (qdockwidget_initstyleoption_callback != nullptr) {
-            qdockwidget_initstyleoption_callback(this, option);
-        } else {
-            QDockWidget::initStyleOption(option);
         }
     }
 

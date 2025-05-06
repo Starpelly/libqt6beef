@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QJsonObject QJsonObject;
@@ -28,7 +30,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPluginLoader QPluginLoader;
 typedef struct QStaticPlugin QStaticPlugin;
 typedef struct QThread QThread;
@@ -46,7 +47,6 @@ int QPluginLoader_Metacall(QPluginLoader* self, int param1, int param2, void** p
 void QPluginLoader_OnMetacall(QPluginLoader* self, intptr_t slot);
 int QPluginLoader_QBaseMetacall(QPluginLoader* self, int param1, int param2, void** param3);
 libqt_string QPluginLoader_Tr(const char* s);
-libqt_string QPluginLoader_TrUtf8(const char* s);
 QObject* QPluginLoader_Instance(QPluginLoader* self);
 QJsonObject* QPluginLoader_MetaData(const QPluginLoader* self);
 libqt_list /* of QObject* */ QPluginLoader_StaticInstances();
@@ -61,8 +61,6 @@ void QPluginLoader_SetLoadHints(QPluginLoader* self, int loadHints);
 int QPluginLoader_LoadHints(const QPluginLoader* self);
 libqt_string QPluginLoader_Tr2(const char* s, const char* c);
 libqt_string QPluginLoader_Tr3(const char* s, const char* c, int n);
-libqt_string QPluginLoader_TrUtf82(const char* s, const char* c);
-libqt_string QPluginLoader_TrUtf83(const char* s, const char* c, int n);
 bool QPluginLoader_Event(QPluginLoader* self, QEvent* event);
 void QPluginLoader_OnEvent(QPluginLoader* self, intptr_t slot);
 bool QPluginLoader_QBaseEvent(QPluginLoader* self, QEvent* event);

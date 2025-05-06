@@ -21,7 +21,6 @@ extern "C" {
 typedef struct QPageSize QPageSize;
 typedef struct QPrinter QPrinter;
 typedef struct QPrinterInfo QPrinterInfo;
-typedef struct QSizeF QSizeF;
 #endif
 
 QPrinterInfo* QPrinterInfo_new();
@@ -41,8 +40,6 @@ QPageSize* QPrinterInfo_DefaultPageSize(const QPrinterInfo* self);
 bool QPrinterInfo_SupportsCustomPageSizes(const QPrinterInfo* self);
 QPageSize* QPrinterInfo_MinimumPhysicalPageSize(const QPrinterInfo* self);
 QPageSize* QPrinterInfo_MaximumPhysicalPageSize(const QPrinterInfo* self);
-libqt_list /* of int */ QPrinterInfo_SupportedPaperSizes(const QPrinterInfo* self);
-libqt_list /* of libqt_pair  tuple of libqt_string and QSizeF*  */ QPrinterInfo_SupportedSizesWithNames(const QPrinterInfo* self);
 libqt_list /* of int */ QPrinterInfo_SupportedResolutions(const QPrinterInfo* self);
 int QPrinterInfo_DefaultDuplexMode(const QPrinterInfo* self);
 libqt_list /* of int */ QPrinterInfo_SupportedDuplexModes(const QPrinterInfo* self);

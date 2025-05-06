@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QHostAddress QHostAddress;
@@ -29,7 +31,6 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkProxy QNetworkProxy;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QTcpServer QTcpServer;
 typedef struct QTcpSocket QTcpSocket;
 typedef struct QThread QThread;
@@ -45,12 +46,13 @@ int QTcpServer_Metacall(QTcpServer* self, int param1, int param2, void** param3)
 void QTcpServer_OnMetacall(QTcpServer* self, intptr_t slot);
 int QTcpServer_QBaseMetacall(QTcpServer* self, int param1, int param2, void** param3);
 libqt_string QTcpServer_Tr(const char* s);
-libqt_string QTcpServer_TrUtf8(const char* s);
 bool QTcpServer_Listen(QTcpServer* self);
 void QTcpServer_Close(QTcpServer* self);
 bool QTcpServer_IsListening(const QTcpServer* self);
 void QTcpServer_SetMaxPendingConnections(QTcpServer* self, int numConnections);
 int QTcpServer_MaxPendingConnections(const QTcpServer* self);
+void QTcpServer_SetListenBacklogSize(QTcpServer* self, int size);
+int QTcpServer_ListenBacklogSize(const QTcpServer* self);
 uint16_t QTcpServer_ServerPort(const QTcpServer* self);
 QHostAddress* QTcpServer_ServerAddress(const QTcpServer* self);
 intptr_t QTcpServer_SocketDescriptor(const QTcpServer* self);
@@ -77,8 +79,6 @@ void QTcpServer_AcceptError(QTcpServer* self, int socketError);
 void QTcpServer_Connect_AcceptError(QTcpServer* self, intptr_t slot);
 libqt_string QTcpServer_Tr2(const char* s, const char* c);
 libqt_string QTcpServer_Tr3(const char* s, const char* c, int n);
-libqt_string QTcpServer_TrUtf82(const char* s, const char* c);
-libqt_string QTcpServer_TrUtf83(const char* s, const char* c, int n);
 bool QTcpServer_Listen1(QTcpServer* self, QHostAddress* address);
 bool QTcpServer_Listen2(QTcpServer* self, QHostAddress* address, uint16_t port);
 bool QTcpServer_WaitForNewConnection1(QTcpServer* self, int msec);

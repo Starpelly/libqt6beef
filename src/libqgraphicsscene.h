@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QBrush QBrush;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
@@ -51,7 +53,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPalette QPalette;
@@ -89,7 +90,6 @@ int QGraphicsScene_Metacall(QGraphicsScene* self, int param1, int param2, void**
 void QGraphicsScene_OnMetacall(QGraphicsScene* self, intptr_t slot);
 int QGraphicsScene_QBaseMetacall(QGraphicsScene* self, int param1, int param2, void** param3);
 libqt_string QGraphicsScene_Tr(const char* s);
-libqt_string QGraphicsScene_TrUtf8(const char* s);
 QRectF* QGraphicsScene_SceneRect(const QGraphicsScene* self);
 double QGraphicsScene_Width(const QGraphicsScene* self);
 double QGraphicsScene_Height(const QGraphicsScene* self);
@@ -98,8 +98,6 @@ void QGraphicsScene_SetSceneRect2(QGraphicsScene* self, double x, double y, doub
 void QGraphicsScene_Render(QGraphicsScene* self, QPainter* painter);
 int QGraphicsScene_ItemIndexMethod(const QGraphicsScene* self);
 void QGraphicsScene_SetItemIndexMethod(QGraphicsScene* self, int method);
-bool QGraphicsScene_IsSortCacheEnabled(const QGraphicsScene* self);
-void QGraphicsScene_SetSortCacheEnabled(QGraphicsScene* self, bool enabled);
 int QGraphicsScene_BspTreeDepth(const QGraphicsScene* self);
 void QGraphicsScene_SetBspTreeDepth(QGraphicsScene* self, int depth);
 QRectF* QGraphicsScene_ItemsBoundingRect(const QGraphicsScene* self);
@@ -107,15 +105,14 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items(const QGraphicsScene* se
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_ItemsWithPos(const QGraphicsScene* self, QPointF* pos);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_ItemsWithRect(const QGraphicsScene* self, QRectF* rect);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_ItemsWithPath(const QGraphicsScene* self, QPainterPath* path);
+libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items2(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems(const QGraphicsScene* self, QGraphicsItem* item);
 QGraphicsItem* QGraphicsScene_ItemAt(const QGraphicsScene* self, QPointF* pos, QTransform* deviceTransform);
-libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items2(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order);
 QGraphicsItem* QGraphicsScene_ItemAt2(const QGraphicsScene* self, double x, double y, QTransform* deviceTransform);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_SelectedItems(const QGraphicsScene* self);
 QPainterPath* QGraphicsScene_SelectionArea(const QGraphicsScene* self);
 void QGraphicsScene_SetSelectionArea(QGraphicsScene* self, QPainterPath* path, QTransform* deviceTransform);
 void QGraphicsScene_SetSelectionAreaWithPath(QGraphicsScene* self, QPainterPath* path);
-void QGraphicsScene_SetSelectionArea2(QGraphicsScene* self, QPainterPath* path, int selectionOperation);
 QGraphicsItemGroup* QGraphicsScene_CreateItemGroup(QGraphicsScene* self, libqt_list /* of QGraphicsItem* */ items);
 void QGraphicsScene_DestroyItemGroup(QGraphicsScene* self, QGraphicsItemGroup* group);
 void QGraphicsScene_AddItem(QGraphicsScene* self, QGraphicsItem* item);
@@ -230,6 +227,9 @@ void QGraphicsScene_QBaseDrawBackground(QGraphicsScene* self, QPainter* painter,
 void QGraphicsScene_DrawForeground(QGraphicsScene* self, QPainter* painter, QRectF* rect);
 void QGraphicsScene_OnDrawForeground(QGraphicsScene* self, intptr_t slot);
 void QGraphicsScene_QBaseDrawForeground(QGraphicsScene* self, QPainter* painter, QRectF* rect);
+bool QGraphicsScene_FocusNextPrevChild(QGraphicsScene* self, bool next);
+void QGraphicsScene_OnFocusNextPrevChild(QGraphicsScene* self, intptr_t slot);
+bool QGraphicsScene_QBaseFocusNextPrevChild(QGraphicsScene* self, bool next);
 void QGraphicsScene_Changed(QGraphicsScene* self, libqt_list /* of QRectF* */ region);
 void QGraphicsScene_Connect_Changed(QGraphicsScene* self, intptr_t slot);
 void QGraphicsScene_SceneRectChanged(QGraphicsScene* self, QRectF* rect);
@@ -240,8 +240,6 @@ void QGraphicsScene_FocusItemChanged(QGraphicsScene* self, QGraphicsItem* newFoc
 void QGraphicsScene_Connect_FocusItemChanged(QGraphicsScene* self, intptr_t slot);
 libqt_string QGraphicsScene_Tr2(const char* s, const char* c);
 libqt_string QGraphicsScene_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsScene_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsScene_TrUtf83(const char* s, const char* c, int n);
 void QGraphicsScene_Render2(QGraphicsScene* self, QPainter* painter, QRectF* target);
 void QGraphicsScene_Render3(QGraphicsScene* self, QPainter* painter, QRectF* target, QRectF* source);
 void QGraphicsScene_Render4(QGraphicsScene* self, QPainter* painter, QRectF* target, QRectF* source, int aspectRatioMode);
@@ -255,11 +253,10 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items42(const QGraphicsScene* 
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items25(const QGraphicsScene* self, QPainterPath* path, int mode);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items34(const QGraphicsScene* self, QPainterPath* path, int mode, int order);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items44(const QGraphicsScene* self, QPainterPath* path, int mode, int order, QTransform* deviceTransform);
-libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems2(const QGraphicsScene* self, QGraphicsItem* item, int mode);
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items7(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order, QTransform* deviceTransform);
-void QGraphicsScene_SetSelectionArea22(QGraphicsScene* self, QPainterPath* path, int mode);
-void QGraphicsScene_SetSelectionArea3(QGraphicsScene* self, QPainterPath* path, int mode, QTransform* deviceTransform);
-void QGraphicsScene_SetSelectionArea32(QGraphicsScene* self, QPainterPath* path, int selectionOperation, int mode);
+libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems2(const QGraphicsScene* self, QGraphicsItem* item, int mode);
+void QGraphicsScene_SetSelectionArea2(QGraphicsScene* self, QPainterPath* path, int selectionOperation);
+void QGraphicsScene_SetSelectionArea3(QGraphicsScene* self, QPainterPath* path, int selectionOperation, int mode);
 void QGraphicsScene_SetSelectionArea4(QGraphicsScene* self, QPainterPath* path, int selectionOperation, int mode, QTransform* deviceTransform);
 QGraphicsEllipseItem* QGraphicsScene_AddEllipse22(QGraphicsScene* self, QRectF* rect, QPen* pen);
 QGraphicsEllipseItem* QGraphicsScene_AddEllipse3(QGraphicsScene* self, QRectF* rect, QPen* pen, QBrush* brush);
@@ -297,9 +294,6 @@ void QGraphicsScene_QBaseConnectNotify(QGraphicsScene* self, QMetaMethod* signal
 void QGraphicsScene_DisconnectNotify(QGraphicsScene* self, QMetaMethod* signal);
 void QGraphicsScene_OnDisconnectNotify(QGraphicsScene* self, intptr_t slot);
 void QGraphicsScene_QBaseDisconnectNotify(QGraphicsScene* self, QMetaMethod* signal);
-bool QGraphicsScene_FocusNextPrevChild(QGraphicsScene* self, bool next);
-void QGraphicsScene_OnFocusNextPrevChild(QGraphicsScene* self, intptr_t slot);
-bool QGraphicsScene_QBaseFocusNextPrevChild(QGraphicsScene* self, bool next);
 QObject* QGraphicsScene_Sender(const QGraphicsScene* self);
 void QGraphicsScene_OnSender(const QGraphicsScene* self, intptr_t slot);
 QObject* QGraphicsScene_QBaseSender(const QGraphicsScene* self);

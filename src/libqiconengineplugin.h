@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIconEngine QIconEngine;
@@ -29,7 +31,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -43,14 +44,11 @@ int QIconEnginePlugin_Metacall(QIconEnginePlugin* self, int param1, int param2, 
 void QIconEnginePlugin_OnMetacall(QIconEnginePlugin* self, intptr_t slot);
 int QIconEnginePlugin_QBaseMetacall(QIconEnginePlugin* self, int param1, int param2, void** param3);
 libqt_string QIconEnginePlugin_Tr(const char* s);
-libqt_string QIconEnginePlugin_TrUtf8(const char* s);
 QIconEngine* QIconEnginePlugin_Create(QIconEnginePlugin* self, libqt_string filename);
 void QIconEnginePlugin_OnCreate(QIconEnginePlugin* self, intptr_t slot);
 QIconEngine* QIconEnginePlugin_QBaseCreate(QIconEnginePlugin* self, libqt_string filename);
 libqt_string QIconEnginePlugin_Tr2(const char* s, const char* c);
 libqt_string QIconEnginePlugin_Tr3(const char* s, const char* c, int n);
-libqt_string QIconEnginePlugin_TrUtf82(const char* s, const char* c);
-libqt_string QIconEnginePlugin_TrUtf83(const char* s, const char* c, int n);
 bool QIconEnginePlugin_Event(QIconEnginePlugin* self, QEvent* event);
 void QIconEnginePlugin_OnEvent(QIconEnginePlugin* self, intptr_t slot);
 bool QIconEnginePlugin_QBaseEvent(QIconEnginePlugin* self, QEvent* event);

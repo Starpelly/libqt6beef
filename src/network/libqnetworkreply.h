@@ -21,9 +21,12 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
+typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
@@ -31,7 +34,6 @@ typedef struct QNetworkAccessManager QNetworkAccessManager;
 typedef struct QNetworkReply QNetworkReply;
 typedef struct QNetworkRequest QNetworkRequest;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QSslConfiguration QSslConfiguration;
 typedef struct QSslError QSslError;
 typedef struct QSslPreSharedKeyAuthenticator QSslPreSharedKeyAuthenticator;
@@ -53,7 +55,6 @@ QMetaObject* QNetworkReply_MetaObject(const QNetworkReply* self);
 void* QNetworkReply_Metacast(QNetworkReply* self, const char* param1);
 int QNetworkReply_Metacall(QNetworkReply* self, int param1, int param2, void** param3);
 libqt_string QNetworkReply_Tr(const char* s);
-libqt_string QNetworkReply_TrUtf8(const char* s);
 void QNetworkReply_Close(QNetworkReply* self);
 bool QNetworkReply_IsSequential(const QNetworkReply* self);
 long long QNetworkReply_ReadBufferSize(const QNetworkReply* self);
@@ -76,12 +77,14 @@ void QNetworkReply_SetSslConfiguration(QNetworkReply* self, QSslConfiguration* c
 void QNetworkReply_IgnoreSslErrors(QNetworkReply* self, libqt_list /* of QSslError* */ errors);
 void QNetworkReply_Abort(QNetworkReply* self);
 void QNetworkReply_IgnoreSslErrors2(QNetworkReply* self);
+void QNetworkReply_SocketStartedConnecting(QNetworkReply* self);
+void QNetworkReply_Connect_SocketStartedConnecting(QNetworkReply* self, intptr_t slot);
+void QNetworkReply_RequestSent(QNetworkReply* self);
+void QNetworkReply_Connect_RequestSent(QNetworkReply* self, intptr_t slot);
 void QNetworkReply_MetaDataChanged(QNetworkReply* self);
 void QNetworkReply_Connect_MetaDataChanged(QNetworkReply* self, intptr_t slot);
 void QNetworkReply_Finished(QNetworkReply* self);
 void QNetworkReply_Connect_Finished(QNetworkReply* self, intptr_t slot);
-void QNetworkReply_ErrorWithQNetworkReplyNetworkError(QNetworkReply* self, int param1);
-void QNetworkReply_Connect_ErrorWithQNetworkReplyNetworkError(QNetworkReply* self, intptr_t slot);
 void QNetworkReply_ErrorOccurred(QNetworkReply* self, int param1);
 void QNetworkReply_Connect_ErrorOccurred(QNetworkReply* self, intptr_t slot);
 void QNetworkReply_Encrypted(QNetworkReply* self);
@@ -100,8 +103,6 @@ void QNetworkReply_DownloadProgress(QNetworkReply* self, long long bytesReceived
 void QNetworkReply_Connect_DownloadProgress(QNetworkReply* self, intptr_t slot);
 libqt_string QNetworkReply_Tr2(const char* s, const char* c);
 libqt_string QNetworkReply_Tr3(const char* s, const char* c, int n);
-libqt_string QNetworkReply_TrUtf82(const char* s, const char* c);
-libqt_string QNetworkReply_TrUtf83(const char* s, const char* c, int n);
 bool QNetworkReply_Open(QNetworkReply* self, int mode);
 long long QNetworkReply_Pos(const QNetworkReply* self);
 long long QNetworkReply_Size(const QNetworkReply* self);

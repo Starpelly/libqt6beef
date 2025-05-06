@@ -45,7 +45,7 @@ class VirtualQDialog : public QDialog {
     using QDialog_KeyReleaseEvent_Callback = void (*)(QDialog*, QKeyEvent*);
     using QDialog_FocusInEvent_Callback = void (*)(QDialog*, QFocusEvent*);
     using QDialog_FocusOutEvent_Callback = void (*)(QDialog*, QFocusEvent*);
-    using QDialog_EnterEvent_Callback = void (*)(QDialog*, QEvent*);
+    using QDialog_EnterEvent_Callback = void (*)(QDialog*, QEnterEvent*);
     using QDialog_LeaveEvent_Callback = void (*)(QDialog*, QEvent*);
     using QDialog_PaintEvent_Callback = void (*)(QDialog*, QPaintEvent*);
     using QDialog_MoveEvent_Callback = void (*)(QDialog*, QMoveEvent*);
@@ -56,7 +56,7 @@ class VirtualQDialog : public QDialog {
     using QDialog_DragLeaveEvent_Callback = void (*)(QDialog*, QDragLeaveEvent*);
     using QDialog_DropEvent_Callback = void (*)(QDialog*, QDropEvent*);
     using QDialog_HideEvent_Callback = void (*)(QDialog*, QHideEvent*);
-    using QDialog_NativeEvent_Callback = bool (*)(QDialog*, const QByteArray&, void*, long*);
+    using QDialog_NativeEvent_Callback = bool (*)(QDialog*, const QByteArray&, void*, qintptr*);
     using QDialog_ChangeEvent_Callback = void (*)(QDialog*, QEvent*);
     using QDialog_Metric_Callback = int (*)(const QDialog*, QPaintDevice::PaintDeviceMetric);
     using QDialog_InitPainter_Callback = void (*)(const QDialog*, QPainter*);
@@ -750,7 +750,7 @@ class VirtualQDialog : public QDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qdialog_enterevent_isbase) {
             qdialog_enterevent_isbase = false;
             QDialog::enterEvent(event);
@@ -882,7 +882,7 @@ class VirtualQDialog : public QDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qdialog_nativeevent_isbase) {
             qdialog_nativeevent_isbase = false;
             return QDialog::nativeEvent(eventType, message, result);

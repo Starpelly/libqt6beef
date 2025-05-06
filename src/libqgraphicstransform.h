@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QGraphicsRotation QGraphicsRotation;
@@ -31,7 +33,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -46,14 +47,11 @@ int QGraphicsTransform_Metacall(QGraphicsTransform* self, int param1, int param2
 void QGraphicsTransform_OnMetacall(QGraphicsTransform* self, intptr_t slot);
 int QGraphicsTransform_QBaseMetacall(QGraphicsTransform* self, int param1, int param2, void** param3);
 libqt_string QGraphicsTransform_Tr(const char* s);
-libqt_string QGraphicsTransform_TrUtf8(const char* s);
 void QGraphicsTransform_ApplyTo(const QGraphicsTransform* self, QMatrix4x4* matrix);
 void QGraphicsTransform_OnApplyTo(const QGraphicsTransform* self, intptr_t slot);
 void QGraphicsTransform_QBaseApplyTo(const QGraphicsTransform* self, QMatrix4x4* matrix);
 libqt_string QGraphicsTransform_Tr2(const char* s, const char* c);
 libqt_string QGraphicsTransform_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsTransform_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsTransform_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsTransform_Event(QGraphicsTransform* self, QEvent* event);
 void QGraphicsTransform_OnEvent(QGraphicsTransform* self, intptr_t slot);
 bool QGraphicsTransform_QBaseEvent(QGraphicsTransform* self, QEvent* event);
@@ -100,7 +98,6 @@ int QGraphicsScale_Metacall(QGraphicsScale* self, int param1, int param2, void**
 void QGraphicsScale_OnMetacall(QGraphicsScale* self, intptr_t slot);
 int QGraphicsScale_QBaseMetacall(QGraphicsScale* self, int param1, int param2, void** param3);
 libqt_string QGraphicsScale_Tr(const char* s);
-libqt_string QGraphicsScale_TrUtf8(const char* s);
 QVector3D* QGraphicsScale_Origin(const QGraphicsScale* self);
 void QGraphicsScale_SetOrigin(QGraphicsScale* self, QVector3D* point);
 double QGraphicsScale_XScale(const QGraphicsScale* self);
@@ -124,8 +121,6 @@ void QGraphicsScale_ScaleChanged(QGraphicsScale* self);
 void QGraphicsScale_Connect_ScaleChanged(QGraphicsScale* self, intptr_t slot);
 libqt_string QGraphicsScale_Tr2(const char* s, const char* c);
 libqt_string QGraphicsScale_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsScale_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsScale_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsScale_Event(QGraphicsScale* self, QEvent* event);
 void QGraphicsScale_OnEvent(QGraphicsScale* self, intptr_t slot);
 bool QGraphicsScale_QBaseEvent(QGraphicsScale* self, QEvent* event);
@@ -172,7 +167,6 @@ int QGraphicsRotation_Metacall(QGraphicsRotation* self, int param1, int param2, 
 void QGraphicsRotation_OnMetacall(QGraphicsRotation* self, intptr_t slot);
 int QGraphicsRotation_QBaseMetacall(QGraphicsRotation* self, int param1, int param2, void** param3);
 libqt_string QGraphicsRotation_Tr(const char* s);
-libqt_string QGraphicsRotation_TrUtf8(const char* s);
 QVector3D* QGraphicsRotation_Origin(const QGraphicsRotation* self);
 void QGraphicsRotation_SetOrigin(QGraphicsRotation* self, QVector3D* point);
 double QGraphicsRotation_Angle(const QGraphicsRotation* self);
@@ -191,8 +185,6 @@ void QGraphicsRotation_AxisChanged(QGraphicsRotation* self);
 void QGraphicsRotation_Connect_AxisChanged(QGraphicsRotation* self, intptr_t slot);
 libqt_string QGraphicsRotation_Tr2(const char* s, const char* c);
 libqt_string QGraphicsRotation_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsRotation_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsRotation_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsRotation_Event(QGraphicsRotation* self, QEvent* event);
 void QGraphicsRotation_OnEvent(QGraphicsRotation* self, intptr_t slot);
 bool QGraphicsRotation_QBaseEvent(QGraphicsRotation* self, QEvent* event);

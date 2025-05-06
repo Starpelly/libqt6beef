@@ -17,11 +17,16 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
+#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QCalendar__SystemId)
+typedef QCalendar::SystemId QCalendar__SystemId;
+#endif
 #if defined(WORKAROUND_INNER_CLASS_DEFINITION_QCalendar__YearMonthDay)
 typedef QCalendar::YearMonthDay QCalendar__YearMonthDay;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QCalendar QCalendar;
+typedef struct QCalendar__SystemId QCalendar__SystemId;
 typedef struct QCalendar__YearMonthDay QCalendar__YearMonthDay;
 typedef struct QDate QDate;
 typedef struct QLocale QLocale;
@@ -39,6 +44,8 @@ QCalendar* QCalendar_new(QCalendar* other);
 QCalendar* QCalendar_new2(QCalendar* other);
 QCalendar* QCalendar_new3();
 QCalendar* QCalendar_new4(int system);
+QCalendar* QCalendar_new5(char* name);
+QCalendar* QCalendar_new6(QCalendar__SystemId* id);
 void QCalendar_CopyAssign(QCalendar* self, QCalendar* other);
 void QCalendar_MoveAssign(QCalendar* self, QCalendar* other);
 bool QCalendar_IsValid(const QCalendar* self);
@@ -85,6 +92,15 @@ void QCalendar__YearMonthDay_CopyAssign(QCalendar__YearMonthDay* self, QCalendar
 void QCalendar__YearMonthDay_MoveAssign(QCalendar__YearMonthDay* self, QCalendar__YearMonthDay* other);
 bool QCalendar__YearMonthDay_IsValid(const QCalendar__YearMonthDay* self);
 void QCalendar__YearMonthDay_Delete(QCalendar__YearMonthDay* self);
+
+QCalendar__SystemId* QCalendar__SystemId_new(QCalendar__SystemId* other);
+QCalendar__SystemId* QCalendar__SystemId_new2(QCalendar__SystemId* other);
+QCalendar__SystemId* QCalendar__SystemId_new3();
+void QCalendar__SystemId_CopyAssign(QCalendar__SystemId* self, QCalendar__SystemId* other);
+void QCalendar__SystemId_MoveAssign(QCalendar__SystemId* self, QCalendar__SystemId* other);
+size_t QCalendar__SystemId_Index(const QCalendar__SystemId* self);
+bool QCalendar__SystemId_IsValid(const QCalendar__SystemId* self);
+void QCalendar__SystemId_Delete(QCalendar__SystemId* self);
 
 #ifdef __cplusplus
 } /* extern C */

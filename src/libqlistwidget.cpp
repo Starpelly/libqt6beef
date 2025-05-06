@@ -4,13 +4,14 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QBrush>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCloseEvent>
-#include <QColor>
 #include <QContextMenuEvent>
 #include <QCursor>
 #include <QDataStream>
@@ -18,6 +19,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -48,7 +50,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -56,6 +57,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -247,8 +249,12 @@ void QListWidgetItem_SetTextAlignment(QListWidgetItem* self, int alignment) {
     self->setTextAlignment(static_cast<int>(alignment));
 }
 
-QColor* QListWidgetItem_BackgroundColor(const QListWidgetItem* self) {
-    return new QColor(self->backgroundColor());
+void QListWidgetItem_SetTextAlignmentWithAlignment(QListWidgetItem* self, int alignment) {
+    self->setTextAlignment(static_cast<Qt::AlignmentFlag>(alignment));
+}
+
+void QListWidgetItem_SetTextAlignment2(QListWidgetItem* self, int alignment) {
+    self->setTextAlignment(static_cast<Qt::Alignment>(alignment));
 }
 
 QBrush* QListWidgetItem_Background(const QListWidgetItem* self) {
@@ -257,14 +263,6 @@ QBrush* QListWidgetItem_Background(const QListWidgetItem* self) {
 
 void QListWidgetItem_SetBackground(QListWidgetItem* self, QBrush* brush) {
     self->setBackground(*brush);
-}
-
-QColor* QListWidgetItem_TextColor(const QListWidgetItem* self) {
-    return new QColor(self->textColor());
-}
-
-void QListWidgetItem_SetTextColor(QListWidgetItem* self, QColor* color) {
-    self->setTextColor(*color);
 }
 
 QBrush* QListWidgetItem_Foreground(const QListWidgetItem* self) {
@@ -322,32 +320,6 @@ QListWidgetItem* QListWidgetItem_QBaseClone(const QListWidgetItem* self) {
 void QListWidgetItem_OnClone(const QListWidgetItem* self, intptr_t slot) {
     if (auto* vqlistwidgetitem = const_cast<VirtualQListWidgetItem*>(dynamic_cast<const VirtualQListWidgetItem*>(self))) {
         vqlistwidgetitem->setQListWidgetItem_Clone_Callback(reinterpret_cast<VirtualQListWidgetItem::QListWidgetItem_Clone_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QListWidgetItem_SetBackgroundColor(QListWidgetItem* self, QColor* color) {
-    if (auto* vqlistwidgetitem = dynamic_cast<VirtualQListWidgetItem*>(self)) {
-        vqlistwidgetitem->setBackgroundColor(*color);
-    } else {
-        vqlistwidgetitem->setBackgroundColor(*color);
-    }
-}
-
-// Base class handler implementation
-void QListWidgetItem_QBaseSetBackgroundColor(QListWidgetItem* self, QColor* color) {
-    if (auto* vqlistwidgetitem = dynamic_cast<VirtualQListWidgetItem*>(self)) {
-        vqlistwidgetitem->setQListWidgetItem_SetBackgroundColor_IsBase(true);
-        vqlistwidgetitem->setBackgroundColor(*color);
-    } else {
-        vqlistwidgetitem->setBackgroundColor(*color);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidgetItem_OnSetBackgroundColor(QListWidgetItem* self, intptr_t slot) {
-    if (auto* vqlistwidgetitem = dynamic_cast<VirtualQListWidgetItem*>(self)) {
-        vqlistwidgetitem->setQListWidgetItem_SetBackgroundColor_Callback(reinterpret_cast<VirtualQListWidgetItem::QListWidgetItem_SetBackgroundColor_Callback>(slot));
     }
 }
 
@@ -538,18 +510,6 @@ libqt_string QListWidget_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QListWidget_TrUtf8(const char* s) {
-    QString _ret = QListWidget::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QListWidgetItem* QListWidget_Item(const QListWidget* self, int row) {
     return self->item(static_cast<int>(row));
 }
@@ -682,14 +642,6 @@ void QListWidget_RemoveItemWidget(QListWidget* self, QListWidgetItem* item) {
     self->removeItemWidget(item);
 }
 
-bool QListWidget_IsItemSelected(const QListWidget* self, QListWidgetItem* item) {
-    return self->isItemSelected(item);
-}
-
-void QListWidget_SetItemSelected(QListWidget* self, QListWidgetItem* item, bool selectVal) {
-    self->setItemSelected(item, selectVal);
-}
-
 libqt_list /* of QListWidgetItem* */ QListWidget_SelectedItems(const QListWidget* self) {
     QList<QListWidgetItem*> _ret = self->selectedItems();
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -717,12 +669,25 @@ libqt_list /* of QListWidgetItem* */ QListWidget_FindItems(const QListWidget* se
     return _out;
 }
 
-bool QListWidget_IsItemHidden(const QListWidget* self, QListWidgetItem* item) {
-    return self->isItemHidden(item);
+libqt_list /* of QListWidgetItem* */ QListWidget_Items(const QListWidget* self, QMimeData* data) {
+    QList<QListWidgetItem*> _ret = self->items(data);
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QListWidgetItem** _arr = static_cast<QListWidgetItem**>(malloc(sizeof(QListWidgetItem*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = _ret[i];
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
-void QListWidget_SetItemHidden(QListWidget* self, QListWidgetItem* item, bool hide) {
-    self->setItemHidden(item, hide);
+QModelIndex* QListWidget_IndexFromItem(const QListWidget* self, QListWidgetItem* item) {
+    return new QModelIndex(self->indexFromItem(item));
+}
+
+QListWidgetItem* QListWidget_ItemFromIndex(const QListWidget* self, QModelIndex* index) {
+    return self->itemFromIndex(*index);
 }
 
 void QListWidget_ScrollToItem(QListWidget* self, QListWidgetItem* item) {
@@ -876,30 +841,6 @@ libqt_string QListWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QListWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QListWidget::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QListWidget_TrUtf82(const char* s, const char* c) {
-    QString _ret = QListWidget::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QListWidget_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QListWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1364,7 +1305,7 @@ void QListWidget_OnScrollContentsBy(QListWidget* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QListWidget_DataChanged(QListWidget* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1379,7 +1320,7 @@ void QListWidget_DataChanged(QListWidget* self, QModelIndex* topLeft, QModelInde
 
 // Base class handler implementation
 void QListWidget_QBaseDataChanged(QListWidget* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1661,26 +1602,28 @@ void QListWidget_OnStartDrag(QListWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QListWidget_ViewOptions(const QListWidget* self) {
+void QListWidget_InitViewItemOption(const QListWidget* self, QStyleOptionViewItem* option) {
     if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return new QStyleOptionViewItem(vqlistwidget->viewOptions());
+        vqlistwidget->initViewItemOption(option);
+    } else {
+        vqlistwidget->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QListWidget_QBaseViewOptions(const QListWidget* self) {
+void QListWidget_QBaseInitViewItemOption(const QListWidget* self, QStyleOptionViewItem* option) {
     if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqlistwidget->viewOptions());
+        vqlistwidget->setQListWidget_InitViewItemOption_IsBase(true);
+        vqlistwidget->initViewItemOption(option);
+    } else {
+        vqlistwidget->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QListWidget_OnViewOptions(const QListWidget* self, intptr_t slot) {
+void QListWidget_OnInitViewItemOption(const QListWidget* self, intptr_t slot) {
     if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_ViewOptions_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_ViewOptions_Callback>(slot));
+        vqlistwidget->setQListWidget_InitViewItemOption_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -2103,6 +2046,32 @@ int QListWidget_QBaseSizeHintForColumn(const QListWidget* self, int column) {
 void QListWidget_OnSizeHintForColumn(const QListWidget* self, intptr_t slot) {
     if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
         vqlistwidget->setQListWidget_SizeHintForColumn_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_SizeHintForColumn_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QAbstractItemDelegate* QListWidget_ItemDelegateForIndex(const QListWidget* self, QModelIndex* index) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        return vqlistwidget->itemDelegateForIndex(*index);
+    } else {
+        return vqlistwidget->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QListWidget_QBaseItemDelegateForIndex(const QListWidget* self, QModelIndex* index) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        vqlistwidget->setQListWidget_ItemDelegateForIndex_IsBase(true);
+        return vqlistwidget->itemDelegateForIndex(*index);
+    } else {
+        return vqlistwidget->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListWidget_OnItemDelegateForIndex(const QListWidget* self, intptr_t slot) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        vqlistwidget->setQListWidget_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_ItemDelegateForIndex_Callback>(slot));
     }
 }
 
@@ -2835,6 +2804,32 @@ void QListWidget_OnChangeEvent(QListWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QListWidget_InitStyleOption(const QListWidget* self, QStyleOptionFrame* option) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        vqlistwidget->initStyleOption(option);
+    } else {
+        vqlistwidget->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QListWidget_QBaseInitStyleOption(const QListWidget* self, QStyleOptionFrame* option) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        vqlistwidget->setQListWidget_InitStyleOption_IsBase(true);
+        vqlistwidget->initStyleOption(option);
+    } else {
+        vqlistwidget->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListWidget_OnInitStyleOption(const QListWidget* self, intptr_t slot) {
+    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
+        vqlistwidget->setQListWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QListWidget_DevType(const QListWidget* self) {
     if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
         return vqlistwidget->devType();
@@ -2991,7 +2986,7 @@ void QListWidget_OnKeyReleaseEvent(QListWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QListWidget_EnterEvent(QListWidget* self, QEvent* event) {
+void QListWidget_EnterEvent(QListWidget* self, QEnterEvent* event) {
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->enterEvent(event);
     } else {
@@ -3000,7 +2995,7 @@ void QListWidget_EnterEvent(QListWidget* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QListWidget_QBaseEnterEvent(QListWidget* self, QEvent* event) {
+void QListWidget_QBaseEnterEvent(QListWidget* self, QEnterEvent* event) {
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->setQListWidget_EnterEvent_IsBase(true);
         vqlistwidget->enterEvent(event);
@@ -3199,23 +3194,23 @@ void QListWidget_OnHideEvent(QListWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QListWidget_NativeEvent(QListWidget* self, libqt_string eventType, void* message, long* result) {
+bool QListWidget_NativeEvent(QListWidget* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        return vqlistwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlistwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqlistwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlistwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QListWidget_QBaseNativeEvent(QListWidget* self, libqt_string eventType, void* message, long* result) {
+bool QListWidget_QBaseNativeEvent(QListWidget* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->setQListWidget_NativeEvent_IsBase(true);
-        return vqlistwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlistwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqlistwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqlistwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -3435,142 +3430,6 @@ void QListWidget_OnDisconnectNotify(QListWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-libqt_list /* of QListWidgetItem* */ QListWidget_Items(const QListWidget* self, QMimeData* data) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        QList<QListWidgetItem*> _ret = vqlistwidget->items(data);
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QListWidgetItem** _arr = static_cast<QListWidgetItem**>(malloc(sizeof(QListWidgetItem*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = _ret[i];
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    } else {
-        QList<QListWidgetItem*> _ret = vqlistwidget->items(data);
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QListWidgetItem** _arr = static_cast<QListWidgetItem**>(malloc(sizeof(QListWidgetItem*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = _ret[i];
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    }
-}
-
-// Base class handler implementation
-libqt_list /* of QListWidgetItem* */ QListWidget_QBaseItems(const QListWidget* self, QMimeData* data) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_Items_IsBase(true);
-        QList<QListWidgetItem*> _ret = vqlistwidget->items(data);
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QListWidgetItem** _arr = static_cast<QListWidgetItem**>(malloc(sizeof(QListWidgetItem*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = _ret[i];
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    } else {
-        QList<QListWidgetItem*> _ret = vqlistwidget->items(data);
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QListWidgetItem** _arr = static_cast<QListWidgetItem**>(malloc(sizeof(QListWidgetItem*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = _ret[i];
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnItems(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_Items_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_Items_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QModelIndex* QListWidget_IndexFromItem(const QListWidget* self, QListWidgetItem* item) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return new QModelIndex(vqlistwidget->indexFromItem(item));
-    }
-    return {};
-}
-
-// Base class handler implementation
-QModelIndex* QListWidget_QBaseIndexFromItem(const QListWidget* self, QListWidgetItem* item) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_IndexFromItem_IsBase(true);
-        return new QModelIndex(vqlistwidget->indexFromItem(item));
-    }
-    return {};
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnIndexFromItem(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_IndexFromItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_IndexFromItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QModelIndex* QListWidget_IndexFromItemWithItem(const QListWidget* self, QListWidgetItem* item) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return new QModelIndex(vqlistwidget->indexFromItem(item));
-    }
-    return {};
-}
-
-// Base class handler implementation
-QModelIndex* QListWidget_QBaseIndexFromItemWithItem(const QListWidget* self, QListWidgetItem* item) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_IndexFromItemWithItem_IsBase(true);
-        return new QModelIndex(vqlistwidget->indexFromItem(item));
-    }
-    return {};
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnIndexFromItemWithItem(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_IndexFromItemWithItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_IndexFromItemWithItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QListWidgetItem* QListWidget_ItemFromIndex(const QListWidget* self, QModelIndex* index) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return vqlistwidget->itemFromIndex(*index);
-    } else {
-        return vqlistwidget->itemFromIndex(*index);
-    }
-}
-
-// Base class handler implementation
-QListWidgetItem* QListWidget_QBaseItemFromIndex(const QListWidget* self, QModelIndex* index) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_ItemFromIndex_IsBase(true);
-        return vqlistwidget->itemFromIndex(*index);
-    } else {
-        return vqlistwidget->itemFromIndex(*index);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnItemFromIndex(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_ItemFromIndex_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_ItemFromIndex_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QListWidget_ResizeContents(QListWidget* self, int width, int height) {
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->resizeContents(static_cast<int>(width), static_cast<int>(height));
@@ -3667,110 +3526,6 @@ void QListWidget_QBaseSetPositionForIndex(QListWidget* self, QPoint* position, Q
 void QListWidget_OnSetPositionForIndex(QListWidget* self, intptr_t slot) {
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->setQListWidget_SetPositionForIndex_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_SetPositionForIndex_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QListWidget_SetHorizontalStepsPerItem(QListWidget* self, int steps) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqlistwidget->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QListWidget_QBaseSetHorizontalStepsPerItem(QListWidget* self, int steps) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setQListWidget_SetHorizontalStepsPerItem_IsBase(true);
-        vqlistwidget->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqlistwidget->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnSetHorizontalStepsPerItem(QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setQListWidget_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QListWidget_HorizontalStepsPerItem(const QListWidget* self) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return vqlistwidget->horizontalStepsPerItem();
-    } else {
-        return vqlistwidget->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QListWidget_QBaseHorizontalStepsPerItem(const QListWidget* self) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_HorizontalStepsPerItem_IsBase(true);
-        return vqlistwidget->horizontalStepsPerItem();
-    } else {
-        return vqlistwidget->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnHorizontalStepsPerItem(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QListWidget_SetVerticalStepsPerItem(QListWidget* self, int steps) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqlistwidget->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QListWidget_QBaseSetVerticalStepsPerItem(QListWidget* self, int steps) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setQListWidget_SetVerticalStepsPerItem_IsBase(true);
-        vqlistwidget->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqlistwidget->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnSetVerticalStepsPerItem(QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
-        vqlistwidget->setQListWidget_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QListWidget_VerticalStepsPerItem(const QListWidget* self) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        return vqlistwidget->verticalStepsPerItem();
-    } else {
-        return vqlistwidget->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QListWidget_QBaseVerticalStepsPerItem(const QListWidget* self) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_VerticalStepsPerItem_IsBase(true);
-        return vqlistwidget->verticalStepsPerItem();
-    } else {
-        return vqlistwidget->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnVerticalStepsPerItem(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_VerticalStepsPerItem_Callback>(slot));
     }
 }
 
@@ -4131,32 +3886,6 @@ void QListWidget_QBaseDrawFrame(QListWidget* self, QPainter* param1) {
 void QListWidget_OnDrawFrame(QListWidget* self, intptr_t slot) {
     if (auto* vqlistwidget = dynamic_cast<VirtualQListWidget*>(self)) {
         vqlistwidget->setQListWidget_DrawFrame_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QListWidget_InitStyleOption(const QListWidget* self, QStyleOptionFrame* option) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->initStyleOption(option);
-    } else {
-        vqlistwidget->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QListWidget_QBaseInitStyleOption(const QListWidget* self, QStyleOptionFrame* option) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_InitStyleOption_IsBase(true);
-        vqlistwidget->initStyleOption(option);
-    } else {
-        vqlistwidget->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListWidget_OnInitStyleOption(const QListWidget* self, intptr_t slot) {
-    if (auto* vqlistwidget = const_cast<VirtualQListWidget*>(dynamic_cast<const VirtualQListWidget*>(self))) {
-        vqlistwidget->setQListWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQListWidget::QListWidget_InitStyleOption_Callback>(slot));
     }
 }
 

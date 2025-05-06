@@ -26,6 +26,7 @@ QScopedPointerPodDeleter* QScopedPointerPodDeleter_new2(QScopedPointerPodDeleter
 void QScopedPointerPodDeleter_CopyAssign(QScopedPointerPodDeleter* self, QScopedPointerPodDeleter* other);
 void QScopedPointerPodDeleter_MoveAssign(QScopedPointerPodDeleter* self, QScopedPointerPodDeleter* other);
 void QScopedPointerPodDeleter_Cleanup(void* pointer);
+void QScopedPointerPodDeleter_OperatorCall(const QScopedPointerPodDeleter* self, void* pointer);
 void QScopedPointerPodDeleter_Delete(QScopedPointerPodDeleter* self);
 
 #ifdef __cplusplus

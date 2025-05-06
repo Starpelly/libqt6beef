@@ -18,7 +18,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
   public:
     // Virtual class public types (including callbacks)
     using QListWidgetItem_Clone_Callback = QListWidgetItem* (*)();
-    using QListWidgetItem_SetBackgroundColor_Callback = void (*)(QListWidgetItem*, const QColor&);
     using QListWidgetItem_Data_Callback = QVariant (*)(const QListWidgetItem*, int);
     using QListWidgetItem_SetData_Callback = void (*)(QListWidgetItem*, int, const QVariant&);
     using QListWidgetItem_OperatorLesser_Callback = bool (*)(const QListWidgetItem*, const QListWidgetItem&);
@@ -28,7 +27,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
   protected:
     // Instance callback storage
     QListWidgetItem_Clone_Callback qlistwidgetitem_clone_callback = nullptr;
-    QListWidgetItem_SetBackgroundColor_Callback qlistwidgetitem_setbackgroundcolor_callback = nullptr;
     QListWidgetItem_Data_Callback qlistwidgetitem_data_callback = nullptr;
     QListWidgetItem_SetData_Callback qlistwidgetitem_setdata_callback = nullptr;
     QListWidgetItem_OperatorLesser_Callback qlistwidgetitem_operatorlesser_callback = nullptr;
@@ -37,7 +35,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
 
     // Instance base flags
     mutable bool qlistwidgetitem_clone_isbase = false;
-    mutable bool qlistwidgetitem_setbackgroundcolor_isbase = false;
     mutable bool qlistwidgetitem_data_isbase = false;
     mutable bool qlistwidgetitem_setdata_isbase = false;
     mutable bool qlistwidgetitem_operatorlesser_isbase = false;
@@ -58,7 +55,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
 
     ~VirtualQListWidgetItem() {
         qlistwidgetitem_clone_callback = nullptr;
-        qlistwidgetitem_setbackgroundcolor_callback = nullptr;
         qlistwidgetitem_data_callback = nullptr;
         qlistwidgetitem_setdata_callback = nullptr;
         qlistwidgetitem_operatorlesser_callback = nullptr;
@@ -68,7 +64,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
 
     // Callback setters
     void setQListWidgetItem_Clone_Callback(QListWidgetItem_Clone_Callback cb) { qlistwidgetitem_clone_callback = cb; }
-    void setQListWidgetItem_SetBackgroundColor_Callback(QListWidgetItem_SetBackgroundColor_Callback cb) { qlistwidgetitem_setbackgroundcolor_callback = cb; }
     void setQListWidgetItem_Data_Callback(QListWidgetItem_Data_Callback cb) { qlistwidgetitem_data_callback = cb; }
     void setQListWidgetItem_SetData_Callback(QListWidgetItem_SetData_Callback cb) { qlistwidgetitem_setdata_callback = cb; }
     void setQListWidgetItem_OperatorLesser_Callback(QListWidgetItem_OperatorLesser_Callback cb) { qlistwidgetitem_operatorlesser_callback = cb; }
@@ -77,7 +72,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
 
     // Base flag setters
     void setQListWidgetItem_Clone_IsBase(bool value) const { qlistwidgetitem_clone_isbase = value; }
-    void setQListWidgetItem_SetBackgroundColor_IsBase(bool value) const { qlistwidgetitem_setbackgroundcolor_isbase = value; }
     void setQListWidgetItem_Data_IsBase(bool value) const { qlistwidgetitem_data_isbase = value; }
     void setQListWidgetItem_SetData_IsBase(bool value) const { qlistwidgetitem_setdata_isbase = value; }
     void setQListWidgetItem_OperatorLesser_IsBase(bool value) const { qlistwidgetitem_operatorlesser_isbase = value; }
@@ -93,18 +87,6 @@ class VirtualQListWidgetItem : public QListWidgetItem {
             return qlistwidgetitem_clone_callback();
         } else {
             return QListWidgetItem::clone();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setBackgroundColor(const QColor& color) override {
-        if (qlistwidgetitem_setbackgroundcolor_isbase) {
-            qlistwidgetitem_setbackgroundcolor_isbase = false;
-            QListWidgetItem::setBackgroundColor(color);
-        } else if (qlistwidgetitem_setbackgroundcolor_callback != nullptr) {
-            qlistwidgetitem_setbackgroundcolor_callback(this, color);
-        } else {
-            QListWidgetItem::setBackgroundColor(color);
         }
     }
 
@@ -182,7 +164,7 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_DropEvent_Callback = void (*)(QListWidget*, QDropEvent*);
     using QListWidget_Event_Callback = bool (*)(QListWidget*, QEvent*);
     using QListWidget_MimeTypes_Callback = QStringList (*)();
-    using QListWidget_MimeData_Callback = QMimeData* (*)(const QListWidget*, const QList<QListWidgetItem*>);
+    using QListWidget_MimeData_Callback = QMimeData* (*)(const QListWidget*, const QList<QListWidgetItem*>&);
     using QListWidget_DropMimeData_Callback = bool (*)(QListWidget*, int, const QMimeData*, Qt::DropAction);
     using QListWidget_SupportedDropActions_Callback = Qt::DropActions (*)();
     using QListWidget_VisualRect_Callback = QRect (*)(const QListWidget*, const QModelIndex&);
@@ -192,7 +174,7 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_Reset_Callback = void (*)();
     using QListWidget_SetRootIndex_Callback = void (*)(QListWidget*, const QModelIndex&);
     using QListWidget_ScrollContentsBy_Callback = void (*)(QListWidget*, int, int);
-    using QListWidget_DataChanged_Callback = void (*)(QListWidget*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
+    using QListWidget_DataChanged_Callback = void (*)(QListWidget*, const QModelIndex&, const QModelIndex&, const QList<int>&);
     using QListWidget_RowsInserted_Callback = void (*)(QListWidget*, const QModelIndex&, int, int);
     using QListWidget_RowsAboutToBeRemoved_Callback = void (*)(QListWidget*, const QModelIndex&, int, int);
     using QListWidget_MouseMoveEvent_Callback = void (*)(QListWidget*, QMouseEvent*);
@@ -203,7 +185,7 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_DragMoveEvent_Callback = void (*)(QListWidget*, QDragMoveEvent*);
     using QListWidget_DragLeaveEvent_Callback = void (*)(QListWidget*, QDragLeaveEvent*);
     using QListWidget_StartDrag_Callback = void (*)(QListWidget*, Qt::DropActions);
-    using QListWidget_ViewOptions_Callback = QStyleOptionViewItem (*)();
+    using QListWidget_InitViewItemOption_Callback = void (*)(const QListWidget*, QStyleOptionViewItem*);
     using QListWidget_PaintEvent_Callback = void (*)(QListWidget*, QPaintEvent*);
     using QListWidget_HorizontalOffset_Callback = int (*)();
     using QListWidget_VerticalOffset_Callback = int (*)();
@@ -219,6 +201,7 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_KeyboardSearch_Callback = void (*)(QListWidget*, const QString&);
     using QListWidget_SizeHintForRow_Callback = int (*)(const QListWidget*, int);
     using QListWidget_SizeHintForColumn_Callback = int (*)(const QListWidget*, int);
+    using QListWidget_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QListWidget*, const QModelIndex&);
     using QListWidget_InputMethodQuery_Callback = QVariant (*)(const QListWidget*, Qt::InputMethodQuery);
     using QListWidget_SelectAll_Callback = void (*)();
     using QListWidget_UpdateEditorData_Callback = void (*)();
@@ -247,13 +230,14 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_SetupViewport_Callback = void (*)(QListWidget*, QWidget*);
     using QListWidget_ContextMenuEvent_Callback = void (*)(QListWidget*, QContextMenuEvent*);
     using QListWidget_ChangeEvent_Callback = void (*)(QListWidget*, QEvent*);
+    using QListWidget_InitStyleOption_Callback = void (*)(const QListWidget*, QStyleOptionFrame*);
     using QListWidget_DevType_Callback = int (*)();
     using QListWidget_SetVisible_Callback = void (*)(QListWidget*, bool);
     using QListWidget_HeightForWidth_Callback = int (*)(const QListWidget*, int);
     using QListWidget_HasHeightForWidth_Callback = bool (*)();
     using QListWidget_PaintEngine_Callback = QPaintEngine* (*)();
     using QListWidget_KeyReleaseEvent_Callback = void (*)(QListWidget*, QKeyEvent*);
-    using QListWidget_EnterEvent_Callback = void (*)(QListWidget*, QEvent*);
+    using QListWidget_EnterEvent_Callback = void (*)(QListWidget*, QEnterEvent*);
     using QListWidget_LeaveEvent_Callback = void (*)(QListWidget*, QEvent*);
     using QListWidget_MoveEvent_Callback = void (*)(QListWidget*, QMoveEvent*);
     using QListWidget_CloseEvent_Callback = void (*)(QListWidget*, QCloseEvent*);
@@ -261,7 +245,7 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_ActionEvent_Callback = void (*)(QListWidget*, QActionEvent*);
     using QListWidget_ShowEvent_Callback = void (*)(QListWidget*, QShowEvent*);
     using QListWidget_HideEvent_Callback = void (*)(QListWidget*, QHideEvent*);
-    using QListWidget_NativeEvent_Callback = bool (*)(QListWidget*, const QByteArray&, void*, long*);
+    using QListWidget_NativeEvent_Callback = bool (*)(QListWidget*, const QByteArray&, void*, qintptr*);
     using QListWidget_Metric_Callback = int (*)(const QListWidget*, QPaintDevice::PaintDeviceMetric);
     using QListWidget_InitPainter_Callback = void (*)(const QListWidget*, QPainter*);
     using QListWidget_Redirected_Callback = QPaintDevice* (*)(const QListWidget*, QPoint*);
@@ -270,18 +254,10 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_CustomEvent_Callback = void (*)(QListWidget*, QEvent*);
     using QListWidget_ConnectNotify_Callback = void (*)(QListWidget*, const QMetaMethod&);
     using QListWidget_DisconnectNotify_Callback = void (*)(QListWidget*, const QMetaMethod&);
-    using QListWidget_Items_Callback = QList<QListWidgetItem*> (*)(const QListWidget*, const QMimeData*);
-    using QListWidget_IndexFromItem_Callback = QModelIndex (*)(const QListWidget*, const QListWidgetItem*);
-    using QListWidget_IndexFromItemWithItem_Callback = QModelIndex (*)(const QListWidget*, QListWidgetItem*);
-    using QListWidget_ItemFromIndex_Callback = QListWidgetItem* (*)(const QListWidget*, const QModelIndex&);
     using QListWidget_ResizeContents_Callback = void (*)(QListWidget*, int, int);
     using QListWidget_ContentsSize_Callback = QSize (*)();
     using QListWidget_RectForIndex_Callback = QRect (*)(const QListWidget*, const QModelIndex&);
     using QListWidget_SetPositionForIndex_Callback = void (*)(QListWidget*, const QPoint&, const QModelIndex&);
-    using QListWidget_SetHorizontalStepsPerItem_Callback = void (*)(QListWidget*, int);
-    using QListWidget_HorizontalStepsPerItem_Callback = int (*)();
-    using QListWidget_SetVerticalStepsPerItem_Callback = void (*)(QListWidget*, int);
-    using QListWidget_VerticalStepsPerItem_Callback = int (*)();
     using QListWidget_State_Callback = QAbstractItemView::State (*)();
     using QListWidget_SetState_Callback = void (*)(QListWidget*, int);
     using QListWidget_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -296,7 +272,6 @@ class VirtualQListWidget : public QListWidget {
     using QListWidget_SetViewportMargins_Callback = void (*)(QListWidget*, int, int, int, int);
     using QListWidget_ViewportMargins_Callback = QMargins (*)();
     using QListWidget_DrawFrame_Callback = void (*)(QListWidget*, QPainter*);
-    using QListWidget_InitStyleOption_Callback = void (*)(const QListWidget*, QStyleOptionFrame*);
     using QListWidget_UpdateMicroFocus_Callback = void (*)();
     using QListWidget_Create_Callback = void (*)();
     using QListWidget_Destroy_Callback = void (*)();
@@ -335,7 +310,7 @@ class VirtualQListWidget : public QListWidget {
     QListWidget_DragMoveEvent_Callback qlistwidget_dragmoveevent_callback = nullptr;
     QListWidget_DragLeaveEvent_Callback qlistwidget_dragleaveevent_callback = nullptr;
     QListWidget_StartDrag_Callback qlistwidget_startdrag_callback = nullptr;
-    QListWidget_ViewOptions_Callback qlistwidget_viewoptions_callback = nullptr;
+    QListWidget_InitViewItemOption_Callback qlistwidget_initviewitemoption_callback = nullptr;
     QListWidget_PaintEvent_Callback qlistwidget_paintevent_callback = nullptr;
     QListWidget_HorizontalOffset_Callback qlistwidget_horizontaloffset_callback = nullptr;
     QListWidget_VerticalOffset_Callback qlistwidget_verticaloffset_callback = nullptr;
@@ -351,6 +326,7 @@ class VirtualQListWidget : public QListWidget {
     QListWidget_KeyboardSearch_Callback qlistwidget_keyboardsearch_callback = nullptr;
     QListWidget_SizeHintForRow_Callback qlistwidget_sizehintforrow_callback = nullptr;
     QListWidget_SizeHintForColumn_Callback qlistwidget_sizehintforcolumn_callback = nullptr;
+    QListWidget_ItemDelegateForIndex_Callback qlistwidget_itemdelegateforindex_callback = nullptr;
     QListWidget_InputMethodQuery_Callback qlistwidget_inputmethodquery_callback = nullptr;
     QListWidget_SelectAll_Callback qlistwidget_selectall_callback = nullptr;
     QListWidget_UpdateEditorData_Callback qlistwidget_updateeditordata_callback = nullptr;
@@ -379,6 +355,7 @@ class VirtualQListWidget : public QListWidget {
     QListWidget_SetupViewport_Callback qlistwidget_setupviewport_callback = nullptr;
     QListWidget_ContextMenuEvent_Callback qlistwidget_contextmenuevent_callback = nullptr;
     QListWidget_ChangeEvent_Callback qlistwidget_changeevent_callback = nullptr;
+    QListWidget_InitStyleOption_Callback qlistwidget_initstyleoption_callback = nullptr;
     QListWidget_DevType_Callback qlistwidget_devtype_callback = nullptr;
     QListWidget_SetVisible_Callback qlistwidget_setvisible_callback = nullptr;
     QListWidget_HeightForWidth_Callback qlistwidget_heightforwidth_callback = nullptr;
@@ -402,18 +379,10 @@ class VirtualQListWidget : public QListWidget {
     QListWidget_CustomEvent_Callback qlistwidget_customevent_callback = nullptr;
     QListWidget_ConnectNotify_Callback qlistwidget_connectnotify_callback = nullptr;
     QListWidget_DisconnectNotify_Callback qlistwidget_disconnectnotify_callback = nullptr;
-    QListWidget_Items_Callback qlistwidget_items_callback = nullptr;
-    QListWidget_IndexFromItem_Callback qlistwidget_indexfromitem_callback = nullptr;
-    QListWidget_IndexFromItemWithItem_Callback qlistwidget_indexfromitemwithitem_callback = nullptr;
-    QListWidget_ItemFromIndex_Callback qlistwidget_itemfromindex_callback = nullptr;
     QListWidget_ResizeContents_Callback qlistwidget_resizecontents_callback = nullptr;
     QListWidget_ContentsSize_Callback qlistwidget_contentssize_callback = nullptr;
     QListWidget_RectForIndex_Callback qlistwidget_rectforindex_callback = nullptr;
     QListWidget_SetPositionForIndex_Callback qlistwidget_setpositionforindex_callback = nullptr;
-    QListWidget_SetHorizontalStepsPerItem_Callback qlistwidget_sethorizontalstepsperitem_callback = nullptr;
-    QListWidget_HorizontalStepsPerItem_Callback qlistwidget_horizontalstepsperitem_callback = nullptr;
-    QListWidget_SetVerticalStepsPerItem_Callback qlistwidget_setverticalstepsperitem_callback = nullptr;
-    QListWidget_VerticalStepsPerItem_Callback qlistwidget_verticalstepsperitem_callback = nullptr;
     QListWidget_State_Callback qlistwidget_state_callback = nullptr;
     QListWidget_SetState_Callback qlistwidget_setstate_callback = nullptr;
     QListWidget_ScheduleDelayedItemsLayout_Callback qlistwidget_scheduledelayeditemslayout_callback = nullptr;
@@ -428,7 +397,6 @@ class VirtualQListWidget : public QListWidget {
     QListWidget_SetViewportMargins_Callback qlistwidget_setviewportmargins_callback = nullptr;
     QListWidget_ViewportMargins_Callback qlistwidget_viewportmargins_callback = nullptr;
     QListWidget_DrawFrame_Callback qlistwidget_drawframe_callback = nullptr;
-    QListWidget_InitStyleOption_Callback qlistwidget_initstyleoption_callback = nullptr;
     QListWidget_UpdateMicroFocus_Callback qlistwidget_updatemicrofocus_callback = nullptr;
     QListWidget_Create_Callback qlistwidget_create_callback = nullptr;
     QListWidget_Destroy_Callback qlistwidget_destroy_callback = nullptr;
@@ -466,7 +434,7 @@ class VirtualQListWidget : public QListWidget {
     mutable bool qlistwidget_dragmoveevent_isbase = false;
     mutable bool qlistwidget_dragleaveevent_isbase = false;
     mutable bool qlistwidget_startdrag_isbase = false;
-    mutable bool qlistwidget_viewoptions_isbase = false;
+    mutable bool qlistwidget_initviewitemoption_isbase = false;
     mutable bool qlistwidget_paintevent_isbase = false;
     mutable bool qlistwidget_horizontaloffset_isbase = false;
     mutable bool qlistwidget_verticaloffset_isbase = false;
@@ -482,6 +450,7 @@ class VirtualQListWidget : public QListWidget {
     mutable bool qlistwidget_keyboardsearch_isbase = false;
     mutable bool qlistwidget_sizehintforrow_isbase = false;
     mutable bool qlistwidget_sizehintforcolumn_isbase = false;
+    mutable bool qlistwidget_itemdelegateforindex_isbase = false;
     mutable bool qlistwidget_inputmethodquery_isbase = false;
     mutable bool qlistwidget_selectall_isbase = false;
     mutable bool qlistwidget_updateeditordata_isbase = false;
@@ -510,6 +479,7 @@ class VirtualQListWidget : public QListWidget {
     mutable bool qlistwidget_setupviewport_isbase = false;
     mutable bool qlistwidget_contextmenuevent_isbase = false;
     mutable bool qlistwidget_changeevent_isbase = false;
+    mutable bool qlistwidget_initstyleoption_isbase = false;
     mutable bool qlistwidget_devtype_isbase = false;
     mutable bool qlistwidget_setvisible_isbase = false;
     mutable bool qlistwidget_heightforwidth_isbase = false;
@@ -533,18 +503,10 @@ class VirtualQListWidget : public QListWidget {
     mutable bool qlistwidget_customevent_isbase = false;
     mutable bool qlistwidget_connectnotify_isbase = false;
     mutable bool qlistwidget_disconnectnotify_isbase = false;
-    mutable bool qlistwidget_items_isbase = false;
-    mutable bool qlistwidget_indexfromitem_isbase = false;
-    mutable bool qlistwidget_indexfromitemwithitem_isbase = false;
-    mutable bool qlistwidget_itemfromindex_isbase = false;
     mutable bool qlistwidget_resizecontents_isbase = false;
     mutable bool qlistwidget_contentssize_isbase = false;
     mutable bool qlistwidget_rectforindex_isbase = false;
     mutable bool qlistwidget_setpositionforindex_isbase = false;
-    mutable bool qlistwidget_sethorizontalstepsperitem_isbase = false;
-    mutable bool qlistwidget_horizontalstepsperitem_isbase = false;
-    mutable bool qlistwidget_setverticalstepsperitem_isbase = false;
-    mutable bool qlistwidget_verticalstepsperitem_isbase = false;
     mutable bool qlistwidget_state_isbase = false;
     mutable bool qlistwidget_setstate_isbase = false;
     mutable bool qlistwidget_scheduledelayeditemslayout_isbase = false;
@@ -559,7 +521,6 @@ class VirtualQListWidget : public QListWidget {
     mutable bool qlistwidget_setviewportmargins_isbase = false;
     mutable bool qlistwidget_viewportmargins_isbase = false;
     mutable bool qlistwidget_drawframe_isbase = false;
-    mutable bool qlistwidget_initstyleoption_isbase = false;
     mutable bool qlistwidget_updatemicrofocus_isbase = false;
     mutable bool qlistwidget_create_isbase = false;
     mutable bool qlistwidget_destroy_isbase = false;
@@ -601,7 +562,7 @@ class VirtualQListWidget : public QListWidget {
         qlistwidget_dragmoveevent_callback = nullptr;
         qlistwidget_dragleaveevent_callback = nullptr;
         qlistwidget_startdrag_callback = nullptr;
-        qlistwidget_viewoptions_callback = nullptr;
+        qlistwidget_initviewitemoption_callback = nullptr;
         qlistwidget_paintevent_callback = nullptr;
         qlistwidget_horizontaloffset_callback = nullptr;
         qlistwidget_verticaloffset_callback = nullptr;
@@ -617,6 +578,7 @@ class VirtualQListWidget : public QListWidget {
         qlistwidget_keyboardsearch_callback = nullptr;
         qlistwidget_sizehintforrow_callback = nullptr;
         qlistwidget_sizehintforcolumn_callback = nullptr;
+        qlistwidget_itemdelegateforindex_callback = nullptr;
         qlistwidget_inputmethodquery_callback = nullptr;
         qlistwidget_selectall_callback = nullptr;
         qlistwidget_updateeditordata_callback = nullptr;
@@ -645,6 +607,7 @@ class VirtualQListWidget : public QListWidget {
         qlistwidget_setupviewport_callback = nullptr;
         qlistwidget_contextmenuevent_callback = nullptr;
         qlistwidget_changeevent_callback = nullptr;
+        qlistwidget_initstyleoption_callback = nullptr;
         qlistwidget_devtype_callback = nullptr;
         qlistwidget_setvisible_callback = nullptr;
         qlistwidget_heightforwidth_callback = nullptr;
@@ -668,18 +631,10 @@ class VirtualQListWidget : public QListWidget {
         qlistwidget_customevent_callback = nullptr;
         qlistwidget_connectnotify_callback = nullptr;
         qlistwidget_disconnectnotify_callback = nullptr;
-        qlistwidget_items_callback = nullptr;
-        qlistwidget_indexfromitem_callback = nullptr;
-        qlistwidget_indexfromitemwithitem_callback = nullptr;
-        qlistwidget_itemfromindex_callback = nullptr;
         qlistwidget_resizecontents_callback = nullptr;
         qlistwidget_contentssize_callback = nullptr;
         qlistwidget_rectforindex_callback = nullptr;
         qlistwidget_setpositionforindex_callback = nullptr;
-        qlistwidget_sethorizontalstepsperitem_callback = nullptr;
-        qlistwidget_horizontalstepsperitem_callback = nullptr;
-        qlistwidget_setverticalstepsperitem_callback = nullptr;
-        qlistwidget_verticalstepsperitem_callback = nullptr;
         qlistwidget_state_callback = nullptr;
         qlistwidget_setstate_callback = nullptr;
         qlistwidget_scheduledelayeditemslayout_callback = nullptr;
@@ -694,7 +649,6 @@ class VirtualQListWidget : public QListWidget {
         qlistwidget_setviewportmargins_callback = nullptr;
         qlistwidget_viewportmargins_callback = nullptr;
         qlistwidget_drawframe_callback = nullptr;
-        qlistwidget_initstyleoption_callback = nullptr;
         qlistwidget_updatemicrofocus_callback = nullptr;
         qlistwidget_create_callback = nullptr;
         qlistwidget_destroy_callback = nullptr;
@@ -733,7 +687,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_DragMoveEvent_Callback(QListWidget_DragMoveEvent_Callback cb) { qlistwidget_dragmoveevent_callback = cb; }
     void setQListWidget_DragLeaveEvent_Callback(QListWidget_DragLeaveEvent_Callback cb) { qlistwidget_dragleaveevent_callback = cb; }
     void setQListWidget_StartDrag_Callback(QListWidget_StartDrag_Callback cb) { qlistwidget_startdrag_callback = cb; }
-    void setQListWidget_ViewOptions_Callback(QListWidget_ViewOptions_Callback cb) { qlistwidget_viewoptions_callback = cb; }
+    void setQListWidget_InitViewItemOption_Callback(QListWidget_InitViewItemOption_Callback cb) { qlistwidget_initviewitemoption_callback = cb; }
     void setQListWidget_PaintEvent_Callback(QListWidget_PaintEvent_Callback cb) { qlistwidget_paintevent_callback = cb; }
     void setQListWidget_HorizontalOffset_Callback(QListWidget_HorizontalOffset_Callback cb) { qlistwidget_horizontaloffset_callback = cb; }
     void setQListWidget_VerticalOffset_Callback(QListWidget_VerticalOffset_Callback cb) { qlistwidget_verticaloffset_callback = cb; }
@@ -749,6 +703,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_KeyboardSearch_Callback(QListWidget_KeyboardSearch_Callback cb) { qlistwidget_keyboardsearch_callback = cb; }
     void setQListWidget_SizeHintForRow_Callback(QListWidget_SizeHintForRow_Callback cb) { qlistwidget_sizehintforrow_callback = cb; }
     void setQListWidget_SizeHintForColumn_Callback(QListWidget_SizeHintForColumn_Callback cb) { qlistwidget_sizehintforcolumn_callback = cb; }
+    void setQListWidget_ItemDelegateForIndex_Callback(QListWidget_ItemDelegateForIndex_Callback cb) { qlistwidget_itemdelegateforindex_callback = cb; }
     void setQListWidget_InputMethodQuery_Callback(QListWidget_InputMethodQuery_Callback cb) { qlistwidget_inputmethodquery_callback = cb; }
     void setQListWidget_SelectAll_Callback(QListWidget_SelectAll_Callback cb) { qlistwidget_selectall_callback = cb; }
     void setQListWidget_UpdateEditorData_Callback(QListWidget_UpdateEditorData_Callback cb) { qlistwidget_updateeditordata_callback = cb; }
@@ -777,6 +732,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_SetupViewport_Callback(QListWidget_SetupViewport_Callback cb) { qlistwidget_setupviewport_callback = cb; }
     void setQListWidget_ContextMenuEvent_Callback(QListWidget_ContextMenuEvent_Callback cb) { qlistwidget_contextmenuevent_callback = cb; }
     void setQListWidget_ChangeEvent_Callback(QListWidget_ChangeEvent_Callback cb) { qlistwidget_changeevent_callback = cb; }
+    void setQListWidget_InitStyleOption_Callback(QListWidget_InitStyleOption_Callback cb) { qlistwidget_initstyleoption_callback = cb; }
     void setQListWidget_DevType_Callback(QListWidget_DevType_Callback cb) { qlistwidget_devtype_callback = cb; }
     void setQListWidget_SetVisible_Callback(QListWidget_SetVisible_Callback cb) { qlistwidget_setvisible_callback = cb; }
     void setQListWidget_HeightForWidth_Callback(QListWidget_HeightForWidth_Callback cb) { qlistwidget_heightforwidth_callback = cb; }
@@ -800,18 +756,10 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_CustomEvent_Callback(QListWidget_CustomEvent_Callback cb) { qlistwidget_customevent_callback = cb; }
     void setQListWidget_ConnectNotify_Callback(QListWidget_ConnectNotify_Callback cb) { qlistwidget_connectnotify_callback = cb; }
     void setQListWidget_DisconnectNotify_Callback(QListWidget_DisconnectNotify_Callback cb) { qlistwidget_disconnectnotify_callback = cb; }
-    void setQListWidget_Items_Callback(QListWidget_Items_Callback cb) { qlistwidget_items_callback = cb; }
-    void setQListWidget_IndexFromItem_Callback(QListWidget_IndexFromItem_Callback cb) { qlistwidget_indexfromitem_callback = cb; }
-    void setQListWidget_IndexFromItemWithItem_Callback(QListWidget_IndexFromItemWithItem_Callback cb) { qlistwidget_indexfromitemwithitem_callback = cb; }
-    void setQListWidget_ItemFromIndex_Callback(QListWidget_ItemFromIndex_Callback cb) { qlistwidget_itemfromindex_callback = cb; }
     void setQListWidget_ResizeContents_Callback(QListWidget_ResizeContents_Callback cb) { qlistwidget_resizecontents_callback = cb; }
     void setQListWidget_ContentsSize_Callback(QListWidget_ContentsSize_Callback cb) { qlistwidget_contentssize_callback = cb; }
     void setQListWidget_RectForIndex_Callback(QListWidget_RectForIndex_Callback cb) { qlistwidget_rectforindex_callback = cb; }
     void setQListWidget_SetPositionForIndex_Callback(QListWidget_SetPositionForIndex_Callback cb) { qlistwidget_setpositionforindex_callback = cb; }
-    void setQListWidget_SetHorizontalStepsPerItem_Callback(QListWidget_SetHorizontalStepsPerItem_Callback cb) { qlistwidget_sethorizontalstepsperitem_callback = cb; }
-    void setQListWidget_HorizontalStepsPerItem_Callback(QListWidget_HorizontalStepsPerItem_Callback cb) { qlistwidget_horizontalstepsperitem_callback = cb; }
-    void setQListWidget_SetVerticalStepsPerItem_Callback(QListWidget_SetVerticalStepsPerItem_Callback cb) { qlistwidget_setverticalstepsperitem_callback = cb; }
-    void setQListWidget_VerticalStepsPerItem_Callback(QListWidget_VerticalStepsPerItem_Callback cb) { qlistwidget_verticalstepsperitem_callback = cb; }
     void setQListWidget_State_Callback(QListWidget_State_Callback cb) { qlistwidget_state_callback = cb; }
     void setQListWidget_SetState_Callback(QListWidget_SetState_Callback cb) { qlistwidget_setstate_callback = cb; }
     void setQListWidget_ScheduleDelayedItemsLayout_Callback(QListWidget_ScheduleDelayedItemsLayout_Callback cb) { qlistwidget_scheduledelayeditemslayout_callback = cb; }
@@ -826,7 +774,6 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_SetViewportMargins_Callback(QListWidget_SetViewportMargins_Callback cb) { qlistwidget_setviewportmargins_callback = cb; }
     void setQListWidget_ViewportMargins_Callback(QListWidget_ViewportMargins_Callback cb) { qlistwidget_viewportmargins_callback = cb; }
     void setQListWidget_DrawFrame_Callback(QListWidget_DrawFrame_Callback cb) { qlistwidget_drawframe_callback = cb; }
-    void setQListWidget_InitStyleOption_Callback(QListWidget_InitStyleOption_Callback cb) { qlistwidget_initstyleoption_callback = cb; }
     void setQListWidget_UpdateMicroFocus_Callback(QListWidget_UpdateMicroFocus_Callback cb) { qlistwidget_updatemicrofocus_callback = cb; }
     void setQListWidget_Create_Callback(QListWidget_Create_Callback cb) { qlistwidget_create_callback = cb; }
     void setQListWidget_Destroy_Callback(QListWidget_Destroy_Callback cb) { qlistwidget_destroy_callback = cb; }
@@ -864,7 +811,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_DragMoveEvent_IsBase(bool value) const { qlistwidget_dragmoveevent_isbase = value; }
     void setQListWidget_DragLeaveEvent_IsBase(bool value) const { qlistwidget_dragleaveevent_isbase = value; }
     void setQListWidget_StartDrag_IsBase(bool value) const { qlistwidget_startdrag_isbase = value; }
-    void setQListWidget_ViewOptions_IsBase(bool value) const { qlistwidget_viewoptions_isbase = value; }
+    void setQListWidget_InitViewItemOption_IsBase(bool value) const { qlistwidget_initviewitemoption_isbase = value; }
     void setQListWidget_PaintEvent_IsBase(bool value) const { qlistwidget_paintevent_isbase = value; }
     void setQListWidget_HorizontalOffset_IsBase(bool value) const { qlistwidget_horizontaloffset_isbase = value; }
     void setQListWidget_VerticalOffset_IsBase(bool value) const { qlistwidget_verticaloffset_isbase = value; }
@@ -880,6 +827,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_KeyboardSearch_IsBase(bool value) const { qlistwidget_keyboardsearch_isbase = value; }
     void setQListWidget_SizeHintForRow_IsBase(bool value) const { qlistwidget_sizehintforrow_isbase = value; }
     void setQListWidget_SizeHintForColumn_IsBase(bool value) const { qlistwidget_sizehintforcolumn_isbase = value; }
+    void setQListWidget_ItemDelegateForIndex_IsBase(bool value) const { qlistwidget_itemdelegateforindex_isbase = value; }
     void setQListWidget_InputMethodQuery_IsBase(bool value) const { qlistwidget_inputmethodquery_isbase = value; }
     void setQListWidget_SelectAll_IsBase(bool value) const { qlistwidget_selectall_isbase = value; }
     void setQListWidget_UpdateEditorData_IsBase(bool value) const { qlistwidget_updateeditordata_isbase = value; }
@@ -908,6 +856,7 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_SetupViewport_IsBase(bool value) const { qlistwidget_setupviewport_isbase = value; }
     void setQListWidget_ContextMenuEvent_IsBase(bool value) const { qlistwidget_contextmenuevent_isbase = value; }
     void setQListWidget_ChangeEvent_IsBase(bool value) const { qlistwidget_changeevent_isbase = value; }
+    void setQListWidget_InitStyleOption_IsBase(bool value) const { qlistwidget_initstyleoption_isbase = value; }
     void setQListWidget_DevType_IsBase(bool value) const { qlistwidget_devtype_isbase = value; }
     void setQListWidget_SetVisible_IsBase(bool value) const { qlistwidget_setvisible_isbase = value; }
     void setQListWidget_HeightForWidth_IsBase(bool value) const { qlistwidget_heightforwidth_isbase = value; }
@@ -931,18 +880,10 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_CustomEvent_IsBase(bool value) const { qlistwidget_customevent_isbase = value; }
     void setQListWidget_ConnectNotify_IsBase(bool value) const { qlistwidget_connectnotify_isbase = value; }
     void setQListWidget_DisconnectNotify_IsBase(bool value) const { qlistwidget_disconnectnotify_isbase = value; }
-    void setQListWidget_Items_IsBase(bool value) const { qlistwidget_items_isbase = value; }
-    void setQListWidget_IndexFromItem_IsBase(bool value) const { qlistwidget_indexfromitem_isbase = value; }
-    void setQListWidget_IndexFromItemWithItem_IsBase(bool value) const { qlistwidget_indexfromitemwithitem_isbase = value; }
-    void setQListWidget_ItemFromIndex_IsBase(bool value) const { qlistwidget_itemfromindex_isbase = value; }
     void setQListWidget_ResizeContents_IsBase(bool value) const { qlistwidget_resizecontents_isbase = value; }
     void setQListWidget_ContentsSize_IsBase(bool value) const { qlistwidget_contentssize_isbase = value; }
     void setQListWidget_RectForIndex_IsBase(bool value) const { qlistwidget_rectforindex_isbase = value; }
     void setQListWidget_SetPositionForIndex_IsBase(bool value) const { qlistwidget_setpositionforindex_isbase = value; }
-    void setQListWidget_SetHorizontalStepsPerItem_IsBase(bool value) const { qlistwidget_sethorizontalstepsperitem_isbase = value; }
-    void setQListWidget_HorizontalStepsPerItem_IsBase(bool value) const { qlistwidget_horizontalstepsperitem_isbase = value; }
-    void setQListWidget_SetVerticalStepsPerItem_IsBase(bool value) const { qlistwidget_setverticalstepsperitem_isbase = value; }
-    void setQListWidget_VerticalStepsPerItem_IsBase(bool value) const { qlistwidget_verticalstepsperitem_isbase = value; }
     void setQListWidget_State_IsBase(bool value) const { qlistwidget_state_isbase = value; }
     void setQListWidget_SetState_IsBase(bool value) const { qlistwidget_setstate_isbase = value; }
     void setQListWidget_ScheduleDelayedItemsLayout_IsBase(bool value) const { qlistwidget_scheduledelayeditemslayout_isbase = value; }
@@ -957,7 +898,6 @@ class VirtualQListWidget : public QListWidget {
     void setQListWidget_SetViewportMargins_IsBase(bool value) const { qlistwidget_setviewportmargins_isbase = value; }
     void setQListWidget_ViewportMargins_IsBase(bool value) const { qlistwidget_viewportmargins_isbase = value; }
     void setQListWidget_DrawFrame_IsBase(bool value) const { qlistwidget_drawframe_isbase = value; }
-    void setQListWidget_InitStyleOption_IsBase(bool value) const { qlistwidget_initstyleoption_isbase = value; }
     void setQListWidget_UpdateMicroFocus_IsBase(bool value) const { qlistwidget_updatemicrofocus_isbase = value; }
     void setQListWidget_Create_IsBase(bool value) const { qlistwidget_create_isbase = value; }
     void setQListWidget_Destroy_IsBase(bool value) const { qlistwidget_destroy_isbase = value; }
@@ -1029,7 +969,7 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QMimeData* mimeData(const QList<QListWidgetItem*> items) const override {
+    virtual QMimeData* mimeData(const QList<QListWidgetItem*>& items) const override {
         if (qlistwidget_mimedata_isbase) {
             qlistwidget_mimedata_isbase = false;
             return QListWidget::mimeData(items);
@@ -1149,7 +1089,7 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
         if (qlistwidget_datachanged_isbase) {
             qlistwidget_datachanged_isbase = false;
             QListWidget::dataChanged(topLeft, bottomRight, roles);
@@ -1281,14 +1221,14 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QStyleOptionViewItem viewOptions() const override {
-        if (qlistwidget_viewoptions_isbase) {
-            qlistwidget_viewoptions_isbase = false;
-            return QListWidget::viewOptions();
-        } else if (qlistwidget_viewoptions_callback != nullptr) {
-            return qlistwidget_viewoptions_callback();
+    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
+        if (qlistwidget_initviewitemoption_isbase) {
+            qlistwidget_initviewitemoption_isbase = false;
+            QListWidget::initViewItemOption(option);
+        } else if (qlistwidget_initviewitemoption_callback != nullptr) {
+            qlistwidget_initviewitemoption_callback(this, option);
         } else {
-            return QListWidget::viewOptions();
+            QListWidget::initViewItemOption(option);
         }
     }
 
@@ -1469,6 +1409,18 @@ class VirtualQListWidget : public QListWidget {
             return qlistwidget_sizehintforcolumn_callback(this, column);
         } else {
             return QListWidget::sizeHintForColumn(column);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
+        if (qlistwidget_itemdelegateforindex_isbase) {
+            qlistwidget_itemdelegateforindex_isbase = false;
+            return QListWidget::itemDelegateForIndex(index);
+        } else if (qlistwidget_itemdelegateforindex_callback != nullptr) {
+            return qlistwidget_itemdelegateforindex_callback(this, index);
+        } else {
+            return QListWidget::itemDelegateForIndex(index);
         }
     }
 
@@ -1809,6 +1761,18 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qlistwidget_initstyleoption_isbase) {
+            qlistwidget_initstyleoption_isbase = false;
+            QListWidget::initStyleOption(option);
+        } else if (qlistwidget_initstyleoption_callback != nullptr) {
+            qlistwidget_initstyleoption_callback(this, option);
+        } else {
+            QListWidget::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qlistwidget_devtype_isbase) {
             qlistwidget_devtype_isbase = false;
@@ -1881,7 +1845,7 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qlistwidget_enterevent_isbase) {
             qlistwidget_enterevent_isbase = false;
             QListWidget::enterEvent(event);
@@ -1977,7 +1941,7 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qlistwidget_nativeevent_isbase) {
             qlistwidget_nativeevent_isbase = false;
             return QListWidget::nativeEvent(eventType, message, result);
@@ -2085,54 +2049,6 @@ class VirtualQListWidget : public QListWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    QList<QListWidgetItem*> items(const QMimeData* data) const {
-        if (qlistwidget_items_isbase) {
-            qlistwidget_items_isbase = false;
-            return QListWidget::items(data);
-        } else if (qlistwidget_items_callback != nullptr) {
-            return qlistwidget_items_callback(this, data);
-        } else {
-            return QListWidget::items(data);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    QModelIndex indexFromItem(const QListWidgetItem* item) const {
-        if (qlistwidget_indexfromitem_isbase) {
-            qlistwidget_indexfromitem_isbase = false;
-            return QListWidget::indexFromItem(item);
-        } else if (qlistwidget_indexfromitem_callback != nullptr) {
-            return qlistwidget_indexfromitem_callback(this, item);
-        } else {
-            return QListWidget::indexFromItem(item);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    QModelIndex indexFromItem(QListWidgetItem* item) const {
-        if (qlistwidget_indexfromitemwithitem_isbase) {
-            qlistwidget_indexfromitemwithitem_isbase = false;
-            return QListWidget::indexFromItem(item);
-        } else if (qlistwidget_indexfromitemwithitem_callback != nullptr) {
-            return qlistwidget_indexfromitemwithitem_callback(this, item);
-        } else {
-            return QListWidget::indexFromItem(item);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    QListWidgetItem* itemFromIndex(const QModelIndex& index) const {
-        if (qlistwidget_itemfromindex_isbase) {
-            qlistwidget_itemfromindex_isbase = false;
-            return QListWidget::itemFromIndex(index);
-        } else if (qlistwidget_itemfromindex_callback != nullptr) {
-            return qlistwidget_itemfromindex_callback(this, index);
-        } else {
-            return QListWidget::itemFromIndex(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     void resizeContents(int width, int height) {
         if (qlistwidget_resizecontents_isbase) {
             qlistwidget_resizecontents_isbase = false;
@@ -2177,54 +2093,6 @@ class VirtualQListWidget : public QListWidget {
             qlistwidget_setpositionforindex_callback(this, position, index);
         } else {
             QListWidget::setPositionForIndex(position, index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setHorizontalStepsPerItem(int steps) {
-        if (qlistwidget_sethorizontalstepsperitem_isbase) {
-            qlistwidget_sethorizontalstepsperitem_isbase = false;
-            QListWidget::setHorizontalStepsPerItem(steps);
-        } else if (qlistwidget_sethorizontalstepsperitem_callback != nullptr) {
-            qlistwidget_sethorizontalstepsperitem_callback(this, steps);
-        } else {
-            QListWidget::setHorizontalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int horizontalStepsPerItem() const {
-        if (qlistwidget_horizontalstepsperitem_isbase) {
-            qlistwidget_horizontalstepsperitem_isbase = false;
-            return QListWidget::horizontalStepsPerItem();
-        } else if (qlistwidget_horizontalstepsperitem_callback != nullptr) {
-            return qlistwidget_horizontalstepsperitem_callback();
-        } else {
-            return QListWidget::horizontalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setVerticalStepsPerItem(int steps) {
-        if (qlistwidget_setverticalstepsperitem_isbase) {
-            qlistwidget_setverticalstepsperitem_isbase = false;
-            QListWidget::setVerticalStepsPerItem(steps);
-        } else if (qlistwidget_setverticalstepsperitem_callback != nullptr) {
-            qlistwidget_setverticalstepsperitem_callback(this, steps);
-        } else {
-            QListWidget::setVerticalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int verticalStepsPerItem() const {
-        if (qlistwidget_verticalstepsperitem_isbase) {
-            qlistwidget_verticalstepsperitem_isbase = false;
-            return QListWidget::verticalStepsPerItem();
-        } else if (qlistwidget_verticalstepsperitem_callback != nullptr) {
-            return qlistwidget_verticalstepsperitem_callback();
-        } else {
-            return QListWidget::verticalStepsPerItem();
         }
     }
 
@@ -2393,18 +2261,6 @@ class VirtualQListWidget : public QListWidget {
             qlistwidget_drawframe_callback(this, param1);
         } else {
             QListWidget::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qlistwidget_initstyleoption_isbase) {
-            qlistwidget_initstyleoption_isbase = false;
-            QListWidget::initStyleOption(option);
-        } else if (qlistwidget_initstyleoption_callback != nullptr) {
-            qlistwidget_initstyleoption_callback(this, option);
-        } else {
-            QListWidget::initStyleOption(option);
         }
     }
 

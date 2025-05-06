@@ -20,6 +20,7 @@ extern "C" {
 #else
 typedef struct QDataStream QDataStream;
 typedef struct QIODevice QIODevice;
+typedef struct QIODeviceBase QIODeviceBase;
 #endif
 
 #ifdef __cplusplus
@@ -39,7 +40,6 @@ QDataStream* QDataStream_new2(QIODevice* param1);
 QDataStream* QDataStream_new3(libqt_string param1);
 QIODevice* QDataStream_Device(const QDataStream* self);
 void QDataStream_SetDevice(QDataStream* self, QIODevice* device);
-void QDataStream_UnsetDevice(QDataStream* self);
 bool QDataStream_AtEnd(const QDataStream* self);
 int QDataStream_Status(const QDataStream* self);
 void QDataStream_SetStatus(QDataStream* self, int status);
@@ -50,7 +50,8 @@ int QDataStream_ByteOrder(const QDataStream* self);
 void QDataStream_SetByteOrder(QDataStream* self, int byteOrder);
 int QDataStream_Version(const QDataStream* self);
 void QDataStream_SetVersion(QDataStream* self, int version);
-void QDataStream_OperatorShiftRight(QDataStream* self, signed char* i);
+void QDataStream_OperatorShiftRight(QDataStream* self, char* i);
+void QDataStream_OperatorShiftRightWithQint8(QDataStream* self, signed char* i);
 void QDataStream_OperatorShiftRightWithQuint8(QDataStream* self, unsigned char* i);
 void QDataStream_OperatorShiftRightWithQint16(QDataStream* self, int16_t* i);
 void QDataStream_OperatorShiftRightWithQuint16(QDataStream* self, uint16_t* i);
@@ -62,7 +63,8 @@ void QDataStream_OperatorShiftRightWithBool(QDataStream* self, bool* i);
 void QDataStream_OperatorShiftRightWithFloat(QDataStream* self, float* f);
 void QDataStream_OperatorShiftRightWithDouble(QDataStream* self, double* f);
 void QDataStream_OperatorShiftRightWithStr(QDataStream* self, char* str);
-void QDataStream_OperatorShiftLeft(QDataStream* self, signed char i);
+void QDataStream_OperatorShiftLeft(QDataStream* self, char i);
+void QDataStream_OperatorShiftLeftWithQint8(QDataStream* self, signed char i);
 void QDataStream_OperatorShiftLeftWithQuint8(QDataStream* self, unsigned char i);
 void QDataStream_OperatorShiftLeftWithQint16(QDataStream* self, int16_t i);
 void QDataStream_OperatorShiftLeftWithQuint16(QDataStream* self, uint16_t i);
@@ -83,6 +85,7 @@ void QDataStream_StartTransaction(QDataStream* self);
 bool QDataStream_CommitTransaction(QDataStream* self);
 void QDataStream_RollbackTransaction(QDataStream* self);
 void QDataStream_AbortTransaction(QDataStream* self);
+bool QDataStream_IsDeviceTransactionStarted(const QDataStream* self);
 void QDataStream_Delete(QDataStream* self);
 
 #ifdef __cplusplus

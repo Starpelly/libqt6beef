@@ -25,6 +25,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
     using QGraphicsLayout_ItemAt_Callback = QGraphicsLayoutItem* (*)(const QGraphicsLayout*, int);
     using QGraphicsLayout_RemoveAt_Callback = void (*)(QGraphicsLayout*, int);
     using QGraphicsLayout_SetGeometry_Callback = void (*)(QGraphicsLayout*, const QRectF&);
+    using QGraphicsLayout_IsEmpty_Callback = bool (*)();
     using QGraphicsLayout_SizeHint_Callback = QSizeF (*)(const QGraphicsLayout*, Qt::SizeHint, const QSizeF&);
     using QGraphicsLayout_AddChildLayoutItem_Callback = void (*)(QGraphicsLayout*, QGraphicsLayoutItem*);
     using QGraphicsLayout_SetGraphicsItem_Callback = void (*)(QGraphicsLayout*, QGraphicsItem*);
@@ -40,6 +41,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
     QGraphicsLayout_ItemAt_Callback qgraphicslayout_itemat_callback = nullptr;
     QGraphicsLayout_RemoveAt_Callback qgraphicslayout_removeat_callback = nullptr;
     QGraphicsLayout_SetGeometry_Callback qgraphicslayout_setgeometry_callback = nullptr;
+    QGraphicsLayout_IsEmpty_Callback qgraphicslayout_isempty_callback = nullptr;
     QGraphicsLayout_SizeHint_Callback qgraphicslayout_sizehint_callback = nullptr;
     QGraphicsLayout_AddChildLayoutItem_Callback qgraphicslayout_addchildlayoutitem_callback = nullptr;
     QGraphicsLayout_SetGraphicsItem_Callback qgraphicslayout_setgraphicsitem_callback = nullptr;
@@ -54,6 +56,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
     mutable bool qgraphicslayout_itemat_isbase = false;
     mutable bool qgraphicslayout_removeat_isbase = false;
     mutable bool qgraphicslayout_setgeometry_isbase = false;
+    mutable bool qgraphicslayout_isempty_isbase = false;
     mutable bool qgraphicslayout_sizehint_isbase = false;
     mutable bool qgraphicslayout_addchildlayoutitem_isbase = false;
     mutable bool qgraphicslayout_setgraphicsitem_isbase = false;
@@ -72,6 +75,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
         qgraphicslayout_itemat_callback = nullptr;
         qgraphicslayout_removeat_callback = nullptr;
         qgraphicslayout_setgeometry_callback = nullptr;
+        qgraphicslayout_isempty_callback = nullptr;
         qgraphicslayout_sizehint_callback = nullptr;
         qgraphicslayout_addchildlayoutitem_callback = nullptr;
         qgraphicslayout_setgraphicsitem_callback = nullptr;
@@ -87,6 +91,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
     void setQGraphicsLayout_ItemAt_Callback(QGraphicsLayout_ItemAt_Callback cb) { qgraphicslayout_itemat_callback = cb; }
     void setQGraphicsLayout_RemoveAt_Callback(QGraphicsLayout_RemoveAt_Callback cb) { qgraphicslayout_removeat_callback = cb; }
     void setQGraphicsLayout_SetGeometry_Callback(QGraphicsLayout_SetGeometry_Callback cb) { qgraphicslayout_setgeometry_callback = cb; }
+    void setQGraphicsLayout_IsEmpty_Callback(QGraphicsLayout_IsEmpty_Callback cb) { qgraphicslayout_isempty_callback = cb; }
     void setQGraphicsLayout_SizeHint_Callback(QGraphicsLayout_SizeHint_Callback cb) { qgraphicslayout_sizehint_callback = cb; }
     void setQGraphicsLayout_AddChildLayoutItem_Callback(QGraphicsLayout_AddChildLayoutItem_Callback cb) { qgraphicslayout_addchildlayoutitem_callback = cb; }
     void setQGraphicsLayout_SetGraphicsItem_Callback(QGraphicsLayout_SetGraphicsItem_Callback cb) { qgraphicslayout_setgraphicsitem_callback = cb; }
@@ -101,6 +106,7 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
     void setQGraphicsLayout_ItemAt_IsBase(bool value) const { qgraphicslayout_itemat_isbase = value; }
     void setQGraphicsLayout_RemoveAt_IsBase(bool value) const { qgraphicslayout_removeat_isbase = value; }
     void setQGraphicsLayout_SetGeometry_IsBase(bool value) const { qgraphicslayout_setgeometry_isbase = value; }
+    void setQGraphicsLayout_IsEmpty_IsBase(bool value) const { qgraphicslayout_isempty_isbase = value; }
     void setQGraphicsLayout_SizeHint_IsBase(bool value) const { qgraphicslayout_sizehint_isbase = value; }
     void setQGraphicsLayout_AddChildLayoutItem_IsBase(bool value) const { qgraphicslayout_addchildlayoutitem_isbase = value; }
     void setQGraphicsLayout_SetGraphicsItem_IsBase(bool value) const { qgraphicslayout_setgraphicsitem_isbase = value; }
@@ -178,6 +184,18 @@ class VirtualQGraphicsLayout : public QGraphicsLayout {
             qgraphicslayout_setgeometry_callback(this, rect);
         } else {
             QGraphicsLayout::setGeometry(rect);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool isEmpty() const override {
+        if (qgraphicslayout_isempty_isbase) {
+            qgraphicslayout_isempty_isbase = false;
+            return QGraphicsLayout::isEmpty();
+        } else if (qgraphicslayout_isempty_callback != nullptr) {
+            return qgraphicslayout_isempty_callback();
+        } else {
+            return QGraphicsLayout::isEmpty();
         }
     }
 

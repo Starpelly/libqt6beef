@@ -9,23 +9,23 @@ QAbstractNativeEventFilter* QAbstractNativeEventFilter_new() {
 }
 
 // Derived class handler implementation
-bool QAbstractNativeEventFilter_NativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractNativeEventFilter_NativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractnativeeventfilter = dynamic_cast<VirtualQAbstractNativeEventFilter*>(self)) {
-        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractNativeEventFilter_QBaseNativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractNativeEventFilter_QBaseNativeEventFilter(QAbstractNativeEventFilter* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractnativeeventfilter = dynamic_cast<VirtualQAbstractNativeEventFilter*>(self)) {
         vqabstractnativeeventfilter->setQAbstractNativeEventFilter_NativeEventFilter_IsBase(true);
-        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractnativeeventfilter->nativeEventFilter(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

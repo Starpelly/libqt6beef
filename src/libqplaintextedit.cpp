@@ -3,7 +3,9 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QAbstractTextDocumentLayout__PaintContext
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,6 +16,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -39,7 +42,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPagedPaintDevice>
 #include <QPaintDevice>
 #include <QPaintEngine>
@@ -53,7 +55,6 @@
 #include <QPointF>
 #include <QRect>
 #include <QRectF>
-#include <QRegExp>
 #include <QRegion>
 #include <QRegularExpression>
 #include <QResizeEvent>
@@ -142,18 +143,6 @@ int QPlainTextEdit_QBaseMetacall(QPlainTextEdit* self, int param1, int param2, v
 
 libqt_string QPlainTextEdit_Tr(const char* s) {
     QString _ret = QPlainTextEdit::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPlainTextEdit_TrUtf8(const char* s) {
-    QString _ret = QPlainTextEdit::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -303,11 +292,7 @@ bool QPlainTextEdit_Find(QPlainTextEdit* self, libqt_string exp) {
     return self->find(exp_QString);
 }
 
-bool QPlainTextEdit_FindWithExp(QPlainTextEdit* self, QRegExp* exp) {
-    return self->find(*exp);
-}
-
-bool QPlainTextEdit_Find2(QPlainTextEdit* self, QRegularExpression* exp) {
+bool QPlainTextEdit_FindWithExp(QPlainTextEdit* self, QRegularExpression* exp) {
     return self->find(*exp);
 }
 
@@ -365,14 +350,6 @@ bool QPlainTextEdit_OverwriteMode(const QPlainTextEdit* self) {
 
 void QPlainTextEdit_SetOverwriteMode(QPlainTextEdit* self, bool overwrite) {
     self->setOverwriteMode(overwrite);
-}
-
-int QPlainTextEdit_TabStopWidth(const QPlainTextEdit* self) {
-    return self->tabStopWidth();
-}
-
-void QPlainTextEdit_SetTabStopWidth(QPlainTextEdit* self, int width) {
-    self->setTabStopWidth(static_cast<int>(width));
 }
 
 double QPlainTextEdit_TabStopDistance(const QPlainTextEdit* self) {
@@ -626,40 +603,12 @@ libqt_string QPlainTextEdit_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QPlainTextEdit_TrUtf82(const char* s, const char* c) {
-    QString _ret = QPlainTextEdit::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPlainTextEdit_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QPlainTextEdit::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-bool QPlainTextEdit_Find22(QPlainTextEdit* self, libqt_string exp, int options) {
+bool QPlainTextEdit_Find2(QPlainTextEdit* self, libqt_string exp, int options) {
     QString exp_QString = QString::fromUtf8(exp.data, exp.len);
     return self->find(exp_QString, static_cast<QTextDocument::FindFlags>(options));
 }
 
-bool QPlainTextEdit_Find23(QPlainTextEdit* self, QRegExp* exp, int options) {
-    return self->find(*exp, static_cast<QTextDocument::FindFlags>(options));
-}
-
-bool QPlainTextEdit_Find24(QPlainTextEdit* self, QRegularExpression* exp, int options) {
+bool QPlainTextEdit_Find22(QPlainTextEdit* self, QRegularExpression* exp, int options) {
     return self->find(*exp, static_cast<QTextDocument::FindFlags>(options));
 }
 
@@ -1584,6 +1533,32 @@ void QPlainTextEdit_OnViewportSizeHint(const QPlainTextEdit* self, intptr_t slot
 }
 
 // Derived class handler implementation
+void QPlainTextEdit_InitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
+        vqplaintextedit->initStyleOption(option);
+    } else {
+        vqplaintextedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QPlainTextEdit_QBaseInitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
+        vqplaintextedit->setQPlainTextEdit_InitStyleOption_IsBase(true);
+        vqplaintextedit->initStyleOption(option);
+    } else {
+        vqplaintextedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QPlainTextEdit_OnInitStyleOption(const QPlainTextEdit* self, intptr_t slot) {
+    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
+        vqplaintextedit->setQPlainTextEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQPlainTextEdit::QPlainTextEdit_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QPlainTextEdit_DevType(const QPlainTextEdit* self) {
     if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
         return vqplaintextedit->devType();
@@ -1714,7 +1689,7 @@ void QPlainTextEdit_OnPaintEngine(const QPlainTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QPlainTextEdit_EnterEvent(QPlainTextEdit* self, QEvent* event) {
+void QPlainTextEdit_EnterEvent(QPlainTextEdit* self, QEnterEvent* event) {
     if (auto* vqplaintextedit = dynamic_cast<VirtualQPlainTextEdit*>(self)) {
         vqplaintextedit->enterEvent(event);
     } else {
@@ -1723,7 +1698,7 @@ void QPlainTextEdit_EnterEvent(QPlainTextEdit* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QPlainTextEdit_QBaseEnterEvent(QPlainTextEdit* self, QEvent* event) {
+void QPlainTextEdit_QBaseEnterEvent(QPlainTextEdit* self, QEnterEvent* event) {
     if (auto* vqplaintextedit = dynamic_cast<VirtualQPlainTextEdit*>(self)) {
         vqplaintextedit->setQPlainTextEdit_EnterEvent_IsBase(true);
         vqplaintextedit->enterEvent(event);
@@ -1896,23 +1871,23 @@ void QPlainTextEdit_OnHideEvent(QPlainTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QPlainTextEdit_NativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, long* result) {
+bool QPlainTextEdit_NativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqplaintextedit = dynamic_cast<VirtualQPlainTextEdit*>(self)) {
-        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QPlainTextEdit_QBaseNativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, long* result) {
+bool QPlainTextEdit_QBaseNativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqplaintextedit = dynamic_cast<VirtualQPlainTextEdit*>(self)) {
         vqplaintextedit->setQPlainTextEdit_NativeEvent_IsBase(true);
-        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqplaintextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -2354,32 +2329,6 @@ void QPlainTextEdit_OnDrawFrame(QPlainTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QPlainTextEdit_InitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
-        vqplaintextedit->initStyleOption(option);
-    } else {
-        vqplaintextedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QPlainTextEdit_QBaseInitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
-        vqplaintextedit->setQPlainTextEdit_InitStyleOption_IsBase(true);
-        vqplaintextedit->initStyleOption(option);
-    } else {
-        vqplaintextedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPlainTextEdit_OnInitStyleOption(const QPlainTextEdit* self, intptr_t slot) {
-    if (auto* vqplaintextedit = const_cast<VirtualQPlainTextEdit*>(dynamic_cast<const VirtualQPlainTextEdit*>(self))) {
-        vqplaintextedit->setQPlainTextEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQPlainTextEdit::QPlainTextEdit_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QPlainTextEdit_UpdateMicroFocus(QPlainTextEdit* self) {
     if (auto* vqplaintextedit = dynamic_cast<VirtualQPlainTextEdit*>(self)) {
         vqplaintextedit->updateMicroFocus();
@@ -2666,18 +2615,6 @@ libqt_string QPlainTextDocumentLayout_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QPlainTextDocumentLayout_TrUtf8(const char* s) {
-    QString _ret = QPlainTextDocumentLayout::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QPlainTextDocumentLayout_EnsureBlockLayout(const QPlainTextDocumentLayout* self, QTextBlock* block) {
     self->ensureBlockLayout(*block);
 }
@@ -2708,30 +2645,6 @@ libqt_string QPlainTextDocumentLayout_Tr2(const char* s, const char* c) {
 
 libqt_string QPlainTextDocumentLayout_Tr3(const char* s, const char* c, int n) {
     QString _ret = QPlainTextDocumentLayout::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPlainTextDocumentLayout_TrUtf82(const char* s, const char* c) {
-    QString _ret = QPlainTextDocumentLayout::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPlainTextDocumentLayout_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QPlainTextDocumentLayout::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -1,14 +1,16 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QBuffer>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QIODevice>
+#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -62,18 +64,6 @@ int QBuffer_QBaseMetacall(QBuffer* self, int param1, int param2, void** param3) 
 
 libqt_string QBuffer_Tr(const char* s) {
     QString _ret = QBuffer::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QBuffer_TrUtf8(const char* s) {
-    QString _ret = QBuffer::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -147,36 +137,12 @@ libqt_string QBuffer_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QBuffer_TrUtf82(const char* s, const char* c) {
-    QString _ret = QBuffer::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QBuffer_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QBuffer::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 // Derived class handler implementation
 bool QBuffer_Open(QBuffer* self, int openMode) {
     if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
-        return vqbuffer->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqbuffer->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqbuffer->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqbuffer->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -184,9 +150,9 @@ bool QBuffer_Open(QBuffer* self, int openMode) {
 bool QBuffer_QBaseOpen(QBuffer* self, int openMode) {
     if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
         vqbuffer->setQBuffer_Open_IsBase(true);
-        return vqbuffer->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqbuffer->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqbuffer->open(static_cast<QIODevice::OpenMode>(openMode));
+        return vqbuffer->open(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -640,6 +606,32 @@ void QBuffer_OnReadLineData(QBuffer* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+long long QBuffer_SkipData(QBuffer* self, long long maxSize) {
+    if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
+        return static_cast<long long>(vqbuffer->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqbuffer->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QBuffer_QBaseSkipData(QBuffer* self, long long maxSize) {
+    if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
+        vqbuffer->setQBuffer_SkipData_IsBase(true);
+        return static_cast<long long>(vqbuffer->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqbuffer->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QBuffer_OnSkipData(QBuffer* self, intptr_t slot) {
+    if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
+        vqbuffer->setQBuffer_SkipData_Callback(reinterpret_cast<VirtualQBuffer::QBuffer_SkipData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QBuffer_Event(QBuffer* self, QEvent* event) {
     if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
         return vqbuffer->event(event);
@@ -772,9 +764,9 @@ void QBuffer_OnCustomEvent(QBuffer* self, intptr_t slot) {
 // Derived class handler implementation
 void QBuffer_SetOpenMode(QBuffer* self, int openMode) {
     if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
-        vqbuffer->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqbuffer->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqbuffer->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqbuffer->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -782,9 +774,9 @@ void QBuffer_SetOpenMode(QBuffer* self, int openMode) {
 void QBuffer_QBaseSetOpenMode(QBuffer* self, int openMode) {
     if (auto* vqbuffer = dynamic_cast<VirtualQBuffer*>(self)) {
         vqbuffer->setQBuffer_SetOpenMode_IsBase(true);
-        vqbuffer->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqbuffer->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqbuffer->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqbuffer->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 

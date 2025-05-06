@@ -40,7 +40,7 @@ bool QFontInfo_Overline(const QFontInfo* self);
 bool QFontInfo_StrikeOut(const QFontInfo* self);
 bool QFontInfo_FixedPitch(const QFontInfo* self);
 int QFontInfo_StyleHint(const QFontInfo* self);
-bool QFontInfo_RawMode(const QFontInfo* self);
+int QFontInfo_LegacyWeight(const QFontInfo* self);
 bool QFontInfo_ExactMatch(const QFontInfo* self);
 void QFontInfo_Delete(QFontInfo* self);
 

@@ -30,6 +30,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     using QAbstractItemModel_SetHeaderData_Callback = bool (*)(QAbstractItemModel*, int, Qt::Orientation, const QVariant&, int);
     using QAbstractItemModel_ItemData_Callback = QMap<int, QVariant> (*)(const QAbstractItemModel*, const QModelIndex&);
     using QAbstractItemModel_SetItemData_Callback = bool (*)(QAbstractItemModel*, const QModelIndex&, const QMap<int, QVariant>&);
+    using QAbstractItemModel_ClearItemData_Callback = bool (*)(QAbstractItemModel*, const QModelIndex&);
     using QAbstractItemModel_MimeTypes_Callback = QStringList (*)();
     using QAbstractItemModel_MimeData_Callback = QMimeData* (*)(const QAbstractItemModel*, const QModelIndexList&);
     using QAbstractItemModel_CanDropMimeData_Callback = bool (*)(const QAbstractItemModel*, const QMimeData*, Qt::DropAction, int, int, const QModelIndex&);
@@ -50,8 +51,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     using QAbstractItemModel_Match_Callback = QModelIndexList (*)(const QAbstractItemModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
     using QAbstractItemModel_Span_Callback = QSize (*)(const QAbstractItemModel*, const QModelIndex&);
     using QAbstractItemModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
+    using QAbstractItemModel_MultiData_Callback = void (*)(const QAbstractItemModel*, const QModelIndex&, QModelRoleDataSpan);
     using QAbstractItemModel_Submit_Callback = bool (*)();
     using QAbstractItemModel_Revert_Callback = void (*)();
+    using QAbstractItemModel_ResetInternalData_Callback = void (*)();
     using QAbstractItemModel_Event_Callback = bool (*)(QAbstractItemModel*, QEvent*);
     using QAbstractItemModel_EventFilter_Callback = bool (*)(QAbstractItemModel*, QObject*, QEvent*);
     using QAbstractItemModel_TimerEvent_Callback = void (*)(QAbstractItemModel*, QTimerEvent*);
@@ -59,7 +62,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     using QAbstractItemModel_CustomEvent_Callback = void (*)(QAbstractItemModel*, QEvent*);
     using QAbstractItemModel_ConnectNotify_Callback = void (*)(QAbstractItemModel*, const QMetaMethod&);
     using QAbstractItemModel_DisconnectNotify_Callback = void (*)(QAbstractItemModel*, const QMetaMethod&);
-    using QAbstractItemModel_ResetInternalData_Callback = void (*)();
     using QAbstractItemModel_CreateIndex_Callback = QModelIndex (*)(const QAbstractItemModel*, int, int);
     using QAbstractItemModel_CreateIndex2_Callback = QModelIndex (*)(const QAbstractItemModel*, int, int, quintptr);
     using QAbstractItemModel_EncodeData_Callback = void (*)(const QAbstractItemModel*, const QModelIndexList&, QDataStream&);
@@ -81,7 +83,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     using QAbstractItemModel_ChangePersistentIndex_Callback = void (*)(QAbstractItemModel*, const QModelIndex&, const QModelIndex&);
     using QAbstractItemModel_ChangePersistentIndexList_Callback = void (*)(QAbstractItemModel*, const QModelIndexList&, const QModelIndexList&);
     using QAbstractItemModel_PersistentIndexList_Callback = QModelIndexList (*)();
-    using QAbstractItemModel_CreateIndex3_Callback = QModelIndex (*)(const QAbstractItemModel*, int, int, void*);
+    using QAbstractItemModel_CreateIndex3_Callback = QModelIndex (*)(const QAbstractItemModel*, int, int, const void*);
     using QAbstractItemModel_Sender_Callback = QObject* (*)();
     using QAbstractItemModel_SenderSignalIndex_Callback = int (*)();
     using QAbstractItemModel_Receivers_Callback = int (*)(const QAbstractItemModel*, const char*);
@@ -102,6 +104,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     QAbstractItemModel_SetHeaderData_Callback qabstractitemmodel_setheaderdata_callback = nullptr;
     QAbstractItemModel_ItemData_Callback qabstractitemmodel_itemdata_callback = nullptr;
     QAbstractItemModel_SetItemData_Callback qabstractitemmodel_setitemdata_callback = nullptr;
+    QAbstractItemModel_ClearItemData_Callback qabstractitemmodel_clearitemdata_callback = nullptr;
     QAbstractItemModel_MimeTypes_Callback qabstractitemmodel_mimetypes_callback = nullptr;
     QAbstractItemModel_MimeData_Callback qabstractitemmodel_mimedata_callback = nullptr;
     QAbstractItemModel_CanDropMimeData_Callback qabstractitemmodel_candropmimedata_callback = nullptr;
@@ -122,8 +125,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     QAbstractItemModel_Match_Callback qabstractitemmodel_match_callback = nullptr;
     QAbstractItemModel_Span_Callback qabstractitemmodel_span_callback = nullptr;
     QAbstractItemModel_RoleNames_Callback qabstractitemmodel_rolenames_callback = nullptr;
+    QAbstractItemModel_MultiData_Callback qabstractitemmodel_multidata_callback = nullptr;
     QAbstractItemModel_Submit_Callback qabstractitemmodel_submit_callback = nullptr;
     QAbstractItemModel_Revert_Callback qabstractitemmodel_revert_callback = nullptr;
+    QAbstractItemModel_ResetInternalData_Callback qabstractitemmodel_resetinternaldata_callback = nullptr;
     QAbstractItemModel_Event_Callback qabstractitemmodel_event_callback = nullptr;
     QAbstractItemModel_EventFilter_Callback qabstractitemmodel_eventfilter_callback = nullptr;
     QAbstractItemModel_TimerEvent_Callback qabstractitemmodel_timerevent_callback = nullptr;
@@ -131,7 +136,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     QAbstractItemModel_CustomEvent_Callback qabstractitemmodel_customevent_callback = nullptr;
     QAbstractItemModel_ConnectNotify_Callback qabstractitemmodel_connectnotify_callback = nullptr;
     QAbstractItemModel_DisconnectNotify_Callback qabstractitemmodel_disconnectnotify_callback = nullptr;
-    QAbstractItemModel_ResetInternalData_Callback qabstractitemmodel_resetinternaldata_callback = nullptr;
     QAbstractItemModel_CreateIndex_Callback qabstractitemmodel_createindex_callback = nullptr;
     QAbstractItemModel_CreateIndex2_Callback qabstractitemmodel_createindex2_callback = nullptr;
     QAbstractItemModel_EncodeData_Callback qabstractitemmodel_encodedata_callback = nullptr;
@@ -173,6 +177,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     mutable bool qabstractitemmodel_setheaderdata_isbase = false;
     mutable bool qabstractitemmodel_itemdata_isbase = false;
     mutable bool qabstractitemmodel_setitemdata_isbase = false;
+    mutable bool qabstractitemmodel_clearitemdata_isbase = false;
     mutable bool qabstractitemmodel_mimetypes_isbase = false;
     mutable bool qabstractitemmodel_mimedata_isbase = false;
     mutable bool qabstractitemmodel_candropmimedata_isbase = false;
@@ -193,8 +198,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     mutable bool qabstractitemmodel_match_isbase = false;
     mutable bool qabstractitemmodel_span_isbase = false;
     mutable bool qabstractitemmodel_rolenames_isbase = false;
+    mutable bool qabstractitemmodel_multidata_isbase = false;
     mutable bool qabstractitemmodel_submit_isbase = false;
     mutable bool qabstractitemmodel_revert_isbase = false;
+    mutable bool qabstractitemmodel_resetinternaldata_isbase = false;
     mutable bool qabstractitemmodel_event_isbase = false;
     mutable bool qabstractitemmodel_eventfilter_isbase = false;
     mutable bool qabstractitemmodel_timerevent_isbase = false;
@@ -202,7 +209,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     mutable bool qabstractitemmodel_customevent_isbase = false;
     mutable bool qabstractitemmodel_connectnotify_isbase = false;
     mutable bool qabstractitemmodel_disconnectnotify_isbase = false;
-    mutable bool qabstractitemmodel_resetinternaldata_isbase = false;
     mutable bool qabstractitemmodel_createindex_isbase = false;
     mutable bool qabstractitemmodel_createindex2_isbase = false;
     mutable bool qabstractitemmodel_encodedata_isbase = false;
@@ -248,6 +254,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
         qabstractitemmodel_setheaderdata_callback = nullptr;
         qabstractitemmodel_itemdata_callback = nullptr;
         qabstractitemmodel_setitemdata_callback = nullptr;
+        qabstractitemmodel_clearitemdata_callback = nullptr;
         qabstractitemmodel_mimetypes_callback = nullptr;
         qabstractitemmodel_mimedata_callback = nullptr;
         qabstractitemmodel_candropmimedata_callback = nullptr;
@@ -268,8 +275,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
         qabstractitemmodel_match_callback = nullptr;
         qabstractitemmodel_span_callback = nullptr;
         qabstractitemmodel_rolenames_callback = nullptr;
+        qabstractitemmodel_multidata_callback = nullptr;
         qabstractitemmodel_submit_callback = nullptr;
         qabstractitemmodel_revert_callback = nullptr;
+        qabstractitemmodel_resetinternaldata_callback = nullptr;
         qabstractitemmodel_event_callback = nullptr;
         qabstractitemmodel_eventfilter_callback = nullptr;
         qabstractitemmodel_timerevent_callback = nullptr;
@@ -277,7 +286,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
         qabstractitemmodel_customevent_callback = nullptr;
         qabstractitemmodel_connectnotify_callback = nullptr;
         qabstractitemmodel_disconnectnotify_callback = nullptr;
-        qabstractitemmodel_resetinternaldata_callback = nullptr;
         qabstractitemmodel_createindex_callback = nullptr;
         qabstractitemmodel_createindex2_callback = nullptr;
         qabstractitemmodel_encodedata_callback = nullptr;
@@ -320,6 +328,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_SetHeaderData_Callback(QAbstractItemModel_SetHeaderData_Callback cb) { qabstractitemmodel_setheaderdata_callback = cb; }
     void setQAbstractItemModel_ItemData_Callback(QAbstractItemModel_ItemData_Callback cb) { qabstractitemmodel_itemdata_callback = cb; }
     void setQAbstractItemModel_SetItemData_Callback(QAbstractItemModel_SetItemData_Callback cb) { qabstractitemmodel_setitemdata_callback = cb; }
+    void setQAbstractItemModel_ClearItemData_Callback(QAbstractItemModel_ClearItemData_Callback cb) { qabstractitemmodel_clearitemdata_callback = cb; }
     void setQAbstractItemModel_MimeTypes_Callback(QAbstractItemModel_MimeTypes_Callback cb) { qabstractitemmodel_mimetypes_callback = cb; }
     void setQAbstractItemModel_MimeData_Callback(QAbstractItemModel_MimeData_Callback cb) { qabstractitemmodel_mimedata_callback = cb; }
     void setQAbstractItemModel_CanDropMimeData_Callback(QAbstractItemModel_CanDropMimeData_Callback cb) { qabstractitemmodel_candropmimedata_callback = cb; }
@@ -340,8 +349,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_Match_Callback(QAbstractItemModel_Match_Callback cb) { qabstractitemmodel_match_callback = cb; }
     void setQAbstractItemModel_Span_Callback(QAbstractItemModel_Span_Callback cb) { qabstractitemmodel_span_callback = cb; }
     void setQAbstractItemModel_RoleNames_Callback(QAbstractItemModel_RoleNames_Callback cb) { qabstractitemmodel_rolenames_callback = cb; }
+    void setQAbstractItemModel_MultiData_Callback(QAbstractItemModel_MultiData_Callback cb) { qabstractitemmodel_multidata_callback = cb; }
     void setQAbstractItemModel_Submit_Callback(QAbstractItemModel_Submit_Callback cb) { qabstractitemmodel_submit_callback = cb; }
     void setQAbstractItemModel_Revert_Callback(QAbstractItemModel_Revert_Callback cb) { qabstractitemmodel_revert_callback = cb; }
+    void setQAbstractItemModel_ResetInternalData_Callback(QAbstractItemModel_ResetInternalData_Callback cb) { qabstractitemmodel_resetinternaldata_callback = cb; }
     void setQAbstractItemModel_Event_Callback(QAbstractItemModel_Event_Callback cb) { qabstractitemmodel_event_callback = cb; }
     void setQAbstractItemModel_EventFilter_Callback(QAbstractItemModel_EventFilter_Callback cb) { qabstractitemmodel_eventfilter_callback = cb; }
     void setQAbstractItemModel_TimerEvent_Callback(QAbstractItemModel_TimerEvent_Callback cb) { qabstractitemmodel_timerevent_callback = cb; }
@@ -349,7 +360,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_CustomEvent_Callback(QAbstractItemModel_CustomEvent_Callback cb) { qabstractitemmodel_customevent_callback = cb; }
     void setQAbstractItemModel_ConnectNotify_Callback(QAbstractItemModel_ConnectNotify_Callback cb) { qabstractitemmodel_connectnotify_callback = cb; }
     void setQAbstractItemModel_DisconnectNotify_Callback(QAbstractItemModel_DisconnectNotify_Callback cb) { qabstractitemmodel_disconnectnotify_callback = cb; }
-    void setQAbstractItemModel_ResetInternalData_Callback(QAbstractItemModel_ResetInternalData_Callback cb) { qabstractitemmodel_resetinternaldata_callback = cb; }
     void setQAbstractItemModel_CreateIndex_Callback(QAbstractItemModel_CreateIndex_Callback cb) { qabstractitemmodel_createindex_callback = cb; }
     void setQAbstractItemModel_CreateIndex2_Callback(QAbstractItemModel_CreateIndex2_Callback cb) { qabstractitemmodel_createindex2_callback = cb; }
     void setQAbstractItemModel_EncodeData_Callback(QAbstractItemModel_EncodeData_Callback cb) { qabstractitemmodel_encodedata_callback = cb; }
@@ -391,6 +401,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_SetHeaderData_IsBase(bool value) const { qabstractitemmodel_setheaderdata_isbase = value; }
     void setQAbstractItemModel_ItemData_IsBase(bool value) const { qabstractitemmodel_itemdata_isbase = value; }
     void setQAbstractItemModel_SetItemData_IsBase(bool value) const { qabstractitemmodel_setitemdata_isbase = value; }
+    void setQAbstractItemModel_ClearItemData_IsBase(bool value) const { qabstractitemmodel_clearitemdata_isbase = value; }
     void setQAbstractItemModel_MimeTypes_IsBase(bool value) const { qabstractitemmodel_mimetypes_isbase = value; }
     void setQAbstractItemModel_MimeData_IsBase(bool value) const { qabstractitemmodel_mimedata_isbase = value; }
     void setQAbstractItemModel_CanDropMimeData_IsBase(bool value) const { qabstractitemmodel_candropmimedata_isbase = value; }
@@ -411,8 +422,10 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_Match_IsBase(bool value) const { qabstractitemmodel_match_isbase = value; }
     void setQAbstractItemModel_Span_IsBase(bool value) const { qabstractitemmodel_span_isbase = value; }
     void setQAbstractItemModel_RoleNames_IsBase(bool value) const { qabstractitemmodel_rolenames_isbase = value; }
+    void setQAbstractItemModel_MultiData_IsBase(bool value) const { qabstractitemmodel_multidata_isbase = value; }
     void setQAbstractItemModel_Submit_IsBase(bool value) const { qabstractitemmodel_submit_isbase = value; }
     void setQAbstractItemModel_Revert_IsBase(bool value) const { qabstractitemmodel_revert_isbase = value; }
+    void setQAbstractItemModel_ResetInternalData_IsBase(bool value) const { qabstractitemmodel_resetinternaldata_isbase = value; }
     void setQAbstractItemModel_Event_IsBase(bool value) const { qabstractitemmodel_event_isbase = value; }
     void setQAbstractItemModel_EventFilter_IsBase(bool value) const { qabstractitemmodel_eventfilter_isbase = value; }
     void setQAbstractItemModel_TimerEvent_IsBase(bool value) const { qabstractitemmodel_timerevent_isbase = value; }
@@ -420,7 +433,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     void setQAbstractItemModel_CustomEvent_IsBase(bool value) const { qabstractitemmodel_customevent_isbase = value; }
     void setQAbstractItemModel_ConnectNotify_IsBase(bool value) const { qabstractitemmodel_connectnotify_isbase = value; }
     void setQAbstractItemModel_DisconnectNotify_IsBase(bool value) const { qabstractitemmodel_disconnectnotify_isbase = value; }
-    void setQAbstractItemModel_ResetInternalData_IsBase(bool value) const { qabstractitemmodel_resetinternaldata_isbase = value; }
     void setQAbstractItemModel_CreateIndex_IsBase(bool value) const { qabstractitemmodel_createindex_isbase = value; }
     void setQAbstractItemModel_CreateIndex2_IsBase(bool value) const { qabstractitemmodel_createindex2_isbase = value; }
     void setQAbstractItemModel_EncodeData_IsBase(bool value) const { qabstractitemmodel_encodedata_isbase = value; }
@@ -566,6 +578,18 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
             return qabstractitemmodel_setitemdata_callback(this, index, roles);
         } else {
             return QAbstractItemModel::setItemData(index, roles);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool clearItemData(const QModelIndex& index) override {
+        if (qabstractitemmodel_clearitemdata_isbase) {
+            qabstractitemmodel_clearitemdata_isbase = false;
+            return QAbstractItemModel::clearItemData(index);
+        } else if (qabstractitemmodel_clearitemdata_callback != nullptr) {
+            return qabstractitemmodel_clearitemdata_callback(this, index);
+        } else {
+            return QAbstractItemModel::clearItemData(index);
         }
     }
 
@@ -810,6 +834,18 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
+        if (qabstractitemmodel_multidata_isbase) {
+            qabstractitemmodel_multidata_isbase = false;
+            QAbstractItemModel::multiData(index, roleDataSpan);
+        } else if (qabstractitemmodel_multidata_callback != nullptr) {
+            qabstractitemmodel_multidata_callback(this, index, roleDataSpan);
+        } else {
+            QAbstractItemModel::multiData(index, roleDataSpan);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool submit() override {
         if (qabstractitemmodel_submit_isbase) {
             qabstractitemmodel_submit_isbase = false;
@@ -830,6 +866,18 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
             qabstractitemmodel_revert_callback();
         } else {
             QAbstractItemModel::revert();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void resetInternalData() override {
+        if (qabstractitemmodel_resetinternaldata_isbase) {
+            qabstractitemmodel_resetinternaldata_isbase = false;
+            QAbstractItemModel::resetInternalData();
+        } else if (qabstractitemmodel_resetinternaldata_callback != nullptr) {
+            qabstractitemmodel_resetinternaldata_callback();
+        } else {
+            QAbstractItemModel::resetInternalData();
         }
     }
 
@@ -914,18 +962,6 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
             qabstractitemmodel_disconnectnotify_callback(this, signal);
         } else {
             QAbstractItemModel::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void resetInternalData() {
-        if (qabstractitemmodel_resetinternaldata_isbase) {
-            qabstractitemmodel_resetinternaldata_isbase = false;
-            QAbstractItemModel::resetInternalData();
-        } else if (qabstractitemmodel_resetinternaldata_callback != nullptr) {
-            qabstractitemmodel_resetinternaldata_callback();
-        } else {
-            QAbstractItemModel::resetInternalData();
         }
     }
 
@@ -1182,7 +1218,7 @@ class VirtualQAbstractItemModel : public QAbstractItemModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    QModelIndex createIndex(int row, int column, void* data) const {
+    QModelIndex createIndex(int row, int column, const void* data) const {
         if (qabstractitemmodel_createindex3_isbase) {
             qabstractitemmodel_createindex3_isbase = false;
             return QAbstractItemModel::createIndex(row, column, data);
@@ -1260,6 +1296,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     using QAbstractTableModel_SetHeaderData_Callback = bool (*)(QAbstractTableModel*, int, Qt::Orientation, const QVariant&, int);
     using QAbstractTableModel_ItemData_Callback = QMap<int, QVariant> (*)(const QAbstractTableModel*, const QModelIndex&);
     using QAbstractTableModel_SetItemData_Callback = bool (*)(QAbstractTableModel*, const QModelIndex&, const QMap<int, QVariant>&);
+    using QAbstractTableModel_ClearItemData_Callback = bool (*)(QAbstractTableModel*, const QModelIndex&);
     using QAbstractTableModel_MimeTypes_Callback = QStringList (*)();
     using QAbstractTableModel_MimeData_Callback = QMimeData* (*)(const QAbstractTableModel*, const QModelIndexList&);
     using QAbstractTableModel_CanDropMimeData_Callback = bool (*)(const QAbstractTableModel*, const QMimeData*, Qt::DropAction, int, int, const QModelIndex&);
@@ -1278,8 +1315,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     using QAbstractTableModel_Match_Callback = QModelIndexList (*)(const QAbstractTableModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
     using QAbstractTableModel_Span_Callback = QSize (*)(const QAbstractTableModel*, const QModelIndex&);
     using QAbstractTableModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
+    using QAbstractTableModel_MultiData_Callback = void (*)(const QAbstractTableModel*, const QModelIndex&, QModelRoleDataSpan);
     using QAbstractTableModel_Submit_Callback = bool (*)();
     using QAbstractTableModel_Revert_Callback = void (*)();
+    using QAbstractTableModel_ResetInternalData_Callback = void (*)();
     using QAbstractTableModel_Event_Callback = bool (*)(QAbstractTableModel*, QEvent*);
     using QAbstractTableModel_EventFilter_Callback = bool (*)(QAbstractTableModel*, QObject*, QEvent*);
     using QAbstractTableModel_TimerEvent_Callback = void (*)(QAbstractTableModel*, QTimerEvent*);
@@ -1287,7 +1326,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     using QAbstractTableModel_CustomEvent_Callback = void (*)(QAbstractTableModel*, QEvent*);
     using QAbstractTableModel_ConnectNotify_Callback = void (*)(QAbstractTableModel*, const QMetaMethod&);
     using QAbstractTableModel_DisconnectNotify_Callback = void (*)(QAbstractTableModel*, const QMetaMethod&);
-    using QAbstractTableModel_ResetInternalData_Callback = void (*)();
     using QAbstractTableModel_CreateIndex_Callback = QModelIndex (*)(const QAbstractTableModel*, int, int);
     using QAbstractTableModel_EncodeData_Callback = void (*)(const QAbstractTableModel*, const QModelIndexList&, QDataStream&);
     using QAbstractTableModel_DecodeData_Callback = bool (*)(QAbstractTableModel*, int, int, const QModelIndex&, QDataStream&);
@@ -1328,6 +1366,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     QAbstractTableModel_SetHeaderData_Callback qabstracttablemodel_setheaderdata_callback = nullptr;
     QAbstractTableModel_ItemData_Callback qabstracttablemodel_itemdata_callback = nullptr;
     QAbstractTableModel_SetItemData_Callback qabstracttablemodel_setitemdata_callback = nullptr;
+    QAbstractTableModel_ClearItemData_Callback qabstracttablemodel_clearitemdata_callback = nullptr;
     QAbstractTableModel_MimeTypes_Callback qabstracttablemodel_mimetypes_callback = nullptr;
     QAbstractTableModel_MimeData_Callback qabstracttablemodel_mimedata_callback = nullptr;
     QAbstractTableModel_CanDropMimeData_Callback qabstracttablemodel_candropmimedata_callback = nullptr;
@@ -1346,8 +1385,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     QAbstractTableModel_Match_Callback qabstracttablemodel_match_callback = nullptr;
     QAbstractTableModel_Span_Callback qabstracttablemodel_span_callback = nullptr;
     QAbstractTableModel_RoleNames_Callback qabstracttablemodel_rolenames_callback = nullptr;
+    QAbstractTableModel_MultiData_Callback qabstracttablemodel_multidata_callback = nullptr;
     QAbstractTableModel_Submit_Callback qabstracttablemodel_submit_callback = nullptr;
     QAbstractTableModel_Revert_Callback qabstracttablemodel_revert_callback = nullptr;
+    QAbstractTableModel_ResetInternalData_Callback qabstracttablemodel_resetinternaldata_callback = nullptr;
     QAbstractTableModel_Event_Callback qabstracttablemodel_event_callback = nullptr;
     QAbstractTableModel_EventFilter_Callback qabstracttablemodel_eventfilter_callback = nullptr;
     QAbstractTableModel_TimerEvent_Callback qabstracttablemodel_timerevent_callback = nullptr;
@@ -1355,7 +1396,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     QAbstractTableModel_CustomEvent_Callback qabstracttablemodel_customevent_callback = nullptr;
     QAbstractTableModel_ConnectNotify_Callback qabstracttablemodel_connectnotify_callback = nullptr;
     QAbstractTableModel_DisconnectNotify_Callback qabstracttablemodel_disconnectnotify_callback = nullptr;
-    QAbstractTableModel_ResetInternalData_Callback qabstracttablemodel_resetinternaldata_callback = nullptr;
     QAbstractTableModel_CreateIndex_Callback qabstracttablemodel_createindex_callback = nullptr;
     QAbstractTableModel_EncodeData_Callback qabstracttablemodel_encodedata_callback = nullptr;
     QAbstractTableModel_DecodeData_Callback qabstracttablemodel_decodedata_callback = nullptr;
@@ -1395,6 +1435,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     mutable bool qabstracttablemodel_setheaderdata_isbase = false;
     mutable bool qabstracttablemodel_itemdata_isbase = false;
     mutable bool qabstracttablemodel_setitemdata_isbase = false;
+    mutable bool qabstracttablemodel_clearitemdata_isbase = false;
     mutable bool qabstracttablemodel_mimetypes_isbase = false;
     mutable bool qabstracttablemodel_mimedata_isbase = false;
     mutable bool qabstracttablemodel_candropmimedata_isbase = false;
@@ -1413,8 +1454,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     mutable bool qabstracttablemodel_match_isbase = false;
     mutable bool qabstracttablemodel_span_isbase = false;
     mutable bool qabstracttablemodel_rolenames_isbase = false;
+    mutable bool qabstracttablemodel_multidata_isbase = false;
     mutable bool qabstracttablemodel_submit_isbase = false;
     mutable bool qabstracttablemodel_revert_isbase = false;
+    mutable bool qabstracttablemodel_resetinternaldata_isbase = false;
     mutable bool qabstracttablemodel_event_isbase = false;
     mutable bool qabstracttablemodel_eventfilter_isbase = false;
     mutable bool qabstracttablemodel_timerevent_isbase = false;
@@ -1422,7 +1465,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     mutable bool qabstracttablemodel_customevent_isbase = false;
     mutable bool qabstracttablemodel_connectnotify_isbase = false;
     mutable bool qabstracttablemodel_disconnectnotify_isbase = false;
-    mutable bool qabstracttablemodel_resetinternaldata_isbase = false;
     mutable bool qabstracttablemodel_createindex_isbase = false;
     mutable bool qabstracttablemodel_encodedata_isbase = false;
     mutable bool qabstracttablemodel_decodedata_isbase = false;
@@ -1466,6 +1508,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
         qabstracttablemodel_setheaderdata_callback = nullptr;
         qabstracttablemodel_itemdata_callback = nullptr;
         qabstracttablemodel_setitemdata_callback = nullptr;
+        qabstracttablemodel_clearitemdata_callback = nullptr;
         qabstracttablemodel_mimetypes_callback = nullptr;
         qabstracttablemodel_mimedata_callback = nullptr;
         qabstracttablemodel_candropmimedata_callback = nullptr;
@@ -1484,8 +1527,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
         qabstracttablemodel_match_callback = nullptr;
         qabstracttablemodel_span_callback = nullptr;
         qabstracttablemodel_rolenames_callback = nullptr;
+        qabstracttablemodel_multidata_callback = nullptr;
         qabstracttablemodel_submit_callback = nullptr;
         qabstracttablemodel_revert_callback = nullptr;
+        qabstracttablemodel_resetinternaldata_callback = nullptr;
         qabstracttablemodel_event_callback = nullptr;
         qabstracttablemodel_eventfilter_callback = nullptr;
         qabstracttablemodel_timerevent_callback = nullptr;
@@ -1493,7 +1538,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
         qabstracttablemodel_customevent_callback = nullptr;
         qabstracttablemodel_connectnotify_callback = nullptr;
         qabstracttablemodel_disconnectnotify_callback = nullptr;
-        qabstracttablemodel_resetinternaldata_callback = nullptr;
         qabstracttablemodel_createindex_callback = nullptr;
         qabstracttablemodel_encodedata_callback = nullptr;
         qabstracttablemodel_decodedata_callback = nullptr;
@@ -1534,6 +1578,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_SetHeaderData_Callback(QAbstractTableModel_SetHeaderData_Callback cb) { qabstracttablemodel_setheaderdata_callback = cb; }
     void setQAbstractTableModel_ItemData_Callback(QAbstractTableModel_ItemData_Callback cb) { qabstracttablemodel_itemdata_callback = cb; }
     void setQAbstractTableModel_SetItemData_Callback(QAbstractTableModel_SetItemData_Callback cb) { qabstracttablemodel_setitemdata_callback = cb; }
+    void setQAbstractTableModel_ClearItemData_Callback(QAbstractTableModel_ClearItemData_Callback cb) { qabstracttablemodel_clearitemdata_callback = cb; }
     void setQAbstractTableModel_MimeTypes_Callback(QAbstractTableModel_MimeTypes_Callback cb) { qabstracttablemodel_mimetypes_callback = cb; }
     void setQAbstractTableModel_MimeData_Callback(QAbstractTableModel_MimeData_Callback cb) { qabstracttablemodel_mimedata_callback = cb; }
     void setQAbstractTableModel_CanDropMimeData_Callback(QAbstractTableModel_CanDropMimeData_Callback cb) { qabstracttablemodel_candropmimedata_callback = cb; }
@@ -1552,8 +1597,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_Match_Callback(QAbstractTableModel_Match_Callback cb) { qabstracttablemodel_match_callback = cb; }
     void setQAbstractTableModel_Span_Callback(QAbstractTableModel_Span_Callback cb) { qabstracttablemodel_span_callback = cb; }
     void setQAbstractTableModel_RoleNames_Callback(QAbstractTableModel_RoleNames_Callback cb) { qabstracttablemodel_rolenames_callback = cb; }
+    void setQAbstractTableModel_MultiData_Callback(QAbstractTableModel_MultiData_Callback cb) { qabstracttablemodel_multidata_callback = cb; }
     void setQAbstractTableModel_Submit_Callback(QAbstractTableModel_Submit_Callback cb) { qabstracttablemodel_submit_callback = cb; }
     void setQAbstractTableModel_Revert_Callback(QAbstractTableModel_Revert_Callback cb) { qabstracttablemodel_revert_callback = cb; }
+    void setQAbstractTableModel_ResetInternalData_Callback(QAbstractTableModel_ResetInternalData_Callback cb) { qabstracttablemodel_resetinternaldata_callback = cb; }
     void setQAbstractTableModel_Event_Callback(QAbstractTableModel_Event_Callback cb) { qabstracttablemodel_event_callback = cb; }
     void setQAbstractTableModel_EventFilter_Callback(QAbstractTableModel_EventFilter_Callback cb) { qabstracttablemodel_eventfilter_callback = cb; }
     void setQAbstractTableModel_TimerEvent_Callback(QAbstractTableModel_TimerEvent_Callback cb) { qabstracttablemodel_timerevent_callback = cb; }
@@ -1561,7 +1608,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_CustomEvent_Callback(QAbstractTableModel_CustomEvent_Callback cb) { qabstracttablemodel_customevent_callback = cb; }
     void setQAbstractTableModel_ConnectNotify_Callback(QAbstractTableModel_ConnectNotify_Callback cb) { qabstracttablemodel_connectnotify_callback = cb; }
     void setQAbstractTableModel_DisconnectNotify_Callback(QAbstractTableModel_DisconnectNotify_Callback cb) { qabstracttablemodel_disconnectnotify_callback = cb; }
-    void setQAbstractTableModel_ResetInternalData_Callback(QAbstractTableModel_ResetInternalData_Callback cb) { qabstracttablemodel_resetinternaldata_callback = cb; }
     void setQAbstractTableModel_CreateIndex_Callback(QAbstractTableModel_CreateIndex_Callback cb) { qabstracttablemodel_createindex_callback = cb; }
     void setQAbstractTableModel_EncodeData_Callback(QAbstractTableModel_EncodeData_Callback cb) { qabstracttablemodel_encodedata_callback = cb; }
     void setQAbstractTableModel_DecodeData_Callback(QAbstractTableModel_DecodeData_Callback cb) { qabstracttablemodel_decodedata_callback = cb; }
@@ -1601,6 +1647,7 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_SetHeaderData_IsBase(bool value) const { qabstracttablemodel_setheaderdata_isbase = value; }
     void setQAbstractTableModel_ItemData_IsBase(bool value) const { qabstracttablemodel_itemdata_isbase = value; }
     void setQAbstractTableModel_SetItemData_IsBase(bool value) const { qabstracttablemodel_setitemdata_isbase = value; }
+    void setQAbstractTableModel_ClearItemData_IsBase(bool value) const { qabstracttablemodel_clearitemdata_isbase = value; }
     void setQAbstractTableModel_MimeTypes_IsBase(bool value) const { qabstracttablemodel_mimetypes_isbase = value; }
     void setQAbstractTableModel_MimeData_IsBase(bool value) const { qabstracttablemodel_mimedata_isbase = value; }
     void setQAbstractTableModel_CanDropMimeData_IsBase(bool value) const { qabstracttablemodel_candropmimedata_isbase = value; }
@@ -1619,8 +1666,10 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_Match_IsBase(bool value) const { qabstracttablemodel_match_isbase = value; }
     void setQAbstractTableModel_Span_IsBase(bool value) const { qabstracttablemodel_span_isbase = value; }
     void setQAbstractTableModel_RoleNames_IsBase(bool value) const { qabstracttablemodel_rolenames_isbase = value; }
+    void setQAbstractTableModel_MultiData_IsBase(bool value) const { qabstracttablemodel_multidata_isbase = value; }
     void setQAbstractTableModel_Submit_IsBase(bool value) const { qabstracttablemodel_submit_isbase = value; }
     void setQAbstractTableModel_Revert_IsBase(bool value) const { qabstracttablemodel_revert_isbase = value; }
+    void setQAbstractTableModel_ResetInternalData_IsBase(bool value) const { qabstracttablemodel_resetinternaldata_isbase = value; }
     void setQAbstractTableModel_Event_IsBase(bool value) const { qabstracttablemodel_event_isbase = value; }
     void setQAbstractTableModel_EventFilter_IsBase(bool value) const { qabstracttablemodel_eventfilter_isbase = value; }
     void setQAbstractTableModel_TimerEvent_IsBase(bool value) const { qabstracttablemodel_timerevent_isbase = value; }
@@ -1628,7 +1677,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     void setQAbstractTableModel_CustomEvent_IsBase(bool value) const { qabstracttablemodel_customevent_isbase = value; }
     void setQAbstractTableModel_ConnectNotify_IsBase(bool value) const { qabstracttablemodel_connectnotify_isbase = value; }
     void setQAbstractTableModel_DisconnectNotify_IsBase(bool value) const { qabstracttablemodel_disconnectnotify_isbase = value; }
-    void setQAbstractTableModel_ResetInternalData_IsBase(bool value) const { qabstracttablemodel_resetinternaldata_isbase = value; }
     void setQAbstractTableModel_CreateIndex_IsBase(bool value) const { qabstracttablemodel_createindex_isbase = value; }
     void setQAbstractTableModel_EncodeData_IsBase(bool value) const { qabstracttablemodel_encodedata_isbase = value; }
     void setQAbstractTableModel_DecodeData_IsBase(bool value) const { qabstracttablemodel_decodedata_isbase = value; }
@@ -1786,6 +1834,18 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
             return qabstracttablemodel_setitemdata_callback(this, index, roles);
         } else {
             return QAbstractTableModel::setItemData(index, roles);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool clearItemData(const QModelIndex& index) override {
+        if (qabstracttablemodel_clearitemdata_isbase) {
+            qabstracttablemodel_clearitemdata_isbase = false;
+            return QAbstractTableModel::clearItemData(index);
+        } else if (qabstracttablemodel_clearitemdata_callback != nullptr) {
+            return qabstracttablemodel_clearitemdata_callback(this, index);
+        } else {
+            return QAbstractTableModel::clearItemData(index);
         }
     }
 
@@ -2006,6 +2066,18 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
+        if (qabstracttablemodel_multidata_isbase) {
+            qabstracttablemodel_multidata_isbase = false;
+            QAbstractTableModel::multiData(index, roleDataSpan);
+        } else if (qabstracttablemodel_multidata_callback != nullptr) {
+            qabstracttablemodel_multidata_callback(this, index, roleDataSpan);
+        } else {
+            QAbstractTableModel::multiData(index, roleDataSpan);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool submit() override {
         if (qabstracttablemodel_submit_isbase) {
             qabstracttablemodel_submit_isbase = false;
@@ -2026,6 +2098,18 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
             qabstracttablemodel_revert_callback();
         } else {
             QAbstractTableModel::revert();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void resetInternalData() override {
+        if (qabstracttablemodel_resetinternaldata_isbase) {
+            qabstracttablemodel_resetinternaldata_isbase = false;
+            QAbstractTableModel::resetInternalData();
+        } else if (qabstracttablemodel_resetinternaldata_callback != nullptr) {
+            qabstracttablemodel_resetinternaldata_callback();
+        } else {
+            QAbstractTableModel::resetInternalData();
         }
     }
 
@@ -2110,18 +2194,6 @@ class VirtualQAbstractTableModel : public QAbstractTableModel {
             qabstracttablemodel_disconnectnotify_callback(this, signal);
         } else {
             QAbstractTableModel::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void resetInternalData() {
-        if (qabstracttablemodel_resetinternaldata_isbase) {
-            qabstracttablemodel_resetinternaldata_isbase = false;
-            QAbstractTableModel::resetInternalData();
-        } else if (qabstracttablemodel_resetinternaldata_callback != nullptr) {
-            qabstracttablemodel_resetinternaldata_callback();
-        } else {
-            QAbstractTableModel::resetInternalData();
         }
     }
 
@@ -2431,6 +2503,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     using QAbstractListModel_SetHeaderData_Callback = bool (*)(QAbstractListModel*, int, Qt::Orientation, const QVariant&, int);
     using QAbstractListModel_ItemData_Callback = QMap<int, QVariant> (*)(const QAbstractListModel*, const QModelIndex&);
     using QAbstractListModel_SetItemData_Callback = bool (*)(QAbstractListModel*, const QModelIndex&, const QMap<int, QVariant>&);
+    using QAbstractListModel_ClearItemData_Callback = bool (*)(QAbstractListModel*, const QModelIndex&);
     using QAbstractListModel_MimeTypes_Callback = QStringList (*)();
     using QAbstractListModel_MimeData_Callback = QMimeData* (*)(const QAbstractListModel*, const QModelIndexList&);
     using QAbstractListModel_CanDropMimeData_Callback = bool (*)(const QAbstractListModel*, const QMimeData*, Qt::DropAction, int, int, const QModelIndex&);
@@ -2449,8 +2522,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     using QAbstractListModel_Match_Callback = QModelIndexList (*)(const QAbstractListModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
     using QAbstractListModel_Span_Callback = QSize (*)(const QAbstractListModel*, const QModelIndex&);
     using QAbstractListModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
+    using QAbstractListModel_MultiData_Callback = void (*)(const QAbstractListModel*, const QModelIndex&, QModelRoleDataSpan);
     using QAbstractListModel_Submit_Callback = bool (*)();
     using QAbstractListModel_Revert_Callback = void (*)();
+    using QAbstractListModel_ResetInternalData_Callback = void (*)();
     using QAbstractListModel_Event_Callback = bool (*)(QAbstractListModel*, QEvent*);
     using QAbstractListModel_EventFilter_Callback = bool (*)(QAbstractListModel*, QObject*, QEvent*);
     using QAbstractListModel_TimerEvent_Callback = void (*)(QAbstractListModel*, QTimerEvent*);
@@ -2458,7 +2533,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     using QAbstractListModel_CustomEvent_Callback = void (*)(QAbstractListModel*, QEvent*);
     using QAbstractListModel_ConnectNotify_Callback = void (*)(QAbstractListModel*, const QMetaMethod&);
     using QAbstractListModel_DisconnectNotify_Callback = void (*)(QAbstractListModel*, const QMetaMethod&);
-    using QAbstractListModel_ResetInternalData_Callback = void (*)();
     using QAbstractListModel_CreateIndex_Callback = QModelIndex (*)(const QAbstractListModel*, int, int);
     using QAbstractListModel_EncodeData_Callback = void (*)(const QAbstractListModel*, const QModelIndexList&, QDataStream&);
     using QAbstractListModel_DecodeData_Callback = bool (*)(QAbstractListModel*, int, int, const QModelIndex&, QDataStream&);
@@ -2498,6 +2572,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     QAbstractListModel_SetHeaderData_Callback qabstractlistmodel_setheaderdata_callback = nullptr;
     QAbstractListModel_ItemData_Callback qabstractlistmodel_itemdata_callback = nullptr;
     QAbstractListModel_SetItemData_Callback qabstractlistmodel_setitemdata_callback = nullptr;
+    QAbstractListModel_ClearItemData_Callback qabstractlistmodel_clearitemdata_callback = nullptr;
     QAbstractListModel_MimeTypes_Callback qabstractlistmodel_mimetypes_callback = nullptr;
     QAbstractListModel_MimeData_Callback qabstractlistmodel_mimedata_callback = nullptr;
     QAbstractListModel_CanDropMimeData_Callback qabstractlistmodel_candropmimedata_callback = nullptr;
@@ -2516,8 +2591,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     QAbstractListModel_Match_Callback qabstractlistmodel_match_callback = nullptr;
     QAbstractListModel_Span_Callback qabstractlistmodel_span_callback = nullptr;
     QAbstractListModel_RoleNames_Callback qabstractlistmodel_rolenames_callback = nullptr;
+    QAbstractListModel_MultiData_Callback qabstractlistmodel_multidata_callback = nullptr;
     QAbstractListModel_Submit_Callback qabstractlistmodel_submit_callback = nullptr;
     QAbstractListModel_Revert_Callback qabstractlistmodel_revert_callback = nullptr;
+    QAbstractListModel_ResetInternalData_Callback qabstractlistmodel_resetinternaldata_callback = nullptr;
     QAbstractListModel_Event_Callback qabstractlistmodel_event_callback = nullptr;
     QAbstractListModel_EventFilter_Callback qabstractlistmodel_eventfilter_callback = nullptr;
     QAbstractListModel_TimerEvent_Callback qabstractlistmodel_timerevent_callback = nullptr;
@@ -2525,7 +2602,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     QAbstractListModel_CustomEvent_Callback qabstractlistmodel_customevent_callback = nullptr;
     QAbstractListModel_ConnectNotify_Callback qabstractlistmodel_connectnotify_callback = nullptr;
     QAbstractListModel_DisconnectNotify_Callback qabstractlistmodel_disconnectnotify_callback = nullptr;
-    QAbstractListModel_ResetInternalData_Callback qabstractlistmodel_resetinternaldata_callback = nullptr;
     QAbstractListModel_CreateIndex_Callback qabstractlistmodel_createindex_callback = nullptr;
     QAbstractListModel_EncodeData_Callback qabstractlistmodel_encodedata_callback = nullptr;
     QAbstractListModel_DecodeData_Callback qabstractlistmodel_decodedata_callback = nullptr;
@@ -2564,6 +2640,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     mutable bool qabstractlistmodel_setheaderdata_isbase = false;
     mutable bool qabstractlistmodel_itemdata_isbase = false;
     mutable bool qabstractlistmodel_setitemdata_isbase = false;
+    mutable bool qabstractlistmodel_clearitemdata_isbase = false;
     mutable bool qabstractlistmodel_mimetypes_isbase = false;
     mutable bool qabstractlistmodel_mimedata_isbase = false;
     mutable bool qabstractlistmodel_candropmimedata_isbase = false;
@@ -2582,8 +2659,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     mutable bool qabstractlistmodel_match_isbase = false;
     mutable bool qabstractlistmodel_span_isbase = false;
     mutable bool qabstractlistmodel_rolenames_isbase = false;
+    mutable bool qabstractlistmodel_multidata_isbase = false;
     mutable bool qabstractlistmodel_submit_isbase = false;
     mutable bool qabstractlistmodel_revert_isbase = false;
+    mutable bool qabstractlistmodel_resetinternaldata_isbase = false;
     mutable bool qabstractlistmodel_event_isbase = false;
     mutable bool qabstractlistmodel_eventfilter_isbase = false;
     mutable bool qabstractlistmodel_timerevent_isbase = false;
@@ -2591,7 +2670,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     mutable bool qabstractlistmodel_customevent_isbase = false;
     mutable bool qabstractlistmodel_connectnotify_isbase = false;
     mutable bool qabstractlistmodel_disconnectnotify_isbase = false;
-    mutable bool qabstractlistmodel_resetinternaldata_isbase = false;
     mutable bool qabstractlistmodel_createindex_isbase = false;
     mutable bool qabstractlistmodel_encodedata_isbase = false;
     mutable bool qabstractlistmodel_decodedata_isbase = false;
@@ -2634,6 +2712,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
         qabstractlistmodel_setheaderdata_callback = nullptr;
         qabstractlistmodel_itemdata_callback = nullptr;
         qabstractlistmodel_setitemdata_callback = nullptr;
+        qabstractlistmodel_clearitemdata_callback = nullptr;
         qabstractlistmodel_mimetypes_callback = nullptr;
         qabstractlistmodel_mimedata_callback = nullptr;
         qabstractlistmodel_candropmimedata_callback = nullptr;
@@ -2652,8 +2731,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
         qabstractlistmodel_match_callback = nullptr;
         qabstractlistmodel_span_callback = nullptr;
         qabstractlistmodel_rolenames_callback = nullptr;
+        qabstractlistmodel_multidata_callback = nullptr;
         qabstractlistmodel_submit_callback = nullptr;
         qabstractlistmodel_revert_callback = nullptr;
+        qabstractlistmodel_resetinternaldata_callback = nullptr;
         qabstractlistmodel_event_callback = nullptr;
         qabstractlistmodel_eventfilter_callback = nullptr;
         qabstractlistmodel_timerevent_callback = nullptr;
@@ -2661,7 +2742,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
         qabstractlistmodel_customevent_callback = nullptr;
         qabstractlistmodel_connectnotify_callback = nullptr;
         qabstractlistmodel_disconnectnotify_callback = nullptr;
-        qabstractlistmodel_resetinternaldata_callback = nullptr;
         qabstractlistmodel_createindex_callback = nullptr;
         qabstractlistmodel_encodedata_callback = nullptr;
         qabstractlistmodel_decodedata_callback = nullptr;
@@ -2701,6 +2781,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_SetHeaderData_Callback(QAbstractListModel_SetHeaderData_Callback cb) { qabstractlistmodel_setheaderdata_callback = cb; }
     void setQAbstractListModel_ItemData_Callback(QAbstractListModel_ItemData_Callback cb) { qabstractlistmodel_itemdata_callback = cb; }
     void setQAbstractListModel_SetItemData_Callback(QAbstractListModel_SetItemData_Callback cb) { qabstractlistmodel_setitemdata_callback = cb; }
+    void setQAbstractListModel_ClearItemData_Callback(QAbstractListModel_ClearItemData_Callback cb) { qabstractlistmodel_clearitemdata_callback = cb; }
     void setQAbstractListModel_MimeTypes_Callback(QAbstractListModel_MimeTypes_Callback cb) { qabstractlistmodel_mimetypes_callback = cb; }
     void setQAbstractListModel_MimeData_Callback(QAbstractListModel_MimeData_Callback cb) { qabstractlistmodel_mimedata_callback = cb; }
     void setQAbstractListModel_CanDropMimeData_Callback(QAbstractListModel_CanDropMimeData_Callback cb) { qabstractlistmodel_candropmimedata_callback = cb; }
@@ -2719,8 +2800,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_Match_Callback(QAbstractListModel_Match_Callback cb) { qabstractlistmodel_match_callback = cb; }
     void setQAbstractListModel_Span_Callback(QAbstractListModel_Span_Callback cb) { qabstractlistmodel_span_callback = cb; }
     void setQAbstractListModel_RoleNames_Callback(QAbstractListModel_RoleNames_Callback cb) { qabstractlistmodel_rolenames_callback = cb; }
+    void setQAbstractListModel_MultiData_Callback(QAbstractListModel_MultiData_Callback cb) { qabstractlistmodel_multidata_callback = cb; }
     void setQAbstractListModel_Submit_Callback(QAbstractListModel_Submit_Callback cb) { qabstractlistmodel_submit_callback = cb; }
     void setQAbstractListModel_Revert_Callback(QAbstractListModel_Revert_Callback cb) { qabstractlistmodel_revert_callback = cb; }
+    void setQAbstractListModel_ResetInternalData_Callback(QAbstractListModel_ResetInternalData_Callback cb) { qabstractlistmodel_resetinternaldata_callback = cb; }
     void setQAbstractListModel_Event_Callback(QAbstractListModel_Event_Callback cb) { qabstractlistmodel_event_callback = cb; }
     void setQAbstractListModel_EventFilter_Callback(QAbstractListModel_EventFilter_Callback cb) { qabstractlistmodel_eventfilter_callback = cb; }
     void setQAbstractListModel_TimerEvent_Callback(QAbstractListModel_TimerEvent_Callback cb) { qabstractlistmodel_timerevent_callback = cb; }
@@ -2728,7 +2811,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_CustomEvent_Callback(QAbstractListModel_CustomEvent_Callback cb) { qabstractlistmodel_customevent_callback = cb; }
     void setQAbstractListModel_ConnectNotify_Callback(QAbstractListModel_ConnectNotify_Callback cb) { qabstractlistmodel_connectnotify_callback = cb; }
     void setQAbstractListModel_DisconnectNotify_Callback(QAbstractListModel_DisconnectNotify_Callback cb) { qabstractlistmodel_disconnectnotify_callback = cb; }
-    void setQAbstractListModel_ResetInternalData_Callback(QAbstractListModel_ResetInternalData_Callback cb) { qabstractlistmodel_resetinternaldata_callback = cb; }
     void setQAbstractListModel_CreateIndex_Callback(QAbstractListModel_CreateIndex_Callback cb) { qabstractlistmodel_createindex_callback = cb; }
     void setQAbstractListModel_EncodeData_Callback(QAbstractListModel_EncodeData_Callback cb) { qabstractlistmodel_encodedata_callback = cb; }
     void setQAbstractListModel_DecodeData_Callback(QAbstractListModel_DecodeData_Callback cb) { qabstractlistmodel_decodedata_callback = cb; }
@@ -2767,6 +2849,7 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_SetHeaderData_IsBase(bool value) const { qabstractlistmodel_setheaderdata_isbase = value; }
     void setQAbstractListModel_ItemData_IsBase(bool value) const { qabstractlistmodel_itemdata_isbase = value; }
     void setQAbstractListModel_SetItemData_IsBase(bool value) const { qabstractlistmodel_setitemdata_isbase = value; }
+    void setQAbstractListModel_ClearItemData_IsBase(bool value) const { qabstractlistmodel_clearitemdata_isbase = value; }
     void setQAbstractListModel_MimeTypes_IsBase(bool value) const { qabstractlistmodel_mimetypes_isbase = value; }
     void setQAbstractListModel_MimeData_IsBase(bool value) const { qabstractlistmodel_mimedata_isbase = value; }
     void setQAbstractListModel_CanDropMimeData_IsBase(bool value) const { qabstractlistmodel_candropmimedata_isbase = value; }
@@ -2785,8 +2868,10 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_Match_IsBase(bool value) const { qabstractlistmodel_match_isbase = value; }
     void setQAbstractListModel_Span_IsBase(bool value) const { qabstractlistmodel_span_isbase = value; }
     void setQAbstractListModel_RoleNames_IsBase(bool value) const { qabstractlistmodel_rolenames_isbase = value; }
+    void setQAbstractListModel_MultiData_IsBase(bool value) const { qabstractlistmodel_multidata_isbase = value; }
     void setQAbstractListModel_Submit_IsBase(bool value) const { qabstractlistmodel_submit_isbase = value; }
     void setQAbstractListModel_Revert_IsBase(bool value) const { qabstractlistmodel_revert_isbase = value; }
+    void setQAbstractListModel_ResetInternalData_IsBase(bool value) const { qabstractlistmodel_resetinternaldata_isbase = value; }
     void setQAbstractListModel_Event_IsBase(bool value) const { qabstractlistmodel_event_isbase = value; }
     void setQAbstractListModel_EventFilter_IsBase(bool value) const { qabstractlistmodel_eventfilter_isbase = value; }
     void setQAbstractListModel_TimerEvent_IsBase(bool value) const { qabstractlistmodel_timerevent_isbase = value; }
@@ -2794,7 +2879,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     void setQAbstractListModel_CustomEvent_IsBase(bool value) const { qabstractlistmodel_customevent_isbase = value; }
     void setQAbstractListModel_ConnectNotify_IsBase(bool value) const { qabstractlistmodel_connectnotify_isbase = value; }
     void setQAbstractListModel_DisconnectNotify_IsBase(bool value) const { qabstractlistmodel_disconnectnotify_isbase = value; }
-    void setQAbstractListModel_ResetInternalData_IsBase(bool value) const { qabstractlistmodel_resetinternaldata_isbase = value; }
     void setQAbstractListModel_CreateIndex_IsBase(bool value) const { qabstractlistmodel_createindex_isbase = value; }
     void setQAbstractListModel_EncodeData_IsBase(bool value) const { qabstractlistmodel_encodedata_isbase = value; }
     void setQAbstractListModel_DecodeData_IsBase(bool value) const { qabstractlistmodel_decodedata_isbase = value; }
@@ -2947,6 +3031,18 @@ class VirtualQAbstractListModel : public QAbstractListModel {
             return qabstractlistmodel_setitemdata_callback(this, index, roles);
         } else {
             return QAbstractListModel::setItemData(index, roles);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool clearItemData(const QModelIndex& index) override {
+        if (qabstractlistmodel_clearitemdata_isbase) {
+            qabstractlistmodel_clearitemdata_isbase = false;
+            return QAbstractListModel::clearItemData(index);
+        } else if (qabstractlistmodel_clearitemdata_callback != nullptr) {
+            return qabstractlistmodel_clearitemdata_callback(this, index);
+        } else {
+            return QAbstractListModel::clearItemData(index);
         }
     }
 
@@ -3167,6 +3263,18 @@ class VirtualQAbstractListModel : public QAbstractListModel {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
+        if (qabstractlistmodel_multidata_isbase) {
+            qabstractlistmodel_multidata_isbase = false;
+            QAbstractListModel::multiData(index, roleDataSpan);
+        } else if (qabstractlistmodel_multidata_callback != nullptr) {
+            qabstractlistmodel_multidata_callback(this, index, roleDataSpan);
+        } else {
+            QAbstractListModel::multiData(index, roleDataSpan);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool submit() override {
         if (qabstractlistmodel_submit_isbase) {
             qabstractlistmodel_submit_isbase = false;
@@ -3187,6 +3295,18 @@ class VirtualQAbstractListModel : public QAbstractListModel {
             qabstractlistmodel_revert_callback();
         } else {
             QAbstractListModel::revert();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void resetInternalData() override {
+        if (qabstractlistmodel_resetinternaldata_isbase) {
+            qabstractlistmodel_resetinternaldata_isbase = false;
+            QAbstractListModel::resetInternalData();
+        } else if (qabstractlistmodel_resetinternaldata_callback != nullptr) {
+            qabstractlistmodel_resetinternaldata_callback();
+        } else {
+            QAbstractListModel::resetInternalData();
         }
     }
 
@@ -3271,18 +3391,6 @@ class VirtualQAbstractListModel : public QAbstractListModel {
             qabstractlistmodel_disconnectnotify_callback(this, signal);
         } else {
             QAbstractListModel::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void resetInternalData() {
-        if (qabstractlistmodel_resetinternaldata_isbase) {
-            qabstractlistmodel_resetinternaldata_isbase = false;
-            QAbstractListModel::resetInternalData();
-        } else if (qabstractlistmodel_resetinternaldata_callback != nullptr) {
-            qabstractlistmodel_resetinternaldata_callback();
-        } else {
-            QAbstractListModel::resetInternalData();
         }
     }
 

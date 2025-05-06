@@ -17,7 +17,7 @@ class VirtualQAbstractNativeEventFilter : public QAbstractNativeEventFilter {
 
   public:
     // Virtual class public types (including callbacks)
-    using QAbstractNativeEventFilter_NativeEventFilter_Callback = bool (*)(QAbstractNativeEventFilter*, const QByteArray&, void*, long*);
+    using QAbstractNativeEventFilter_NativeEventFilter_Callback = bool (*)(QAbstractNativeEventFilter*, const QByteArray&, void*, qintptr*);
 
   protected:
     // Instance callback storage
@@ -40,7 +40,7 @@ class VirtualQAbstractNativeEventFilter : public QAbstractNativeEventFilter {
     void setQAbstractNativeEventFilter_NativeEventFilter_IsBase(bool value) const { qabstractnativeeventfilter_nativeeventfilter_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override {
         return qabstractnativeeventfilter_nativeeventfilter_callback(this, eventType, message, result);
     }
 };

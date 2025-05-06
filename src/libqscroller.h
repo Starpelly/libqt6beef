@@ -21,13 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPointF QPointF;
 typedef struct QRectF QRectF;
 typedef struct QScroller QScroller;
@@ -51,7 +52,6 @@ QMetaObject* QScroller_MetaObject(const QScroller* self);
 void* QScroller_Metacast(QScroller* self, const char* param1);
 int QScroller_Metacall(QScroller* self, int param1, int param2, void** param3);
 libqt_string QScroller_Tr(const char* s);
-libqt_string QScroller_TrUtf8(const char* s);
 bool QScroller_HasScroller(QObject* target);
 QScroller* QScroller_Scroller(QObject* target);
 QScroller* QScroller_ScrollerWithTarget(QObject* target);
@@ -83,8 +83,6 @@ void QScroller_ScrollerPropertiesChanged(QScroller* self, QScrollerProperties* p
 void QScroller_Connect_ScrollerPropertiesChanged(QScroller* self, intptr_t slot);
 libqt_string QScroller_Tr2(const char* s, const char* c);
 libqt_string QScroller_Tr3(const char* s, const char* c, int n);
-libqt_string QScroller_TrUtf82(const char* s, const char* c);
-libqt_string QScroller_TrUtf83(const char* s, const char* c, int n);
 int QScroller_GrabGesture2(QObject* target, int gestureType);
 bool QScroller_HandleInput3(QScroller* self, int input, QPointF* position, long long timestamp);
 

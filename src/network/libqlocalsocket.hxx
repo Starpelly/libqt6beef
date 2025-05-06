@@ -22,18 +22,19 @@ class VirtualQLocalSocket : public QLocalSocket {
     using QLocalSocket_BytesAvailable_Callback = qint64 (*)();
     using QLocalSocket_BytesToWrite_Callback = qint64 (*)();
     using QLocalSocket_CanReadLine_Callback = bool (*)();
-    using QLocalSocket_Open_Callback = bool (*)(QLocalSocket*, QIODevice::OpenMode);
+    using QLocalSocket_Open_Callback = bool (*)(QLocalSocket*, QIODeviceBase::OpenMode);
     using QLocalSocket_Close_Callback = void (*)();
     using QLocalSocket_WaitForBytesWritten_Callback = bool (*)(QLocalSocket*, int);
     using QLocalSocket_WaitForReadyRead_Callback = bool (*)(QLocalSocket*, int);
     using QLocalSocket_ReadData_Callback = qint64 (*)(QLocalSocket*, char*, long long);
+    using QLocalSocket_ReadLineData_Callback = qint64 (*)(QLocalSocket*, char*, qint64);
+    using QLocalSocket_SkipData_Callback = qint64 (*)(QLocalSocket*, qint64);
     using QLocalSocket_WriteData_Callback = qint64 (*)(QLocalSocket*, const char*, long long);
     using QLocalSocket_Pos_Callback = qint64 (*)();
     using QLocalSocket_Size_Callback = qint64 (*)();
     using QLocalSocket_Seek_Callback = bool (*)(QLocalSocket*, qint64);
     using QLocalSocket_AtEnd_Callback = bool (*)();
     using QLocalSocket_Reset_Callback = bool (*)();
-    using QLocalSocket_ReadLineData_Callback = qint64 (*)(QLocalSocket*, char*, qint64);
     using QLocalSocket_Event_Callback = bool (*)(QLocalSocket*, QEvent*);
     using QLocalSocket_EventFilter_Callback = bool (*)(QLocalSocket*, QObject*, QEvent*);
     using QLocalSocket_TimerEvent_Callback = void (*)(QLocalSocket*, QTimerEvent*);
@@ -41,7 +42,7 @@ class VirtualQLocalSocket : public QLocalSocket {
     using QLocalSocket_CustomEvent_Callback = void (*)(QLocalSocket*, QEvent*);
     using QLocalSocket_ConnectNotify_Callback = void (*)(QLocalSocket*, const QMetaMethod&);
     using QLocalSocket_DisconnectNotify_Callback = void (*)(QLocalSocket*, const QMetaMethod&);
-    using QLocalSocket_SetOpenMode_Callback = void (*)(QLocalSocket*, QIODevice::OpenMode);
+    using QLocalSocket_SetOpenMode_Callback = void (*)(QLocalSocket*, QIODeviceBase::OpenMode);
     using QLocalSocket_SetErrorString_Callback = void (*)(QLocalSocket*, const QString&);
     using QLocalSocket_Sender_Callback = QObject* (*)();
     using QLocalSocket_SenderSignalIndex_Callback = int (*)();
@@ -60,13 +61,14 @@ class VirtualQLocalSocket : public QLocalSocket {
     QLocalSocket_WaitForBytesWritten_Callback qlocalsocket_waitforbyteswritten_callback = nullptr;
     QLocalSocket_WaitForReadyRead_Callback qlocalsocket_waitforreadyread_callback = nullptr;
     QLocalSocket_ReadData_Callback qlocalsocket_readdata_callback = nullptr;
+    QLocalSocket_ReadLineData_Callback qlocalsocket_readlinedata_callback = nullptr;
+    QLocalSocket_SkipData_Callback qlocalsocket_skipdata_callback = nullptr;
     QLocalSocket_WriteData_Callback qlocalsocket_writedata_callback = nullptr;
     QLocalSocket_Pos_Callback qlocalsocket_pos_callback = nullptr;
     QLocalSocket_Size_Callback qlocalsocket_size_callback = nullptr;
     QLocalSocket_Seek_Callback qlocalsocket_seek_callback = nullptr;
     QLocalSocket_AtEnd_Callback qlocalsocket_atend_callback = nullptr;
     QLocalSocket_Reset_Callback qlocalsocket_reset_callback = nullptr;
-    QLocalSocket_ReadLineData_Callback qlocalsocket_readlinedata_callback = nullptr;
     QLocalSocket_Event_Callback qlocalsocket_event_callback = nullptr;
     QLocalSocket_EventFilter_Callback qlocalsocket_eventfilter_callback = nullptr;
     QLocalSocket_TimerEvent_Callback qlocalsocket_timerevent_callback = nullptr;
@@ -92,13 +94,14 @@ class VirtualQLocalSocket : public QLocalSocket {
     mutable bool qlocalsocket_waitforbyteswritten_isbase = false;
     mutable bool qlocalsocket_waitforreadyread_isbase = false;
     mutable bool qlocalsocket_readdata_isbase = false;
+    mutable bool qlocalsocket_readlinedata_isbase = false;
+    mutable bool qlocalsocket_skipdata_isbase = false;
     mutable bool qlocalsocket_writedata_isbase = false;
     mutable bool qlocalsocket_pos_isbase = false;
     mutable bool qlocalsocket_size_isbase = false;
     mutable bool qlocalsocket_seek_isbase = false;
     mutable bool qlocalsocket_atend_isbase = false;
     mutable bool qlocalsocket_reset_isbase = false;
-    mutable bool qlocalsocket_readlinedata_isbase = false;
     mutable bool qlocalsocket_event_isbase = false;
     mutable bool qlocalsocket_eventfilter_isbase = false;
     mutable bool qlocalsocket_timerevent_isbase = false;
@@ -128,13 +131,14 @@ class VirtualQLocalSocket : public QLocalSocket {
         qlocalsocket_waitforbyteswritten_callback = nullptr;
         qlocalsocket_waitforreadyread_callback = nullptr;
         qlocalsocket_readdata_callback = nullptr;
+        qlocalsocket_readlinedata_callback = nullptr;
+        qlocalsocket_skipdata_callback = nullptr;
         qlocalsocket_writedata_callback = nullptr;
         qlocalsocket_pos_callback = nullptr;
         qlocalsocket_size_callback = nullptr;
         qlocalsocket_seek_callback = nullptr;
         qlocalsocket_atend_callback = nullptr;
         qlocalsocket_reset_callback = nullptr;
-        qlocalsocket_readlinedata_callback = nullptr;
         qlocalsocket_event_callback = nullptr;
         qlocalsocket_eventfilter_callback = nullptr;
         qlocalsocket_timerevent_callback = nullptr;
@@ -161,13 +165,14 @@ class VirtualQLocalSocket : public QLocalSocket {
     void setQLocalSocket_WaitForBytesWritten_Callback(QLocalSocket_WaitForBytesWritten_Callback cb) { qlocalsocket_waitforbyteswritten_callback = cb; }
     void setQLocalSocket_WaitForReadyRead_Callback(QLocalSocket_WaitForReadyRead_Callback cb) { qlocalsocket_waitforreadyread_callback = cb; }
     void setQLocalSocket_ReadData_Callback(QLocalSocket_ReadData_Callback cb) { qlocalsocket_readdata_callback = cb; }
+    void setQLocalSocket_ReadLineData_Callback(QLocalSocket_ReadLineData_Callback cb) { qlocalsocket_readlinedata_callback = cb; }
+    void setQLocalSocket_SkipData_Callback(QLocalSocket_SkipData_Callback cb) { qlocalsocket_skipdata_callback = cb; }
     void setQLocalSocket_WriteData_Callback(QLocalSocket_WriteData_Callback cb) { qlocalsocket_writedata_callback = cb; }
     void setQLocalSocket_Pos_Callback(QLocalSocket_Pos_Callback cb) { qlocalsocket_pos_callback = cb; }
     void setQLocalSocket_Size_Callback(QLocalSocket_Size_Callback cb) { qlocalsocket_size_callback = cb; }
     void setQLocalSocket_Seek_Callback(QLocalSocket_Seek_Callback cb) { qlocalsocket_seek_callback = cb; }
     void setQLocalSocket_AtEnd_Callback(QLocalSocket_AtEnd_Callback cb) { qlocalsocket_atend_callback = cb; }
     void setQLocalSocket_Reset_Callback(QLocalSocket_Reset_Callback cb) { qlocalsocket_reset_callback = cb; }
-    void setQLocalSocket_ReadLineData_Callback(QLocalSocket_ReadLineData_Callback cb) { qlocalsocket_readlinedata_callback = cb; }
     void setQLocalSocket_Event_Callback(QLocalSocket_Event_Callback cb) { qlocalsocket_event_callback = cb; }
     void setQLocalSocket_EventFilter_Callback(QLocalSocket_EventFilter_Callback cb) { qlocalsocket_eventfilter_callback = cb; }
     void setQLocalSocket_TimerEvent_Callback(QLocalSocket_TimerEvent_Callback cb) { qlocalsocket_timerevent_callback = cb; }
@@ -193,13 +198,14 @@ class VirtualQLocalSocket : public QLocalSocket {
     void setQLocalSocket_WaitForBytesWritten_IsBase(bool value) const { qlocalsocket_waitforbyteswritten_isbase = value; }
     void setQLocalSocket_WaitForReadyRead_IsBase(bool value) const { qlocalsocket_waitforreadyread_isbase = value; }
     void setQLocalSocket_ReadData_IsBase(bool value) const { qlocalsocket_readdata_isbase = value; }
+    void setQLocalSocket_ReadLineData_IsBase(bool value) const { qlocalsocket_readlinedata_isbase = value; }
+    void setQLocalSocket_SkipData_IsBase(bool value) const { qlocalsocket_skipdata_isbase = value; }
     void setQLocalSocket_WriteData_IsBase(bool value) const { qlocalsocket_writedata_isbase = value; }
     void setQLocalSocket_Pos_IsBase(bool value) const { qlocalsocket_pos_isbase = value; }
     void setQLocalSocket_Size_IsBase(bool value) const { qlocalsocket_size_isbase = value; }
     void setQLocalSocket_Seek_IsBase(bool value) const { qlocalsocket_seek_isbase = value; }
     void setQLocalSocket_AtEnd_IsBase(bool value) const { qlocalsocket_atend_isbase = value; }
     void setQLocalSocket_Reset_IsBase(bool value) const { qlocalsocket_reset_isbase = value; }
-    void setQLocalSocket_ReadLineData_IsBase(bool value) const { qlocalsocket_readlinedata_isbase = value; }
     void setQLocalSocket_Event_IsBase(bool value) const { qlocalsocket_event_isbase = value; }
     void setQLocalSocket_EventFilter_IsBase(bool value) const { qlocalsocket_eventfilter_isbase = value; }
     void setQLocalSocket_TimerEvent_IsBase(bool value) const { qlocalsocket_timerevent_isbase = value; }
@@ -275,7 +281,7 @@ class VirtualQLocalSocket : public QLocalSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODevice::OpenMode openMode) override {
+    virtual bool open(QIODeviceBase::OpenMode openMode) override {
         if (qlocalsocket_open_isbase) {
             qlocalsocket_open_isbase = false;
             return QLocalSocket::open(openMode);
@@ -331,6 +337,30 @@ class VirtualQLocalSocket : public QLocalSocket {
             return qlocalsocket_readdata_callback(this, param1, param2);
         } else {
             return QLocalSocket::readData(param1, param2);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual qint64 readLineData(char* data, qint64 maxSize) override {
+        if (qlocalsocket_readlinedata_isbase) {
+            qlocalsocket_readlinedata_isbase = false;
+            return QLocalSocket::readLineData(data, maxSize);
+        } else if (qlocalsocket_readlinedata_callback != nullptr) {
+            return qlocalsocket_readlinedata_callback(this, data, maxSize);
+        } else {
+            return QLocalSocket::readLineData(data, maxSize);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual qint64 skipData(qint64 maxSize) override {
+        if (qlocalsocket_skipdata_isbase) {
+            qlocalsocket_skipdata_isbase = false;
+            return QLocalSocket::skipData(maxSize);
+        } else if (qlocalsocket_skipdata_callback != nullptr) {
+            return qlocalsocket_skipdata_callback(this, maxSize);
+        } else {
+            return QLocalSocket::skipData(maxSize);
         }
     }
 
@@ -403,18 +433,6 @@ class VirtualQLocalSocket : public QLocalSocket {
             return qlocalsocket_reset_callback();
         } else {
             return QLocalSocket::reset();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual qint64 readLineData(char* data, qint64 maxlen) override {
-        if (qlocalsocket_readlinedata_isbase) {
-            qlocalsocket_readlinedata_isbase = false;
-            return QLocalSocket::readLineData(data, maxlen);
-        } else if (qlocalsocket_readlinedata_callback != nullptr) {
-            return qlocalsocket_readlinedata_callback(this, data, maxlen);
-        } else {
-            return QLocalSocket::readLineData(data, maxlen);
         }
     }
 
@@ -503,7 +521,7 @@ class VirtualQLocalSocket : public QLocalSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODevice::OpenMode openMode) {
+    void setOpenMode(QIODeviceBase::OpenMode openMode) {
         if (qlocalsocket_setopenmode_isbase) {
             qlocalsocket_setopenmode_isbase = false;
             QLocalSocket::setOpenMode(openMode);

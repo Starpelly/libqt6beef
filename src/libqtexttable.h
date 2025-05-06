@@ -24,13 +24,14 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef QTextFrame::iterator QTextFrame__iterator;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QTextCharFormat QTextCharFormat;
 typedef struct QTextCursor QTextCursor;
 typedef struct QTextDocument QTextDocument;
@@ -76,7 +77,6 @@ int QTextTable_Metacall(QTextTable* self, int param1, int param2, void** param3)
 void QTextTable_OnMetacall(QTextTable* self, intptr_t slot);
 int QTextTable_QBaseMetacall(QTextTable* self, int param1, int param2, void** param3);
 libqt_string QTextTable_Tr(const char* s);
-libqt_string QTextTable_TrUtf8(const char* s);
 void QTextTable_Resize(QTextTable* self, int rows, int cols);
 void QTextTable_InsertRows(QTextTable* self, int pos, int num);
 void QTextTable_InsertColumns(QTextTable* self, int pos, int num);
@@ -98,8 +98,6 @@ void QTextTable_SetFormat(QTextTable* self, QTextTableFormat* format);
 QTextTableFormat* QTextTable_Format(const QTextTable* self);
 libqt_string QTextTable_Tr2(const char* s, const char* c);
 libqt_string QTextTable_Tr3(const char* s, const char* c, int n);
-libqt_string QTextTable_TrUtf82(const char* s, const char* c);
-libqt_string QTextTable_TrUtf83(const char* s, const char* c, int n);
 bool QTextTable_Event(QTextTable* self, QEvent* event);
 void QTextTable_OnEvent(QTextTable* self, intptr_t slot);
 bool QTextTable_QBaseEvent(QTextTable* self, QEvent* event);

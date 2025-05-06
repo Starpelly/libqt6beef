@@ -21,13 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QRunnable QRunnable;
 typedef struct QThread QThread;
 typedef struct QThreadPool QThreadPool;
@@ -43,10 +44,10 @@ int QThreadPool_Metacall(QThreadPool* self, int param1, int param2, void** param
 void QThreadPool_OnMetacall(QThreadPool* self, intptr_t slot);
 int QThreadPool_QBaseMetacall(QThreadPool* self, int param1, int param2, void** param3);
 libqt_string QThreadPool_Tr(const char* s);
-libqt_string QThreadPool_TrUtf8(const char* s);
 QThreadPool* QThreadPool_GlobalInstance();
 void QThreadPool_Start(QThreadPool* self, QRunnable* runnable);
 bool QThreadPool_TryStart(QThreadPool* self, QRunnable* runnable);
+void QThreadPool_StartOnReservedThread(QThreadPool* self, QRunnable* runnable);
 int QThreadPool_ExpiryTimeout(const QThreadPool* self);
 void QThreadPool_SetExpiryTimeout(QThreadPool* self, int expiryTimeout);
 int QThreadPool_MaxThreadCount(const QThreadPool* self);
@@ -54,17 +55,16 @@ void QThreadPool_SetMaxThreadCount(QThreadPool* self, int maxThreadCount);
 int QThreadPool_ActiveThreadCount(const QThreadPool* self);
 void QThreadPool_SetStackSize(QThreadPool* self, unsigned int stackSize);
 unsigned int QThreadPool_StackSize(const QThreadPool* self);
+void QThreadPool_SetThreadPriority(QThreadPool* self, int priority);
+int QThreadPool_ThreadPriority(const QThreadPool* self);
 void QThreadPool_ReserveThread(QThreadPool* self);
 void QThreadPool_ReleaseThread(QThreadPool* self);
 bool QThreadPool_WaitForDone(QThreadPool* self);
 void QThreadPool_Clear(QThreadPool* self);
 bool QThreadPool_Contains(const QThreadPool* self, QThread* thread);
-void QThreadPool_Cancel(QThreadPool* self, QRunnable* runnable);
 bool QThreadPool_TryTake(QThreadPool* self, QRunnable* runnable);
 libqt_string QThreadPool_Tr2(const char* s, const char* c);
 libqt_string QThreadPool_Tr3(const char* s, const char* c, int n);
-libqt_string QThreadPool_TrUtf82(const char* s, const char* c);
-libqt_string QThreadPool_TrUtf83(const char* s, const char* c, int n);
 void QThreadPool_Start2(QThreadPool* self, QRunnable* runnable, int priority);
 bool QThreadPool_WaitForDone1(QThreadPool* self, int msecs);
 bool QThreadPool_Event(QThreadPool* self, QEvent* event);

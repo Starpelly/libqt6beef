@@ -1,5 +1,7 @@
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
@@ -12,8 +14,8 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
+#include <QModelRoleDataSpan>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -80,18 +82,6 @@ libqt_string QTransposeProxyModel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QTransposeProxyModel_TrUtf8(const char* s) {
-    QString _ret = QTransposeProxyModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QTransposeProxyModel_Tr2(const char* s, const char* c) {
     QString _ret = QTransposeProxyModel::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -106,30 +96,6 @@ libqt_string QTransposeProxyModel_Tr2(const char* s, const char* c) {
 
 libqt_string QTransposeProxyModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTransposeProxyModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTransposeProxyModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTransposeProxyModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QTransposeProxyModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTransposeProxyModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -885,6 +851,32 @@ void QTransposeProxyModel_OnSetData(QTransposeProxyModel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QTransposeProxyModel_ClearItemData(QTransposeProxyModel* self, QModelIndex* index) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        return vqtransposeproxymodel->clearItemData(*index);
+    } else {
+        return vqtransposeproxymodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QTransposeProxyModel_QBaseClearItemData(QTransposeProxyModel* self, QModelIndex* index) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        vqtransposeproxymodel->setQTransposeProxyModel_ClearItemData_IsBase(true);
+        return vqtransposeproxymodel->clearItemData(*index);
+    } else {
+        return vqtransposeproxymodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTransposeProxyModel_OnClearItemData(QTransposeProxyModel* self, intptr_t slot) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        vqtransposeproxymodel->setQTransposeProxyModel_ClearItemData_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_ClearItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QModelIndex* QTransposeProxyModel_Buddy(const QTransposeProxyModel* self, QModelIndex* index) {
     if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
         return new QModelIndex(vqtransposeproxymodel->buddy(*index));
@@ -1251,68 +1243,6 @@ void QTransposeProxyModel_OnSupportedDropActions(const QTransposeProxyModel* sel
 }
 
 // Derived class handler implementation
-libqt_list /* of QModelIndex* */ QTransposeProxyModel_Match(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags) {
-    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
-        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = new QModelIndex(_ret[i]);
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    } else {
-        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = new QModelIndex(_ret[i]);
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    }
-}
-
-// Base class handler implementation
-libqt_list /* of QModelIndex* */ QTransposeProxyModel_QBaseMatch(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags) {
-    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
-        vqtransposeproxymodel->setQTransposeProxyModel_Match_IsBase(true);
-        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = new QModelIndex(_ret[i]);
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    } else {
-        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
-        // Convert QList<> from C++ memory to manually-managed C memory
-        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
-        for (size_t i = 0; i < _ret.length(); ++i) {
-            _arr[i] = new QModelIndex(_ret[i]);
-        }
-        libqt_list _out;
-        _out.len = _ret.length();
-        _out.data = static_cast<void*>(_arr);
-        return _out;
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTransposeProxyModel_OnMatch(const QTransposeProxyModel* self, intptr_t slot) {
-    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
-        vqtransposeproxymodel->setQTransposeProxyModel_Match_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_Match_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 libqt_map /* of int to libqt_string */ QTransposeProxyModel_RoleNames(const QTransposeProxyModel* self) {
     if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
         QHash<int, QByteArray> _ret = vqtransposeproxymodel->roleNames();
@@ -1415,6 +1345,120 @@ libqt_map /* of int to libqt_string */ QTransposeProxyModel_QBaseRoleNames(const
 void QTransposeProxyModel_OnRoleNames(const QTransposeProxyModel* self, intptr_t slot) {
     if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
         vqtransposeproxymodel->setQTransposeProxyModel_RoleNames_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_RoleNames_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+libqt_list /* of QModelIndex* */ QTransposeProxyModel_Match(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
+        // Convert QList<> from C++ memory to manually-managed C memory
+        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
+        for (size_t i = 0; i < _ret.length(); ++i) {
+            _arr[i] = new QModelIndex(_ret[i]);
+        }
+        libqt_list _out;
+        _out.len = _ret.length();
+        _out.data = static_cast<void*>(_arr);
+        return _out;
+    } else {
+        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
+        // Convert QList<> from C++ memory to manually-managed C memory
+        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
+        for (size_t i = 0; i < _ret.length(); ++i) {
+            _arr[i] = new QModelIndex(_ret[i]);
+        }
+        libqt_list _out;
+        _out.len = _ret.length();
+        _out.data = static_cast<void*>(_arr);
+        return _out;
+    }
+}
+
+// Base class handler implementation
+libqt_list /* of QModelIndex* */ QTransposeProxyModel_QBaseMatch(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_Match_IsBase(true);
+        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
+        // Convert QList<> from C++ memory to manually-managed C memory
+        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
+        for (size_t i = 0; i < _ret.length(); ++i) {
+            _arr[i] = new QModelIndex(_ret[i]);
+        }
+        libqt_list _out;
+        _out.len = _ret.length();
+        _out.data = static_cast<void*>(_arr);
+        return _out;
+    } else {
+        QModelIndexList _ret = vqtransposeproxymodel->match(*start, static_cast<int>(role), *value, static_cast<int>(hits), static_cast<Qt::MatchFlags>(flags));
+        // Convert QList<> from C++ memory to manually-managed C memory
+        QModelIndex** _arr = static_cast<QModelIndex**>(malloc(sizeof(QModelIndex*) * _ret.length()));
+        for (size_t i = 0; i < _ret.length(); ++i) {
+            _arr[i] = new QModelIndex(_ret[i]);
+        }
+        libqt_list _out;
+        _out.len = _ret.length();
+        _out.data = static_cast<void*>(_arr);
+        return _out;
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTransposeProxyModel_OnMatch(const QTransposeProxyModel* self, intptr_t slot) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_Match_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_Match_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTransposeProxyModel_MultiData(const QTransposeProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqtransposeproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QTransposeProxyModel_QBaseMultiData(const QTransposeProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_MultiData_IsBase(true);
+        vqtransposeproxymodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqtransposeproxymodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTransposeProxyModel_OnMultiData(const QTransposeProxyModel* self, intptr_t slot) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_MultiData_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTransposeProxyModel_ResetInternalData(QTransposeProxyModel* self) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        vqtransposeproxymodel->resetInternalData();
+    } else {
+        vqtransposeproxymodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QTransposeProxyModel_QBaseResetInternalData(QTransposeProxyModel* self) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        vqtransposeproxymodel->setQTransposeProxyModel_ResetInternalData_IsBase(true);
+        vqtransposeproxymodel->resetInternalData();
+    } else {
+        vqtransposeproxymodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTransposeProxyModel_OnResetInternalData(QTransposeProxyModel* self, intptr_t slot) {
+    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
+        vqtransposeproxymodel->setQTransposeProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1601,28 +1645,26 @@ void QTransposeProxyModel_OnDisconnectNotify(QTransposeProxyModel* self, intptr_
 }
 
 // Derived class handler implementation
-void QTransposeProxyModel_ResetInternalData(QTransposeProxyModel* self) {
-    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
-        vqtransposeproxymodel->resetInternalData();
-    } else {
-        vqtransposeproxymodel->resetInternalData();
+QModelIndex* QTransposeProxyModel_CreateSourceIndex(const QTransposeProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        return new QModelIndex(vqtransposeproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
     }
+    return {};
 }
 
 // Base class handler implementation
-void QTransposeProxyModel_QBaseResetInternalData(QTransposeProxyModel* self) {
-    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
-        vqtransposeproxymodel->setQTransposeProxyModel_ResetInternalData_IsBase(true);
-        vqtransposeproxymodel->resetInternalData();
-    } else {
-        vqtransposeproxymodel->resetInternalData();
+QModelIndex* QTransposeProxyModel_QBaseCreateSourceIndex(const QTransposeProxyModel* self, int row, int col, void* internalPtr) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_CreateSourceIndex_IsBase(true);
+        return new QModelIndex(vqtransposeproxymodel->createSourceIndex(static_cast<int>(row), static_cast<int>(col), internalPtr));
     }
+    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QTransposeProxyModel_OnResetInternalData(QTransposeProxyModel* self, intptr_t slot) {
-    if (auto* vqtransposeproxymodel = dynamic_cast<VirtualQTransposeProxyModel*>(self)) {
-        vqtransposeproxymodel->setQTransposeProxyModel_ResetInternalData_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_ResetInternalData_Callback>(slot));
+void QTransposeProxyModel_OnCreateSourceIndex(const QTransposeProxyModel* self, intptr_t slot) {
+    if (auto* vqtransposeproxymodel = const_cast<VirtualQTransposeProxyModel*>(dynamic_cast<const VirtualQTransposeProxyModel*>(self))) {
+        vqtransposeproxymodel->setQTransposeProxyModel_CreateSourceIndex_Callback(reinterpret_cast<VirtualQTransposeProxyModel::QTransposeProxyModel_CreateSourceIndex_Callback>(slot));
     }
 }
 

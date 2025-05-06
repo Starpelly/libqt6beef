@@ -17,15 +17,12 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QPagedPaintDevice__Margins)
-typedef QPagedPaintDevice::Margins QPagedPaintDevice__Margins;
-#endif
 #else
 typedef struct QMarginsF QMarginsF;
 typedef struct QPageLayout QPageLayout;
+typedef struct QPageRanges QPageRanges;
 typedef struct QPageSize QPageSize;
 typedef struct QPagedPaintDevice QPagedPaintDevice;
-typedef struct QPagedPaintDevice__Margins QPagedPaintDevice__Margins;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPainter QPainter;
@@ -33,18 +30,14 @@ typedef struct QPoint QPoint;
 typedef struct QPrintEngine QPrintEngine;
 typedef struct QPrinter QPrinter;
 typedef struct QPrinterInfo QPrinterInfo;
-typedef struct QRect QRect;
 typedef struct QRectF QRectF;
-typedef struct QSizeF QSizeF;
 #endif
 
 #ifdef __cplusplus
 typedef QPrinter::ColorMode ColorMode;       // C++ enum
 typedef QPrinter::DuplexMode DuplexMode;     // C++ enum
-typedef QPrinter::Orientation Orientation;   // C++ enum
 typedef QPrinter::OutputFormat OutputFormat; // C++ enum
 typedef QPrinter::PageOrder PageOrder;       // C++ enum
-typedef QPrinter::PaperSize PaperSize;       // C++ QFlags
 typedef QPrinter::PaperSource PaperSource;   // C++ enum
 typedef QPrinter::PrintRange PrintRange;     // C++ enum
 typedef QPrinter::PrinterMode PrinterMode;   // C++ enum
@@ -53,10 +46,8 @@ typedef QPrinter::Unit Unit;                 // C++ enum
 #else
 typedef int ColorMode;    // C ABI enum
 typedef int DuplexMode;   // C ABI enum
-typedef int Orientation;  // C ABI enum
 typedef int OutputFormat; // C ABI enum
 typedef int PageOrder;    // C ABI enum
-typedef int PaperSize;    // C ABI QFlags
 typedef int PaperSource;  // C ABI enum
 typedef int PrintRange;   // C ABI enum
 typedef int PrinterMode;  // C ABI enum
@@ -86,21 +77,6 @@ void QPrinter_SetDocName(QPrinter* self, libqt_string docName);
 libqt_string QPrinter_DocName(const QPrinter* self);
 void QPrinter_SetCreator(QPrinter* self, libqt_string creator);
 libqt_string QPrinter_Creator(const QPrinter* self);
-void QPrinter_SetOrientation(QPrinter* self, int orientation);
-int QPrinter_Orientation(const QPrinter* self);
-void QPrinter_SetPageSize(QPrinter* self, int pageSize);
-void QPrinter_OnSetPageSize(QPrinter* self, intptr_t slot);
-void QPrinter_QBaseSetPageSize(QPrinter* self, int pageSize);
-int QPrinter_PageSize(const QPrinter* self);
-void QPrinter_SetPageSizeMM(QPrinter* self, QSizeF* size);
-void QPrinter_OnSetPageSizeMM(QPrinter* self, intptr_t slot);
-void QPrinter_QBaseSetPageSizeMM(QPrinter* self, QSizeF* size);
-void QPrinter_SetPaperSize(QPrinter* self, int paperSize);
-int QPrinter_PaperSize(const QPrinter* self);
-void QPrinter_SetPaperSize2(QPrinter* self, QSizeF* paperSize, int unit);
-QSizeF* QPrinter_PaperSizeWithUnit(const QPrinter* self, int unit);
-void QPrinter_SetPaperName(QPrinter* self, libqt_string paperName);
-libqt_string QPrinter_PaperName(const QPrinter* self);
 void QPrinter_SetPageOrder(QPrinter* self, int pageOrder);
 int QPrinter_PageOrder(const QPrinter* self);
 void QPrinter_SetResolution(QPrinter* self, int resolution);
@@ -111,9 +87,6 @@ void QPrinter_SetCollateCopies(QPrinter* self, bool collate);
 bool QPrinter_CollateCopies(const QPrinter* self);
 void QPrinter_SetFullPage(QPrinter* self, bool fullPage);
 bool QPrinter_FullPage(const QPrinter* self);
-void QPrinter_SetNumCopies(QPrinter* self, int numCopies);
-int QPrinter_NumCopies(const QPrinter* self);
-int QPrinter_ActualNumCopies(const QPrinter* self);
 void QPrinter_SetCopyCount(QPrinter* self, int copyCount);
 int QPrinter_CopyCount(const QPrinter* self);
 bool QPrinter_SupportsMultipleCopies(const QPrinter* self);
@@ -124,14 +97,8 @@ int QPrinter_Duplex(const QPrinter* self);
 libqt_list /* of int */ QPrinter_SupportedResolutions(const QPrinter* self);
 void QPrinter_SetFontEmbeddingEnabled(QPrinter* self, bool enable);
 bool QPrinter_FontEmbeddingEnabled(const QPrinter* self);
-void QPrinter_SetDoubleSidedPrinting(QPrinter* self, bool enable);
-bool QPrinter_DoubleSidedPrinting(const QPrinter* self);
-void QPrinter_SetWinPageSize(QPrinter* self, int winPageSize);
-int QPrinter_WinPageSize(const QPrinter* self);
-QRect* QPrinter_PaperRect(const QPrinter* self);
-QRect* QPrinter_PageRect(const QPrinter* self);
-QRectF* QPrinter_PaperRectWithQPrinterUnit(const QPrinter* self, int param1);
-QRectF* QPrinter_PageRectWithQPrinterUnit(const QPrinter* self, int param1);
+QRectF* QPrinter_PaperRect(const QPrinter* self, int param1);
+QRectF* QPrinter_PageRect(const QPrinter* self, int param1);
 libqt_string QPrinter_PrinterSelectionOption(const QPrinter* self);
 void QPrinter_SetPrinterSelectionOption(QPrinter* self, libqt_string printerSelectionOption);
 bool QPrinter_NewPage(QPrinter* self);
@@ -148,17 +115,24 @@ int QPrinter_FromPage(const QPrinter* self);
 int QPrinter_ToPage(const QPrinter* self);
 void QPrinter_SetPrintRange(QPrinter* self, int range);
 int QPrinter_PrintRange(const QPrinter* self);
-void QPrinter_SetMargins(QPrinter* self, QPagedPaintDevice__Margins* m);
-void QPrinter_OnSetMargins(QPrinter* self, intptr_t slot);
-void QPrinter_QBaseSetMargins(QPrinter* self, QPagedPaintDevice__Margins* m);
-void QPrinter_SetPageMargins(QPrinter* self, double left, double top, double right, double bottom, int unit);
-void QPrinter_GetPageMargins(const QPrinter* self, double* left, double* top, double* right, double* bottom, int unit);
 int QPrinter_Metric(const QPrinter* self, int param1);
 void QPrinter_OnMetric(const QPrinter* self, intptr_t slot);
 int QPrinter_QBaseMetric(const QPrinter* self, int param1);
-void QPrinter_SetPageSizeWithSize(QPrinter* self, int size);
-void QPrinter_OnSetPageSizeWithSize(QPrinter* self, intptr_t slot);
-void QPrinter_QBaseSetPageSizeWithSize(QPrinter* self, int size);
+bool QPrinter_SetPageLayout(QPrinter* self, QPageLayout* pageLayout);
+void QPrinter_OnSetPageLayout(QPrinter* self, intptr_t slot);
+bool QPrinter_QBaseSetPageLayout(QPrinter* self, QPageLayout* pageLayout);
+bool QPrinter_SetPageSize(QPrinter* self, QPageSize* pageSize);
+void QPrinter_OnSetPageSize(QPrinter* self, intptr_t slot);
+bool QPrinter_QBaseSetPageSize(QPrinter* self, QPageSize* pageSize);
+bool QPrinter_SetPageOrientation(QPrinter* self, int orientation);
+void QPrinter_OnSetPageOrientation(QPrinter* self, intptr_t slot);
+bool QPrinter_QBaseSetPageOrientation(QPrinter* self, int orientation);
+bool QPrinter_SetPageMargins(QPrinter* self, QMarginsF* margins, int units);
+void QPrinter_OnSetPageMargins(QPrinter* self, intptr_t slot);
+bool QPrinter_QBaseSetPageMargins(QPrinter* self, QMarginsF* margins, int units);
+void QPrinter_SetPageRanges(QPrinter* self, QPageRanges* ranges);
+void QPrinter_OnSetPageRanges(QPrinter* self, intptr_t slot);
+void QPrinter_QBaseSetPageRanges(QPrinter* self, QPageRanges* ranges);
 void QPrinter_InitPainter(const QPrinter* self, QPainter* painter);
 void QPrinter_OnInitPainter(const QPrinter* self, intptr_t slot);
 void QPrinter_QBaseInitPainter(const QPrinter* self, QPainter* painter);
@@ -171,9 +145,6 @@ QPainter* QPrinter_QBaseSharedPainter(const QPrinter* self);
 void QPrinter_SetEngines(QPrinter* self, QPrintEngine* printEngine, QPaintEngine* paintEngine);
 void QPrinter_OnSetEngines(QPrinter* self, intptr_t slot);
 void QPrinter_QBaseSetEngines(QPrinter* self, QPrintEngine* printEngine, QPaintEngine* paintEngine);
-QPageLayout* QPrinter_DevicePageLayout(const QPrinter* self);
-void QPrinter_OnDevicePageLayout(const QPrinter* self, intptr_t slot);
-QPageLayout* QPrinter_QBaseDevicePageLayout(const QPrinter* self);
 void QPrinter_Delete(QPrinter* self);
 
 #ifdef __cplusplus

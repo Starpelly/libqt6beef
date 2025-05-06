@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -118,18 +121,6 @@ int QSplitter_QBaseMetacall(QSplitter* self, int param1, int param2, void** para
 
 libqt_string QSplitter_Tr(const char* s) {
     QString _ret = QSplitter::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSplitter_TrUtf8(const char* s) {
-    QString _ret = QSplitter::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -285,30 +276,6 @@ libqt_string QSplitter_Tr2(const char* s, const char* c) {
 
 libqt_string QSplitter_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSplitter::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSplitter_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSplitter::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSplitter_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSplitter::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -528,6 +495,32 @@ void QSplitter_QBasePaintEvent(QSplitter* self, QPaintEvent* param1) {
 void QSplitter_OnPaintEvent(QSplitter* self, intptr_t slot) {
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
         vqsplitter->setQSplitter_PaintEvent_Callback(reinterpret_cast<VirtualQSplitter::QSplitter_PaintEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QSplitter_InitStyleOption(const QSplitter* self, QStyleOptionFrame* option) {
+    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
+        vqsplitter->initStyleOption(option);
+    } else {
+        vqsplitter->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QSplitter_QBaseInitStyleOption(const QSplitter* self, QStyleOptionFrame* option) {
+    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
+        vqsplitter->setQSplitter_InitStyleOption_IsBase(true);
+        vqsplitter->initStyleOption(option);
+    } else {
+        vqsplitter->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSplitter_OnInitStyleOption(const QSplitter* self, intptr_t slot) {
+    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
+        vqsplitter->setQSplitter_InitStyleOption_Callback(reinterpret_cast<VirtualQSplitter::QSplitter_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -896,7 +889,7 @@ void QSplitter_OnFocusOutEvent(QSplitter* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSplitter_EnterEvent(QSplitter* self, QEvent* event) {
+void QSplitter_EnterEvent(QSplitter* self, QEnterEvent* event) {
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
         vqsplitter->enterEvent(event);
     } else {
@@ -905,7 +898,7 @@ void QSplitter_EnterEvent(QSplitter* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QSplitter_QBaseEnterEvent(QSplitter* self, QEvent* event) {
+void QSplitter_QBaseEnterEvent(QSplitter* self, QEnterEvent* event) {
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
         vqsplitter->setQSplitter_EnterEvent_IsBase(true);
         vqsplitter->enterEvent(event);
@@ -1234,23 +1227,23 @@ void QSplitter_OnHideEvent(QSplitter* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QSplitter_NativeEvent(QSplitter* self, libqt_string eventType, void* message, long* result) {
+bool QSplitter_NativeEvent(QSplitter* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
-        return vqsplitter->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitter->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqsplitter->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitter->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QSplitter_QBaseNativeEvent(QSplitter* self, libqt_string eventType, void* message, long* result) {
+bool QSplitter_QBaseNativeEvent(QSplitter* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
         vqsplitter->setQSplitter_NativeEvent_IsBase(true);
-        return vqsplitter->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitter->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqsplitter->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitter->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1678,32 +1671,6 @@ void QSplitter_OnDrawFrame(QSplitter* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSplitter_InitStyleOption(const QSplitter* self, QStyleOptionFrame* option) {
-    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
-        vqsplitter->initStyleOption(option);
-    } else {
-        vqsplitter->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QSplitter_QBaseInitStyleOption(const QSplitter* self, QStyleOptionFrame* option) {
-    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
-        vqsplitter->setQSplitter_InitStyleOption_IsBase(true);
-        vqsplitter->initStyleOption(option);
-    } else {
-        vqsplitter->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSplitter_OnInitStyleOption(const QSplitter* self, intptr_t slot) {
-    if (auto* vqsplitter = const_cast<VirtualQSplitter*>(dynamic_cast<const VirtualQSplitter*>(self))) {
-        vqsplitter->setQSplitter_InitStyleOption_Callback(reinterpret_cast<VirtualQSplitter::QSplitter_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QSplitter_UpdateMicroFocus(QSplitter* self) {
     if (auto* vqsplitter = dynamic_cast<VirtualQSplitter*>(self)) {
         vqsplitter->updateMicroFocus();
@@ -1990,18 +1957,6 @@ libqt_string QSplitterHandle_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QSplitterHandle_TrUtf8(const char* s) {
-    QString _ret = QSplitterHandle::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QSplitterHandle_SetOrientation(QSplitterHandle* self, int o) {
     self->setOrientation(static_cast<Qt::Orientation>(o));
 }
@@ -2032,30 +1987,6 @@ libqt_string QSplitterHandle_Tr2(const char* s, const char* c) {
 
 libqt_string QSplitterHandle_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSplitterHandle::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSplitterHandle_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSplitterHandle::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSplitterHandle_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSplitterHandle::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -2561,7 +2492,7 @@ void QSplitterHandle_OnFocusOutEvent(QSplitterHandle* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSplitterHandle_EnterEvent(QSplitterHandle* self, QEvent* event) {
+void QSplitterHandle_EnterEvent(QSplitterHandle* self, QEnterEvent* event) {
     if (auto* vqsplitterhandle = dynamic_cast<VirtualQSplitterHandle*>(self)) {
         vqsplitterhandle->enterEvent(event);
     } else {
@@ -2570,7 +2501,7 @@ void QSplitterHandle_EnterEvent(QSplitterHandle* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QSplitterHandle_QBaseEnterEvent(QSplitterHandle* self, QEvent* event) {
+void QSplitterHandle_QBaseEnterEvent(QSplitterHandle* self, QEnterEvent* event) {
     if (auto* vqsplitterhandle = dynamic_cast<VirtualQSplitterHandle*>(self)) {
         vqsplitterhandle->setQSplitterHandle_EnterEvent_IsBase(true);
         vqsplitterhandle->enterEvent(event);
@@ -2899,23 +2830,23 @@ void QSplitterHandle_OnHideEvent(QSplitterHandle* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QSplitterHandle_NativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, long* result) {
+bool QSplitterHandle_NativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplitterhandle = dynamic_cast<VirtualQSplitterHandle*>(self)) {
-        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QSplitterHandle_QBaseNativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, long* result) {
+bool QSplitterHandle_QBaseNativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplitterhandle = dynamic_cast<VirtualQSplitterHandle*>(self)) {
         vqsplitterhandle->setQSplitterHandle_NativeEvent_IsBase(true);
-        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqsplitterhandle->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

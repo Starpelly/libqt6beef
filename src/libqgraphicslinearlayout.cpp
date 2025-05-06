@@ -337,6 +337,32 @@ void QGraphicsLinearLayout_OnWidgetEvent(QGraphicsLinearLayout* self, intptr_t s
 }
 
 // Derived class handler implementation
+bool QGraphicsLinearLayout_IsEmpty(const QGraphicsLinearLayout* self) {
+    if (auto* vqgraphicslinearlayout = const_cast<VirtualQGraphicsLinearLayout*>(dynamic_cast<const VirtualQGraphicsLinearLayout*>(self))) {
+        return vqgraphicslinearlayout->isEmpty();
+    } else {
+        return vqgraphicslinearlayout->isEmpty();
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsLinearLayout_QBaseIsEmpty(const QGraphicsLinearLayout* self) {
+    if (auto* vqgraphicslinearlayout = const_cast<VirtualQGraphicsLinearLayout*>(dynamic_cast<const VirtualQGraphicsLinearLayout*>(self))) {
+        vqgraphicslinearlayout->setQGraphicsLinearLayout_IsEmpty_IsBase(true);
+        return vqgraphicslinearlayout->isEmpty();
+    } else {
+        return vqgraphicslinearlayout->isEmpty();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsLinearLayout_OnIsEmpty(const QGraphicsLinearLayout* self, intptr_t slot) {
+    if (auto* vqgraphicslinearlayout = const_cast<VirtualQGraphicsLinearLayout*>(dynamic_cast<const VirtualQGraphicsLinearLayout*>(self))) {
+        vqgraphicslinearlayout->setQGraphicsLinearLayout_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsLinearLayout::QGraphicsLinearLayout_IsEmpty_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QGraphicsLinearLayout_AddChildLayoutItem(QGraphicsLinearLayout* self, QGraphicsLayoutItem* layoutItem) {
     if (auto* vqgraphicslinearlayout = dynamic_cast<VirtualQGraphicsLinearLayout*>(self)) {
         vqgraphicslinearlayout->addChildLayoutItem(layoutItem);

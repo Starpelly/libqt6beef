@@ -1,5 +1,7 @@
 #include <QAbstractEventDispatcher>
 #include <QAbstractNativeEventFilter>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCoreApplication>
@@ -9,7 +11,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -64,18 +65,6 @@ int QCoreApplication_QBaseMetacall(QCoreApplication* self, int param1, int param
 
 libqt_string QCoreApplication_Tr(const char* s) {
     QString _ret = QCoreApplication::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCoreApplication_TrUtf8(const char* s) {
-    QString _ret = QCoreApplication::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -207,10 +196,6 @@ void QCoreApplication_ProcessEvents2(int flags, int maxtime) {
     QCoreApplication::processEvents(static_cast<QEventLoop::ProcessEventsFlags>(flags), static_cast<int>(maxtime));
 }
 
-void QCoreApplication_Exit() {
-    QCoreApplication::exit();
-}
-
 bool QCoreApplication_SendEvent(QObject* receiver, QEvent* event) {
     return QCoreApplication::sendEvent(receiver, event);
 }
@@ -225,10 +210,6 @@ void QCoreApplication_SendPostedEvents() {
 
 void QCoreApplication_RemovePostedEvents(QObject* receiver) {
     QCoreApplication::removePostedEvents(receiver);
-}
-
-bool QCoreApplication_HasPendingEvents() {
-    return QCoreApplication::hasPendingEvents();
 }
 
 QAbstractEventDispatcher* QCoreApplication_EventDispatcher() {
@@ -337,16 +318,28 @@ libqt_string QCoreApplication_Translate(const char* context, const char* key) {
     return _str;
 }
 
-void QCoreApplication_Flush() {
-    QCoreApplication::flush();
-}
-
 void QCoreApplication_InstallNativeEventFilter(QCoreApplication* self, QAbstractNativeEventFilter* filterObj) {
     self->installNativeEventFilter(filterObj);
 }
 
+void QCoreApplication_Connect_InstallNativeEventFilter(QCoreApplication* self, intptr_t slot) {
+    void (*slotFunc)(QCoreApplication*, QAbstractNativeEventFilter*) = reinterpret_cast<void (*)(QCoreApplication*, QAbstractNativeEventFilter*)>(slot);
+    QCoreApplication::connect(self, &QCoreApplication::installNativeEventFilter, [self, slotFunc](QAbstractNativeEventFilter* filterObj) {
+        QAbstractNativeEventFilter* sigval1 = filterObj;
+        slotFunc(self, sigval1);
+    });
+}
+
 void QCoreApplication_RemoveNativeEventFilter(QCoreApplication* self, QAbstractNativeEventFilter* filterObj) {
     self->removeNativeEventFilter(filterObj);
+}
+
+void QCoreApplication_Connect_RemoveNativeEventFilter(QCoreApplication* self, intptr_t slot) {
+    void (*slotFunc)(QCoreApplication*, QAbstractNativeEventFilter*) = reinterpret_cast<void (*)(QCoreApplication*, QAbstractNativeEventFilter*)>(slot);
+    QCoreApplication::connect(self, &QCoreApplication::removeNativeEventFilter, [self, slotFunc](QAbstractNativeEventFilter* filterObj) {
+        QAbstractNativeEventFilter* sigval1 = filterObj;
+        slotFunc(self, sigval1);
+    });
 }
 
 bool QCoreApplication_IsQuitLockEnabled() {
@@ -359,6 +352,10 @@ void QCoreApplication_SetQuitLockEnabled(bool enabled) {
 
 void QCoreApplication_Quit() {
     QCoreApplication::quit();
+}
+
+void QCoreApplication_Exit() {
+    QCoreApplication::exit();
 }
 
 void QCoreApplication_OrganizationNameChanged(QCoreApplication* self) {
@@ -429,40 +426,12 @@ libqt_string QCoreApplication_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QCoreApplication_TrUtf82(const char* s, const char* c) {
-    QString _ret = QCoreApplication::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCoreApplication_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QCoreApplication::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QCoreApplication_SetAttribute2(int attribute, bool on) {
     QCoreApplication::setAttribute(static_cast<Qt::ApplicationAttribute>(attribute), on);
 }
 
 void QCoreApplication_ProcessEvents1(int flags) {
     QCoreApplication::processEvents(static_cast<QEventLoop::ProcessEventsFlags>(flags));
-}
-
-void QCoreApplication_Exit1(int retcode) {
-    QCoreApplication::exit(static_cast<int>(retcode));
 }
 
 void QCoreApplication_PostEvent3(QObject* receiver, QEvent* event, int priority) {
@@ -503,6 +472,10 @@ libqt_string QCoreApplication_Translate4(const char* context, const char* key, c
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+void QCoreApplication_Exit1(int retcode) {
+    QCoreApplication::exit(static_cast<int>(retcode));
 }
 
 // Derived class handler implementation
@@ -710,6 +683,32 @@ void QCoreApplication_QBaseDisconnectNotify(QCoreApplication* self, QMetaMethod*
 void QCoreApplication_OnDisconnectNotify(QCoreApplication* self, intptr_t slot) {
     if (auto* vqcoreapplication = dynamic_cast<VirtualQCoreApplication*>(self)) {
         vqcoreapplication->setQCoreApplication_DisconnectNotify_Callback(reinterpret_cast<VirtualQCoreApplication::QCoreApplication_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void* QCoreApplication_ResolveInterface(const QCoreApplication* self, const char* name, int revision) {
+    if (auto* vqcoreapplication = const_cast<VirtualQCoreApplication*>(dynamic_cast<const VirtualQCoreApplication*>(self))) {
+        return vqcoreapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqcoreapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Base class handler implementation
+void* QCoreApplication_QBaseResolveInterface(const QCoreApplication* self, const char* name, int revision) {
+    if (auto* vqcoreapplication = const_cast<VirtualQCoreApplication*>(dynamic_cast<const VirtualQCoreApplication*>(self))) {
+        vqcoreapplication->setQCoreApplication_ResolveInterface_IsBase(true);
+        return vqcoreapplication->resolveInterface(name, static_cast<int>(revision));
+    } else {
+        return vqcoreapplication->resolveInterface(name, static_cast<int>(revision));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCoreApplication_OnResolveInterface(const QCoreApplication* self, intptr_t slot) {
+    if (auto* vqcoreapplication = const_cast<VirtualQCoreApplication*>(dynamic_cast<const VirtualQCoreApplication*>(self))) {
+        vqcoreapplication->setQCoreApplication_ResolveInterface_Callback(reinterpret_cast<VirtualQCoreApplication::QCoreApplication_ResolveInterface_Callback>(slot));
     }
 }
 

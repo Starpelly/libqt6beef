@@ -4,7 +4,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,6 +17,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -41,7 +44,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -49,6 +51,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -117,18 +120,6 @@ int QAbstractItemView_QBaseMetacall(QAbstractItemView* self, int param1, int par
 
 libqt_string QAbstractItemView_Tr(const char* s) {
     QString _ret = QAbstractItemView::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractItemView_TrUtf8(const char* s) {
-    QString _ret = QAbstractItemView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -486,30 +477,6 @@ libqt_string QAbstractItemView_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QAbstractItemView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractItemView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractItemView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractItemView::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 // Derived class handler implementation
 void QAbstractItemView_SetModel(QAbstractItemView* self, QAbstractItemModel* model) {
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
@@ -721,6 +688,32 @@ void QAbstractItemView_OnSizeHintForColumn(const QAbstractItemView* self, intptr
 }
 
 // Derived class handler implementation
+QAbstractItemDelegate* QAbstractItemView_ItemDelegateForIndex(const QAbstractItemView* self, QModelIndex* index) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        return vqabstractitemview->itemDelegateForIndex(*index);
+    } else {
+        return vqabstractitemview->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QAbstractItemView_QBaseItemDelegateForIndex(const QAbstractItemView* self, QModelIndex* index) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        vqabstractitemview->setQAbstractItemView_ItemDelegateForIndex_IsBase(true);
+        return vqabstractitemview->itemDelegateForIndex(*index);
+    } else {
+        return vqabstractitemview->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractItemView_OnItemDelegateForIndex(const QAbstractItemView* self, intptr_t slot) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        vqabstractitemview->setQAbstractItemView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_ItemDelegateForIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QVariant* QAbstractItemView_InputMethodQuery(const QAbstractItemView* self, int query) {
     if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
         return new QVariant(vqabstractitemview->inputMethodQuery(static_cast<Qt::InputMethodQuery>(query)));
@@ -852,7 +845,7 @@ void QAbstractItemView_OnSelectAll(QAbstractItemView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QAbstractItemView_DataChanged(QAbstractItemView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -867,7 +860,7 @@ void QAbstractItemView_DataChanged(QAbstractItemView* self, QModelIndex* topLeft
 
 // Base class handler implementation
 void QAbstractItemView_QBaseDataChanged(QAbstractItemView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1545,26 +1538,28 @@ void QAbstractItemView_OnStartDrag(QAbstractItemView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QAbstractItemView_ViewOptions(const QAbstractItemView* self) {
+void QAbstractItemView_InitViewItemOption(const QAbstractItemView* self, QStyleOptionViewItem* option) {
     if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        return new QStyleOptionViewItem(vqabstractitemview->viewOptions());
+        vqabstractitemview->initViewItemOption(option);
+    } else {
+        vqabstractitemview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QAbstractItemView_QBaseViewOptions(const QAbstractItemView* self) {
+void QAbstractItemView_QBaseInitViewItemOption(const QAbstractItemView* self, QStyleOptionViewItem* option) {
     if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqabstractitemview->viewOptions());
+        vqabstractitemview->setQAbstractItemView_InitViewItemOption_IsBase(true);
+        vqabstractitemview->initViewItemOption(option);
+    } else {
+        vqabstractitemview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnViewOptions(const QAbstractItemView* self, intptr_t slot) {
+void QAbstractItemView_OnInitViewItemOption(const QAbstractItemView* self, intptr_t slot) {
     if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_ViewOptions_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_ViewOptions_Callback>(slot));
+        vqabstractitemview->setQAbstractItemView_InitViewItemOption_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -2269,6 +2264,32 @@ void QAbstractItemView_OnChangeEvent(QAbstractItemView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QAbstractItemView_InitStyleOption(const QAbstractItemView* self, QStyleOptionFrame* option) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        vqabstractitemview->initStyleOption(option);
+    } else {
+        vqabstractitemview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QAbstractItemView_QBaseInitStyleOption(const QAbstractItemView* self, QStyleOptionFrame* option) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        vqabstractitemview->setQAbstractItemView_InitStyleOption_IsBase(true);
+        vqabstractitemview->initStyleOption(option);
+    } else {
+        vqabstractitemview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractItemView_OnInitStyleOption(const QAbstractItemView* self, intptr_t slot) {
+    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
+        vqabstractitemview->setQAbstractItemView_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QAbstractItemView_DevType(const QAbstractItemView* self) {
     if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
         return vqabstractitemview->devType();
@@ -2425,7 +2446,7 @@ void QAbstractItemView_OnKeyReleaseEvent(QAbstractItemView* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-void QAbstractItemView_EnterEvent(QAbstractItemView* self, QEvent* event) {
+void QAbstractItemView_EnterEvent(QAbstractItemView* self, QEnterEvent* event) {
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
         vqabstractitemview->enterEvent(event);
     } else {
@@ -2434,7 +2455,7 @@ void QAbstractItemView_EnterEvent(QAbstractItemView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QAbstractItemView_QBaseEnterEvent(QAbstractItemView* self, QEvent* event) {
+void QAbstractItemView_QBaseEnterEvent(QAbstractItemView* self, QEnterEvent* event) {
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
         vqabstractitemview->setQAbstractItemView_EnterEvent_IsBase(true);
         vqabstractitemview->enterEvent(event);
@@ -2633,23 +2654,23 @@ void QAbstractItemView_OnHideEvent(QAbstractItemView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractItemView_NativeEvent(QAbstractItemView* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractItemView_NativeEvent(QAbstractItemView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractItemView_QBaseNativeEvent(QAbstractItemView* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractItemView_QBaseNativeEvent(QAbstractItemView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
         vqabstractitemview->setQAbstractItemView_NativeEvent_IsBase(true);
-        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractitemview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -2865,110 +2886,6 @@ void QAbstractItemView_QBaseDisconnectNotify(QAbstractItemView* self, QMetaMetho
 void QAbstractItemView_OnDisconnectNotify(QAbstractItemView* self, intptr_t slot) {
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
         vqabstractitemview->setQAbstractItemView_DisconnectNotify_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractItemView_SetHorizontalStepsPerItem(QAbstractItemView* self, int steps) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqabstractitemview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QAbstractItemView_QBaseSetHorizontalStepsPerItem(QAbstractItemView* self, int steps) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setQAbstractItemView_SetHorizontalStepsPerItem_IsBase(true);
-        vqabstractitemview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqabstractitemview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnSetHorizontalStepsPerItem(QAbstractItemView* self, intptr_t slot) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setQAbstractItemView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QAbstractItemView_HorizontalStepsPerItem(const QAbstractItemView* self) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        return vqabstractitemview->horizontalStepsPerItem();
-    } else {
-        return vqabstractitemview->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QAbstractItemView_QBaseHorizontalStepsPerItem(const QAbstractItemView* self) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_HorizontalStepsPerItem_IsBase(true);
-        return vqabstractitemview->horizontalStepsPerItem();
-    } else {
-        return vqabstractitemview->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnHorizontalStepsPerItem(const QAbstractItemView* self, intptr_t slot) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractItemView_SetVerticalStepsPerItem(QAbstractItemView* self, int steps) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqabstractitemview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QAbstractItemView_QBaseSetVerticalStepsPerItem(QAbstractItemView* self, int steps) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setQAbstractItemView_SetVerticalStepsPerItem_IsBase(true);
-        vqabstractitemview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqabstractitemview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnSetVerticalStepsPerItem(QAbstractItemView* self, intptr_t slot) {
-    if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
-        vqabstractitemview->setQAbstractItemView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QAbstractItemView_VerticalStepsPerItem(const QAbstractItemView* self) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        return vqabstractitemview->verticalStepsPerItem();
-    } else {
-        return vqabstractitemview->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QAbstractItemView_QBaseVerticalStepsPerItem(const QAbstractItemView* self) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_VerticalStepsPerItem_IsBase(true);
-        return vqabstractitemview->verticalStepsPerItem();
-    } else {
-        return vqabstractitemview->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnVerticalStepsPerItem(const QAbstractItemView* self, intptr_t slot) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_VerticalStepsPerItem_Callback>(slot));
     }
 }
 
@@ -3329,32 +3246,6 @@ void QAbstractItemView_QBaseDrawFrame(QAbstractItemView* self, QPainter* param1)
 void QAbstractItemView_OnDrawFrame(QAbstractItemView* self, intptr_t slot) {
     if (auto* vqabstractitemview = dynamic_cast<VirtualQAbstractItemView*>(self)) {
         vqabstractitemview->setQAbstractItemView_DrawFrame_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractItemView_InitStyleOption(const QAbstractItemView* self, QStyleOptionFrame* option) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->initStyleOption(option);
-    } else {
-        vqabstractitemview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QAbstractItemView_QBaseInitStyleOption(const QAbstractItemView* self, QStyleOptionFrame* option) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_InitStyleOption_IsBase(true);
-        vqabstractitemview->initStyleOption(option);
-    } else {
-        vqabstractitemview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemView_OnInitStyleOption(const QAbstractItemView* self, intptr_t slot) {
-    if (auto* vqabstractitemview = const_cast<VirtualQAbstractItemView*>(dynamic_cast<const VirtualQAbstractItemView*>(self))) {
-        vqabstractitemview->setQAbstractItemView_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractItemView::QAbstractItemView_InitStyleOption_Callback>(slot));
     }
 }
 

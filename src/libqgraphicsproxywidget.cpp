@@ -1,4 +1,6 @@
 #include <QAction>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCloseEvent>
@@ -29,12 +31,10 @@
 #include <QKeySequence>
 #include <QList>
 #include <QMarginsF>
-#include <QMatrix>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
@@ -117,18 +117,6 @@ libqt_string QGraphicsProxyWidget_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QGraphicsProxyWidget_TrUtf8(const char* s) {
-    QString _ret = QGraphicsProxyWidget::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QGraphicsProxyWidget_SetWidget(QGraphicsProxyWidget* self, QWidget* widget) {
     self->setWidget(widget);
 }
@@ -159,30 +147,6 @@ libqt_string QGraphicsProxyWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsProxyWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsProxyWidget::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsProxyWidget_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGraphicsProxyWidget::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsProxyWidget_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGraphicsProxyWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1820,6 +1784,32 @@ QVariant* QGraphicsProxyWidget_QBaseExtension(const QGraphicsProxyWidget* self, 
 void QGraphicsProxyWidget_OnExtension(const QGraphicsProxyWidget* self, intptr_t slot) {
     if (auto* vqgraphicsproxywidget = const_cast<VirtualQGraphicsProxyWidget*>(dynamic_cast<const VirtualQGraphicsProxyWidget*>(self))) {
         vqgraphicsproxywidget->setQGraphicsProxyWidget_Extension_Callback(reinterpret_cast<VirtualQGraphicsProxyWidget::QGraphicsProxyWidget_Extension_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QGraphicsProxyWidget_IsEmpty(const QGraphicsProxyWidget* self) {
+    if (auto* vqgraphicsproxywidget = const_cast<VirtualQGraphicsProxyWidget*>(dynamic_cast<const VirtualQGraphicsProxyWidget*>(self))) {
+        return vqgraphicsproxywidget->isEmpty();
+    } else {
+        return vqgraphicsproxywidget->isEmpty();
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsProxyWidget_QBaseIsEmpty(const QGraphicsProxyWidget* self) {
+    if (auto* vqgraphicsproxywidget = const_cast<VirtualQGraphicsProxyWidget*>(dynamic_cast<const VirtualQGraphicsProxyWidget*>(self))) {
+        vqgraphicsproxywidget->setQGraphicsProxyWidget_IsEmpty_IsBase(true);
+        return vqgraphicsproxywidget->isEmpty();
+    } else {
+        return vqgraphicsproxywidget->isEmpty();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsProxyWidget_OnIsEmpty(const QGraphicsProxyWidget* self, intptr_t slot) {
+    if (auto* vqgraphicsproxywidget = const_cast<VirtualQGraphicsProxyWidget*>(dynamic_cast<const VirtualQGraphicsProxyWidget*>(self))) {
+        vqgraphicsproxywidget->setQGraphicsProxyWidget_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsProxyWidget::QGraphicsProxyWidget_IsEmpty_Callback>(slot));
     }
 }
 

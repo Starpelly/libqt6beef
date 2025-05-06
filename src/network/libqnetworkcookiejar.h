@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
@@ -29,7 +31,6 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkCookie QNetworkCookie;
 typedef struct QNetworkCookieJar QNetworkCookieJar;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
@@ -44,7 +45,6 @@ int QNetworkCookieJar_Metacall(QNetworkCookieJar* self, int param1, int param2, 
 void QNetworkCookieJar_OnMetacall(QNetworkCookieJar* self, intptr_t slot);
 int QNetworkCookieJar_QBaseMetacall(QNetworkCookieJar* self, int param1, int param2, void** param3);
 libqt_string QNetworkCookieJar_Tr(const char* s);
-libqt_string QNetworkCookieJar_TrUtf8(const char* s);
 libqt_list /* of QNetworkCookie* */ QNetworkCookieJar_CookiesForUrl(const QNetworkCookieJar* self, QUrl* url);
 void QNetworkCookieJar_OnCookiesForUrl(const QNetworkCookieJar* self, intptr_t slot);
 libqt_list /* of QNetworkCookie* */ QNetworkCookieJar_QBaseCookiesForUrl(const QNetworkCookieJar* self, QUrl* url);
@@ -65,8 +65,6 @@ void QNetworkCookieJar_OnValidateCookie(const QNetworkCookieJar* self, intptr_t 
 bool QNetworkCookieJar_QBaseValidateCookie(const QNetworkCookieJar* self, QNetworkCookie* cookie, QUrl* url);
 libqt_string QNetworkCookieJar_Tr2(const char* s, const char* c);
 libqt_string QNetworkCookieJar_Tr3(const char* s, const char* c, int n);
-libqt_string QNetworkCookieJar_TrUtf82(const char* s, const char* c);
-libqt_string QNetworkCookieJar_TrUtf83(const char* s, const char* c, int n);
 bool QNetworkCookieJar_Event(QNetworkCookieJar* self, QEvent* event);
 void QNetworkCookieJar_OnEvent(QNetworkCookieJar* self, intptr_t slot);
 bool QNetworkCookieJar_QBaseEvent(QNetworkCookieJar* self, QEvent* event);

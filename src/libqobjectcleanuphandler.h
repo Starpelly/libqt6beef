@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
@@ -28,7 +30,6 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
 typedef struct QObjectCleanupHandler QObjectCleanupHandler;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -41,15 +42,12 @@ int QObjectCleanupHandler_Metacall(QObjectCleanupHandler* self, int param1, int 
 void QObjectCleanupHandler_OnMetacall(QObjectCleanupHandler* self, intptr_t slot);
 int QObjectCleanupHandler_QBaseMetacall(QObjectCleanupHandler* self, int param1, int param2, void** param3);
 libqt_string QObjectCleanupHandler_Tr(const char* s);
-libqt_string QObjectCleanupHandler_TrUtf8(const char* s);
 QObject* QObjectCleanupHandler_Add(QObjectCleanupHandler* self, QObject* object);
 void QObjectCleanupHandler_Remove(QObjectCleanupHandler* self, QObject* object);
 bool QObjectCleanupHandler_IsEmpty(const QObjectCleanupHandler* self);
 void QObjectCleanupHandler_Clear(QObjectCleanupHandler* self);
 libqt_string QObjectCleanupHandler_Tr2(const char* s, const char* c);
 libqt_string QObjectCleanupHandler_Tr3(const char* s, const char* c, int n);
-libqt_string QObjectCleanupHandler_TrUtf82(const char* s, const char* c);
-libqt_string QObjectCleanupHandler_TrUtf83(const char* s, const char* c, int n);
 bool QObjectCleanupHandler_Event(QObjectCleanupHandler* self, QEvent* event);
 void QObjectCleanupHandler_OnEvent(QObjectCleanupHandler* self, intptr_t slot);
 bool QObjectCleanupHandler_QBaseEvent(QObjectCleanupHandler* self, QEvent* event);

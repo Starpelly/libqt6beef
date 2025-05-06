@@ -21,7 +21,9 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QApplication QApplication;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCommonStyle QCommonStyle;
 typedef struct QEvent QEvent;
@@ -31,7 +33,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
@@ -55,7 +56,6 @@ int QCommonStyle_Metacall(QCommonStyle* self, int param1, int param2, void** par
 void QCommonStyle_OnMetacall(QCommonStyle* self, intptr_t slot);
 int QCommonStyle_QBaseMetacall(QCommonStyle* self, int param1, int param2, void** param3);
 libqt_string QCommonStyle_Tr(const char* s);
-libqt_string QCommonStyle_TrUtf8(const char* s);
 void QCommonStyle_DrawPrimitive(const QCommonStyle* self, int pe, QStyleOption* opt, QPainter* p, QWidget* w);
 void QCommonStyle_OnDrawPrimitive(const QCommonStyle* self, intptr_t slot);
 void QCommonStyle_QBaseDrawPrimitive(const QCommonStyle* self, int pe, QStyleOption* opt, QPainter* p, QWidget* w);
@@ -112,8 +112,6 @@ void QCommonStyle_OnUnpolishWithApplication(QCommonStyle* self, intptr_t slot);
 void QCommonStyle_QBaseUnpolishWithApplication(QCommonStyle* self, QApplication* application);
 libqt_string QCommonStyle_Tr2(const char* s, const char* c);
 libqt_string QCommonStyle_Tr3(const char* s, const char* c, int n);
-libqt_string QCommonStyle_TrUtf82(const char* s, const char* c);
-libqt_string QCommonStyle_TrUtf83(const char* s, const char* c, int n);
 QRect* QCommonStyle_ItemTextRect(const QCommonStyle* self, QFontMetrics* fm, QRect* r, int flags, bool enabled, libqt_string text);
 void QCommonStyle_OnItemTextRect(const QCommonStyle* self, intptr_t slot);
 QRect* QCommonStyle_QBaseItemTextRect(const QCommonStyle* self, QFontMetrics* fm, QRect* r, int flags, bool enabled, libqt_string text);

@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -33,7 +36,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -41,6 +43,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -107,18 +110,6 @@ int QStatusBar_QBaseMetacall(QStatusBar* self, int param1, int param2, void** pa
 
 libqt_string QStatusBar_Tr(const char* s) {
     QString _ret = QStatusBar::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QStatusBar_TrUtf8(const char* s) {
-    QString _ret = QStatusBar::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -213,30 +204,6 @@ libqt_string QStatusBar_Tr2(const char* s, const char* c) {
 
 libqt_string QStatusBar_Tr3(const char* s, const char* c, int n) {
     QString _ret = QStatusBar::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QStatusBar_TrUtf82(const char* s, const char* c) {
-    QString _ret = QStatusBar::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QStatusBar_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QStatusBar::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -789,7 +756,7 @@ void QStatusBar_OnFocusOutEvent(QStatusBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QStatusBar_EnterEvent(QStatusBar* self, QEvent* event) {
+void QStatusBar_EnterEvent(QStatusBar* self, QEnterEvent* event) {
     if (auto* vqstatusbar = dynamic_cast<VirtualQStatusBar*>(self)) {
         vqstatusbar->enterEvent(event);
     } else {
@@ -798,7 +765,7 @@ void QStatusBar_EnterEvent(QStatusBar* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QStatusBar_QBaseEnterEvent(QStatusBar* self, QEvent* event) {
+void QStatusBar_QBaseEnterEvent(QStatusBar* self, QEnterEvent* event) {
     if (auto* vqstatusbar = dynamic_cast<VirtualQStatusBar*>(self)) {
         vqstatusbar->setQStatusBar_EnterEvent_IsBase(true);
         vqstatusbar->enterEvent(event);
@@ -1101,23 +1068,23 @@ void QStatusBar_OnHideEvent(QStatusBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QStatusBar_NativeEvent(QStatusBar* self, libqt_string eventType, void* message, long* result) {
+bool QStatusBar_NativeEvent(QStatusBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqstatusbar = dynamic_cast<VirtualQStatusBar*>(self)) {
-        return vqstatusbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqstatusbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqstatusbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqstatusbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QStatusBar_QBaseNativeEvent(QStatusBar* self, libqt_string eventType, void* message, long* result) {
+bool QStatusBar_QBaseNativeEvent(QStatusBar* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqstatusbar = dynamic_cast<VirtualQStatusBar*>(self)) {
         vqstatusbar->setQStatusBar_NativeEvent_IsBase(true);
-        return vqstatusbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqstatusbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqstatusbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqstatusbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

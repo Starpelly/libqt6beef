@@ -18,8 +18,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
   public:
     // Virtual class public types (including callbacks)
     using QMediaRecorder_Metacall_Callback = int (*)(QMediaRecorder*, QMetaObject::Call, int, void**);
-    using QMediaRecorder_MediaObject_Callback = QMediaObject* (*)();
-    using QMediaRecorder_SetMediaObject_Callback = bool (*)(QMediaRecorder*, QMediaObject*);
     using QMediaRecorder_Event_Callback = bool (*)(QMediaRecorder*, QEvent*);
     using QMediaRecorder_EventFilter_Callback = bool (*)(QMediaRecorder*, QObject*, QEvent*);
     using QMediaRecorder_TimerEvent_Callback = void (*)(QMediaRecorder*, QTimerEvent*);
@@ -35,8 +33,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
   protected:
     // Instance callback storage
     QMediaRecorder_Metacall_Callback qmediarecorder_metacall_callback = nullptr;
-    QMediaRecorder_MediaObject_Callback qmediarecorder_mediaobject_callback = nullptr;
-    QMediaRecorder_SetMediaObject_Callback qmediarecorder_setmediaobject_callback = nullptr;
     QMediaRecorder_Event_Callback qmediarecorder_event_callback = nullptr;
     QMediaRecorder_EventFilter_Callback qmediarecorder_eventfilter_callback = nullptr;
     QMediaRecorder_TimerEvent_Callback qmediarecorder_timerevent_callback = nullptr;
@@ -51,8 +47,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
 
     // Instance base flags
     mutable bool qmediarecorder_metacall_isbase = false;
-    mutable bool qmediarecorder_mediaobject_isbase = false;
-    mutable bool qmediarecorder_setmediaobject_isbase = false;
     mutable bool qmediarecorder_event_isbase = false;
     mutable bool qmediarecorder_eventfilter_isbase = false;
     mutable bool qmediarecorder_timerevent_isbase = false;
@@ -66,13 +60,11 @@ class VirtualQMediaRecorder : public QMediaRecorder {
     mutable bool qmediarecorder_issignalconnected_isbase = false;
 
   public:
-    VirtualQMediaRecorder(QMediaObject* mediaObject) : QMediaRecorder(mediaObject){};
-    VirtualQMediaRecorder(QMediaObject* mediaObject, QObject* parent) : QMediaRecorder(mediaObject, parent){};
+    VirtualQMediaRecorder() : QMediaRecorder(){};
+    VirtualQMediaRecorder(QObject* parent) : QMediaRecorder(parent){};
 
     ~VirtualQMediaRecorder() {
         qmediarecorder_metacall_callback = nullptr;
-        qmediarecorder_mediaobject_callback = nullptr;
-        qmediarecorder_setmediaobject_callback = nullptr;
         qmediarecorder_event_callback = nullptr;
         qmediarecorder_eventfilter_callback = nullptr;
         qmediarecorder_timerevent_callback = nullptr;
@@ -88,8 +80,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
 
     // Callback setters
     void setQMediaRecorder_Metacall_Callback(QMediaRecorder_Metacall_Callback cb) { qmediarecorder_metacall_callback = cb; }
-    void setQMediaRecorder_MediaObject_Callback(QMediaRecorder_MediaObject_Callback cb) { qmediarecorder_mediaobject_callback = cb; }
-    void setQMediaRecorder_SetMediaObject_Callback(QMediaRecorder_SetMediaObject_Callback cb) { qmediarecorder_setmediaobject_callback = cb; }
     void setQMediaRecorder_Event_Callback(QMediaRecorder_Event_Callback cb) { qmediarecorder_event_callback = cb; }
     void setQMediaRecorder_EventFilter_Callback(QMediaRecorder_EventFilter_Callback cb) { qmediarecorder_eventfilter_callback = cb; }
     void setQMediaRecorder_TimerEvent_Callback(QMediaRecorder_TimerEvent_Callback cb) { qmediarecorder_timerevent_callback = cb; }
@@ -104,8 +94,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
 
     // Base flag setters
     void setQMediaRecorder_Metacall_IsBase(bool value) const { qmediarecorder_metacall_isbase = value; }
-    void setQMediaRecorder_MediaObject_IsBase(bool value) const { qmediarecorder_mediaobject_isbase = value; }
-    void setQMediaRecorder_SetMediaObject_IsBase(bool value) const { qmediarecorder_setmediaobject_isbase = value; }
     void setQMediaRecorder_Event_IsBase(bool value) const { qmediarecorder_event_isbase = value; }
     void setQMediaRecorder_EventFilter_IsBase(bool value) const { qmediarecorder_eventfilter_isbase = value; }
     void setQMediaRecorder_TimerEvent_IsBase(bool value) const { qmediarecorder_timerevent_isbase = value; }
@@ -127,30 +115,6 @@ class VirtualQMediaRecorder : public QMediaRecorder {
             return qmediarecorder_metacall_callback(this, param1, param2, param3);
         } else {
             return QMediaRecorder::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QMediaObject* mediaObject() const override {
-        if (qmediarecorder_mediaobject_isbase) {
-            qmediarecorder_mediaobject_isbase = false;
-            return QMediaRecorder::mediaObject();
-        } else if (qmediarecorder_mediaobject_callback != nullptr) {
-            return qmediarecorder_mediaobject_callback();
-        } else {
-            return QMediaRecorder::mediaObject();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setMediaObject(QMediaObject* object) override {
-        if (qmediarecorder_setmediaobject_isbase) {
-            qmediarecorder_setmediaobject_isbase = false;
-            return QMediaRecorder::setMediaObject(object);
-        } else if (qmediarecorder_setmediaobject_callback != nullptr) {
-            return qmediarecorder_setmediaobject_callback(this, object);
-        } else {
-            return QMediaRecorder::setMediaObject(object);
         }
     }
 

@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QHttpMultiPart QHttpMultiPart;
@@ -30,7 +32,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -64,15 +65,12 @@ int QHttpMultiPart_Metacall(QHttpMultiPart* self, int param1, int param2, void**
 void QHttpMultiPart_OnMetacall(QHttpMultiPart* self, intptr_t slot);
 int QHttpMultiPart_QBaseMetacall(QHttpMultiPart* self, int param1, int param2, void** param3);
 libqt_string QHttpMultiPart_Tr(const char* s);
-libqt_string QHttpMultiPart_TrUtf8(const char* s);
 void QHttpMultiPart_Append(QHttpMultiPart* self, QHttpPart* httpPart);
 void QHttpMultiPart_SetContentType(QHttpMultiPart* self, int contentType);
 libqt_string QHttpMultiPart_Boundary(const QHttpMultiPart* self);
 void QHttpMultiPart_SetBoundary(QHttpMultiPart* self, libqt_string boundary);
 libqt_string QHttpMultiPart_Tr2(const char* s, const char* c);
 libqt_string QHttpMultiPart_Tr3(const char* s, const char* c, int n);
-libqt_string QHttpMultiPart_TrUtf82(const char* s, const char* c);
-libqt_string QHttpMultiPart_TrUtf83(const char* s, const char* c, int n);
 bool QHttpMultiPart_Event(QHttpMultiPart* self, QEvent* event);
 void QHttpMultiPart_OnEvent(QHttpMultiPart* self, intptr_t slot);
 bool QHttpMultiPart_QBaseEvent(QHttpMultiPart* self, QEvent* event);

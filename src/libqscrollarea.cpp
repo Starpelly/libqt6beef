@@ -1,7 +1,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -12,6 +14,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -35,7 +38,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,6 +45,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -121,18 +124,6 @@ libqt_string QScrollArea_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QScrollArea_TrUtf8(const char* s) {
-    QString _ret = QScrollArea::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QWidget* QScrollArea_Widget(const QScrollArea* self) {
     return self->widget();
 }
@@ -183,30 +174,6 @@ libqt_string QScrollArea_Tr2(const char* s, const char* c) {
 
 libqt_string QScrollArea_Tr3(const char* s, const char* c, int n) {
     QString _ret = QScrollArea::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QScrollArea_TrUtf82(const char* s, const char* c) {
-    QString _ret = QScrollArea::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QScrollArea_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QScrollArea::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -830,6 +797,32 @@ void QScrollArea_OnChangeEvent(QScrollArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QScrollArea_InitStyleOption(const QScrollArea* self, QStyleOptionFrame* option) {
+    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
+        vqscrollarea->initStyleOption(option);
+    } else {
+        vqscrollarea->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QScrollArea_QBaseInitStyleOption(const QScrollArea* self, QStyleOptionFrame* option) {
+    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
+        vqscrollarea->setQScrollArea_InitStyleOption_IsBase(true);
+        vqscrollarea->initStyleOption(option);
+    } else {
+        vqscrollarea->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QScrollArea_OnInitStyleOption(const QScrollArea* self, intptr_t slot) {
+    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
+        vqscrollarea->setQScrollArea_InitStyleOption_Callback(reinterpret_cast<VirtualQScrollArea::QScrollArea_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QScrollArea_DevType(const QScrollArea* self) {
     if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
         return vqscrollarea->devType();
@@ -1038,7 +1031,7 @@ void QScrollArea_OnFocusOutEvent(QScrollArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QScrollArea_EnterEvent(QScrollArea* self, QEvent* event) {
+void QScrollArea_EnterEvent(QScrollArea* self, QEnterEvent* event) {
     if (auto* vqscrollarea = dynamic_cast<VirtualQScrollArea*>(self)) {
         vqscrollarea->enterEvent(event);
     } else {
@@ -1047,7 +1040,7 @@ void QScrollArea_EnterEvent(QScrollArea* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QScrollArea_QBaseEnterEvent(QScrollArea* self, QEvent* event) {
+void QScrollArea_QBaseEnterEvent(QScrollArea* self, QEnterEvent* event) {
     if (auto* vqscrollarea = dynamic_cast<VirtualQScrollArea*>(self)) {
         vqscrollarea->setQScrollArea_EnterEvent_IsBase(true);
         vqscrollarea->enterEvent(event);
@@ -1246,23 +1239,23 @@ void QScrollArea_OnHideEvent(QScrollArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QScrollArea_NativeEvent(QScrollArea* self, libqt_string eventType, void* message, long* result) {
+bool QScrollArea_NativeEvent(QScrollArea* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqscrollarea = dynamic_cast<VirtualQScrollArea*>(self)) {
-        return vqscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QScrollArea_QBaseNativeEvent(QScrollArea* self, libqt_string eventType, void* message, long* result) {
+bool QScrollArea_QBaseNativeEvent(QScrollArea* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqscrollarea = dynamic_cast<VirtualQScrollArea*>(self)) {
         vqscrollarea->setQScrollArea_NativeEvent_IsBase(true);
-        return vqscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1632,32 +1625,6 @@ void QScrollArea_QBaseDrawFrame(QScrollArea* self, QPainter* param1) {
 void QScrollArea_OnDrawFrame(QScrollArea* self, intptr_t slot) {
     if (auto* vqscrollarea = dynamic_cast<VirtualQScrollArea*>(self)) {
         vqscrollarea->setQScrollArea_DrawFrame_Callback(reinterpret_cast<VirtualQScrollArea::QScrollArea_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QScrollArea_InitStyleOption(const QScrollArea* self, QStyleOptionFrame* option) {
-    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
-        vqscrollarea->initStyleOption(option);
-    } else {
-        vqscrollarea->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QScrollArea_QBaseInitStyleOption(const QScrollArea* self, QStyleOptionFrame* option) {
-    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
-        vqscrollarea->setQScrollArea_InitStyleOption_IsBase(true);
-        vqscrollarea->initStyleOption(option);
-    } else {
-        vqscrollarea->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QScrollArea_OnInitStyleOption(const QScrollArea* self, intptr_t slot) {
-    if (auto* vqscrollarea = const_cast<VirtualQScrollArea*>(dynamic_cast<const VirtualQScrollArea*>(self))) {
-        vqscrollarea->setQScrollArea_InitStyleOption_Callback(reinterpret_cast<VirtualQScrollArea::QScrollArea_InitStyleOption_Callback>(slot));
     }
 }
 

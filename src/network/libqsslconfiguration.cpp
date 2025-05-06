@@ -153,6 +153,11 @@ void QSslConfiguration_SetCiphers(QSslConfiguration* self, libqt_list /* of QSsl
     self->setCiphers(ciphers_QList);
 }
 
+void QSslConfiguration_SetCiphersWithCiphers(QSslConfiguration* self, libqt_string ciphers) {
+    QString ciphers_QString = QString::fromUtf8(ciphers.data, ciphers.len);
+    self->setCiphers(ciphers_QString);
+}
+
 libqt_list /* of QSslCipher* */ QSslConfiguration_SupportedCiphers() {
     QList<QSslCipher> _ret = QSslConfiguration::supportedCiphers();
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -253,7 +258,7 @@ QSslKey* QSslConfiguration_EphemeralServerKey(const QSslConfiguration* self) {
 }
 
 libqt_list /* of QSslEllipticCurve* */ QSslConfiguration_EllipticCurves(const QSslConfiguration* self) {
-    QVector<QSslEllipticCurve> _ret = self->ellipticCurves();
+    QList<QSslEllipticCurve> _ret = self->ellipticCurves();
     // Convert QList<> from C++ memory to manually-managed C memory
     QSslEllipticCurve** _arr = static_cast<QSslEllipticCurve**>(malloc(sizeof(QSslEllipticCurve*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -266,7 +271,7 @@ libqt_list /* of QSslEllipticCurve* */ QSslConfiguration_EllipticCurves(const QS
 }
 
 void QSslConfiguration_SetEllipticCurves(QSslConfiguration* self, libqt_list /* of QSslEllipticCurve* */ curves) {
-    QVector<QSslEllipticCurve> curves_QList;
+    QList<QSslEllipticCurve> curves_QList;
     curves_QList.reserve(curves.len);
     QSslEllipticCurve** curves_arr = static_cast<QSslEllipticCurve**>(curves.data);
     for (size_t i = 0; i < curves.len; ++i) {
@@ -276,7 +281,7 @@ void QSslConfiguration_SetEllipticCurves(QSslConfiguration* self, libqt_list /* 
 }
 
 libqt_list /* of QSslEllipticCurve* */ QSslConfiguration_SupportedEllipticCurves() {
-    QVector<QSslEllipticCurve> _ret = QSslConfiguration::supportedEllipticCurves();
+    QList<QSslEllipticCurve> _ret = QSslConfiguration::supportedEllipticCurves();
     // Convert QList<> from C++ memory to manually-managed C memory
     QSslEllipticCurve** _arr = static_cast<QSslEllipticCurve**>(malloc(sizeof(QSslEllipticCurve*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -342,6 +347,22 @@ QSslConfiguration* QSslConfiguration_DefaultDtlsConfiguration() {
 
 void QSslConfiguration_SetDefaultDtlsConfiguration(QSslConfiguration* configuration) {
     QSslConfiguration::setDefaultDtlsConfiguration(*configuration);
+}
+
+bool QSslConfiguration_HandshakeMustInterruptOnError(const QSslConfiguration* self) {
+    return self->handshakeMustInterruptOnError();
+}
+
+void QSslConfiguration_SetHandshakeMustInterruptOnError(QSslConfiguration* self, bool interrupt) {
+    self->setHandshakeMustInterruptOnError(interrupt);
+}
+
+bool QSslConfiguration_MissingCertificateIsFatal(const QSslConfiguration* self) {
+    return self->missingCertificateIsFatal();
+}
+
+void QSslConfiguration_SetMissingCertificateIsFatal(QSslConfiguration* self, bool cannotRecover) {
+    self->setMissingCertificateIsFatal(cannotRecover);
 }
 
 void QSslConfiguration_SetOcspStaplingEnabled(QSslConfiguration* self, bool enable) {

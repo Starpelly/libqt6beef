@@ -38,7 +38,7 @@ class VirtualQStatusBar : public QStatusBar {
     using QStatusBar_KeyReleaseEvent_Callback = void (*)(QStatusBar*, QKeyEvent*);
     using QStatusBar_FocusInEvent_Callback = void (*)(QStatusBar*, QFocusEvent*);
     using QStatusBar_FocusOutEvent_Callback = void (*)(QStatusBar*, QFocusEvent*);
-    using QStatusBar_EnterEvent_Callback = void (*)(QStatusBar*, QEvent*);
+    using QStatusBar_EnterEvent_Callback = void (*)(QStatusBar*, QEnterEvent*);
     using QStatusBar_LeaveEvent_Callback = void (*)(QStatusBar*, QEvent*);
     using QStatusBar_MoveEvent_Callback = void (*)(QStatusBar*, QMoveEvent*);
     using QStatusBar_CloseEvent_Callback = void (*)(QStatusBar*, QCloseEvent*);
@@ -50,7 +50,7 @@ class VirtualQStatusBar : public QStatusBar {
     using QStatusBar_DragLeaveEvent_Callback = void (*)(QStatusBar*, QDragLeaveEvent*);
     using QStatusBar_DropEvent_Callback = void (*)(QStatusBar*, QDropEvent*);
     using QStatusBar_HideEvent_Callback = void (*)(QStatusBar*, QHideEvent*);
-    using QStatusBar_NativeEvent_Callback = bool (*)(QStatusBar*, const QByteArray&, void*, long*);
+    using QStatusBar_NativeEvent_Callback = bool (*)(QStatusBar*, const QByteArray&, void*, qintptr*);
     using QStatusBar_ChangeEvent_Callback = void (*)(QStatusBar*, QEvent*);
     using QStatusBar_Metric_Callback = int (*)(const QStatusBar*, QPaintDevice::PaintDeviceMetric);
     using QStatusBar_InitPainter_Callback = void (*)(const QStatusBar*, QPainter*);
@@ -641,7 +641,7 @@ class VirtualQStatusBar : public QStatusBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qstatusbar_enterevent_isbase) {
             qstatusbar_enterevent_isbase = false;
             QStatusBar::enterEvent(event);
@@ -785,7 +785,7 @@ class VirtualQStatusBar : public QStatusBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qstatusbar_nativeevent_isbase) {
             qstatusbar_nativeevent_isbase = false;
             return QStatusBar::nativeEvent(eventType, message, result);

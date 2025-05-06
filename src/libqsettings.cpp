@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -6,12 +8,10 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QSettings>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
-#include <QTextCodec>
 #include <QThread>
 #include <QTimerEvent>
 #include <QVariant>
@@ -141,18 +141,6 @@ libqt_string QSettings_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QSettings_TrUtf8(const char* s) {
-    QString _ret = QSettings::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QSettings_Clear(QSettings* self) {
     self->clear();
 }
@@ -173,9 +161,8 @@ void QSettings_SetAtomicSyncRequired(QSettings* self, bool enable) {
     self->setAtomicSyncRequired(enable);
 }
 
-void QSettings_BeginGroup(QSettings* self, libqt_string prefix) {
-    QString prefix_QString = QString::fromUtf8(prefix.data, prefix.len);
-    self->beginGroup(prefix_QString);
+void QSettings_BeginGroup(QSettings* self, char* prefix) {
+    self->beginGroup(QAnyStringView(prefix));
 }
 
 void QSettings_EndGroup(QSettings* self) {
@@ -194,14 +181,12 @@ libqt_string QSettings_Group(const QSettings* self) {
     return _str;
 }
 
-int QSettings_BeginReadArray(QSettings* self, libqt_string prefix) {
-    QString prefix_QString = QString::fromUtf8(prefix.data, prefix.len);
-    return self->beginReadArray(prefix_QString);
+int QSettings_BeginReadArray(QSettings* self, char* prefix) {
+    return self->beginReadArray(QAnyStringView(prefix));
 }
 
-void QSettings_BeginWriteArray(QSettings* self, libqt_string prefix) {
-    QString prefix_QString = QString::fromUtf8(prefix.data, prefix.len);
-    self->beginWriteArray(prefix_QString);
+void QSettings_BeginWriteArray(QSettings* self, char* prefix) {
+    self->beginWriteArray(QAnyStringView(prefix));
 }
 
 void QSettings_EndArray(QSettings* self) {
@@ -279,24 +264,24 @@ bool QSettings_IsWritable(const QSettings* self) {
     return self->isWritable();
 }
 
-void QSettings_SetValue(QSettings* self, libqt_string key, QVariant* value) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    self->setValue(key_QString, *value);
+void QSettings_SetValue(QSettings* self, char* key, QVariant* value) {
+    self->setValue(QAnyStringView(key), *value);
 }
 
-QVariant* QSettings_Value(const QSettings* self, libqt_string key) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return new QVariant(self->value(key_QString));
+QVariant* QSettings_Value(const QSettings* self, char* key, QVariant* defaultValue) {
+    return new QVariant(self->value(QAnyStringView(key), *defaultValue));
 }
 
-void QSettings_Remove(QSettings* self, libqt_string key) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    self->remove(key_QString);
+QVariant* QSettings_ValueWithKey(const QSettings* self, char* key) {
+    return new QVariant(self->value(QAnyStringView(key)));
 }
 
-bool QSettings_Contains(const QSettings* self, libqt_string key) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return self->contains(key_QString);
+void QSettings_Remove(QSettings* self, char* key) {
+    self->remove(QAnyStringView(key));
+}
+
+bool QSettings_Contains(const QSettings* self, char* key) {
+    return self->contains(QAnyStringView(key));
 }
 
 void QSettings_SetFallbacksEnabled(QSettings* self, bool b) {
@@ -351,34 +336,12 @@ libqt_string QSettings_ApplicationName(const QSettings* self) {
     return _str;
 }
 
-void QSettings_SetIniCodec(QSettings* self, QTextCodec* codec) {
-    self->setIniCodec(codec);
-}
-
-void QSettings_SetIniCodecWithCodecName(QSettings* self, const char* codecName) {
-    self->setIniCodec(codecName);
-}
-
-QTextCodec* QSettings_IniCodec(const QSettings* self) {
-    return self->iniCodec();
-}
-
 void QSettings_SetDefaultFormat(int format) {
     QSettings::setDefaultFormat(static_cast<QSettings::Format>(format));
 }
 
 int QSettings_DefaultFormat() {
     return static_cast<int>(QSettings::defaultFormat());
-}
-
-void QSettings_SetSystemIniPath(libqt_string dir) {
-    QString dir_QString = QString::fromUtf8(dir.data, dir.len);
-    QSettings::setSystemIniPath(dir_QString);
-}
-
-void QSettings_SetUserIniPath(libqt_string dir) {
-    QString dir_QString = QString::fromUtf8(dir.data, dir.len);
-    QSettings::setUserIniPath(dir_QString);
 }
 
 void QSettings_SetPath(int format, int scope, libqt_string path) {
@@ -410,38 +373,8 @@ libqt_string QSettings_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QSettings_TrUtf82(const char* s, const char* c) {
-    QString _ret = QSettings::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QSettings_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QSettings::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QSettings_BeginWriteArray2(QSettings* self, libqt_string prefix, int size) {
-    QString prefix_QString = QString::fromUtf8(prefix.data, prefix.len);
-    self->beginWriteArray(prefix_QString, static_cast<int>(size));
-}
-
-QVariant* QSettings_Value2(const QSettings* self, libqt_string key, QVariant* defaultValue) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return new QVariant(self->value(key_QString, *defaultValue));
+void QSettings_BeginWriteArray2(QSettings* self, char* prefix, int size) {
+    self->beginWriteArray(QAnyStringView(prefix), static_cast<int>(size));
 }
 
 // Derived class handler implementation

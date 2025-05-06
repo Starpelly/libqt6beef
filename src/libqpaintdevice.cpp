@@ -50,8 +50,8 @@ int QPaintDevice_PhysicalDpiY(const QPaintDevice* self) {
     return self->physicalDpiY();
 }
 
-int QPaintDevice_DevicePixelRatio(const QPaintDevice* self) {
-    return self->devicePixelRatio();
+double QPaintDevice_DevicePixelRatio(const QPaintDevice* self) {
+    return static_cast<double>(self->devicePixelRatio());
 }
 
 double QPaintDevice_DevicePixelRatioF(const QPaintDevice* self) {

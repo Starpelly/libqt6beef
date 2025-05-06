@@ -23,6 +23,7 @@ typedef QAccessible::State QAccessible__State;
 #else
 typedef struct QAccessibleActionInterface QAccessibleActionInterface;
 typedef struct QAccessibleEditableTextInterface QAccessibleEditableTextInterface;
+typedef struct QAccessibleHyperlinkInterface QAccessibleHyperlinkInterface;
 typedef struct QAccessibleImageInterface QAccessibleImageInterface;
 typedef struct QAccessibleInterface QAccessibleInterface;
 typedef struct QAccessibleObject QAccessibleObject;

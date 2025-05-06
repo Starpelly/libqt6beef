@@ -21,13 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QTextBlock QTextBlock;
 typedef struct QTextBlockGroup QTextBlockGroup;
 typedef struct QTextDocument QTextDocument;
@@ -47,9 +48,7 @@ int QTextList_Metacall(QTextList* self, int param1, int param2, void** param3);
 void QTextList_OnMetacall(QTextList* self, intptr_t slot);
 int QTextList_QBaseMetacall(QTextList* self, int param1, int param2, void** param3);
 libqt_string QTextList_Tr(const char* s);
-libqt_string QTextList_TrUtf8(const char* s);
 int QTextList_Count(const QTextList* self);
-bool QTextList_IsEmpty(const QTextList* self);
 QTextBlock* QTextList_Item(const QTextList* self, int i);
 int QTextList_ItemNumber(const QTextList* self, QTextBlock* param1);
 libqt_string QTextList_ItemText(const QTextList* self, QTextBlock* param1);
@@ -60,8 +59,6 @@ void QTextList_SetFormat(QTextList* self, QTextListFormat* format);
 QTextListFormat* QTextList_Format(const QTextList* self);
 libqt_string QTextList_Tr2(const char* s, const char* c);
 libqt_string QTextList_Tr3(const char* s, const char* c, int n);
-libqt_string QTextList_TrUtf82(const char* s, const char* c);
-libqt_string QTextList_TrUtf83(const char* s, const char* c, int n);
 void QTextList_BlockInserted(QTextList* self, QTextBlock* block);
 void QTextList_OnBlockInserted(QTextList* self, intptr_t slot);
 void QTextList_QBaseBlockInserted(QTextList* self, QTextBlock* block);

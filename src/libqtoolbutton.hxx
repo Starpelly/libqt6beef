@@ -25,13 +25,14 @@ class VirtualQToolButton : public QToolButton {
     using QToolButton_MouseReleaseEvent_Callback = void (*)(QToolButton*, QMouseEvent*);
     using QToolButton_PaintEvent_Callback = void (*)(QToolButton*, QPaintEvent*);
     using QToolButton_ActionEvent_Callback = void (*)(QToolButton*, QActionEvent*);
-    using QToolButton_EnterEvent_Callback = void (*)(QToolButton*, QEvent*);
+    using QToolButton_EnterEvent_Callback = void (*)(QToolButton*, QEnterEvent*);
     using QToolButton_LeaveEvent_Callback = void (*)(QToolButton*, QEvent*);
     using QToolButton_TimerEvent_Callback = void (*)(QToolButton*, QTimerEvent*);
     using QToolButton_ChangeEvent_Callback = void (*)(QToolButton*, QEvent*);
     using QToolButton_HitButton_Callback = bool (*)(const QToolButton*, const QPoint&);
-    using QToolButton_NextCheckState_Callback = void (*)();
     using QToolButton_CheckStateSet_Callback = void (*)();
+    using QToolButton_NextCheckState_Callback = void (*)();
+    using QToolButton_InitStyleOption_Callback = void (*)(const QToolButton*, QStyleOptionToolButton*);
     using QToolButton_KeyPressEvent_Callback = void (*)(QToolButton*, QKeyEvent*);
     using QToolButton_KeyReleaseEvent_Callback = void (*)(QToolButton*, QKeyEvent*);
     using QToolButton_MouseMoveEvent_Callback = void (*)(QToolButton*, QMouseEvent*);
@@ -55,7 +56,7 @@ class VirtualQToolButton : public QToolButton {
     using QToolButton_DropEvent_Callback = void (*)(QToolButton*, QDropEvent*);
     using QToolButton_ShowEvent_Callback = void (*)(QToolButton*, QShowEvent*);
     using QToolButton_HideEvent_Callback = void (*)(QToolButton*, QHideEvent*);
-    using QToolButton_NativeEvent_Callback = bool (*)(QToolButton*, const QByteArray&, void*, long*);
+    using QToolButton_NativeEvent_Callback = bool (*)(QToolButton*, const QByteArray&, void*, qintptr*);
     using QToolButton_Metric_Callback = int (*)(const QToolButton*, QPaintDevice::PaintDeviceMetric);
     using QToolButton_InitPainter_Callback = void (*)(const QToolButton*, QPainter*);
     using QToolButton_Redirected_Callback = QPaintDevice* (*)(const QToolButton*, QPoint*);
@@ -68,7 +69,6 @@ class VirtualQToolButton : public QToolButton {
     using QToolButton_CustomEvent_Callback = void (*)(QToolButton*, QEvent*);
     using QToolButton_ConnectNotify_Callback = void (*)(QToolButton*, const QMetaMethod&);
     using QToolButton_DisconnectNotify_Callback = void (*)(QToolButton*, const QMetaMethod&);
-    using QToolButton_InitStyleOption_Callback = void (*)(const QToolButton*, QStyleOptionToolButton*);
     using QToolButton_UpdateMicroFocus_Callback = void (*)();
     using QToolButton_Create_Callback = void (*)();
     using QToolButton_Destroy_Callback = void (*)();
@@ -94,8 +94,9 @@ class VirtualQToolButton : public QToolButton {
     QToolButton_TimerEvent_Callback qtoolbutton_timerevent_callback = nullptr;
     QToolButton_ChangeEvent_Callback qtoolbutton_changeevent_callback = nullptr;
     QToolButton_HitButton_Callback qtoolbutton_hitbutton_callback = nullptr;
-    QToolButton_NextCheckState_Callback qtoolbutton_nextcheckstate_callback = nullptr;
     QToolButton_CheckStateSet_Callback qtoolbutton_checkstateset_callback = nullptr;
+    QToolButton_NextCheckState_Callback qtoolbutton_nextcheckstate_callback = nullptr;
+    QToolButton_InitStyleOption_Callback qtoolbutton_initstyleoption_callback = nullptr;
     QToolButton_KeyPressEvent_Callback qtoolbutton_keypressevent_callback = nullptr;
     QToolButton_KeyReleaseEvent_Callback qtoolbutton_keyreleaseevent_callback = nullptr;
     QToolButton_MouseMoveEvent_Callback qtoolbutton_mousemoveevent_callback = nullptr;
@@ -132,7 +133,6 @@ class VirtualQToolButton : public QToolButton {
     QToolButton_CustomEvent_Callback qtoolbutton_customevent_callback = nullptr;
     QToolButton_ConnectNotify_Callback qtoolbutton_connectnotify_callback = nullptr;
     QToolButton_DisconnectNotify_Callback qtoolbutton_disconnectnotify_callback = nullptr;
-    QToolButton_InitStyleOption_Callback qtoolbutton_initstyleoption_callback = nullptr;
     QToolButton_UpdateMicroFocus_Callback qtoolbutton_updatemicrofocus_callback = nullptr;
     QToolButton_Create_Callback qtoolbutton_create_callback = nullptr;
     QToolButton_Destroy_Callback qtoolbutton_destroy_callback = nullptr;
@@ -157,8 +157,9 @@ class VirtualQToolButton : public QToolButton {
     mutable bool qtoolbutton_timerevent_isbase = false;
     mutable bool qtoolbutton_changeevent_isbase = false;
     mutable bool qtoolbutton_hitbutton_isbase = false;
-    mutable bool qtoolbutton_nextcheckstate_isbase = false;
     mutable bool qtoolbutton_checkstateset_isbase = false;
+    mutable bool qtoolbutton_nextcheckstate_isbase = false;
+    mutable bool qtoolbutton_initstyleoption_isbase = false;
     mutable bool qtoolbutton_keypressevent_isbase = false;
     mutable bool qtoolbutton_keyreleaseevent_isbase = false;
     mutable bool qtoolbutton_mousemoveevent_isbase = false;
@@ -195,7 +196,6 @@ class VirtualQToolButton : public QToolButton {
     mutable bool qtoolbutton_customevent_isbase = false;
     mutable bool qtoolbutton_connectnotify_isbase = false;
     mutable bool qtoolbutton_disconnectnotify_isbase = false;
-    mutable bool qtoolbutton_initstyleoption_isbase = false;
     mutable bool qtoolbutton_updatemicrofocus_isbase = false;
     mutable bool qtoolbutton_create_isbase = false;
     mutable bool qtoolbutton_destroy_isbase = false;
@@ -224,8 +224,9 @@ class VirtualQToolButton : public QToolButton {
         qtoolbutton_timerevent_callback = nullptr;
         qtoolbutton_changeevent_callback = nullptr;
         qtoolbutton_hitbutton_callback = nullptr;
-        qtoolbutton_nextcheckstate_callback = nullptr;
         qtoolbutton_checkstateset_callback = nullptr;
+        qtoolbutton_nextcheckstate_callback = nullptr;
+        qtoolbutton_initstyleoption_callback = nullptr;
         qtoolbutton_keypressevent_callback = nullptr;
         qtoolbutton_keyreleaseevent_callback = nullptr;
         qtoolbutton_mousemoveevent_callback = nullptr;
@@ -262,7 +263,6 @@ class VirtualQToolButton : public QToolButton {
         qtoolbutton_customevent_callback = nullptr;
         qtoolbutton_connectnotify_callback = nullptr;
         qtoolbutton_disconnectnotify_callback = nullptr;
-        qtoolbutton_initstyleoption_callback = nullptr;
         qtoolbutton_updatemicrofocus_callback = nullptr;
         qtoolbutton_create_callback = nullptr;
         qtoolbutton_destroy_callback = nullptr;
@@ -288,8 +288,9 @@ class VirtualQToolButton : public QToolButton {
     void setQToolButton_TimerEvent_Callback(QToolButton_TimerEvent_Callback cb) { qtoolbutton_timerevent_callback = cb; }
     void setQToolButton_ChangeEvent_Callback(QToolButton_ChangeEvent_Callback cb) { qtoolbutton_changeevent_callback = cb; }
     void setQToolButton_HitButton_Callback(QToolButton_HitButton_Callback cb) { qtoolbutton_hitbutton_callback = cb; }
-    void setQToolButton_NextCheckState_Callback(QToolButton_NextCheckState_Callback cb) { qtoolbutton_nextcheckstate_callback = cb; }
     void setQToolButton_CheckStateSet_Callback(QToolButton_CheckStateSet_Callback cb) { qtoolbutton_checkstateset_callback = cb; }
+    void setQToolButton_NextCheckState_Callback(QToolButton_NextCheckState_Callback cb) { qtoolbutton_nextcheckstate_callback = cb; }
+    void setQToolButton_InitStyleOption_Callback(QToolButton_InitStyleOption_Callback cb) { qtoolbutton_initstyleoption_callback = cb; }
     void setQToolButton_KeyPressEvent_Callback(QToolButton_KeyPressEvent_Callback cb) { qtoolbutton_keypressevent_callback = cb; }
     void setQToolButton_KeyReleaseEvent_Callback(QToolButton_KeyReleaseEvent_Callback cb) { qtoolbutton_keyreleaseevent_callback = cb; }
     void setQToolButton_MouseMoveEvent_Callback(QToolButton_MouseMoveEvent_Callback cb) { qtoolbutton_mousemoveevent_callback = cb; }
@@ -326,7 +327,6 @@ class VirtualQToolButton : public QToolButton {
     void setQToolButton_CustomEvent_Callback(QToolButton_CustomEvent_Callback cb) { qtoolbutton_customevent_callback = cb; }
     void setQToolButton_ConnectNotify_Callback(QToolButton_ConnectNotify_Callback cb) { qtoolbutton_connectnotify_callback = cb; }
     void setQToolButton_DisconnectNotify_Callback(QToolButton_DisconnectNotify_Callback cb) { qtoolbutton_disconnectnotify_callback = cb; }
-    void setQToolButton_InitStyleOption_Callback(QToolButton_InitStyleOption_Callback cb) { qtoolbutton_initstyleoption_callback = cb; }
     void setQToolButton_UpdateMicroFocus_Callback(QToolButton_UpdateMicroFocus_Callback cb) { qtoolbutton_updatemicrofocus_callback = cb; }
     void setQToolButton_Create_Callback(QToolButton_Create_Callback cb) { qtoolbutton_create_callback = cb; }
     void setQToolButton_Destroy_Callback(QToolButton_Destroy_Callback cb) { qtoolbutton_destroy_callback = cb; }
@@ -351,8 +351,9 @@ class VirtualQToolButton : public QToolButton {
     void setQToolButton_TimerEvent_IsBase(bool value) const { qtoolbutton_timerevent_isbase = value; }
     void setQToolButton_ChangeEvent_IsBase(bool value) const { qtoolbutton_changeevent_isbase = value; }
     void setQToolButton_HitButton_IsBase(bool value) const { qtoolbutton_hitbutton_isbase = value; }
-    void setQToolButton_NextCheckState_IsBase(bool value) const { qtoolbutton_nextcheckstate_isbase = value; }
     void setQToolButton_CheckStateSet_IsBase(bool value) const { qtoolbutton_checkstateset_isbase = value; }
+    void setQToolButton_NextCheckState_IsBase(bool value) const { qtoolbutton_nextcheckstate_isbase = value; }
+    void setQToolButton_InitStyleOption_IsBase(bool value) const { qtoolbutton_initstyleoption_isbase = value; }
     void setQToolButton_KeyPressEvent_IsBase(bool value) const { qtoolbutton_keypressevent_isbase = value; }
     void setQToolButton_KeyReleaseEvent_IsBase(bool value) const { qtoolbutton_keyreleaseevent_isbase = value; }
     void setQToolButton_MouseMoveEvent_IsBase(bool value) const { qtoolbutton_mousemoveevent_isbase = value; }
@@ -389,7 +390,6 @@ class VirtualQToolButton : public QToolButton {
     void setQToolButton_CustomEvent_IsBase(bool value) const { qtoolbutton_customevent_isbase = value; }
     void setQToolButton_ConnectNotify_IsBase(bool value) const { qtoolbutton_connectnotify_isbase = value; }
     void setQToolButton_DisconnectNotify_IsBase(bool value) const { qtoolbutton_disconnectnotify_isbase = value; }
-    void setQToolButton_InitStyleOption_IsBase(bool value) const { qtoolbutton_initstyleoption_isbase = value; }
     void setQToolButton_UpdateMicroFocus_IsBase(bool value) const { qtoolbutton_updatemicrofocus_isbase = value; }
     void setQToolButton_Create_IsBase(bool value) const { qtoolbutton_create_isbase = value; }
     void setQToolButton_Destroy_IsBase(bool value) const { qtoolbutton_destroy_isbase = value; }
@@ -497,7 +497,7 @@ class VirtualQToolButton : public QToolButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* param1) override {
+    virtual void enterEvent(QEnterEvent* param1) override {
         if (qtoolbutton_enterevent_isbase) {
             qtoolbutton_enterevent_isbase = false;
             QToolButton::enterEvent(param1);
@@ -557,6 +557,18 @@ class VirtualQToolButton : public QToolButton {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void checkStateSet() override {
+        if (qtoolbutton_checkstateset_isbase) {
+            qtoolbutton_checkstateset_isbase = false;
+            QToolButton::checkStateSet();
+        } else if (qtoolbutton_checkstateset_callback != nullptr) {
+            qtoolbutton_checkstateset_callback();
+        } else {
+            QToolButton::checkStateSet();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual void nextCheckState() override {
         if (qtoolbutton_nextcheckstate_isbase) {
             qtoolbutton_nextcheckstate_isbase = false;
@@ -569,14 +581,14 @@ class VirtualQToolButton : public QToolButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void checkStateSet() override {
-        if (qtoolbutton_checkstateset_isbase) {
-            qtoolbutton_checkstateset_isbase = false;
-            QToolButton::checkStateSet();
-        } else if (qtoolbutton_checkstateset_callback != nullptr) {
-            qtoolbutton_checkstateset_callback();
+    virtual void initStyleOption(QStyleOptionToolButton* option) const override {
+        if (qtoolbutton_initstyleoption_isbase) {
+            qtoolbutton_initstyleoption_isbase = false;
+            QToolButton::initStyleOption(option);
+        } else if (qtoolbutton_initstyleoption_callback != nullptr) {
+            qtoolbutton_initstyleoption_callback(this, option);
         } else {
-            QToolButton::checkStateSet();
+            QToolButton::initStyleOption(option);
         }
     }
 
@@ -857,7 +869,7 @@ class VirtualQToolButton : public QToolButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qtoolbutton_nativeevent_isbase) {
             qtoolbutton_nativeevent_isbase = false;
             return QToolButton::nativeEvent(eventType, message, result);
@@ -1009,18 +1021,6 @@ class VirtualQToolButton : public QToolButton {
             qtoolbutton_disconnectnotify_callback(this, signal);
         } else {
             QToolButton::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionToolButton* option) const {
-        if (qtoolbutton_initstyleoption_isbase) {
-            qtoolbutton_initstyleoption_isbase = false;
-            QToolButton::initStyleOption(option);
-        } else if (qtoolbutton_initstyleoption_callback != nullptr) {
-            qtoolbutton_initstyleoption_callback(this, option);
-        } else {
-            QToolButton::initStyleOption(option);
         }
     }
 

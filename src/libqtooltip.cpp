@@ -32,16 +32,6 @@ void QToolTip_ShowText(QPoint* pos, libqt_string text) {
     QToolTip::showText(*pos, text_QString);
 }
 
-void QToolTip_ShowText2(QPoint* pos, libqt_string text, QWidget* w, QRect* rect) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    QToolTip::showText(*pos, text_QString, w, *rect);
-}
-
-void QToolTip_ShowText3(QPoint* pos, libqt_string text, QWidget* w, QRect* rect, int msecShowTime) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    QToolTip::showText(*pos, text_QString, w, *rect, static_cast<int>(msecShowTime));
-}
-
 void QToolTip_HideText() {
     QToolTip::hideText();
 }
@@ -78,9 +68,19 @@ void QToolTip_SetFont(QFont* font) {
     QToolTip::setFont(*font);
 }
 
-void QToolTip_ShowText32(QPoint* pos, libqt_string text, QWidget* w) {
+void QToolTip_ShowText3(QPoint* pos, libqt_string text, QWidget* w) {
     QString text_QString = QString::fromUtf8(text.data, text.len);
     QToolTip::showText(*pos, text_QString, w);
+}
+
+void QToolTip_ShowText4(QPoint* pos, libqt_string text, QWidget* w, QRect* rect) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    QToolTip::showText(*pos, text_QString, w, *rect);
+}
+
+void QToolTip_ShowText5(QPoint* pos, libqt_string text, QWidget* w, QRect* rect, int msecShowTime) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    QToolTip::showText(*pos, text_QString, w, *rect, static_cast<int>(msecShowTime));
 }
 
 void QToolTip_Delete(QToolTip* self) {

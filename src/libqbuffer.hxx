@@ -18,7 +18,7 @@ class VirtualQBuffer : public QBuffer {
   public:
     // Virtual class public types (including callbacks)
     using QBuffer_Metacall_Callback = int (*)(QBuffer*, QMetaObject::Call, int, void**);
-    using QBuffer_Open_Callback = bool (*)(QBuffer*, QIODevice::OpenMode);
+    using QBuffer_Open_Callback = bool (*)(QBuffer*, QIODeviceBase::OpenMode);
     using QBuffer_Close_Callback = void (*)();
     using QBuffer_Size_Callback = qint64 (*)();
     using QBuffer_Pos_Callback = qint64 (*)();
@@ -36,12 +36,13 @@ class VirtualQBuffer : public QBuffer {
     using QBuffer_WaitForReadyRead_Callback = bool (*)(QBuffer*, int);
     using QBuffer_WaitForBytesWritten_Callback = bool (*)(QBuffer*, int);
     using QBuffer_ReadLineData_Callback = qint64 (*)(QBuffer*, char*, qint64);
+    using QBuffer_SkipData_Callback = qint64 (*)(QBuffer*, qint64);
     using QBuffer_Event_Callback = bool (*)(QBuffer*, QEvent*);
     using QBuffer_EventFilter_Callback = bool (*)(QBuffer*, QObject*, QEvent*);
     using QBuffer_TimerEvent_Callback = void (*)(QBuffer*, QTimerEvent*);
     using QBuffer_ChildEvent_Callback = void (*)(QBuffer*, QChildEvent*);
     using QBuffer_CustomEvent_Callback = void (*)(QBuffer*, QEvent*);
-    using QBuffer_SetOpenMode_Callback = void (*)(QBuffer*, QIODevice::OpenMode);
+    using QBuffer_SetOpenMode_Callback = void (*)(QBuffer*, QIODeviceBase::OpenMode);
     using QBuffer_SetErrorString_Callback = void (*)(QBuffer*, const QString&);
     using QBuffer_Sender_Callback = QObject* (*)();
     using QBuffer_SenderSignalIndex_Callback = int (*)();
@@ -69,6 +70,7 @@ class VirtualQBuffer : public QBuffer {
     QBuffer_WaitForReadyRead_Callback qbuffer_waitforreadyread_callback = nullptr;
     QBuffer_WaitForBytesWritten_Callback qbuffer_waitforbyteswritten_callback = nullptr;
     QBuffer_ReadLineData_Callback qbuffer_readlinedata_callback = nullptr;
+    QBuffer_SkipData_Callback qbuffer_skipdata_callback = nullptr;
     QBuffer_Event_Callback qbuffer_event_callback = nullptr;
     QBuffer_EventFilter_Callback qbuffer_eventfilter_callback = nullptr;
     QBuffer_TimerEvent_Callback qbuffer_timerevent_callback = nullptr;
@@ -101,6 +103,7 @@ class VirtualQBuffer : public QBuffer {
     mutable bool qbuffer_waitforreadyread_isbase = false;
     mutable bool qbuffer_waitforbyteswritten_isbase = false;
     mutable bool qbuffer_readlinedata_isbase = false;
+    mutable bool qbuffer_skipdata_isbase = false;
     mutable bool qbuffer_event_isbase = false;
     mutable bool qbuffer_eventfilter_isbase = false;
     mutable bool qbuffer_timerevent_isbase = false;
@@ -137,6 +140,7 @@ class VirtualQBuffer : public QBuffer {
         qbuffer_waitforreadyread_callback = nullptr;
         qbuffer_waitforbyteswritten_callback = nullptr;
         qbuffer_readlinedata_callback = nullptr;
+        qbuffer_skipdata_callback = nullptr;
         qbuffer_event_callback = nullptr;
         qbuffer_eventfilter_callback = nullptr;
         qbuffer_timerevent_callback = nullptr;
@@ -170,6 +174,7 @@ class VirtualQBuffer : public QBuffer {
     void setQBuffer_WaitForReadyRead_Callback(QBuffer_WaitForReadyRead_Callback cb) { qbuffer_waitforreadyread_callback = cb; }
     void setQBuffer_WaitForBytesWritten_Callback(QBuffer_WaitForBytesWritten_Callback cb) { qbuffer_waitforbyteswritten_callback = cb; }
     void setQBuffer_ReadLineData_Callback(QBuffer_ReadLineData_Callback cb) { qbuffer_readlinedata_callback = cb; }
+    void setQBuffer_SkipData_Callback(QBuffer_SkipData_Callback cb) { qbuffer_skipdata_callback = cb; }
     void setQBuffer_Event_Callback(QBuffer_Event_Callback cb) { qbuffer_event_callback = cb; }
     void setQBuffer_EventFilter_Callback(QBuffer_EventFilter_Callback cb) { qbuffer_eventfilter_callback = cb; }
     void setQBuffer_TimerEvent_Callback(QBuffer_TimerEvent_Callback cb) { qbuffer_timerevent_callback = cb; }
@@ -202,6 +207,7 @@ class VirtualQBuffer : public QBuffer {
     void setQBuffer_WaitForReadyRead_IsBase(bool value) const { qbuffer_waitforreadyread_isbase = value; }
     void setQBuffer_WaitForBytesWritten_IsBase(bool value) const { qbuffer_waitforbyteswritten_isbase = value; }
     void setQBuffer_ReadLineData_IsBase(bool value) const { qbuffer_readlinedata_isbase = value; }
+    void setQBuffer_SkipData_IsBase(bool value) const { qbuffer_skipdata_isbase = value; }
     void setQBuffer_Event_IsBase(bool value) const { qbuffer_event_isbase = value; }
     void setQBuffer_EventFilter_IsBase(bool value) const { qbuffer_eventfilter_isbase = value; }
     void setQBuffer_TimerEvent_IsBase(bool value) const { qbuffer_timerevent_isbase = value; }
@@ -227,7 +233,7 @@ class VirtualQBuffer : public QBuffer {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODevice::OpenMode openMode) override {
+    virtual bool open(QIODeviceBase::OpenMode openMode) override {
         if (qbuffer_open_isbase) {
             qbuffer_open_isbase = false;
             return QBuffer::open(openMode);
@@ -443,6 +449,18 @@ class VirtualQBuffer : public QBuffer {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual qint64 skipData(qint64 maxSize) override {
+        if (qbuffer_skipdata_isbase) {
+            qbuffer_skipdata_isbase = false;
+            return QBuffer::skipData(maxSize);
+        } else if (qbuffer_skipdata_callback != nullptr) {
+            return qbuffer_skipdata_callback(this, maxSize);
+        } else {
+            return QBuffer::skipData(maxSize);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual bool event(QEvent* event) override {
         if (qbuffer_event_isbase) {
             qbuffer_event_isbase = false;
@@ -503,7 +521,7 @@ class VirtualQBuffer : public QBuffer {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODevice::OpenMode openMode) {
+    void setOpenMode(QIODeviceBase::OpenMode openMode) {
         if (qbuffer_setopenmode_isbase) {
             qbuffer_setopenmode_isbase = false;
             QBuffer::setOpenMode(openMode);

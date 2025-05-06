@@ -46,7 +46,7 @@ class VirtualQFontDialog : public QFontDialog {
     using QFontDialog_KeyReleaseEvent_Callback = void (*)(QFontDialog*, QKeyEvent*);
     using QFontDialog_FocusInEvent_Callback = void (*)(QFontDialog*, QFocusEvent*);
     using QFontDialog_FocusOutEvent_Callback = void (*)(QFontDialog*, QFocusEvent*);
-    using QFontDialog_EnterEvent_Callback = void (*)(QFontDialog*, QEvent*);
+    using QFontDialog_EnterEvent_Callback = void (*)(QFontDialog*, QEnterEvent*);
     using QFontDialog_LeaveEvent_Callback = void (*)(QFontDialog*, QEvent*);
     using QFontDialog_PaintEvent_Callback = void (*)(QFontDialog*, QPaintEvent*);
     using QFontDialog_MoveEvent_Callback = void (*)(QFontDialog*, QMoveEvent*);
@@ -57,7 +57,7 @@ class VirtualQFontDialog : public QFontDialog {
     using QFontDialog_DragLeaveEvent_Callback = void (*)(QFontDialog*, QDragLeaveEvent*);
     using QFontDialog_DropEvent_Callback = void (*)(QFontDialog*, QDropEvent*);
     using QFontDialog_HideEvent_Callback = void (*)(QFontDialog*, QHideEvent*);
-    using QFontDialog_NativeEvent_Callback = bool (*)(QFontDialog*, const QByteArray&, void*, long*);
+    using QFontDialog_NativeEvent_Callback = bool (*)(QFontDialog*, const QByteArray&, void*, qintptr*);
     using QFontDialog_Metric_Callback = int (*)(const QFontDialog*, QPaintDevice::PaintDeviceMetric);
     using QFontDialog_InitPainter_Callback = void (*)(const QFontDialog*, QPainter*);
     using QFontDialog_Redirected_Callback = QPaintDevice* (*)(const QFontDialog*, QPoint*);
@@ -763,7 +763,7 @@ class VirtualQFontDialog : public QFontDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qfontdialog_enterevent_isbase) {
             qfontdialog_enterevent_isbase = false;
             QFontDialog::enterEvent(event);
@@ -895,7 +895,7 @@ class VirtualQFontDialog : public QFontDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qfontdialog_nativeevent_isbase) {
             qfontdialog_nativeevent_isbase = false;
             return QFontDialog::nativeEvent(eventType, message, result);

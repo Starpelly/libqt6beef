@@ -22,6 +22,7 @@ class VirtualQFrame : public QFrame {
     using QFrame_Event_Callback = bool (*)(QFrame*, QEvent*);
     using QFrame_PaintEvent_Callback = void (*)(QFrame*, QPaintEvent*);
     using QFrame_ChangeEvent_Callback = void (*)(QFrame*, QEvent*);
+    using QFrame_InitStyleOption_Callback = void (*)(const QFrame*, QStyleOptionFrame*);
     using QFrame_DevType_Callback = int (*)();
     using QFrame_SetVisible_Callback = void (*)(QFrame*, bool);
     using QFrame_MinimumSizeHint_Callback = QSize (*)();
@@ -37,7 +38,7 @@ class VirtualQFrame : public QFrame {
     using QFrame_KeyReleaseEvent_Callback = void (*)(QFrame*, QKeyEvent*);
     using QFrame_FocusInEvent_Callback = void (*)(QFrame*, QFocusEvent*);
     using QFrame_FocusOutEvent_Callback = void (*)(QFrame*, QFocusEvent*);
-    using QFrame_EnterEvent_Callback = void (*)(QFrame*, QEvent*);
+    using QFrame_EnterEvent_Callback = void (*)(QFrame*, QEnterEvent*);
     using QFrame_LeaveEvent_Callback = void (*)(QFrame*, QEvent*);
     using QFrame_MoveEvent_Callback = void (*)(QFrame*, QMoveEvent*);
     using QFrame_ResizeEvent_Callback = void (*)(QFrame*, QResizeEvent*);
@@ -51,7 +52,7 @@ class VirtualQFrame : public QFrame {
     using QFrame_DropEvent_Callback = void (*)(QFrame*, QDropEvent*);
     using QFrame_ShowEvent_Callback = void (*)(QFrame*, QShowEvent*);
     using QFrame_HideEvent_Callback = void (*)(QFrame*, QHideEvent*);
-    using QFrame_NativeEvent_Callback = bool (*)(QFrame*, const QByteArray&, void*, long*);
+    using QFrame_NativeEvent_Callback = bool (*)(QFrame*, const QByteArray&, void*, qintptr*);
     using QFrame_Metric_Callback = int (*)(const QFrame*, QPaintDevice::PaintDeviceMetric);
     using QFrame_InitPainter_Callback = void (*)(const QFrame*, QPainter*);
     using QFrame_Redirected_Callback = QPaintDevice* (*)(const QFrame*, QPoint*);
@@ -66,7 +67,6 @@ class VirtualQFrame : public QFrame {
     using QFrame_ConnectNotify_Callback = void (*)(QFrame*, const QMetaMethod&);
     using QFrame_DisconnectNotify_Callback = void (*)(QFrame*, const QMetaMethod&);
     using QFrame_DrawFrame_Callback = void (*)(QFrame*, QPainter*);
-    using QFrame_InitStyleOption_Callback = void (*)(const QFrame*, QStyleOptionFrame*);
     using QFrame_UpdateMicroFocus_Callback = void (*)();
     using QFrame_Create_Callback = void (*)();
     using QFrame_Destroy_Callback = void (*)();
@@ -84,6 +84,7 @@ class VirtualQFrame : public QFrame {
     QFrame_Event_Callback qframe_event_callback = nullptr;
     QFrame_PaintEvent_Callback qframe_paintevent_callback = nullptr;
     QFrame_ChangeEvent_Callback qframe_changeevent_callback = nullptr;
+    QFrame_InitStyleOption_Callback qframe_initstyleoption_callback = nullptr;
     QFrame_DevType_Callback qframe_devtype_callback = nullptr;
     QFrame_SetVisible_Callback qframe_setvisible_callback = nullptr;
     QFrame_MinimumSizeHint_Callback qframe_minimumsizehint_callback = nullptr;
@@ -128,7 +129,6 @@ class VirtualQFrame : public QFrame {
     QFrame_ConnectNotify_Callback qframe_connectnotify_callback = nullptr;
     QFrame_DisconnectNotify_Callback qframe_disconnectnotify_callback = nullptr;
     QFrame_DrawFrame_Callback qframe_drawframe_callback = nullptr;
-    QFrame_InitStyleOption_Callback qframe_initstyleoption_callback = nullptr;
     QFrame_UpdateMicroFocus_Callback qframe_updatemicrofocus_callback = nullptr;
     QFrame_Create_Callback qframe_create_callback = nullptr;
     QFrame_Destroy_Callback qframe_destroy_callback = nullptr;
@@ -145,6 +145,7 @@ class VirtualQFrame : public QFrame {
     mutable bool qframe_event_isbase = false;
     mutable bool qframe_paintevent_isbase = false;
     mutable bool qframe_changeevent_isbase = false;
+    mutable bool qframe_initstyleoption_isbase = false;
     mutable bool qframe_devtype_isbase = false;
     mutable bool qframe_setvisible_isbase = false;
     mutable bool qframe_minimumsizehint_isbase = false;
@@ -189,7 +190,6 @@ class VirtualQFrame : public QFrame {
     mutable bool qframe_connectnotify_isbase = false;
     mutable bool qframe_disconnectnotify_isbase = false;
     mutable bool qframe_drawframe_isbase = false;
-    mutable bool qframe_initstyleoption_isbase = false;
     mutable bool qframe_updatemicrofocus_isbase = false;
     mutable bool qframe_create_isbase = false;
     mutable bool qframe_destroy_isbase = false;
@@ -211,6 +211,7 @@ class VirtualQFrame : public QFrame {
         qframe_event_callback = nullptr;
         qframe_paintevent_callback = nullptr;
         qframe_changeevent_callback = nullptr;
+        qframe_initstyleoption_callback = nullptr;
         qframe_devtype_callback = nullptr;
         qframe_setvisible_callback = nullptr;
         qframe_minimumsizehint_callback = nullptr;
@@ -255,7 +256,6 @@ class VirtualQFrame : public QFrame {
         qframe_connectnotify_callback = nullptr;
         qframe_disconnectnotify_callback = nullptr;
         qframe_drawframe_callback = nullptr;
-        qframe_initstyleoption_callback = nullptr;
         qframe_updatemicrofocus_callback = nullptr;
         qframe_create_callback = nullptr;
         qframe_destroy_callback = nullptr;
@@ -273,6 +273,7 @@ class VirtualQFrame : public QFrame {
     void setQFrame_Event_Callback(QFrame_Event_Callback cb) { qframe_event_callback = cb; }
     void setQFrame_PaintEvent_Callback(QFrame_PaintEvent_Callback cb) { qframe_paintevent_callback = cb; }
     void setQFrame_ChangeEvent_Callback(QFrame_ChangeEvent_Callback cb) { qframe_changeevent_callback = cb; }
+    void setQFrame_InitStyleOption_Callback(QFrame_InitStyleOption_Callback cb) { qframe_initstyleoption_callback = cb; }
     void setQFrame_DevType_Callback(QFrame_DevType_Callback cb) { qframe_devtype_callback = cb; }
     void setQFrame_SetVisible_Callback(QFrame_SetVisible_Callback cb) { qframe_setvisible_callback = cb; }
     void setQFrame_MinimumSizeHint_Callback(QFrame_MinimumSizeHint_Callback cb) { qframe_minimumsizehint_callback = cb; }
@@ -317,7 +318,6 @@ class VirtualQFrame : public QFrame {
     void setQFrame_ConnectNotify_Callback(QFrame_ConnectNotify_Callback cb) { qframe_connectnotify_callback = cb; }
     void setQFrame_DisconnectNotify_Callback(QFrame_DisconnectNotify_Callback cb) { qframe_disconnectnotify_callback = cb; }
     void setQFrame_DrawFrame_Callback(QFrame_DrawFrame_Callback cb) { qframe_drawframe_callback = cb; }
-    void setQFrame_InitStyleOption_Callback(QFrame_InitStyleOption_Callback cb) { qframe_initstyleoption_callback = cb; }
     void setQFrame_UpdateMicroFocus_Callback(QFrame_UpdateMicroFocus_Callback cb) { qframe_updatemicrofocus_callback = cb; }
     void setQFrame_Create_Callback(QFrame_Create_Callback cb) { qframe_create_callback = cb; }
     void setQFrame_Destroy_Callback(QFrame_Destroy_Callback cb) { qframe_destroy_callback = cb; }
@@ -334,6 +334,7 @@ class VirtualQFrame : public QFrame {
     void setQFrame_Event_IsBase(bool value) const { qframe_event_isbase = value; }
     void setQFrame_PaintEvent_IsBase(bool value) const { qframe_paintevent_isbase = value; }
     void setQFrame_ChangeEvent_IsBase(bool value) const { qframe_changeevent_isbase = value; }
+    void setQFrame_InitStyleOption_IsBase(bool value) const { qframe_initstyleoption_isbase = value; }
     void setQFrame_DevType_IsBase(bool value) const { qframe_devtype_isbase = value; }
     void setQFrame_SetVisible_IsBase(bool value) const { qframe_setvisible_isbase = value; }
     void setQFrame_MinimumSizeHint_IsBase(bool value) const { qframe_minimumsizehint_isbase = value; }
@@ -378,7 +379,6 @@ class VirtualQFrame : public QFrame {
     void setQFrame_ConnectNotify_IsBase(bool value) const { qframe_connectnotify_isbase = value; }
     void setQFrame_DisconnectNotify_IsBase(bool value) const { qframe_disconnectnotify_isbase = value; }
     void setQFrame_DrawFrame_IsBase(bool value) const { qframe_drawframe_isbase = value; }
-    void setQFrame_InitStyleOption_IsBase(bool value) const { qframe_initstyleoption_isbase = value; }
     void setQFrame_UpdateMicroFocus_IsBase(bool value) const { qframe_updatemicrofocus_isbase = value; }
     void setQFrame_Create_IsBase(bool value) const { qframe_create_isbase = value; }
     void setQFrame_Destroy_IsBase(bool value) const { qframe_destroy_isbase = value; }
@@ -446,6 +446,18 @@ class VirtualQFrame : public QFrame {
             qframe_changeevent_callback(this, param1);
         } else {
             QFrame::changeEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qframe_initstyleoption_isbase) {
+            qframe_initstyleoption_isbase = false;
+            QFrame::initStyleOption(option);
+        } else if (qframe_initstyleoption_callback != nullptr) {
+            qframe_initstyleoption_callback(this, option);
+        } else {
+            QFrame::initStyleOption(option);
         }
     }
 
@@ -630,7 +642,7 @@ class VirtualQFrame : public QFrame {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qframe_enterevent_isbase) {
             qframe_enterevent_isbase = false;
             QFrame::enterEvent(event);
@@ -798,7 +810,7 @@ class VirtualQFrame : public QFrame {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qframe_nativeevent_isbase) {
             qframe_nativeevent_isbase = false;
             return QFrame::nativeEvent(eventType, message, result);
@@ -974,18 +986,6 @@ class VirtualQFrame : public QFrame {
             qframe_drawframe_callback(this, param1);
         } else {
             QFrame::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qframe_initstyleoption_isbase) {
-            qframe_initstyleoption_isbase = false;
-            QFrame::initStyleOption(option);
-        } else if (qframe_initstyleoption_callback != nullptr) {
-            qframe_initstyleoption_callback(this, option);
-        } else {
-            QFrame::initStyleOption(option);
         }
     }
 

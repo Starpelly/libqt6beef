@@ -4,7 +4,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,6 +17,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -42,7 +45,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -50,6 +52,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -147,18 +150,6 @@ libqt_string QUndoView_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QUndoView_TrUtf8(const char* s) {
-    QString _ret = QUndoView::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QUndoStack* QUndoView_Stack(const QUndoView* self) {
     return self->stack();
 }
@@ -214,30 +205,6 @@ libqt_string QUndoView_Tr2(const char* s, const char* c) {
 
 libqt_string QUndoView_Tr3(const char* s, const char* c, int n) {
     QString _ret = QUndoView::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QUndoView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QUndoView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QUndoView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QUndoView::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -458,7 +425,7 @@ void QUndoView_OnScrollContentsBy(QUndoView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QUndoView_DataChanged(QUndoView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -473,7 +440,7 @@ void QUndoView_DataChanged(QUndoView* self, QModelIndex* topLeft, QModelIndex* b
 
 // Base class handler implementation
 void QUndoView_QBaseDataChanged(QUndoView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -781,26 +748,28 @@ void QUndoView_OnStartDrag(QUndoView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QUndoView_ViewOptions(const QUndoView* self) {
+void QUndoView_InitViewItemOption(const QUndoView* self, QStyleOptionViewItem* option) {
     if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        return new QStyleOptionViewItem(vqundoview->viewOptions());
+        vqundoview->initViewItemOption(option);
+    } else {
+        vqundoview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QUndoView_QBaseViewOptions(const QUndoView* self) {
+void QUndoView_QBaseInitViewItemOption(const QUndoView* self, QStyleOptionViewItem* option) {
     if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqundoview->viewOptions());
+        vqundoview->setQUndoView_InitViewItemOption_IsBase(true);
+        vqundoview->initViewItemOption(option);
+    } else {
+        vqundoview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QUndoView_OnViewOptions(const QUndoView* self, intptr_t slot) {
+void QUndoView_OnInitViewItemOption(const QUndoView* self, intptr_t slot) {
     if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_ViewOptions_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_ViewOptions_Callback>(slot));
+        vqundoview->setQUndoView_InitViewItemOption_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -1275,6 +1244,32 @@ int QUndoView_QBaseSizeHintForColumn(const QUndoView* self, int column) {
 void QUndoView_OnSizeHintForColumn(const QUndoView* self, intptr_t slot) {
     if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
         vqundoview->setQUndoView_SizeHintForColumn_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_SizeHintForColumn_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QAbstractItemDelegate* QUndoView_ItemDelegateForIndex(const QUndoView* self, QModelIndex* index) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        return vqundoview->itemDelegateForIndex(*index);
+    } else {
+        return vqundoview->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QUndoView_QBaseItemDelegateForIndex(const QUndoView* self, QModelIndex* index) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        vqundoview->setQUndoView_ItemDelegateForIndex_IsBase(true);
+        return vqundoview->itemDelegateForIndex(*index);
+    } else {
+        return vqundoview->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QUndoView_OnItemDelegateForIndex(const QUndoView* self, intptr_t slot) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        vqundoview->setQUndoView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_ItemDelegateForIndex_Callback>(slot));
     }
 }
 
@@ -2007,6 +2002,32 @@ void QUndoView_OnChangeEvent(QUndoView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QUndoView_InitStyleOption(const QUndoView* self, QStyleOptionFrame* option) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        vqundoview->initStyleOption(option);
+    } else {
+        vqundoview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QUndoView_QBaseInitStyleOption(const QUndoView* self, QStyleOptionFrame* option) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        vqundoview->setQUndoView_InitStyleOption_IsBase(true);
+        vqundoview->initStyleOption(option);
+    } else {
+        vqundoview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QUndoView_OnInitStyleOption(const QUndoView* self, intptr_t slot) {
+    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
+        vqundoview->setQUndoView_InitStyleOption_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 int QUndoView_DevType(const QUndoView* self) {
     if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
         return vqundoview->devType();
@@ -2163,7 +2184,7 @@ void QUndoView_OnKeyReleaseEvent(QUndoView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QUndoView_EnterEvent(QUndoView* self, QEvent* event) {
+void QUndoView_EnterEvent(QUndoView* self, QEnterEvent* event) {
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
         vqundoview->enterEvent(event);
     } else {
@@ -2172,7 +2193,7 @@ void QUndoView_EnterEvent(QUndoView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QUndoView_QBaseEnterEvent(QUndoView* self, QEvent* event) {
+void QUndoView_QBaseEnterEvent(QUndoView* self, QEnterEvent* event) {
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
         vqundoview->setQUndoView_EnterEvent_IsBase(true);
         vqundoview->enterEvent(event);
@@ -2371,23 +2392,23 @@ void QUndoView_OnHideEvent(QUndoView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QUndoView_NativeEvent(QUndoView* self, libqt_string eventType, void* message, long* result) {
+bool QUndoView_NativeEvent(QUndoView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        return vqundoview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqundoview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqundoview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqundoview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QUndoView_QBaseNativeEvent(QUndoView* self, libqt_string eventType, void* message, long* result) {
+bool QUndoView_QBaseNativeEvent(QUndoView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
         vqundoview->setQUndoView_NativeEvent_IsBase(true);
-        return vqundoview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqundoview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqundoview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqundoview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -2703,110 +2724,6 @@ void QUndoView_QBaseSetPositionForIndex(QUndoView* self, QPoint* position, QMode
 void QUndoView_OnSetPositionForIndex(QUndoView* self, intptr_t slot) {
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
         vqundoview->setQUndoView_SetPositionForIndex_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_SetPositionForIndex_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QUndoView_SetHorizontalStepsPerItem(QUndoView* self, int steps) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqundoview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QUndoView_QBaseSetHorizontalStepsPerItem(QUndoView* self, int steps) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setQUndoView_SetHorizontalStepsPerItem_IsBase(true);
-        vqundoview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqundoview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QUndoView_OnSetHorizontalStepsPerItem(QUndoView* self, intptr_t slot) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setQUndoView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QUndoView_HorizontalStepsPerItem(const QUndoView* self) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        return vqundoview->horizontalStepsPerItem();
-    } else {
-        return vqundoview->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QUndoView_QBaseHorizontalStepsPerItem(const QUndoView* self) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_HorizontalStepsPerItem_IsBase(true);
-        return vqundoview->horizontalStepsPerItem();
-    } else {
-        return vqundoview->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QUndoView_OnHorizontalStepsPerItem(const QUndoView* self, intptr_t slot) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QUndoView_SetVerticalStepsPerItem(QUndoView* self, int steps) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqundoview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QUndoView_QBaseSetVerticalStepsPerItem(QUndoView* self, int steps) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setQUndoView_SetVerticalStepsPerItem_IsBase(true);
-        vqundoview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqundoview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QUndoView_OnSetVerticalStepsPerItem(QUndoView* self, intptr_t slot) {
-    if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
-        vqundoview->setQUndoView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QUndoView_VerticalStepsPerItem(const QUndoView* self) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        return vqundoview->verticalStepsPerItem();
-    } else {
-        return vqundoview->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QUndoView_QBaseVerticalStepsPerItem(const QUndoView* self) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_VerticalStepsPerItem_IsBase(true);
-        return vqundoview->verticalStepsPerItem();
-    } else {
-        return vqundoview->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QUndoView_OnVerticalStepsPerItem(const QUndoView* self, intptr_t slot) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_VerticalStepsPerItem_Callback>(slot));
     }
 }
 
@@ -3167,32 +3084,6 @@ void QUndoView_QBaseDrawFrame(QUndoView* self, QPainter* param1) {
 void QUndoView_OnDrawFrame(QUndoView* self, intptr_t slot) {
     if (auto* vqundoview = dynamic_cast<VirtualQUndoView*>(self)) {
         vqundoview->setQUndoView_DrawFrame_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_DrawFrame_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QUndoView_InitStyleOption(const QUndoView* self, QStyleOptionFrame* option) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->initStyleOption(option);
-    } else {
-        vqundoview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QUndoView_QBaseInitStyleOption(const QUndoView* self, QStyleOptionFrame* option) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_InitStyleOption_IsBase(true);
-        vqundoview->initStyleOption(option);
-    } else {
-        vqundoview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QUndoView_OnInitStyleOption(const QUndoView* self, intptr_t slot) {
-    if (auto* vqundoview = const_cast<VirtualQUndoView*>(dynamic_cast<const VirtualQUndoView*>(self))) {
-        vqundoview->setQUndoView_InitStyleOption_Callback(reinterpret_cast<VirtualQUndoView::QUndoView_InitStyleOption_Callback>(slot));
     }
 }
 

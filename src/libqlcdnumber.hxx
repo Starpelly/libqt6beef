@@ -22,6 +22,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     using QLCDNumber_Event_Callback = bool (*)(QLCDNumber*, QEvent*);
     using QLCDNumber_PaintEvent_Callback = void (*)(QLCDNumber*, QPaintEvent*);
     using QLCDNumber_ChangeEvent_Callback = void (*)(QLCDNumber*, QEvent*);
+    using QLCDNumber_InitStyleOption_Callback = void (*)(const QLCDNumber*, QStyleOptionFrame*);
     using QLCDNumber_DevType_Callback = int (*)();
     using QLCDNumber_SetVisible_Callback = void (*)(QLCDNumber*, bool);
     using QLCDNumber_MinimumSizeHint_Callback = QSize (*)();
@@ -37,7 +38,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     using QLCDNumber_KeyReleaseEvent_Callback = void (*)(QLCDNumber*, QKeyEvent*);
     using QLCDNumber_FocusInEvent_Callback = void (*)(QLCDNumber*, QFocusEvent*);
     using QLCDNumber_FocusOutEvent_Callback = void (*)(QLCDNumber*, QFocusEvent*);
-    using QLCDNumber_EnterEvent_Callback = void (*)(QLCDNumber*, QEvent*);
+    using QLCDNumber_EnterEvent_Callback = void (*)(QLCDNumber*, QEnterEvent*);
     using QLCDNumber_LeaveEvent_Callback = void (*)(QLCDNumber*, QEvent*);
     using QLCDNumber_MoveEvent_Callback = void (*)(QLCDNumber*, QMoveEvent*);
     using QLCDNumber_ResizeEvent_Callback = void (*)(QLCDNumber*, QResizeEvent*);
@@ -51,7 +52,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     using QLCDNumber_DropEvent_Callback = void (*)(QLCDNumber*, QDropEvent*);
     using QLCDNumber_ShowEvent_Callback = void (*)(QLCDNumber*, QShowEvent*);
     using QLCDNumber_HideEvent_Callback = void (*)(QLCDNumber*, QHideEvent*);
-    using QLCDNumber_NativeEvent_Callback = bool (*)(QLCDNumber*, const QByteArray&, void*, long*);
+    using QLCDNumber_NativeEvent_Callback = bool (*)(QLCDNumber*, const QByteArray&, void*, qintptr*);
     using QLCDNumber_Metric_Callback = int (*)(const QLCDNumber*, QPaintDevice::PaintDeviceMetric);
     using QLCDNumber_InitPainter_Callback = void (*)(const QLCDNumber*, QPainter*);
     using QLCDNumber_Redirected_Callback = QPaintDevice* (*)(const QLCDNumber*, QPoint*);
@@ -66,7 +67,6 @@ class VirtualQLCDNumber : public QLCDNumber {
     using QLCDNumber_ConnectNotify_Callback = void (*)(QLCDNumber*, const QMetaMethod&);
     using QLCDNumber_DisconnectNotify_Callback = void (*)(QLCDNumber*, const QMetaMethod&);
     using QLCDNumber_DrawFrame_Callback = void (*)(QLCDNumber*, QPainter*);
-    using QLCDNumber_InitStyleOption_Callback = void (*)(const QLCDNumber*, QStyleOptionFrame*);
     using QLCDNumber_UpdateMicroFocus_Callback = void (*)();
     using QLCDNumber_Create_Callback = void (*)();
     using QLCDNumber_Destroy_Callback = void (*)();
@@ -84,6 +84,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     QLCDNumber_Event_Callback qlcdnumber_event_callback = nullptr;
     QLCDNumber_PaintEvent_Callback qlcdnumber_paintevent_callback = nullptr;
     QLCDNumber_ChangeEvent_Callback qlcdnumber_changeevent_callback = nullptr;
+    QLCDNumber_InitStyleOption_Callback qlcdnumber_initstyleoption_callback = nullptr;
     QLCDNumber_DevType_Callback qlcdnumber_devtype_callback = nullptr;
     QLCDNumber_SetVisible_Callback qlcdnumber_setvisible_callback = nullptr;
     QLCDNumber_MinimumSizeHint_Callback qlcdnumber_minimumsizehint_callback = nullptr;
@@ -128,7 +129,6 @@ class VirtualQLCDNumber : public QLCDNumber {
     QLCDNumber_ConnectNotify_Callback qlcdnumber_connectnotify_callback = nullptr;
     QLCDNumber_DisconnectNotify_Callback qlcdnumber_disconnectnotify_callback = nullptr;
     QLCDNumber_DrawFrame_Callback qlcdnumber_drawframe_callback = nullptr;
-    QLCDNumber_InitStyleOption_Callback qlcdnumber_initstyleoption_callback = nullptr;
     QLCDNumber_UpdateMicroFocus_Callback qlcdnumber_updatemicrofocus_callback = nullptr;
     QLCDNumber_Create_Callback qlcdnumber_create_callback = nullptr;
     QLCDNumber_Destroy_Callback qlcdnumber_destroy_callback = nullptr;
@@ -145,6 +145,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     mutable bool qlcdnumber_event_isbase = false;
     mutable bool qlcdnumber_paintevent_isbase = false;
     mutable bool qlcdnumber_changeevent_isbase = false;
+    mutable bool qlcdnumber_initstyleoption_isbase = false;
     mutable bool qlcdnumber_devtype_isbase = false;
     mutable bool qlcdnumber_setvisible_isbase = false;
     mutable bool qlcdnumber_minimumsizehint_isbase = false;
@@ -189,7 +190,6 @@ class VirtualQLCDNumber : public QLCDNumber {
     mutable bool qlcdnumber_connectnotify_isbase = false;
     mutable bool qlcdnumber_disconnectnotify_isbase = false;
     mutable bool qlcdnumber_drawframe_isbase = false;
-    mutable bool qlcdnumber_initstyleoption_isbase = false;
     mutable bool qlcdnumber_updatemicrofocus_isbase = false;
     mutable bool qlcdnumber_create_isbase = false;
     mutable bool qlcdnumber_destroy_isbase = false;
@@ -212,6 +212,7 @@ class VirtualQLCDNumber : public QLCDNumber {
         qlcdnumber_event_callback = nullptr;
         qlcdnumber_paintevent_callback = nullptr;
         qlcdnumber_changeevent_callback = nullptr;
+        qlcdnumber_initstyleoption_callback = nullptr;
         qlcdnumber_devtype_callback = nullptr;
         qlcdnumber_setvisible_callback = nullptr;
         qlcdnumber_minimumsizehint_callback = nullptr;
@@ -256,7 +257,6 @@ class VirtualQLCDNumber : public QLCDNumber {
         qlcdnumber_connectnotify_callback = nullptr;
         qlcdnumber_disconnectnotify_callback = nullptr;
         qlcdnumber_drawframe_callback = nullptr;
-        qlcdnumber_initstyleoption_callback = nullptr;
         qlcdnumber_updatemicrofocus_callback = nullptr;
         qlcdnumber_create_callback = nullptr;
         qlcdnumber_destroy_callback = nullptr;
@@ -274,6 +274,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     void setQLCDNumber_Event_Callback(QLCDNumber_Event_Callback cb) { qlcdnumber_event_callback = cb; }
     void setQLCDNumber_PaintEvent_Callback(QLCDNumber_PaintEvent_Callback cb) { qlcdnumber_paintevent_callback = cb; }
     void setQLCDNumber_ChangeEvent_Callback(QLCDNumber_ChangeEvent_Callback cb) { qlcdnumber_changeevent_callback = cb; }
+    void setQLCDNumber_InitStyleOption_Callback(QLCDNumber_InitStyleOption_Callback cb) { qlcdnumber_initstyleoption_callback = cb; }
     void setQLCDNumber_DevType_Callback(QLCDNumber_DevType_Callback cb) { qlcdnumber_devtype_callback = cb; }
     void setQLCDNumber_SetVisible_Callback(QLCDNumber_SetVisible_Callback cb) { qlcdnumber_setvisible_callback = cb; }
     void setQLCDNumber_MinimumSizeHint_Callback(QLCDNumber_MinimumSizeHint_Callback cb) { qlcdnumber_minimumsizehint_callback = cb; }
@@ -318,7 +319,6 @@ class VirtualQLCDNumber : public QLCDNumber {
     void setQLCDNumber_ConnectNotify_Callback(QLCDNumber_ConnectNotify_Callback cb) { qlcdnumber_connectnotify_callback = cb; }
     void setQLCDNumber_DisconnectNotify_Callback(QLCDNumber_DisconnectNotify_Callback cb) { qlcdnumber_disconnectnotify_callback = cb; }
     void setQLCDNumber_DrawFrame_Callback(QLCDNumber_DrawFrame_Callback cb) { qlcdnumber_drawframe_callback = cb; }
-    void setQLCDNumber_InitStyleOption_Callback(QLCDNumber_InitStyleOption_Callback cb) { qlcdnumber_initstyleoption_callback = cb; }
     void setQLCDNumber_UpdateMicroFocus_Callback(QLCDNumber_UpdateMicroFocus_Callback cb) { qlcdnumber_updatemicrofocus_callback = cb; }
     void setQLCDNumber_Create_Callback(QLCDNumber_Create_Callback cb) { qlcdnumber_create_callback = cb; }
     void setQLCDNumber_Destroy_Callback(QLCDNumber_Destroy_Callback cb) { qlcdnumber_destroy_callback = cb; }
@@ -335,6 +335,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     void setQLCDNumber_Event_IsBase(bool value) const { qlcdnumber_event_isbase = value; }
     void setQLCDNumber_PaintEvent_IsBase(bool value) const { qlcdnumber_paintevent_isbase = value; }
     void setQLCDNumber_ChangeEvent_IsBase(bool value) const { qlcdnumber_changeevent_isbase = value; }
+    void setQLCDNumber_InitStyleOption_IsBase(bool value) const { qlcdnumber_initstyleoption_isbase = value; }
     void setQLCDNumber_DevType_IsBase(bool value) const { qlcdnumber_devtype_isbase = value; }
     void setQLCDNumber_SetVisible_IsBase(bool value) const { qlcdnumber_setvisible_isbase = value; }
     void setQLCDNumber_MinimumSizeHint_IsBase(bool value) const { qlcdnumber_minimumsizehint_isbase = value; }
@@ -379,7 +380,6 @@ class VirtualQLCDNumber : public QLCDNumber {
     void setQLCDNumber_ConnectNotify_IsBase(bool value) const { qlcdnumber_connectnotify_isbase = value; }
     void setQLCDNumber_DisconnectNotify_IsBase(bool value) const { qlcdnumber_disconnectnotify_isbase = value; }
     void setQLCDNumber_DrawFrame_IsBase(bool value) const { qlcdnumber_drawframe_isbase = value; }
-    void setQLCDNumber_InitStyleOption_IsBase(bool value) const { qlcdnumber_initstyleoption_isbase = value; }
     void setQLCDNumber_UpdateMicroFocus_IsBase(bool value) const { qlcdnumber_updatemicrofocus_isbase = value; }
     void setQLCDNumber_Create_IsBase(bool value) const { qlcdnumber_create_isbase = value; }
     void setQLCDNumber_Destroy_IsBase(bool value) const { qlcdnumber_destroy_isbase = value; }
@@ -447,6 +447,18 @@ class VirtualQLCDNumber : public QLCDNumber {
             qlcdnumber_changeevent_callback(this, param1);
         } else {
             QLCDNumber::changeEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qlcdnumber_initstyleoption_isbase) {
+            qlcdnumber_initstyleoption_isbase = false;
+            QLCDNumber::initStyleOption(option);
+        } else if (qlcdnumber_initstyleoption_callback != nullptr) {
+            qlcdnumber_initstyleoption_callback(this, option);
+        } else {
+            QLCDNumber::initStyleOption(option);
         }
     }
 
@@ -631,7 +643,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qlcdnumber_enterevent_isbase) {
             qlcdnumber_enterevent_isbase = false;
             QLCDNumber::enterEvent(event);
@@ -799,7 +811,7 @@ class VirtualQLCDNumber : public QLCDNumber {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qlcdnumber_nativeevent_isbase) {
             qlcdnumber_nativeevent_isbase = false;
             return QLCDNumber::nativeEvent(eventType, message, result);
@@ -975,18 +987,6 @@ class VirtualQLCDNumber : public QLCDNumber {
             qlcdnumber_drawframe_callback(this, param1);
         } else {
             QLCDNumber::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qlcdnumber_initstyleoption_isbase) {
-            qlcdnumber_initstyleoption_isbase = false;
-            QLCDNumber::initStyleOption(option);
-        } else if (qlcdnumber_initstyleoption_callback != nullptr) {
-            qlcdnumber_initstyleoption_callback(this, option);
-        } else {
-            QLCDNumber::initStyleOption(option);
         }
     }
 

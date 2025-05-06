@@ -31,6 +31,7 @@ typedef struct QStyleOptionFrame QStyleOptionFrame;
 typedef struct QStyleOptionGraphicsItem QStyleOptionGraphicsItem;
 typedef struct QStyleOptionGroupBox QStyleOptionGroupBox;
 typedef struct QStyleOptionHeader QStyleOptionHeader;
+typedef struct QStyleOptionHeaderV2 QStyleOptionHeaderV2;
 typedef struct QStyleOptionMenuItem QStyleOptionMenuItem;
 typedef struct QStyleOptionProgressBar QStyleOptionProgressBar;
 typedef struct QStyleOptionRubberBand QStyleOptionRubberBand;
@@ -39,7 +40,6 @@ typedef struct QStyleOptionSlider QStyleOptionSlider;
 typedef struct QStyleOptionSpinBox QStyleOptionSpinBox;
 typedef struct QStyleOptionTab QStyleOptionTab;
 typedef struct QStyleOptionTabBarBase QStyleOptionTabBarBase;
-typedef struct QStyleOptionTabV4 QStyleOptionTabV4;
 typedef struct QStyleOptionTabWidgetFrame QStyleOptionTabWidgetFrame;
 typedef struct QStyleOptionTitleBar QStyleOptionTitleBar;
 typedef struct QStyleOptionToolBar QStyleOptionToolBar;
@@ -112,7 +112,6 @@ QStyleOption* QStyleOption_new();
 QStyleOption* QStyleOption_new2(QStyleOption* other);
 QStyleOption* QStyleOption_new3(int version);
 QStyleOption* QStyleOption_new4(int version, int typeVal);
-void QStyleOption_Init(QStyleOption* self, QWidget* w);
 void QStyleOption_InitFrom(QStyleOption* self, QWidget* w);
 void QStyleOption_OperatorAssign(QStyleOption* self, QStyleOption* other);
 void QStyleOption_Delete(QStyleOption* self);
@@ -137,6 +136,10 @@ QStyleOptionHeader* QStyleOptionHeader_new();
 QStyleOptionHeader* QStyleOptionHeader_new2(QStyleOptionHeader* other);
 void QStyleOptionHeader_Delete(QStyleOptionHeader* self);
 
+QStyleOptionHeaderV2* QStyleOptionHeaderV2_new();
+QStyleOptionHeaderV2* QStyleOptionHeaderV2_new2(QStyleOptionHeaderV2* other);
+void QStyleOptionHeaderV2_Delete(QStyleOptionHeaderV2* self);
+
 QStyleOptionButton* QStyleOptionButton_new();
 QStyleOptionButton* QStyleOptionButton_new2(QStyleOptionButton* other);
 void QStyleOptionButton_Delete(QStyleOptionButton* self);
@@ -144,11 +147,6 @@ void QStyleOptionButton_Delete(QStyleOptionButton* self);
 QStyleOptionTab* QStyleOptionTab_new();
 QStyleOptionTab* QStyleOptionTab_new2(QStyleOptionTab* other);
 void QStyleOptionTab_Delete(QStyleOptionTab* self);
-
-QStyleOptionTabV4* QStyleOptionTabV4_new();
-QStyleOptionTabV4* QStyleOptionTabV4_new2(QStyleOptionTabV4* param1);
-void QStyleOptionTabV4_OperatorAssign(QStyleOptionTabV4* self, QStyleOptionTabV4* param1);
-void QStyleOptionTabV4_Delete(QStyleOptionTabV4* self);
 
 QStyleOptionToolBar* QStyleOptionToolBar_new();
 QStyleOptionToolBar* QStyleOptionToolBar_new2(QStyleOptionToolBar* other);

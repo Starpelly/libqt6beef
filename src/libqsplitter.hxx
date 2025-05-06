@@ -26,6 +26,7 @@ class VirtualQSplitter : public QSplitter {
     using QSplitter_ResizeEvent_Callback = void (*)(QSplitter*, QResizeEvent*);
     using QSplitter_ChangeEvent_Callback = void (*)(QSplitter*, QEvent*);
     using QSplitter_PaintEvent_Callback = void (*)(QSplitter*, QPaintEvent*);
+    using QSplitter_InitStyleOption_Callback = void (*)(const QSplitter*, QStyleOptionFrame*);
     using QSplitter_DevType_Callback = int (*)();
     using QSplitter_SetVisible_Callback = void (*)(QSplitter*, bool);
     using QSplitter_HeightForWidth_Callback = int (*)(const QSplitter*, int);
@@ -40,7 +41,7 @@ class VirtualQSplitter : public QSplitter {
     using QSplitter_KeyReleaseEvent_Callback = void (*)(QSplitter*, QKeyEvent*);
     using QSplitter_FocusInEvent_Callback = void (*)(QSplitter*, QFocusEvent*);
     using QSplitter_FocusOutEvent_Callback = void (*)(QSplitter*, QFocusEvent*);
-    using QSplitter_EnterEvent_Callback = void (*)(QSplitter*, QEvent*);
+    using QSplitter_EnterEvent_Callback = void (*)(QSplitter*, QEnterEvent*);
     using QSplitter_LeaveEvent_Callback = void (*)(QSplitter*, QEvent*);
     using QSplitter_MoveEvent_Callback = void (*)(QSplitter*, QMoveEvent*);
     using QSplitter_CloseEvent_Callback = void (*)(QSplitter*, QCloseEvent*);
@@ -53,7 +54,7 @@ class VirtualQSplitter : public QSplitter {
     using QSplitter_DropEvent_Callback = void (*)(QSplitter*, QDropEvent*);
     using QSplitter_ShowEvent_Callback = void (*)(QSplitter*, QShowEvent*);
     using QSplitter_HideEvent_Callback = void (*)(QSplitter*, QHideEvent*);
-    using QSplitter_NativeEvent_Callback = bool (*)(QSplitter*, const QByteArray&, void*, long*);
+    using QSplitter_NativeEvent_Callback = bool (*)(QSplitter*, const QByteArray&, void*, qintptr*);
     using QSplitter_Metric_Callback = int (*)(const QSplitter*, QPaintDevice::PaintDeviceMetric);
     using QSplitter_InitPainter_Callback = void (*)(const QSplitter*, QPainter*);
     using QSplitter_Redirected_Callback = QPaintDevice* (*)(const QSplitter*, QPoint*);
@@ -70,7 +71,6 @@ class VirtualQSplitter : public QSplitter {
     using QSplitter_SetRubberBand_Callback = void (*)(QSplitter*, int);
     using QSplitter_ClosestLegalPosition_Callback = int (*)(QSplitter*, int, int);
     using QSplitter_DrawFrame_Callback = void (*)(QSplitter*, QPainter*);
-    using QSplitter_InitStyleOption_Callback = void (*)(const QSplitter*, QStyleOptionFrame*);
     using QSplitter_UpdateMicroFocus_Callback = void (*)();
     using QSplitter_Create_Callback = void (*)();
     using QSplitter_Destroy_Callback = void (*)();
@@ -92,6 +92,7 @@ class VirtualQSplitter : public QSplitter {
     QSplitter_ResizeEvent_Callback qsplitter_resizeevent_callback = nullptr;
     QSplitter_ChangeEvent_Callback qsplitter_changeevent_callback = nullptr;
     QSplitter_PaintEvent_Callback qsplitter_paintevent_callback = nullptr;
+    QSplitter_InitStyleOption_Callback qsplitter_initstyleoption_callback = nullptr;
     QSplitter_DevType_Callback qsplitter_devtype_callback = nullptr;
     QSplitter_SetVisible_Callback qsplitter_setvisible_callback = nullptr;
     QSplitter_HeightForWidth_Callback qsplitter_heightforwidth_callback = nullptr;
@@ -136,7 +137,6 @@ class VirtualQSplitter : public QSplitter {
     QSplitter_SetRubberBand_Callback qsplitter_setrubberband_callback = nullptr;
     QSplitter_ClosestLegalPosition_Callback qsplitter_closestlegalposition_callback = nullptr;
     QSplitter_DrawFrame_Callback qsplitter_drawframe_callback = nullptr;
-    QSplitter_InitStyleOption_Callback qsplitter_initstyleoption_callback = nullptr;
     QSplitter_UpdateMicroFocus_Callback qsplitter_updatemicrofocus_callback = nullptr;
     QSplitter_Create_Callback qsplitter_create_callback = nullptr;
     QSplitter_Destroy_Callback qsplitter_destroy_callback = nullptr;
@@ -157,6 +157,7 @@ class VirtualQSplitter : public QSplitter {
     mutable bool qsplitter_resizeevent_isbase = false;
     mutable bool qsplitter_changeevent_isbase = false;
     mutable bool qsplitter_paintevent_isbase = false;
+    mutable bool qsplitter_initstyleoption_isbase = false;
     mutable bool qsplitter_devtype_isbase = false;
     mutable bool qsplitter_setvisible_isbase = false;
     mutable bool qsplitter_heightforwidth_isbase = false;
@@ -201,7 +202,6 @@ class VirtualQSplitter : public QSplitter {
     mutable bool qsplitter_setrubberband_isbase = false;
     mutable bool qsplitter_closestlegalposition_isbase = false;
     mutable bool qsplitter_drawframe_isbase = false;
-    mutable bool qsplitter_initstyleoption_isbase = false;
     mutable bool qsplitter_updatemicrofocus_isbase = false;
     mutable bool qsplitter_create_isbase = false;
     mutable bool qsplitter_destroy_isbase = false;
@@ -228,6 +228,7 @@ class VirtualQSplitter : public QSplitter {
         qsplitter_resizeevent_callback = nullptr;
         qsplitter_changeevent_callback = nullptr;
         qsplitter_paintevent_callback = nullptr;
+        qsplitter_initstyleoption_callback = nullptr;
         qsplitter_devtype_callback = nullptr;
         qsplitter_setvisible_callback = nullptr;
         qsplitter_heightforwidth_callback = nullptr;
@@ -272,7 +273,6 @@ class VirtualQSplitter : public QSplitter {
         qsplitter_setrubberband_callback = nullptr;
         qsplitter_closestlegalposition_callback = nullptr;
         qsplitter_drawframe_callback = nullptr;
-        qsplitter_initstyleoption_callback = nullptr;
         qsplitter_updatemicrofocus_callback = nullptr;
         qsplitter_create_callback = nullptr;
         qsplitter_destroy_callback = nullptr;
@@ -294,6 +294,7 @@ class VirtualQSplitter : public QSplitter {
     void setQSplitter_ResizeEvent_Callback(QSplitter_ResizeEvent_Callback cb) { qsplitter_resizeevent_callback = cb; }
     void setQSplitter_ChangeEvent_Callback(QSplitter_ChangeEvent_Callback cb) { qsplitter_changeevent_callback = cb; }
     void setQSplitter_PaintEvent_Callback(QSplitter_PaintEvent_Callback cb) { qsplitter_paintevent_callback = cb; }
+    void setQSplitter_InitStyleOption_Callback(QSplitter_InitStyleOption_Callback cb) { qsplitter_initstyleoption_callback = cb; }
     void setQSplitter_DevType_Callback(QSplitter_DevType_Callback cb) { qsplitter_devtype_callback = cb; }
     void setQSplitter_SetVisible_Callback(QSplitter_SetVisible_Callback cb) { qsplitter_setvisible_callback = cb; }
     void setQSplitter_HeightForWidth_Callback(QSplitter_HeightForWidth_Callback cb) { qsplitter_heightforwidth_callback = cb; }
@@ -338,7 +339,6 @@ class VirtualQSplitter : public QSplitter {
     void setQSplitter_SetRubberBand_Callback(QSplitter_SetRubberBand_Callback cb) { qsplitter_setrubberband_callback = cb; }
     void setQSplitter_ClosestLegalPosition_Callback(QSplitter_ClosestLegalPosition_Callback cb) { qsplitter_closestlegalposition_callback = cb; }
     void setQSplitter_DrawFrame_Callback(QSplitter_DrawFrame_Callback cb) { qsplitter_drawframe_callback = cb; }
-    void setQSplitter_InitStyleOption_Callback(QSplitter_InitStyleOption_Callback cb) { qsplitter_initstyleoption_callback = cb; }
     void setQSplitter_UpdateMicroFocus_Callback(QSplitter_UpdateMicroFocus_Callback cb) { qsplitter_updatemicrofocus_callback = cb; }
     void setQSplitter_Create_Callback(QSplitter_Create_Callback cb) { qsplitter_create_callback = cb; }
     void setQSplitter_Destroy_Callback(QSplitter_Destroy_Callback cb) { qsplitter_destroy_callback = cb; }
@@ -359,6 +359,7 @@ class VirtualQSplitter : public QSplitter {
     void setQSplitter_ResizeEvent_IsBase(bool value) const { qsplitter_resizeevent_isbase = value; }
     void setQSplitter_ChangeEvent_IsBase(bool value) const { qsplitter_changeevent_isbase = value; }
     void setQSplitter_PaintEvent_IsBase(bool value) const { qsplitter_paintevent_isbase = value; }
+    void setQSplitter_InitStyleOption_IsBase(bool value) const { qsplitter_initstyleoption_isbase = value; }
     void setQSplitter_DevType_IsBase(bool value) const { qsplitter_devtype_isbase = value; }
     void setQSplitter_SetVisible_IsBase(bool value) const { qsplitter_setvisible_isbase = value; }
     void setQSplitter_HeightForWidth_IsBase(bool value) const { qsplitter_heightforwidth_isbase = value; }
@@ -403,7 +404,6 @@ class VirtualQSplitter : public QSplitter {
     void setQSplitter_SetRubberBand_IsBase(bool value) const { qsplitter_setrubberband_isbase = value; }
     void setQSplitter_ClosestLegalPosition_IsBase(bool value) const { qsplitter_closestlegalposition_isbase = value; }
     void setQSplitter_DrawFrame_IsBase(bool value) const { qsplitter_drawframe_isbase = value; }
-    void setQSplitter_InitStyleOption_IsBase(bool value) const { qsplitter_initstyleoption_isbase = value; }
     void setQSplitter_UpdateMicroFocus_IsBase(bool value) const { qsplitter_updatemicrofocus_isbase = value; }
     void setQSplitter_Create_IsBase(bool value) const { qsplitter_create_isbase = value; }
     void setQSplitter_Destroy_IsBase(bool value) const { qsplitter_destroy_isbase = value; }
@@ -519,6 +519,18 @@ class VirtualQSplitter : public QSplitter {
             qsplitter_paintevent_callback(this, param1);
         } else {
             QSplitter::paintEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qsplitter_initstyleoption_isbase) {
+            qsplitter_initstyleoption_isbase = false;
+            QSplitter::initStyleOption(option);
+        } else if (qsplitter_initstyleoption_callback != nullptr) {
+            qsplitter_initstyleoption_callback(this, option);
+        } else {
+            QSplitter::initStyleOption(option);
         }
     }
 
@@ -691,7 +703,7 @@ class VirtualQSplitter : public QSplitter {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qsplitter_enterevent_isbase) {
             qsplitter_enterevent_isbase = false;
             QSplitter::enterEvent(event);
@@ -847,7 +859,7 @@ class VirtualQSplitter : public QSplitter {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qsplitter_nativeevent_isbase) {
             qsplitter_nativeevent_isbase = false;
             return QSplitter::nativeEvent(eventType, message, result);
@@ -1051,18 +1063,6 @@ class VirtualQSplitter : public QSplitter {
     }
 
     // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qsplitter_initstyleoption_isbase) {
-            qsplitter_initstyleoption_isbase = false;
-            QSplitter::initStyleOption(option);
-        } else if (qsplitter_initstyleoption_callback != nullptr) {
-            qsplitter_initstyleoption_callback(this, option);
-        } else {
-            QSplitter::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     void updateMicroFocus() {
         if (qsplitter_updatemicrofocus_isbase) {
             qsplitter_updatemicrofocus_isbase = false;
@@ -1196,7 +1196,7 @@ class VirtualQSplitterHandle : public QSplitterHandle {
     using QSplitterHandle_KeyReleaseEvent_Callback = void (*)(QSplitterHandle*, QKeyEvent*);
     using QSplitterHandle_FocusInEvent_Callback = void (*)(QSplitterHandle*, QFocusEvent*);
     using QSplitterHandle_FocusOutEvent_Callback = void (*)(QSplitterHandle*, QFocusEvent*);
-    using QSplitterHandle_EnterEvent_Callback = void (*)(QSplitterHandle*, QEvent*);
+    using QSplitterHandle_EnterEvent_Callback = void (*)(QSplitterHandle*, QEnterEvent*);
     using QSplitterHandle_LeaveEvent_Callback = void (*)(QSplitterHandle*, QEvent*);
     using QSplitterHandle_MoveEvent_Callback = void (*)(QSplitterHandle*, QMoveEvent*);
     using QSplitterHandle_CloseEvent_Callback = void (*)(QSplitterHandle*, QCloseEvent*);
@@ -1209,7 +1209,7 @@ class VirtualQSplitterHandle : public QSplitterHandle {
     using QSplitterHandle_DropEvent_Callback = void (*)(QSplitterHandle*, QDropEvent*);
     using QSplitterHandle_ShowEvent_Callback = void (*)(QSplitterHandle*, QShowEvent*);
     using QSplitterHandle_HideEvent_Callback = void (*)(QSplitterHandle*, QHideEvent*);
-    using QSplitterHandle_NativeEvent_Callback = bool (*)(QSplitterHandle*, const QByteArray&, void*, long*);
+    using QSplitterHandle_NativeEvent_Callback = bool (*)(QSplitterHandle*, const QByteArray&, void*, qintptr*);
     using QSplitterHandle_ChangeEvent_Callback = void (*)(QSplitterHandle*, QEvent*);
     using QSplitterHandle_Metric_Callback = int (*)(const QSplitterHandle*, QPaintDevice::PaintDeviceMetric);
     using QSplitterHandle_InitPainter_Callback = void (*)(const QSplitterHandle*, QPainter*);
@@ -1787,7 +1787,7 @@ class VirtualQSplitterHandle : public QSplitterHandle {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qsplitterhandle_enterevent_isbase) {
             qsplitterhandle_enterevent_isbase = false;
             QSplitterHandle::enterEvent(event);
@@ -1943,7 +1943,7 @@ class VirtualQSplitterHandle : public QSplitterHandle {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qsplitterhandle_nativeevent_isbase) {
             qsplitterhandle_nativeevent_isbase = false;
             return QSplitterHandle::nativeEvent(eventType, message, result);

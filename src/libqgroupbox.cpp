@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -11,6 +13,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -118,18 +121,6 @@ int QGroupBox_QBaseMetacall(QGroupBox* self, int param1, int param2, void** para
 
 libqt_string QGroupBox_Tr(const char* s) {
     QString _ret = QGroupBox::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGroupBox_TrUtf8(const char* s) {
-    QString _ret = QGroupBox::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -226,30 +217,6 @@ libqt_string QGroupBox_Tr2(const char* s, const char* c) {
 
 libqt_string QGroupBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGroupBox::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGroupBox_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGroupBox::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGroupBox_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGroupBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -529,6 +496,32 @@ void QGroupBox_QBaseMouseReleaseEvent(QGroupBox* self, QMouseEvent* event) {
 void QGroupBox_OnMouseReleaseEvent(QGroupBox* self, intptr_t slot) {
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
         vqgroupbox->setQGroupBox_MouseReleaseEvent_Callback(reinterpret_cast<VirtualQGroupBox::QGroupBox_MouseReleaseEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QGroupBox_InitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option) {
+    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
+        vqgroupbox->initStyleOption(option);
+    } else {
+        vqgroupbox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QGroupBox_QBaseInitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option) {
+    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
+        vqgroupbox->setQGroupBox_InitStyleOption_IsBase(true);
+        vqgroupbox->initStyleOption(option);
+    } else {
+        vqgroupbox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGroupBox_OnInitStyleOption(const QGroupBox* self, intptr_t slot) {
+    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
+        vqgroupbox->setQGroupBox_InitStyleOption_Callback(reinterpret_cast<VirtualQGroupBox::QGroupBox_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -819,7 +812,7 @@ void QGroupBox_OnFocusOutEvent(QGroupBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QGroupBox_EnterEvent(QGroupBox* self, QEvent* event) {
+void QGroupBox_EnterEvent(QGroupBox* self, QEnterEvent* event) {
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
         vqgroupbox->enterEvent(event);
     } else {
@@ -828,7 +821,7 @@ void QGroupBox_EnterEvent(QGroupBox* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QGroupBox_QBaseEnterEvent(QGroupBox* self, QEvent* event) {
+void QGroupBox_QBaseEnterEvent(QGroupBox* self, QEnterEvent* event) {
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
         vqgroupbox->setQGroupBox_EnterEvent_IsBase(true);
         vqgroupbox->enterEvent(event);
@@ -1157,23 +1150,23 @@ void QGroupBox_OnHideEvent(QGroupBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QGroupBox_NativeEvent(QGroupBox* self, libqt_string eventType, void* message, long* result) {
+bool QGroupBox_NativeEvent(QGroupBox* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
-        return vqgroupbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgroupbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqgroupbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgroupbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QGroupBox_QBaseNativeEvent(QGroupBox* self, libqt_string eventType, void* message, long* result) {
+bool QGroupBox_QBaseNativeEvent(QGroupBox* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
         vqgroupbox->setQGroupBox_NativeEvent_IsBase(true);
-        return vqgroupbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgroupbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqgroupbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqgroupbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1493,32 +1486,6 @@ void QGroupBox_QBaseDisconnectNotify(QGroupBox* self, QMetaMethod* signal) {
 void QGroupBox_OnDisconnectNotify(QGroupBox* self, intptr_t slot) {
     if (auto* vqgroupbox = dynamic_cast<VirtualQGroupBox*>(self)) {
         vqgroupbox->setQGroupBox_DisconnectNotify_Callback(reinterpret_cast<VirtualQGroupBox::QGroupBox_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QGroupBox_InitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option) {
-    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
-        vqgroupbox->initStyleOption(option);
-    } else {
-        vqgroupbox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QGroupBox_QBaseInitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option) {
-    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
-        vqgroupbox->setQGroupBox_InitStyleOption_IsBase(true);
-        vqgroupbox->initStyleOption(option);
-    } else {
-        vqgroupbox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGroupBox_OnInitStyleOption(const QGroupBox* self, intptr_t slot) {
-    if (auto* vqgroupbox = const_cast<VirtualQGroupBox*>(dynamic_cast<const VirtualQGroupBox*>(self))) {
-        vqgroupbox->setQGroupBox_InitStyleOption_Callback(reinterpret_cast<VirtualQGroupBox::QGroupBox_InitStyleOption_Callback>(slot));
     }
 }
 

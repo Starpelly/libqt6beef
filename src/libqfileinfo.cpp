@@ -1,6 +1,6 @@
 #include <QDateTime>
 #include <QDir>
-#include <QFile>
+#include <QFileDevice>
 #include <QFileInfo>
 #include <QString>
 #include <QByteArray>
@@ -18,7 +18,7 @@ QFileInfo* QFileInfo_new2(libqt_string file) {
     return new QFileInfo(file_QString);
 }
 
-QFileInfo* QFileInfo_new3(QFile* file) {
+QFileInfo* QFileInfo_new3(QFileDevice* file) {
     return new QFileInfo(*file);
 }
 
@@ -52,7 +52,7 @@ void QFileInfo_SetFile(QFileInfo* self, libqt_string file) {
     self->setFile(file_QString);
 }
 
-void QFileInfo_SetFileWithFile(QFileInfo* self, QFile* file) {
+void QFileInfo_SetFileWithFile(QFileInfo* self, QFileDevice* file) {
     self->setFile(*file);
 }
 
@@ -278,6 +278,10 @@ bool QFileInfo_IsShortcut(const QFileInfo* self) {
     return self->isShortcut();
 }
 
+bool QFileInfo_IsAlias(const QFileInfo* self) {
+    return self->isAlias();
+}
+
 bool QFileInfo_IsJunction(const QFileInfo* self) {
     return self->isJunction();
 }
@@ -290,8 +294,8 @@ bool QFileInfo_IsBundle(const QFileInfo* self) {
     return self->isBundle();
 }
 
-libqt_string QFileInfo_ReadLink(const QFileInfo* self) {
-    QString _ret = self->readLink();
+libqt_string QFileInfo_SymLinkTarget(const QFileInfo* self) {
+    QString _ret = self->symLinkTarget();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -302,8 +306,8 @@ libqt_string QFileInfo_ReadLink(const QFileInfo* self) {
     return _str;
 }
 
-libqt_string QFileInfo_SymLinkTarget(const QFileInfo* self) {
-    QString _ret = self->symLinkTarget();
+libqt_string QFileInfo_JunctionTarget(const QFileInfo* self) {
+    QString _ret = self->junctionTarget();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -358,10 +362,6 @@ long long QFileInfo_Size(const QFileInfo* self) {
     return static_cast<long long>(self->size());
 }
 
-QDateTime* QFileInfo_Created(const QFileInfo* self) {
-    return new QDateTime(self->created());
-}
-
 QDateTime* QFileInfo_BirthTime(const QFileInfo* self) {
     return new QDateTime(self->birthTime());
 }
@@ -388,6 +388,10 @@ bool QFileInfo_Caching(const QFileInfo* self) {
 
 void QFileInfo_SetCaching(QFileInfo* self, bool on) {
     self->setCaching(on);
+}
+
+void QFileInfo_Stat(QFileInfo* self) {
+    self->stat();
 }
 
 void QFileInfo_Delete(QFileInfo* self) {

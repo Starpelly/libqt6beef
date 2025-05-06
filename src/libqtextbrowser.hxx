@@ -19,7 +19,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     // Virtual class public types (including callbacks)
     using QTextBrowser_Metacall_Callback = int (*)(QTextBrowser*, QMetaObject::Call, int, void**);
     using QTextBrowser_LoadResource_Callback = QVariant (*)(QTextBrowser*, int, const QUrl&);
-    using QTextBrowser_SetSource_Callback = void (*)(QTextBrowser*, const QUrl&);
     using QTextBrowser_Backward_Callback = void (*)();
     using QTextBrowser_Forward_Callback = void (*)();
     using QTextBrowser_Home_Callback = void (*)();
@@ -32,6 +31,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     using QTextBrowser_FocusOutEvent_Callback = void (*)(QTextBrowser*, QFocusEvent*);
     using QTextBrowser_FocusNextPrevChild_Callback = bool (*)(QTextBrowser*, bool);
     using QTextBrowser_PaintEvent_Callback = void (*)(QTextBrowser*, QPaintEvent*);
+    using QTextBrowser_DoSetSource_Callback = void (*)(QTextBrowser*, const QUrl&, QTextDocument::ResourceType);
     using QTextBrowser_InputMethodQuery_Callback = QVariant (*)(const QTextBrowser*, Qt::InputMethodQuery);
     using QTextBrowser_TimerEvent_Callback = void (*)(QTextBrowser*, QTimerEvent*);
     using QTextBrowser_KeyReleaseEvent_Callback = void (*)(QTextBrowser*, QKeyEvent*);
@@ -58,19 +58,20 @@ class VirtualQTextBrowser : public QTextBrowser {
     using QTextBrowser_EventFilter_Callback = bool (*)(QTextBrowser*, QObject*, QEvent*);
     using QTextBrowser_ViewportEvent_Callback = bool (*)(QTextBrowser*, QEvent*);
     using QTextBrowser_ViewportSizeHint_Callback = QSize (*)();
+    using QTextBrowser_InitStyleOption_Callback = void (*)(const QTextBrowser*, QStyleOptionFrame*);
     using QTextBrowser_DevType_Callback = int (*)();
     using QTextBrowser_SetVisible_Callback = void (*)(QTextBrowser*, bool);
     using QTextBrowser_HeightForWidth_Callback = int (*)(const QTextBrowser*, int);
     using QTextBrowser_HasHeightForWidth_Callback = bool (*)();
     using QTextBrowser_PaintEngine_Callback = QPaintEngine* (*)();
-    using QTextBrowser_EnterEvent_Callback = void (*)(QTextBrowser*, QEvent*);
+    using QTextBrowser_EnterEvent_Callback = void (*)(QTextBrowser*, QEnterEvent*);
     using QTextBrowser_LeaveEvent_Callback = void (*)(QTextBrowser*, QEvent*);
     using QTextBrowser_MoveEvent_Callback = void (*)(QTextBrowser*, QMoveEvent*);
     using QTextBrowser_CloseEvent_Callback = void (*)(QTextBrowser*, QCloseEvent*);
     using QTextBrowser_TabletEvent_Callback = void (*)(QTextBrowser*, QTabletEvent*);
     using QTextBrowser_ActionEvent_Callback = void (*)(QTextBrowser*, QActionEvent*);
     using QTextBrowser_HideEvent_Callback = void (*)(QTextBrowser*, QHideEvent*);
-    using QTextBrowser_NativeEvent_Callback = bool (*)(QTextBrowser*, const QByteArray&, void*, long*);
+    using QTextBrowser_NativeEvent_Callback = bool (*)(QTextBrowser*, const QByteArray&, void*, qintptr*);
     using QTextBrowser_Metric_Callback = int (*)(const QTextBrowser*, QPaintDevice::PaintDeviceMetric);
     using QTextBrowser_InitPainter_Callback = void (*)(const QTextBrowser*, QPainter*);
     using QTextBrowser_Redirected_Callback = QPaintDevice* (*)(const QTextBrowser*, QPoint*);
@@ -79,13 +80,10 @@ class VirtualQTextBrowser : public QTextBrowser {
     using QTextBrowser_CustomEvent_Callback = void (*)(QTextBrowser*, QEvent*);
     using QTextBrowser_ConnectNotify_Callback = void (*)(QTextBrowser*, const QMetaMethod&);
     using QTextBrowser_DisconnectNotify_Callback = void (*)(QTextBrowser*, const QMetaMethod&);
-    using QTextBrowser_DoSetSource_Callback = void (*)(QTextBrowser*, const QUrl&);
-    using QTextBrowser_DoSetSource2_Callback = void (*)(QTextBrowser*, const QUrl&, QTextDocument::ResourceType);
     using QTextBrowser_ZoomInF_Callback = void (*)(QTextBrowser*, float);
     using QTextBrowser_SetViewportMargins_Callback = void (*)(QTextBrowser*, int, int, int, int);
     using QTextBrowser_ViewportMargins_Callback = QMargins (*)();
     using QTextBrowser_DrawFrame_Callback = void (*)(QTextBrowser*, QPainter*);
-    using QTextBrowser_InitStyleOption_Callback = void (*)(const QTextBrowser*, QStyleOptionFrame*);
     using QTextBrowser_UpdateMicroFocus_Callback = void (*)();
     using QTextBrowser_Create_Callback = void (*)();
     using QTextBrowser_Destroy_Callback = void (*)();
@@ -100,7 +98,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     // Instance callback storage
     QTextBrowser_Metacall_Callback qtextbrowser_metacall_callback = nullptr;
     QTextBrowser_LoadResource_Callback qtextbrowser_loadresource_callback = nullptr;
-    QTextBrowser_SetSource_Callback qtextbrowser_setsource_callback = nullptr;
     QTextBrowser_Backward_Callback qtextbrowser_backward_callback = nullptr;
     QTextBrowser_Forward_Callback qtextbrowser_forward_callback = nullptr;
     QTextBrowser_Home_Callback qtextbrowser_home_callback = nullptr;
@@ -113,6 +110,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     QTextBrowser_FocusOutEvent_Callback qtextbrowser_focusoutevent_callback = nullptr;
     QTextBrowser_FocusNextPrevChild_Callback qtextbrowser_focusnextprevchild_callback = nullptr;
     QTextBrowser_PaintEvent_Callback qtextbrowser_paintevent_callback = nullptr;
+    QTextBrowser_DoSetSource_Callback qtextbrowser_dosetsource_callback = nullptr;
     QTextBrowser_InputMethodQuery_Callback qtextbrowser_inputmethodquery_callback = nullptr;
     QTextBrowser_TimerEvent_Callback qtextbrowser_timerevent_callback = nullptr;
     QTextBrowser_KeyReleaseEvent_Callback qtextbrowser_keyreleaseevent_callback = nullptr;
@@ -139,6 +137,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     QTextBrowser_EventFilter_Callback qtextbrowser_eventfilter_callback = nullptr;
     QTextBrowser_ViewportEvent_Callback qtextbrowser_viewportevent_callback = nullptr;
     QTextBrowser_ViewportSizeHint_Callback qtextbrowser_viewportsizehint_callback = nullptr;
+    QTextBrowser_InitStyleOption_Callback qtextbrowser_initstyleoption_callback = nullptr;
     QTextBrowser_DevType_Callback qtextbrowser_devtype_callback = nullptr;
     QTextBrowser_SetVisible_Callback qtextbrowser_setvisible_callback = nullptr;
     QTextBrowser_HeightForWidth_Callback qtextbrowser_heightforwidth_callback = nullptr;
@@ -160,13 +159,10 @@ class VirtualQTextBrowser : public QTextBrowser {
     QTextBrowser_CustomEvent_Callback qtextbrowser_customevent_callback = nullptr;
     QTextBrowser_ConnectNotify_Callback qtextbrowser_connectnotify_callback = nullptr;
     QTextBrowser_DisconnectNotify_Callback qtextbrowser_disconnectnotify_callback = nullptr;
-    QTextBrowser_DoSetSource_Callback qtextbrowser_dosetsource_callback = nullptr;
-    QTextBrowser_DoSetSource2_Callback qtextbrowser_dosetsource2_callback = nullptr;
     QTextBrowser_ZoomInF_Callback qtextbrowser_zoominf_callback = nullptr;
     QTextBrowser_SetViewportMargins_Callback qtextbrowser_setviewportmargins_callback = nullptr;
     QTextBrowser_ViewportMargins_Callback qtextbrowser_viewportmargins_callback = nullptr;
     QTextBrowser_DrawFrame_Callback qtextbrowser_drawframe_callback = nullptr;
-    QTextBrowser_InitStyleOption_Callback qtextbrowser_initstyleoption_callback = nullptr;
     QTextBrowser_UpdateMicroFocus_Callback qtextbrowser_updatemicrofocus_callback = nullptr;
     QTextBrowser_Create_Callback qtextbrowser_create_callback = nullptr;
     QTextBrowser_Destroy_Callback qtextbrowser_destroy_callback = nullptr;
@@ -180,7 +176,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     // Instance base flags
     mutable bool qtextbrowser_metacall_isbase = false;
     mutable bool qtextbrowser_loadresource_isbase = false;
-    mutable bool qtextbrowser_setsource_isbase = false;
     mutable bool qtextbrowser_backward_isbase = false;
     mutable bool qtextbrowser_forward_isbase = false;
     mutable bool qtextbrowser_home_isbase = false;
@@ -193,6 +188,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     mutable bool qtextbrowser_focusoutevent_isbase = false;
     mutable bool qtextbrowser_focusnextprevchild_isbase = false;
     mutable bool qtextbrowser_paintevent_isbase = false;
+    mutable bool qtextbrowser_dosetsource_isbase = false;
     mutable bool qtextbrowser_inputmethodquery_isbase = false;
     mutable bool qtextbrowser_timerevent_isbase = false;
     mutable bool qtextbrowser_keyreleaseevent_isbase = false;
@@ -219,6 +215,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     mutable bool qtextbrowser_eventfilter_isbase = false;
     mutable bool qtextbrowser_viewportevent_isbase = false;
     mutable bool qtextbrowser_viewportsizehint_isbase = false;
+    mutable bool qtextbrowser_initstyleoption_isbase = false;
     mutable bool qtextbrowser_devtype_isbase = false;
     mutable bool qtextbrowser_setvisible_isbase = false;
     mutable bool qtextbrowser_heightforwidth_isbase = false;
@@ -240,13 +237,10 @@ class VirtualQTextBrowser : public QTextBrowser {
     mutable bool qtextbrowser_customevent_isbase = false;
     mutable bool qtextbrowser_connectnotify_isbase = false;
     mutable bool qtextbrowser_disconnectnotify_isbase = false;
-    mutable bool qtextbrowser_dosetsource_isbase = false;
-    mutable bool qtextbrowser_dosetsource2_isbase = false;
     mutable bool qtextbrowser_zoominf_isbase = false;
     mutable bool qtextbrowser_setviewportmargins_isbase = false;
     mutable bool qtextbrowser_viewportmargins_isbase = false;
     mutable bool qtextbrowser_drawframe_isbase = false;
-    mutable bool qtextbrowser_initstyleoption_isbase = false;
     mutable bool qtextbrowser_updatemicrofocus_isbase = false;
     mutable bool qtextbrowser_create_isbase = false;
     mutable bool qtextbrowser_destroy_isbase = false;
@@ -264,7 +258,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     ~VirtualQTextBrowser() {
         qtextbrowser_metacall_callback = nullptr;
         qtextbrowser_loadresource_callback = nullptr;
-        qtextbrowser_setsource_callback = nullptr;
         qtextbrowser_backward_callback = nullptr;
         qtextbrowser_forward_callback = nullptr;
         qtextbrowser_home_callback = nullptr;
@@ -277,6 +270,7 @@ class VirtualQTextBrowser : public QTextBrowser {
         qtextbrowser_focusoutevent_callback = nullptr;
         qtextbrowser_focusnextprevchild_callback = nullptr;
         qtextbrowser_paintevent_callback = nullptr;
+        qtextbrowser_dosetsource_callback = nullptr;
         qtextbrowser_inputmethodquery_callback = nullptr;
         qtextbrowser_timerevent_callback = nullptr;
         qtextbrowser_keyreleaseevent_callback = nullptr;
@@ -303,6 +297,7 @@ class VirtualQTextBrowser : public QTextBrowser {
         qtextbrowser_eventfilter_callback = nullptr;
         qtextbrowser_viewportevent_callback = nullptr;
         qtextbrowser_viewportsizehint_callback = nullptr;
+        qtextbrowser_initstyleoption_callback = nullptr;
         qtextbrowser_devtype_callback = nullptr;
         qtextbrowser_setvisible_callback = nullptr;
         qtextbrowser_heightforwidth_callback = nullptr;
@@ -324,13 +319,10 @@ class VirtualQTextBrowser : public QTextBrowser {
         qtextbrowser_customevent_callback = nullptr;
         qtextbrowser_connectnotify_callback = nullptr;
         qtextbrowser_disconnectnotify_callback = nullptr;
-        qtextbrowser_dosetsource_callback = nullptr;
-        qtextbrowser_dosetsource2_callback = nullptr;
         qtextbrowser_zoominf_callback = nullptr;
         qtextbrowser_setviewportmargins_callback = nullptr;
         qtextbrowser_viewportmargins_callback = nullptr;
         qtextbrowser_drawframe_callback = nullptr;
-        qtextbrowser_initstyleoption_callback = nullptr;
         qtextbrowser_updatemicrofocus_callback = nullptr;
         qtextbrowser_create_callback = nullptr;
         qtextbrowser_destroy_callback = nullptr;
@@ -345,7 +337,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     // Callback setters
     void setQTextBrowser_Metacall_Callback(QTextBrowser_Metacall_Callback cb) { qtextbrowser_metacall_callback = cb; }
     void setQTextBrowser_LoadResource_Callback(QTextBrowser_LoadResource_Callback cb) { qtextbrowser_loadresource_callback = cb; }
-    void setQTextBrowser_SetSource_Callback(QTextBrowser_SetSource_Callback cb) { qtextbrowser_setsource_callback = cb; }
     void setQTextBrowser_Backward_Callback(QTextBrowser_Backward_Callback cb) { qtextbrowser_backward_callback = cb; }
     void setQTextBrowser_Forward_Callback(QTextBrowser_Forward_Callback cb) { qtextbrowser_forward_callback = cb; }
     void setQTextBrowser_Home_Callback(QTextBrowser_Home_Callback cb) { qtextbrowser_home_callback = cb; }
@@ -358,6 +349,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_FocusOutEvent_Callback(QTextBrowser_FocusOutEvent_Callback cb) { qtextbrowser_focusoutevent_callback = cb; }
     void setQTextBrowser_FocusNextPrevChild_Callback(QTextBrowser_FocusNextPrevChild_Callback cb) { qtextbrowser_focusnextprevchild_callback = cb; }
     void setQTextBrowser_PaintEvent_Callback(QTextBrowser_PaintEvent_Callback cb) { qtextbrowser_paintevent_callback = cb; }
+    void setQTextBrowser_DoSetSource_Callback(QTextBrowser_DoSetSource_Callback cb) { qtextbrowser_dosetsource_callback = cb; }
     void setQTextBrowser_InputMethodQuery_Callback(QTextBrowser_InputMethodQuery_Callback cb) { qtextbrowser_inputmethodquery_callback = cb; }
     void setQTextBrowser_TimerEvent_Callback(QTextBrowser_TimerEvent_Callback cb) { qtextbrowser_timerevent_callback = cb; }
     void setQTextBrowser_KeyReleaseEvent_Callback(QTextBrowser_KeyReleaseEvent_Callback cb) { qtextbrowser_keyreleaseevent_callback = cb; }
@@ -384,6 +376,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_EventFilter_Callback(QTextBrowser_EventFilter_Callback cb) { qtextbrowser_eventfilter_callback = cb; }
     void setQTextBrowser_ViewportEvent_Callback(QTextBrowser_ViewportEvent_Callback cb) { qtextbrowser_viewportevent_callback = cb; }
     void setQTextBrowser_ViewportSizeHint_Callback(QTextBrowser_ViewportSizeHint_Callback cb) { qtextbrowser_viewportsizehint_callback = cb; }
+    void setQTextBrowser_InitStyleOption_Callback(QTextBrowser_InitStyleOption_Callback cb) { qtextbrowser_initstyleoption_callback = cb; }
     void setQTextBrowser_DevType_Callback(QTextBrowser_DevType_Callback cb) { qtextbrowser_devtype_callback = cb; }
     void setQTextBrowser_SetVisible_Callback(QTextBrowser_SetVisible_Callback cb) { qtextbrowser_setvisible_callback = cb; }
     void setQTextBrowser_HeightForWidth_Callback(QTextBrowser_HeightForWidth_Callback cb) { qtextbrowser_heightforwidth_callback = cb; }
@@ -405,13 +398,10 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_CustomEvent_Callback(QTextBrowser_CustomEvent_Callback cb) { qtextbrowser_customevent_callback = cb; }
     void setQTextBrowser_ConnectNotify_Callback(QTextBrowser_ConnectNotify_Callback cb) { qtextbrowser_connectnotify_callback = cb; }
     void setQTextBrowser_DisconnectNotify_Callback(QTextBrowser_DisconnectNotify_Callback cb) { qtextbrowser_disconnectnotify_callback = cb; }
-    void setQTextBrowser_DoSetSource_Callback(QTextBrowser_DoSetSource_Callback cb) { qtextbrowser_dosetsource_callback = cb; }
-    void setQTextBrowser_DoSetSource2_Callback(QTextBrowser_DoSetSource2_Callback cb) { qtextbrowser_dosetsource2_callback = cb; }
     void setQTextBrowser_ZoomInF_Callback(QTextBrowser_ZoomInF_Callback cb) { qtextbrowser_zoominf_callback = cb; }
     void setQTextBrowser_SetViewportMargins_Callback(QTextBrowser_SetViewportMargins_Callback cb) { qtextbrowser_setviewportmargins_callback = cb; }
     void setQTextBrowser_ViewportMargins_Callback(QTextBrowser_ViewportMargins_Callback cb) { qtextbrowser_viewportmargins_callback = cb; }
     void setQTextBrowser_DrawFrame_Callback(QTextBrowser_DrawFrame_Callback cb) { qtextbrowser_drawframe_callback = cb; }
-    void setQTextBrowser_InitStyleOption_Callback(QTextBrowser_InitStyleOption_Callback cb) { qtextbrowser_initstyleoption_callback = cb; }
     void setQTextBrowser_UpdateMicroFocus_Callback(QTextBrowser_UpdateMicroFocus_Callback cb) { qtextbrowser_updatemicrofocus_callback = cb; }
     void setQTextBrowser_Create_Callback(QTextBrowser_Create_Callback cb) { qtextbrowser_create_callback = cb; }
     void setQTextBrowser_Destroy_Callback(QTextBrowser_Destroy_Callback cb) { qtextbrowser_destroy_callback = cb; }
@@ -425,7 +415,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     // Base flag setters
     void setQTextBrowser_Metacall_IsBase(bool value) const { qtextbrowser_metacall_isbase = value; }
     void setQTextBrowser_LoadResource_IsBase(bool value) const { qtextbrowser_loadresource_isbase = value; }
-    void setQTextBrowser_SetSource_IsBase(bool value) const { qtextbrowser_setsource_isbase = value; }
     void setQTextBrowser_Backward_IsBase(bool value) const { qtextbrowser_backward_isbase = value; }
     void setQTextBrowser_Forward_IsBase(bool value) const { qtextbrowser_forward_isbase = value; }
     void setQTextBrowser_Home_IsBase(bool value) const { qtextbrowser_home_isbase = value; }
@@ -438,6 +427,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_FocusOutEvent_IsBase(bool value) const { qtextbrowser_focusoutevent_isbase = value; }
     void setQTextBrowser_FocusNextPrevChild_IsBase(bool value) const { qtextbrowser_focusnextprevchild_isbase = value; }
     void setQTextBrowser_PaintEvent_IsBase(bool value) const { qtextbrowser_paintevent_isbase = value; }
+    void setQTextBrowser_DoSetSource_IsBase(bool value) const { qtextbrowser_dosetsource_isbase = value; }
     void setQTextBrowser_InputMethodQuery_IsBase(bool value) const { qtextbrowser_inputmethodquery_isbase = value; }
     void setQTextBrowser_TimerEvent_IsBase(bool value) const { qtextbrowser_timerevent_isbase = value; }
     void setQTextBrowser_KeyReleaseEvent_IsBase(bool value) const { qtextbrowser_keyreleaseevent_isbase = value; }
@@ -464,6 +454,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_EventFilter_IsBase(bool value) const { qtextbrowser_eventfilter_isbase = value; }
     void setQTextBrowser_ViewportEvent_IsBase(bool value) const { qtextbrowser_viewportevent_isbase = value; }
     void setQTextBrowser_ViewportSizeHint_IsBase(bool value) const { qtextbrowser_viewportsizehint_isbase = value; }
+    void setQTextBrowser_InitStyleOption_IsBase(bool value) const { qtextbrowser_initstyleoption_isbase = value; }
     void setQTextBrowser_DevType_IsBase(bool value) const { qtextbrowser_devtype_isbase = value; }
     void setQTextBrowser_SetVisible_IsBase(bool value) const { qtextbrowser_setvisible_isbase = value; }
     void setQTextBrowser_HeightForWidth_IsBase(bool value) const { qtextbrowser_heightforwidth_isbase = value; }
@@ -485,13 +476,10 @@ class VirtualQTextBrowser : public QTextBrowser {
     void setQTextBrowser_CustomEvent_IsBase(bool value) const { qtextbrowser_customevent_isbase = value; }
     void setQTextBrowser_ConnectNotify_IsBase(bool value) const { qtextbrowser_connectnotify_isbase = value; }
     void setQTextBrowser_DisconnectNotify_IsBase(bool value) const { qtextbrowser_disconnectnotify_isbase = value; }
-    void setQTextBrowser_DoSetSource_IsBase(bool value) const { qtextbrowser_dosetsource_isbase = value; }
-    void setQTextBrowser_DoSetSource2_IsBase(bool value) const { qtextbrowser_dosetsource2_isbase = value; }
     void setQTextBrowser_ZoomInF_IsBase(bool value) const { qtextbrowser_zoominf_isbase = value; }
     void setQTextBrowser_SetViewportMargins_IsBase(bool value) const { qtextbrowser_setviewportmargins_isbase = value; }
     void setQTextBrowser_ViewportMargins_IsBase(bool value) const { qtextbrowser_viewportmargins_isbase = value; }
     void setQTextBrowser_DrawFrame_IsBase(bool value) const { qtextbrowser_drawframe_isbase = value; }
-    void setQTextBrowser_InitStyleOption_IsBase(bool value) const { qtextbrowser_initstyleoption_isbase = value; }
     void setQTextBrowser_UpdateMicroFocus_IsBase(bool value) const { qtextbrowser_updatemicrofocus_isbase = value; }
     void setQTextBrowser_Create_IsBase(bool value) const { qtextbrowser_create_isbase = value; }
     void setQTextBrowser_Destroy_IsBase(bool value) const { qtextbrowser_destroy_isbase = value; }
@@ -523,18 +511,6 @@ class VirtualQTextBrowser : public QTextBrowser {
             return qtextbrowser_loadresource_callback(this, typeVal, name);
         } else {
             return QTextBrowser::loadResource(typeVal, name);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setSource(const QUrl& name) override {
-        if (qtextbrowser_setsource_isbase) {
-            qtextbrowser_setsource_isbase = false;
-            QTextBrowser::setSource(name);
-        } else if (qtextbrowser_setsource_callback != nullptr) {
-            qtextbrowser_setsource_callback(this, name);
-        } else {
-            QTextBrowser::setSource(name);
         }
     }
 
@@ -679,6 +655,18 @@ class VirtualQTextBrowser : public QTextBrowser {
             qtextbrowser_paintevent_callback(this, e);
         } else {
             QTextBrowser::paintEvent(e);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void doSetSource(const QUrl& name, QTextDocument::ResourceType typeVal) override {
+        if (qtextbrowser_dosetsource_isbase) {
+            qtextbrowser_dosetsource_isbase = false;
+            QTextBrowser::doSetSource(name, typeVal);
+        } else if (qtextbrowser_dosetsource_callback != nullptr) {
+            qtextbrowser_dosetsource_callback(this, name, typeVal);
+        } else {
+            QTextBrowser::doSetSource(name, typeVal);
         }
     }
 
@@ -995,6 +983,18 @@ class VirtualQTextBrowser : public QTextBrowser {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qtextbrowser_initstyleoption_isbase) {
+            qtextbrowser_initstyleoption_isbase = false;
+            QTextBrowser::initStyleOption(option);
+        } else if (qtextbrowser_initstyleoption_callback != nullptr) {
+            qtextbrowser_initstyleoption_callback(this, option);
+        } else {
+            QTextBrowser::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qtextbrowser_devtype_isbase) {
             qtextbrowser_devtype_isbase = false;
@@ -1055,7 +1055,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qtextbrowser_enterevent_isbase) {
             qtextbrowser_enterevent_isbase = false;
             QTextBrowser::enterEvent(event);
@@ -1139,7 +1139,7 @@ class VirtualQTextBrowser : public QTextBrowser {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qtextbrowser_nativeevent_isbase) {
             qtextbrowser_nativeevent_isbase = false;
             return QTextBrowser::nativeEvent(eventType, message, result);
@@ -1247,30 +1247,6 @@ class VirtualQTextBrowser : public QTextBrowser {
     }
 
     // Virtual method for C ABI access and custom callback
-    void doSetSource(const QUrl& name) {
-        if (qtextbrowser_dosetsource_isbase) {
-            qtextbrowser_dosetsource_isbase = false;
-            QTextBrowser::doSetSource(name);
-        } else if (qtextbrowser_dosetsource_callback != nullptr) {
-            qtextbrowser_dosetsource_callback(this, name);
-        } else {
-            QTextBrowser::doSetSource(name);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void doSetSource(const QUrl& name, QTextDocument::ResourceType typeVal) {
-        if (qtextbrowser_dosetsource2_isbase) {
-            qtextbrowser_dosetsource2_isbase = false;
-            QTextBrowser::doSetSource(name, typeVal);
-        } else if (qtextbrowser_dosetsource2_callback != nullptr) {
-            qtextbrowser_dosetsource2_callback(this, name, typeVal);
-        } else {
-            QTextBrowser::doSetSource(name, typeVal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     void zoomInF(float range) {
         if (qtextbrowser_zoominf_isbase) {
             qtextbrowser_zoominf_isbase = false;
@@ -1315,18 +1291,6 @@ class VirtualQTextBrowser : public QTextBrowser {
             qtextbrowser_drawframe_callback(this, param1);
         } else {
             QTextBrowser::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qtextbrowser_initstyleoption_isbase) {
-            qtextbrowser_initstyleoption_isbase = false;
-            QTextBrowser::initStyleOption(option);
-        } else if (qtextbrowser_initstyleoption_callback != nullptr) {
-            qtextbrowser_initstyleoption_callback(this, option);
-        } else {
-            QTextBrowser::initStyleOption(option);
         }
     }
 

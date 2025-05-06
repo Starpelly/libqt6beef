@@ -1,4 +1,6 @@
 #include <QAbstractEventDispatcher>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDeadlineTimer>
@@ -8,7 +10,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -72,18 +73,6 @@ libqt_string QThread_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QThread_TrUtf8(const char* s) {
-    QString _ret = QThread::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void* QThread_CurrentThreadId() {
     return static_cast<void*>(QThread::currentThreadId());
 }
@@ -132,10 +121,6 @@ unsigned int QThread_StackSize(const QThread* self) {
     return static_cast<unsigned int>(self->stackSize());
 }
 
-void QThread_Exit(QThread* self) {
-    self->exit();
-}
-
 QAbstractEventDispatcher* QThread_EventDispatcher(const QThread* self) {
     return self->eventDispatcher();
 }
@@ -154,6 +139,10 @@ void QThread_Start(QThread* self) {
 
 void QThread_Terminate(QThread* self) {
     self->terminate();
+}
+
+void QThread_Exit(QThread* self) {
+    self->exit();
 }
 
 void QThread_Quit(QThread* self) {
@@ -204,36 +193,12 @@ libqt_string QThread_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QThread_TrUtf82(const char* s, const char* c) {
-    QString _ret = QThread::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QThread_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QThread::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
+void QThread_Start1(QThread* self, int param1) {
+    self->start(static_cast<QThread::Priority>(param1));
 }
 
 void QThread_Exit1(QThread* self, int retcode) {
     self->exit(static_cast<int>(retcode));
-}
-
-void QThread_Start1(QThread* self, int param1) {
-    self->start(static_cast<QThread::Priority>(param1));
 }
 
 bool QThread_Wait1(QThread* self, QDeadlineTimer* deadline) {

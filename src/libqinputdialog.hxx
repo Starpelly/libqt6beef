@@ -45,7 +45,7 @@ class VirtualQInputDialog : public QInputDialog {
     using QInputDialog_KeyReleaseEvent_Callback = void (*)(QInputDialog*, QKeyEvent*);
     using QInputDialog_FocusInEvent_Callback = void (*)(QInputDialog*, QFocusEvent*);
     using QInputDialog_FocusOutEvent_Callback = void (*)(QInputDialog*, QFocusEvent*);
-    using QInputDialog_EnterEvent_Callback = void (*)(QInputDialog*, QEvent*);
+    using QInputDialog_EnterEvent_Callback = void (*)(QInputDialog*, QEnterEvent*);
     using QInputDialog_LeaveEvent_Callback = void (*)(QInputDialog*, QEvent*);
     using QInputDialog_PaintEvent_Callback = void (*)(QInputDialog*, QPaintEvent*);
     using QInputDialog_MoveEvent_Callback = void (*)(QInputDialog*, QMoveEvent*);
@@ -56,7 +56,7 @@ class VirtualQInputDialog : public QInputDialog {
     using QInputDialog_DragLeaveEvent_Callback = void (*)(QInputDialog*, QDragLeaveEvent*);
     using QInputDialog_DropEvent_Callback = void (*)(QInputDialog*, QDropEvent*);
     using QInputDialog_HideEvent_Callback = void (*)(QInputDialog*, QHideEvent*);
-    using QInputDialog_NativeEvent_Callback = bool (*)(QInputDialog*, const QByteArray&, void*, long*);
+    using QInputDialog_NativeEvent_Callback = bool (*)(QInputDialog*, const QByteArray&, void*, qintptr*);
     using QInputDialog_ChangeEvent_Callback = void (*)(QInputDialog*, QEvent*);
     using QInputDialog_Metric_Callback = int (*)(const QInputDialog*, QPaintDevice::PaintDeviceMetric);
     using QInputDialog_InitPainter_Callback = void (*)(const QInputDialog*, QPainter*);
@@ -750,7 +750,7 @@ class VirtualQInputDialog : public QInputDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qinputdialog_enterevent_isbase) {
             qinputdialog_enterevent_isbase = false;
             QInputDialog::enterEvent(event);
@@ -882,7 +882,7 @@ class VirtualQInputDialog : public QInputDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qinputdialog_nativeevent_isbase) {
             qinputdialog_nativeevent_isbase = false;
             return QInputDialog::nativeEvent(eventType, message, result);

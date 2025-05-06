@@ -45,7 +45,7 @@ class VirtualQPageSetupDialog : public QPageSetupDialog {
     using QPageSetupDialog_KeyReleaseEvent_Callback = void (*)(QPageSetupDialog*, QKeyEvent*);
     using QPageSetupDialog_FocusInEvent_Callback = void (*)(QPageSetupDialog*, QFocusEvent*);
     using QPageSetupDialog_FocusOutEvent_Callback = void (*)(QPageSetupDialog*, QFocusEvent*);
-    using QPageSetupDialog_EnterEvent_Callback = void (*)(QPageSetupDialog*, QEvent*);
+    using QPageSetupDialog_EnterEvent_Callback = void (*)(QPageSetupDialog*, QEnterEvent*);
     using QPageSetupDialog_LeaveEvent_Callback = void (*)(QPageSetupDialog*, QEvent*);
     using QPageSetupDialog_PaintEvent_Callback = void (*)(QPageSetupDialog*, QPaintEvent*);
     using QPageSetupDialog_MoveEvent_Callback = void (*)(QPageSetupDialog*, QMoveEvent*);
@@ -56,7 +56,7 @@ class VirtualQPageSetupDialog : public QPageSetupDialog {
     using QPageSetupDialog_DragLeaveEvent_Callback = void (*)(QPageSetupDialog*, QDragLeaveEvent*);
     using QPageSetupDialog_DropEvent_Callback = void (*)(QPageSetupDialog*, QDropEvent*);
     using QPageSetupDialog_HideEvent_Callback = void (*)(QPageSetupDialog*, QHideEvent*);
-    using QPageSetupDialog_NativeEvent_Callback = bool (*)(QPageSetupDialog*, const QByteArray&, void*, long*);
+    using QPageSetupDialog_NativeEvent_Callback = bool (*)(QPageSetupDialog*, const QByteArray&, void*, qintptr*);
     using QPageSetupDialog_ChangeEvent_Callback = void (*)(QPageSetupDialog*, QEvent*);
     using QPageSetupDialog_Metric_Callback = int (*)(const QPageSetupDialog*, QPaintDevice::PaintDeviceMetric);
     using QPageSetupDialog_InitPainter_Callback = void (*)(const QPageSetupDialog*, QPainter*);
@@ -751,7 +751,7 @@ class VirtualQPageSetupDialog : public QPageSetupDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qpagesetupdialog_enterevent_isbase) {
             qpagesetupdialog_enterevent_isbase = false;
             QPageSetupDialog::enterEvent(event);
@@ -883,7 +883,7 @@ class VirtualQPageSetupDialog : public QPageSetupDialog {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qpagesetupdialog_nativeevent_isbase) {
             qpagesetupdialog_nativeevent_isbase = false;
             return QPageSetupDialog::nativeEvent(eventType, message, result);

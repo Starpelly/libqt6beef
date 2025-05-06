@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QBrush QBrush;
 typedef struct QChildEvent QChildEvent;
 typedef struct QColor QColor;
@@ -34,7 +36,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
@@ -67,7 +68,6 @@ int QGraphicsEffect_Metacall(QGraphicsEffect* self, int param1, int param2, void
 void QGraphicsEffect_OnMetacall(QGraphicsEffect* self, intptr_t slot);
 int QGraphicsEffect_QBaseMetacall(QGraphicsEffect* self, int param1, int param2, void** param3);
 libqt_string QGraphicsEffect_Tr(const char* s);
-libqt_string QGraphicsEffect_TrUtf8(const char* s);
 QRectF* QGraphicsEffect_BoundingRectFor(const QGraphicsEffect* self, QRectF* sourceRect);
 void QGraphicsEffect_OnBoundingRectFor(const QGraphicsEffect* self, intptr_t slot);
 QRectF* QGraphicsEffect_QBaseBoundingRectFor(const QGraphicsEffect* self, QRectF* sourceRect);
@@ -85,8 +85,6 @@ void QGraphicsEffect_OnSourceChanged(QGraphicsEffect* self, intptr_t slot);
 void QGraphicsEffect_QBaseSourceChanged(QGraphicsEffect* self, int flags);
 libqt_string QGraphicsEffect_Tr2(const char* s, const char* c);
 libqt_string QGraphicsEffect_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsEffect_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsEffect_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsEffect_Event(QGraphicsEffect* self, QEvent* event);
 void QGraphicsEffect_OnEvent(QGraphicsEffect* self, intptr_t slot);
 bool QGraphicsEffect_QBaseEvent(QGraphicsEffect* self, QEvent* event);
@@ -157,7 +155,6 @@ int QGraphicsColorizeEffect_Metacall(QGraphicsColorizeEffect* self, int param1, 
 void QGraphicsColorizeEffect_OnMetacall(QGraphicsColorizeEffect* self, intptr_t slot);
 int QGraphicsColorizeEffect_QBaseMetacall(QGraphicsColorizeEffect* self, int param1, int param2, void** param3);
 libqt_string QGraphicsColorizeEffect_Tr(const char* s);
-libqt_string QGraphicsColorizeEffect_TrUtf8(const char* s);
 QColor* QGraphicsColorizeEffect_Color(const QGraphicsColorizeEffect* self);
 double QGraphicsColorizeEffect_Strength(const QGraphicsColorizeEffect* self);
 void QGraphicsColorizeEffect_SetColor(QGraphicsColorizeEffect* self, QColor* c);
@@ -171,8 +168,6 @@ void QGraphicsColorizeEffect_OnDraw(QGraphicsColorizeEffect* self, intptr_t slot
 void QGraphicsColorizeEffect_QBaseDraw(QGraphicsColorizeEffect* self, QPainter* painter);
 libqt_string QGraphicsColorizeEffect_Tr2(const char* s, const char* c);
 libqt_string QGraphicsColorizeEffect_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsColorizeEffect_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsColorizeEffect_TrUtf83(const char* s, const char* c, int n);
 QRectF* QGraphicsColorizeEffect_BoundingRectFor(const QGraphicsColorizeEffect* self, QRectF* sourceRect);
 void QGraphicsColorizeEffect_OnBoundingRectFor(const QGraphicsColorizeEffect* self, intptr_t slot);
 QRectF* QGraphicsColorizeEffect_QBaseBoundingRectFor(const QGraphicsColorizeEffect* self, QRectF* sourceRect);
@@ -237,7 +232,6 @@ int QGraphicsBlurEffect_Metacall(QGraphicsBlurEffect* self, int param1, int para
 void QGraphicsBlurEffect_OnMetacall(QGraphicsBlurEffect* self, intptr_t slot);
 int QGraphicsBlurEffect_QBaseMetacall(QGraphicsBlurEffect* self, int param1, int param2, void** param3);
 libqt_string QGraphicsBlurEffect_Tr(const char* s);
-libqt_string QGraphicsBlurEffect_TrUtf8(const char* s);
 QRectF* QGraphicsBlurEffect_BoundingRectFor(const QGraphicsBlurEffect* self, QRectF* rect);
 void QGraphicsBlurEffect_OnBoundingRectFor(const QGraphicsBlurEffect* self, intptr_t slot);
 QRectF* QGraphicsBlurEffect_QBaseBoundingRectFor(const QGraphicsBlurEffect* self, QRectF* rect);
@@ -254,8 +248,6 @@ void QGraphicsBlurEffect_OnDraw(QGraphicsBlurEffect* self, intptr_t slot);
 void QGraphicsBlurEffect_QBaseDraw(QGraphicsBlurEffect* self, QPainter* painter);
 libqt_string QGraphicsBlurEffect_Tr2(const char* s, const char* c);
 libqt_string QGraphicsBlurEffect_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsBlurEffect_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsBlurEffect_TrUtf83(const char* s, const char* c, int n);
 void QGraphicsBlurEffect_SourceChanged(QGraphicsBlurEffect* self, int flags);
 void QGraphicsBlurEffect_OnSourceChanged(QGraphicsBlurEffect* self, intptr_t slot);
 void QGraphicsBlurEffect_QBaseSourceChanged(QGraphicsBlurEffect* self, int flags);
@@ -317,7 +309,6 @@ int QGraphicsDropShadowEffect_Metacall(QGraphicsDropShadowEffect* self, int para
 void QGraphicsDropShadowEffect_OnMetacall(QGraphicsDropShadowEffect* self, intptr_t slot);
 int QGraphicsDropShadowEffect_QBaseMetacall(QGraphicsDropShadowEffect* self, int param1, int param2, void** param3);
 libqt_string QGraphicsDropShadowEffect_Tr(const char* s);
-libqt_string QGraphicsDropShadowEffect_TrUtf8(const char* s);
 QRectF* QGraphicsDropShadowEffect_BoundingRectFor(const QGraphicsDropShadowEffect* self, QRectF* rect);
 void QGraphicsDropShadowEffect_OnBoundingRectFor(const QGraphicsDropShadowEffect* self, intptr_t slot);
 QRectF* QGraphicsDropShadowEffect_QBaseBoundingRectFor(const QGraphicsDropShadowEffect* self, QRectF* rect);
@@ -344,8 +335,6 @@ void QGraphicsDropShadowEffect_OnDraw(QGraphicsDropShadowEffect* self, intptr_t 
 void QGraphicsDropShadowEffect_QBaseDraw(QGraphicsDropShadowEffect* self, QPainter* painter);
 libqt_string QGraphicsDropShadowEffect_Tr2(const char* s, const char* c);
 libqt_string QGraphicsDropShadowEffect_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsDropShadowEffect_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsDropShadowEffect_TrUtf83(const char* s, const char* c, int n);
 void QGraphicsDropShadowEffect_SourceChanged(QGraphicsDropShadowEffect* self, int flags);
 void QGraphicsDropShadowEffect_OnSourceChanged(QGraphicsDropShadowEffect* self, intptr_t slot);
 void QGraphicsDropShadowEffect_QBaseSourceChanged(QGraphicsDropShadowEffect* self, int flags);
@@ -407,7 +396,6 @@ int QGraphicsOpacityEffect_Metacall(QGraphicsOpacityEffect* self, int param1, in
 void QGraphicsOpacityEffect_OnMetacall(QGraphicsOpacityEffect* self, intptr_t slot);
 int QGraphicsOpacityEffect_QBaseMetacall(QGraphicsOpacityEffect* self, int param1, int param2, void** param3);
 libqt_string QGraphicsOpacityEffect_Tr(const char* s);
-libqt_string QGraphicsOpacityEffect_TrUtf8(const char* s);
 double QGraphicsOpacityEffect_Opacity(const QGraphicsOpacityEffect* self);
 QBrush* QGraphicsOpacityEffect_OpacityMask(const QGraphicsOpacityEffect* self);
 void QGraphicsOpacityEffect_SetOpacity(QGraphicsOpacityEffect* self, double opacity);
@@ -421,8 +409,6 @@ void QGraphicsOpacityEffect_OnDraw(QGraphicsOpacityEffect* self, intptr_t slot);
 void QGraphicsOpacityEffect_QBaseDraw(QGraphicsOpacityEffect* self, QPainter* painter);
 libqt_string QGraphicsOpacityEffect_Tr2(const char* s, const char* c);
 libqt_string QGraphicsOpacityEffect_Tr3(const char* s, const char* c, int n);
-libqt_string QGraphicsOpacityEffect_TrUtf82(const char* s, const char* c);
-libqt_string QGraphicsOpacityEffect_TrUtf83(const char* s, const char* c, int n);
 QRectF* QGraphicsOpacityEffect_BoundingRectFor(const QGraphicsOpacityEffect* self, QRectF* sourceRect);
 void QGraphicsOpacityEffect_OnBoundingRectFor(const QGraphicsOpacityEffect* self, intptr_t slot);
 QRectF* QGraphicsOpacityEffect_QBaseBoundingRectFor(const QGraphicsOpacityEffect* self, QRectF* sourceRect);

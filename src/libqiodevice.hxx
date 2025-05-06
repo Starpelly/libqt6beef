@@ -19,7 +19,7 @@ class VirtualQIODevice : public QIODevice {
     // Virtual class public types (including callbacks)
     using QIODevice_Metacall_Callback = int (*)(QIODevice*, QMetaObject::Call, int, void**);
     using QIODevice_IsSequential_Callback = bool (*)();
-    using QIODevice_Open_Callback = bool (*)(QIODevice*, QIODevice::OpenMode);
+    using QIODevice_Open_Callback = bool (*)(QIODevice*, QIODeviceBase::OpenMode);
     using QIODevice_Close_Callback = void (*)();
     using QIODevice_Pos_Callback = qint64 (*)();
     using QIODevice_Size_Callback = qint64 (*)();
@@ -33,6 +33,7 @@ class VirtualQIODevice : public QIODevice {
     using QIODevice_WaitForBytesWritten_Callback = bool (*)(QIODevice*, int);
     using QIODevice_ReadData_Callback = qint64 (*)(QIODevice*, char*, qint64);
     using QIODevice_ReadLineData_Callback = qint64 (*)(QIODevice*, char*, qint64);
+    using QIODevice_SkipData_Callback = qint64 (*)(QIODevice*, qint64);
     using QIODevice_WriteData_Callback = qint64 (*)(QIODevice*, const char*, qint64);
     using QIODevice_Event_Callback = bool (*)(QIODevice*, QEvent*);
     using QIODevice_EventFilter_Callback = bool (*)(QIODevice*, QObject*, QEvent*);
@@ -41,7 +42,7 @@ class VirtualQIODevice : public QIODevice {
     using QIODevice_CustomEvent_Callback = void (*)(QIODevice*, QEvent*);
     using QIODevice_ConnectNotify_Callback = void (*)(QIODevice*, const QMetaMethod&);
     using QIODevice_DisconnectNotify_Callback = void (*)(QIODevice*, const QMetaMethod&);
-    using QIODevice_SetOpenMode_Callback = void (*)(QIODevice*, QIODevice::OpenMode);
+    using QIODevice_SetOpenMode_Callback = void (*)(QIODevice*, QIODeviceBase::OpenMode);
     using QIODevice_SetErrorString_Callback = void (*)(QIODevice*, const QString&);
     using QIODevice_Sender_Callback = QObject* (*)();
     using QIODevice_SenderSignalIndex_Callback = int (*)();
@@ -66,6 +67,7 @@ class VirtualQIODevice : public QIODevice {
     QIODevice_WaitForBytesWritten_Callback qiodevice_waitforbyteswritten_callback = nullptr;
     QIODevice_ReadData_Callback qiodevice_readdata_callback = nullptr;
     QIODevice_ReadLineData_Callback qiodevice_readlinedata_callback = nullptr;
+    QIODevice_SkipData_Callback qiodevice_skipdata_callback = nullptr;
     QIODevice_WriteData_Callback qiodevice_writedata_callback = nullptr;
     QIODevice_Event_Callback qiodevice_event_callback = nullptr;
     QIODevice_EventFilter_Callback qiodevice_eventfilter_callback = nullptr;
@@ -98,6 +100,7 @@ class VirtualQIODevice : public QIODevice {
     mutable bool qiodevice_waitforbyteswritten_isbase = false;
     mutable bool qiodevice_readdata_isbase = false;
     mutable bool qiodevice_readlinedata_isbase = false;
+    mutable bool qiodevice_skipdata_isbase = false;
     mutable bool qiodevice_writedata_isbase = false;
     mutable bool qiodevice_event_isbase = false;
     mutable bool qiodevice_eventfilter_isbase = false;
@@ -134,6 +137,7 @@ class VirtualQIODevice : public QIODevice {
         qiodevice_waitforbyteswritten_callback = nullptr;
         qiodevice_readdata_callback = nullptr;
         qiodevice_readlinedata_callback = nullptr;
+        qiodevice_skipdata_callback = nullptr;
         qiodevice_writedata_callback = nullptr;
         qiodevice_event_callback = nullptr;
         qiodevice_eventfilter_callback = nullptr;
@@ -167,6 +171,7 @@ class VirtualQIODevice : public QIODevice {
     void setQIODevice_WaitForBytesWritten_Callback(QIODevice_WaitForBytesWritten_Callback cb) { qiodevice_waitforbyteswritten_callback = cb; }
     void setQIODevice_ReadData_Callback(QIODevice_ReadData_Callback cb) { qiodevice_readdata_callback = cb; }
     void setQIODevice_ReadLineData_Callback(QIODevice_ReadLineData_Callback cb) { qiodevice_readlinedata_callback = cb; }
+    void setQIODevice_SkipData_Callback(QIODevice_SkipData_Callback cb) { qiodevice_skipdata_callback = cb; }
     void setQIODevice_WriteData_Callback(QIODevice_WriteData_Callback cb) { qiodevice_writedata_callback = cb; }
     void setQIODevice_Event_Callback(QIODevice_Event_Callback cb) { qiodevice_event_callback = cb; }
     void setQIODevice_EventFilter_Callback(QIODevice_EventFilter_Callback cb) { qiodevice_eventfilter_callback = cb; }
@@ -199,6 +204,7 @@ class VirtualQIODevice : public QIODevice {
     void setQIODevice_WaitForBytesWritten_IsBase(bool value) const { qiodevice_waitforbyteswritten_isbase = value; }
     void setQIODevice_ReadData_IsBase(bool value) const { qiodevice_readdata_isbase = value; }
     void setQIODevice_ReadLineData_IsBase(bool value) const { qiodevice_readlinedata_isbase = value; }
+    void setQIODevice_SkipData_IsBase(bool value) const { qiodevice_skipdata_isbase = value; }
     void setQIODevice_WriteData_IsBase(bool value) const { qiodevice_writedata_isbase = value; }
     void setQIODevice_Event_IsBase(bool value) const { qiodevice_event_isbase = value; }
     void setQIODevice_EventFilter_IsBase(bool value) const { qiodevice_eventfilter_isbase = value; }
@@ -239,7 +245,7 @@ class VirtualQIODevice : public QIODevice {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODevice::OpenMode mode) override {
+    virtual bool open(QIODeviceBase::OpenMode mode) override {
         if (qiodevice_open_isbase) {
             qiodevice_open_isbase = false;
             return QIODevice::open(mode);
@@ -400,6 +406,18 @@ class VirtualQIODevice : public QIODevice {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual qint64 skipData(qint64 maxSize) override {
+        if (qiodevice_skipdata_isbase) {
+            qiodevice_skipdata_isbase = false;
+            return QIODevice::skipData(maxSize);
+        } else if (qiodevice_skipdata_callback != nullptr) {
+            return qiodevice_skipdata_callback(this, maxSize);
+        } else {
+            return QIODevice::skipData(maxSize);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual qint64 writeData(const char* data, qint64 lenVal) override {
         return qiodevice_writedata_callback(this, data, lenVal);
     }
@@ -489,7 +507,7 @@ class VirtualQIODevice : public QIODevice {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODevice::OpenMode openMode) {
+    void setOpenMode(QIODeviceBase::OpenMode openMode) {
         if (qiodevice_setopenmode_isbase) {
             qiodevice_setopenmode_isbase = false;
             QIODevice::setOpenMode(openMode);

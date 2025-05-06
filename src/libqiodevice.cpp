@@ -1,13 +1,15 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QIODevice>
+#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -61,18 +63,6 @@ int QIODevice_QBaseMetacall(QIODevice* self, int param1, int param2, void** para
 
 libqt_string QIODevice_Tr(const char* s) {
     QString _ret = QIODevice::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QIODevice_TrUtf8(const char* s) {
-    QString _ret = QIODevice::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -334,30 +324,6 @@ libqt_string QIODevice_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QIODevice_TrUtf82(const char* s, const char* c) {
-    QString _ret = QIODevice::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QIODevice_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QIODevice::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QIODevice_ReadLine1(QIODevice* self, long long maxlen) {
     QByteArray _qb = self->readLine(static_cast<qint64>(maxlen));
     libqt_string _str;
@@ -397,9 +363,9 @@ void QIODevice_OnIsSequential(const QIODevice* self, intptr_t slot) {
 // Derived class handler implementation
 bool QIODevice_Open(QIODevice* self, int mode) {
     if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
-        return vqiodevice->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqiodevice->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqiodevice->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqiodevice->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -407,9 +373,9 @@ bool QIODevice_Open(QIODevice* self, int mode) {
 bool QIODevice_QBaseOpen(QIODevice* self, int mode) {
     if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
         vqiodevice->setQIODevice_Open_IsBase(true);
-        return vqiodevice->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqiodevice->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqiodevice->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqiodevice->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -759,6 +725,32 @@ void QIODevice_OnReadLineData(QIODevice* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+long long QIODevice_SkipData(QIODevice* self, long long maxSize) {
+    if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
+        return static_cast<long long>(vqiodevice->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqiodevice->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QIODevice_QBaseSkipData(QIODevice* self, long long maxSize) {
+    if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
+        vqiodevice->setQIODevice_SkipData_IsBase(true);
+        return static_cast<long long>(vqiodevice->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqiodevice->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QIODevice_OnSkipData(QIODevice* self, intptr_t slot) {
+    if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
+        vqiodevice->setQIODevice_SkipData_Callback(reinterpret_cast<VirtualQIODevice::QIODevice_SkipData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 long long QIODevice_WriteData(QIODevice* self, const char* data, long long lenVal) {
     if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
         return static_cast<long long>(vqiodevice->writeData(data, static_cast<qint64>(lenVal)));
@@ -969,9 +961,9 @@ void QIODevice_OnDisconnectNotify(QIODevice* self, intptr_t slot) {
 // Derived class handler implementation
 void QIODevice_SetOpenMode(QIODevice* self, int openMode) {
     if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
-        vqiodevice->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqiodevice->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqiodevice->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqiodevice->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -979,9 +971,9 @@ void QIODevice_SetOpenMode(QIODevice* self, int openMode) {
 void QIODevice_QBaseSetOpenMode(QIODevice* self, int openMode) {
     if (auto* vqiodevice = dynamic_cast<VirtualQIODevice*>(self)) {
         vqiodevice->setQIODevice_SetOpenMode_IsBase(true);
-        vqiodevice->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqiodevice->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqiodevice->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqiodevice->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 

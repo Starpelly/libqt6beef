@@ -1,4 +1,6 @@
 #include <QAbstractButton>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QButtonGroup>
 #include <QByteArray>
 #include <QChildEvent>
@@ -8,7 +10,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -62,18 +63,6 @@ int QButtonGroup_QBaseMetacall(QButtonGroup* self, int param1, int param2, void*
 
 libqt_string QButtonGroup_Tr(const char* s) {
     QString _ret = QButtonGroup::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QButtonGroup_TrUtf8(const char* s) {
-    QString _ret = QButtonGroup::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -231,55 +220,6 @@ void QButtonGroup_Connect_IdToggled(QButtonGroup* self, intptr_t slot) {
     });
 }
 
-void QButtonGroup_ButtonClickedWithInt(QButtonGroup* self, int param1) {
-    self->buttonClicked(static_cast<int>(param1));
-}
-
-void QButtonGroup_Connect_ButtonClickedWithInt(QButtonGroup* self, intptr_t slot) {
-    void (*slotFunc)(QButtonGroup*, int) = reinterpret_cast<void (*)(QButtonGroup*, int)>(slot);
-    QButtonGroup::connect(self, &QButtonGroup::buttonClicked, [self, slotFunc](int param1) {
-        int sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QButtonGroup_ButtonPressedWithInt(QButtonGroup* self, int param1) {
-    self->buttonPressed(static_cast<int>(param1));
-}
-
-void QButtonGroup_Connect_ButtonPressedWithInt(QButtonGroup* self, intptr_t slot) {
-    void (*slotFunc)(QButtonGroup*, int) = reinterpret_cast<void (*)(QButtonGroup*, int)>(slot);
-    QButtonGroup::connect(self, &QButtonGroup::buttonPressed, [self, slotFunc](int param1) {
-        int sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QButtonGroup_ButtonReleasedWithInt(QButtonGroup* self, int param1) {
-    self->buttonReleased(static_cast<int>(param1));
-}
-
-void QButtonGroup_Connect_ButtonReleasedWithInt(QButtonGroup* self, intptr_t slot) {
-    void (*slotFunc)(QButtonGroup*, int) = reinterpret_cast<void (*)(QButtonGroup*, int)>(slot);
-    QButtonGroup::connect(self, &QButtonGroup::buttonReleased, [self, slotFunc](int param1) {
-        int sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QButtonGroup_ButtonToggled2(QButtonGroup* self, int param1, bool param2) {
-    self->buttonToggled(static_cast<int>(param1), param2);
-}
-
-void QButtonGroup_Connect_ButtonToggled2(QButtonGroup* self, intptr_t slot) {
-    void (*slotFunc)(QButtonGroup*, int, bool) = reinterpret_cast<void (*)(QButtonGroup*, int, bool)>(slot);
-    QButtonGroup::connect(self, &QButtonGroup::buttonToggled, [self, slotFunc](int param1, bool param2) {
-        int sigval1 = param1;
-        bool sigval2 = param2;
-        slotFunc(self, sigval1, sigval2);
-    });
-}
-
 libqt_string QButtonGroup_Tr2(const char* s, const char* c) {
     QString _ret = QButtonGroup::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -294,30 +234,6 @@ libqt_string QButtonGroup_Tr2(const char* s, const char* c) {
 
 libqt_string QButtonGroup_Tr3(const char* s, const char* c, int n) {
     QString _ret = QButtonGroup::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QButtonGroup_TrUtf82(const char* s, const char* c) {
-    QString _ret = QButtonGroup::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QButtonGroup_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QButtonGroup::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

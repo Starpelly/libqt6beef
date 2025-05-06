@@ -21,126 +21,113 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAudioEncoderSettings QAudioEncoderSettings;
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
-typedef struct QMediaBindableInterface QMediaBindableInterface;
-typedef struct QMediaObject QMediaObject;
+typedef struct QMediaCaptureSession QMediaCaptureSession;
+typedef struct QMediaFormat QMediaFormat;
+typedef struct QMediaMetaData QMediaMetaData;
 typedef struct QMediaRecorder QMediaRecorder;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
 typedef struct QVariant QVariant;
-typedef struct QVideoEncoderSettings QVideoEncoderSettings;
 #endif
 
 #ifdef __cplusplus
-typedef QMediaRecorder::Error Error;   // C++ enum
-typedef QMediaRecorder::State State;   // C++ enum
-typedef QMediaRecorder::Status Status; // C++ enum
+typedef QMediaRecorder::EncodingMode EncodingMode;   // C++ enum
+typedef QMediaRecorder::Error Error;                 // C++ enum
+typedef QMediaRecorder::Quality Quality;             // C++ enum
+typedef QMediaRecorder::RecorderState RecorderState; // C++ enum
 #else
-typedef int Error;  // C ABI enum
-typedef int State;  // C ABI enum
-typedef int Status; // C ABI enum
+typedef int EncodingMode;  // C ABI enum
+typedef int Error;         // C ABI enum
+typedef int Quality;       // C ABI enum
+typedef int RecorderState; // C ABI enum
 #endif
 
-QMediaRecorder* QMediaRecorder_new(QMediaObject* mediaObject);
-QMediaRecorder* QMediaRecorder_new2(QMediaObject* mediaObject, QObject* parent);
+QMediaRecorder* QMediaRecorder_new();
+QMediaRecorder* QMediaRecorder_new2(QObject* parent);
 QMetaObject* QMediaRecorder_MetaObject(const QMediaRecorder* self);
 void* QMediaRecorder_Metacast(QMediaRecorder* self, const char* param1);
 int QMediaRecorder_Metacall(QMediaRecorder* self, int param1, int param2, void** param3);
 void QMediaRecorder_OnMetacall(QMediaRecorder* self, intptr_t slot);
 int QMediaRecorder_QBaseMetacall(QMediaRecorder* self, int param1, int param2, void** param3);
 libqt_string QMediaRecorder_Tr(const char* s);
-libqt_string QMediaRecorder_TrUtf8(const char* s);
-QMediaObject* QMediaRecorder_MediaObject(const QMediaRecorder* self);
-void QMediaRecorder_OnMediaObject(const QMediaRecorder* self, intptr_t slot);
-QMediaObject* QMediaRecorder_QBaseMediaObject(const QMediaRecorder* self);
 bool QMediaRecorder_IsAvailable(const QMediaRecorder* self);
-int QMediaRecorder_Availability(const QMediaRecorder* self);
 QUrl* QMediaRecorder_OutputLocation(const QMediaRecorder* self);
-bool QMediaRecorder_SetOutputLocation(QMediaRecorder* self, QUrl* location);
+void QMediaRecorder_SetOutputLocation(QMediaRecorder* self, QUrl* location);
 QUrl* QMediaRecorder_ActualLocation(const QMediaRecorder* self);
-int QMediaRecorder_State(const QMediaRecorder* self);
-int QMediaRecorder_Status(const QMediaRecorder* self);
+int QMediaRecorder_RecorderState(const QMediaRecorder* self);
 int QMediaRecorder_Error(const QMediaRecorder* self);
 libqt_string QMediaRecorder_ErrorString(const QMediaRecorder* self);
 long long QMediaRecorder_Duration(const QMediaRecorder* self);
-bool QMediaRecorder_IsMuted(const QMediaRecorder* self);
-double QMediaRecorder_Volume(const QMediaRecorder* self);
-libqt_list /* of libqt_string */ QMediaRecorder_SupportedContainers(const QMediaRecorder* self);
-libqt_string QMediaRecorder_ContainerDescription(const QMediaRecorder* self, libqt_string format);
-libqt_list /* of libqt_string */ QMediaRecorder_SupportedAudioCodecs(const QMediaRecorder* self);
-libqt_string QMediaRecorder_AudioCodecDescription(const QMediaRecorder* self, libqt_string codecName);
-libqt_list /* of int */ QMediaRecorder_SupportedAudioSampleRates(const QMediaRecorder* self);
-libqt_list /* of libqt_string */ QMediaRecorder_SupportedVideoCodecs(const QMediaRecorder* self);
-libqt_string QMediaRecorder_VideoCodecDescription(const QMediaRecorder* self, libqt_string codecName);
-libqt_list /* of QSize* */ QMediaRecorder_SupportedResolutions(const QMediaRecorder* self);
-libqt_list /* of double */ QMediaRecorder_SupportedFrameRates(const QMediaRecorder* self);
-QAudioEncoderSettings* QMediaRecorder_AudioSettings(const QMediaRecorder* self);
-QVideoEncoderSettings* QMediaRecorder_VideoSettings(const QMediaRecorder* self);
-libqt_string QMediaRecorder_ContainerFormat(const QMediaRecorder* self);
-void QMediaRecorder_SetAudioSettings(QMediaRecorder* self, QAudioEncoderSettings* audioSettings);
-void QMediaRecorder_SetVideoSettings(QMediaRecorder* self, QVideoEncoderSettings* videoSettings);
-void QMediaRecorder_SetContainerFormat(QMediaRecorder* self, libqt_string container);
-void QMediaRecorder_SetEncodingSettings(QMediaRecorder* self, QAudioEncoderSettings* audioSettings);
-bool QMediaRecorder_IsMetaDataAvailable(const QMediaRecorder* self);
-bool QMediaRecorder_IsMetaDataWritable(const QMediaRecorder* self);
-QVariant* QMediaRecorder_MetaData(const QMediaRecorder* self, libqt_string key);
-void QMediaRecorder_SetMetaData(QMediaRecorder* self, libqt_string key, QVariant* value);
-libqt_list /* of libqt_string */ QMediaRecorder_AvailableMetaData(const QMediaRecorder* self);
+QMediaFormat* QMediaRecorder_MediaFormat(const QMediaRecorder* self);
+void QMediaRecorder_SetMediaFormat(QMediaRecorder* self, QMediaFormat* format);
+int QMediaRecorder_EncodingMode(const QMediaRecorder* self);
+void QMediaRecorder_SetEncodingMode(QMediaRecorder* self, int encodingMode);
+int QMediaRecorder_Quality(const QMediaRecorder* self);
+void QMediaRecorder_SetQuality(QMediaRecorder* self, int quality);
+QSize* QMediaRecorder_VideoResolution(const QMediaRecorder* self);
+void QMediaRecorder_SetVideoResolution(QMediaRecorder* self, QSize* videoResolution);
+void QMediaRecorder_SetVideoResolution2(QMediaRecorder* self, int width, int height);
+double QMediaRecorder_VideoFrameRate(const QMediaRecorder* self);
+void QMediaRecorder_SetVideoFrameRate(QMediaRecorder* self, double frameRate);
+int QMediaRecorder_VideoBitRate(const QMediaRecorder* self);
+void QMediaRecorder_SetVideoBitRate(QMediaRecorder* self, int bitRate);
+int QMediaRecorder_AudioBitRate(const QMediaRecorder* self);
+void QMediaRecorder_SetAudioBitRate(QMediaRecorder* self, int bitRate);
+int QMediaRecorder_AudioChannelCount(const QMediaRecorder* self);
+void QMediaRecorder_SetAudioChannelCount(QMediaRecorder* self, int channels);
+int QMediaRecorder_AudioSampleRate(const QMediaRecorder* self);
+void QMediaRecorder_SetAudioSampleRate(QMediaRecorder* self, int sampleRate);
+QMediaMetaData* QMediaRecorder_MetaData(const QMediaRecorder* self);
+void QMediaRecorder_SetMetaData(QMediaRecorder* self, QMediaMetaData* metaData);
+void QMediaRecorder_AddMetaData(QMediaRecorder* self, QMediaMetaData* metaData);
+QMediaCaptureSession* QMediaRecorder_CaptureSession(const QMediaRecorder* self);
 void QMediaRecorder_Record(QMediaRecorder* self);
 void QMediaRecorder_Pause(QMediaRecorder* self);
 void QMediaRecorder_Stop(QMediaRecorder* self);
-void QMediaRecorder_SetMuted(QMediaRecorder* self, bool muted);
-void QMediaRecorder_SetVolume(QMediaRecorder* self, double volume);
-void QMediaRecorder_StateChanged(QMediaRecorder* self, int state);
-void QMediaRecorder_Connect_StateChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_StatusChanged(QMediaRecorder* self, int status);
-void QMediaRecorder_Connect_StatusChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_RecorderStateChanged(QMediaRecorder* self, int state);
+void QMediaRecorder_Connect_RecorderStateChanged(QMediaRecorder* self, intptr_t slot);
 void QMediaRecorder_DurationChanged(QMediaRecorder* self, long long duration);
 void QMediaRecorder_Connect_DurationChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_MutedChanged(QMediaRecorder* self, bool muted);
-void QMediaRecorder_Connect_MutedChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_VolumeChanged(QMediaRecorder* self, double volume);
-void QMediaRecorder_Connect_VolumeChanged(QMediaRecorder* self, intptr_t slot);
 void QMediaRecorder_ActualLocationChanged(QMediaRecorder* self, QUrl* location);
 void QMediaRecorder_Connect_ActualLocationChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_ErrorWithErrorVal(QMediaRecorder* self, int errorVal);
-void QMediaRecorder_Connect_ErrorWithErrorVal(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_MetaDataAvailableChanged(QMediaRecorder* self, bool available);
-void QMediaRecorder_Connect_MetaDataAvailableChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_MetaDataWritableChanged(QMediaRecorder* self, bool writable);
-void QMediaRecorder_Connect_MetaDataWritableChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_EncoderSettingsChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_EncoderSettingsChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_ErrorOccurred(QMediaRecorder* self, int errorVal, libqt_string errorString);
+void QMediaRecorder_Connect_ErrorOccurred(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_ErrorChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_ErrorChanged(QMediaRecorder* self, intptr_t slot);
 void QMediaRecorder_MetaDataChanged(QMediaRecorder* self);
 void QMediaRecorder_Connect_MetaDataChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_MetaDataChanged2(QMediaRecorder* self, libqt_string key, QVariant* value);
-void QMediaRecorder_Connect_MetaDataChanged2(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_AvailabilityChanged(QMediaRecorder* self, bool available);
-void QMediaRecorder_Connect_AvailabilityChanged(QMediaRecorder* self, intptr_t slot);
-void QMediaRecorder_AvailabilityChangedWithAvailability(QMediaRecorder* self, int availability);
-void QMediaRecorder_Connect_AvailabilityChangedWithAvailability(QMediaRecorder* self, intptr_t slot);
-bool QMediaRecorder_SetMediaObject(QMediaRecorder* self, QMediaObject* object);
-void QMediaRecorder_OnSetMediaObject(QMediaRecorder* self, intptr_t slot);
-bool QMediaRecorder_QBaseSetMediaObject(QMediaRecorder* self, QMediaObject* object);
+void QMediaRecorder_MediaFormatChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_MediaFormatChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_EncodingModeChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_EncodingModeChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_QualityChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_QualityChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_VideoResolutionChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_VideoResolutionChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_VideoFrameRateChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_VideoFrameRateChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_VideoBitRateChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_VideoBitRateChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_AudioBitRateChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_AudioBitRateChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_AudioChannelCountChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_AudioChannelCountChanged(QMediaRecorder* self, intptr_t slot);
+void QMediaRecorder_AudioSampleRateChanged(QMediaRecorder* self);
+void QMediaRecorder_Connect_AudioSampleRateChanged(QMediaRecorder* self, intptr_t slot);
 libqt_string QMediaRecorder_Tr2(const char* s, const char* c);
 libqt_string QMediaRecorder_Tr3(const char* s, const char* c, int n);
-libqt_string QMediaRecorder_TrUtf82(const char* s, const char* c);
-libqt_string QMediaRecorder_TrUtf83(const char* s, const char* c, int n);
-libqt_list /* of int */ QMediaRecorder_SupportedAudioSampleRates1(const QMediaRecorder* self, QAudioEncoderSettings* settings);
-libqt_list /* of int */ QMediaRecorder_SupportedAudioSampleRates2(const QMediaRecorder* self, QAudioEncoderSettings* settings, bool* continuous);
-libqt_list /* of QSize* */ QMediaRecorder_SupportedResolutions1(const QMediaRecorder* self, QVideoEncoderSettings* settings);
-libqt_list /* of QSize* */ QMediaRecorder_SupportedResolutions2(const QMediaRecorder* self, QVideoEncoderSettings* settings, bool* continuous);
-libqt_list /* of double */ QMediaRecorder_SupportedFrameRates1(const QMediaRecorder* self, QVideoEncoderSettings* settings);
-libqt_list /* of double */ QMediaRecorder_SupportedFrameRates2(const QMediaRecorder* self, QVideoEncoderSettings* settings, bool* continuous);
-void QMediaRecorder_SetEncodingSettings2(QMediaRecorder* self, QAudioEncoderSettings* audioSettings, QVideoEncoderSettings* videoSettings);
-void QMediaRecorder_SetEncodingSettings3(QMediaRecorder* self, QAudioEncoderSettings* audioSettings, QVideoEncoderSettings* videoSettings, libqt_string containerMimeType);
 bool QMediaRecorder_Event(QMediaRecorder* self, QEvent* event);
 void QMediaRecorder_OnEvent(QMediaRecorder* self, intptr_t slot);
 bool QMediaRecorder_QBaseEvent(QMediaRecorder* self, QEvent* event);

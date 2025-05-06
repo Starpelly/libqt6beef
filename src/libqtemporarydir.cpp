@@ -15,6 +15,10 @@ QTemporaryDir* QTemporaryDir_new2(libqt_string templateName) {
     return new QTemporaryDir(templateName_QString);
 }
 
+void QTemporaryDir_Swap(QTemporaryDir* self, QTemporaryDir* other) {
+    self->swap(*other);
+}
+
 bool QTemporaryDir_IsValid(const QTemporaryDir* self) {
     return self->isValid();
 }

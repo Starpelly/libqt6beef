@@ -8,7 +8,6 @@
 #include <QLine>
 #include <QLineF>
 #include <QList>
-#include <QMatrix>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPainter>

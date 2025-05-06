@@ -21,6 +21,8 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QEventLoop QEventLoop;
@@ -29,7 +31,6 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -51,21 +52,18 @@ int QEventLoop_Metacall(QEventLoop* self, int param1, int param2, void** param3)
 void QEventLoop_OnMetacall(QEventLoop* self, intptr_t slot);
 int QEventLoop_QBaseMetacall(QEventLoop* self, int param1, int param2, void** param3);
 libqt_string QEventLoop_Tr(const char* s);
-libqt_string QEventLoop_TrUtf8(const char* s);
 bool QEventLoop_ProcessEvents(QEventLoop* self);
 void QEventLoop_ProcessEvents2(QEventLoop* self, int flags, int maximumTime);
 int QEventLoop_Exec(QEventLoop* self);
-void QEventLoop_Exit(QEventLoop* self);
 bool QEventLoop_IsRunning(const QEventLoop* self);
 void QEventLoop_WakeUp(QEventLoop* self);
 bool QEventLoop_Event(QEventLoop* self, QEvent* event);
 void QEventLoop_OnEvent(QEventLoop* self, intptr_t slot);
 bool QEventLoop_QBaseEvent(QEventLoop* self, QEvent* event);
+void QEventLoop_Exit(QEventLoop* self);
 void QEventLoop_Quit(QEventLoop* self);
 libqt_string QEventLoop_Tr2(const char* s, const char* c);
 libqt_string QEventLoop_Tr3(const char* s, const char* c, int n);
-libqt_string QEventLoop_TrUtf82(const char* s, const char* c);
-libqt_string QEventLoop_TrUtf83(const char* s, const char* c, int n);
 bool QEventLoop_ProcessEvents1(QEventLoop* self, int flags);
 int QEventLoop_Exec1(QEventLoop* self, int flags);
 void QEventLoop_Exit1(QEventLoop* self, int returnCode);

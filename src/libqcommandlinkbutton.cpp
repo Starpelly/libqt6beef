@@ -1,7 +1,9 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QButtonGroup>
 #include <QByteArray>
@@ -14,6 +16,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,7 +40,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,6 +47,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QPushButton>
 #include <QRect>
 #include <QRegion>
@@ -144,18 +147,6 @@ libqt_string QCommandLinkButton_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QCommandLinkButton_TrUtf8(const char* s) {
-    QString _ret = QCommandLinkButton::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QCommandLinkButton_Description(const QCommandLinkButton* self) {
     QString _ret = self->description();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -197,36 +188,13 @@ libqt_string QCommandLinkButton_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QCommandLinkButton_TrUtf82(const char* s, const char* c) {
-    QString _ret = QCommandLinkButton::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QCommandLinkButton_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QCommandLinkButton::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 // Derived class handler implementation
 QSize* QCommandLinkButton_SizeHint(const QCommandLinkButton* self) {
     if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
         return new QSize(vqcommandlinkbutton->sizeHint());
+    } else {
+        return new QSize(self->sizeHint());
     }
-    return {};
 }
 
 // Base class handler implementation
@@ -234,8 +202,9 @@ QSize* QCommandLinkButton_QBaseSizeHint(const QCommandLinkButton* self) {
     if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
         vqcommandlinkbutton->setQCommandLinkButton_SizeHint_IsBase(true);
         return new QSize(vqcommandlinkbutton->sizeHint());
+    } else {
+        return new QSize(self->sizeHint());
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
@@ -275,8 +244,9 @@ void QCommandLinkButton_OnHeightForWidth(const QCommandLinkButton* self, intptr_
 QSize* QCommandLinkButton_MinimumSizeHint(const QCommandLinkButton* self) {
     if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
         return new QSize(vqcommandlinkbutton->minimumSizeHint());
+    } else {
+        return new QSize(self->minimumSizeHint());
     }
-    return {};
 }
 
 // Base class handler implementation
@@ -284,14 +254,41 @@ QSize* QCommandLinkButton_QBaseMinimumSizeHint(const QCommandLinkButton* self) {
     if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
         vqcommandlinkbutton->setQCommandLinkButton_MinimumSizeHint_IsBase(true);
         return new QSize(vqcommandlinkbutton->minimumSizeHint());
+    } else {
+        return new QSize(self->minimumSizeHint());
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
 void QCommandLinkButton_OnMinimumSizeHint(const QCommandLinkButton* self, intptr_t slot) {
     if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
         vqcommandlinkbutton->setQCommandLinkButton_MinimumSizeHint_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_MinimumSizeHint_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QCommandLinkButton_InitStyleOption(const QCommandLinkButton* self, QStyleOptionButton* option) {
+    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
+        vqcommandlinkbutton->initStyleOption(option);
+    } else {
+        vqcommandlinkbutton->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QCommandLinkButton_QBaseInitStyleOption(const QCommandLinkButton* self, QStyleOptionButton* option) {
+    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
+        vqcommandlinkbutton->setQCommandLinkButton_InitStyleOption_IsBase(true);
+        vqcommandlinkbutton->initStyleOption(option);
+    } else {
+        vqcommandlinkbutton->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCommandLinkButton_OnInitStyleOption(const QCommandLinkButton* self, intptr_t slot) {
+    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
+        vqcommandlinkbutton->setQCommandLinkButton_InitStyleOption_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -422,6 +419,32 @@ void QCommandLinkButton_QBaseFocusOutEvent(QCommandLinkButton* self, QFocusEvent
 void QCommandLinkButton_OnFocusOutEvent(QCommandLinkButton* self, intptr_t slot) {
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->setQCommandLinkButton_FocusOutEvent_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_FocusOutEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QCommandLinkButton_MouseMoveEvent(QCommandLinkButton* self, QMouseEvent* param1) {
+    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
+        vqcommandlinkbutton->mouseMoveEvent(param1);
+    } else {
+        vqcommandlinkbutton->mouseMoveEvent(param1);
+    }
+}
+
+// Base class handler implementation
+void QCommandLinkButton_QBaseMouseMoveEvent(QCommandLinkButton* self, QMouseEvent* param1) {
+    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
+        vqcommandlinkbutton->setQCommandLinkButton_MouseMoveEvent_IsBase(true);
+        vqcommandlinkbutton->mouseMoveEvent(param1);
+    } else {
+        vqcommandlinkbutton->mouseMoveEvent(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCommandLinkButton_OnMouseMoveEvent(QCommandLinkButton* self, intptr_t slot) {
+    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
+        vqcommandlinkbutton->setQCommandLinkButton_MouseMoveEvent_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_MouseMoveEvent_Callback>(slot));
     }
 }
 
@@ -578,32 +601,6 @@ void QCommandLinkButton_QBaseMouseReleaseEvent(QCommandLinkButton* self, QMouseE
 void QCommandLinkButton_OnMouseReleaseEvent(QCommandLinkButton* self, intptr_t slot) {
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->setQCommandLinkButton_MouseReleaseEvent_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_MouseReleaseEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QCommandLinkButton_MouseMoveEvent(QCommandLinkButton* self, QMouseEvent* e) {
-    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
-        vqcommandlinkbutton->mouseMoveEvent(e);
-    } else {
-        vqcommandlinkbutton->mouseMoveEvent(e);
-    }
-}
-
-// Base class handler implementation
-void QCommandLinkButton_QBaseMouseMoveEvent(QCommandLinkButton* self, QMouseEvent* e) {
-    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
-        vqcommandlinkbutton->setQCommandLinkButton_MouseMoveEvent_IsBase(true);
-        vqcommandlinkbutton->mouseMoveEvent(e);
-    } else {
-        vqcommandlinkbutton->mouseMoveEvent(e);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QCommandLinkButton_OnMouseMoveEvent(QCommandLinkButton* self, intptr_t slot) {
-    if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
-        vqcommandlinkbutton->setQCommandLinkButton_MouseMoveEvent_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_MouseMoveEvent_Callback>(slot));
     }
 }
 
@@ -816,7 +813,7 @@ void QCommandLinkButton_OnWheelEvent(QCommandLinkButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QCommandLinkButton_EnterEvent(QCommandLinkButton* self, QEvent* event) {
+void QCommandLinkButton_EnterEvent(QCommandLinkButton* self, QEnterEvent* event) {
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->enterEvent(event);
     } else {
@@ -825,7 +822,7 @@ void QCommandLinkButton_EnterEvent(QCommandLinkButton* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QCommandLinkButton_QBaseEnterEvent(QCommandLinkButton* self, QEvent* event) {
+void QCommandLinkButton_QBaseEnterEvent(QCommandLinkButton* self, QEnterEvent* event) {
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->setQCommandLinkButton_EnterEvent_IsBase(true);
         vqcommandlinkbutton->enterEvent(event);
@@ -1180,23 +1177,23 @@ void QCommandLinkButton_OnHideEvent(QCommandLinkButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QCommandLinkButton_NativeEvent(QCommandLinkButton* self, libqt_string eventType, void* message, long* result) {
+bool QCommandLinkButton_NativeEvent(QCommandLinkButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
-        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QCommandLinkButton_QBaseNativeEvent(QCommandLinkButton* self, libqt_string eventType, void* message, long* result) {
+bool QCommandLinkButton_QBaseNativeEvent(QCommandLinkButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->setQCommandLinkButton_NativeEvent_IsBase(true);
-        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcommandlinkbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1516,32 +1513,6 @@ void QCommandLinkButton_QBaseDisconnectNotify(QCommandLinkButton* self, QMetaMet
 void QCommandLinkButton_OnDisconnectNotify(QCommandLinkButton* self, intptr_t slot) {
     if (auto* vqcommandlinkbutton = dynamic_cast<VirtualQCommandLinkButton*>(self)) {
         vqcommandlinkbutton->setQCommandLinkButton_DisconnectNotify_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QCommandLinkButton_InitStyleOption(const QCommandLinkButton* self, QStyleOptionButton* option) {
-    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
-        vqcommandlinkbutton->initStyleOption(option);
-    } else {
-        vqcommandlinkbutton->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QCommandLinkButton_QBaseInitStyleOption(const QCommandLinkButton* self, QStyleOptionButton* option) {
-    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
-        vqcommandlinkbutton->setQCommandLinkButton_InitStyleOption_IsBase(true);
-        vqcommandlinkbutton->initStyleOption(option);
-    } else {
-        vqcommandlinkbutton->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QCommandLinkButton_OnInitStyleOption(const QCommandLinkButton* self, intptr_t slot) {
-    if (auto* vqcommandlinkbutton = const_cast<VirtualQCommandLinkButton*>(dynamic_cast<const VirtualQCommandLinkButton*>(self))) {
-        vqcommandlinkbutton->setQCommandLinkButton_InitStyleOption_Callback(reinterpret_cast<VirtualQCommandLinkButton::QCommandLinkButton_InitStyleOption_Callback>(slot));
     }
 }
 

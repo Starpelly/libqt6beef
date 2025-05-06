@@ -11,6 +11,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QStyleOptionGroupBox>
 #include <QStyleOptionHeader>
+#include <QStyleOptionHeaderV2>
 #include <QStyleOptionMenuItem>
 #include <QStyleOptionProgressBar>
 #include <QStyleOptionRubberBand>
@@ -19,7 +20,6 @@
 #include <QStyleOptionSpinBox>
 #include <QStyleOptionTab>
 #include <QStyleOptionTabBarBase>
-#include <QStyleOptionTabV4>
 #include <QStyleOptionTabWidgetFrame>
 #include <QStyleOptionTitleBar>
 #include <QStyleOptionToolBar>
@@ -46,10 +46,6 @@ QStyleOption* QStyleOption_new3(int version) {
 
 QStyleOption* QStyleOption_new4(int version, int typeVal) {
     return new QStyleOption(static_cast<int>(version), static_cast<int>(typeVal));
-}
-
-void QStyleOption_Init(QStyleOption* self, QWidget* w) {
-    self->init(w);
 }
 
 void QStyleOption_InitFrom(QStyleOption* self, QWidget* w) {
@@ -124,6 +120,18 @@ void QStyleOptionHeader_Delete(QStyleOptionHeader* self) {
     delete self;
 }
 
+QStyleOptionHeaderV2* QStyleOptionHeaderV2_new() {
+    return new QStyleOptionHeaderV2();
+}
+
+QStyleOptionHeaderV2* QStyleOptionHeaderV2_new2(QStyleOptionHeaderV2* other) {
+    return new QStyleOptionHeaderV2(*other);
+}
+
+void QStyleOptionHeaderV2_Delete(QStyleOptionHeaderV2* self) {
+    delete self;
+}
+
 QStyleOptionButton* QStyleOptionButton_new() {
     return new QStyleOptionButton();
 }
@@ -145,22 +153,6 @@ QStyleOptionTab* QStyleOptionTab_new2(QStyleOptionTab* other) {
 }
 
 void QStyleOptionTab_Delete(QStyleOptionTab* self) {
-    delete self;
-}
-
-QStyleOptionTabV4* QStyleOptionTabV4_new() {
-    return new QStyleOptionTabV4();
-}
-
-QStyleOptionTabV4* QStyleOptionTabV4_new2(QStyleOptionTabV4* param1) {
-    return new QStyleOptionTabV4(*param1);
-}
-
-void QStyleOptionTabV4_OperatorAssign(QStyleOptionTabV4* self, QStyleOptionTabV4* param1) {
-    self->operator=(*param1);
-}
-
-void QStyleOptionTabV4_Delete(QStyleOptionTabV4* self) {
     delete self;
 }
 

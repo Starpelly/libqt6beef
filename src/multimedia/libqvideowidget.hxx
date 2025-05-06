@@ -18,15 +18,12 @@ class VirtualQVideoWidget : public QVideoWidget {
   public:
     // Virtual class public types (including callbacks)
     using QVideoWidget_Metacall_Callback = int (*)(QVideoWidget*, QMetaObject::Call, int, void**);
-    using QVideoWidget_MediaObject_Callback = QMediaObject* (*)();
     using QVideoWidget_SizeHint_Callback = QSize (*)();
     using QVideoWidget_Event_Callback = bool (*)(QVideoWidget*, QEvent*);
     using QVideoWidget_ShowEvent_Callback = void (*)(QVideoWidget*, QShowEvent*);
     using QVideoWidget_HideEvent_Callback = void (*)(QVideoWidget*, QHideEvent*);
     using QVideoWidget_ResizeEvent_Callback = void (*)(QVideoWidget*, QResizeEvent*);
     using QVideoWidget_MoveEvent_Callback = void (*)(QVideoWidget*, QMoveEvent*);
-    using QVideoWidget_PaintEvent_Callback = void (*)(QVideoWidget*, QPaintEvent*);
-    using QVideoWidget_SetMediaObject_Callback = bool (*)(QVideoWidget*, QMediaObject*);
     using QVideoWidget_DevType_Callback = int (*)();
     using QVideoWidget_SetVisible_Callback = void (*)(QVideoWidget*, bool);
     using QVideoWidget_MinimumSizeHint_Callback = QSize (*)();
@@ -42,8 +39,9 @@ class VirtualQVideoWidget : public QVideoWidget {
     using QVideoWidget_KeyReleaseEvent_Callback = void (*)(QVideoWidget*, QKeyEvent*);
     using QVideoWidget_FocusInEvent_Callback = void (*)(QVideoWidget*, QFocusEvent*);
     using QVideoWidget_FocusOutEvent_Callback = void (*)(QVideoWidget*, QFocusEvent*);
-    using QVideoWidget_EnterEvent_Callback = void (*)(QVideoWidget*, QEvent*);
+    using QVideoWidget_EnterEvent_Callback = void (*)(QVideoWidget*, QEnterEvent*);
     using QVideoWidget_LeaveEvent_Callback = void (*)(QVideoWidget*, QEvent*);
+    using QVideoWidget_PaintEvent_Callback = void (*)(QVideoWidget*, QPaintEvent*);
     using QVideoWidget_CloseEvent_Callback = void (*)(QVideoWidget*, QCloseEvent*);
     using QVideoWidget_ContextMenuEvent_Callback = void (*)(QVideoWidget*, QContextMenuEvent*);
     using QVideoWidget_TabletEvent_Callback = void (*)(QVideoWidget*, QTabletEvent*);
@@ -52,7 +50,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     using QVideoWidget_DragMoveEvent_Callback = void (*)(QVideoWidget*, QDragMoveEvent*);
     using QVideoWidget_DragLeaveEvent_Callback = void (*)(QVideoWidget*, QDragLeaveEvent*);
     using QVideoWidget_DropEvent_Callback = void (*)(QVideoWidget*, QDropEvent*);
-    using QVideoWidget_NativeEvent_Callback = bool (*)(QVideoWidget*, const QByteArray&, void*, long*);
+    using QVideoWidget_NativeEvent_Callback = bool (*)(QVideoWidget*, const QByteArray&, void*, qintptr*);
     using QVideoWidget_ChangeEvent_Callback = void (*)(QVideoWidget*, QEvent*);
     using QVideoWidget_Metric_Callback = int (*)(const QVideoWidget*, QPaintDevice::PaintDeviceMetric);
     using QVideoWidget_InitPainter_Callback = void (*)(const QVideoWidget*, QPainter*);
@@ -80,15 +78,12 @@ class VirtualQVideoWidget : public QVideoWidget {
   protected:
     // Instance callback storage
     QVideoWidget_Metacall_Callback qvideowidget_metacall_callback = nullptr;
-    QVideoWidget_MediaObject_Callback qvideowidget_mediaobject_callback = nullptr;
     QVideoWidget_SizeHint_Callback qvideowidget_sizehint_callback = nullptr;
     QVideoWidget_Event_Callback qvideowidget_event_callback = nullptr;
     QVideoWidget_ShowEvent_Callback qvideowidget_showevent_callback = nullptr;
     QVideoWidget_HideEvent_Callback qvideowidget_hideevent_callback = nullptr;
     QVideoWidget_ResizeEvent_Callback qvideowidget_resizeevent_callback = nullptr;
     QVideoWidget_MoveEvent_Callback qvideowidget_moveevent_callback = nullptr;
-    QVideoWidget_PaintEvent_Callback qvideowidget_paintevent_callback = nullptr;
-    QVideoWidget_SetMediaObject_Callback qvideowidget_setmediaobject_callback = nullptr;
     QVideoWidget_DevType_Callback qvideowidget_devtype_callback = nullptr;
     QVideoWidget_SetVisible_Callback qvideowidget_setvisible_callback = nullptr;
     QVideoWidget_MinimumSizeHint_Callback qvideowidget_minimumsizehint_callback = nullptr;
@@ -106,6 +101,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     QVideoWidget_FocusOutEvent_Callback qvideowidget_focusoutevent_callback = nullptr;
     QVideoWidget_EnterEvent_Callback qvideowidget_enterevent_callback = nullptr;
     QVideoWidget_LeaveEvent_Callback qvideowidget_leaveevent_callback = nullptr;
+    QVideoWidget_PaintEvent_Callback qvideowidget_paintevent_callback = nullptr;
     QVideoWidget_CloseEvent_Callback qvideowidget_closeevent_callback = nullptr;
     QVideoWidget_ContextMenuEvent_Callback qvideowidget_contextmenuevent_callback = nullptr;
     QVideoWidget_TabletEvent_Callback qvideowidget_tabletevent_callback = nullptr;
@@ -141,15 +137,12 @@ class VirtualQVideoWidget : public QVideoWidget {
 
     // Instance base flags
     mutable bool qvideowidget_metacall_isbase = false;
-    mutable bool qvideowidget_mediaobject_isbase = false;
     mutable bool qvideowidget_sizehint_isbase = false;
     mutable bool qvideowidget_event_isbase = false;
     mutable bool qvideowidget_showevent_isbase = false;
     mutable bool qvideowidget_hideevent_isbase = false;
     mutable bool qvideowidget_resizeevent_isbase = false;
     mutable bool qvideowidget_moveevent_isbase = false;
-    mutable bool qvideowidget_paintevent_isbase = false;
-    mutable bool qvideowidget_setmediaobject_isbase = false;
     mutable bool qvideowidget_devtype_isbase = false;
     mutable bool qvideowidget_setvisible_isbase = false;
     mutable bool qvideowidget_minimumsizehint_isbase = false;
@@ -167,6 +160,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     mutable bool qvideowidget_focusoutevent_isbase = false;
     mutable bool qvideowidget_enterevent_isbase = false;
     mutable bool qvideowidget_leaveevent_isbase = false;
+    mutable bool qvideowidget_paintevent_isbase = false;
     mutable bool qvideowidget_closeevent_isbase = false;
     mutable bool qvideowidget_contextmenuevent_isbase = false;
     mutable bool qvideowidget_tabletevent_isbase = false;
@@ -206,15 +200,12 @@ class VirtualQVideoWidget : public QVideoWidget {
 
     ~VirtualQVideoWidget() {
         qvideowidget_metacall_callback = nullptr;
-        qvideowidget_mediaobject_callback = nullptr;
         qvideowidget_sizehint_callback = nullptr;
         qvideowidget_event_callback = nullptr;
         qvideowidget_showevent_callback = nullptr;
         qvideowidget_hideevent_callback = nullptr;
         qvideowidget_resizeevent_callback = nullptr;
         qvideowidget_moveevent_callback = nullptr;
-        qvideowidget_paintevent_callback = nullptr;
-        qvideowidget_setmediaobject_callback = nullptr;
         qvideowidget_devtype_callback = nullptr;
         qvideowidget_setvisible_callback = nullptr;
         qvideowidget_minimumsizehint_callback = nullptr;
@@ -232,6 +223,7 @@ class VirtualQVideoWidget : public QVideoWidget {
         qvideowidget_focusoutevent_callback = nullptr;
         qvideowidget_enterevent_callback = nullptr;
         qvideowidget_leaveevent_callback = nullptr;
+        qvideowidget_paintevent_callback = nullptr;
         qvideowidget_closeevent_callback = nullptr;
         qvideowidget_contextmenuevent_callback = nullptr;
         qvideowidget_tabletevent_callback = nullptr;
@@ -268,15 +260,12 @@ class VirtualQVideoWidget : public QVideoWidget {
 
     // Callback setters
     void setQVideoWidget_Metacall_Callback(QVideoWidget_Metacall_Callback cb) { qvideowidget_metacall_callback = cb; }
-    void setQVideoWidget_MediaObject_Callback(QVideoWidget_MediaObject_Callback cb) { qvideowidget_mediaobject_callback = cb; }
     void setQVideoWidget_SizeHint_Callback(QVideoWidget_SizeHint_Callback cb) { qvideowidget_sizehint_callback = cb; }
     void setQVideoWidget_Event_Callback(QVideoWidget_Event_Callback cb) { qvideowidget_event_callback = cb; }
     void setQVideoWidget_ShowEvent_Callback(QVideoWidget_ShowEvent_Callback cb) { qvideowidget_showevent_callback = cb; }
     void setQVideoWidget_HideEvent_Callback(QVideoWidget_HideEvent_Callback cb) { qvideowidget_hideevent_callback = cb; }
     void setQVideoWidget_ResizeEvent_Callback(QVideoWidget_ResizeEvent_Callback cb) { qvideowidget_resizeevent_callback = cb; }
     void setQVideoWidget_MoveEvent_Callback(QVideoWidget_MoveEvent_Callback cb) { qvideowidget_moveevent_callback = cb; }
-    void setQVideoWidget_PaintEvent_Callback(QVideoWidget_PaintEvent_Callback cb) { qvideowidget_paintevent_callback = cb; }
-    void setQVideoWidget_SetMediaObject_Callback(QVideoWidget_SetMediaObject_Callback cb) { qvideowidget_setmediaobject_callback = cb; }
     void setQVideoWidget_DevType_Callback(QVideoWidget_DevType_Callback cb) { qvideowidget_devtype_callback = cb; }
     void setQVideoWidget_SetVisible_Callback(QVideoWidget_SetVisible_Callback cb) { qvideowidget_setvisible_callback = cb; }
     void setQVideoWidget_MinimumSizeHint_Callback(QVideoWidget_MinimumSizeHint_Callback cb) { qvideowidget_minimumsizehint_callback = cb; }
@@ -294,6 +283,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     void setQVideoWidget_FocusOutEvent_Callback(QVideoWidget_FocusOutEvent_Callback cb) { qvideowidget_focusoutevent_callback = cb; }
     void setQVideoWidget_EnterEvent_Callback(QVideoWidget_EnterEvent_Callback cb) { qvideowidget_enterevent_callback = cb; }
     void setQVideoWidget_LeaveEvent_Callback(QVideoWidget_LeaveEvent_Callback cb) { qvideowidget_leaveevent_callback = cb; }
+    void setQVideoWidget_PaintEvent_Callback(QVideoWidget_PaintEvent_Callback cb) { qvideowidget_paintevent_callback = cb; }
     void setQVideoWidget_CloseEvent_Callback(QVideoWidget_CloseEvent_Callback cb) { qvideowidget_closeevent_callback = cb; }
     void setQVideoWidget_ContextMenuEvent_Callback(QVideoWidget_ContextMenuEvent_Callback cb) { qvideowidget_contextmenuevent_callback = cb; }
     void setQVideoWidget_TabletEvent_Callback(QVideoWidget_TabletEvent_Callback cb) { qvideowidget_tabletevent_callback = cb; }
@@ -329,15 +319,12 @@ class VirtualQVideoWidget : public QVideoWidget {
 
     // Base flag setters
     void setQVideoWidget_Metacall_IsBase(bool value) const { qvideowidget_metacall_isbase = value; }
-    void setQVideoWidget_MediaObject_IsBase(bool value) const { qvideowidget_mediaobject_isbase = value; }
     void setQVideoWidget_SizeHint_IsBase(bool value) const { qvideowidget_sizehint_isbase = value; }
     void setQVideoWidget_Event_IsBase(bool value) const { qvideowidget_event_isbase = value; }
     void setQVideoWidget_ShowEvent_IsBase(bool value) const { qvideowidget_showevent_isbase = value; }
     void setQVideoWidget_HideEvent_IsBase(bool value) const { qvideowidget_hideevent_isbase = value; }
     void setQVideoWidget_ResizeEvent_IsBase(bool value) const { qvideowidget_resizeevent_isbase = value; }
     void setQVideoWidget_MoveEvent_IsBase(bool value) const { qvideowidget_moveevent_isbase = value; }
-    void setQVideoWidget_PaintEvent_IsBase(bool value) const { qvideowidget_paintevent_isbase = value; }
-    void setQVideoWidget_SetMediaObject_IsBase(bool value) const { qvideowidget_setmediaobject_isbase = value; }
     void setQVideoWidget_DevType_IsBase(bool value) const { qvideowidget_devtype_isbase = value; }
     void setQVideoWidget_SetVisible_IsBase(bool value) const { qvideowidget_setvisible_isbase = value; }
     void setQVideoWidget_MinimumSizeHint_IsBase(bool value) const { qvideowidget_minimumsizehint_isbase = value; }
@@ -355,6 +342,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     void setQVideoWidget_FocusOutEvent_IsBase(bool value) const { qvideowidget_focusoutevent_isbase = value; }
     void setQVideoWidget_EnterEvent_IsBase(bool value) const { qvideowidget_enterevent_isbase = value; }
     void setQVideoWidget_LeaveEvent_IsBase(bool value) const { qvideowidget_leaveevent_isbase = value; }
+    void setQVideoWidget_PaintEvent_IsBase(bool value) const { qvideowidget_paintevent_isbase = value; }
     void setQVideoWidget_CloseEvent_IsBase(bool value) const { qvideowidget_closeevent_isbase = value; }
     void setQVideoWidget_ContextMenuEvent_IsBase(bool value) const { qvideowidget_contextmenuevent_isbase = value; }
     void setQVideoWidget_TabletEvent_IsBase(bool value) const { qvideowidget_tabletevent_isbase = value; }
@@ -397,18 +385,6 @@ class VirtualQVideoWidget : public QVideoWidget {
             return qvideowidget_metacall_callback(this, param1, param2, param3);
         } else {
             return QVideoWidget::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QMediaObject* mediaObject() const override {
-        if (qvideowidget_mediaobject_isbase) {
-            qvideowidget_mediaobject_isbase = false;
-            return QVideoWidget::mediaObject();
-        } else if (qvideowidget_mediaobject_callback != nullptr) {
-            return qvideowidget_mediaobject_callback();
-        } else {
-            return QVideoWidget::mediaObject();
         }
     }
 
@@ -481,30 +457,6 @@ class VirtualQVideoWidget : public QVideoWidget {
             qvideowidget_moveevent_callback(this, event);
         } else {
             QVideoWidget::moveEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void paintEvent(QPaintEvent* event) override {
-        if (qvideowidget_paintevent_isbase) {
-            qvideowidget_paintevent_isbase = false;
-            QVideoWidget::paintEvent(event);
-        } else if (qvideowidget_paintevent_callback != nullptr) {
-            qvideowidget_paintevent_callback(this, event);
-        } else {
-            QVideoWidget::paintEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setMediaObject(QMediaObject* object) override {
-        if (qvideowidget_setmediaobject_isbase) {
-            qvideowidget_setmediaobject_isbase = false;
-            return QVideoWidget::setMediaObject(object);
-        } else if (qvideowidget_setmediaobject_callback != nullptr) {
-            return qvideowidget_setmediaobject_callback(this, object);
-        } else {
-            return QVideoWidget::setMediaObject(object);
         }
     }
 
@@ -689,7 +641,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qvideowidget_enterevent_isbase) {
             qvideowidget_enterevent_isbase = false;
             QVideoWidget::enterEvent(event);
@@ -709,6 +661,18 @@ class VirtualQVideoWidget : public QVideoWidget {
             qvideowidget_leaveevent_callback(this, event);
         } else {
             QVideoWidget::leaveEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void paintEvent(QPaintEvent* event) override {
+        if (qvideowidget_paintevent_isbase) {
+            qvideowidget_paintevent_isbase = false;
+            QVideoWidget::paintEvent(event);
+        } else if (qvideowidget_paintevent_callback != nullptr) {
+            qvideowidget_paintevent_callback(this, event);
+        } else {
+            QVideoWidget::paintEvent(event);
         }
     }
 
@@ -809,7 +773,7 @@ class VirtualQVideoWidget : public QVideoWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qvideowidget_nativeevent_isbase) {
             qvideowidget_nativeevent_isbase = false;
             return QVideoWidget::nativeEvent(eventType, message, result);

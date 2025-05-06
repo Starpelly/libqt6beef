@@ -22,7 +22,9 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractNetworkCache QAbstractNetworkCache;
+typedef struct QAnyStringView QAnyStringView;
 typedef struct QAuthenticator QAuthenticator;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QHstsPolicy QHstsPolicy;
@@ -32,14 +34,12 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkAccessManager QNetworkAccessManager;
-typedef struct QNetworkConfiguration QNetworkConfiguration;
 typedef struct QNetworkCookieJar QNetworkCookieJar;
 typedef struct QNetworkProxy QNetworkProxy;
 typedef struct QNetworkProxyFactory QNetworkProxyFactory;
 typedef struct QNetworkReply QNetworkReply;
 typedef struct QNetworkRequest QNetworkRequest;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QSslConfiguration QSslConfiguration;
 typedef struct QSslError QSslError;
 typedef struct QSslPreSharedKeyAuthenticator QSslPreSharedKeyAuthenticator;
@@ -49,11 +49,9 @@ typedef struct QVariant QVariant;
 #endif
 
 #ifdef __cplusplus
-typedef QNetworkAccessManager::NetworkAccessibility NetworkAccessibility; // C++ enum
-typedef QNetworkAccessManager::Operation Operation;                       // C++ enum
+typedef QNetworkAccessManager::Operation Operation; // C++ enum
 #else
-typedef int NetworkAccessibility; // C ABI enum
-typedef int Operation;            // C ABI enum
+typedef int Operation; // C ABI enum
 #endif
 
 QNetworkAccessManager* QNetworkAccessManager_new();
@@ -64,8 +62,9 @@ int QNetworkAccessManager_Metacall(QNetworkAccessManager* self, int param1, int 
 void QNetworkAccessManager_OnMetacall(QNetworkAccessManager* self, intptr_t slot);
 int QNetworkAccessManager_QBaseMetacall(QNetworkAccessManager* self, int param1, int param2, void** param3);
 libqt_string QNetworkAccessManager_Tr(const char* s);
-libqt_string QNetworkAccessManager_TrUtf8(const char* s);
 libqt_list /* of libqt_string */ QNetworkAccessManager_SupportedSchemes(const QNetworkAccessManager* self);
+void QNetworkAccessManager_OnSupportedSchemes(const QNetworkAccessManager* self, intptr_t slot);
+libqt_list /* of libqt_string */ QNetworkAccessManager_QBaseSupportedSchemes(const QNetworkAccessManager* self);
 void QNetworkAccessManager_ClearAccessCache(QNetworkAccessManager* self);
 void QNetworkAccessManager_ClearConnectionCache(QNetworkAccessManager* self);
 QNetworkProxy* QNetworkAccessManager_Proxy(const QNetworkAccessManager* self);
@@ -94,11 +93,6 @@ QNetworkReply* QNetworkAccessManager_SendCustomRequest2(QNetworkAccessManager* s
 QNetworkReply* QNetworkAccessManager_Post3(QNetworkAccessManager* self, QNetworkRequest* request, QHttpMultiPart* multiPart);
 QNetworkReply* QNetworkAccessManager_Put3(QNetworkAccessManager* self, QNetworkRequest* request, QHttpMultiPart* multiPart);
 QNetworkReply* QNetworkAccessManager_SendCustomRequest3(QNetworkAccessManager* self, QNetworkRequest* request, libqt_string verb, QHttpMultiPart* multiPart);
-void QNetworkAccessManager_SetConfiguration(QNetworkAccessManager* self, QNetworkConfiguration* config);
-QNetworkConfiguration* QNetworkAccessManager_Configuration(const QNetworkAccessManager* self);
-QNetworkConfiguration* QNetworkAccessManager_ActiveConfiguration(const QNetworkAccessManager* self);
-void QNetworkAccessManager_SetNetworkAccessible(QNetworkAccessManager* self, int accessible);
-int QNetworkAccessManager_NetworkAccessible(const QNetworkAccessManager* self);
 void QNetworkAccessManager_ConnectToHostEncrypted(QNetworkAccessManager* self, libqt_string hostName);
 void QNetworkAccessManager_ConnectToHostEncrypted2(QNetworkAccessManager* self, libqt_string hostName, uint16_t port, QSslConfiguration* sslConfiguration, libqt_string peerName);
 void QNetworkAccessManager_ConnectToHost(QNetworkAccessManager* self, libqt_string hostName);
@@ -120,17 +114,11 @@ void QNetworkAccessManager_SslErrors(QNetworkAccessManager* self, QNetworkReply*
 void QNetworkAccessManager_Connect_SslErrors(QNetworkAccessManager* self, intptr_t slot);
 void QNetworkAccessManager_PreSharedKeyAuthenticationRequired(QNetworkAccessManager* self, QNetworkReply* reply, QSslPreSharedKeyAuthenticator* authenticator);
 void QNetworkAccessManager_Connect_PreSharedKeyAuthenticationRequired(QNetworkAccessManager* self, intptr_t slot);
-void QNetworkAccessManager_NetworkSessionConnected(QNetworkAccessManager* self);
-void QNetworkAccessManager_Connect_NetworkSessionConnected(QNetworkAccessManager* self, intptr_t slot);
-void QNetworkAccessManager_NetworkAccessibleChanged(QNetworkAccessManager* self, int accessible);
-void QNetworkAccessManager_Connect_NetworkAccessibleChanged(QNetworkAccessManager* self, intptr_t slot);
 QNetworkReply* QNetworkAccessManager_CreateRequest(QNetworkAccessManager* self, int op, QNetworkRequest* request, QIODevice* outgoingData);
 void QNetworkAccessManager_OnCreateRequest(QNetworkAccessManager* self, intptr_t slot);
 QNetworkReply* QNetworkAccessManager_QBaseCreateRequest(QNetworkAccessManager* self, int op, QNetworkRequest* request, QIODevice* outgoingData);
 libqt_string QNetworkAccessManager_Tr2(const char* s, const char* c);
 libqt_string QNetworkAccessManager_Tr3(const char* s, const char* c, int n);
-libqt_string QNetworkAccessManager_TrUtf82(const char* s, const char* c);
-libqt_string QNetworkAccessManager_TrUtf83(const char* s, const char* c, int n);
 void QNetworkAccessManager_EnableStrictTransportSecurityStore2(QNetworkAccessManager* self, bool enabled, libqt_string storeDir);
 QNetworkReply* QNetworkAccessManager_SendCustomRequest32(QNetworkAccessManager* self, QNetworkRequest* request, libqt_string verb, QIODevice* data);
 void QNetworkAccessManager_ConnectToHostEncrypted22(QNetworkAccessManager* self, libqt_string hostName, uint16_t port);

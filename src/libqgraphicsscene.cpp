@@ -1,3 +1,5 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QBrush>
 #include <QByteArray>
 #include <QChildEvent>
@@ -30,7 +32,6 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
@@ -120,18 +121,6 @@ libqt_string QGraphicsScene_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QGraphicsScene_TrUtf8(const char* s) {
-    QString _ret = QGraphicsScene::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QRectF* QGraphicsScene_SceneRect(const QGraphicsScene* self) {
     return new QRectF(self->sceneRect());
 }
@@ -162,14 +151,6 @@ int QGraphicsScene_ItemIndexMethod(const QGraphicsScene* self) {
 
 void QGraphicsScene_SetItemIndexMethod(QGraphicsScene* self, int method) {
     self->setItemIndexMethod(static_cast<QGraphicsScene::ItemIndexMethod>(method));
-}
-
-bool QGraphicsScene_IsSortCacheEnabled(const QGraphicsScene* self) {
-    return self->isSortCacheEnabled();
-}
-
-void QGraphicsScene_SetSortCacheEnabled(QGraphicsScene* self, bool enabled) {
-    self->setSortCacheEnabled(enabled);
 }
 
 int QGraphicsScene_BspTreeDepth(const QGraphicsScene* self) {
@@ -236,6 +217,19 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_ItemsWithPath(const QGraphicsS
     return _out;
 }
 
+libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items2(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order) {
+    QList<QGraphicsItem*> _ret = self->items(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<Qt::ItemSelectionMode>(mode), static_cast<Qt::SortOrder>(order));
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QGraphicsItem** _arr = static_cast<QGraphicsItem**>(malloc(sizeof(QGraphicsItem*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = _ret[i];
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems(const QGraphicsScene* self, QGraphicsItem* item) {
     QList<QGraphicsItem*> _ret = self->collidingItems(item);
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -251,19 +245,6 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems(const QGraphics
 
 QGraphicsItem* QGraphicsScene_ItemAt(const QGraphicsScene* self, QPointF* pos, QTransform* deviceTransform) {
     return self->itemAt(*pos, *deviceTransform);
-}
-
-libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items2(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order) {
-    QList<QGraphicsItem*> _ret = self->items(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<Qt::ItemSelectionMode>(mode), static_cast<Qt::SortOrder>(order));
-    // Convert QList<> from C++ memory to manually-managed C memory
-    QGraphicsItem** _arr = static_cast<QGraphicsItem**>(malloc(sizeof(QGraphicsItem*) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = _ret[i];
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
 }
 
 QGraphicsItem* QGraphicsScene_ItemAt2(const QGraphicsScene* self, double x, double y, QTransform* deviceTransform) {
@@ -293,10 +274,6 @@ void QGraphicsScene_SetSelectionArea(QGraphicsScene* self, QPainterPath* path, Q
 
 void QGraphicsScene_SetSelectionAreaWithPath(QGraphicsScene* self, QPainterPath* path) {
     self->setSelectionArea(*path);
-}
-
-void QGraphicsScene_SetSelectionArea2(QGraphicsScene* self, QPainterPath* path, int selectionOperation) {
-    self->setSelectionArea(*path, static_cast<Qt::ItemSelectionOperation>(selectionOperation));
 }
 
 QGraphicsItemGroup* QGraphicsScene_CreateItemGroup(QGraphicsScene* self, libqt_list /* of QGraphicsItem* */ items) {
@@ -610,30 +587,6 @@ libqt_string QGraphicsScene_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QGraphicsScene_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGraphicsScene::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsScene_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGraphicsScene::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QGraphicsScene_Render2(QGraphicsScene* self, QPainter* painter, QRectF* target) {
     self->render(painter, *target);
 }
@@ -776,19 +729,6 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items44(const QGraphicsScene* 
     return _out;
 }
 
-libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems2(const QGraphicsScene* self, QGraphicsItem* item, int mode) {
-    QList<QGraphicsItem*> _ret = self->collidingItems(item, static_cast<Qt::ItemSelectionMode>(mode));
-    // Convert QList<> from C++ memory to manually-managed C memory
-    QGraphicsItem** _arr = static_cast<QGraphicsItem**>(malloc(sizeof(QGraphicsItem*) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = _ret[i];
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
 libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items7(const QGraphicsScene* self, double x, double y, double w, double h, int mode, int order, QTransform* deviceTransform) {
     QList<QGraphicsItem*> _ret = self->items(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<Qt::ItemSelectionMode>(mode), static_cast<Qt::SortOrder>(order), *deviceTransform);
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -802,15 +742,24 @@ libqt_list /* of QGraphicsItem* */ QGraphicsScene_Items7(const QGraphicsScene* s
     return _out;
 }
 
-void QGraphicsScene_SetSelectionArea22(QGraphicsScene* self, QPainterPath* path, int mode) {
-    self->setSelectionArea(*path, static_cast<Qt::ItemSelectionMode>(mode));
+libqt_list /* of QGraphicsItem* */ QGraphicsScene_CollidingItems2(const QGraphicsScene* self, QGraphicsItem* item, int mode) {
+    QList<QGraphicsItem*> _ret = self->collidingItems(item, static_cast<Qt::ItemSelectionMode>(mode));
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QGraphicsItem** _arr = static_cast<QGraphicsItem**>(malloc(sizeof(QGraphicsItem*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = _ret[i];
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
-void QGraphicsScene_SetSelectionArea3(QGraphicsScene* self, QPainterPath* path, int mode, QTransform* deviceTransform) {
-    self->setSelectionArea(*path, static_cast<Qt::ItemSelectionMode>(mode), *deviceTransform);
+void QGraphicsScene_SetSelectionArea2(QGraphicsScene* self, QPainterPath* path, int selectionOperation) {
+    self->setSelectionArea(*path, static_cast<Qt::ItemSelectionOperation>(selectionOperation));
 }
 
-void QGraphicsScene_SetSelectionArea32(QGraphicsScene* self, QPainterPath* path, int selectionOperation, int mode) {
+void QGraphicsScene_SetSelectionArea3(QGraphicsScene* self, QPainterPath* path, int selectionOperation, int mode) {
     self->setSelectionArea(*path, static_cast<Qt::ItemSelectionOperation>(selectionOperation), static_cast<Qt::ItemSelectionMode>(mode));
 }
 
@@ -1451,6 +1400,32 @@ void QGraphicsScene_OnDrawForeground(QGraphicsScene* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QGraphicsScene_FocusNextPrevChild(QGraphicsScene* self, bool next) {
+    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
+        return vqgraphicsscene->focusNextPrevChild(next);
+    } else {
+        return vqgraphicsscene->focusNextPrevChild(next);
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsScene_QBaseFocusNextPrevChild(QGraphicsScene* self, bool next) {
+    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
+        vqgraphicsscene->setQGraphicsScene_FocusNextPrevChild_IsBase(true);
+        return vqgraphicsscene->focusNextPrevChild(next);
+    } else {
+        return vqgraphicsscene->focusNextPrevChild(next);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsScene_OnFocusNextPrevChild(QGraphicsScene* self, intptr_t slot) {
+    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
+        vqgraphicsscene->setQGraphicsScene_FocusNextPrevChild_Callback(reinterpret_cast<VirtualQGraphicsScene::QGraphicsScene_FocusNextPrevChild_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QGraphicsScene_TimerEvent(QGraphicsScene* self, QTimerEvent* event) {
     if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
         vqgraphicsscene->timerEvent(event);
@@ -1577,32 +1552,6 @@ void QGraphicsScene_QBaseDisconnectNotify(QGraphicsScene* self, QMetaMethod* sig
 void QGraphicsScene_OnDisconnectNotify(QGraphicsScene* self, intptr_t slot) {
     if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
         vqgraphicsscene->setQGraphicsScene_DisconnectNotify_Callback(reinterpret_cast<VirtualQGraphicsScene::QGraphicsScene_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QGraphicsScene_FocusNextPrevChild(QGraphicsScene* self, bool next) {
-    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
-        return vqgraphicsscene->focusNextPrevChild(next);
-    } else {
-        return vqgraphicsscene->focusNextPrevChild(next);
-    }
-}
-
-// Base class handler implementation
-bool QGraphicsScene_QBaseFocusNextPrevChild(QGraphicsScene* self, bool next) {
-    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
-        vqgraphicsscene->setQGraphicsScene_FocusNextPrevChild_IsBase(true);
-        return vqgraphicsscene->focusNextPrevChild(next);
-    } else {
-        return vqgraphicsscene->focusNextPrevChild(next);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGraphicsScene_OnFocusNextPrevChild(QGraphicsScene* self, intptr_t slot) {
-    if (auto* vqgraphicsscene = dynamic_cast<VirtualQGraphicsScene*>(self)) {
-        vqgraphicsscene->setQGraphicsScene_FocusNextPrevChild_Callback(reinterpret_cast<VirtualQGraphicsScene::QGraphicsScene_FocusNextPrevChild_Callback>(slot));
     }
 }
 

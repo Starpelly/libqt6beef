@@ -37,7 +37,7 @@ class VirtualQMainWindow : public QMainWindow {
     using QMainWindow_KeyReleaseEvent_Callback = void (*)(QMainWindow*, QKeyEvent*);
     using QMainWindow_FocusInEvent_Callback = void (*)(QMainWindow*, QFocusEvent*);
     using QMainWindow_FocusOutEvent_Callback = void (*)(QMainWindow*, QFocusEvent*);
-    using QMainWindow_EnterEvent_Callback = void (*)(QMainWindow*, QEvent*);
+    using QMainWindow_EnterEvent_Callback = void (*)(QMainWindow*, QEnterEvent*);
     using QMainWindow_LeaveEvent_Callback = void (*)(QMainWindow*, QEvent*);
     using QMainWindow_PaintEvent_Callback = void (*)(QMainWindow*, QPaintEvent*);
     using QMainWindow_MoveEvent_Callback = void (*)(QMainWindow*, QMoveEvent*);
@@ -51,7 +51,7 @@ class VirtualQMainWindow : public QMainWindow {
     using QMainWindow_DropEvent_Callback = void (*)(QMainWindow*, QDropEvent*);
     using QMainWindow_ShowEvent_Callback = void (*)(QMainWindow*, QShowEvent*);
     using QMainWindow_HideEvent_Callback = void (*)(QMainWindow*, QHideEvent*);
-    using QMainWindow_NativeEvent_Callback = bool (*)(QMainWindow*, const QByteArray&, void*, long*);
+    using QMainWindow_NativeEvent_Callback = bool (*)(QMainWindow*, const QByteArray&, void*, qintptr*);
     using QMainWindow_ChangeEvent_Callback = void (*)(QMainWindow*, QEvent*);
     using QMainWindow_Metric_Callback = int (*)(const QMainWindow*, QPaintDevice::PaintDeviceMetric);
     using QMainWindow_InitPainter_Callback = void (*)(const QMainWindow*, QPainter*);
@@ -624,7 +624,7 @@ class VirtualQMainWindow : public QMainWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qmainwindow_enterevent_isbase) {
             qmainwindow_enterevent_isbase = false;
             QMainWindow::enterEvent(event);
@@ -792,7 +792,7 @@ class VirtualQMainWindow : public QMainWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qmainwindow_nativeevent_isbase) {
             qmainwindow_nativeevent_isbase = false;
             return QMainWindow::nativeEvent(eventType, message, result);

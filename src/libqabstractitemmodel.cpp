@@ -1,6 +1,8 @@
 #include <QAbstractItemModel>
 #include <QAbstractListModel>
 #include <QAbstractTableModel>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
@@ -12,8 +14,9 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
+#include <QModelRoleData>
+#include <QModelRoleDataSpan>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -25,6 +28,108 @@
 #include <qabstractitemmodel.h>
 #include "libqabstractitemmodel.h"
 #include "libqabstractitemmodel.hxx"
+
+QModelRoleData* QModelRoleData_new(int role) {
+    return new QModelRoleData(static_cast<int>(role));
+}
+
+QModelRoleData* QModelRoleData_new2(QModelRoleData* param1) {
+    return new QModelRoleData(*param1);
+}
+
+int QModelRoleData_Role(const QModelRoleData* self) {
+    return self->role();
+}
+
+QVariant* QModelRoleData_Data(QModelRoleData* self) {
+    QVariant& _ret = self->data();
+    // Cast returned reference into pointer
+    return &_ret;
+}
+
+QVariant* QModelRoleData_Data2(const QModelRoleData* self) {
+    const QVariant& _ret = self->data();
+    // Cast returned reference into pointer
+    return const_cast<QVariant*>(&_ret);
+}
+
+void QModelRoleData_ClearData(QModelRoleData* self) {
+    self->clearData();
+}
+
+void QModelRoleData_OperatorAssign(QModelRoleData* self, QModelRoleData* param1) {
+    self->operator=(*param1);
+}
+
+void QModelRoleData_Delete(QModelRoleData* self) {
+    delete self;
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new(QModelRoleDataSpan* other) {
+    return new QModelRoleDataSpan(*other);
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new2(QModelRoleDataSpan* other) {
+    return new QModelRoleDataSpan(std::move(*other));
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new3() {
+    return new QModelRoleDataSpan();
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new4(QModelRoleData* modelRoleData) {
+    return new QModelRoleDataSpan(*modelRoleData);
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new5(QModelRoleData* modelRoleData, ptrdiff_t lenVal) {
+    return new QModelRoleDataSpan(modelRoleData, (qsizetype)(lenVal));
+}
+
+QModelRoleDataSpan* QModelRoleDataSpan_new6(QModelRoleDataSpan* param1) {
+    return new QModelRoleDataSpan(*param1);
+}
+
+void QModelRoleDataSpan_CopyAssign(QModelRoleDataSpan* self, QModelRoleDataSpan* other) {
+    *self = *other;
+}
+
+void QModelRoleDataSpan_MoveAssign(QModelRoleDataSpan* self, QModelRoleDataSpan* other) {
+    *self = std::move(*other);
+}
+
+ptrdiff_t QModelRoleDataSpan_Size(const QModelRoleDataSpan* self) {
+    return static_cast<ptrdiff_t>(self->size());
+}
+
+ptrdiff_t QModelRoleDataSpan_Length(const QModelRoleDataSpan* self) {
+    return static_cast<ptrdiff_t>(self->length());
+}
+
+QModelRoleData* QModelRoleDataSpan_Data(const QModelRoleDataSpan* self) {
+    return self->data();
+}
+
+QModelRoleData* QModelRoleDataSpan_Begin(const QModelRoleDataSpan* self) {
+    return self->begin();
+}
+
+QModelRoleData* QModelRoleDataSpan_End(const QModelRoleDataSpan* self) {
+    return self->end();
+}
+
+QModelRoleData* QModelRoleDataSpan_OperatorSubscript(const QModelRoleDataSpan* self, ptrdiff_t index) {
+    QModelRoleData& _ret = self->operator[]((qsizetype)(index));
+    // Cast returned reference into pointer
+    return &_ret;
+}
+
+QVariant* QModelRoleDataSpan_DataForRole(const QModelRoleDataSpan* self, int role) {
+    return self->dataForRole(static_cast<int>(role));
+}
+
+void QModelRoleDataSpan_Delete(QModelRoleDataSpan* self) {
+    delete self;
+}
 
 QModelIndex* QModelIndex_new(QModelIndex* other) {
     return new QModelIndex(*other);
@@ -66,6 +171,10 @@ void* QModelIndex_InternalPointer(const QModelIndex* self) {
     return self->internalPointer();
 }
 
+const void* QModelIndex_ConstInternalPointer(const QModelIndex* self) {
+    return (const void*)self->constInternalPointer();
+}
+
 QModelIndex* QModelIndex_Parent(const QModelIndex* self) {
     return new QModelIndex(self->parent());
 }
@@ -82,12 +191,12 @@ QModelIndex* QModelIndex_SiblingAtRow(const QModelIndex* self, int row) {
     return new QModelIndex(self->siblingAtRow(static_cast<int>(row)));
 }
 
-QModelIndex* QModelIndex_Child(const QModelIndex* self, int row, int column) {
-    return new QModelIndex(self->child(static_cast<int>(row), static_cast<int>(column)));
-}
-
 QVariant* QModelIndex_Data(const QModelIndex* self) {
     return new QVariant(self->data());
+}
+
+void QModelIndex_MultiData(const QModelIndex* self, QModelRoleDataSpan* roleDataSpan) {
+    self->multiData(*roleDataSpan);
 }
 
 int QModelIndex_Flags(const QModelIndex* self) {
@@ -166,10 +275,8 @@ void QPersistentModelIndex_OperatorAssignWithOther(QPersistentModelIndex* self, 
     self->operator=(*other);
 }
 
-QModelIndex* QPersistentModelIndex_ToConstQModelIndexBitwiseAnd(const QPersistentModelIndex* self) {
-    const QModelIndex& _ret = self->operator const QModelIndex&();
-    // Cast returned reference into pointer
-    return const_cast<QModelIndex*>(&_ret);
+QModelIndex* QPersistentModelIndex_ToQModelIndex(const QPersistentModelIndex* self) {
+    return new QModelIndex(self->operator QModelIndex());
 }
 
 int QPersistentModelIndex_Row(const QPersistentModelIndex* self) {
@@ -184,6 +291,10 @@ void* QPersistentModelIndex_InternalPointer(const QPersistentModelIndex* self) {
     return self->internalPointer();
 }
 
+const void* QPersistentModelIndex_ConstInternalPointer(const QPersistentModelIndex* self) {
+    return (const void*)self->constInternalPointer();
+}
+
 uintptr_t QPersistentModelIndex_InternalId(const QPersistentModelIndex* self) {
     return static_cast<uintptr_t>(self->internalId());
 }
@@ -196,12 +307,12 @@ QModelIndex* QPersistentModelIndex_Sibling(const QPersistentModelIndex* self, in
     return new QModelIndex(self->sibling(static_cast<int>(row), static_cast<int>(column)));
 }
 
-QModelIndex* QPersistentModelIndex_Child(const QPersistentModelIndex* self, int row, int column) {
-    return new QModelIndex(self->child(static_cast<int>(row), static_cast<int>(column)));
-}
-
 QVariant* QPersistentModelIndex_Data(const QPersistentModelIndex* self) {
     return new QVariant(self->data());
+}
+
+void QPersistentModelIndex_MultiData(const QPersistentModelIndex* self, QModelRoleDataSpan* roleDataSpan) {
+    self->multiData(*roleDataSpan);
 }
 
 int QPersistentModelIndex_Flags(const QPersistentModelIndex* self) {
@@ -267,18 +378,6 @@ int QAbstractItemModel_QBaseMetacall(QAbstractItemModel* self, int param1, int p
 
 libqt_string QAbstractItemModel_Tr(const char* s) {
     QString _ret = QAbstractItemModel::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractItemModel_TrUtf8(const char* s) {
-    QString _ret = QAbstractItemModel::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -398,30 +497,6 @@ libqt_string QAbstractItemModel_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QAbstractItemModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractItemModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractItemModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractItemModel::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 bool QAbstractItemModel_HasIndex3(const QAbstractItemModel* self, int row, int column, QModelIndex* parent) {
     return self->hasIndex(static_cast<int>(row), static_cast<int>(column), *parent);
 }
@@ -447,7 +522,7 @@ bool QAbstractItemModel_CheckIndex2(const QAbstractItemModel* self, QModelIndex*
 }
 
 void QAbstractItemModel_DataChanged3(QAbstractItemModel* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -458,14 +533,14 @@ void QAbstractItemModel_DataChanged3(QAbstractItemModel* self, QModelIndex* topL
 
 void QAbstractItemModel_Connect_DataChanged3(QAbstractItemModel* self, intptr_t slot) {
     void (*slotFunc)(QAbstractItemModel*, QModelIndex*, QModelIndex*, libqt_list /* of int */) = reinterpret_cast<void (*)(QAbstractItemModel*, QModelIndex*, QModelIndex*, libqt_list /* of int */)>(slot);
-    QAbstractItemModel::connect(self, &QAbstractItemModel::dataChanged, [self, slotFunc](const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) {
+    QAbstractItemModel::connect(self, &QAbstractItemModel::dataChanged, [self, slotFunc](const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) {
         const QModelIndex& topLeft_ret = topLeft;
         // Cast returned reference into pointer
         QModelIndex* sigval1 = const_cast<QModelIndex*>(&topLeft_ret);
         const QModelIndex& bottomRight_ret = bottomRight;
         // Cast returned reference into pointer
         QModelIndex* sigval2 = const_cast<QModelIndex*>(&bottomRight_ret);
-        const QVector<int>& roles_ret = roles;
+        const QList<int>& roles_ret = roles;
         // Convert QList<> from C++ memory to manually-managed C memory
         int* roles_arr = static_cast<int*>(malloc(sizeof(int) * roles_ret.length()));
         for (size_t i = 0; i < roles_ret.length(); ++i) {
@@ -966,6 +1041,32 @@ bool QAbstractItemModel_QBaseSetItemData(QAbstractItemModel* self, QModelIndex* 
 void QAbstractItemModel_OnSetItemData(QAbstractItemModel* self, intptr_t slot) {
     if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
         vqabstractitemmodel->setQAbstractItemModel_SetItemData_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_SetItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QAbstractItemModel_ClearItemData(QAbstractItemModel* self, QModelIndex* index) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        return vqabstractitemmodel->clearItemData(*index);
+    } else {
+        return vqabstractitemmodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QAbstractItemModel_QBaseClearItemData(QAbstractItemModel* self, QModelIndex* index) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        vqabstractitemmodel->setQAbstractItemModel_ClearItemData_IsBase(true);
+        return vqabstractitemmodel->clearItemData(*index);
+    } else {
+        return vqabstractitemmodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractItemModel_OnClearItemData(QAbstractItemModel* self, intptr_t slot) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        vqabstractitemmodel->setQAbstractItemModel_ClearItemData_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_ClearItemData_Callback>(slot));
     }
 }
 
@@ -1686,6 +1787,32 @@ void QAbstractItemModel_OnRoleNames(const QAbstractItemModel* self, intptr_t slo
 }
 
 // Derived class handler implementation
+void QAbstractItemModel_MultiData(const QAbstractItemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstractitemmodel = const_cast<VirtualQAbstractItemModel*>(dynamic_cast<const VirtualQAbstractItemModel*>(self))) {
+        vqabstractitemmodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstractitemmodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QAbstractItemModel_QBaseMultiData(const QAbstractItemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstractitemmodel = const_cast<VirtualQAbstractItemModel*>(dynamic_cast<const VirtualQAbstractItemModel*>(self))) {
+        vqabstractitemmodel->setQAbstractItemModel_MultiData_IsBase(true);
+        vqabstractitemmodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstractitemmodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractItemModel_OnMultiData(const QAbstractItemModel* self, intptr_t slot) {
+    if (auto* vqabstractitemmodel = const_cast<VirtualQAbstractItemModel*>(dynamic_cast<const VirtualQAbstractItemModel*>(self))) {
+        vqabstractitemmodel->setQAbstractItemModel_MultiData_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QAbstractItemModel_Submit(QAbstractItemModel* self) {
     if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
         return vqabstractitemmodel->submit();
@@ -1734,6 +1861,32 @@ void QAbstractItemModel_QBaseRevert(QAbstractItemModel* self) {
 void QAbstractItemModel_OnRevert(QAbstractItemModel* self, intptr_t slot) {
     if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
         vqabstractitemmodel->setQAbstractItemModel_Revert_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_Revert_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractItemModel_ResetInternalData(QAbstractItemModel* self) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        vqabstractitemmodel->resetInternalData();
+    } else {
+        vqabstractitemmodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QAbstractItemModel_QBaseResetInternalData(QAbstractItemModel* self) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        vqabstractitemmodel->setQAbstractItemModel_ResetInternalData_IsBase(true);
+        vqabstractitemmodel->resetInternalData();
+    } else {
+        vqabstractitemmodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractItemModel_OnResetInternalData(QAbstractItemModel* self, intptr_t slot) {
+    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
+        vqabstractitemmodel->setQAbstractItemModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1916,32 +2069,6 @@ void QAbstractItemModel_QBaseDisconnectNotify(QAbstractItemModel* self, QMetaMet
 void QAbstractItemModel_OnDisconnectNotify(QAbstractItemModel* self, intptr_t slot) {
     if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
         vqabstractitemmodel->setQAbstractItemModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractItemModel_ResetInternalData(QAbstractItemModel* self) {
-    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
-        vqabstractitemmodel->resetInternalData();
-    } else {
-        vqabstractitemmodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QAbstractItemModel_QBaseResetInternalData(QAbstractItemModel* self) {
-    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
-        vqabstractitemmodel->setQAbstractItemModel_ResetInternalData_IsBase(true);
-        vqabstractitemmodel->resetInternalData();
-    } else {
-        vqabstractitemmodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractItemModel_OnResetInternalData(QAbstractItemModel* self, intptr_t slot) {
-    if (auto* vqabstractitemmodel = dynamic_cast<VirtualQAbstractItemModel*>(self)) {
-        vqabstractitemmodel->setQAbstractItemModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractItemModel::QAbstractItemModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -2560,7 +2687,7 @@ void QAbstractItemModel_OnPersistentIndexList(const QAbstractItemModel* self, in
 }
 
 // Derived class handler implementation
-QModelIndex* QAbstractItemModel_CreateIndex3(const QAbstractItemModel* self, int row, int column, void* data) {
+QModelIndex* QAbstractItemModel_CreateIndex3(const QAbstractItemModel* self, int row, int column, const void* data) {
     if (auto* vqabstractitemmodel = const_cast<VirtualQAbstractItemModel*>(dynamic_cast<const VirtualQAbstractItemModel*>(self))) {
         return new QModelIndex(vqabstractitemmodel->createIndex(static_cast<int>(row), static_cast<int>(column), data));
     }
@@ -2568,7 +2695,7 @@ QModelIndex* QAbstractItemModel_CreateIndex3(const QAbstractItemModel* self, int
 }
 
 // Base class handler implementation
-QModelIndex* QAbstractItemModel_QBaseCreateIndex3(const QAbstractItemModel* self, int row, int column, void* data) {
+QModelIndex* QAbstractItemModel_QBaseCreateIndex3(const QAbstractItemModel* self, int row, int column, const void* data) {
     if (auto* vqabstractitemmodel = const_cast<VirtualQAbstractItemModel*>(dynamic_cast<const VirtualQAbstractItemModel*>(self))) {
         vqabstractitemmodel->setQAbstractItemModel_CreateIndex3_IsBase(true);
         return new QModelIndex(vqabstractitemmodel->createIndex(static_cast<int>(row), static_cast<int>(column), data));
@@ -2744,18 +2871,6 @@ libqt_string QAbstractTableModel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QAbstractTableModel_TrUtf8(const char* s) {
-    QString _ret = QAbstractTableModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QAbstractTableModel_Tr2(const char* s, const char* c) {
     QString _ret = QAbstractTableModel::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -2770,30 +2885,6 @@ libqt_string QAbstractTableModel_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractTableModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractTableModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractTableModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractTableModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractTableModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractTableModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -3181,6 +3272,32 @@ bool QAbstractTableModel_QBaseSetItemData(QAbstractTableModel* self, QModelIndex
 void QAbstractTableModel_OnSetItemData(QAbstractTableModel* self, intptr_t slot) {
     if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
         vqabstracttablemodel->setQAbstractTableModel_SetItemData_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_SetItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QAbstractTableModel_ClearItemData(QAbstractTableModel* self, QModelIndex* index) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        return vqabstracttablemodel->clearItemData(*index);
+    } else {
+        return vqabstracttablemodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QAbstractTableModel_QBaseClearItemData(QAbstractTableModel* self, QModelIndex* index) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        vqabstracttablemodel->setQAbstractTableModel_ClearItemData_IsBase(true);
+        return vqabstracttablemodel->clearItemData(*index);
+    } else {
+        return vqabstracttablemodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractTableModel_OnClearItemData(QAbstractTableModel* self, intptr_t slot) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        vqabstracttablemodel->setQAbstractTableModel_ClearItemData_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_ClearItemData_Callback>(slot));
     }
 }
 
@@ -3849,6 +3966,32 @@ void QAbstractTableModel_OnRoleNames(const QAbstractTableModel* self, intptr_t s
 }
 
 // Derived class handler implementation
+void QAbstractTableModel_MultiData(const QAbstractTableModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstracttablemodel = const_cast<VirtualQAbstractTableModel*>(dynamic_cast<const VirtualQAbstractTableModel*>(self))) {
+        vqabstracttablemodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstracttablemodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QAbstractTableModel_QBaseMultiData(const QAbstractTableModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstracttablemodel = const_cast<VirtualQAbstractTableModel*>(dynamic_cast<const VirtualQAbstractTableModel*>(self))) {
+        vqabstracttablemodel->setQAbstractTableModel_MultiData_IsBase(true);
+        vqabstracttablemodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstracttablemodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractTableModel_OnMultiData(const QAbstractTableModel* self, intptr_t slot) {
+    if (auto* vqabstracttablemodel = const_cast<VirtualQAbstractTableModel*>(dynamic_cast<const VirtualQAbstractTableModel*>(self))) {
+        vqabstracttablemodel->setQAbstractTableModel_MultiData_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QAbstractTableModel_Submit(QAbstractTableModel* self) {
     if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
         return vqabstracttablemodel->submit();
@@ -3897,6 +4040,32 @@ void QAbstractTableModel_QBaseRevert(QAbstractTableModel* self) {
 void QAbstractTableModel_OnRevert(QAbstractTableModel* self, intptr_t slot) {
     if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
         vqabstracttablemodel->setQAbstractTableModel_Revert_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_Revert_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractTableModel_ResetInternalData(QAbstractTableModel* self) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        vqabstracttablemodel->resetInternalData();
+    } else {
+        vqabstracttablemodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QAbstractTableModel_QBaseResetInternalData(QAbstractTableModel* self) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        vqabstracttablemodel->setQAbstractTableModel_ResetInternalData_IsBase(true);
+        vqabstracttablemodel->resetInternalData();
+    } else {
+        vqabstracttablemodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractTableModel_OnResetInternalData(QAbstractTableModel* self, intptr_t slot) {
+    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
+        vqabstracttablemodel->setQAbstractTableModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -4079,32 +4248,6 @@ void QAbstractTableModel_QBaseDisconnectNotify(QAbstractTableModel* self, QMetaM
 void QAbstractTableModel_OnDisconnectNotify(QAbstractTableModel* self, intptr_t slot) {
     if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
         vqabstracttablemodel->setQAbstractTableModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractTableModel_ResetInternalData(QAbstractTableModel* self) {
-    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
-        vqabstracttablemodel->resetInternalData();
-    } else {
-        vqabstracttablemodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QAbstractTableModel_QBaseResetInternalData(QAbstractTableModel* self) {
-    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
-        vqabstracttablemodel->setQAbstractTableModel_ResetInternalData_IsBase(true);
-        vqabstracttablemodel->resetInternalData();
-    } else {
-        vqabstracttablemodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractTableModel_OnResetInternalData(QAbstractTableModel* self, intptr_t slot) {
-    if (auto* vqabstracttablemodel = dynamic_cast<VirtualQAbstractTableModel*>(self)) {
-        vqabstracttablemodel->setQAbstractTableModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractTableModel::QAbstractTableModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -4859,18 +5002,6 @@ libqt_string QAbstractListModel_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QAbstractListModel_TrUtf8(const char* s) {
-    QString _ret = QAbstractListModel::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QAbstractListModel_Tr2(const char* s, const char* c) {
     QString _ret = QAbstractListModel::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -4885,30 +5016,6 @@ libqt_string QAbstractListModel_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractListModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractListModel::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractListModel_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractListModel::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractListModel_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractListModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -5270,6 +5377,32 @@ bool QAbstractListModel_QBaseSetItemData(QAbstractListModel* self, QModelIndex* 
 void QAbstractListModel_OnSetItemData(QAbstractListModel* self, intptr_t slot) {
     if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
         vqabstractlistmodel->setQAbstractListModel_SetItemData_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_SetItemData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QAbstractListModel_ClearItemData(QAbstractListModel* self, QModelIndex* index) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        return vqabstractlistmodel->clearItemData(*index);
+    } else {
+        return vqabstractlistmodel->clearItemData(*index);
+    }
+}
+
+// Base class handler implementation
+bool QAbstractListModel_QBaseClearItemData(QAbstractListModel* self, QModelIndex* index) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        vqabstractlistmodel->setQAbstractListModel_ClearItemData_IsBase(true);
+        return vqabstractlistmodel->clearItemData(*index);
+    } else {
+        return vqabstractlistmodel->clearItemData(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractListModel_OnClearItemData(QAbstractListModel* self, intptr_t slot) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        vqabstractlistmodel->setQAbstractListModel_ClearItemData_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_ClearItemData_Callback>(slot));
     }
 }
 
@@ -5938,6 +6071,32 @@ void QAbstractListModel_OnRoleNames(const QAbstractListModel* self, intptr_t slo
 }
 
 // Derived class handler implementation
+void QAbstractListModel_MultiData(const QAbstractListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstractlistmodel = const_cast<VirtualQAbstractListModel*>(dynamic_cast<const VirtualQAbstractListModel*>(self))) {
+        vqabstractlistmodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstractlistmodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Base class handler implementation
+void QAbstractListModel_QBaseMultiData(const QAbstractListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+    if (auto* vqabstractlistmodel = const_cast<VirtualQAbstractListModel*>(dynamic_cast<const VirtualQAbstractListModel*>(self))) {
+        vqabstractlistmodel->setQAbstractListModel_MultiData_IsBase(true);
+        vqabstractlistmodel->multiData(*index, *roleDataSpan);
+    } else {
+        vqabstractlistmodel->multiData(*index, *roleDataSpan);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractListModel_OnMultiData(const QAbstractListModel* self, intptr_t slot) {
+    if (auto* vqabstractlistmodel = const_cast<VirtualQAbstractListModel*>(dynamic_cast<const VirtualQAbstractListModel*>(self))) {
+        vqabstractlistmodel->setQAbstractListModel_MultiData_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_MultiData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QAbstractListModel_Submit(QAbstractListModel* self) {
     if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
         return vqabstractlistmodel->submit();
@@ -5986,6 +6145,32 @@ void QAbstractListModel_QBaseRevert(QAbstractListModel* self) {
 void QAbstractListModel_OnRevert(QAbstractListModel* self, intptr_t slot) {
     if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
         vqabstractlistmodel->setQAbstractListModel_Revert_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_Revert_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractListModel_ResetInternalData(QAbstractListModel* self) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        vqabstractlistmodel->resetInternalData();
+    } else {
+        vqabstractlistmodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QAbstractListModel_QBaseResetInternalData(QAbstractListModel* self) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        vqabstractlistmodel->setQAbstractListModel_ResetInternalData_IsBase(true);
+        vqabstractlistmodel->resetInternalData();
+    } else {
+        vqabstractlistmodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractListModel_OnResetInternalData(QAbstractListModel* self, intptr_t slot) {
+    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
+        vqabstractlistmodel->setQAbstractListModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -6168,32 +6353,6 @@ void QAbstractListModel_QBaseDisconnectNotify(QAbstractListModel* self, QMetaMet
 void QAbstractListModel_OnDisconnectNotify(QAbstractListModel* self, intptr_t slot) {
     if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
         vqabstractlistmodel->setQAbstractListModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QAbstractListModel_ResetInternalData(QAbstractListModel* self) {
-    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
-        vqabstractlistmodel->resetInternalData();
-    } else {
-        vqabstractlistmodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QAbstractListModel_QBaseResetInternalData(QAbstractListModel* self) {
-    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
-        vqabstractlistmodel->setQAbstractListModel_ResetInternalData_IsBase(true);
-        vqabstractlistmodel->resetInternalData();
-    } else {
-        vqabstractlistmodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractListModel_OnResetInternalData(QAbstractListModel* self, intptr_t slot) {
-    if (auto* vqabstractlistmodel = dynamic_cast<VirtualQAbstractListModel*>(self)) {
-        vqabstractlistmodel->setQAbstractListModel_ResetInternalData_Callback(reinterpret_cast<VirtualQAbstractListModel::QAbstractListModel_ResetInternalData_Callback>(slot));
     }
 }
 

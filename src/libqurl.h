@@ -23,6 +23,8 @@ typedef struct QUrlQuery QUrlQuery;
 #endif
 
 #ifdef __cplusplus
+typedef QUrl::AceProcessingOption AceProcessingOption;               // C++ enum
+typedef QUrl::AceProcessingOptions AceProcessingOptions;             // C++ QFlags
 typedef QUrl::ComponentFormattingOption ComponentFormattingOption;   // C++ enum
 typedef QUrl::ComponentFormattingOptions ComponentFormattingOptions; // C++ QFlags
 typedef QUrl::DataPtr DataPtr;                                       // C++ QFlags
@@ -32,12 +34,14 @@ typedef QUrl::UrlFormattingOption UrlFormattingOption;               // C++ enum
 typedef QUrl::UserInputResolutionOption UserInputResolutionOption;   // C++ enum
 typedef QUrl::UserInputResolutionOptions UserInputResolutionOptions; // C++ QFlags
 #else
-typedef int ComponentFormattingOption;  // C ABI enum
-typedef int ComponentFormattingOptions; // C ABI QFlags
-typedef int ParsingMode;                // C ABI enum
-typedef int UrlFormattingOption;        // C ABI enum
-typedef int UserInputResolutionOption;  // C ABI enum
-typedef int UserInputResolutionOptions; // C ABI QFlags
+typedef int AceProcessingOptions;               // C ABI QFlags
+typedef int ComponentFormattingOptions;         // C ABI QFlags
+typedef int ParsingMode;                        // C ABI enum
+typedef int UserInputResolutionOption;          // C ABI enum
+typedef int UserInputResolutionOptions;         // C ABI QFlags
+typedef unsigned int AceProcessingOption;       // C ABI enum
+typedef unsigned int ComponentFormattingOption; // C ABI enum
+typedef unsigned int UrlFormattingOption;       // C ABI enum
 #endif
 
 QUrl* QUrl_new();
@@ -54,7 +58,6 @@ libqt_string QUrl_ToDisplayString(const QUrl* self);
 libqt_string QUrl_ToEncoded(const QUrl* self);
 QUrl* QUrl_FromEncoded(libqt_string url);
 QUrl* QUrl_FromUserInput(libqt_string userInput);
-QUrl* QUrl_FromUserInput2(libqt_string userInput, libqt_string workingDirectory);
 bool QUrl_IsValid(const QUrl* self);
 libqt_string QUrl_ErrorString(const QUrl* self);
 bool QUrl_IsEmpty(const QUrl* self);
@@ -71,7 +74,6 @@ void QUrl_SetPassword(QUrl* self, libqt_string password);
 libqt_string QUrl_Password(const QUrl* self);
 void QUrl_SetHost(QUrl* self, libqt_string host);
 libqt_string QUrl_Host(const QUrl* self);
-libqt_string QUrl_TopLevelDomain(const QUrl* self);
 void QUrl_SetPort(QUrl* self, int port);
 int QUrl_Port(const QUrl* self);
 void QUrl_SetPath(QUrl* self, libqt_string path);
@@ -97,14 +99,15 @@ bool QUrl_OperatorEqual(const QUrl* self, QUrl* url);
 bool QUrl_OperatorNotEqual(const QUrl* self, QUrl* url);
 libqt_string QUrl_FromPercentEncoding(libqt_string param1);
 libqt_string QUrl_ToPercentEncoding(libqt_string param1);
-libqt_string QUrl_FromAce(libqt_string param1);
-libqt_string QUrl_ToAce(libqt_string param1);
+libqt_string QUrl_FromAce(libqt_string domain);
+libqt_string QUrl_ToAce(libqt_string domain);
 libqt_list /* of libqt_string */ QUrl_IdnWhitelist();
 libqt_list /* of libqt_string */ QUrl_ToStringList(libqt_list /* of QUrl* */ uris);
 libqt_list /* of QUrl* */ QUrl_FromStringList(libqt_list /* of libqt_string */ uris);
 void QUrl_SetIdnWhitelist(libqt_list /* of libqt_string */ idnWhitelist);
 void QUrl_SetUrl2(QUrl* self, libqt_string url, int mode);
 QUrl* QUrl_FromEncoded2(libqt_string url, int mode);
+QUrl* QUrl_FromUserInput2(libqt_string userInput, libqt_string workingDirectory);
 QUrl* QUrl_FromUserInput3(libqt_string userInput, libqt_string workingDirectory, int options);
 void QUrl_SetAuthority2(QUrl* self, libqt_string authority, int mode);
 libqt_string QUrl_Authority1(const QUrl* self, int options);
@@ -116,7 +119,6 @@ void QUrl_SetPassword2(QUrl* self, libqt_string password, int mode);
 libqt_string QUrl_Password1(const QUrl* self, int param1);
 void QUrl_SetHost2(QUrl* self, libqt_string host, int mode);
 libqt_string QUrl_Host1(const QUrl* self, int param1);
-libqt_string QUrl_TopLevelDomain1(const QUrl* self, int options);
 int QUrl_Port1(const QUrl* self, int defaultPort);
 void QUrl_SetPath2(QUrl* self, libqt_string path, int mode);
 libqt_string QUrl_Path1(const QUrl* self, int options);
@@ -127,6 +129,8 @@ libqt_string QUrl_Fragment1(const QUrl* self, int options);
 void QUrl_SetFragment2(QUrl* self, libqt_string fragment, int mode);
 libqt_string QUrl_ToPercentEncoding2(libqt_string param1, libqt_string exclude);
 libqt_string QUrl_ToPercentEncoding3(libqt_string param1, libqt_string exclude, libqt_string include);
+libqt_string QUrl_FromAce2(libqt_string domain, int options);
+libqt_string QUrl_ToAce2(libqt_string domain, int options);
 libqt_list /* of QUrl* */ QUrl_FromStringList2(libqt_list /* of libqt_string */ uris, int mode);
 void QUrl_Delete(QUrl* self);
 

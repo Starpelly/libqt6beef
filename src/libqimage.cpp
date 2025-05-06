@@ -1,11 +1,11 @@
 #include <QByteArray>
+#include <QByteArrayView>
 #include <QColor>
 #include <QColorSpace>
 #include <QColorTransform>
 #include <QIODevice>
 #include <QImage>
 #include <QList>
-#include <QMatrix>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPainter>
@@ -13,6 +13,7 @@
 #include <QPoint>
 #include <QRect>
 #include <QSize>
+#include <QSizeF>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -42,12 +43,12 @@ QImage* QImage_new5(const unsigned char* data, int width, int height, int format
     return new VirtualQImage(static_cast<const uchar*>(data), static_cast<int>(width), static_cast<int>(height), static_cast<QImage::Format>(format));
 }
 
-QImage* QImage_new6(unsigned char* data, int width, int height, int bytesPerLine, int format) {
-    return new VirtualQImage(static_cast<uchar*>(data), static_cast<int>(width), static_cast<int>(height), static_cast<int>(bytesPerLine), static_cast<QImage::Format>(format));
+QImage* QImage_new6(unsigned char* data, int width, int height, ptrdiff_t bytesPerLine, int format) {
+    return new VirtualQImage(static_cast<uchar*>(data), static_cast<int>(width), static_cast<int>(height), (qsizetype)(bytesPerLine), static_cast<QImage::Format>(format));
 }
 
-QImage* QImage_new7(const unsigned char* data, int width, int height, int bytesPerLine, int format) {
-    return new VirtualQImage(static_cast<const uchar*>(data), static_cast<int>(width), static_cast<int>(height), static_cast<int>(bytesPerLine), static_cast<QImage::Format>(format));
+QImage* QImage_new7(const unsigned char* data, int width, int height, ptrdiff_t bytesPerLine, int format) {
+    return new VirtualQImage(static_cast<const uchar*>(data), static_cast<int>(width), static_cast<int>(height), (qsizetype)(bytesPerLine), static_cast<QImage::Format>(format));
 }
 
 QImage* QImage_new8(libqt_string fileName) {
@@ -113,7 +114,7 @@ QImage* QImage_ConvertToFormat(const QImage* self, int f) {
 }
 
 QImage* QImage_ConvertToFormat2(const QImage* self, int f, libqt_list /* of unsigned int */ colorTable) {
-    QVector<QRgb> colorTable_QList;
+    QList<QRgb> colorTable_QList;
     colorTable_QList.reserve(colorTable.len);
     unsigned int* colorTable_arr = static_cast<unsigned int*>(colorTable.data);
     for (size_t i = 0; i < colorTable.len; ++i) {
@@ -124,6 +125,10 @@ QImage* QImage_ConvertToFormat2(const QImage* self, int f, libqt_list /* of unsi
 
 bool QImage_ReinterpretAsFormat(QImage* self, int f) {
     return self->reinterpretAsFormat(static_cast<QImage::Format>(f));
+}
+
+QImage* QImage_ConvertedTo(const QImage* self, int f) {
+    return new QImage(self->convertedTo(static_cast<QImage::Format>(f)));
 }
 
 void QImage_ConvertTo(QImage* self, int f) {
@@ -190,10 +195,6 @@ const unsigned char* QImage_ConstBits(const QImage* self) {
     return static_cast<const unsigned char*>(self->constBits());
 }
 
-int QImage_ByteCount(const QImage* self) {
-    return self->byteCount();
-}
-
 ptrdiff_t QImage_SizeInBytes(const QImage* self) {
     return static_cast<ptrdiff_t>(self->sizeInBytes());
 }
@@ -210,8 +211,8 @@ const unsigned char* QImage_ConstScanLine(const QImage* self, int param1) {
     return static_cast<const unsigned char*>(self->constScanLine(static_cast<int>(param1)));
 }
 
-int QImage_BytesPerLine(const QImage* self) {
-    return self->bytesPerLine();
+ptrdiff_t QImage_BytesPerLine(const QImage* self) {
+    return static_cast<ptrdiff_t>(self->bytesPerLine());
 }
 
 bool QImage_Valid(const QImage* self, int x, int y) {
@@ -263,7 +264,7 @@ void QImage_SetPixelColor2(QImage* self, QPoint* pt, QColor* c) {
 }
 
 libqt_list /* of unsigned int */ QImage_ColorTable(const QImage* self) {
-    QVector<QRgb> _ret = self->colorTable();
+    QList<QRgb> _ret = self->colorTable();
     // Convert QList<> from C++ memory to manually-managed C memory
     unsigned int* _arr = static_cast<unsigned int*>(malloc(sizeof(unsigned int) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -276,7 +277,7 @@ libqt_list /* of unsigned int */ QImage_ColorTable(const QImage* self) {
 }
 
 void QImage_SetColorTable(QImage* self, libqt_list /* of unsigned int */ colors) {
-    QVector<QRgb> colors_QList;
+    QList<QRgb> colors_QList;
     colors_QList.reserve(colors.len);
     unsigned int* colors_arr = static_cast<unsigned int*>(colors.data);
     for (size_t i = 0; i < colors.len; ++i) {
@@ -291,6 +292,10 @@ double QImage_DevicePixelRatio(const QImage* self) {
 
 void QImage_SetDevicePixelRatio(QImage* self, double scaleFactor) {
     self->setDevicePixelRatio(static_cast<qreal>(scaleFactor));
+}
+
+QSizeF* QImage_DeviceIndependentSize(const QImage* self) {
+    return new QSizeF(self->deviceIndependentSize());
 }
 
 void QImage_Fill(QImage* self, unsigned int pixel) {
@@ -311,10 +316,6 @@ bool QImage_HasAlphaChannel(const QImage* self) {
 
 void QImage_SetAlphaChannel(QImage* self, QImage* alphaChannel) {
     self->setAlphaChannel(*alphaChannel);
-}
-
-QImage* QImage_AlphaChannel(const QImage* self) {
-    return new QImage(self->alphaChannel());
 }
 
 QImage* QImage_CreateAlphaMask(const QImage* self) {
@@ -345,19 +346,11 @@ QImage* QImage_ScaledToHeight(const QImage* self, int h) {
     return new QImage(self->scaledToHeight(static_cast<int>(h)));
 }
 
-QImage* QImage_Transformed(const QImage* self, QMatrix* matrix) {
+QImage* QImage_Transformed(const QImage* self, QTransform* matrix) {
     return new QImage(self->transformed(*matrix));
 }
 
-QMatrix* QImage_TrueMatrix(QMatrix* param1, int w, int h) {
-    return new QMatrix(QImage::trueMatrix(*param1, static_cast<int>(w), static_cast<int>(h)));
-}
-
-QImage* QImage_TransformedWithMatrix(const QImage* self, QTransform* matrix) {
-    return new QImage(self->transformed(*matrix));
-}
-
-QTransform* QImage_TrueMatrix2(QTransform* param1, int w, int h) {
+QTransform* QImage_TrueMatrix(QTransform* param1, int w, int h) {
     return new QTransform(QImage::trueMatrix(*param1, static_cast<int>(w), static_cast<int>(h)));
 }
 
@@ -367,6 +360,14 @@ QImage* QImage_Mirrored(const QImage* self) {
 
 QImage* QImage_RgbSwapped(const QImage* self) {
     return new QImage(self->rgbSwapped());
+}
+
+void QImage_Mirror(QImage* self) {
+    self->mirror();
+}
+
+void QImage_RgbSwap(QImage* self) {
+    self->rgbSwap();
 }
 
 void QImage_InvertPixels(QImage* self) {
@@ -389,6 +390,10 @@ void QImage_SetColorSpace(QImage* self, QColorSpace* colorSpace) {
     self->setColorSpace(*colorSpace);
 }
 
+QImage* QImage_ColorTransformed(const QImage* self, QColorTransform* transform) {
+    return new QImage(self->colorTransformed(*transform));
+}
+
 void QImage_ApplyColorTransform(QImage* self, QColorTransform* transform) {
     self->applyColorTransform(*transform);
 }
@@ -402,7 +407,11 @@ bool QImage_LoadWithFileName(QImage* self, libqt_string fileName) {
     return self->load(fileName_QString);
 }
 
-bool QImage_LoadFromData(QImage* self, const unsigned char* buf, int lenVal) {
+bool QImage_LoadFromData(QImage* self, QByteArrayView* data) {
+    return self->loadFromData(*data);
+}
+
+bool QImage_LoadFromData2(QImage* self, const unsigned char* buf, int lenVal) {
     return self->loadFromData(static_cast<const uchar*>(buf), static_cast<int>(lenVal));
 }
 
@@ -420,7 +429,11 @@ bool QImage_SaveWithDevice(const QImage* self, QIODevice* device) {
     return self->save(device);
 }
 
-QImage* QImage_FromData(const unsigned char* data, int size) {
+QImage* QImage_FromData(QByteArrayView* data) {
+    return new QImage(QImage::fromData(*data));
+}
+
+QImage* QImage_FromData2(const unsigned char* data, int size) {
     return new QImage(QImage::fromData(static_cast<const uchar*>(data), static_cast<int>(size)));
 }
 
@@ -517,13 +530,17 @@ QImage* QImage_ConvertToFormat22(const QImage* self, int f, int flags) {
 }
 
 QImage* QImage_ConvertToFormat3(const QImage* self, int f, libqt_list /* of unsigned int */ colorTable, int flags) {
-    QVector<QRgb> colorTable_QList;
+    QList<QRgb> colorTable_QList;
     colorTable_QList.reserve(colorTable.len);
     unsigned int* colorTable_arr = static_cast<unsigned int*>(colorTable.data);
     for (size_t i = 0; i < colorTable.len; ++i) {
         colorTable_QList.push_back(static_cast<unsigned int>(colorTable_arr[i]));
     }
     return new QImage(self->convertToFormat(static_cast<QImage::Format>(f), colorTable_QList, static_cast<Qt::ImageConversionFlags>(flags)));
+}
+
+QImage* QImage_ConvertedTo2(const QImage* self, int f, int flags) {
+    return new QImage(self->convertedTo(static_cast<QImage::Format>(f), static_cast<Qt::ImageConversionFlags>(flags)));
 }
 
 void QImage_ConvertTo2(QImage* self, int f, int flags) {
@@ -566,11 +583,7 @@ QImage* QImage_ScaledToHeight2(const QImage* self, int h, int mode) {
     return new QImage(self->scaledToHeight(static_cast<int>(h), static_cast<Qt::TransformationMode>(mode)));
 }
 
-QImage* QImage_Transformed2(const QImage* self, QMatrix* matrix, int mode) {
-    return new QImage(self->transformed(*matrix, static_cast<Qt::TransformationMode>(mode)));
-}
-
-QImage* QImage_Transformed22(const QImage* self, QTransform* matrix, int mode) {
+QImage* QImage_Transformed2(const QImage* self, QTransform* matrix, int mode) {
     return new QImage(self->transformed(*matrix, static_cast<Qt::TransformationMode>(mode)));
 }
 
@@ -582,6 +595,14 @@ QImage* QImage_Mirrored2(const QImage* self, bool horizontally, bool vertically)
     return new QImage(self->mirrored(horizontally, vertically));
 }
 
+void QImage_Mirror1(QImage* self, bool horizontally) {
+    self->mirror(horizontally);
+}
+
+void QImage_Mirror2(QImage* self, bool horizontally, bool vertically) {
+    self->mirror(horizontally, vertically);
+}
+
 void QImage_InvertPixels1(QImage* self, int param1) {
     self->invertPixels(static_cast<QImage::InvertMode>(param1));
 }
@@ -591,13 +612,17 @@ bool QImage_Load2(QImage* self, libqt_string fileName, const char* format) {
     return self->load(fileName_QString, format);
 }
 
+bool QImage_LoadFromData22(QImage* self, QByteArrayView* data, const char* format) {
+    return self->loadFromData(*data, format);
+}
+
 bool QImage_LoadFromData3(QImage* self, const unsigned char* buf, int lenVal, const char* format) {
     return self->loadFromData(static_cast<const uchar*>(buf), static_cast<int>(lenVal), format);
 }
 
-bool QImage_LoadFromData2(QImage* self, libqt_string data, const char* aformat) {
+bool QImage_LoadFromData23(QImage* self, libqt_string data, const char* format) {
     QByteArray data_QByteArray(data.data, data.len);
-    return self->loadFromData(data_QByteArray, aformat);
+    return self->loadFromData(data_QByteArray, format);
 }
 
 bool QImage_Save2(const QImage* self, libqt_string fileName, const char* format) {
@@ -618,11 +643,15 @@ bool QImage_Save32(const QImage* self, QIODevice* device, const char* format, in
     return self->save(device, format, static_cast<int>(quality));
 }
 
+QImage* QImage_FromData22(QByteArrayView* data, const char* format) {
+    return new QImage(QImage::fromData(*data, format));
+}
+
 QImage* QImage_FromData3(const unsigned char* data, int size, const char* format) {
     return new QImage(QImage::fromData(static_cast<const uchar*>(data), static_cast<int>(size), format));
 }
 
-QImage* QImage_FromData2(libqt_string data, const char* format) {
+QImage* QImage_FromData23(libqt_string data, const char* format) {
     QByteArray data_QByteArray(data.data, data.len);
     return new QImage(QImage::fromData(data_QByteArray, format));
 }
@@ -967,6 +996,58 @@ QImage* QImage_QBaseSmoothScaled(const QImage* self, int w, int h) {
 void QImage_OnSmoothScaled(const QImage* self, intptr_t slot) {
     if (auto* vqimage = const_cast<VirtualQImage*>(dynamic_cast<const VirtualQImage*>(self))) {
         vqimage->setQImage_SmoothScaled_Callback(reinterpret_cast<VirtualQImage::QImage_SmoothScaled_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QImage_DetachMetadata(QImage* self) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->detachMetadata();
+    } else {
+        vqimage->detachMetadata();
+    }
+}
+
+// Base class handler implementation
+void QImage_QBaseDetachMetadata(QImage* self) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->setQImage_DetachMetadata_IsBase(true);
+        vqimage->detachMetadata();
+    } else {
+        vqimage->detachMetadata();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QImage_OnDetachMetadata(QImage* self, intptr_t slot) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->setQImage_DetachMetadata_Callback(reinterpret_cast<VirtualQImage::QImage_DetachMetadata_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QImage_DetachMetadata1(QImage* self, bool invalidateCache) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->detachMetadata(invalidateCache);
+    } else {
+        vqimage->detachMetadata(invalidateCache);
+    }
+}
+
+// Base class handler implementation
+void QImage_QBaseDetachMetadata1(QImage* self, bool invalidateCache) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->setQImage_DetachMetadata1_IsBase(true);
+        vqimage->detachMetadata(invalidateCache);
+    } else {
+        vqimage->detachMetadata(invalidateCache);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QImage_OnDetachMetadata1(QImage* self, intptr_t slot) {
+    if (auto* vqimage = dynamic_cast<VirtualQImage*>(self)) {
+        vqimage->setQImage_DetachMetadata1_Callback(reinterpret_cast<VirtualQImage::QImage_DetachMetadata1_Callback>(slot));
     }
 }
 

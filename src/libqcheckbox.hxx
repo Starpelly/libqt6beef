@@ -26,6 +26,7 @@ class VirtualQCheckBox : public QCheckBox {
     using QCheckBox_NextCheckState_Callback = void (*)();
     using QCheckBox_PaintEvent_Callback = void (*)(QCheckBox*, QPaintEvent*);
     using QCheckBox_MouseMoveEvent_Callback = void (*)(QCheckBox*, QMouseEvent*);
+    using QCheckBox_InitStyleOption_Callback = void (*)(const QCheckBox*, QStyleOptionButton*);
     using QCheckBox_KeyPressEvent_Callback = void (*)(QCheckBox*, QKeyEvent*);
     using QCheckBox_KeyReleaseEvent_Callback = void (*)(QCheckBox*, QKeyEvent*);
     using QCheckBox_MousePressEvent_Callback = void (*)(QCheckBox*, QMouseEvent*);
@@ -41,7 +42,7 @@ class VirtualQCheckBox : public QCheckBox {
     using QCheckBox_PaintEngine_Callback = QPaintEngine* (*)();
     using QCheckBox_MouseDoubleClickEvent_Callback = void (*)(QCheckBox*, QMouseEvent*);
     using QCheckBox_WheelEvent_Callback = void (*)(QCheckBox*, QWheelEvent*);
-    using QCheckBox_EnterEvent_Callback = void (*)(QCheckBox*, QEvent*);
+    using QCheckBox_EnterEvent_Callback = void (*)(QCheckBox*, QEnterEvent*);
     using QCheckBox_LeaveEvent_Callback = void (*)(QCheckBox*, QEvent*);
     using QCheckBox_MoveEvent_Callback = void (*)(QCheckBox*, QMoveEvent*);
     using QCheckBox_ResizeEvent_Callback = void (*)(QCheckBox*, QResizeEvent*);
@@ -55,7 +56,7 @@ class VirtualQCheckBox : public QCheckBox {
     using QCheckBox_DropEvent_Callback = void (*)(QCheckBox*, QDropEvent*);
     using QCheckBox_ShowEvent_Callback = void (*)(QCheckBox*, QShowEvent*);
     using QCheckBox_HideEvent_Callback = void (*)(QCheckBox*, QHideEvent*);
-    using QCheckBox_NativeEvent_Callback = bool (*)(QCheckBox*, const QByteArray&, void*, long*);
+    using QCheckBox_NativeEvent_Callback = bool (*)(QCheckBox*, const QByteArray&, void*, qintptr*);
     using QCheckBox_Metric_Callback = int (*)(const QCheckBox*, QPaintDevice::PaintDeviceMetric);
     using QCheckBox_InitPainter_Callback = void (*)(const QCheckBox*, QPainter*);
     using QCheckBox_Redirected_Callback = QPaintDevice* (*)(const QCheckBox*, QPoint*);
@@ -68,7 +69,6 @@ class VirtualQCheckBox : public QCheckBox {
     using QCheckBox_CustomEvent_Callback = void (*)(QCheckBox*, QEvent*);
     using QCheckBox_ConnectNotify_Callback = void (*)(QCheckBox*, const QMetaMethod&);
     using QCheckBox_DisconnectNotify_Callback = void (*)(QCheckBox*, const QMetaMethod&);
-    using QCheckBox_InitStyleOption_Callback = void (*)(const QCheckBox*, QStyleOptionButton*);
     using QCheckBox_UpdateMicroFocus_Callback = void (*)();
     using QCheckBox_Create_Callback = void (*)();
     using QCheckBox_Destroy_Callback = void (*)();
@@ -90,6 +90,7 @@ class VirtualQCheckBox : public QCheckBox {
     QCheckBox_NextCheckState_Callback qcheckbox_nextcheckstate_callback = nullptr;
     QCheckBox_PaintEvent_Callback qcheckbox_paintevent_callback = nullptr;
     QCheckBox_MouseMoveEvent_Callback qcheckbox_mousemoveevent_callback = nullptr;
+    QCheckBox_InitStyleOption_Callback qcheckbox_initstyleoption_callback = nullptr;
     QCheckBox_KeyPressEvent_Callback qcheckbox_keypressevent_callback = nullptr;
     QCheckBox_KeyReleaseEvent_Callback qcheckbox_keyreleaseevent_callback = nullptr;
     QCheckBox_MousePressEvent_Callback qcheckbox_mousepressevent_callback = nullptr;
@@ -132,7 +133,6 @@ class VirtualQCheckBox : public QCheckBox {
     QCheckBox_CustomEvent_Callback qcheckbox_customevent_callback = nullptr;
     QCheckBox_ConnectNotify_Callback qcheckbox_connectnotify_callback = nullptr;
     QCheckBox_DisconnectNotify_Callback qcheckbox_disconnectnotify_callback = nullptr;
-    QCheckBox_InitStyleOption_Callback qcheckbox_initstyleoption_callback = nullptr;
     QCheckBox_UpdateMicroFocus_Callback qcheckbox_updatemicrofocus_callback = nullptr;
     QCheckBox_Create_Callback qcheckbox_create_callback = nullptr;
     QCheckBox_Destroy_Callback qcheckbox_destroy_callback = nullptr;
@@ -153,6 +153,7 @@ class VirtualQCheckBox : public QCheckBox {
     mutable bool qcheckbox_nextcheckstate_isbase = false;
     mutable bool qcheckbox_paintevent_isbase = false;
     mutable bool qcheckbox_mousemoveevent_isbase = false;
+    mutable bool qcheckbox_initstyleoption_isbase = false;
     mutable bool qcheckbox_keypressevent_isbase = false;
     mutable bool qcheckbox_keyreleaseevent_isbase = false;
     mutable bool qcheckbox_mousepressevent_isbase = false;
@@ -195,7 +196,6 @@ class VirtualQCheckBox : public QCheckBox {
     mutable bool qcheckbox_customevent_isbase = false;
     mutable bool qcheckbox_connectnotify_isbase = false;
     mutable bool qcheckbox_disconnectnotify_isbase = false;
-    mutable bool qcheckbox_initstyleoption_isbase = false;
     mutable bool qcheckbox_updatemicrofocus_isbase = false;
     mutable bool qcheckbox_create_isbase = false;
     mutable bool qcheckbox_destroy_isbase = false;
@@ -222,6 +222,7 @@ class VirtualQCheckBox : public QCheckBox {
         qcheckbox_nextcheckstate_callback = nullptr;
         qcheckbox_paintevent_callback = nullptr;
         qcheckbox_mousemoveevent_callback = nullptr;
+        qcheckbox_initstyleoption_callback = nullptr;
         qcheckbox_keypressevent_callback = nullptr;
         qcheckbox_keyreleaseevent_callback = nullptr;
         qcheckbox_mousepressevent_callback = nullptr;
@@ -264,7 +265,6 @@ class VirtualQCheckBox : public QCheckBox {
         qcheckbox_customevent_callback = nullptr;
         qcheckbox_connectnotify_callback = nullptr;
         qcheckbox_disconnectnotify_callback = nullptr;
-        qcheckbox_initstyleoption_callback = nullptr;
         qcheckbox_updatemicrofocus_callback = nullptr;
         qcheckbox_create_callback = nullptr;
         qcheckbox_destroy_callback = nullptr;
@@ -286,6 +286,7 @@ class VirtualQCheckBox : public QCheckBox {
     void setQCheckBox_NextCheckState_Callback(QCheckBox_NextCheckState_Callback cb) { qcheckbox_nextcheckstate_callback = cb; }
     void setQCheckBox_PaintEvent_Callback(QCheckBox_PaintEvent_Callback cb) { qcheckbox_paintevent_callback = cb; }
     void setQCheckBox_MouseMoveEvent_Callback(QCheckBox_MouseMoveEvent_Callback cb) { qcheckbox_mousemoveevent_callback = cb; }
+    void setQCheckBox_InitStyleOption_Callback(QCheckBox_InitStyleOption_Callback cb) { qcheckbox_initstyleoption_callback = cb; }
     void setQCheckBox_KeyPressEvent_Callback(QCheckBox_KeyPressEvent_Callback cb) { qcheckbox_keypressevent_callback = cb; }
     void setQCheckBox_KeyReleaseEvent_Callback(QCheckBox_KeyReleaseEvent_Callback cb) { qcheckbox_keyreleaseevent_callback = cb; }
     void setQCheckBox_MousePressEvent_Callback(QCheckBox_MousePressEvent_Callback cb) { qcheckbox_mousepressevent_callback = cb; }
@@ -328,7 +329,6 @@ class VirtualQCheckBox : public QCheckBox {
     void setQCheckBox_CustomEvent_Callback(QCheckBox_CustomEvent_Callback cb) { qcheckbox_customevent_callback = cb; }
     void setQCheckBox_ConnectNotify_Callback(QCheckBox_ConnectNotify_Callback cb) { qcheckbox_connectnotify_callback = cb; }
     void setQCheckBox_DisconnectNotify_Callback(QCheckBox_DisconnectNotify_Callback cb) { qcheckbox_disconnectnotify_callback = cb; }
-    void setQCheckBox_InitStyleOption_Callback(QCheckBox_InitStyleOption_Callback cb) { qcheckbox_initstyleoption_callback = cb; }
     void setQCheckBox_UpdateMicroFocus_Callback(QCheckBox_UpdateMicroFocus_Callback cb) { qcheckbox_updatemicrofocus_callback = cb; }
     void setQCheckBox_Create_Callback(QCheckBox_Create_Callback cb) { qcheckbox_create_callback = cb; }
     void setQCheckBox_Destroy_Callback(QCheckBox_Destroy_Callback cb) { qcheckbox_destroy_callback = cb; }
@@ -349,6 +349,7 @@ class VirtualQCheckBox : public QCheckBox {
     void setQCheckBox_NextCheckState_IsBase(bool value) const { qcheckbox_nextcheckstate_isbase = value; }
     void setQCheckBox_PaintEvent_IsBase(bool value) const { qcheckbox_paintevent_isbase = value; }
     void setQCheckBox_MouseMoveEvent_IsBase(bool value) const { qcheckbox_mousemoveevent_isbase = value; }
+    void setQCheckBox_InitStyleOption_IsBase(bool value) const { qcheckbox_initstyleoption_isbase = value; }
     void setQCheckBox_KeyPressEvent_IsBase(bool value) const { qcheckbox_keypressevent_isbase = value; }
     void setQCheckBox_KeyReleaseEvent_IsBase(bool value) const { qcheckbox_keyreleaseevent_isbase = value; }
     void setQCheckBox_MousePressEvent_IsBase(bool value) const { qcheckbox_mousepressevent_isbase = value; }
@@ -391,7 +392,6 @@ class VirtualQCheckBox : public QCheckBox {
     void setQCheckBox_CustomEvent_IsBase(bool value) const { qcheckbox_customevent_isbase = value; }
     void setQCheckBox_ConnectNotify_IsBase(bool value) const { qcheckbox_connectnotify_isbase = value; }
     void setQCheckBox_DisconnectNotify_IsBase(bool value) const { qcheckbox_disconnectnotify_isbase = value; }
-    void setQCheckBox_InitStyleOption_IsBase(bool value) const { qcheckbox_initstyleoption_isbase = value; }
     void setQCheckBox_UpdateMicroFocus_IsBase(bool value) const { qcheckbox_updatemicrofocus_isbase = value; }
     void setQCheckBox_Create_IsBase(bool value) const { qcheckbox_create_isbase = value; }
     void setQCheckBox_Destroy_IsBase(bool value) const { qcheckbox_destroy_isbase = value; }
@@ -507,6 +507,18 @@ class VirtualQCheckBox : public QCheckBox {
             qcheckbox_mousemoveevent_callback(this, param1);
         } else {
             QCheckBox::mouseMoveEvent(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionButton* option) const override {
+        if (qcheckbox_initstyleoption_isbase) {
+            qcheckbox_initstyleoption_isbase = false;
+            QCheckBox::initStyleOption(option);
+        } else if (qcheckbox_initstyleoption_callback != nullptr) {
+            qcheckbox_initstyleoption_callback(this, option);
+        } else {
+            QCheckBox::initStyleOption(option);
         }
     }
 
@@ -691,7 +703,7 @@ class VirtualQCheckBox : public QCheckBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qcheckbox_enterevent_isbase) {
             qcheckbox_enterevent_isbase = false;
             QCheckBox::enterEvent(event);
@@ -859,7 +871,7 @@ class VirtualQCheckBox : public QCheckBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qcheckbox_nativeevent_isbase) {
             qcheckbox_nativeevent_isbase = false;
             return QCheckBox::nativeEvent(eventType, message, result);
@@ -1011,18 +1023,6 @@ class VirtualQCheckBox : public QCheckBox {
             qcheckbox_disconnectnotify_callback(this, signal);
         } else {
             QCheckBox::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionButton* option) const {
-        if (qcheckbox_initstyleoption_isbase) {
-            qcheckbox_initstyleoption_isbase = false;
-            QCheckBox::initStyleOption(option);
-        } else if (qcheckbox_initstyleoption_callback != nullptr) {
-            qcheckbox_initstyleoption_callback(this, option);
-        } else {
-            QCheckBox::initStyleOption(option);
         }
     }
 

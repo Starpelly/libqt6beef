@@ -1,5 +1,6 @@
 #include <QByteArray>
 #include <QByteArrayMatcher>
+#include <QByteArrayView>
 #include <QStaticByteArrayMatcherBase>
 #include <qbytearraymatcher.h>
 #include "libqbytearraymatcher.h"
@@ -14,12 +15,20 @@ QByteArrayMatcher* QByteArrayMatcher_new2(libqt_string pattern) {
     return new QByteArrayMatcher(pattern_QByteArray);
 }
 
-QByteArrayMatcher* QByteArrayMatcher_new3(const char* pattern, int length) {
-    return new QByteArrayMatcher(pattern, static_cast<int>(length));
+QByteArrayMatcher* QByteArrayMatcher_new3(QByteArrayView* pattern) {
+    return new QByteArrayMatcher(*pattern);
 }
 
-QByteArrayMatcher* QByteArrayMatcher_new4(QByteArrayMatcher* other) {
+QByteArrayMatcher* QByteArrayMatcher_new4(const char* pattern) {
+    return new QByteArrayMatcher(pattern);
+}
+
+QByteArrayMatcher* QByteArrayMatcher_new5(QByteArrayMatcher* other) {
     return new QByteArrayMatcher(*other);
+}
+
+QByteArrayMatcher* QByteArrayMatcher_new6(const char* pattern, ptrdiff_t length) {
+    return new QByteArrayMatcher(pattern, (qsizetype)(length));
 }
 
 void QByteArrayMatcher_OperatorAssign(QByteArrayMatcher* self, QByteArrayMatcher* other) {
@@ -31,13 +40,12 @@ void QByteArrayMatcher_SetPattern(QByteArrayMatcher* self, libqt_string pattern)
     self->setPattern(pattern_QByteArray);
 }
 
-int QByteArrayMatcher_IndexIn(const QByteArrayMatcher* self, libqt_string ba) {
-    QByteArray ba_QByteArray(ba.data, ba.len);
-    return self->indexIn(ba_QByteArray);
+ptrdiff_t QByteArrayMatcher_IndexIn(const QByteArrayMatcher* self, const char* str, ptrdiff_t lenVal) {
+    return static_cast<ptrdiff_t>(self->indexIn(str, (qsizetype)(lenVal)));
 }
 
-int QByteArrayMatcher_IndexIn2(const QByteArrayMatcher* self, const char* str, int lenVal) {
-    return self->indexIn(str, static_cast<int>(lenVal));
+ptrdiff_t QByteArrayMatcher_IndexInWithData(const QByteArrayMatcher* self, QByteArrayView* data) {
+    return static_cast<ptrdiff_t>(self->indexIn(*data));
 }
 
 libqt_string QByteArrayMatcher_Pattern(const QByteArrayMatcher* self) {
@@ -50,13 +58,12 @@ libqt_string QByteArrayMatcher_Pattern(const QByteArrayMatcher* self) {
     return _str;
 }
 
-int QByteArrayMatcher_IndexIn22(const QByteArrayMatcher* self, libqt_string ba, int from) {
-    QByteArray ba_QByteArray(ba.data, ba.len);
-    return self->indexIn(ba_QByteArray, static_cast<int>(from));
+ptrdiff_t QByteArrayMatcher_IndexIn3(const QByteArrayMatcher* self, const char* str, ptrdiff_t lenVal, ptrdiff_t from) {
+    return static_cast<ptrdiff_t>(self->indexIn(str, (qsizetype)(lenVal), (qsizetype)(from)));
 }
 
-int QByteArrayMatcher_IndexIn3(const QByteArrayMatcher* self, const char* str, int lenVal, int from) {
-    return self->indexIn(str, static_cast<int>(lenVal), static_cast<int>(from));
+ptrdiff_t QByteArrayMatcher_IndexIn2(const QByteArrayMatcher* self, QByteArrayView* data, ptrdiff_t from) {
+    return static_cast<ptrdiff_t>(self->indexIn(*data, (qsizetype)(from)));
 }
 
 void QByteArrayMatcher_Delete(QByteArrayMatcher* self) {
@@ -67,18 +74,6 @@ QStaticByteArrayMatcherBase* QStaticByteArrayMatcherBase_new(QStaticByteArrayMat
     return new QStaticByteArrayMatcherBase(*other);
 }
 
-QStaticByteArrayMatcherBase* QStaticByteArrayMatcherBase_new2(QStaticByteArrayMatcherBase* other) {
-    return new QStaticByteArrayMatcherBase(std::move(*other));
-}
-
 void QStaticByteArrayMatcherBase_CopyAssign(QStaticByteArrayMatcherBase* self, QStaticByteArrayMatcherBase* other) {
     *self = *other;
-}
-
-void QStaticByteArrayMatcherBase_MoveAssign(QStaticByteArrayMatcherBase* self, QStaticByteArrayMatcherBase* other) {
-    *self = std::move(*other);
-}
-
-void QStaticByteArrayMatcherBase_Delete(QStaticByteArrayMatcherBase* self) {
-    delete self;
 }

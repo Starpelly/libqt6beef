@@ -19,12 +19,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     // Virtual class public types (including callbacks)
     using QGraphicsItem::Extension;
     using QGraphicsVideoItem_Metacall_Callback = int (*)(QGraphicsVideoItem*, QMetaObject::Call, int, void**);
-    using QGraphicsVideoItem_MediaObject_Callback = QMediaObject* (*)();
     using QGraphicsVideoItem_BoundingRect_Callback = QRectF (*)();
     using QGraphicsVideoItem_Paint_Callback = void (*)(QGraphicsVideoItem*, QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+    using QGraphicsVideoItem_Type_Callback = int (*)();
     using QGraphicsVideoItem_TimerEvent_Callback = void (*)(QGraphicsVideoItem*, QTimerEvent*);
     using QGraphicsVideoItem_ItemChange_Callback = QVariant (*)(QGraphicsVideoItem*, QGraphicsItem::GraphicsItemChange, const QVariant&);
-    using QGraphicsVideoItem_SetMediaObject_Callback = bool (*)(QGraphicsVideoItem*, QMediaObject*);
     using QGraphicsVideoItem_Event_Callback = bool (*)(QGraphicsVideoItem*, QEvent*);
     using QGraphicsVideoItem_EventFilter_Callback = bool (*)(QGraphicsVideoItem*, QObject*, QEvent*);
     using QGraphicsVideoItem_ChildEvent_Callback = void (*)(QGraphicsVideoItem*, QChildEvent*);
@@ -38,7 +37,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     using QGraphicsVideoItem_CollidesWithPath_Callback = bool (*)(const QGraphicsVideoItem*, const QPainterPath&, Qt::ItemSelectionMode);
     using QGraphicsVideoItem_IsObscuredBy_Callback = bool (*)(const QGraphicsVideoItem*, const QGraphicsItem*);
     using QGraphicsVideoItem_OpaqueArea_Callback = QPainterPath (*)();
-    using QGraphicsVideoItem_Type_Callback = int (*)();
     using QGraphicsVideoItem_SceneEventFilter_Callback = bool (*)(QGraphicsVideoItem*, QGraphicsItem*, QEvent*);
     using QGraphicsVideoItem_SceneEvent_Callback = bool (*)(QGraphicsVideoItem*, QEvent*);
     using QGraphicsVideoItem_ContextMenuEvent_Callback = void (*)(QGraphicsVideoItem*, QGraphicsSceneContextMenuEvent*);
@@ -75,12 +73,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
   protected:
     // Instance callback storage
     QGraphicsVideoItem_Metacall_Callback qgraphicsvideoitem_metacall_callback = nullptr;
-    QGraphicsVideoItem_MediaObject_Callback qgraphicsvideoitem_mediaobject_callback = nullptr;
     QGraphicsVideoItem_BoundingRect_Callback qgraphicsvideoitem_boundingrect_callback = nullptr;
     QGraphicsVideoItem_Paint_Callback qgraphicsvideoitem_paint_callback = nullptr;
+    QGraphicsVideoItem_Type_Callback qgraphicsvideoitem_type_callback = nullptr;
     QGraphicsVideoItem_TimerEvent_Callback qgraphicsvideoitem_timerevent_callback = nullptr;
     QGraphicsVideoItem_ItemChange_Callback qgraphicsvideoitem_itemchange_callback = nullptr;
-    QGraphicsVideoItem_SetMediaObject_Callback qgraphicsvideoitem_setmediaobject_callback = nullptr;
     QGraphicsVideoItem_Event_Callback qgraphicsvideoitem_event_callback = nullptr;
     QGraphicsVideoItem_EventFilter_Callback qgraphicsvideoitem_eventfilter_callback = nullptr;
     QGraphicsVideoItem_ChildEvent_Callback qgraphicsvideoitem_childevent_callback = nullptr;
@@ -94,7 +91,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     QGraphicsVideoItem_CollidesWithPath_Callback qgraphicsvideoitem_collideswithpath_callback = nullptr;
     QGraphicsVideoItem_IsObscuredBy_Callback qgraphicsvideoitem_isobscuredby_callback = nullptr;
     QGraphicsVideoItem_OpaqueArea_Callback qgraphicsvideoitem_opaquearea_callback = nullptr;
-    QGraphicsVideoItem_Type_Callback qgraphicsvideoitem_type_callback = nullptr;
     QGraphicsVideoItem_SceneEventFilter_Callback qgraphicsvideoitem_sceneeventfilter_callback = nullptr;
     QGraphicsVideoItem_SceneEvent_Callback qgraphicsvideoitem_sceneevent_callback = nullptr;
     QGraphicsVideoItem_ContextMenuEvent_Callback qgraphicsvideoitem_contextmenuevent_callback = nullptr;
@@ -130,12 +126,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
 
     // Instance base flags
     mutable bool qgraphicsvideoitem_metacall_isbase = false;
-    mutable bool qgraphicsvideoitem_mediaobject_isbase = false;
     mutable bool qgraphicsvideoitem_boundingrect_isbase = false;
     mutable bool qgraphicsvideoitem_paint_isbase = false;
+    mutable bool qgraphicsvideoitem_type_isbase = false;
     mutable bool qgraphicsvideoitem_timerevent_isbase = false;
     mutable bool qgraphicsvideoitem_itemchange_isbase = false;
-    mutable bool qgraphicsvideoitem_setmediaobject_isbase = false;
     mutable bool qgraphicsvideoitem_event_isbase = false;
     mutable bool qgraphicsvideoitem_eventfilter_isbase = false;
     mutable bool qgraphicsvideoitem_childevent_isbase = false;
@@ -149,7 +144,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     mutable bool qgraphicsvideoitem_collideswithpath_isbase = false;
     mutable bool qgraphicsvideoitem_isobscuredby_isbase = false;
     mutable bool qgraphicsvideoitem_opaquearea_isbase = false;
-    mutable bool qgraphicsvideoitem_type_isbase = false;
     mutable bool qgraphicsvideoitem_sceneeventfilter_isbase = false;
     mutable bool qgraphicsvideoitem_sceneevent_isbase = false;
     mutable bool qgraphicsvideoitem_contextmenuevent_isbase = false;
@@ -189,12 +183,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
 
     ~VirtualQGraphicsVideoItem() {
         qgraphicsvideoitem_metacall_callback = nullptr;
-        qgraphicsvideoitem_mediaobject_callback = nullptr;
         qgraphicsvideoitem_boundingrect_callback = nullptr;
         qgraphicsvideoitem_paint_callback = nullptr;
+        qgraphicsvideoitem_type_callback = nullptr;
         qgraphicsvideoitem_timerevent_callback = nullptr;
         qgraphicsvideoitem_itemchange_callback = nullptr;
-        qgraphicsvideoitem_setmediaobject_callback = nullptr;
         qgraphicsvideoitem_event_callback = nullptr;
         qgraphicsvideoitem_eventfilter_callback = nullptr;
         qgraphicsvideoitem_childevent_callback = nullptr;
@@ -208,7 +201,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
         qgraphicsvideoitem_collideswithpath_callback = nullptr;
         qgraphicsvideoitem_isobscuredby_callback = nullptr;
         qgraphicsvideoitem_opaquearea_callback = nullptr;
-        qgraphicsvideoitem_type_callback = nullptr;
         qgraphicsvideoitem_sceneeventfilter_callback = nullptr;
         qgraphicsvideoitem_sceneevent_callback = nullptr;
         qgraphicsvideoitem_contextmenuevent_callback = nullptr;
@@ -245,12 +237,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
 
     // Callback setters
     void setQGraphicsVideoItem_Metacall_Callback(QGraphicsVideoItem_Metacall_Callback cb) { qgraphicsvideoitem_metacall_callback = cb; }
-    void setQGraphicsVideoItem_MediaObject_Callback(QGraphicsVideoItem_MediaObject_Callback cb) { qgraphicsvideoitem_mediaobject_callback = cb; }
     void setQGraphicsVideoItem_BoundingRect_Callback(QGraphicsVideoItem_BoundingRect_Callback cb) { qgraphicsvideoitem_boundingrect_callback = cb; }
     void setQGraphicsVideoItem_Paint_Callback(QGraphicsVideoItem_Paint_Callback cb) { qgraphicsvideoitem_paint_callback = cb; }
+    void setQGraphicsVideoItem_Type_Callback(QGraphicsVideoItem_Type_Callback cb) { qgraphicsvideoitem_type_callback = cb; }
     void setQGraphicsVideoItem_TimerEvent_Callback(QGraphicsVideoItem_TimerEvent_Callback cb) { qgraphicsvideoitem_timerevent_callback = cb; }
     void setQGraphicsVideoItem_ItemChange_Callback(QGraphicsVideoItem_ItemChange_Callback cb) { qgraphicsvideoitem_itemchange_callback = cb; }
-    void setQGraphicsVideoItem_SetMediaObject_Callback(QGraphicsVideoItem_SetMediaObject_Callback cb) { qgraphicsvideoitem_setmediaobject_callback = cb; }
     void setQGraphicsVideoItem_Event_Callback(QGraphicsVideoItem_Event_Callback cb) { qgraphicsvideoitem_event_callback = cb; }
     void setQGraphicsVideoItem_EventFilter_Callback(QGraphicsVideoItem_EventFilter_Callback cb) { qgraphicsvideoitem_eventfilter_callback = cb; }
     void setQGraphicsVideoItem_ChildEvent_Callback(QGraphicsVideoItem_ChildEvent_Callback cb) { qgraphicsvideoitem_childevent_callback = cb; }
@@ -264,7 +255,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     void setQGraphicsVideoItem_CollidesWithPath_Callback(QGraphicsVideoItem_CollidesWithPath_Callback cb) { qgraphicsvideoitem_collideswithpath_callback = cb; }
     void setQGraphicsVideoItem_IsObscuredBy_Callback(QGraphicsVideoItem_IsObscuredBy_Callback cb) { qgraphicsvideoitem_isobscuredby_callback = cb; }
     void setQGraphicsVideoItem_OpaqueArea_Callback(QGraphicsVideoItem_OpaqueArea_Callback cb) { qgraphicsvideoitem_opaquearea_callback = cb; }
-    void setQGraphicsVideoItem_Type_Callback(QGraphicsVideoItem_Type_Callback cb) { qgraphicsvideoitem_type_callback = cb; }
     void setQGraphicsVideoItem_SceneEventFilter_Callback(QGraphicsVideoItem_SceneEventFilter_Callback cb) { qgraphicsvideoitem_sceneeventfilter_callback = cb; }
     void setQGraphicsVideoItem_SceneEvent_Callback(QGraphicsVideoItem_SceneEvent_Callback cb) { qgraphicsvideoitem_sceneevent_callback = cb; }
     void setQGraphicsVideoItem_ContextMenuEvent_Callback(QGraphicsVideoItem_ContextMenuEvent_Callback cb) { qgraphicsvideoitem_contextmenuevent_callback = cb; }
@@ -300,12 +290,11 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
 
     // Base flag setters
     void setQGraphicsVideoItem_Metacall_IsBase(bool value) const { qgraphicsvideoitem_metacall_isbase = value; }
-    void setQGraphicsVideoItem_MediaObject_IsBase(bool value) const { qgraphicsvideoitem_mediaobject_isbase = value; }
     void setQGraphicsVideoItem_BoundingRect_IsBase(bool value) const { qgraphicsvideoitem_boundingrect_isbase = value; }
     void setQGraphicsVideoItem_Paint_IsBase(bool value) const { qgraphicsvideoitem_paint_isbase = value; }
+    void setQGraphicsVideoItem_Type_IsBase(bool value) const { qgraphicsvideoitem_type_isbase = value; }
     void setQGraphicsVideoItem_TimerEvent_IsBase(bool value) const { qgraphicsvideoitem_timerevent_isbase = value; }
     void setQGraphicsVideoItem_ItemChange_IsBase(bool value) const { qgraphicsvideoitem_itemchange_isbase = value; }
-    void setQGraphicsVideoItem_SetMediaObject_IsBase(bool value) const { qgraphicsvideoitem_setmediaobject_isbase = value; }
     void setQGraphicsVideoItem_Event_IsBase(bool value) const { qgraphicsvideoitem_event_isbase = value; }
     void setQGraphicsVideoItem_EventFilter_IsBase(bool value) const { qgraphicsvideoitem_eventfilter_isbase = value; }
     void setQGraphicsVideoItem_ChildEvent_IsBase(bool value) const { qgraphicsvideoitem_childevent_isbase = value; }
@@ -319,7 +308,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     void setQGraphicsVideoItem_CollidesWithPath_IsBase(bool value) const { qgraphicsvideoitem_collideswithpath_isbase = value; }
     void setQGraphicsVideoItem_IsObscuredBy_IsBase(bool value) const { qgraphicsvideoitem_isobscuredby_isbase = value; }
     void setQGraphicsVideoItem_OpaqueArea_IsBase(bool value) const { qgraphicsvideoitem_opaquearea_isbase = value; }
-    void setQGraphicsVideoItem_Type_IsBase(bool value) const { qgraphicsvideoitem_type_isbase = value; }
     void setQGraphicsVideoItem_SceneEventFilter_IsBase(bool value) const { qgraphicsvideoitem_sceneeventfilter_isbase = value; }
     void setQGraphicsVideoItem_SceneEvent_IsBase(bool value) const { qgraphicsvideoitem_sceneevent_isbase = value; }
     void setQGraphicsVideoItem_ContextMenuEvent_IsBase(bool value) const { qgraphicsvideoitem_contextmenuevent_isbase = value; }
@@ -366,18 +354,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QMediaObject* mediaObject() const override {
-        if (qgraphicsvideoitem_mediaobject_isbase) {
-            qgraphicsvideoitem_mediaobject_isbase = false;
-            return QGraphicsVideoItem::mediaObject();
-        } else if (qgraphicsvideoitem_mediaobject_callback != nullptr) {
-            return qgraphicsvideoitem_mediaobject_callback();
-        } else {
-            return QGraphicsVideoItem::mediaObject();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QRectF boundingRect() const override {
         if (qgraphicsvideoitem_boundingrect_isbase) {
             qgraphicsvideoitem_boundingrect_isbase = false;
@@ -402,6 +378,18 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual int type() const override {
+        if (qgraphicsvideoitem_type_isbase) {
+            qgraphicsvideoitem_type_isbase = false;
+            return QGraphicsVideoItem::type();
+        } else if (qgraphicsvideoitem_type_callback != nullptr) {
+            return qgraphicsvideoitem_type_callback();
+        } else {
+            return QGraphicsVideoItem::type();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual void timerEvent(QTimerEvent* event) override {
         if (qgraphicsvideoitem_timerevent_isbase) {
             qgraphicsvideoitem_timerevent_isbase = false;
@@ -422,18 +410,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
             return qgraphicsvideoitem_itemchange_callback(this, change, value);
         } else {
             return QGraphicsVideoItem::itemChange(change, value);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setMediaObject(QMediaObject* object) override {
-        if (qgraphicsvideoitem_setmediaobject_isbase) {
-            qgraphicsvideoitem_setmediaobject_isbase = false;
-            return QGraphicsVideoItem::setMediaObject(object);
-        } else if (qgraphicsvideoitem_setmediaobject_callback != nullptr) {
-            return qgraphicsvideoitem_setmediaobject_callback(this, object);
-        } else {
-            return QGraphicsVideoItem::setMediaObject(object);
         }
     }
 
@@ -590,18 +566,6 @@ class VirtualQGraphicsVideoItem : public QGraphicsVideoItem {
             return qgraphicsvideoitem_opaquearea_callback();
         } else {
             return QGraphicsVideoItem::opaqueArea();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual int type() const override {
-        if (qgraphicsvideoitem_type_isbase) {
-            qgraphicsvideoitem_type_isbase = false;
-            return QGraphicsVideoItem::type();
-        } else if (qgraphicsvideoitem_type_callback != nullptr) {
-            return qgraphicsvideoitem_type_callback();
-        } else {
-            return QGraphicsVideoItem::type();
         }
     }
 

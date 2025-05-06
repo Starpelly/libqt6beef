@@ -26,6 +26,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
     using QGraphicsGridLayout_GetContentsMargins_Callback = void (*)(const QGraphicsGridLayout*, qreal*, qreal*, qreal*, qreal*);
     using QGraphicsGridLayout_UpdateGeometry_Callback = void (*)();
     using QGraphicsGridLayout_WidgetEvent_Callback = void (*)(QGraphicsGridLayout*, QEvent*);
+    using QGraphicsGridLayout_IsEmpty_Callback = bool (*)();
     using QGraphicsGridLayout_AddChildLayoutItem_Callback = void (*)(QGraphicsGridLayout*, QGraphicsLayoutItem*);
     using QGraphicsGridLayout_SetGraphicsItem_Callback = void (*)(QGraphicsGridLayout*, QGraphicsItem*);
     using QGraphicsGridLayout_SetOwnedByLayout_Callback = void (*)(QGraphicsGridLayout*, bool);
@@ -41,6 +42,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
     QGraphicsGridLayout_GetContentsMargins_Callback qgraphicsgridlayout_getcontentsmargins_callback = nullptr;
     QGraphicsGridLayout_UpdateGeometry_Callback qgraphicsgridlayout_updategeometry_callback = nullptr;
     QGraphicsGridLayout_WidgetEvent_Callback qgraphicsgridlayout_widgetevent_callback = nullptr;
+    QGraphicsGridLayout_IsEmpty_Callback qgraphicsgridlayout_isempty_callback = nullptr;
     QGraphicsGridLayout_AddChildLayoutItem_Callback qgraphicsgridlayout_addchildlayoutitem_callback = nullptr;
     QGraphicsGridLayout_SetGraphicsItem_Callback qgraphicsgridlayout_setgraphicsitem_callback = nullptr;
     QGraphicsGridLayout_SetOwnedByLayout_Callback qgraphicsgridlayout_setownedbylayout_callback = nullptr;
@@ -55,6 +57,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
     mutable bool qgraphicsgridlayout_getcontentsmargins_isbase = false;
     mutable bool qgraphicsgridlayout_updategeometry_isbase = false;
     mutable bool qgraphicsgridlayout_widgetevent_isbase = false;
+    mutable bool qgraphicsgridlayout_isempty_isbase = false;
     mutable bool qgraphicsgridlayout_addchildlayoutitem_isbase = false;
     mutable bool qgraphicsgridlayout_setgraphicsitem_isbase = false;
     mutable bool qgraphicsgridlayout_setownedbylayout_isbase = false;
@@ -73,6 +76,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
         qgraphicsgridlayout_getcontentsmargins_callback = nullptr;
         qgraphicsgridlayout_updategeometry_callback = nullptr;
         qgraphicsgridlayout_widgetevent_callback = nullptr;
+        qgraphicsgridlayout_isempty_callback = nullptr;
         qgraphicsgridlayout_addchildlayoutitem_callback = nullptr;
         qgraphicsgridlayout_setgraphicsitem_callback = nullptr;
         qgraphicsgridlayout_setownedbylayout_callback = nullptr;
@@ -88,6 +92,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
     void setQGraphicsGridLayout_GetContentsMargins_Callback(QGraphicsGridLayout_GetContentsMargins_Callback cb) { qgraphicsgridlayout_getcontentsmargins_callback = cb; }
     void setQGraphicsGridLayout_UpdateGeometry_Callback(QGraphicsGridLayout_UpdateGeometry_Callback cb) { qgraphicsgridlayout_updategeometry_callback = cb; }
     void setQGraphicsGridLayout_WidgetEvent_Callback(QGraphicsGridLayout_WidgetEvent_Callback cb) { qgraphicsgridlayout_widgetevent_callback = cb; }
+    void setQGraphicsGridLayout_IsEmpty_Callback(QGraphicsGridLayout_IsEmpty_Callback cb) { qgraphicsgridlayout_isempty_callback = cb; }
     void setQGraphicsGridLayout_AddChildLayoutItem_Callback(QGraphicsGridLayout_AddChildLayoutItem_Callback cb) { qgraphicsgridlayout_addchildlayoutitem_callback = cb; }
     void setQGraphicsGridLayout_SetGraphicsItem_Callback(QGraphicsGridLayout_SetGraphicsItem_Callback cb) { qgraphicsgridlayout_setgraphicsitem_callback = cb; }
     void setQGraphicsGridLayout_SetOwnedByLayout_Callback(QGraphicsGridLayout_SetOwnedByLayout_Callback cb) { qgraphicsgridlayout_setownedbylayout_callback = cb; }
@@ -102,6 +107,7 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
     void setQGraphicsGridLayout_GetContentsMargins_IsBase(bool value) const { qgraphicsgridlayout_getcontentsmargins_isbase = value; }
     void setQGraphicsGridLayout_UpdateGeometry_IsBase(bool value) const { qgraphicsgridlayout_updategeometry_isbase = value; }
     void setQGraphicsGridLayout_WidgetEvent_IsBase(bool value) const { qgraphicsgridlayout_widgetevent_isbase = value; }
+    void setQGraphicsGridLayout_IsEmpty_IsBase(bool value) const { qgraphicsgridlayout_isempty_isbase = value; }
     void setQGraphicsGridLayout_AddChildLayoutItem_IsBase(bool value) const { qgraphicsgridlayout_addchildlayoutitem_isbase = value; }
     void setQGraphicsGridLayout_SetGraphicsItem_IsBase(bool value) const { qgraphicsgridlayout_setgraphicsitem_isbase = value; }
     void setQGraphicsGridLayout_SetOwnedByLayout_IsBase(bool value) const { qgraphicsgridlayout_setownedbylayout_isbase = value; }
@@ -211,6 +217,18 @@ class VirtualQGraphicsGridLayout : public QGraphicsGridLayout {
             qgraphicsgridlayout_widgetevent_callback(this, e);
         } else {
             QGraphicsGridLayout::widgetEvent(e);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool isEmpty() const override {
+        if (qgraphicsgridlayout_isempty_isbase) {
+            qgraphicsgridlayout_isempty_isbase = false;
+            return QGraphicsGridLayout::isEmpty();
+        } else if (qgraphicsgridlayout_isempty_callback != nullptr) {
+            return qgraphicsgridlayout_isempty_callback();
+        } else {
+            return QGraphicsGridLayout::isEmpty();
         }
     }
 

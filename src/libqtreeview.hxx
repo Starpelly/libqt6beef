@@ -30,7 +30,7 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_IndexAt_Callback = QModelIndex (*)(const QTreeView*, const QPoint&);
     using QTreeView_DoItemsLayout_Callback = void (*)();
     using QTreeView_Reset_Callback = void (*)();
-    using QTreeView_DataChanged_Callback = void (*)(QTreeView*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
+    using QTreeView_DataChanged_Callback = void (*)(QTreeView*, const QModelIndex&, const QModelIndex&, const QList<int>&);
     using QTreeView_SelectAll_Callback = void (*)();
     using QTreeView_VerticalScrollbarValueChanged_Callback = void (*)(QTreeView*, int);
     using QTreeView_ScrollContentsBy_Callback = void (*)(QTreeView*, int, int);
@@ -42,6 +42,7 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_SetSelection_Callback = void (*)(QTreeView*, const QRect&, QItemSelectionModel::SelectionFlags);
     using QTreeView_VisualRegionForSelection_Callback = QRegion (*)(const QTreeView*, const QItemSelection&);
     using QTreeView_SelectedIndexes_Callback = QModelIndexList (*)();
+    using QTreeView_ChangeEvent_Callback = void (*)(QTreeView*, QEvent*);
     using QTreeView_TimerEvent_Callback = void (*)(QTreeView*, QTimerEvent*);
     using QTreeView_PaintEvent_Callback = void (*)(QTreeView*, QPaintEvent*);
     using QTreeView_DrawRow_Callback = void (*)(const QTreeView*, QPainter*, const QStyleOptionViewItem&, const QModelIndex&);
@@ -61,6 +62,7 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_SelectionChanged_Callback = void (*)(QTreeView*, const QItemSelection&, const QItemSelection&);
     using QTreeView_CurrentChanged_Callback = void (*)(QTreeView*, const QModelIndex&, const QModelIndex&);
     using QTreeView_SizeHintForRow_Callback = int (*)(const QTreeView*, int);
+    using QTreeView_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QTreeView*, const QModelIndex&);
     using QTreeView_InputMethodQuery_Callback = QVariant (*)(const QTreeView*, Qt::InputMethodQuery);
     using QTreeView_UpdateEditorData_Callback = void (*)();
     using QTreeView_UpdateEditorGeometries_Callback = void (*)();
@@ -72,7 +74,7 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_Edit2_Callback = bool (*)(QTreeView*, const QModelIndex&, QAbstractItemView::EditTrigger, QEvent*);
     using QTreeView_SelectionCommand_Callback = QItemSelectionModel::SelectionFlags (*)(const QTreeView*, const QModelIndex&, const QEvent*);
     using QTreeView_StartDrag_Callback = void (*)(QTreeView*, Qt::DropActions);
-    using QTreeView_ViewOptions_Callback = QStyleOptionViewItem (*)();
+    using QTreeView_InitViewItemOption_Callback = void (*)(const QTreeView*, QStyleOptionViewItem*);
     using QTreeView_FocusNextPrevChild_Callback = bool (*)(QTreeView*, bool);
     using QTreeView_Event_Callback = bool (*)(QTreeView*, QEvent*);
     using QTreeView_DragEnterEvent_Callback = void (*)(QTreeView*, QDragEnterEvent*);
@@ -88,14 +90,14 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_SetupViewport_Callback = void (*)(QTreeView*, QWidget*);
     using QTreeView_WheelEvent_Callback = void (*)(QTreeView*, QWheelEvent*);
     using QTreeView_ContextMenuEvent_Callback = void (*)(QTreeView*, QContextMenuEvent*);
-    using QTreeView_ChangeEvent_Callback = void (*)(QTreeView*, QEvent*);
+    using QTreeView_InitStyleOption_Callback = void (*)(const QTreeView*, QStyleOptionFrame*);
     using QTreeView_DevType_Callback = int (*)();
     using QTreeView_SetVisible_Callback = void (*)(QTreeView*, bool);
     using QTreeView_HeightForWidth_Callback = int (*)(const QTreeView*, int);
     using QTreeView_HasHeightForWidth_Callback = bool (*)();
     using QTreeView_PaintEngine_Callback = QPaintEngine* (*)();
     using QTreeView_KeyReleaseEvent_Callback = void (*)(QTreeView*, QKeyEvent*);
-    using QTreeView_EnterEvent_Callback = void (*)(QTreeView*, QEvent*);
+    using QTreeView_EnterEvent_Callback = void (*)(QTreeView*, QEnterEvent*);
     using QTreeView_LeaveEvent_Callback = void (*)(QTreeView*, QEvent*);
     using QTreeView_MoveEvent_Callback = void (*)(QTreeView*, QMoveEvent*);
     using QTreeView_CloseEvent_Callback = void (*)(QTreeView*, QCloseEvent*);
@@ -103,7 +105,7 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_ActionEvent_Callback = void (*)(QTreeView*, QActionEvent*);
     using QTreeView_ShowEvent_Callback = void (*)(QTreeView*, QShowEvent*);
     using QTreeView_HideEvent_Callback = void (*)(QTreeView*, QHideEvent*);
-    using QTreeView_NativeEvent_Callback = bool (*)(QTreeView*, const QByteArray&, void*, long*);
+    using QTreeView_NativeEvent_Callback = bool (*)(QTreeView*, const QByteArray&, void*, qintptr*);
     using QTreeView_Metric_Callback = int (*)(const QTreeView*, QPaintDevice::PaintDeviceMetric);
     using QTreeView_InitPainter_Callback = void (*)(const QTreeView*, QPainter*);
     using QTreeView_Redirected_Callback = QPaintDevice* (*)(const QTreeView*, QPoint*);
@@ -120,10 +122,6 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_DrawTree_Callback = void (*)(const QTreeView*, QPainter*, const QRegion&);
     using QTreeView_IndexRowSizeHint_Callback = int (*)(const QTreeView*, const QModelIndex&);
     using QTreeView_RowHeight_Callback = int (*)(const QTreeView*, const QModelIndex&);
-    using QTreeView_SetHorizontalStepsPerItem_Callback = void (*)(QTreeView*, int);
-    using QTreeView_HorizontalStepsPerItem_Callback = int (*)();
-    using QTreeView_SetVerticalStepsPerItem_Callback = void (*)(QTreeView*, int);
-    using QTreeView_VerticalStepsPerItem_Callback = int (*)();
     using QTreeView_State_Callback = QAbstractItemView::State (*)();
     using QTreeView_SetState_Callback = void (*)(QTreeView*, int);
     using QTreeView_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -138,7 +136,6 @@ class VirtualQTreeView : public QTreeView {
     using QTreeView_SetViewportMargins_Callback = void (*)(QTreeView*, int, int, int, int);
     using QTreeView_ViewportMargins_Callback = QMargins (*)();
     using QTreeView_DrawFrame_Callback = void (*)(QTreeView*, QPainter*);
-    using QTreeView_InitStyleOption_Callback = void (*)(const QTreeView*, QStyleOptionFrame*);
     using QTreeView_UpdateMicroFocus_Callback = void (*)();
     using QTreeView_Create_Callback = void (*)();
     using QTreeView_Destroy_Callback = void (*)();
@@ -173,6 +170,7 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_SetSelection_Callback qtreeview_setselection_callback = nullptr;
     QTreeView_VisualRegionForSelection_Callback qtreeview_visualregionforselection_callback = nullptr;
     QTreeView_SelectedIndexes_Callback qtreeview_selectedindexes_callback = nullptr;
+    QTreeView_ChangeEvent_Callback qtreeview_changeevent_callback = nullptr;
     QTreeView_TimerEvent_Callback qtreeview_timerevent_callback = nullptr;
     QTreeView_PaintEvent_Callback qtreeview_paintevent_callback = nullptr;
     QTreeView_DrawRow_Callback qtreeview_drawrow_callback = nullptr;
@@ -192,6 +190,7 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_SelectionChanged_Callback qtreeview_selectionchanged_callback = nullptr;
     QTreeView_CurrentChanged_Callback qtreeview_currentchanged_callback = nullptr;
     QTreeView_SizeHintForRow_Callback qtreeview_sizehintforrow_callback = nullptr;
+    QTreeView_ItemDelegateForIndex_Callback qtreeview_itemdelegateforindex_callback = nullptr;
     QTreeView_InputMethodQuery_Callback qtreeview_inputmethodquery_callback = nullptr;
     QTreeView_UpdateEditorData_Callback qtreeview_updateeditordata_callback = nullptr;
     QTreeView_UpdateEditorGeometries_Callback qtreeview_updateeditorgeometries_callback = nullptr;
@@ -203,7 +202,7 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_Edit2_Callback qtreeview_edit2_callback = nullptr;
     QTreeView_SelectionCommand_Callback qtreeview_selectioncommand_callback = nullptr;
     QTreeView_StartDrag_Callback qtreeview_startdrag_callback = nullptr;
-    QTreeView_ViewOptions_Callback qtreeview_viewoptions_callback = nullptr;
+    QTreeView_InitViewItemOption_Callback qtreeview_initviewitemoption_callback = nullptr;
     QTreeView_FocusNextPrevChild_Callback qtreeview_focusnextprevchild_callback = nullptr;
     QTreeView_Event_Callback qtreeview_event_callback = nullptr;
     QTreeView_DragEnterEvent_Callback qtreeview_dragenterevent_callback = nullptr;
@@ -219,7 +218,7 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_SetupViewport_Callback qtreeview_setupviewport_callback = nullptr;
     QTreeView_WheelEvent_Callback qtreeview_wheelevent_callback = nullptr;
     QTreeView_ContextMenuEvent_Callback qtreeview_contextmenuevent_callback = nullptr;
-    QTreeView_ChangeEvent_Callback qtreeview_changeevent_callback = nullptr;
+    QTreeView_InitStyleOption_Callback qtreeview_initstyleoption_callback = nullptr;
     QTreeView_DevType_Callback qtreeview_devtype_callback = nullptr;
     QTreeView_SetVisible_Callback qtreeview_setvisible_callback = nullptr;
     QTreeView_HeightForWidth_Callback qtreeview_heightforwidth_callback = nullptr;
@@ -251,10 +250,6 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_DrawTree_Callback qtreeview_drawtree_callback = nullptr;
     QTreeView_IndexRowSizeHint_Callback qtreeview_indexrowsizehint_callback = nullptr;
     QTreeView_RowHeight_Callback qtreeview_rowheight_callback = nullptr;
-    QTreeView_SetHorizontalStepsPerItem_Callback qtreeview_sethorizontalstepsperitem_callback = nullptr;
-    QTreeView_HorizontalStepsPerItem_Callback qtreeview_horizontalstepsperitem_callback = nullptr;
-    QTreeView_SetVerticalStepsPerItem_Callback qtreeview_setverticalstepsperitem_callback = nullptr;
-    QTreeView_VerticalStepsPerItem_Callback qtreeview_verticalstepsperitem_callback = nullptr;
     QTreeView_State_Callback qtreeview_state_callback = nullptr;
     QTreeView_SetState_Callback qtreeview_setstate_callback = nullptr;
     QTreeView_ScheduleDelayedItemsLayout_Callback qtreeview_scheduledelayeditemslayout_callback = nullptr;
@@ -269,7 +264,6 @@ class VirtualQTreeView : public QTreeView {
     QTreeView_SetViewportMargins_Callback qtreeview_setviewportmargins_callback = nullptr;
     QTreeView_ViewportMargins_Callback qtreeview_viewportmargins_callback = nullptr;
     QTreeView_DrawFrame_Callback qtreeview_drawframe_callback = nullptr;
-    QTreeView_InitStyleOption_Callback qtreeview_initstyleoption_callback = nullptr;
     QTreeView_UpdateMicroFocus_Callback qtreeview_updatemicrofocus_callback = nullptr;
     QTreeView_Create_Callback qtreeview_create_callback = nullptr;
     QTreeView_Destroy_Callback qtreeview_destroy_callback = nullptr;
@@ -303,6 +297,7 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_setselection_isbase = false;
     mutable bool qtreeview_visualregionforselection_isbase = false;
     mutable bool qtreeview_selectedindexes_isbase = false;
+    mutable bool qtreeview_changeevent_isbase = false;
     mutable bool qtreeview_timerevent_isbase = false;
     mutable bool qtreeview_paintevent_isbase = false;
     mutable bool qtreeview_drawrow_isbase = false;
@@ -322,6 +317,7 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_selectionchanged_isbase = false;
     mutable bool qtreeview_currentchanged_isbase = false;
     mutable bool qtreeview_sizehintforrow_isbase = false;
+    mutable bool qtreeview_itemdelegateforindex_isbase = false;
     mutable bool qtreeview_inputmethodquery_isbase = false;
     mutable bool qtreeview_updateeditordata_isbase = false;
     mutable bool qtreeview_updateeditorgeometries_isbase = false;
@@ -333,7 +329,7 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_edit2_isbase = false;
     mutable bool qtreeview_selectioncommand_isbase = false;
     mutable bool qtreeview_startdrag_isbase = false;
-    mutable bool qtreeview_viewoptions_isbase = false;
+    mutable bool qtreeview_initviewitemoption_isbase = false;
     mutable bool qtreeview_focusnextprevchild_isbase = false;
     mutable bool qtreeview_event_isbase = false;
     mutable bool qtreeview_dragenterevent_isbase = false;
@@ -349,7 +345,7 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_setupviewport_isbase = false;
     mutable bool qtreeview_wheelevent_isbase = false;
     mutable bool qtreeview_contextmenuevent_isbase = false;
-    mutable bool qtreeview_changeevent_isbase = false;
+    mutable bool qtreeview_initstyleoption_isbase = false;
     mutable bool qtreeview_devtype_isbase = false;
     mutable bool qtreeview_setvisible_isbase = false;
     mutable bool qtreeview_heightforwidth_isbase = false;
@@ -381,10 +377,6 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_drawtree_isbase = false;
     mutable bool qtreeview_indexrowsizehint_isbase = false;
     mutable bool qtreeview_rowheight_isbase = false;
-    mutable bool qtreeview_sethorizontalstepsperitem_isbase = false;
-    mutable bool qtreeview_horizontalstepsperitem_isbase = false;
-    mutable bool qtreeview_setverticalstepsperitem_isbase = false;
-    mutable bool qtreeview_verticalstepsperitem_isbase = false;
     mutable bool qtreeview_state_isbase = false;
     mutable bool qtreeview_setstate_isbase = false;
     mutable bool qtreeview_scheduledelayeditemslayout_isbase = false;
@@ -399,7 +391,6 @@ class VirtualQTreeView : public QTreeView {
     mutable bool qtreeview_setviewportmargins_isbase = false;
     mutable bool qtreeview_viewportmargins_isbase = false;
     mutable bool qtreeview_drawframe_isbase = false;
-    mutable bool qtreeview_initstyleoption_isbase = false;
     mutable bool qtreeview_updatemicrofocus_isbase = false;
     mutable bool qtreeview_create_isbase = false;
     mutable bool qtreeview_destroy_isbase = false;
@@ -437,6 +428,7 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_setselection_callback = nullptr;
         qtreeview_visualregionforselection_callback = nullptr;
         qtreeview_selectedindexes_callback = nullptr;
+        qtreeview_changeevent_callback = nullptr;
         qtreeview_timerevent_callback = nullptr;
         qtreeview_paintevent_callback = nullptr;
         qtreeview_drawrow_callback = nullptr;
@@ -456,6 +448,7 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_selectionchanged_callback = nullptr;
         qtreeview_currentchanged_callback = nullptr;
         qtreeview_sizehintforrow_callback = nullptr;
+        qtreeview_itemdelegateforindex_callback = nullptr;
         qtreeview_inputmethodquery_callback = nullptr;
         qtreeview_updateeditordata_callback = nullptr;
         qtreeview_updateeditorgeometries_callback = nullptr;
@@ -467,7 +460,7 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_edit2_callback = nullptr;
         qtreeview_selectioncommand_callback = nullptr;
         qtreeview_startdrag_callback = nullptr;
-        qtreeview_viewoptions_callback = nullptr;
+        qtreeview_initviewitemoption_callback = nullptr;
         qtreeview_focusnextprevchild_callback = nullptr;
         qtreeview_event_callback = nullptr;
         qtreeview_dragenterevent_callback = nullptr;
@@ -483,7 +476,7 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_setupviewport_callback = nullptr;
         qtreeview_wheelevent_callback = nullptr;
         qtreeview_contextmenuevent_callback = nullptr;
-        qtreeview_changeevent_callback = nullptr;
+        qtreeview_initstyleoption_callback = nullptr;
         qtreeview_devtype_callback = nullptr;
         qtreeview_setvisible_callback = nullptr;
         qtreeview_heightforwidth_callback = nullptr;
@@ -515,10 +508,6 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_drawtree_callback = nullptr;
         qtreeview_indexrowsizehint_callback = nullptr;
         qtreeview_rowheight_callback = nullptr;
-        qtreeview_sethorizontalstepsperitem_callback = nullptr;
-        qtreeview_horizontalstepsperitem_callback = nullptr;
-        qtreeview_setverticalstepsperitem_callback = nullptr;
-        qtreeview_verticalstepsperitem_callback = nullptr;
         qtreeview_state_callback = nullptr;
         qtreeview_setstate_callback = nullptr;
         qtreeview_scheduledelayeditemslayout_callback = nullptr;
@@ -533,7 +522,6 @@ class VirtualQTreeView : public QTreeView {
         qtreeview_setviewportmargins_callback = nullptr;
         qtreeview_viewportmargins_callback = nullptr;
         qtreeview_drawframe_callback = nullptr;
-        qtreeview_initstyleoption_callback = nullptr;
         qtreeview_updatemicrofocus_callback = nullptr;
         qtreeview_create_callback = nullptr;
         qtreeview_destroy_callback = nullptr;
@@ -568,6 +556,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetSelection_Callback(QTreeView_SetSelection_Callback cb) { qtreeview_setselection_callback = cb; }
     void setQTreeView_VisualRegionForSelection_Callback(QTreeView_VisualRegionForSelection_Callback cb) { qtreeview_visualregionforselection_callback = cb; }
     void setQTreeView_SelectedIndexes_Callback(QTreeView_SelectedIndexes_Callback cb) { qtreeview_selectedindexes_callback = cb; }
+    void setQTreeView_ChangeEvent_Callback(QTreeView_ChangeEvent_Callback cb) { qtreeview_changeevent_callback = cb; }
     void setQTreeView_TimerEvent_Callback(QTreeView_TimerEvent_Callback cb) { qtreeview_timerevent_callback = cb; }
     void setQTreeView_PaintEvent_Callback(QTreeView_PaintEvent_Callback cb) { qtreeview_paintevent_callback = cb; }
     void setQTreeView_DrawRow_Callback(QTreeView_DrawRow_Callback cb) { qtreeview_drawrow_callback = cb; }
@@ -587,6 +576,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SelectionChanged_Callback(QTreeView_SelectionChanged_Callback cb) { qtreeview_selectionchanged_callback = cb; }
     void setQTreeView_CurrentChanged_Callback(QTreeView_CurrentChanged_Callback cb) { qtreeview_currentchanged_callback = cb; }
     void setQTreeView_SizeHintForRow_Callback(QTreeView_SizeHintForRow_Callback cb) { qtreeview_sizehintforrow_callback = cb; }
+    void setQTreeView_ItemDelegateForIndex_Callback(QTreeView_ItemDelegateForIndex_Callback cb) { qtreeview_itemdelegateforindex_callback = cb; }
     void setQTreeView_InputMethodQuery_Callback(QTreeView_InputMethodQuery_Callback cb) { qtreeview_inputmethodquery_callback = cb; }
     void setQTreeView_UpdateEditorData_Callback(QTreeView_UpdateEditorData_Callback cb) { qtreeview_updateeditordata_callback = cb; }
     void setQTreeView_UpdateEditorGeometries_Callback(QTreeView_UpdateEditorGeometries_Callback cb) { qtreeview_updateeditorgeometries_callback = cb; }
@@ -598,7 +588,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_Edit2_Callback(QTreeView_Edit2_Callback cb) { qtreeview_edit2_callback = cb; }
     void setQTreeView_SelectionCommand_Callback(QTreeView_SelectionCommand_Callback cb) { qtreeview_selectioncommand_callback = cb; }
     void setQTreeView_StartDrag_Callback(QTreeView_StartDrag_Callback cb) { qtreeview_startdrag_callback = cb; }
-    void setQTreeView_ViewOptions_Callback(QTreeView_ViewOptions_Callback cb) { qtreeview_viewoptions_callback = cb; }
+    void setQTreeView_InitViewItemOption_Callback(QTreeView_InitViewItemOption_Callback cb) { qtreeview_initviewitemoption_callback = cb; }
     void setQTreeView_FocusNextPrevChild_Callback(QTreeView_FocusNextPrevChild_Callback cb) { qtreeview_focusnextprevchild_callback = cb; }
     void setQTreeView_Event_Callback(QTreeView_Event_Callback cb) { qtreeview_event_callback = cb; }
     void setQTreeView_DragEnterEvent_Callback(QTreeView_DragEnterEvent_Callback cb) { qtreeview_dragenterevent_callback = cb; }
@@ -614,7 +604,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetupViewport_Callback(QTreeView_SetupViewport_Callback cb) { qtreeview_setupviewport_callback = cb; }
     void setQTreeView_WheelEvent_Callback(QTreeView_WheelEvent_Callback cb) { qtreeview_wheelevent_callback = cb; }
     void setQTreeView_ContextMenuEvent_Callback(QTreeView_ContextMenuEvent_Callback cb) { qtreeview_contextmenuevent_callback = cb; }
-    void setQTreeView_ChangeEvent_Callback(QTreeView_ChangeEvent_Callback cb) { qtreeview_changeevent_callback = cb; }
+    void setQTreeView_InitStyleOption_Callback(QTreeView_InitStyleOption_Callback cb) { qtreeview_initstyleoption_callback = cb; }
     void setQTreeView_DevType_Callback(QTreeView_DevType_Callback cb) { qtreeview_devtype_callback = cb; }
     void setQTreeView_SetVisible_Callback(QTreeView_SetVisible_Callback cb) { qtreeview_setvisible_callback = cb; }
     void setQTreeView_HeightForWidth_Callback(QTreeView_HeightForWidth_Callback cb) { qtreeview_heightforwidth_callback = cb; }
@@ -646,10 +636,6 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_DrawTree_Callback(QTreeView_DrawTree_Callback cb) { qtreeview_drawtree_callback = cb; }
     void setQTreeView_IndexRowSizeHint_Callback(QTreeView_IndexRowSizeHint_Callback cb) { qtreeview_indexrowsizehint_callback = cb; }
     void setQTreeView_RowHeight_Callback(QTreeView_RowHeight_Callback cb) { qtreeview_rowheight_callback = cb; }
-    void setQTreeView_SetHorizontalStepsPerItem_Callback(QTreeView_SetHorizontalStepsPerItem_Callback cb) { qtreeview_sethorizontalstepsperitem_callback = cb; }
-    void setQTreeView_HorizontalStepsPerItem_Callback(QTreeView_HorizontalStepsPerItem_Callback cb) { qtreeview_horizontalstepsperitem_callback = cb; }
-    void setQTreeView_SetVerticalStepsPerItem_Callback(QTreeView_SetVerticalStepsPerItem_Callback cb) { qtreeview_setverticalstepsperitem_callback = cb; }
-    void setQTreeView_VerticalStepsPerItem_Callback(QTreeView_VerticalStepsPerItem_Callback cb) { qtreeview_verticalstepsperitem_callback = cb; }
     void setQTreeView_State_Callback(QTreeView_State_Callback cb) { qtreeview_state_callback = cb; }
     void setQTreeView_SetState_Callback(QTreeView_SetState_Callback cb) { qtreeview_setstate_callback = cb; }
     void setQTreeView_ScheduleDelayedItemsLayout_Callback(QTreeView_ScheduleDelayedItemsLayout_Callback cb) { qtreeview_scheduledelayeditemslayout_callback = cb; }
@@ -664,7 +650,6 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetViewportMargins_Callback(QTreeView_SetViewportMargins_Callback cb) { qtreeview_setviewportmargins_callback = cb; }
     void setQTreeView_ViewportMargins_Callback(QTreeView_ViewportMargins_Callback cb) { qtreeview_viewportmargins_callback = cb; }
     void setQTreeView_DrawFrame_Callback(QTreeView_DrawFrame_Callback cb) { qtreeview_drawframe_callback = cb; }
-    void setQTreeView_InitStyleOption_Callback(QTreeView_InitStyleOption_Callback cb) { qtreeview_initstyleoption_callback = cb; }
     void setQTreeView_UpdateMicroFocus_Callback(QTreeView_UpdateMicroFocus_Callback cb) { qtreeview_updatemicrofocus_callback = cb; }
     void setQTreeView_Create_Callback(QTreeView_Create_Callback cb) { qtreeview_create_callback = cb; }
     void setQTreeView_Destroy_Callback(QTreeView_Destroy_Callback cb) { qtreeview_destroy_callback = cb; }
@@ -698,6 +683,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetSelection_IsBase(bool value) const { qtreeview_setselection_isbase = value; }
     void setQTreeView_VisualRegionForSelection_IsBase(bool value) const { qtreeview_visualregionforselection_isbase = value; }
     void setQTreeView_SelectedIndexes_IsBase(bool value) const { qtreeview_selectedindexes_isbase = value; }
+    void setQTreeView_ChangeEvent_IsBase(bool value) const { qtreeview_changeevent_isbase = value; }
     void setQTreeView_TimerEvent_IsBase(bool value) const { qtreeview_timerevent_isbase = value; }
     void setQTreeView_PaintEvent_IsBase(bool value) const { qtreeview_paintevent_isbase = value; }
     void setQTreeView_DrawRow_IsBase(bool value) const { qtreeview_drawrow_isbase = value; }
@@ -717,6 +703,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SelectionChanged_IsBase(bool value) const { qtreeview_selectionchanged_isbase = value; }
     void setQTreeView_CurrentChanged_IsBase(bool value) const { qtreeview_currentchanged_isbase = value; }
     void setQTreeView_SizeHintForRow_IsBase(bool value) const { qtreeview_sizehintforrow_isbase = value; }
+    void setQTreeView_ItemDelegateForIndex_IsBase(bool value) const { qtreeview_itemdelegateforindex_isbase = value; }
     void setQTreeView_InputMethodQuery_IsBase(bool value) const { qtreeview_inputmethodquery_isbase = value; }
     void setQTreeView_UpdateEditorData_IsBase(bool value) const { qtreeview_updateeditordata_isbase = value; }
     void setQTreeView_UpdateEditorGeometries_IsBase(bool value) const { qtreeview_updateeditorgeometries_isbase = value; }
@@ -728,7 +715,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_Edit2_IsBase(bool value) const { qtreeview_edit2_isbase = value; }
     void setQTreeView_SelectionCommand_IsBase(bool value) const { qtreeview_selectioncommand_isbase = value; }
     void setQTreeView_StartDrag_IsBase(bool value) const { qtreeview_startdrag_isbase = value; }
-    void setQTreeView_ViewOptions_IsBase(bool value) const { qtreeview_viewoptions_isbase = value; }
+    void setQTreeView_InitViewItemOption_IsBase(bool value) const { qtreeview_initviewitemoption_isbase = value; }
     void setQTreeView_FocusNextPrevChild_IsBase(bool value) const { qtreeview_focusnextprevchild_isbase = value; }
     void setQTreeView_Event_IsBase(bool value) const { qtreeview_event_isbase = value; }
     void setQTreeView_DragEnterEvent_IsBase(bool value) const { qtreeview_dragenterevent_isbase = value; }
@@ -744,7 +731,7 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetupViewport_IsBase(bool value) const { qtreeview_setupviewport_isbase = value; }
     void setQTreeView_WheelEvent_IsBase(bool value) const { qtreeview_wheelevent_isbase = value; }
     void setQTreeView_ContextMenuEvent_IsBase(bool value) const { qtreeview_contextmenuevent_isbase = value; }
-    void setQTreeView_ChangeEvent_IsBase(bool value) const { qtreeview_changeevent_isbase = value; }
+    void setQTreeView_InitStyleOption_IsBase(bool value) const { qtreeview_initstyleoption_isbase = value; }
     void setQTreeView_DevType_IsBase(bool value) const { qtreeview_devtype_isbase = value; }
     void setQTreeView_SetVisible_IsBase(bool value) const { qtreeview_setvisible_isbase = value; }
     void setQTreeView_HeightForWidth_IsBase(bool value) const { qtreeview_heightforwidth_isbase = value; }
@@ -776,10 +763,6 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_DrawTree_IsBase(bool value) const { qtreeview_drawtree_isbase = value; }
     void setQTreeView_IndexRowSizeHint_IsBase(bool value) const { qtreeview_indexrowsizehint_isbase = value; }
     void setQTreeView_RowHeight_IsBase(bool value) const { qtreeview_rowheight_isbase = value; }
-    void setQTreeView_SetHorizontalStepsPerItem_IsBase(bool value) const { qtreeview_sethorizontalstepsperitem_isbase = value; }
-    void setQTreeView_HorizontalStepsPerItem_IsBase(bool value) const { qtreeview_horizontalstepsperitem_isbase = value; }
-    void setQTreeView_SetVerticalStepsPerItem_IsBase(bool value) const { qtreeview_setverticalstepsperitem_isbase = value; }
-    void setQTreeView_VerticalStepsPerItem_IsBase(bool value) const { qtreeview_verticalstepsperitem_isbase = value; }
     void setQTreeView_State_IsBase(bool value) const { qtreeview_state_isbase = value; }
     void setQTreeView_SetState_IsBase(bool value) const { qtreeview_setstate_isbase = value; }
     void setQTreeView_ScheduleDelayedItemsLayout_IsBase(bool value) const { qtreeview_scheduledelayeditemslayout_isbase = value; }
@@ -794,7 +777,6 @@ class VirtualQTreeView : public QTreeView {
     void setQTreeView_SetViewportMargins_IsBase(bool value) const { qtreeview_setviewportmargins_isbase = value; }
     void setQTreeView_ViewportMargins_IsBase(bool value) const { qtreeview_viewportmargins_isbase = value; }
     void setQTreeView_DrawFrame_IsBase(bool value) const { qtreeview_drawframe_isbase = value; }
-    void setQTreeView_InitStyleOption_IsBase(bool value) const { qtreeview_initstyleoption_isbase = value; }
     void setQTreeView_UpdateMicroFocus_IsBase(bool value) const { qtreeview_updatemicrofocus_isbase = value; }
     void setQTreeView_Create_IsBase(bool value) const { qtreeview_create_isbase = value; }
     void setQTreeView_Destroy_IsBase(bool value) const { qtreeview_destroy_isbase = value; }
@@ -926,7 +908,7 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
         if (qtreeview_datachanged_isbase) {
             qtreeview_datachanged_isbase = false;
             QTreeView::dataChanged(topLeft, bottomRight, roles);
@@ -1066,6 +1048,18 @@ class VirtualQTreeView : public QTreeView {
             return qtreeview_selectedindexes_callback();
         } else {
             return QTreeView::selectedIndexes();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void changeEvent(QEvent* event) override {
+        if (qtreeview_changeevent_isbase) {
+            qtreeview_changeevent_isbase = false;
+            QTreeView::changeEvent(event);
+        } else if (qtreeview_changeevent_callback != nullptr) {
+            qtreeview_changeevent_callback(this, event);
+        } else {
+            QTreeView::changeEvent(event);
         }
     }
 
@@ -1298,6 +1292,18 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
+        if (qtreeview_itemdelegateforindex_isbase) {
+            qtreeview_itemdelegateforindex_isbase = false;
+            return QTreeView::itemDelegateForIndex(index);
+        } else if (qtreeview_itemdelegateforindex_callback != nullptr) {
+            return qtreeview_itemdelegateforindex_callback(this, index);
+        } else {
+            return QTreeView::itemDelegateForIndex(index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery query) const override {
         if (qtreeview_inputmethodquery_isbase) {
             qtreeview_inputmethodquery_isbase = false;
@@ -1430,14 +1436,14 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QStyleOptionViewItem viewOptions() const override {
-        if (qtreeview_viewoptions_isbase) {
-            qtreeview_viewoptions_isbase = false;
-            return QTreeView::viewOptions();
-        } else if (qtreeview_viewoptions_callback != nullptr) {
-            return qtreeview_viewoptions_callback();
+    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
+        if (qtreeview_initviewitemoption_isbase) {
+            qtreeview_initviewitemoption_isbase = false;
+            QTreeView::initViewItemOption(option);
+        } else if (qtreeview_initviewitemoption_callback != nullptr) {
+            qtreeview_initviewitemoption_callback(this, option);
         } else {
-            return QTreeView::viewOptions();
+            QTreeView::initViewItemOption(option);
         }
     }
 
@@ -1622,14 +1628,14 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void changeEvent(QEvent* param1) override {
-        if (qtreeview_changeevent_isbase) {
-            qtreeview_changeevent_isbase = false;
-            QTreeView::changeEvent(param1);
-        } else if (qtreeview_changeevent_callback != nullptr) {
-            qtreeview_changeevent_callback(this, param1);
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qtreeview_initstyleoption_isbase) {
+            qtreeview_initstyleoption_isbase = false;
+            QTreeView::initStyleOption(option);
+        } else if (qtreeview_initstyleoption_callback != nullptr) {
+            qtreeview_initstyleoption_callback(this, option);
         } else {
-            QTreeView::changeEvent(param1);
+            QTreeView::initStyleOption(option);
         }
     }
 
@@ -1706,7 +1712,7 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qtreeview_enterevent_isbase) {
             qtreeview_enterevent_isbase = false;
             QTreeView::enterEvent(event);
@@ -1802,7 +1808,7 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qtreeview_nativeevent_isbase) {
             qtreeview_nativeevent_isbase = false;
             return QTreeView::nativeEvent(eventType, message, result);
@@ -2006,54 +2012,6 @@ class VirtualQTreeView : public QTreeView {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setHorizontalStepsPerItem(int steps) {
-        if (qtreeview_sethorizontalstepsperitem_isbase) {
-            qtreeview_sethorizontalstepsperitem_isbase = false;
-            QTreeView::setHorizontalStepsPerItem(steps);
-        } else if (qtreeview_sethorizontalstepsperitem_callback != nullptr) {
-            qtreeview_sethorizontalstepsperitem_callback(this, steps);
-        } else {
-            QTreeView::setHorizontalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int horizontalStepsPerItem() const {
-        if (qtreeview_horizontalstepsperitem_isbase) {
-            qtreeview_horizontalstepsperitem_isbase = false;
-            return QTreeView::horizontalStepsPerItem();
-        } else if (qtreeview_horizontalstepsperitem_callback != nullptr) {
-            return qtreeview_horizontalstepsperitem_callback();
-        } else {
-            return QTreeView::horizontalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void setVerticalStepsPerItem(int steps) {
-        if (qtreeview_setverticalstepsperitem_isbase) {
-            qtreeview_setverticalstepsperitem_isbase = false;
-            QTreeView::setVerticalStepsPerItem(steps);
-        } else if (qtreeview_setverticalstepsperitem_callback != nullptr) {
-            qtreeview_setverticalstepsperitem_callback(this, steps);
-        } else {
-            QTreeView::setVerticalStepsPerItem(steps);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    int verticalStepsPerItem() const {
-        if (qtreeview_verticalstepsperitem_isbase) {
-            qtreeview_verticalstepsperitem_isbase = false;
-            return QTreeView::verticalStepsPerItem();
-        } else if (qtreeview_verticalstepsperitem_callback != nullptr) {
-            return qtreeview_verticalstepsperitem_callback();
-        } else {
-            return QTreeView::verticalStepsPerItem();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     QAbstractItemView::State state() const {
         if (qtreeview_state_isbase) {
             qtreeview_state_isbase = false;
@@ -2218,18 +2176,6 @@ class VirtualQTreeView : public QTreeView {
             qtreeview_drawframe_callback(this, param1);
         } else {
             QTreeView::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qtreeview_initstyleoption_isbase) {
-            qtreeview_initstyleoption_isbase = false;
-            QTreeView::initStyleOption(option);
-        } else if (qtreeview_initstyleoption_callback != nullptr) {
-            qtreeview_initstyleoption_callback(this, option);
-        } else {
-            QTreeView::initStyleOption(option);
         }
     }
 

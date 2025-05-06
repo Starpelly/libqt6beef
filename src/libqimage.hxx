@@ -30,6 +30,8 @@ class VirtualQImage : public QImage {
     using QImage_ConvertToFormatHelper_Callback = QImage (*)(const QImage*, QImage::Format, Qt::ImageConversionFlags);
     using QImage_ConvertToFormatInplace_Callback = bool (*)(QImage*, QImage::Format, Qt::ImageConversionFlags);
     using QImage_SmoothScaled_Callback = QImage (*)(const QImage*, int, int);
+    using QImage_DetachMetadata_Callback = void (*)();
+    using QImage_DetachMetadata1_Callback = void (*)(QImage*, bool);
 
   protected:
     // Instance callback storage
@@ -46,6 +48,8 @@ class VirtualQImage : public QImage {
     QImage_ConvertToFormatHelper_Callback qimage_converttoformathelper_callback = nullptr;
     QImage_ConvertToFormatInplace_Callback qimage_converttoformatinplace_callback = nullptr;
     QImage_SmoothScaled_Callback qimage_smoothscaled_callback = nullptr;
+    QImage_DetachMetadata_Callback qimage_detachmetadata_callback = nullptr;
+    QImage_DetachMetadata1_Callback qimage_detachmetadata1_callback = nullptr;
 
     // Instance base flags
     mutable bool qimage_devtype_isbase = false;
@@ -61,6 +65,8 @@ class VirtualQImage : public QImage {
     mutable bool qimage_converttoformathelper_isbase = false;
     mutable bool qimage_converttoformatinplace_isbase = false;
     mutable bool qimage_smoothscaled_isbase = false;
+    mutable bool qimage_detachmetadata_isbase = false;
+    mutable bool qimage_detachmetadata1_isbase = false;
 
   public:
     VirtualQImage() : QImage(){};
@@ -68,8 +74,8 @@ class VirtualQImage : public QImage {
     VirtualQImage(int width, int height, QImage::Format format) : QImage(width, height, format){};
     VirtualQImage(uchar* data, int width, int height, QImage::Format format) : QImage(data, width, height, format){};
     VirtualQImage(const uchar* data, int width, int height, QImage::Format format) : QImage(data, width, height, format){};
-    VirtualQImage(uchar* data, int width, int height, int bytesPerLine, QImage::Format format) : QImage(data, width, height, bytesPerLine, format){};
-    VirtualQImage(const uchar* data, int width, int height, int bytesPerLine, QImage::Format format) : QImage(data, width, height, bytesPerLine, format){};
+    VirtualQImage(uchar* data, int width, int height, qsizetype bytesPerLine, QImage::Format format) : QImage(data, width, height, bytesPerLine, format){};
+    VirtualQImage(const uchar* data, int width, int height, qsizetype bytesPerLine, QImage::Format format) : QImage(data, width, height, bytesPerLine, format){};
     VirtualQImage(const QString& fileName) : QImage(fileName){};
     VirtualQImage(const QImage& param1) : QImage(param1){};
     VirtualQImage(const QString& fileName, const char* format) : QImage(fileName, format){};
@@ -88,6 +94,8 @@ class VirtualQImage : public QImage {
         qimage_converttoformathelper_callback = nullptr;
         qimage_converttoformatinplace_callback = nullptr;
         qimage_smoothscaled_callback = nullptr;
+        qimage_detachmetadata_callback = nullptr;
+        qimage_detachmetadata1_callback = nullptr;
     }
 
     // Callback setters
@@ -104,6 +112,8 @@ class VirtualQImage : public QImage {
     void setQImage_ConvertToFormatHelper_Callback(QImage_ConvertToFormatHelper_Callback cb) { qimage_converttoformathelper_callback = cb; }
     void setQImage_ConvertToFormatInplace_Callback(QImage_ConvertToFormatInplace_Callback cb) { qimage_converttoformatinplace_callback = cb; }
     void setQImage_SmoothScaled_Callback(QImage_SmoothScaled_Callback cb) { qimage_smoothscaled_callback = cb; }
+    void setQImage_DetachMetadata_Callback(QImage_DetachMetadata_Callback cb) { qimage_detachmetadata_callback = cb; }
+    void setQImage_DetachMetadata1_Callback(QImage_DetachMetadata1_Callback cb) { qimage_detachmetadata1_callback = cb; }
 
     // Base flag setters
     void setQImage_DevType_IsBase(bool value) const { qimage_devtype_isbase = value; }
@@ -119,6 +129,8 @@ class VirtualQImage : public QImage {
     void setQImage_ConvertToFormatHelper_IsBase(bool value) const { qimage_converttoformathelper_isbase = value; }
     void setQImage_ConvertToFormatInplace_IsBase(bool value) const { qimage_converttoformatinplace_isbase = value; }
     void setQImage_SmoothScaled_IsBase(bool value) const { qimage_smoothscaled_isbase = value; }
+    void setQImage_DetachMetadata_IsBase(bool value) const { qimage_detachmetadata_isbase = value; }
+    void setQImage_DetachMetadata1_IsBase(bool value) const { qimage_detachmetadata1_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
@@ -273,6 +285,30 @@ class VirtualQImage : public QImage {
             return qimage_smoothscaled_callback(this, w, h);
         } else {
             return QImage::smoothScaled(w, h);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void detachMetadata() {
+        if (qimage_detachmetadata_isbase) {
+            qimage_detachmetadata_isbase = false;
+            QImage::detachMetadata();
+        } else if (qimage_detachmetadata_callback != nullptr) {
+            qimage_detachmetadata_callback();
+        } else {
+            QImage::detachMetadata();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void detachMetadata(bool invalidateCache) {
+        if (qimage_detachmetadata1_isbase) {
+            qimage_detachmetadata1_isbase = false;
+            QImage::detachMetadata(invalidateCache);
+        } else if (qimage_detachmetadata1_callback != nullptr) {
+            qimage_detachmetadata1_callback(this, invalidateCache);
+        } else {
+            QImage::detachMetadata(invalidateCache);
         }
     }
 };

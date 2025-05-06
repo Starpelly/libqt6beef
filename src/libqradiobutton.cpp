@@ -1,7 +1,9 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QButtonGroup>
 #include <QByteArray>
@@ -13,6 +15,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -35,7 +38,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,6 +45,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRadioButton>
 #include <QRect>
 #include <QRegion>
@@ -130,18 +133,6 @@ libqt_string QRadioButton_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QRadioButton_TrUtf8(const char* s) {
-    QString _ret = QRadioButton::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QRadioButton_Tr2(const char* s, const char* c) {
     QString _ret = QRadioButton::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -156,30 +147,6 @@ libqt_string QRadioButton_Tr2(const char* s, const char* c) {
 
 libqt_string QRadioButton_Tr3(const char* s, const char* c, int n) {
     QString _ret = QRadioButton::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRadioButton_TrUtf82(const char* s, const char* c) {
-    QString _ret = QRadioButton::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QRadioButton_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QRadioButton::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -343,6 +310,32 @@ void QRadioButton_QBaseMouseMoveEvent(QRadioButton* self, QMouseEvent* param1) {
 void QRadioButton_OnMouseMoveEvent(QRadioButton* self, intptr_t slot) {
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
         vqradiobutton->setQRadioButton_MouseMoveEvent_Callback(reinterpret_cast<VirtualQRadioButton::QRadioButton_MouseMoveEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRadioButton_InitStyleOption(const QRadioButton* self, QStyleOptionButton* button) {
+    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
+        vqradiobutton->initStyleOption(button);
+    } else {
+        vqradiobutton->initStyleOption(button);
+    }
+}
+
+// Base class handler implementation
+void QRadioButton_QBaseInitStyleOption(const QRadioButton* self, QStyleOptionButton* button) {
+    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
+        vqradiobutton->setQRadioButton_InitStyleOption_IsBase(true);
+        vqradiobutton->initStyleOption(button);
+    } else {
+        vqradiobutton->initStyleOption(button);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRadioButton_OnInitStyleOption(const QRadioButton* self, intptr_t slot) {
+    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
+        vqradiobutton->setQRadioButton_InitStyleOption_Callback(reinterpret_cast<VirtualQRadioButton::QRadioButton_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -789,7 +782,7 @@ void QRadioButton_OnWheelEvent(QRadioButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QRadioButton_EnterEvent(QRadioButton* self, QEvent* event) {
+void QRadioButton_EnterEvent(QRadioButton* self, QEnterEvent* event) {
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
         vqradiobutton->enterEvent(event);
     } else {
@@ -798,7 +791,7 @@ void QRadioButton_EnterEvent(QRadioButton* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QRadioButton_QBaseEnterEvent(QRadioButton* self, QEvent* event) {
+void QRadioButton_QBaseEnterEvent(QRadioButton* self, QEnterEvent* event) {
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
         vqradiobutton->setQRadioButton_EnterEvent_IsBase(true);
         vqradiobutton->enterEvent(event);
@@ -1153,23 +1146,23 @@ void QRadioButton_OnHideEvent(QRadioButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QRadioButton_NativeEvent(QRadioButton* self, libqt_string eventType, void* message, long* result) {
+bool QRadioButton_NativeEvent(QRadioButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
-        return vqradiobutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqradiobutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqradiobutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqradiobutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QRadioButton_QBaseNativeEvent(QRadioButton* self, libqt_string eventType, void* message, long* result) {
+bool QRadioButton_QBaseNativeEvent(QRadioButton* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
         vqradiobutton->setQRadioButton_NativeEvent_IsBase(true);
-        return vqradiobutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqradiobutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqradiobutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqradiobutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -1489,32 +1482,6 @@ void QRadioButton_QBaseDisconnectNotify(QRadioButton* self, QMetaMethod* signal)
 void QRadioButton_OnDisconnectNotify(QRadioButton* self, intptr_t slot) {
     if (auto* vqradiobutton = dynamic_cast<VirtualQRadioButton*>(self)) {
         vqradiobutton->setQRadioButton_DisconnectNotify_Callback(reinterpret_cast<VirtualQRadioButton::QRadioButton_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QRadioButton_InitStyleOption(const QRadioButton* self, QStyleOptionButton* button) {
-    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
-        vqradiobutton->initStyleOption(button);
-    } else {
-        vqradiobutton->initStyleOption(button);
-    }
-}
-
-// Base class handler implementation
-void QRadioButton_QBaseInitStyleOption(const QRadioButton* self, QStyleOptionButton* button) {
-    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
-        vqradiobutton->setQRadioButton_InitStyleOption_IsBase(true);
-        vqradiobutton->initStyleOption(button);
-    } else {
-        vqradiobutton->initStyleOption(button);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QRadioButton_OnInitStyleOption(const QRadioButton* self, intptr_t slot) {
-    if (auto* vqradiobutton = const_cast<VirtualQRadioButton*>(dynamic_cast<const VirtualQRadioButton*>(self))) {
-        vqradiobutton->setQRadioButton_InitStyleOption_Callback(reinterpret_cast<VirtualQRadioButton::QRadioButton_InitStyleOption_Callback>(slot));
     }
 }
 

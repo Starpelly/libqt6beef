@@ -20,6 +20,9 @@ extern "C" {
 #if defined(WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection)
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
+#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Data)
+typedef QMetaObject::Data QMetaObject__Data;
+#endif
 #if defined(WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__SuperData)
 typedef QMetaObject::SuperData QMetaObject__SuperData;
 #endif
@@ -31,14 +34,19 @@ typedef struct QMetaEnum QMetaEnum;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
+typedef struct QMetaObject__Data QMetaObject__Data;
 typedef struct QMetaObject__SuperData QMetaObject__SuperData;
 typedef struct QMetaProperty QMetaProperty;
+typedef struct QMetaType QMetaType;
+typedef struct QMethodRawArguments QMethodRawArguments;
 typedef struct QObject QObject;
 #endif
 
 #ifdef __cplusplus
-typedef QMetaObject::Call Call;                                           // C++ enum
-typedef QMetaObject::Connection::RestrictedBool ConnectionRestrictedBool; // C++ QFlags
+typedef QMetaObject::Call Call;                                               // C++ enum
+typedef QMetaObject::Connection::RestrictedBool ConnectionRestrictedBool;     // C++ QFlags
+typedef QMetaObject::Data::StaticMetacallFunction DataStaticMetacallFunction; // C++ QFlags
+typedef QMetaObject::SuperData::Getter SuperDataGetter;                       // C++ QFlags
 #else
 typedef int Call; // C ABI enum
 #endif
@@ -73,6 +81,7 @@ bool QMetaObject_Inherits(const QMetaObject* self, QMetaObject* metaObject);
 QObject* QMetaObject_Cast(const QMetaObject* self, QObject* obj);
 QObject* QMetaObject_CastWithObj(const QMetaObject* self, QObject* obj);
 libqt_string QMetaObject_Tr(const QMetaObject* self, const char* s, const char* c);
+QMetaType* QMetaObject_MetaType(const QMetaObject* self);
 int QMetaObject_MethodOffset(const QMetaObject* self);
 int QMetaObject_EnumeratorOffset(const QMetaObject* self);
 int QMetaObject_PropertyOffset(const QMetaObject* self);
@@ -171,6 +180,7 @@ void QMetaObject_Delete(QMetaObject* self);
 QMetaObject__Connection* QMetaObject__Connection_new();
 QMetaObject__Connection* QMetaObject__Connection_new2(QMetaObject__Connection* other);
 void QMetaObject__Connection_OperatorAssign(QMetaObject__Connection* self, QMetaObject__Connection* other);
+void QMetaObject__Connection_Swap(QMetaObject__Connection* self, QMetaObject__Connection* other);
 void QMetaObject__Connection_Delete(QMetaObject__Connection* self);
 
 QMetaObject__SuperData* QMetaObject__SuperData_new();
@@ -180,6 +190,11 @@ QMetaObject* QMetaObject__SuperData_OperatorMinusGreater(const QMetaObject__Supe
 QMetaObject* QMetaObject__SuperData_ToConstQMetaObjectMultiply(const QMetaObject__SuperData* self);
 void QMetaObject__SuperData_OperatorAssign(QMetaObject__SuperData* self, QMetaObject__SuperData* param1);
 void QMetaObject__SuperData_Delete(QMetaObject__SuperData* self);
+
+QMetaObject__Data* QMetaObject__Data_new();
+QMetaObject__Data* QMetaObject__Data_new2(QMetaObject__Data* param1);
+void QMetaObject__Data_OperatorAssign(QMetaObject__Data* self, QMetaObject__Data* param1);
+void QMetaObject__Data_Delete(QMetaObject__Data* self);
 
 #ifdef __cplusplus
 } /* extern C */

@@ -6,8 +6,11 @@
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
+#define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Data
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__SuperData
 #include <QMetaProperty>
+#include <QMetaType>
+#include <QMethodRawArguments>
 #include <QObject>
 #include <QString>
 #include <QByteArray>
@@ -134,6 +137,10 @@ libqt_string QMetaObject_Tr(const QMetaObject* self, const char* s, const char* 
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+QMetaType* QMetaObject_MetaType(const QMetaObject* self) {
+    return new QMetaType(self->metaType());
 }
 
 int QMetaObject_MethodOffset(const QMetaObject* self) {
@@ -544,6 +551,10 @@ void QMetaObject__Connection_OperatorAssign(QMetaObject__Connection* self, QMeta
     self->operator=(*other);
 }
 
+void QMetaObject__Connection_Swap(QMetaObject__Connection* self, QMetaObject__Connection* other) {
+    self->swap(*other);
+}
+
 void QMetaObject__Connection_Delete(QMetaObject__Connection* self) {
     delete self;
 }
@@ -573,5 +584,21 @@ void QMetaObject__SuperData_OperatorAssign(QMetaObject__SuperData* self, QMetaOb
 }
 
 void QMetaObject__SuperData_Delete(QMetaObject__SuperData* self) {
+    delete self;
+}
+
+QMetaObject__Data* QMetaObject__Data_new() {
+    return new QMetaObject::Data();
+}
+
+QMetaObject__Data* QMetaObject__Data_new2(QMetaObject__Data* param1) {
+    return new QMetaObject::Data(*param1);
+}
+
+void QMetaObject__Data_OperatorAssign(QMetaObject__Data* self, QMetaObject__Data* param1) {
+    self->operator=(*param1);
+}
+
+void QMetaObject__Data_Delete(QMetaObject__Data* self) {
     delete self;
 }

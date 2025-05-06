@@ -18,7 +18,6 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
-typedef struct QNetworkConfiguration QNetworkConfiguration;
 typedef struct QNetworkProxy QNetworkProxy;
 typedef struct QNetworkProxyFactory QNetworkProxyFactory;
 typedef struct QNetworkProxyQuery QNetworkProxyQuery;
@@ -44,20 +43,12 @@ QNetworkProxyQuery* QNetworkProxyQuery_new();
 QNetworkProxyQuery* QNetworkProxyQuery_new2(QUrl* requestUrl);
 QNetworkProxyQuery* QNetworkProxyQuery_new3(libqt_string hostname, int port);
 QNetworkProxyQuery* QNetworkProxyQuery_new4(uint16_t bindPort);
-QNetworkProxyQuery* QNetworkProxyQuery_new5(QNetworkConfiguration* networkConfiguration, QUrl* requestUrl);
-QNetworkProxyQuery* QNetworkProxyQuery_new6(QNetworkConfiguration* networkConfiguration, libqt_string hostname, int port);
-QNetworkProxyQuery* QNetworkProxyQuery_new7(QNetworkConfiguration* networkConfiguration, uint16_t bindPort);
-QNetworkProxyQuery* QNetworkProxyQuery_new8(QNetworkProxyQuery* other);
-QNetworkProxyQuery* QNetworkProxyQuery_new9(QUrl* requestUrl, int queryType);
-QNetworkProxyQuery* QNetworkProxyQuery_new10(libqt_string hostname, int port, libqt_string protocolTag);
-QNetworkProxyQuery* QNetworkProxyQuery_new11(libqt_string hostname, int port, libqt_string protocolTag, int queryType);
-QNetworkProxyQuery* QNetworkProxyQuery_new12(uint16_t bindPort, libqt_string protocolTag);
-QNetworkProxyQuery* QNetworkProxyQuery_new13(uint16_t bindPort, libqt_string protocolTag, int queryType);
-QNetworkProxyQuery* QNetworkProxyQuery_new14(QNetworkConfiguration* networkConfiguration, QUrl* requestUrl, int queryType);
-QNetworkProxyQuery* QNetworkProxyQuery_new15(QNetworkConfiguration* networkConfiguration, libqt_string hostname, int port, libqt_string protocolTag);
-QNetworkProxyQuery* QNetworkProxyQuery_new16(QNetworkConfiguration* networkConfiguration, libqt_string hostname, int port, libqt_string protocolTag, int queryType);
-QNetworkProxyQuery* QNetworkProxyQuery_new17(QNetworkConfiguration* networkConfiguration, uint16_t bindPort, libqt_string protocolTag);
-QNetworkProxyQuery* QNetworkProxyQuery_new18(QNetworkConfiguration* networkConfiguration, uint16_t bindPort, libqt_string protocolTag, int queryType);
+QNetworkProxyQuery* QNetworkProxyQuery_new5(QNetworkProxyQuery* other);
+QNetworkProxyQuery* QNetworkProxyQuery_new6(QUrl* requestUrl, int queryType);
+QNetworkProxyQuery* QNetworkProxyQuery_new7(libqt_string hostname, int port, libqt_string protocolTag);
+QNetworkProxyQuery* QNetworkProxyQuery_new8(libqt_string hostname, int port, libqt_string protocolTag, int queryType);
+QNetworkProxyQuery* QNetworkProxyQuery_new9(uint16_t bindPort, libqt_string protocolTag);
+QNetworkProxyQuery* QNetworkProxyQuery_new10(uint16_t bindPort, libqt_string protocolTag, int queryType);
 void QNetworkProxyQuery_OperatorAssign(QNetworkProxyQuery* self, QNetworkProxyQuery* other);
 void QNetworkProxyQuery_Swap(QNetworkProxyQuery* self, QNetworkProxyQuery* other);
 bool QNetworkProxyQuery_OperatorEqual(const QNetworkProxyQuery* self, QNetworkProxyQuery* other);
@@ -74,8 +65,6 @@ libqt_string QNetworkProxyQuery_ProtocolTag(const QNetworkProxyQuery* self);
 void QNetworkProxyQuery_SetProtocolTag(QNetworkProxyQuery* self, libqt_string protocolTag);
 QUrl* QNetworkProxyQuery_Url(const QNetworkProxyQuery* self);
 void QNetworkProxyQuery_SetUrl(QNetworkProxyQuery* self, QUrl* url);
-QNetworkConfiguration* QNetworkProxyQuery_NetworkConfiguration(const QNetworkProxyQuery* self);
-void QNetworkProxyQuery_SetNetworkConfiguration(QNetworkProxyQuery* self, QNetworkConfiguration* networkConfiguration);
 void QNetworkProxyQuery_Delete(QNetworkProxyQuery* self);
 
 QNetworkProxy* QNetworkProxy_new();

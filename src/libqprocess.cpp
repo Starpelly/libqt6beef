@@ -1,13 +1,15 @@
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QIODevice>
+#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QString>
@@ -24,7 +26,11 @@ QProcessEnvironment* QProcessEnvironment_new() {
     return new QProcessEnvironment();
 }
 
-QProcessEnvironment* QProcessEnvironment_new2(QProcessEnvironment* other) {
+QProcessEnvironment* QProcessEnvironment_new2(int param1) {
+    return new QProcessEnvironment(static_cast<QProcessEnvironment::Initialization>(param1));
+}
+
+QProcessEnvironment* QProcessEnvironment_new3(QProcessEnvironment* other) {
     return new QProcessEnvironment(*other);
 }
 
@@ -46,6 +52,10 @@ bool QProcessEnvironment_OperatorNotEqual(const QProcessEnvironment* self, QProc
 
 bool QProcessEnvironment_IsEmpty(const QProcessEnvironment* self) {
     return self->isEmpty();
+}
+
+bool QProcessEnvironment_InheritsFromParent(const QProcessEnvironment* self) {
+    return self->inheritsFromParent();
 }
 
 void QProcessEnvironment_Clear(QProcessEnvironment* self) {
@@ -202,37 +212,18 @@ libqt_string QProcess_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QProcess_TrUtf8(const char* s) {
-    QString _ret = QProcess::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QProcess_Start(QProcess* self, libqt_string program, libqt_list /* of libqt_string */ arguments) {
+void QProcess_Start(QProcess* self, libqt_string program) {
     QString program_QString = QString::fromUtf8(program.data, program.len);
-    QStringList arguments_QList;
-    arguments_QList.reserve(arguments.len);
-    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
-    for (size_t i = 0; i < arguments.len; ++i) {
-        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
-        arguments_QList.push_back(arguments_arr_i_QString);
-    }
-    self->start(program_QString, arguments_QList);
-}
-
-void QProcess_StartWithCommand(QProcess* self, libqt_string command) {
-    QString command_QString = QString::fromUtf8(command.data, command.len);
-    self->start(command_QString);
+    self->start(program_QString);
 }
 
 void QProcess_Start2(QProcess* self) {
     self->start();
+}
+
+void QProcess_StartCommand(QProcess* self, libqt_string command) {
+    QString command_QString = QString::fromUtf8(command.data, command.len);
+    self->startCommand(command_QString);
 }
 
 bool QProcess_StartDetached(QProcess* self) {
@@ -286,14 +277,6 @@ void QProcess_SetArguments(QProcess* self, libqt_list /* of libqt_string */ argu
         arguments_QList.push_back(arguments_arr_i_QString);
     }
     self->setArguments(arguments_QList);
-}
-
-int QProcess_ReadChannelMode(const QProcess* self) {
-    return static_cast<int>(self->readChannelMode());
-}
-
-void QProcess_SetReadChannelMode(QProcess* self, int mode) {
-    self->setReadChannelMode(static_cast<QProcess::ProcessChannelMode>(mode));
 }
 
 int QProcess_ProcessChannelMode(const QProcess* self) {
@@ -412,15 +395,6 @@ int QProcess_State(const QProcess* self) {
     return static_cast<int>(self->state());
 }
 
-long long QProcess_Pid(const QProcess* self) {
-#ifdef Q_OS_LINUX
-    return static_cast<long long>(self->pid());
-#else
-    long long _ret_invalidOS;
-    return _ret_invalidOS;
-#endif
-}
-
 long long QProcess_ProcessId(const QProcess* self) {
     return static_cast<long long>(self->processId());
 }
@@ -461,51 +435,14 @@ int QProcess_ExitStatus(const QProcess* self) {
     return static_cast<int>(self->exitStatus());
 }
 
-int QProcess_Execute(libqt_string program, libqt_list /* of libqt_string */ arguments) {
+int QProcess_Execute(libqt_string program) {
     QString program_QString = QString::fromUtf8(program.data, program.len);
-    QStringList arguments_QList;
-    arguments_QList.reserve(arguments.len);
-    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
-    for (size_t i = 0; i < arguments.len; ++i) {
-        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
-        arguments_QList.push_back(arguments_arr_i_QString);
-    }
-    return QProcess::execute(program_QString, arguments_QList);
+    return QProcess::execute(program_QString);
 }
 
-int QProcess_ExecuteWithCommand(libqt_string command) {
-    QString command_QString = QString::fromUtf8(command.data, command.len);
-    return QProcess::execute(command_QString);
-}
-
-bool QProcess_StartDetached2(libqt_string program, libqt_list /* of libqt_string */ arguments, libqt_string workingDirectory) {
+bool QProcess_StartDetachedWithProgram(libqt_string program) {
     QString program_QString = QString::fromUtf8(program.data, program.len);
-    QStringList arguments_QList;
-    arguments_QList.reserve(arguments.len);
-    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
-    for (size_t i = 0; i < arguments.len; ++i) {
-        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
-        arguments_QList.push_back(arguments_arr_i_QString);
-    }
-    QString workingDirectory_QString = QString::fromUtf8(workingDirectory.data, workingDirectory.len);
-    return QProcess::startDetached(program_QString, arguments_QList, workingDirectory_QString);
-}
-
-bool QProcess_StartDetached3(libqt_string program, libqt_list /* of libqt_string */ arguments) {
-    QString program_QString = QString::fromUtf8(program.data, program.len);
-    QStringList arguments_QList;
-    arguments_QList.reserve(arguments.len);
-    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
-    for (size_t i = 0; i < arguments.len; ++i) {
-        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
-        arguments_QList.push_back(arguments_arr_i_QString);
-    }
-    return QProcess::startDetached(program_QString, arguments_QList);
-}
-
-bool QProcess_StartDetachedWithCommand(libqt_string command) {
-    QString command_QString = QString::fromUtf8(command.data, command.len);
-    return QProcess::startDetached(command_QString);
+    return QProcess::startDetached(program_QString);
 }
 
 libqt_list /* of libqt_string */ QProcess_SystemEnvironment() {
@@ -561,31 +498,6 @@ void QProcess_Connect_Finished(QProcess* self, intptr_t slot) {
     });
 }
 
-void QProcess_Finished2(QProcess* self, int exitCode, int exitStatus) {
-    self->finished(static_cast<int>(exitCode), static_cast<QProcess::ExitStatus>(exitStatus));
-}
-
-void QProcess_Connect_Finished2(QProcess* self, intptr_t slot) {
-    void (*slotFunc)(QProcess*, int, int) = reinterpret_cast<void (*)(QProcess*, int, int)>(slot);
-    QProcess::connect(self, &QProcess::finished, [self, slotFunc](int exitCode, QProcess::ExitStatus exitStatus) {
-        int sigval1 = exitCode;
-        int sigval2 = static_cast<int>(exitStatus);
-        slotFunc(self, sigval1, sigval2);
-    });
-}
-
-void QProcess_ErrorWithErrorVal(QProcess* self, int errorVal) {
-    self->error(static_cast<QProcess::ProcessError>(errorVal));
-}
-
-void QProcess_Connect_ErrorWithErrorVal(QProcess* self, intptr_t slot) {
-    void (*slotFunc)(QProcess*, int) = reinterpret_cast<void (*)(QProcess*, int)>(slot);
-    QProcess::connect(self, &QProcess::error, [self, slotFunc](QProcess::ProcessError errorVal) {
-        int sigval1 = static_cast<int>(errorVal);
-        slotFunc(self, sigval1);
-    });
-}
-
 void QProcess_ErrorOccurred(QProcess* self, int errorVal) {
     self->errorOccurred(static_cast<QProcess::ProcessError>(errorVal));
 }
@@ -622,28 +534,16 @@ libqt_string QProcess_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QProcess_TrUtf82(const char* s, const char* c) {
-    QString _ret = QProcess::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QProcess_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QProcess::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
+void QProcess_Start22(QProcess* self, libqt_string program, libqt_list /* of libqt_string */ arguments) {
+    QString program_QString = QString::fromUtf8(program.data, program.len);
+    QStringList arguments_QList;
+    arguments_QList.reserve(arguments.len);
+    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
+    for (size_t i = 0; i < arguments.len; ++i) {
+        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
+        arguments_QList.push_back(arguments_arr_i_QString);
+    }
+    self->start(program_QString, arguments_QList);
 }
 
 void QProcess_Start3(QProcess* self, libqt_string program, libqt_list /* of libqt_string */ arguments, int mode) {
@@ -655,16 +555,16 @@ void QProcess_Start3(QProcess* self, libqt_string program, libqt_list /* of libq
         QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
         arguments_QList.push_back(arguments_arr_i_QString);
     }
-    self->start(program_QString, arguments_QList, static_cast<QIODevice::OpenMode>(mode));
-}
-
-void QProcess_Start22(QProcess* self, libqt_string command, int mode) {
-    QString command_QString = QString::fromUtf8(command.data, command.len);
-    self->start(command_QString, static_cast<QIODevice::OpenMode>(mode));
+    self->start(program_QString, arguments_QList, static_cast<QIODeviceBase::OpenMode>(mode));
 }
 
 void QProcess_Start1(QProcess* self, int mode) {
-    self->start(static_cast<QIODevice::OpenMode>(mode));
+    self->start(static_cast<QIODeviceBase::OpenMode>(mode));
+}
+
+void QProcess_StartCommand2(QProcess* self, libqt_string command, int mode) {
+    QString command_QString = QString::fromUtf8(command.data, command.len);
+    self->startCommand(command_QString, static_cast<QIODeviceBase::OpenMode>(mode));
 }
 
 bool QProcess_StartDetached1(QProcess* self, long long* pid) {
@@ -673,12 +573,12 @@ bool QProcess_StartDetached1(QProcess* self, long long* pid) {
 
 void QProcess_SetStandardOutputFile2(QProcess* self, libqt_string fileName, int mode) {
     QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
-    self->setStandardOutputFile(fileName_QString, static_cast<QIODevice::OpenMode>(mode));
+    self->setStandardOutputFile(fileName_QString, static_cast<QIODeviceBase::OpenMode>(mode));
 }
 
 void QProcess_SetStandardErrorFile2(QProcess* self, libqt_string fileName, int mode) {
     QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
-    self->setStandardErrorFile(fileName_QString, static_cast<QIODevice::OpenMode>(mode));
+    self->setStandardErrorFile(fileName_QString, static_cast<QIODeviceBase::OpenMode>(mode));
 }
 
 bool QProcess_WaitForStarted1(QProcess* self, int msecs) {
@@ -687,6 +587,43 @@ bool QProcess_WaitForStarted1(QProcess* self, int msecs) {
 
 bool QProcess_WaitForFinished1(QProcess* self, int msecs) {
     return self->waitForFinished(static_cast<int>(msecs));
+}
+
+int QProcess_Execute2(libqt_string program, libqt_list /* of libqt_string */ arguments) {
+    QString program_QString = QString::fromUtf8(program.data, program.len);
+    QStringList arguments_QList;
+    arguments_QList.reserve(arguments.len);
+    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
+    for (size_t i = 0; i < arguments.len; ++i) {
+        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
+        arguments_QList.push_back(arguments_arr_i_QString);
+    }
+    return QProcess::execute(program_QString, arguments_QList);
+}
+
+bool QProcess_StartDetached2(libqt_string program, libqt_list /* of libqt_string */ arguments) {
+    QString program_QString = QString::fromUtf8(program.data, program.len);
+    QStringList arguments_QList;
+    arguments_QList.reserve(arguments.len);
+    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
+    for (size_t i = 0; i < arguments.len; ++i) {
+        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
+        arguments_QList.push_back(arguments_arr_i_QString);
+    }
+    return QProcess::startDetached(program_QString, arguments_QList);
+}
+
+bool QProcess_StartDetached3(libqt_string program, libqt_list /* of libqt_string */ arguments, libqt_string workingDirectory) {
+    QString program_QString = QString::fromUtf8(program.data, program.len);
+    QStringList arguments_QList;
+    arguments_QList.reserve(arguments.len);
+    libqt_string* arguments_arr = static_cast<libqt_string*>(arguments.data);
+    for (size_t i = 0; i < arguments.len; ++i) {
+        QString arguments_arr_i_QString = QString::fromUtf8(arguments_arr[i].data, arguments_arr[i].len);
+        arguments_QList.push_back(arguments_arr_i_QString);
+    }
+    QString workingDirectory_QString = QString::fromUtf8(workingDirectory.data, workingDirectory.len);
+    return QProcess::startDetached(program_QString, arguments_QList, workingDirectory_QString);
 }
 
 bool QProcess_StartDetached4(libqt_string program, libqt_list /* of libqt_string */ arguments, libqt_string workingDirectory, long long* pid) {
@@ -702,12 +639,25 @@ bool QProcess_StartDetached4(libqt_string program, libqt_list /* of libqt_string
     return QProcess::startDetached(program_QString, arguments_QList, workingDirectory_QString, static_cast<qint64*>(pid));
 }
 
+void QProcess_Finished2(QProcess* self, int exitCode, int exitStatus) {
+    self->finished(static_cast<int>(exitCode), static_cast<QProcess::ExitStatus>(exitStatus));
+}
+
+void QProcess_Connect_Finished2(QProcess* self, intptr_t slot) {
+    void (*slotFunc)(QProcess*, int, int) = reinterpret_cast<void (*)(QProcess*, int, int)>(slot);
+    QProcess::connect(self, &QProcess::finished, [self, slotFunc](int exitCode, QProcess::ExitStatus exitStatus) {
+        int sigval1 = exitCode;
+        int sigval2 = static_cast<int>(exitStatus);
+        slotFunc(self, sigval1, sigval2);
+    });
+}
+
 // Derived class handler implementation
 bool QProcess_Open(QProcess* self, int mode) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
-        return vqprocess->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqprocess->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqprocess->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqprocess->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -715,9 +665,9 @@ bool QProcess_Open(QProcess* self, int mode) {
 bool QProcess_QBaseOpen(QProcess* self, int mode) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         vqprocess->setQProcess_Open_IsBase(true);
-        return vqprocess->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqprocess->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqprocess->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqprocess->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -781,32 +731,6 @@ void QProcess_OnWaitForBytesWritten(QProcess* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-long long QProcess_BytesAvailable(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        return static_cast<long long>(vqprocess->bytesAvailable());
-    } else {
-        return static_cast<long long>(vqprocess->bytesAvailable());
-    }
-}
-
-// Base class handler implementation
-long long QProcess_QBaseBytesAvailable(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_BytesAvailable_IsBase(true);
-        return static_cast<long long>(vqprocess->bytesAvailable());
-    } else {
-        return static_cast<long long>(vqprocess->bytesAvailable());
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QProcess_OnBytesAvailable(const QProcess* self, intptr_t slot) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_BytesAvailable_Callback(reinterpret_cast<VirtualQProcess::QProcess_BytesAvailable_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 long long QProcess_BytesToWrite(const QProcess* self) {
     if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
         return static_cast<long long>(vqprocess->bytesToWrite());
@@ -859,32 +783,6 @@ void QProcess_OnIsSequential(const QProcess* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QProcess_CanReadLine(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        return vqprocess->canReadLine();
-    } else {
-        return vqprocess->canReadLine();
-    }
-}
-
-// Base class handler implementation
-bool QProcess_QBaseCanReadLine(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_CanReadLine_IsBase(true);
-        return vqprocess->canReadLine();
-    } else {
-        return vqprocess->canReadLine();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QProcess_OnCanReadLine(const QProcess* self, intptr_t slot) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_CanReadLine_Callback(reinterpret_cast<VirtualQProcess::QProcess_CanReadLine_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QProcess_Close(QProcess* self) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         vqprocess->close();
@@ -907,58 +805,6 @@ void QProcess_QBaseClose(QProcess* self) {
 void QProcess_OnClose(QProcess* self, intptr_t slot) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         vqprocess->setQProcess_Close_Callback(reinterpret_cast<VirtualQProcess::QProcess_Close_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QProcess_AtEnd(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        return vqprocess->atEnd();
-    } else {
-        return vqprocess->atEnd();
-    }
-}
-
-// Base class handler implementation
-bool QProcess_QBaseAtEnd(const QProcess* self) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_AtEnd_IsBase(true);
-        return vqprocess->atEnd();
-    } else {
-        return vqprocess->atEnd();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QProcess_OnAtEnd(const QProcess* self, intptr_t slot) {
-    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
-        vqprocess->setQProcess_AtEnd_Callback(reinterpret_cast<VirtualQProcess::QProcess_AtEnd_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QProcess_SetupChildProcess(QProcess* self) {
-    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
-        vqprocess->setupChildProcess();
-    } else {
-        vqprocess->setupChildProcess();
-    }
-}
-
-// Base class handler implementation
-void QProcess_QBaseSetupChildProcess(QProcess* self) {
-    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
-        vqprocess->setQProcess_SetupChildProcess_IsBase(true);
-        vqprocess->setupChildProcess();
-    } else {
-        vqprocess->setupChildProcess();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QProcess_OnSetupChildProcess(QProcess* self, intptr_t slot) {
-    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
-        vqprocess->setQProcess_SetupChildProcess_Callback(reinterpret_cast<VirtualQProcess::QProcess_SetupChildProcess_Callback>(slot));
     }
 }
 
@@ -1093,6 +939,32 @@ void QProcess_OnSeek(QProcess* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QProcess_AtEnd(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        return vqprocess->atEnd();
+    } else {
+        return vqprocess->atEnd();
+    }
+}
+
+// Base class handler implementation
+bool QProcess_QBaseAtEnd(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_AtEnd_IsBase(true);
+        return vqprocess->atEnd();
+    } else {
+        return vqprocess->atEnd();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QProcess_OnAtEnd(const QProcess* self, intptr_t slot) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_AtEnd_Callback(reinterpret_cast<VirtualQProcess::QProcess_AtEnd_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QProcess_Reset(QProcess* self) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         return vqprocess->reset();
@@ -1119,6 +991,58 @@ void QProcess_OnReset(QProcess* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+long long QProcess_BytesAvailable(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        return static_cast<long long>(vqprocess->bytesAvailable());
+    } else {
+        return static_cast<long long>(vqprocess->bytesAvailable());
+    }
+}
+
+// Base class handler implementation
+long long QProcess_QBaseBytesAvailable(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_BytesAvailable_IsBase(true);
+        return static_cast<long long>(vqprocess->bytesAvailable());
+    } else {
+        return static_cast<long long>(vqprocess->bytesAvailable());
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QProcess_OnBytesAvailable(const QProcess* self, intptr_t slot) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_BytesAvailable_Callback(reinterpret_cast<VirtualQProcess::QProcess_BytesAvailable_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QProcess_CanReadLine(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        return vqprocess->canReadLine();
+    } else {
+        return vqprocess->canReadLine();
+    }
+}
+
+// Base class handler implementation
+bool QProcess_QBaseCanReadLine(const QProcess* self) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_CanReadLine_IsBase(true);
+        return vqprocess->canReadLine();
+    } else {
+        return vqprocess->canReadLine();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QProcess_OnCanReadLine(const QProcess* self, intptr_t slot) {
+    if (auto* vqprocess = const_cast<VirtualQProcess*>(dynamic_cast<const VirtualQProcess*>(self))) {
+        vqprocess->setQProcess_CanReadLine_Callback(reinterpret_cast<VirtualQProcess::QProcess_CanReadLine_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 long long QProcess_ReadLineData(QProcess* self, char* data, long long maxlen) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         return static_cast<long long>(vqprocess->readLineData(data, static_cast<qint64>(maxlen)));
@@ -1141,6 +1065,32 @@ long long QProcess_QBaseReadLineData(QProcess* self, char* data, long long maxle
 void QProcess_OnReadLineData(QProcess* self, intptr_t slot) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         vqprocess->setQProcess_ReadLineData_Callback(reinterpret_cast<VirtualQProcess::QProcess_ReadLineData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+long long QProcess_SkipData(QProcess* self, long long maxSize) {
+    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
+        return static_cast<long long>(vqprocess->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqprocess->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QProcess_QBaseSkipData(QProcess* self, long long maxSize) {
+    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
+        vqprocess->setQProcess_SkipData_IsBase(true);
+        return static_cast<long long>(vqprocess->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqprocess->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QProcess_OnSkipData(QProcess* self, intptr_t slot) {
+    if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
+        vqprocess->setQProcess_SkipData_Callback(reinterpret_cast<VirtualQProcess::QProcess_SkipData_Callback>(slot));
     }
 }
 
@@ -1355,9 +1305,9 @@ void QProcess_OnSetProcessState(QProcess* self, intptr_t slot) {
 // Derived class handler implementation
 void QProcess_SetOpenMode(QProcess* self, int openMode) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
-        vqprocess->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqprocess->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqprocess->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqprocess->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -1365,9 +1315,9 @@ void QProcess_SetOpenMode(QProcess* self, int openMode) {
 void QProcess_QBaseSetOpenMode(QProcess* self, int openMode) {
     if (auto* vqprocess = dynamic_cast<VirtualQProcess*>(self)) {
         vqprocess->setQProcess_SetOpenMode_IsBase(true);
-        vqprocess->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqprocess->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqprocess->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqprocess->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 

@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -12,6 +14,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QRect>
@@ -135,18 +138,6 @@ libqt_string QPrintPreviewDialog_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QPrintPreviewDialog_TrUtf8(const char* s) {
-    QString _ret = QPrintPreviewDialog::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 QPrinter* QPrintPreviewDialog_Printer(QPrintPreviewDialog* self) {
     return self->printer();
 }
@@ -177,30 +168,6 @@ libqt_string QPrintPreviewDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QPrintPreviewDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QPrintPreviewDialog::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPrintPreviewDialog_TrUtf82(const char* s, const char* c) {
-    QString _ret = QPrintPreviewDialog::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QPrintPreviewDialog_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QPrintPreviewDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -914,7 +881,7 @@ void QPrintPreviewDialog_OnFocusOutEvent(QPrintPreviewDialog* self, intptr_t slo
 }
 
 // Derived class handler implementation
-void QPrintPreviewDialog_EnterEvent(QPrintPreviewDialog* self, QEvent* event) {
+void QPrintPreviewDialog_EnterEvent(QPrintPreviewDialog* self, QEnterEvent* event) {
     if (auto* vqprintpreviewdialog = dynamic_cast<VirtualQPrintPreviewDialog*>(self)) {
         vqprintpreviewdialog->enterEvent(event);
     } else {
@@ -923,7 +890,7 @@ void QPrintPreviewDialog_EnterEvent(QPrintPreviewDialog* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QPrintPreviewDialog_QBaseEnterEvent(QPrintPreviewDialog* self, QEvent* event) {
+void QPrintPreviewDialog_QBaseEnterEvent(QPrintPreviewDialog* self, QEnterEvent* event) {
     if (auto* vqprintpreviewdialog = dynamic_cast<VirtualQPrintPreviewDialog*>(self)) {
         vqprintpreviewdialog->setQPrintPreviewDialog_EnterEvent_IsBase(true);
         vqprintpreviewdialog->enterEvent(event);
@@ -1200,23 +1167,23 @@ void QPrintPreviewDialog_OnHideEvent(QPrintPreviewDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QPrintPreviewDialog_NativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, long* result) {
+bool QPrintPreviewDialog_NativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqprintpreviewdialog = dynamic_cast<VirtualQPrintPreviewDialog*>(self)) {
-        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QPrintPreviewDialog_QBaseNativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, long* result) {
+bool QPrintPreviewDialog_QBaseNativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqprintpreviewdialog = dynamic_cast<VirtualQPrintPreviewDialog*>(self)) {
         vqprintpreviewdialog->setQPrintPreviewDialog_NativeEvent_IsBase(true);
-        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqprintpreviewdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

@@ -306,21 +306,7 @@ libqt_string QSslCertificate_ToText(const QSslCertificate* self) {
     return _str;
 }
 
-libqt_list /* of QSslCertificate* */ QSslCertificate_FromPath(libqt_string path, int format, int syntax) {
-    QString path_QString = QString::fromUtf8(path.data, path.len);
-    QList<QSslCertificate> _ret = QSslCertificate::fromPath(path_QString, static_cast<QSsl::EncodingFormat>(format), static_cast<QRegExp::PatternSyntax>(syntax));
-    // Convert QList<> from C++ memory to manually-managed C memory
-    QSslCertificate** _arr = static_cast<QSslCertificate**>(malloc(sizeof(QSslCertificate*) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = new QSslCertificate(_ret[i]);
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-libqt_list /* of QSslCertificate* */ QSslCertificate_FromPathWithPath(libqt_string path) {
+libqt_list /* of QSslCertificate* */ QSslCertificate_FromPath(libqt_string path) {
     QString path_QString = QString::fromUtf8(path.data, path.len);
     QList<QSslCertificate> _ret = QSslCertificate::fromPath(path_QString);
     // Convert QList<> from C++ memory to manually-managed C memory

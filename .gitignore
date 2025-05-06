@@ -3,3 +3,5 @@
 cachedir
 cmd/genbindings/genbindings
 zig-out
+build
+build_win

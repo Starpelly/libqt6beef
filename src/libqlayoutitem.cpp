@@ -318,8 +318,8 @@ void QLayoutItem_OnInvalidate(QLayoutItem* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QLayoutItem_Widget(QLayoutItem* self) {
-    if (auto* vqlayoutitem = dynamic_cast<VirtualQLayoutItem*>(self)) {
+QWidget* QLayoutItem_Widget(const QLayoutItem* self) {
+    if (auto* vqlayoutitem = const_cast<VirtualQLayoutItem*>(dynamic_cast<const VirtualQLayoutItem*>(self))) {
         return vqlayoutitem->widget();
     } else {
         return vqlayoutitem->widget();
@@ -327,8 +327,8 @@ QWidget* QLayoutItem_Widget(QLayoutItem* self) {
 }
 
 // Base class handler implementation
-QWidget* QLayoutItem_QBaseWidget(QLayoutItem* self) {
-    if (auto* vqlayoutitem = dynamic_cast<VirtualQLayoutItem*>(self)) {
+QWidget* QLayoutItem_QBaseWidget(const QLayoutItem* self) {
+    if (auto* vqlayoutitem = const_cast<VirtualQLayoutItem*>(dynamic_cast<const VirtualQLayoutItem*>(self))) {
         vqlayoutitem->setQLayoutItem_Widget_IsBase(true);
         return vqlayoutitem->widget();
     } else {
@@ -337,8 +337,8 @@ QWidget* QLayoutItem_QBaseWidget(QLayoutItem* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QLayoutItem_OnWidget(QLayoutItem* self, intptr_t slot) {
-    if (auto* vqlayoutitem = dynamic_cast<VirtualQLayoutItem*>(self)) {
+void QLayoutItem_OnWidget(const QLayoutItem* self, intptr_t slot) {
+    if (auto* vqlayoutitem = const_cast<VirtualQLayoutItem*>(dynamic_cast<const VirtualQLayoutItem*>(self))) {
         vqlayoutitem->setQLayoutItem_Widget_Callback(reinterpret_cast<VirtualQLayoutItem::QLayoutItem_Widget_Callback>(slot));
     }
 }
@@ -796,8 +796,8 @@ void QSpacerItem_OnInvalidate(QSpacerItem* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QSpacerItem_Widget(QSpacerItem* self) {
-    if (auto* vqspaceritem = dynamic_cast<VirtualQSpacerItem*>(self)) {
+QWidget* QSpacerItem_Widget(const QSpacerItem* self) {
+    if (auto* vqspaceritem = const_cast<VirtualQSpacerItem*>(dynamic_cast<const VirtualQSpacerItem*>(self))) {
         return vqspaceritem->widget();
     } else {
         return vqspaceritem->widget();
@@ -805,8 +805,8 @@ QWidget* QSpacerItem_Widget(QSpacerItem* self) {
 }
 
 // Base class handler implementation
-QWidget* QSpacerItem_QBaseWidget(QSpacerItem* self) {
-    if (auto* vqspaceritem = dynamic_cast<VirtualQSpacerItem*>(self)) {
+QWidget* QSpacerItem_QBaseWidget(const QSpacerItem* self) {
+    if (auto* vqspaceritem = const_cast<VirtualQSpacerItem*>(dynamic_cast<const VirtualQSpacerItem*>(self))) {
         vqspaceritem->setQSpacerItem_Widget_IsBase(true);
         return vqspaceritem->widget();
     } else {
@@ -815,8 +815,8 @@ QWidget* QSpacerItem_QBaseWidget(QSpacerItem* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QSpacerItem_OnWidget(QSpacerItem* self, intptr_t slot) {
-    if (auto* vqspaceritem = dynamic_cast<VirtualQSpacerItem*>(self)) {
+void QSpacerItem_OnWidget(const QSpacerItem* self, intptr_t slot) {
+    if (auto* vqspaceritem = const_cast<VirtualQSpacerItem*>(dynamic_cast<const VirtualQSpacerItem*>(self))) {
         vqspaceritem->setQSpacerItem_Widget_Callback(reinterpret_cast<VirtualQSpacerItem::QSpacerItem_Widget_Callback>(slot));
     }
 }
@@ -1064,8 +1064,8 @@ void QWidgetItem_OnGeometry(const QWidgetItem* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QWidgetItem_Widget(QWidgetItem* self) {
-    if (auto* vqwidgetitem = dynamic_cast<VirtualQWidgetItem*>(self)) {
+QWidget* QWidgetItem_Widget(const QWidgetItem* self) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
         return vqwidgetitem->widget();
     } else {
         return vqwidgetitem->widget();
@@ -1073,8 +1073,8 @@ QWidget* QWidgetItem_Widget(QWidgetItem* self) {
 }
 
 // Base class handler implementation
-QWidget* QWidgetItem_QBaseWidget(QWidgetItem* self) {
-    if (auto* vqwidgetitem = dynamic_cast<VirtualQWidgetItem*>(self)) {
+QWidget* QWidgetItem_QBaseWidget(const QWidgetItem* self) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
         vqwidgetitem->setQWidgetItem_Widget_IsBase(true);
         return vqwidgetitem->widget();
     } else {
@@ -1083,8 +1083,8 @@ QWidget* QWidgetItem_QBaseWidget(QWidgetItem* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QWidgetItem_OnWidget(QWidgetItem* self, intptr_t slot) {
-    if (auto* vqwidgetitem = dynamic_cast<VirtualQWidgetItem*>(self)) {
+void QWidgetItem_OnWidget(const QWidgetItem* self, intptr_t slot) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
         vqwidgetitem->setQWidgetItem_Widget_Callback(reinterpret_cast<VirtualQWidgetItem::QWidgetItem_Widget_Callback>(slot));
     }
 }
@@ -1142,32 +1142,6 @@ void QWidgetItem_OnHeightForWidth(const QWidgetItem* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-int QWidgetItem_ControlTypes(const QWidgetItem* self) {
-    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
-        return static_cast<int>(vqwidgetitem->controlTypes());
-    } else {
-        return static_cast<int>(vqwidgetitem->controlTypes());
-    }
-}
-
-// Base class handler implementation
-int QWidgetItem_QBaseControlTypes(const QWidgetItem* self) {
-    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
-        vqwidgetitem->setQWidgetItem_ControlTypes_IsBase(true);
-        return static_cast<int>(vqwidgetitem->controlTypes());
-    } else {
-        return static_cast<int>(vqwidgetitem->controlTypes());
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWidgetItem_OnControlTypes(const QWidgetItem* self, intptr_t slot) {
-    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
-        vqwidgetitem->setQWidgetItem_ControlTypes_Callback(reinterpret_cast<VirtualQWidgetItem::QWidgetItem_ControlTypes_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QWidgetItem_MinimumHeightForWidth(const QWidgetItem* self, int param1) {
     if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
         return vqwidgetitem->minimumHeightForWidth(static_cast<int>(param1));
@@ -1190,6 +1164,32 @@ int QWidgetItem_QBaseMinimumHeightForWidth(const QWidgetItem* self, int param1) 
 void QWidgetItem_OnMinimumHeightForWidth(const QWidgetItem* self, intptr_t slot) {
     if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
         vqwidgetitem->setQWidgetItem_MinimumHeightForWidth_Callback(reinterpret_cast<VirtualQWidgetItem::QWidgetItem_MinimumHeightForWidth_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QWidgetItem_ControlTypes(const QWidgetItem* self) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
+        return static_cast<int>(vqwidgetitem->controlTypes());
+    } else {
+        return static_cast<int>(vqwidgetitem->controlTypes());
+    }
+}
+
+// Base class handler implementation
+int QWidgetItem_QBaseControlTypes(const QWidgetItem* self) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
+        vqwidgetitem->setQWidgetItem_ControlTypes_IsBase(true);
+        return static_cast<int>(vqwidgetitem->controlTypes());
+    } else {
+        return static_cast<int>(vqwidgetitem->controlTypes());
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QWidgetItem_OnControlTypes(const QWidgetItem* self, intptr_t slot) {
+    if (auto* vqwidgetitem = const_cast<VirtualQWidgetItem*>(dynamic_cast<const VirtualQWidgetItem*>(self))) {
+        vqwidgetitem->setQWidgetItem_ControlTypes_Callback(reinterpret_cast<VirtualQWidgetItem::QWidgetItem_ControlTypes_Callback>(slot));
     }
 }
 
@@ -1488,8 +1488,8 @@ void QWidgetItemV2_OnGeometry(const QWidgetItemV2* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QWidgetItemV2_Widget(QWidgetItemV2* self) {
-    if (auto* vqwidgetitemv2 = dynamic_cast<VirtualQWidgetItemV2*>(self)) {
+QWidget* QWidgetItemV2_Widget(const QWidgetItemV2* self) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
         return vqwidgetitemv2->widget();
     } else {
         return vqwidgetitemv2->widget();
@@ -1497,8 +1497,8 @@ QWidget* QWidgetItemV2_Widget(QWidgetItemV2* self) {
 }
 
 // Base class handler implementation
-QWidget* QWidgetItemV2_QBaseWidget(QWidgetItemV2* self) {
-    if (auto* vqwidgetitemv2 = dynamic_cast<VirtualQWidgetItemV2*>(self)) {
+QWidget* QWidgetItemV2_QBaseWidget(const QWidgetItemV2* self) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
         vqwidgetitemv2->setQWidgetItemV2_Widget_IsBase(true);
         return vqwidgetitemv2->widget();
     } else {
@@ -1507,8 +1507,8 @@ QWidget* QWidgetItemV2_QBaseWidget(QWidgetItemV2* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QWidgetItemV2_OnWidget(QWidgetItemV2* self, intptr_t slot) {
-    if (auto* vqwidgetitemv2 = dynamic_cast<VirtualQWidgetItemV2*>(self)) {
+void QWidgetItemV2_OnWidget(const QWidgetItemV2* self, intptr_t slot) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
         vqwidgetitemv2->setQWidgetItemV2_Widget_Callback(reinterpret_cast<VirtualQWidgetItemV2::QWidgetItemV2_Widget_Callback>(slot));
     }
 }
@@ -1540,32 +1540,6 @@ void QWidgetItemV2_OnHasHeightForWidth(const QWidgetItemV2* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-int QWidgetItemV2_ControlTypes(const QWidgetItemV2* self) {
-    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
-        return static_cast<int>(vqwidgetitemv2->controlTypes());
-    } else {
-        return static_cast<int>(vqwidgetitemv2->controlTypes());
-    }
-}
-
-// Base class handler implementation
-int QWidgetItemV2_QBaseControlTypes(const QWidgetItemV2* self) {
-    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
-        vqwidgetitemv2->setQWidgetItemV2_ControlTypes_IsBase(true);
-        return static_cast<int>(vqwidgetitemv2->controlTypes());
-    } else {
-        return static_cast<int>(vqwidgetitemv2->controlTypes());
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWidgetItemV2_OnControlTypes(const QWidgetItemV2* self, intptr_t slot) {
-    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
-        vqwidgetitemv2->setQWidgetItemV2_ControlTypes_Callback(reinterpret_cast<VirtualQWidgetItemV2::QWidgetItemV2_ControlTypes_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QWidgetItemV2_MinimumHeightForWidth(const QWidgetItemV2* self, int param1) {
     if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
         return vqwidgetitemv2->minimumHeightForWidth(static_cast<int>(param1));
@@ -1588,6 +1562,32 @@ int QWidgetItemV2_QBaseMinimumHeightForWidth(const QWidgetItemV2* self, int para
 void QWidgetItemV2_OnMinimumHeightForWidth(const QWidgetItemV2* self, intptr_t slot) {
     if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
         vqwidgetitemv2->setQWidgetItemV2_MinimumHeightForWidth_Callback(reinterpret_cast<VirtualQWidgetItemV2::QWidgetItemV2_MinimumHeightForWidth_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QWidgetItemV2_ControlTypes(const QWidgetItemV2* self) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
+        return static_cast<int>(vqwidgetitemv2->controlTypes());
+    } else {
+        return static_cast<int>(vqwidgetitemv2->controlTypes());
+    }
+}
+
+// Base class handler implementation
+int QWidgetItemV2_QBaseControlTypes(const QWidgetItemV2* self) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
+        vqwidgetitemv2->setQWidgetItemV2_ControlTypes_IsBase(true);
+        return static_cast<int>(vqwidgetitemv2->controlTypes());
+    } else {
+        return static_cast<int>(vqwidgetitemv2->controlTypes());
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QWidgetItemV2_OnControlTypes(const QWidgetItemV2* self, intptr_t slot) {
+    if (auto* vqwidgetitemv2 = const_cast<VirtualQWidgetItemV2*>(dynamic_cast<const VirtualQWidgetItemV2*>(self))) {
+        vqwidgetitemv2->setQWidgetItemV2_ControlTypes_Callback(reinterpret_cast<VirtualQWidgetItemV2::QWidgetItemV2_ControlTypes_Callback>(slot));
     }
 }
 

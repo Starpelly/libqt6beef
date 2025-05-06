@@ -24,28 +24,24 @@ QHostAddress* QHostAddress_new2(unsigned int ip4Addr) {
     return new QHostAddress(static_cast<quint32>(ip4Addr));
 }
 
-QHostAddress* QHostAddress_new3(unsigned char* ip6Addr) {
-    return new QHostAddress(static_cast<quint8*>(ip6Addr));
-}
-
-QHostAddress* QHostAddress_new4(const unsigned char* ip6Addr) {
+QHostAddress* QHostAddress_new3(const unsigned char* ip6Addr) {
     return new QHostAddress(static_cast<const quint8*>(ip6Addr));
 }
 
-QHostAddress* QHostAddress_new5(QIPv6Address* ip6Addr) {
+QHostAddress* QHostAddress_new4(QIPv6Address* ip6Addr) {
     return new QHostAddress(*ip6Addr);
 }
 
-QHostAddress* QHostAddress_new6(libqt_string address) {
+QHostAddress* QHostAddress_new5(libqt_string address) {
     QString address_QString = QString::fromUtf8(address.data, address.len);
     return new QHostAddress(address_QString);
 }
 
-QHostAddress* QHostAddress_new7(QHostAddress* copyVal) {
+QHostAddress* QHostAddress_new6(QHostAddress* copyVal) {
     return new QHostAddress(*copyVal);
 }
 
-QHostAddress* QHostAddress_new8(int address) {
+QHostAddress* QHostAddress_new7(int address) {
     return new QHostAddress(static_cast<QHostAddress::SpecialAddress>(address));
 }
 
@@ -53,12 +49,7 @@ void QHostAddress_OperatorAssign(QHostAddress* self, QHostAddress* other) {
     self->operator=(*other);
 }
 
-void QHostAddress_OperatorAssignWithAddress(QHostAddress* self, libqt_string address) {
-    QString address_QString = QString::fromUtf8(address.data, address.len);
-    self->operator=(address_QString);
-}
-
-void QHostAddress_OperatorAssign2(QHostAddress* self, int address) {
+void QHostAddress_OperatorAssignWithAddress(QHostAddress* self, int address) {
     self->operator=(static_cast<QHostAddress::SpecialAddress>(address));
 }
 
@@ -70,24 +61,20 @@ void QHostAddress_SetAddress(QHostAddress* self, unsigned int ip4Addr) {
     self->setAddress(static_cast<quint32>(ip4Addr));
 }
 
-void QHostAddress_SetAddressWithIp6Addr(QHostAddress* self, unsigned char* ip6Addr) {
-    self->setAddress(static_cast<quint8*>(ip6Addr));
-}
-
-void QHostAddress_SetAddress2(QHostAddress* self, const unsigned char* ip6Addr) {
+void QHostAddress_SetAddressWithIp6Addr(QHostAddress* self, const unsigned char* ip6Addr) {
     self->setAddress(static_cast<const quint8*>(ip6Addr));
 }
 
-void QHostAddress_SetAddress3(QHostAddress* self, QIPv6Address* ip6Addr) {
+void QHostAddress_SetAddress2(QHostAddress* self, QIPv6Address* ip6Addr) {
     self->setAddress(*ip6Addr);
 }
 
-bool QHostAddress_SetAddress4(QHostAddress* self, libqt_string address) {
+bool QHostAddress_SetAddress3(QHostAddress* self, libqt_string address) {
     QString address_QString = QString::fromUtf8(address.data, address.len);
     return self->setAddress(address_QString);
 }
 
-void QHostAddress_SetAddress5(QHostAddress* self, int address) {
+void QHostAddress_SetAddress4(QHostAddress* self, int address) {
     self->setAddress(static_cast<QHostAddress::SpecialAddress>(address));
 }
 
@@ -97,10 +84,6 @@ int QHostAddress_Protocol(const QHostAddress* self) {
 
 unsigned int QHostAddress_ToIPv4Address(const QHostAddress* self) {
     return static_cast<unsigned int>(self->toIPv4Address());
-}
-
-unsigned int QHostAddress_ToIPv4AddressWithOk(const QHostAddress* self, bool* ok) {
-    return static_cast<unsigned int>(self->toIPv4Address(ok));
 }
 
 QIPv6Address* QHostAddress_ToIPv6Address(const QHostAddress* self) {
@@ -208,6 +191,10 @@ libqt_pair /* tuple of QHostAddress* and int */ QHostAddress_ParseSubnet(libqt_s
     _out.first = static_cast<void*>(_first);
     _out.second = static_cast<void*>(_second);
     return _out;
+}
+
+unsigned int QHostAddress_ToIPv4Address1(const QHostAddress* self, bool* ok) {
+    return static_cast<unsigned int>(self->toIPv4Address(ok));
 }
 
 bool QHostAddress_IsEqual2(const QHostAddress* self, QHostAddress* address, int mode) {

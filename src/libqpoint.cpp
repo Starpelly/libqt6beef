@@ -100,6 +100,10 @@ int QPoint_DotProduct(QPoint* p1, QPoint* p2) {
     return QPoint::dotProduct(*p1, *p2);
 }
 
+QPointF* QPoint_ToPointF(const QPoint* self) {
+    return new QPointF(self->toPointF());
+}
+
 void QPoint_Delete(QPoint* self) {
     delete self;
 }

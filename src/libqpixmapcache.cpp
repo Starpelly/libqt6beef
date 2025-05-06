@@ -32,22 +32,12 @@ void QPixmapCache_SetCacheLimit(int cacheLimit) {
     QPixmapCache::setCacheLimit(static_cast<int>(cacheLimit));
 }
 
-QPixmap* QPixmapCache_Find(libqt_string key) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return QPixmapCache::find(key_QString);
-}
-
-bool QPixmapCache_Find2(libqt_string key, QPixmap* pixmap) {
-    QString key_QString = QString::fromUtf8(key.data, key.len);
-    return QPixmapCache::find(key_QString, *pixmap);
-}
-
-bool QPixmapCache_Find3(libqt_string key, QPixmap* pixmap) {
+bool QPixmapCache_Find(libqt_string key, QPixmap* pixmap) {
     QString key_QString = QString::fromUtf8(key.data, key.len);
     return QPixmapCache::find(key_QString, pixmap);
 }
 
-bool QPixmapCache_Find4(QPixmapCache__Key* key, QPixmap* pixmap) {
+bool QPixmapCache_Find2(QPixmapCache__Key* key, QPixmap* pixmap) {
     return QPixmapCache::find(*key, pixmap);
 }
 

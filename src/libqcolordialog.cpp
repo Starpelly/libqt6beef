@@ -1,6 +1,8 @@
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,6 +16,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,7 +39,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,6 +46,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -127,18 +130,6 @@ libqt_string QColorDialog_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QColorDialog_TrUtf8(const char* s) {
-    QString _ret = QColorDialog::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QColorDialog_SetCurrentColor(QColorDialog* self, QColor* color) {
     self->setCurrentColor(*color);
 }
@@ -169,10 +160,6 @@ int QColorDialog_Options(const QColorDialog* self) {
 
 QColor* QColorDialog_GetColor() {
     return new QColor(QColorDialog::getColor());
-}
-
-unsigned int QColorDialog_GetRgba() {
-    return static_cast<unsigned int>(QColorDialog::getRgba());
 }
 
 int QColorDialog_CustomCount() {
@@ -247,30 +234,6 @@ libqt_string QColorDialog_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QColorDialog_TrUtf82(const char* s, const char* c) {
-    QString _ret = QColorDialog::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QColorDialog_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QColorDialog::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QColorDialog_SetOption2(QColorDialog* self, int option, bool on) {
     self->setOption(static_cast<QColorDialog::ColorDialogOption>(option), on);
 }
@@ -291,18 +254,6 @@ QColor* QColorDialog_GetColor3(QColor* initial, QWidget* parent, libqt_string ti
 QColor* QColorDialog_GetColor4(QColor* initial, QWidget* parent, libqt_string title, int options) {
     QString title_QString = QString::fromUtf8(title.data, title.len);
     return new QColor(QColorDialog::getColor(*initial, parent, title_QString, static_cast<QColorDialog::ColorDialogOptions>(options)));
-}
-
-unsigned int QColorDialog_GetRgba1(unsigned int rgba) {
-    return static_cast<unsigned int>(QColorDialog::getRgba(static_cast<QRgb>(rgba)));
-}
-
-unsigned int QColorDialog_GetRgba2(unsigned int rgba, bool* ok) {
-    return static_cast<unsigned int>(QColorDialog::getRgba(static_cast<QRgb>(rgba), ok));
-}
-
-unsigned int QColorDialog_GetRgba3(unsigned int rgba, bool* ok, QWidget* parent) {
-    return static_cast<unsigned int>(QColorDialog::getRgba(static_cast<QRgb>(rgba), ok, parent));
 }
 
 // Derived class handler implementation
@@ -1034,7 +985,7 @@ void QColorDialog_OnFocusOutEvent(QColorDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QColorDialog_EnterEvent(QColorDialog* self, QEvent* event) {
+void QColorDialog_EnterEvent(QColorDialog* self, QEnterEvent* event) {
     if (auto* vqcolordialog = dynamic_cast<VirtualQColorDialog*>(self)) {
         vqcolordialog->enterEvent(event);
     } else {
@@ -1043,7 +994,7 @@ void QColorDialog_EnterEvent(QColorDialog* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QColorDialog_QBaseEnterEvent(QColorDialog* self, QEvent* event) {
+void QColorDialog_QBaseEnterEvent(QColorDialog* self, QEnterEvent* event) {
     if (auto* vqcolordialog = dynamic_cast<VirtualQColorDialog*>(self)) {
         vqcolordialog->setQColorDialog_EnterEvent_IsBase(true);
         vqcolordialog->enterEvent(event);
@@ -1320,23 +1271,23 @@ void QColorDialog_OnHideEvent(QColorDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QColorDialog_NativeEvent(QColorDialog* self, libqt_string eventType, void* message, long* result) {
+bool QColorDialog_NativeEvent(QColorDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcolordialog = dynamic_cast<VirtualQColorDialog*>(self)) {
-        return vqcolordialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcolordialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqcolordialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcolordialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QColorDialog_QBaseNativeEvent(QColorDialog* self, libqt_string eventType, void* message, long* result) {
+bool QColorDialog_QBaseNativeEvent(QColorDialog* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcolordialog = dynamic_cast<VirtualQColorDialog*>(self)) {
         vqcolordialog->setQColorDialog_NativeEvent_IsBase(true);
-        return vqcolordialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcolordialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqcolordialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqcolordialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

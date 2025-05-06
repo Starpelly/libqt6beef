@@ -23,13 +23,14 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
+typedef struct QAnyStringView QAnyStringView;
+typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QObjectUserData QObjectUserData;
 typedef struct QPauseAnimation QPauseAnimation;
 typedef struct QSequentialAnimationGroup QSequentialAnimationGroup;
 typedef struct QThread QThread;
@@ -45,7 +46,6 @@ int QSequentialAnimationGroup_Metacall(QSequentialAnimationGroup* self, int para
 void QSequentialAnimationGroup_OnMetacall(QSequentialAnimationGroup* self, intptr_t slot);
 int QSequentialAnimationGroup_QBaseMetacall(QSequentialAnimationGroup* self, int param1, int param2, void** param3);
 libqt_string QSequentialAnimationGroup_Tr(const char* s);
-libqt_string QSequentialAnimationGroup_TrUtf8(const char* s);
 QPauseAnimation* QSequentialAnimationGroup_AddPause(QSequentialAnimationGroup* self, int msecs);
 QPauseAnimation* QSequentialAnimationGroup_InsertPause(QSequentialAnimationGroup* self, int index, int msecs);
 QAbstractAnimation* QSequentialAnimationGroup_CurrentAnimation(const QSequentialAnimationGroup* self);
@@ -68,8 +68,6 @@ void QSequentialAnimationGroup_OnUpdateDirection(QSequentialAnimationGroup* self
 void QSequentialAnimationGroup_QBaseUpdateDirection(QSequentialAnimationGroup* self, int direction);
 libqt_string QSequentialAnimationGroup_Tr2(const char* s, const char* c);
 libqt_string QSequentialAnimationGroup_Tr3(const char* s, const char* c, int n);
-libqt_string QSequentialAnimationGroup_TrUtf82(const char* s, const char* c);
-libqt_string QSequentialAnimationGroup_TrUtf83(const char* s, const char* c, int n);
 bool QSequentialAnimationGroup_EventFilter(QSequentialAnimationGroup* self, QObject* watched, QEvent* event);
 void QSequentialAnimationGroup_OnEventFilter(QSequentialAnimationGroup* self, intptr_t slot);
 bool QSequentialAnimationGroup_QBaseEventFilter(QSequentialAnimationGroup* self, QObject* watched, QEvent* event);

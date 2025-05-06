@@ -23,6 +23,10 @@ void QScopedPointerPodDeleter_Cleanup(void* pointer) {
     QScopedPointerPodDeleter::cleanup(pointer);
 }
 
+void QScopedPointerPodDeleter_OperatorCall(const QScopedPointerPodDeleter* self, void* pointer) {
+    self->operator()(pointer);
+}
+
 void QScopedPointerPodDeleter_Delete(QScopedPointerPodDeleter* self) {
     delete self;
 }

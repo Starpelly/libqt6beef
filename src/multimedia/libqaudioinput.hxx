@@ -61,11 +61,9 @@ class VirtualQAudioInput : public QAudioInput {
 
   public:
     VirtualQAudioInput() : QAudioInput(){};
-    VirtualQAudioInput(const QAudioDeviceInfo& audioDeviceInfo) : QAudioInput(audioDeviceInfo){};
-    VirtualQAudioInput(const QAudioFormat& format) : QAudioInput(format){};
-    VirtualQAudioInput(const QAudioFormat& format, QObject* parent) : QAudioInput(format, parent){};
-    VirtualQAudioInput(const QAudioDeviceInfo& audioDeviceInfo, const QAudioFormat& format) : QAudioInput(audioDeviceInfo, format){};
-    VirtualQAudioInput(const QAudioDeviceInfo& audioDeviceInfo, const QAudioFormat& format, QObject* parent) : QAudioInput(audioDeviceInfo, format, parent){};
+    VirtualQAudioInput(const QAudioDevice& deviceInfo) : QAudioInput(deviceInfo){};
+    VirtualQAudioInput(QObject* parent) : QAudioInput(parent){};
+    VirtualQAudioInput(const QAudioDevice& deviceInfo, QObject* parent) : QAudioInput(deviceInfo, parent){};
 
     ~VirtualQAudioInput() {
         qaudioinput_metacall_callback = nullptr;

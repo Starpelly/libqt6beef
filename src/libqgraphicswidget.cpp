@@ -1,4 +1,6 @@
 #include <QAction>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCloseEvent>
@@ -28,12 +30,10 @@
 #include <QKeySequence>
 #include <QList>
 #include <QMarginsF>
-#include <QMatrix>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
@@ -106,18 +106,6 @@ int QGraphicsWidget_QBaseMetacall(QGraphicsWidget* self, int param1, int param2,
 
 libqt_string QGraphicsWidget_Tr(const char* s) {
     QString _ret = QGraphicsWidget::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsWidget_TrUtf8(const char* s) {
-    QString _ret = QGraphicsWidget::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -394,30 +382,6 @@ libqt_string QGraphicsWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsWidget::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsWidget_TrUtf82(const char* s, const char* c) {
-    QString _ret = QGraphicsWidget::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QGraphicsWidget_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QGraphicsWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -2071,6 +2035,32 @@ QVariant* QGraphicsWidget_QBaseExtension(const QGraphicsWidget* self, QVariant* 
 void QGraphicsWidget_OnExtension(const QGraphicsWidget* self, intptr_t slot) {
     if (auto* vqgraphicswidget = const_cast<VirtualQGraphicsWidget*>(dynamic_cast<const VirtualQGraphicsWidget*>(self))) {
         vqgraphicswidget->setQGraphicsWidget_Extension_Callback(reinterpret_cast<VirtualQGraphicsWidget::QGraphicsWidget_Extension_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QGraphicsWidget_IsEmpty(const QGraphicsWidget* self) {
+    if (auto* vqgraphicswidget = const_cast<VirtualQGraphicsWidget*>(dynamic_cast<const VirtualQGraphicsWidget*>(self))) {
+        return vqgraphicswidget->isEmpty();
+    } else {
+        return vqgraphicswidget->isEmpty();
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsWidget_QBaseIsEmpty(const QGraphicsWidget* self) {
+    if (auto* vqgraphicswidget = const_cast<VirtualQGraphicsWidget*>(dynamic_cast<const VirtualQGraphicsWidget*>(self))) {
+        vqgraphicswidget->setQGraphicsWidget_IsEmpty_IsBase(true);
+        return vqgraphicswidget->isEmpty();
+    } else {
+        return vqgraphicswidget->isEmpty();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsWidget_OnIsEmpty(const QGraphicsWidget* self, intptr_t slot) {
+    if (auto* vqgraphicswidget = const_cast<VirtualQGraphicsWidget*>(dynamic_cast<const VirtualQGraphicsWidget*>(self))) {
+        vqgraphicswidget->setQGraphicsWidget_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsWidget::QGraphicsWidget_IsEmpty_Callback>(slot));
     }
 }
 

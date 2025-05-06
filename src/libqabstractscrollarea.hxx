@@ -40,6 +40,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     using QAbstractScrollArea_ScrollContentsBy_Callback = void (*)(QAbstractScrollArea*, int, int);
     using QAbstractScrollArea_ViewportSizeHint_Callback = QSize (*)();
     using QAbstractScrollArea_ChangeEvent_Callback = void (*)(QAbstractScrollArea*, QEvent*);
+    using QAbstractScrollArea_InitStyleOption_Callback = void (*)(const QAbstractScrollArea*, QStyleOptionFrame*);
     using QAbstractScrollArea_DevType_Callback = int (*)();
     using QAbstractScrollArea_SetVisible_Callback = void (*)(QAbstractScrollArea*, bool);
     using QAbstractScrollArea_HeightForWidth_Callback = int (*)(const QAbstractScrollArea*, int);
@@ -48,7 +49,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     using QAbstractScrollArea_KeyReleaseEvent_Callback = void (*)(QAbstractScrollArea*, QKeyEvent*);
     using QAbstractScrollArea_FocusInEvent_Callback = void (*)(QAbstractScrollArea*, QFocusEvent*);
     using QAbstractScrollArea_FocusOutEvent_Callback = void (*)(QAbstractScrollArea*, QFocusEvent*);
-    using QAbstractScrollArea_EnterEvent_Callback = void (*)(QAbstractScrollArea*, QEvent*);
+    using QAbstractScrollArea_EnterEvent_Callback = void (*)(QAbstractScrollArea*, QEnterEvent*);
     using QAbstractScrollArea_LeaveEvent_Callback = void (*)(QAbstractScrollArea*, QEvent*);
     using QAbstractScrollArea_MoveEvent_Callback = void (*)(QAbstractScrollArea*, QMoveEvent*);
     using QAbstractScrollArea_CloseEvent_Callback = void (*)(QAbstractScrollArea*, QCloseEvent*);
@@ -56,7 +57,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     using QAbstractScrollArea_ActionEvent_Callback = void (*)(QAbstractScrollArea*, QActionEvent*);
     using QAbstractScrollArea_ShowEvent_Callback = void (*)(QAbstractScrollArea*, QShowEvent*);
     using QAbstractScrollArea_HideEvent_Callback = void (*)(QAbstractScrollArea*, QHideEvent*);
-    using QAbstractScrollArea_NativeEvent_Callback = bool (*)(QAbstractScrollArea*, const QByteArray&, void*, long*);
+    using QAbstractScrollArea_NativeEvent_Callback = bool (*)(QAbstractScrollArea*, const QByteArray&, void*, qintptr*);
     using QAbstractScrollArea_Metric_Callback = int (*)(const QAbstractScrollArea*, QPaintDevice::PaintDeviceMetric);
     using QAbstractScrollArea_InitPainter_Callback = void (*)(const QAbstractScrollArea*, QPainter*);
     using QAbstractScrollArea_Redirected_Callback = QPaintDevice* (*)(const QAbstractScrollArea*, QPoint*);
@@ -73,7 +74,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     using QAbstractScrollArea_SetViewportMarginsWithMargins_Callback = void (*)(QAbstractScrollArea*, const QMargins&);
     using QAbstractScrollArea_ViewportMargins_Callback = QMargins (*)();
     using QAbstractScrollArea_DrawFrame_Callback = void (*)(QAbstractScrollArea*, QPainter*);
-    using QAbstractScrollArea_InitStyleOption_Callback = void (*)(const QAbstractScrollArea*, QStyleOptionFrame*);
     using QAbstractScrollArea_UpdateMicroFocus_Callback = void (*)();
     using QAbstractScrollArea_Create_Callback = void (*)();
     using QAbstractScrollArea_Destroy_Callback = void (*)();
@@ -109,6 +109,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     QAbstractScrollArea_ScrollContentsBy_Callback qabstractscrollarea_scrollcontentsby_callback = nullptr;
     QAbstractScrollArea_ViewportSizeHint_Callback qabstractscrollarea_viewportsizehint_callback = nullptr;
     QAbstractScrollArea_ChangeEvent_Callback qabstractscrollarea_changeevent_callback = nullptr;
+    QAbstractScrollArea_InitStyleOption_Callback qabstractscrollarea_initstyleoption_callback = nullptr;
     QAbstractScrollArea_DevType_Callback qabstractscrollarea_devtype_callback = nullptr;
     QAbstractScrollArea_SetVisible_Callback qabstractscrollarea_setvisible_callback = nullptr;
     QAbstractScrollArea_HeightForWidth_Callback qabstractscrollarea_heightforwidth_callback = nullptr;
@@ -142,7 +143,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     QAbstractScrollArea_SetViewportMarginsWithMargins_Callback qabstractscrollarea_setviewportmarginswithmargins_callback = nullptr;
     QAbstractScrollArea_ViewportMargins_Callback qabstractscrollarea_viewportmargins_callback = nullptr;
     QAbstractScrollArea_DrawFrame_Callback qabstractscrollarea_drawframe_callback = nullptr;
-    QAbstractScrollArea_InitStyleOption_Callback qabstractscrollarea_initstyleoption_callback = nullptr;
     QAbstractScrollArea_UpdateMicroFocus_Callback qabstractscrollarea_updatemicrofocus_callback = nullptr;
     QAbstractScrollArea_Create_Callback qabstractscrollarea_create_callback = nullptr;
     QAbstractScrollArea_Destroy_Callback qabstractscrollarea_destroy_callback = nullptr;
@@ -177,6 +177,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     mutable bool qabstractscrollarea_scrollcontentsby_isbase = false;
     mutable bool qabstractscrollarea_viewportsizehint_isbase = false;
     mutable bool qabstractscrollarea_changeevent_isbase = false;
+    mutable bool qabstractscrollarea_initstyleoption_isbase = false;
     mutable bool qabstractscrollarea_devtype_isbase = false;
     mutable bool qabstractscrollarea_setvisible_isbase = false;
     mutable bool qabstractscrollarea_heightforwidth_isbase = false;
@@ -210,7 +211,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     mutable bool qabstractscrollarea_setviewportmarginswithmargins_isbase = false;
     mutable bool qabstractscrollarea_viewportmargins_isbase = false;
     mutable bool qabstractscrollarea_drawframe_isbase = false;
-    mutable bool qabstractscrollarea_initstyleoption_isbase = false;
     mutable bool qabstractscrollarea_updatemicrofocus_isbase = false;
     mutable bool qabstractscrollarea_create_isbase = false;
     mutable bool qabstractscrollarea_destroy_isbase = false;
@@ -249,6 +249,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
         qabstractscrollarea_scrollcontentsby_callback = nullptr;
         qabstractscrollarea_viewportsizehint_callback = nullptr;
         qabstractscrollarea_changeevent_callback = nullptr;
+        qabstractscrollarea_initstyleoption_callback = nullptr;
         qabstractscrollarea_devtype_callback = nullptr;
         qabstractscrollarea_setvisible_callback = nullptr;
         qabstractscrollarea_heightforwidth_callback = nullptr;
@@ -282,7 +283,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
         qabstractscrollarea_setviewportmarginswithmargins_callback = nullptr;
         qabstractscrollarea_viewportmargins_callback = nullptr;
         qabstractscrollarea_drawframe_callback = nullptr;
-        qabstractscrollarea_initstyleoption_callback = nullptr;
         qabstractscrollarea_updatemicrofocus_callback = nullptr;
         qabstractscrollarea_create_callback = nullptr;
         qabstractscrollarea_destroy_callback = nullptr;
@@ -318,6 +318,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     void setQAbstractScrollArea_ScrollContentsBy_Callback(QAbstractScrollArea_ScrollContentsBy_Callback cb) { qabstractscrollarea_scrollcontentsby_callback = cb; }
     void setQAbstractScrollArea_ViewportSizeHint_Callback(QAbstractScrollArea_ViewportSizeHint_Callback cb) { qabstractscrollarea_viewportsizehint_callback = cb; }
     void setQAbstractScrollArea_ChangeEvent_Callback(QAbstractScrollArea_ChangeEvent_Callback cb) { qabstractscrollarea_changeevent_callback = cb; }
+    void setQAbstractScrollArea_InitStyleOption_Callback(QAbstractScrollArea_InitStyleOption_Callback cb) { qabstractscrollarea_initstyleoption_callback = cb; }
     void setQAbstractScrollArea_DevType_Callback(QAbstractScrollArea_DevType_Callback cb) { qabstractscrollarea_devtype_callback = cb; }
     void setQAbstractScrollArea_SetVisible_Callback(QAbstractScrollArea_SetVisible_Callback cb) { qabstractscrollarea_setvisible_callback = cb; }
     void setQAbstractScrollArea_HeightForWidth_Callback(QAbstractScrollArea_HeightForWidth_Callback cb) { qabstractscrollarea_heightforwidth_callback = cb; }
@@ -351,7 +352,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     void setQAbstractScrollArea_SetViewportMarginsWithMargins_Callback(QAbstractScrollArea_SetViewportMarginsWithMargins_Callback cb) { qabstractscrollarea_setviewportmarginswithmargins_callback = cb; }
     void setQAbstractScrollArea_ViewportMargins_Callback(QAbstractScrollArea_ViewportMargins_Callback cb) { qabstractscrollarea_viewportmargins_callback = cb; }
     void setQAbstractScrollArea_DrawFrame_Callback(QAbstractScrollArea_DrawFrame_Callback cb) { qabstractscrollarea_drawframe_callback = cb; }
-    void setQAbstractScrollArea_InitStyleOption_Callback(QAbstractScrollArea_InitStyleOption_Callback cb) { qabstractscrollarea_initstyleoption_callback = cb; }
     void setQAbstractScrollArea_UpdateMicroFocus_Callback(QAbstractScrollArea_UpdateMicroFocus_Callback cb) { qabstractscrollarea_updatemicrofocus_callback = cb; }
     void setQAbstractScrollArea_Create_Callback(QAbstractScrollArea_Create_Callback cb) { qabstractscrollarea_create_callback = cb; }
     void setQAbstractScrollArea_Destroy_Callback(QAbstractScrollArea_Destroy_Callback cb) { qabstractscrollarea_destroy_callback = cb; }
@@ -386,6 +386,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     void setQAbstractScrollArea_ScrollContentsBy_IsBase(bool value) const { qabstractscrollarea_scrollcontentsby_isbase = value; }
     void setQAbstractScrollArea_ViewportSizeHint_IsBase(bool value) const { qabstractscrollarea_viewportsizehint_isbase = value; }
     void setQAbstractScrollArea_ChangeEvent_IsBase(bool value) const { qabstractscrollarea_changeevent_isbase = value; }
+    void setQAbstractScrollArea_InitStyleOption_IsBase(bool value) const { qabstractscrollarea_initstyleoption_isbase = value; }
     void setQAbstractScrollArea_DevType_IsBase(bool value) const { qabstractscrollarea_devtype_isbase = value; }
     void setQAbstractScrollArea_SetVisible_IsBase(bool value) const { qabstractscrollarea_setvisible_isbase = value; }
     void setQAbstractScrollArea_HeightForWidth_IsBase(bool value) const { qabstractscrollarea_heightforwidth_isbase = value; }
@@ -419,7 +420,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     void setQAbstractScrollArea_SetViewportMarginsWithMargins_IsBase(bool value) const { qabstractscrollarea_setviewportmarginswithmargins_isbase = value; }
     void setQAbstractScrollArea_ViewportMargins_IsBase(bool value) const { qabstractscrollarea_viewportmargins_isbase = value; }
     void setQAbstractScrollArea_DrawFrame_IsBase(bool value) const { qabstractscrollarea_drawframe_isbase = value; }
-    void setQAbstractScrollArea_InitStyleOption_IsBase(bool value) const { qabstractscrollarea_initstyleoption_isbase = value; }
     void setQAbstractScrollArea_UpdateMicroFocus_IsBase(bool value) const { qabstractscrollarea_updatemicrofocus_isbase = value; }
     void setQAbstractScrollArea_Create_IsBase(bool value) const { qabstractscrollarea_create_isbase = value; }
     void setQAbstractScrollArea_Destroy_IsBase(bool value) const { qabstractscrollarea_destroy_isbase = value; }
@@ -707,6 +707,18 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void initStyleOption(QStyleOptionFrame* option) const override {
+        if (qabstractscrollarea_initstyleoption_isbase) {
+            qabstractscrollarea_initstyleoption_isbase = false;
+            QAbstractScrollArea::initStyleOption(option);
+        } else if (qabstractscrollarea_initstyleoption_callback != nullptr) {
+            qabstractscrollarea_initstyleoption_callback(this, option);
+        } else {
+            QAbstractScrollArea::initStyleOption(option);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qabstractscrollarea_devtype_isbase) {
             qabstractscrollarea_devtype_isbase = false;
@@ -803,7 +815,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qabstractscrollarea_enterevent_isbase) {
             qabstractscrollarea_enterevent_isbase = false;
             QAbstractScrollArea::enterEvent(event);
@@ -899,7 +911,7 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qabstractscrollarea_nativeevent_isbase) {
             qabstractscrollarea_nativeevent_isbase = false;
             return QAbstractScrollArea::nativeEvent(eventType, message, result);
@@ -1099,18 +1111,6 @@ class VirtualQAbstractScrollArea : public QAbstractScrollArea {
             qabstractscrollarea_drawframe_callback(this, param1);
         } else {
             QAbstractScrollArea::drawFrame(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void initStyleOption(QStyleOptionFrame* option) const {
-        if (qabstractscrollarea_initstyleoption_isbase) {
-            qabstractscrollarea_initstyleoption_isbase = false;
-            QAbstractScrollArea::initStyleOption(option);
-        } else if (qabstractscrollarea_initstyleoption_callback != nullptr) {
-            qabstractscrollarea_initstyleoption_callback(this, option);
-        } else {
-            QAbstractScrollArea::initStyleOption(option);
         }
     }
 

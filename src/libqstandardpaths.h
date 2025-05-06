@@ -39,7 +39,6 @@ libqt_string QStandardPaths_Locate(int typeVal, libqt_string fileName);
 libqt_list /* of libqt_string */ QStandardPaths_LocateAll(int typeVal, libqt_string fileName);
 libqt_string QStandardPaths_DisplayName(int typeVal);
 libqt_string QStandardPaths_FindExecutable(libqt_string executableName);
-void QStandardPaths_EnableTestMode(bool testMode);
 void QStandardPaths_SetTestModeEnabled(bool testMode);
 bool QStandardPaths_IsTestModeEnabled();
 libqt_string QStandardPaths_Locate3(int typeVal, libqt_string fileName, int options);

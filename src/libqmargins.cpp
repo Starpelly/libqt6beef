@@ -116,6 +116,10 @@ QMargins* QMargins_OperatorDivideAssignWithDouble(QMargins* self, double param1)
     return &_ret;
 }
 
+QMarginsF* QMargins_ToMarginsF(const QMargins* self) {
+    return new QMarginsF(self->toMarginsF());
+}
+
 void QMargins_Delete(QMargins* self) {
     delete self;
 }
@@ -172,20 +176,20 @@ double QMarginsF_Bottom(const QMarginsF* self) {
     return static_cast<double>(self->bottom());
 }
 
-void QMarginsF_SetLeft(QMarginsF* self, double left) {
-    self->setLeft(static_cast<qreal>(left));
+void QMarginsF_SetLeft(QMarginsF* self, double aleft) {
+    self->setLeft(static_cast<qreal>(aleft));
 }
 
-void QMarginsF_SetTop(QMarginsF* self, double top) {
-    self->setTop(static_cast<qreal>(top));
+void QMarginsF_SetTop(QMarginsF* self, double atop) {
+    self->setTop(static_cast<qreal>(atop));
 }
 
-void QMarginsF_SetRight(QMarginsF* self, double right) {
-    self->setRight(static_cast<qreal>(right));
+void QMarginsF_SetRight(QMarginsF* self, double aright) {
+    self->setRight(static_cast<qreal>(aright));
 }
 
-void QMarginsF_SetBottom(QMarginsF* self, double bottom) {
-    self->setBottom(static_cast<qreal>(bottom));
+void QMarginsF_SetBottom(QMarginsF* self, double abottom) {
+    self->setBottom(static_cast<qreal>(abottom));
 }
 
 QMarginsF* QMarginsF_OperatorPlusAssign(QMarginsF* self, QMarginsF* margins) {

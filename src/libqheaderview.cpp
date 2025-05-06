@@ -4,7 +4,9 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,6 +17,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -42,7 +45,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -50,6 +52,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -62,7 +65,6 @@
 #include <QByteArray>
 #include <cstring>
 #include <QStyle>
-#include <QStyleOptionFrame>
 #include <QStyleOptionHeader>
 #include <QStyleOptionViewItem>
 #include <QTabletEvent>
@@ -119,18 +121,6 @@ int QHeaderView_QBaseMetacall(QHeaderView* self, int param1, int param2, void** 
 
 libqt_string QHeaderView_Tr(const char* s) {
     QString _ret = QHeaderView::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QHeaderView_TrUtf8(const char* s) {
-    QString _ret = QHeaderView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -307,6 +297,14 @@ int QHeaderView_SortIndicatorSection(const QHeaderView* self) {
 
 int QHeaderView_SortIndicatorOrder(const QHeaderView* self) {
     return static_cast<int>(self->sortIndicatorOrder());
+}
+
+void QHeaderView_SetSortIndicatorClearable(QHeaderView* self, bool clearable) {
+    self->setSortIndicatorClearable(clearable);
+}
+
+bool QHeaderView_IsSortIndicatorClearable(const QHeaderView* self) {
+    return self->isSortIndicatorClearable();
 }
 
 bool QHeaderView_StretchLastSection(const QHeaderView* self) {
@@ -525,6 +523,18 @@ void QHeaderView_Connect_SortIndicatorChanged(QHeaderView* self, intptr_t slot) 
     });
 }
 
+void QHeaderView_SortIndicatorClearableChanged(QHeaderView* self, bool clearable) {
+    self->sortIndicatorClearableChanged(clearable);
+}
+
+void QHeaderView_Connect_SortIndicatorClearableChanged(QHeaderView* self, intptr_t slot) {
+    void (*slotFunc)(QHeaderView*, bool) = reinterpret_cast<void (*)(QHeaderView*, bool)>(slot);
+    QHeaderView::connect(self, &QHeaderView::sortIndicatorClearableChanged, [self, slotFunc](bool clearable) {
+        bool sigval1 = clearable;
+        slotFunc(self, sigval1);
+    });
+}
+
 libqt_string QHeaderView_Tr2(const char* s, const char* c) {
     QString _ret = QHeaderView::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -539,30 +549,6 @@ libqt_string QHeaderView_Tr2(const char* s, const char* c) {
 
 libqt_string QHeaderView_Tr3(const char* s, const char* c, int n) {
     QString _ret = QHeaderView::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QHeaderView_TrUtf82(const char* s, const char* c) {
-    QString _ret = QHeaderView::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QHeaderView_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QHeaderView::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1067,7 +1053,7 @@ void QHeaderView_OnScrollContentsBy(QHeaderView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QHeaderView_DataChanged(QHeaderView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1082,7 +1068,7 @@ void QHeaderView_DataChanged(QHeaderView* self, QModelIndex* topLeft, QModelInde
 
 // Base class handler implementation
 void QHeaderView_QBaseDataChanged(QHeaderView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QVector<int> roles_QList;
+    QList<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -1304,6 +1290,58 @@ void QHeaderView_OnVisualRegionForSelection(const QHeaderView* self, intptr_t sl
 }
 
 // Derived class handler implementation
+void QHeaderView_InitStyleOptionForIndex(const QHeaderView* self, QStyleOptionHeader* option, int logicalIndex) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->initStyleOptionForIndex(option, static_cast<int>(logicalIndex));
+    } else {
+        vqheaderview->initStyleOptionForIndex(option, static_cast<int>(logicalIndex));
+    }
+}
+
+// Base class handler implementation
+void QHeaderView_QBaseInitStyleOptionForIndex(const QHeaderView* self, QStyleOptionHeader* option, int logicalIndex) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_InitStyleOptionForIndex_IsBase(true);
+        vqheaderview->initStyleOptionForIndex(option, static_cast<int>(logicalIndex));
+    } else {
+        vqheaderview->initStyleOptionForIndex(option, static_cast<int>(logicalIndex));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QHeaderView_OnInitStyleOptionForIndex(const QHeaderView* self, intptr_t slot) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_InitStyleOptionForIndex_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_InitStyleOptionForIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QHeaderView_InitStyleOption(const QHeaderView* self, QStyleOptionHeader* option) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->initStyleOption(option);
+    } else {
+        vqheaderview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QHeaderView_QBaseInitStyleOption(const QHeaderView* self, QStyleOptionHeader* option) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_InitStyleOption_IsBase(true);
+        vqheaderview->initStyleOption(option);
+    } else {
+        vqheaderview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QHeaderView_OnInitStyleOption(const QHeaderView* self, intptr_t slot) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_InitStyleOption_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_InitStyleOption_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QHeaderView_SetSelectionModel(QHeaderView* self, QItemSelectionModel* selectionModel) {
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
         vqheaderview->setSelectionModel(selectionModel);
@@ -1406,6 +1444,32 @@ int QHeaderView_QBaseSizeHintForColumn(const QHeaderView* self, int column) {
 void QHeaderView_OnSizeHintForColumn(const QHeaderView* self, intptr_t slot) {
     if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
         vqheaderview->setQHeaderView_SizeHintForColumn_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_SizeHintForColumn_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QAbstractItemDelegate* QHeaderView_ItemDelegateForIndex(const QHeaderView* self, QModelIndex* index) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        return vqheaderview->itemDelegateForIndex(*index);
+    } else {
+        return vqheaderview->itemDelegateForIndex(*index);
+    }
+}
+
+// Base class handler implementation
+QAbstractItemDelegate* QHeaderView_QBaseItemDelegateForIndex(const QHeaderView* self, QModelIndex* index) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_ItemDelegateForIndex_IsBase(true);
+        return vqheaderview->itemDelegateForIndex(*index);
+    } else {
+        return vqheaderview->itemDelegateForIndex(*index);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QHeaderView_OnItemDelegateForIndex(const QHeaderView* self, intptr_t slot) {
+    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
+        vqheaderview->setQHeaderView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_ItemDelegateForIndex_Callback>(slot));
     }
 }
 
@@ -1914,26 +1978,28 @@ void QHeaderView_OnStartDrag(QHeaderView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QStyleOptionViewItem* QHeaderView_ViewOptions(const QHeaderView* self) {
+void QHeaderView_InitViewItemOption(const QHeaderView* self, QStyleOptionViewItem* option) {
     if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        return new QStyleOptionViewItem(vqheaderview->viewOptions());
+        vqheaderview->initViewItemOption(option);
+    } else {
+        vqheaderview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Base class handler implementation
-QStyleOptionViewItem* QHeaderView_QBaseViewOptions(const QHeaderView* self) {
+void QHeaderView_QBaseInitViewItemOption(const QHeaderView* self, QStyleOptionViewItem* option) {
     if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_ViewOptions_IsBase(true);
-        return new QStyleOptionViewItem(vqheaderview->viewOptions());
+        vqheaderview->setQHeaderView_InitViewItemOption_IsBase(true);
+        vqheaderview->initViewItemOption(option);
+    } else {
+        vqheaderview->initViewItemOption(option);
     }
-    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QHeaderView_OnViewOptions(const QHeaderView* self, intptr_t slot) {
+void QHeaderView_OnInitViewItemOption(const QHeaderView* self, intptr_t slot) {
     if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_ViewOptions_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_ViewOptions_Callback>(slot));
+        vqheaderview->setQHeaderView_InitViewItemOption_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_InitViewItemOption_Callback>(slot));
     }
 }
 
@@ -2534,7 +2600,7 @@ void QHeaderView_OnKeyReleaseEvent(QHeaderView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QHeaderView_EnterEvent(QHeaderView* self, QEvent* event) {
+void QHeaderView_EnterEvent(QHeaderView* self, QEnterEvent* event) {
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
         vqheaderview->enterEvent(event);
     } else {
@@ -2543,7 +2609,7 @@ void QHeaderView_EnterEvent(QHeaderView* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QHeaderView_QBaseEnterEvent(QHeaderView* self, QEvent* event) {
+void QHeaderView_QBaseEnterEvent(QHeaderView* self, QEnterEvent* event) {
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
         vqheaderview->setQHeaderView_EnterEvent_IsBase(true);
         vqheaderview->enterEvent(event);
@@ -2742,23 +2808,23 @@ void QHeaderView_OnHideEvent(QHeaderView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QHeaderView_NativeEvent(QHeaderView* self, libqt_string eventType, void* message, long* result) {
+bool QHeaderView_NativeEvent(QHeaderView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        return vqheaderview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqheaderview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqheaderview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqheaderview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QHeaderView_QBaseNativeEvent(QHeaderView* self, libqt_string eventType, void* message, long* result) {
+bool QHeaderView_QBaseNativeEvent(QHeaderView* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
         vqheaderview->setQHeaderView_NativeEvent_IsBase(true);
-        return vqheaderview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqheaderview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqheaderview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqheaderview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
@@ -3156,136 +3222,6 @@ void QHeaderView_QBaseInitializeSections2(QHeaderView* self, int start, int end)
 void QHeaderView_OnInitializeSections2(QHeaderView* self, intptr_t slot) {
     if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
         vqheaderview->setQHeaderView_InitializeSections2_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_InitializeSections2_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QHeaderView_InitStyleOption(const QHeaderView* self, QStyleOptionHeader* option) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->initStyleOption(option);
-    } else {
-        vqheaderview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QHeaderView_QBaseInitStyleOption(const QHeaderView* self, QStyleOptionHeader* option) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_InitStyleOption_IsBase(true);
-        vqheaderview->initStyleOption(option);
-    } else {
-        vqheaderview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHeaderView_OnInitStyleOption(const QHeaderView* self, intptr_t slot) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_InitStyleOption_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QHeaderView_SetHorizontalStepsPerItem(QHeaderView* self, int steps) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqheaderview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QHeaderView_QBaseSetHorizontalStepsPerItem(QHeaderView* self, int steps) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setQHeaderView_SetHorizontalStepsPerItem_IsBase(true);
-        vqheaderview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqheaderview->setHorizontalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHeaderView_OnSetHorizontalStepsPerItem(QHeaderView* self, intptr_t slot) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setQHeaderView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_SetHorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QHeaderView_HorizontalStepsPerItem(const QHeaderView* self) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        return vqheaderview->horizontalStepsPerItem();
-    } else {
-        return vqheaderview->horizontalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QHeaderView_QBaseHorizontalStepsPerItem(const QHeaderView* self) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_HorizontalStepsPerItem_IsBase(true);
-        return vqheaderview->horizontalStepsPerItem();
-    } else {
-        return vqheaderview->horizontalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHeaderView_OnHorizontalStepsPerItem(const QHeaderView* self, intptr_t slot) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_HorizontalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QHeaderView_SetVerticalStepsPerItem(QHeaderView* self, int steps) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqheaderview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Base class handler implementation
-void QHeaderView_QBaseSetVerticalStepsPerItem(QHeaderView* self, int steps) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setQHeaderView_SetVerticalStepsPerItem_IsBase(true);
-        vqheaderview->setVerticalStepsPerItem(static_cast<int>(steps));
-    } else {
-        vqheaderview->setVerticalStepsPerItem(static_cast<int>(steps));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHeaderView_OnSetVerticalStepsPerItem(QHeaderView* self, intptr_t slot) {
-    if (auto* vqheaderview = dynamic_cast<VirtualQHeaderView*>(self)) {
-        vqheaderview->setQHeaderView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_SetVerticalStepsPerItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QHeaderView_VerticalStepsPerItem(const QHeaderView* self) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        return vqheaderview->verticalStepsPerItem();
-    } else {
-        return vqheaderview->verticalStepsPerItem();
-    }
-}
-
-// Base class handler implementation
-int QHeaderView_QBaseVerticalStepsPerItem(const QHeaderView* self) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_VerticalStepsPerItem_IsBase(true);
-        return vqheaderview->verticalStepsPerItem();
-    } else {
-        return vqheaderview->verticalStepsPerItem();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHeaderView_OnVerticalStepsPerItem(const QHeaderView* self, intptr_t slot) {
-    if (auto* vqheaderview = const_cast<VirtualQHeaderView*>(dynamic_cast<const VirtualQHeaderView*>(self))) {
-        vqheaderview->setQHeaderView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQHeaderView::QHeaderView_VerticalStepsPerItem_Callback>(slot));
     }
 }
 

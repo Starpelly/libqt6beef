@@ -1,19 +1,18 @@
 #include <QAction>
 #include <QActionGroup>
+#include <QAnyStringView>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QFont>
-#include <QGraphicsWidget>
 #include <QIcon>
 #include <QKeySequence>
 #include <QList>
-#include <QMenu>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -75,18 +74,6 @@ libqt_string QWidgetAction_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QWidgetAction_TrUtf8(const char* s) {
-    QString _ret = QWidgetAction::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 void QWidgetAction_SetDefaultWidget(QWidgetAction* self, QWidget* w) {
     self->setDefaultWidget(w);
 }
@@ -117,30 +104,6 @@ libqt_string QWidgetAction_Tr2(const char* s, const char* c) {
 
 libqt_string QWidgetAction_Tr3(const char* s, const char* c, int n) {
     QString _ret = QWidgetAction::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QWidgetAction_TrUtf82(const char* s, const char* c) {
-    QString _ret = QWidgetAction::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QWidgetAction_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QWidgetAction::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -1,17 +1,19 @@
 #include <QAbstractSocket>
+#include <QAnyStringView>
 #include <QAuthenticator>
+#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QHostAddress>
 #include <QIODevice>
+#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QNetworkProxy>
 #include <QObject>
-#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -76,18 +78,6 @@ libqt_string QTcpSocket_Tr(const char* s) {
     return _str;
 }
 
-libqt_string QTcpSocket_TrUtf8(const char* s) {
-    QString _ret = QTcpSocket::trUtf8(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 libqt_string QTcpSocket_Tr2(const char* s, const char* c) {
     QString _ret = QTcpSocket::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -112,53 +102,12 @@ libqt_string QTcpSocket_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-libqt_string QTcpSocket_TrUtf82(const char* s, const char* c) {
-    QString _ret = QTcpSocket::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
+bool QTcpSocket_Bind2(QTcpSocket* self, int addr, uint16_t port) {
+    return self->bind(static_cast<QHostAddress::SpecialAddress>(addr), static_cast<quint16>(port));
 }
 
-libqt_string QTcpSocket_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QTcpSocket::trUtf8(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QTcpSocket_ConnectToHost2(QTcpSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
-    } else {
-        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
-    }
-}
-
-// Subclass method to allow providing a virtual method re-implementation
-void QTcpSocket_OnConnectToHost2(QTcpSocket* self, intptr_t slot) {
-    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        vqtcpsocket->setQTcpSocket_ConnectToHost2_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_ConnectToHost2_Callback>(slot));
-    }
-}
-
-// Virtual base class handler implementation
-void QTcpSocket_QBaseConnectToHost2(QTcpSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        vqtcpsocket->setQTcpSocket_ConnectToHost2_IsBase(true);
-        vqtcpsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
-    } else {
-        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
-    }
+bool QTcpSocket_Bind3(QTcpSocket* self, int addr, uint16_t port, int mode) {
+    return self->bind(static_cast<QHostAddress::SpecialAddress>(addr), static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
 }
 
 // Derived class handler implementation
@@ -188,12 +137,38 @@ void QTcpSocket_OnResume(QTcpSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QTcpSocket_Bind(QTcpSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        return vqtcpsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
+    } else {
+        return vqtcpsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
+    }
+}
+
+// Base class handler implementation
+bool QTcpSocket_QBaseBind(QTcpSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        vqtcpsocket->setQTcpSocket_Bind_IsBase(true);
+        return vqtcpsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
+    } else {
+        return vqtcpsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTcpSocket_OnBind(QTcpSocket* self, intptr_t slot) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        vqtcpsocket->setQTcpSocket_Bind_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_Bind_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QTcpSocket_ConnectToHost(QTcpSocket* self, libqt_string hostName, uint16_t port, int mode, int protocol) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -202,9 +177,9 @@ void QTcpSocket_QBaseConnectToHost(QTcpSocket* self, libqt_string hostName, uint
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setQTcpSocket_ConnectToHost_IsBase(true);
-        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqtcpsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -294,32 +269,6 @@ void QTcpSocket_OnBytesToWrite(const QTcpSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTcpSocket_CanReadLine(const QTcpSocket* self) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        return vqtcpsocket->canReadLine();
-    } else {
-        return vqtcpsocket->canReadLine();
-    }
-}
-
-// Base class handler implementation
-bool QTcpSocket_QBaseCanReadLine(const QTcpSocket* self) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        vqtcpsocket->setQTcpSocket_CanReadLine_IsBase(true);
-        return vqtcpsocket->canReadLine();
-    } else {
-        return vqtcpsocket->canReadLine();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTcpSocket_OnCanReadLine(const QTcpSocket* self, intptr_t slot) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        vqtcpsocket->setQTcpSocket_CanReadLine_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_CanReadLine_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QTcpSocket_SetReadBufferSize(QTcpSocket* self, long long size) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setReadBufferSize(static_cast<qint64>(size));
@@ -378,9 +327,9 @@ void QTcpSocket_OnSocketDescriptor(const QTcpSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QTcpSocket_SetSocketDescriptor(QTcpSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
+        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
+        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -388,9 +337,9 @@ bool QTcpSocket_SetSocketDescriptor(QTcpSocket* self, intptr_t socketDescriptor,
 bool QTcpSocket_QBaseSetSocketDescriptor(QTcpSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setQTcpSocket_SetSocketDescriptor_IsBase(true);
-        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
+        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
+        return vqtcpsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -502,32 +451,6 @@ bool QTcpSocket_QBaseIsSequential(const QTcpSocket* self) {
 void QTcpSocket_OnIsSequential(const QTcpSocket* self, intptr_t slot) {
     if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
         vqtcpsocket->setQTcpSocket_IsSequential_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_IsSequential_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QTcpSocket_AtEnd(const QTcpSocket* self) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        return vqtcpsocket->atEnd();
-    } else {
-        return vqtcpsocket->atEnd();
-    }
-}
-
-// Base class handler implementation
-bool QTcpSocket_QBaseAtEnd(const QTcpSocket* self) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        vqtcpsocket->setQTcpSocket_AtEnd_IsBase(true);
-        return vqtcpsocket->atEnd();
-    } else {
-        return vqtcpsocket->atEnd();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTcpSocket_OnAtEnd(const QTcpSocket* self, intptr_t slot) {
-    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
-        vqtcpsocket->setQTcpSocket_AtEnd_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_AtEnd_Callback>(slot));
     }
 }
 
@@ -688,6 +611,32 @@ void QTcpSocket_OnReadLineData(QTcpSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+long long QTcpSocket_SkipData(QTcpSocket* self, long long maxSize) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        return static_cast<long long>(vqtcpsocket->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqtcpsocket->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Base class handler implementation
+long long QTcpSocket_QBaseSkipData(QTcpSocket* self, long long maxSize) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        vqtcpsocket->setQTcpSocket_SkipData_IsBase(true);
+        return static_cast<long long>(vqtcpsocket->skipData(static_cast<qint64>(maxSize)));
+    } else {
+        return static_cast<long long>(vqtcpsocket->skipData(static_cast<qint64>(maxSize)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTcpSocket_OnSkipData(QTcpSocket* self, intptr_t slot) {
+    if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
+        vqtcpsocket->setQTcpSocket_SkipData_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_SkipData_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 long long QTcpSocket_WriteData(QTcpSocket* self, const char* data, long long lenVal) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         return static_cast<long long>(vqtcpsocket->writeData(data, static_cast<qint64>(lenVal)));
@@ -716,9 +665,9 @@ void QTcpSocket_OnWriteData(QTcpSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QTcpSocket_Open(QTcpSocket* self, int mode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        return vqtcpsocket->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqtcpsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqtcpsocket->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqtcpsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -726,9 +675,9 @@ bool QTcpSocket_Open(QTcpSocket* self, int mode) {
 bool QTcpSocket_QBaseOpen(QTcpSocket* self, int mode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setQTcpSocket_Open_IsBase(true);
-        return vqtcpsocket->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqtcpsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
     } else {
-        return vqtcpsocket->open(static_cast<QIODevice::OpenMode>(mode));
+        return vqtcpsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
     }
 }
 
@@ -818,6 +767,32 @@ void QTcpSocket_OnSeek(QTcpSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+bool QTcpSocket_AtEnd(const QTcpSocket* self) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        return vqtcpsocket->atEnd();
+    } else {
+        return vqtcpsocket->atEnd();
+    }
+}
+
+// Base class handler implementation
+bool QTcpSocket_QBaseAtEnd(const QTcpSocket* self) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        vqtcpsocket->setQTcpSocket_AtEnd_IsBase(true);
+        return vqtcpsocket->atEnd();
+    } else {
+        return vqtcpsocket->atEnd();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTcpSocket_OnAtEnd(const QTcpSocket* self, intptr_t slot) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        vqtcpsocket->setQTcpSocket_AtEnd_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_AtEnd_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 bool QTcpSocket_Reset(QTcpSocket* self) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         return vqtcpsocket->reset();
@@ -840,6 +815,32 @@ bool QTcpSocket_QBaseReset(QTcpSocket* self) {
 void QTcpSocket_OnReset(QTcpSocket* self, intptr_t slot) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setQTcpSocket_Reset_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_Reset_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QTcpSocket_CanReadLine(const QTcpSocket* self) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        return vqtcpsocket->canReadLine();
+    } else {
+        return vqtcpsocket->canReadLine();
+    }
+}
+
+// Base class handler implementation
+bool QTcpSocket_QBaseCanReadLine(const QTcpSocket* self) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        vqtcpsocket->setQTcpSocket_CanReadLine_IsBase(true);
+        return vqtcpsocket->canReadLine();
+    } else {
+        return vqtcpsocket->canReadLine();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTcpSocket_OnCanReadLine(const QTcpSocket* self, intptr_t slot) {
+    if (auto* vqtcpsocket = const_cast<VirtualQTcpSocket*>(dynamic_cast<const VirtualQTcpSocket*>(self))) {
+        vqtcpsocket->setQTcpSocket_CanReadLine_Callback(reinterpret_cast<VirtualQTcpSocket::QTcpSocket_CanReadLine_Callback>(slot));
     }
 }
 
@@ -1212,9 +1213,9 @@ void QTcpSocket_OnSetPeerName(QTcpSocket* self, intptr_t slot) {
 // Derived class handler implementation
 void QTcpSocket_SetOpenMode(QTcpSocket* self, int openMode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
-        vqtcpsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqtcpsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqtcpsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqtcpsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 
@@ -1222,9 +1223,9 @@ void QTcpSocket_SetOpenMode(QTcpSocket* self, int openMode) {
 void QTcpSocket_QBaseSetOpenMode(QTcpSocket* self, int openMode) {
     if (auto* vqtcpsocket = dynamic_cast<VirtualQTcpSocket*>(self)) {
         vqtcpsocket->setQTcpSocket_SetOpenMode_IsBase(true);
-        vqtcpsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqtcpsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     } else {
-        vqtcpsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
+        vqtcpsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
     }
 }
 

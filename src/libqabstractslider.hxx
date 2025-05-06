@@ -39,7 +39,7 @@ class VirtualQAbstractSlider : public QAbstractSlider {
     using QAbstractSlider_KeyReleaseEvent_Callback = void (*)(QAbstractSlider*, QKeyEvent*);
     using QAbstractSlider_FocusInEvent_Callback = void (*)(QAbstractSlider*, QFocusEvent*);
     using QAbstractSlider_FocusOutEvent_Callback = void (*)(QAbstractSlider*, QFocusEvent*);
-    using QAbstractSlider_EnterEvent_Callback = void (*)(QAbstractSlider*, QEvent*);
+    using QAbstractSlider_EnterEvent_Callback = void (*)(QAbstractSlider*, QEnterEvent*);
     using QAbstractSlider_LeaveEvent_Callback = void (*)(QAbstractSlider*, QEvent*);
     using QAbstractSlider_PaintEvent_Callback = void (*)(QAbstractSlider*, QPaintEvent*);
     using QAbstractSlider_MoveEvent_Callback = void (*)(QAbstractSlider*, QMoveEvent*);
@@ -54,7 +54,7 @@ class VirtualQAbstractSlider : public QAbstractSlider {
     using QAbstractSlider_DropEvent_Callback = void (*)(QAbstractSlider*, QDropEvent*);
     using QAbstractSlider_ShowEvent_Callback = void (*)(QAbstractSlider*, QShowEvent*);
     using QAbstractSlider_HideEvent_Callback = void (*)(QAbstractSlider*, QHideEvent*);
-    using QAbstractSlider_NativeEvent_Callback = bool (*)(QAbstractSlider*, const QByteArray&, void*, long*);
+    using QAbstractSlider_NativeEvent_Callback = bool (*)(QAbstractSlider*, const QByteArray&, void*, qintptr*);
     using QAbstractSlider_Metric_Callback = int (*)(const QAbstractSlider*, QPaintDevice::PaintDeviceMetric);
     using QAbstractSlider_InitPainter_Callback = void (*)(const QAbstractSlider*, QPainter*);
     using QAbstractSlider_Redirected_Callback = QPaintDevice* (*)(const QAbstractSlider*, QPoint*);
@@ -660,7 +660,7 @@ class VirtualQAbstractSlider : public QAbstractSlider {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEvent* event) override {
+    virtual void enterEvent(QEnterEvent* event) override {
         if (qabstractslider_enterevent_isbase) {
             qabstractslider_enterevent_isbase = false;
             QAbstractSlider::enterEvent(event);
@@ -840,7 +840,7 @@ class VirtualQAbstractSlider : public QAbstractSlider {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
         if (qabstractslider_nativeevent_isbase) {
             qabstractslider_nativeevent_isbase = false;
             return QAbstractSlider::nativeEvent(eventType, message, result);

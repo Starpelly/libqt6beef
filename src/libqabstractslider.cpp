@@ -1,7 +1,9 @@
 #include <QAbstractSlider>
 #include <QAction>
 #include <QActionEvent>
+#include <QAnyStringView>
 #include <QBackingStore>
+#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -12,6 +14,7 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -34,7 +37,6 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -42,6 +44,7 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -107,18 +110,6 @@ int QAbstractSlider_QBaseMetacall(QAbstractSlider* self, int param1, int param2,
 
 libqt_string QAbstractSlider_Tr(const char* s) {
     QString _ret = QAbstractSlider::tr(s);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractSlider_TrUtf8(const char* s) {
-    QString _ret = QAbstractSlider::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -310,30 +301,6 @@ libqt_string QAbstractSlider_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractSlider_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractSlider::tr(s, c, static_cast<int>(n));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractSlider_TrUtf82(const char* s, const char* c) {
-    QString _ret = QAbstractSlider::trUtf8(s, c);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QAbstractSlider_TrUtf83(const char* s, const char* c, int n) {
-    QString _ret = QAbstractSlider::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -865,7 +832,7 @@ void QAbstractSlider_OnFocusOutEvent(QAbstractSlider* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QAbstractSlider_EnterEvent(QAbstractSlider* self, QEvent* event) {
+void QAbstractSlider_EnterEvent(QAbstractSlider* self, QEnterEvent* event) {
     if (auto* vqabstractslider = dynamic_cast<VirtualQAbstractSlider*>(self)) {
         vqabstractslider->enterEvent(event);
     } else {
@@ -874,7 +841,7 @@ void QAbstractSlider_EnterEvent(QAbstractSlider* self, QEvent* event) {
 }
 
 // Base class handler implementation
-void QAbstractSlider_QBaseEnterEvent(QAbstractSlider* self, QEvent* event) {
+void QAbstractSlider_QBaseEnterEvent(QAbstractSlider* self, QEnterEvent* event) {
     if (auto* vqabstractslider = dynamic_cast<VirtualQAbstractSlider*>(self)) {
         vqabstractslider->setQAbstractSlider_EnterEvent_IsBase(true);
         vqabstractslider->enterEvent(event);
@@ -1255,23 +1222,23 @@ void QAbstractSlider_OnHideEvent(QAbstractSlider* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractSlider_NativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractSlider_NativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractslider = dynamic_cast<VirtualQAbstractSlider*>(self)) {
-        return vqabstractslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractSlider_QBaseNativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, long* result) {
+bool QAbstractSlider_QBaseNativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, intptr_t* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractslider = dynamic_cast<VirtualQAbstractSlider*>(self)) {
         vqabstractslider->setQAbstractSlider_NativeEvent_IsBase(true);
-        return vqabstractslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     } else {
-        return vqabstractslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
+        return vqabstractslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
     }
 }
 

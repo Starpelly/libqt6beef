@@ -29,6 +29,7 @@ bool QSemaphore_TryAcquire(QSemaphore* self);
 bool QSemaphore_TryAcquire2(QSemaphore* self, int n, int timeout);
 void QSemaphore_Release(QSemaphore* self);
 int QSemaphore_Available(const QSemaphore* self);
+bool QSemaphore_TryAcquire3(QSemaphore* self);
 void QSemaphore_Acquire1(QSemaphore* self, int n);
 bool QSemaphore_TryAcquire1(QSemaphore* self, int n);
 void QSemaphore_Release1(QSemaphore* self, int n);
