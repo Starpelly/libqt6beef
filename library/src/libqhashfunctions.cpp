@@ -28,7 +28,7 @@ void QHashSeed_MoveAssign(QHashSeed* self, QHashSeed* other) {
 }
 
 size_t QHashSeed_ToUnsignedLong(const QHashSeed* self) {
-    return self->operator unsigned long();
+    return static_cast<unsigned long>(*self);
 }
 
 QHashSeed* QHashSeed_GlobalSeed() {

@@ -65,21 +65,23 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 	)
 
 	// Qt 6 QtPrintSupport
-	generate(
-		"src/printsupport",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6PrintSupport"),
-		outDir,
-		"include/printsupport",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+	/*
+		generate(
+			"src/printsupport",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport",
+			},
+			AllowAllHeaders,
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt6PrintSupport"),
+			outDir,
+			"include/printsupport",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
+	*/
 
 	// Qt 6 SVG
 	generate(
@@ -100,24 +102,26 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 	)
 
 	// Qt 6 QtNetwork
-	generate(
-		"src/network",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtNetwork",
-		},
-		func(fullpath string) bool {
-			fname := filepath.Base(fullpath)
-			return fname != "qtnetwork-config.h"
-		},
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6Network"),
-		outDir,
-		"include/network",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+	/*
+		generate(
+			"src/network",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt6/QtNetwork",
+			},
+			func(fullpath string) bool {
+				fname := filepath.Base(fullpath)
+				return fname != "qtnetwork-config.h"
+			},
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt6Network"),
+			outDir,
+			"include/network",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
+	*/
 
 	// Qt 6 QtMultimedia
 	generate(

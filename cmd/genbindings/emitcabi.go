@@ -1890,21 +1890,31 @@ func emitBindingCpp(src *CppParsedHeader, filename, packageName string) (string,
 
 			preamble, forwarding := emitParametersCABI2CppForwarding(m.Parameters, "\t", c.ClassName)
 
-			// Need to take an extra 'self' parameter
-			// callTarget is an rvalue representing the full C++ function call.
-			vVar := "v" + strings.ToLower(methodPrefixName)
-			callTarget := "self->"
-			if (m.IsVirtual || m.IsPrivate || m.IsProtected) && len(virtualMethods) > 0 && virtualEligible {
-				if _, exists := seenVirtualsMap[m.MethodName]; exists {
-					callTarget = vVar + "->"
+			vVar := ""
+			callTarget := ""
+
+			if c.ClassName == "QHashSeed" && m.MethodName == "operator unsigned long" {
+
+				// I don't fucking know why, but MSVC doesn't like it when we don't do this, and I'm lazy
+				callTarget = "static_cast<unsigned long>(*self)"
+
+			} else {
+				// Need to take an extra 'self' parameter
+				// callTarget is an rvalue representing the full C++ function call.
+				vVar = "v" + strings.ToLower(methodPrefixName)
+				callTarget = "self->"
+				if (m.IsVirtual || m.IsPrivate || m.IsProtected) && len(virtualMethods) > 0 && virtualEligible {
+					if _, exists := seenVirtualsMap[m.MethodName]; exists {
+						callTarget = vVar + "->"
+					}
 				}
-			}
 
-			if m.IsStatic {
-				callTarget = c.ClassName + "::"
-			}
+				if m.IsStatic {
+					callTarget = c.ClassName + "::"
+				}
 
-			callTarget += m.CppCallTarget() + "(" + forwarding + ")"
+				callTarget += m.CppCallTarget() + "(" + forwarding + ")"
+			}
 
 			// Qt 6.8 moved many operator== implementations from class methods
 			// into global operators.

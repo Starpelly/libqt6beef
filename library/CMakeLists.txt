@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_SUPPRESS_REGENERATION TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+set(CMAKE_LINK_WHAT_YOU_USE TRUE) # Helps detect missing symbols
+
 # Output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -29,17 +31,17 @@ set(QT_MODULES
     Core
     Gui
     Widgets
-    Network
+    # Network
     Multimedia
     MultimediaWidgets
-    PrintSupport
+    # PrintSupport
     Svg
     SvgWidgets
-    WebChannel
-    WebEngineCore
-    Qml
-    Quick
-    Pdf
+    # WebChannel
+    # WebEngineCore
+    # Qml
+    # Quick
+    # Pdf
 )
 
 find_package(Qt6 REQUIRED COMPONENTS ${QT_MODULES})
@@ -62,6 +64,17 @@ install(TARGETS QtBeefLink
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+# Ensures that the Qt API symbols are properly exported
+if(MSVC)
+    foreach(module IN LISTS QT_MODULES)
+        target_link_options(QtBeefLink PRIVATE /WHOLEARCHIVE:Qt6::${module})
+    endforeach()
+else()
+    foreach(module IN LISTS QT_MODULES)
+        target_link_libraries(QtBeefLink PRIVATE -Wl,--whole-archive Qt6::${module} -Wl,--no-whole-archive)
+    endforeach()
+endif()
 
 # Optional: Copy Qt DLLs after build (Windows only)
 if(WIN32)
