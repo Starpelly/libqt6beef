@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QPushButton QPushButton;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
@@ -109,6 +108,7 @@ int QDialogButtonBox_Metacall(QDialogButtonBox* self, int param1, int param2, vo
 void QDialogButtonBox_OnMetacall(QDialogButtonBox* self, intptr_t slot);
 int QDialogButtonBox_QBaseMetacall(QDialogButtonBox* self, int param1, int param2, void** param3);
 libqt_string QDialogButtonBox_Tr(const char* s);
+libqt_string QDialogButtonBox_TrUtf8(const char* s);
 void QDialogButtonBox_SetOrientation(QDialogButtonBox* self, int orientation);
 int QDialogButtonBox_Orientation(const QDialogButtonBox* self);
 void QDialogButtonBox_AddButton(QDialogButtonBox* self, QAbstractButton* button, int role);
@@ -140,6 +140,8 @@ void QDialogButtonBox_OnEvent(QDialogButtonBox* self, intptr_t slot);
 bool QDialogButtonBox_QBaseEvent(QDialogButtonBox* self, QEvent* event);
 libqt_string QDialogButtonBox_Tr2(const char* s, const char* c);
 libqt_string QDialogButtonBox_Tr3(const char* s, const char* c, int n);
+libqt_string QDialogButtonBox_TrUtf82(const char* s, const char* c);
+libqt_string QDialogButtonBox_TrUtf83(const char* s, const char* c, int n);
 int QDialogButtonBox_DevType(const QDialogButtonBox* self);
 void QDialogButtonBox_OnDevType(const QDialogButtonBox* self, intptr_t slot);
 int QDialogButtonBox_QBaseDevType(const QDialogButtonBox* self);
@@ -188,9 +190,9 @@ void QDialogButtonBox_QBaseFocusInEvent(QDialogButtonBox* self, QFocusEvent* eve
 void QDialogButtonBox_FocusOutEvent(QDialogButtonBox* self, QFocusEvent* event);
 void QDialogButtonBox_OnFocusOutEvent(QDialogButtonBox* self, intptr_t slot);
 void QDialogButtonBox_QBaseFocusOutEvent(QDialogButtonBox* self, QFocusEvent* event);
-void QDialogButtonBox_EnterEvent(QDialogButtonBox* self, QEnterEvent* event);
+void QDialogButtonBox_EnterEvent(QDialogButtonBox* self, QEvent* event);
 void QDialogButtonBox_OnEnterEvent(QDialogButtonBox* self, intptr_t slot);
-void QDialogButtonBox_QBaseEnterEvent(QDialogButtonBox* self, QEnterEvent* event);
+void QDialogButtonBox_QBaseEnterEvent(QDialogButtonBox* self, QEvent* event);
 void QDialogButtonBox_LeaveEvent(QDialogButtonBox* self, QEvent* event);
 void QDialogButtonBox_OnLeaveEvent(QDialogButtonBox* self, intptr_t slot);
 void QDialogButtonBox_QBaseLeaveEvent(QDialogButtonBox* self, QEvent* event);
@@ -233,9 +235,9 @@ void QDialogButtonBox_QBaseShowEvent(QDialogButtonBox* self, QShowEvent* event);
 void QDialogButtonBox_HideEvent(QDialogButtonBox* self, QHideEvent* event);
 void QDialogButtonBox_OnHideEvent(QDialogButtonBox* self, intptr_t slot);
 void QDialogButtonBox_QBaseHideEvent(QDialogButtonBox* self, QHideEvent* event);
-bool QDialogButtonBox_NativeEvent(QDialogButtonBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDialogButtonBox_NativeEvent(QDialogButtonBox* self, libqt_string eventType, void* message, long* result);
 void QDialogButtonBox_OnNativeEvent(QDialogButtonBox* self, intptr_t slot);
-bool QDialogButtonBox_QBaseNativeEvent(QDialogButtonBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDialogButtonBox_QBaseNativeEvent(QDialogButtonBox* self, libqt_string eventType, void* message, long* result);
 void QDialogButtonBox_InputMethodEvent(QDialogButtonBox* self, QInputMethodEvent* param1);
 void QDialogButtonBox_OnInputMethodEvent(QDialogButtonBox* self, intptr_t slot);
 void QDialogButtonBox_QBaseInputMethodEvent(QDialogButtonBox* self, QInputMethodEvent* param1);

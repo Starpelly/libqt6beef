@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -9,6 +7,7 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
 #include <QObjectData>
+#include <QObjectUserData>
 #include <QSignalBlocker>
 #include <QString>
 #include <QByteArray>
@@ -86,6 +85,18 @@ libqt_string QObject_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QObject_TrUtf8(const char* s) {
+    QString _ret = QObject::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QObject_ObjectName(const QObject* self) {
     QString _ret = self->objectName();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -98,8 +109,9 @@ libqt_string QObject_ObjectName(const QObject* self) {
     return _str;
 }
 
-void QObject_SetObjectName(QObject* self, char* name) {
-    self->setObjectName(QAnyStringView(name));
+void QObject_SetObjectName(QObject* self, libqt_string name) {
+    QString name_QString = QString::fromUtf8(name.data, name.len);
+    self->setObjectName(name_QString);
 }
 
 bool QObject_IsWidgetType(const QObject* self) {
@@ -108,10 +120,6 @@ bool QObject_IsWidgetType(const QObject* self) {
 
 bool QObject_IsWindowType(const QObject* self) {
     return self->isWindowType();
-}
-
-bool QObject_IsQuickItemType(const QObject* self) {
-    return self->isQuickItemType();
 }
 
 bool QObject_SignalsBlocked(const QObject* self) {
@@ -179,11 +187,19 @@ bool QObject_DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1
     return QObject::disconnect(*param1);
 }
 
-void QObject_DumpObjectTree(const QObject* self) {
+void QObject_DumpObjectTree(QObject* self) {
     self->dumpObjectTree();
 }
 
-void QObject_DumpObjectInfo(const QObject* self) {
+void QObject_DumpObjectInfo(QObject* self) {
+    self->dumpObjectInfo();
+}
+
+void QObject_DumpObjectTree2(const QObject* self) {
+    self->dumpObjectTree();
+}
+
+void QObject_DumpObjectInfo2(const QObject* self) {
     self->dumpObjectInfo();
 }
 
@@ -214,12 +230,16 @@ libqt_list /* of libqt_string */ QObject_DynamicPropertyNames(const QObject* sel
     return _out;
 }
 
-QBindingStorage* QObject_BindingStorage(QObject* self) {
-    return self->bindingStorage();
+unsigned int QObject_RegisterUserData() {
+    return static_cast<unsigned int>(QObject::registerUserData());
 }
 
-QBindingStorage* QObject_BindingStorage2(const QObject* self) {
-    return (QBindingStorage*)self->bindingStorage();
+void QObject_SetUserData(QObject* self, unsigned int id, QObjectUserData* data) {
+    self->setUserData(static_cast<uint>(id), data);
+}
+
+QObjectUserData* QObject_UserData(const QObject* self, unsigned int id) {
+    return self->userData(static_cast<uint>(id));
 }
 
 void QObject_Destroyed(QObject* self) {
@@ -259,6 +279,30 @@ libqt_string QObject_Tr2(const char* s, const char* c) {
 
 libqt_string QObject_Tr3(const char* s, const char* c, int n) {
     QString _ret = QObject::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QObject_TrUtf82(const char* s, const char* c) {
+    QString _ret = QObject::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QObject_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QObject::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -580,6 +624,14 @@ void QObject_OnIsSignalConnected(const QObject* self, intptr_t slot) {
 }
 
 void QObject_Delete(QObject* self) {
+    delete self;
+}
+
+QObjectUserData* QObjectUserData_new() {
+    return new QObjectUserData();
+}
+
+void QObjectUserData_Delete(QObjectUserData* self) {
     delete self;
 }
 

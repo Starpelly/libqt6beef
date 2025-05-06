@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -91,6 +90,7 @@ int QStackedWidget_Metacall(QStackedWidget* self, int param1, int param2, void**
 void QStackedWidget_OnMetacall(QStackedWidget* self, intptr_t slot);
 int QStackedWidget_QBaseMetacall(QStackedWidget* self, int param1, int param2, void** param3);
 libqt_string QStackedWidget_Tr(const char* s);
+libqt_string QStackedWidget_TrUtf8(const char* s);
 int QStackedWidget_AddWidget(QStackedWidget* self, QWidget* w);
 int QStackedWidget_InsertWidget(QStackedWidget* self, int index, QWidget* w);
 void QStackedWidget_RemoveWidget(QStackedWidget* self, QWidget* w);
@@ -110,6 +110,8 @@ void QStackedWidget_OnEvent(QStackedWidget* self, intptr_t slot);
 bool QStackedWidget_QBaseEvent(QStackedWidget* self, QEvent* e);
 libqt_string QStackedWidget_Tr2(const char* s, const char* c);
 libqt_string QStackedWidget_Tr3(const char* s, const char* c, int n);
+libqt_string QStackedWidget_TrUtf82(const char* s, const char* c);
+libqt_string QStackedWidget_TrUtf83(const char* s, const char* c, int n);
 QSize* QStackedWidget_SizeHint(const QStackedWidget* self);
 void QStackedWidget_OnSizeHint(const QStackedWidget* self, intptr_t slot);
 QSize* QStackedWidget_QBaseSizeHint(const QStackedWidget* self);
@@ -164,9 +166,9 @@ void QStackedWidget_QBaseFocusInEvent(QStackedWidget* self, QFocusEvent* event);
 void QStackedWidget_FocusOutEvent(QStackedWidget* self, QFocusEvent* event);
 void QStackedWidget_OnFocusOutEvent(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseFocusOutEvent(QStackedWidget* self, QFocusEvent* event);
-void QStackedWidget_EnterEvent(QStackedWidget* self, QEnterEvent* event);
+void QStackedWidget_EnterEvent(QStackedWidget* self, QEvent* event);
 void QStackedWidget_OnEnterEvent(QStackedWidget* self, intptr_t slot);
-void QStackedWidget_QBaseEnterEvent(QStackedWidget* self, QEnterEvent* event);
+void QStackedWidget_QBaseEnterEvent(QStackedWidget* self, QEvent* event);
 void QStackedWidget_LeaveEvent(QStackedWidget* self, QEvent* event);
 void QStackedWidget_OnLeaveEvent(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseLeaveEvent(QStackedWidget* self, QEvent* event);
@@ -206,9 +208,9 @@ void QStackedWidget_QBaseShowEvent(QStackedWidget* self, QShowEvent* event);
 void QStackedWidget_HideEvent(QStackedWidget* self, QHideEvent* event);
 void QStackedWidget_OnHideEvent(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseHideEvent(QStackedWidget* self, QHideEvent* event);
-bool QStackedWidget_NativeEvent(QStackedWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QStackedWidget_NativeEvent(QStackedWidget* self, libqt_string eventType, void* message, long* result);
 void QStackedWidget_OnNativeEvent(QStackedWidget* self, intptr_t slot);
-bool QStackedWidget_QBaseNativeEvent(QStackedWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QStackedWidget_QBaseNativeEvent(QStackedWidget* self, libqt_string eventType, void* message, long* result);
 void QStackedWidget_InputMethodEvent(QStackedWidget* self, QInputMethodEvent* param1);
 void QStackedWidget_OnInputMethodEvent(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseInputMethodEvent(QStackedWidget* self, QInputMethodEvent* param1);
@@ -236,9 +238,6 @@ void QStackedWidget_QBaseConnectNotify(QStackedWidget* self, QMetaMethod* signal
 void QStackedWidget_DisconnectNotify(QStackedWidget* self, QMetaMethod* signal);
 void QStackedWidget_OnDisconnectNotify(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseDisconnectNotify(QStackedWidget* self, QMetaMethod* signal);
-void QStackedWidget_InitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option);
-void QStackedWidget_OnInitStyleOption(const QStackedWidget* self, intptr_t slot);
-void QStackedWidget_QBaseInitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option);
 int QStackedWidget_Metric(const QStackedWidget* self, int param1);
 void QStackedWidget_OnMetric(const QStackedWidget* self, intptr_t slot);
 int QStackedWidget_QBaseMetric(const QStackedWidget* self, int param1);
@@ -254,6 +253,9 @@ QPainter* QStackedWidget_QBaseSharedPainter(const QStackedWidget* self);
 void QStackedWidget_DrawFrame(QStackedWidget* self, QPainter* param1);
 void QStackedWidget_OnDrawFrame(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseDrawFrame(QStackedWidget* self, QPainter* param1);
+void QStackedWidget_InitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option);
+void QStackedWidget_OnInitStyleOption(const QStackedWidget* self, intptr_t slot);
+void QStackedWidget_QBaseInitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option);
 void QStackedWidget_UpdateMicroFocus(QStackedWidget* self);
 void QStackedWidget_OnUpdateMicroFocus(QStackedWidget* self, intptr_t slot);
 void QStackedWidget_QBaseUpdateMicroFocus(QStackedWidget* self);

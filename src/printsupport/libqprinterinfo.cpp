@@ -1,7 +1,9 @@
 #include <QList>
 #include <QPageSize>
+#include <QPair>
 #include <QPrinter>
 #include <QPrinterInfo>
+#include <QSizeF>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -116,6 +118,49 @@ QPageSize* QPrinterInfo_MinimumPhysicalPageSize(const QPrinterInfo* self) {
 
 QPageSize* QPrinterInfo_MaximumPhysicalPageSize(const QPrinterInfo* self) {
     return new QPageSize(self->maximumPhysicalPageSize());
+}
+
+libqt_list /* of int */ QPrinterInfo_SupportedPaperSizes(const QPrinterInfo* self) {
+    QList<QPrinter::PaperSize> _ret = self->supportedPaperSizes();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = static_cast<int>(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of libqt_pair  tuple of libqt_string and QSizeF*  */ QPrinterInfo_SupportedSizesWithNames(const QPrinterInfo* self) {
+    QList<QPair<QString, QSizeF>> _ret = self->supportedSizesWithNames();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    libqt_pair /* tuple of libqt_string and QSizeF* */* _arr = static_cast<libqt_pair /* tuple of libqt_string and QSizeF* */*>(malloc(sizeof(libqt_pair /* tuple of libqt_string and QSizeF* */) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        QPair<QString, QSizeF> _lv_ret = _ret[i];
+        // Convert QPair<> from C++ memory to manually-managed C memory
+        libqt_string* _lv_first = static_cast<libqt_string*>(malloc(sizeof(libqt_string)));
+        QSizeF** _lv_second = static_cast<QSizeF**>(malloc(sizeof(QSizeF*)));
+        QString _lv_first_ret = _lv_ret.first;
+        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+        QByteArray _lv_first_b = _lv_first_ret.toUtf8();
+        libqt_string _lv_first_str;
+        _lv_first_str.len = _lv_first_b.length();
+        _lv_first_str.data = static_cast<char*>(malloc((_lv_first_str.len + 1) * sizeof(char)));
+        memcpy(_lv_first_str.data, _lv_first_b.data(), _lv_first_str.len);
+        _lv_first_str.data[_lv_first_str.len] = '\0';
+        *_lv_first = _lv_first_str;
+        *_lv_second = new QSizeF(_lv_ret.second);
+        libqt_pair _lv_out;
+        _lv_out.first = static_cast<void*>(_lv_first);
+        _lv_out.second = static_cast<void*>(_lv_second);
+        _arr[i] = _lv_out;
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 libqt_list /* of int */ QPrinterInfo_SupportedResolutions(const QPrinterInfo* self) {

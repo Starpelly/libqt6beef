@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,6 @@ class VirtualQApplication : public QApplication {
     using QApplication_CustomEvent_Callback = void (*)(QApplication*, QEvent*);
     using QApplication_ConnectNotify_Callback = void (*)(QApplication*, const QMetaMethod&);
     using QApplication_DisconnectNotify_Callback = void (*)(QApplication*, const QMetaMethod&);
-    using QApplication_ResolveInterface_Callback = void* (*)(const QApplication*, const char*, int);
     using QApplication_Sender_Callback = QObject* (*)();
     using QApplication_SenderSignalIndex_Callback = int (*)();
     using QApplication_Receivers_Callback = int (*)(const QApplication*, const char*);
@@ -41,7 +42,6 @@ class VirtualQApplication : public QApplication {
     QApplication_CustomEvent_Callback qapplication_customevent_callback = nullptr;
     QApplication_ConnectNotify_Callback qapplication_connectnotify_callback = nullptr;
     QApplication_DisconnectNotify_Callback qapplication_disconnectnotify_callback = nullptr;
-    QApplication_ResolveInterface_Callback qapplication_resolveinterface_callback = nullptr;
     QApplication_Sender_Callback qapplication_sender_callback = nullptr;
     QApplication_SenderSignalIndex_Callback qapplication_sendersignalindex_callback = nullptr;
     QApplication_Receivers_Callback qapplication_receivers_callback = nullptr;
@@ -57,7 +57,6 @@ class VirtualQApplication : public QApplication {
     mutable bool qapplication_customevent_isbase = false;
     mutable bool qapplication_connectnotify_isbase = false;
     mutable bool qapplication_disconnectnotify_isbase = false;
-    mutable bool qapplication_resolveinterface_isbase = false;
     mutable bool qapplication_sender_isbase = false;
     mutable bool qapplication_sendersignalindex_isbase = false;
     mutable bool qapplication_receivers_isbase = false;
@@ -77,7 +76,6 @@ class VirtualQApplication : public QApplication {
         qapplication_customevent_callback = nullptr;
         qapplication_connectnotify_callback = nullptr;
         qapplication_disconnectnotify_callback = nullptr;
-        qapplication_resolveinterface_callback = nullptr;
         qapplication_sender_callback = nullptr;
         qapplication_sendersignalindex_callback = nullptr;
         qapplication_receivers_callback = nullptr;
@@ -94,7 +92,6 @@ class VirtualQApplication : public QApplication {
     void setQApplication_CustomEvent_Callback(QApplication_CustomEvent_Callback cb) { qapplication_customevent_callback = cb; }
     void setQApplication_ConnectNotify_Callback(QApplication_ConnectNotify_Callback cb) { qapplication_connectnotify_callback = cb; }
     void setQApplication_DisconnectNotify_Callback(QApplication_DisconnectNotify_Callback cb) { qapplication_disconnectnotify_callback = cb; }
-    void setQApplication_ResolveInterface_Callback(QApplication_ResolveInterface_Callback cb) { qapplication_resolveinterface_callback = cb; }
     void setQApplication_Sender_Callback(QApplication_Sender_Callback cb) { qapplication_sender_callback = cb; }
     void setQApplication_SenderSignalIndex_Callback(QApplication_SenderSignalIndex_Callback cb) { qapplication_sendersignalindex_callback = cb; }
     void setQApplication_Receivers_Callback(QApplication_Receivers_Callback cb) { qapplication_receivers_callback = cb; }
@@ -110,7 +107,6 @@ class VirtualQApplication : public QApplication {
     void setQApplication_CustomEvent_IsBase(bool value) const { qapplication_customevent_isbase = value; }
     void setQApplication_ConnectNotify_IsBase(bool value) const { qapplication_connectnotify_isbase = value; }
     void setQApplication_DisconnectNotify_IsBase(bool value) const { qapplication_disconnectnotify_isbase = value; }
-    void setQApplication_ResolveInterface_IsBase(bool value) const { qapplication_resolveinterface_isbase = value; }
     void setQApplication_Sender_IsBase(bool value) const { qapplication_sender_isbase = value; }
     void setQApplication_SenderSignalIndex_IsBase(bool value) const { qapplication_sendersignalindex_isbase = value; }
     void setQApplication_Receivers_IsBase(bool value) const { qapplication_receivers_isbase = value; }
@@ -221,18 +217,6 @@ class VirtualQApplication : public QApplication {
             qapplication_disconnectnotify_callback(this, signal);
         } else {
             QApplication::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void* resolveInterface(const char* name, int revision) const {
-        if (qapplication_resolveinterface_isbase) {
-            qapplication_resolveinterface_isbase = false;
-            return QApplication::resolveInterface(name, revision);
-        } else if (qapplication_resolveinterface_callback != nullptr) {
-            return qapplication_resolveinterface_callback(this, name, revision);
-        } else {
-            return QApplication::resolveInterface(name, revision);
         }
     }
 

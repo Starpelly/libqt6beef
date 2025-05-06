@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,11 +25,11 @@ typedef struct QPointF QPointF;
 #endif
 
 #ifdef __cplusplus
-typedef QLineF::IntersectType IntersectType;       // C++ QFlags
-typedef QLineF::IntersectionType IntersectionType; // C++ enum
+typedef QLineF::IntersectType IntersectType;       // C++ enum
+typedef QLineF::IntersectionType IntersectionType; // C++ QFlags
 #else
-typedef int IntersectType;    // C ABI QFlags
-typedef int IntersectionType; // C ABI enum
+typedef int IntersectType;    // C ABI enum
+typedef int IntersectionType; // C ABI QFlags
 #endif
 
 QLine* QLine_new(QLine* other);
@@ -58,7 +60,6 @@ void QLine_SetPoints(QLine* self, QPoint* p1, QPoint* p2);
 void QLine_SetLine(QLine* self, int x1, int y1, int x2, int y2);
 bool QLine_OperatorEqual(const QLine* self, QLine* d);
 bool QLine_OperatorNotEqual(const QLine* self, QLine* d);
-QLineF* QLine_ToLineF(const QLine* self);
 void QLine_Delete(QLine* self);
 
 QLineF* QLineF_new(QLineF* other);
@@ -87,7 +88,9 @@ void QLineF_SetAngle(QLineF* self, double angle);
 double QLineF_AngleTo(const QLineF* self, QLineF* l);
 QLineF* QLineF_UnitVector(const QLineF* self);
 QLineF* QLineF_NormalVector(const QLineF* self);
-int QLineF_Intersects(const QLineF* self, QLineF* l);
+int QLineF_Intersects(const QLineF* self, QLineF* l, QPointF* intersectionPoint);
+int QLineF_Intersect(const QLineF* self, QLineF* l, QPointF* intersectionPoint);
+double QLineF_AngleWithQLineF(const QLineF* self, QLineF* l);
 QPointF* QLineF_PointAt(const QLineF* self, double t);
 void QLineF_Translate(QLineF* self, QPointF* p);
 void QLineF_Translate2(QLineF* self, double dx, double dy);
@@ -101,7 +104,6 @@ void QLineF_SetLine(QLineF* self, double x1, double y1, double x2, double y2);
 bool QLineF_OperatorEqual(const QLineF* self, QLineF* d);
 bool QLineF_OperatorNotEqual(const QLineF* self, QLineF* d);
 QLine* QLineF_ToLine(const QLineF* self);
-int QLineF_Intersects2(const QLineF* self, QLineF* l, QPointF* intersectionPoint);
 void QLineF_Delete(QLineF* self);
 
 #ifdef __cplusplus

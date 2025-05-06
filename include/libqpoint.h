@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -41,7 +43,6 @@ QPoint* QPoint_OperatorMultiplyAssignWithFactor(QPoint* self, double factor);
 QPoint* QPoint_OperatorMultiplyAssign2(QPoint* self, int factor);
 QPoint* QPoint_OperatorDivideAssign(QPoint* self, double divisor);
 int QPoint_DotProduct(QPoint* p1, QPoint* p2);
-QPointF* QPoint_ToPointF(const QPoint* self);
 void QPoint_Delete(QPoint* self);
 
 QPointF* QPointF_new(QPointF* other);

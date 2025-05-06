@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,6 +33,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,7 +41,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -112,6 +109,18 @@ int QTabWidget_QBaseMetacall(QTabWidget* self, int param1, int param2, void** pa
 
 libqt_string QTabWidget_Tr(const char* s) {
     QString _ret = QTabWidget::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTabWidget_TrUtf8(const char* s) {
+    QString _ret = QTabWidget::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -399,6 +408,30 @@ libqt_string QTabWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QTabWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTabWidget::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTabWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTabWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTabWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTabWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -730,32 +763,6 @@ void QTabWidget_OnEvent(QTabWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTabWidget_InitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option) {
-    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
-        vqtabwidget->initStyleOption(option);
-    } else {
-        vqtabwidget->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTabWidget_QBaseInitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option) {
-    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
-        vqtabwidget->setQTabWidget_InitStyleOption_IsBase(true);
-        vqtabwidget->initStyleOption(option);
-    } else {
-        vqtabwidget->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTabWidget_OnInitStyleOption(const QTabWidget* self, intptr_t slot) {
-    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
-        vqtabwidget->setQTabWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQTabWidget::QTabWidget_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QTabWidget_DevType(const QTabWidget* self) {
     if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
         return vqtabwidget->devType();
@@ -1042,7 +1049,7 @@ void QTabWidget_OnFocusOutEvent(QTabWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTabWidget_EnterEvent(QTabWidget* self, QEnterEvent* event) {
+void QTabWidget_EnterEvent(QTabWidget* self, QEvent* event) {
     if (auto* vqtabwidget = dynamic_cast<VirtualQTabWidget*>(self)) {
         vqtabwidget->enterEvent(event);
     } else {
@@ -1051,7 +1058,7 @@ void QTabWidget_EnterEvent(QTabWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QTabWidget_QBaseEnterEvent(QTabWidget* self, QEnterEvent* event) {
+void QTabWidget_QBaseEnterEvent(QTabWidget* self, QEvent* event) {
     if (auto* vqtabwidget = dynamic_cast<VirtualQTabWidget*>(self)) {
         vqtabwidget->setQTabWidget_EnterEvent_IsBase(true);
         vqtabwidget->enterEvent(event);
@@ -1354,23 +1361,23 @@ void QTabWidget_OnHideEvent(QTabWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTabWidget_NativeEvent(QTabWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTabWidget_NativeEvent(QTabWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtabwidget = dynamic_cast<VirtualQTabWidget*>(self)) {
-        return vqtabwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtabwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtabwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtabwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QTabWidget_QBaseNativeEvent(QTabWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTabWidget_QBaseNativeEvent(QTabWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtabwidget = dynamic_cast<VirtualQTabWidget*>(self)) {
         vqtabwidget->setQTabWidget_NativeEvent_IsBase(true);
-        return vqtabwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtabwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtabwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtabwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1742,6 +1749,32 @@ void QTabWidget_QBaseSetTabBar(QTabWidget* self, QTabBar* tabBar) {
 void QTabWidget_OnSetTabBar(QTabWidget* self, intptr_t slot) {
     if (auto* vqtabwidget = dynamic_cast<VirtualQTabWidget*>(self)) {
         vqtabwidget->setQTabWidget_SetTabBar_Callback(reinterpret_cast<VirtualQTabWidget::QTabWidget_SetTabBar_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTabWidget_InitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option) {
+    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
+        vqtabwidget->initStyleOption(option);
+    } else {
+        vqtabwidget->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QTabWidget_QBaseInitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option) {
+    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
+        vqtabwidget->setQTabWidget_InitStyleOption_IsBase(true);
+        vqtabwidget->initStyleOption(option);
+    } else {
+        vqtabwidget->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTabWidget_OnInitStyleOption(const QTabWidget* self, intptr_t slot) {
+    if (auto* vqtabwidget = const_cast<VirtualQTabWidget*>(dynamic_cast<const VirtualQTabWidget*>(self))) {
+        vqtabwidget->setQTabWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQTabWidget::QTabWidget_InitStyleOption_Callback>(slot));
     }
 }
 

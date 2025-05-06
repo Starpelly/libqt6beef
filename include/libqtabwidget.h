@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -55,6 +54,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -62,7 +62,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -99,6 +98,7 @@ int QTabWidget_Metacall(QTabWidget* self, int param1, int param2, void** param3)
 void QTabWidget_OnMetacall(QTabWidget* self, intptr_t slot);
 int QTabWidget_QBaseMetacall(QTabWidget* self, int param1, int param2, void** param3);
 libqt_string QTabWidget_Tr(const char* s);
+libqt_string QTabWidget_TrUtf8(const char* s);
 int QTabWidget_AddTab(QTabWidget* self, QWidget* widget, libqt_string param2);
 int QTabWidget_AddTab2(QTabWidget* self, QWidget* widget, QIcon* icon, libqt_string label);
 int QTabWidget_InsertTab(QTabWidget* self, int index, QWidget* widget, libqt_string param3);
@@ -189,11 +189,10 @@ void QTabWidget_QBaseChangeEvent(QTabWidget* self, QEvent* param1);
 bool QTabWidget_Event(QTabWidget* self, QEvent* param1);
 void QTabWidget_OnEvent(QTabWidget* self, intptr_t slot);
 bool QTabWidget_QBaseEvent(QTabWidget* self, QEvent* param1);
-void QTabWidget_InitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option);
-void QTabWidget_OnInitStyleOption(const QTabWidget* self, intptr_t slot);
-void QTabWidget_QBaseInitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option);
 libqt_string QTabWidget_Tr2(const char* s, const char* c);
 libqt_string QTabWidget_Tr3(const char* s, const char* c, int n);
+libqt_string QTabWidget_TrUtf82(const char* s, const char* c);
+libqt_string QTabWidget_TrUtf83(const char* s, const char* c, int n);
 void QTabWidget_SetCornerWidget2(QTabWidget* self, QWidget* w, int corner);
 QWidget* QTabWidget_CornerWidget1(const QTabWidget* self, int corner);
 int QTabWidget_DevType(const QTabWidget* self);
@@ -229,9 +228,9 @@ void QTabWidget_QBaseFocusInEvent(QTabWidget* self, QFocusEvent* event);
 void QTabWidget_FocusOutEvent(QTabWidget* self, QFocusEvent* event);
 void QTabWidget_OnFocusOutEvent(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseFocusOutEvent(QTabWidget* self, QFocusEvent* event);
-void QTabWidget_EnterEvent(QTabWidget* self, QEnterEvent* event);
+void QTabWidget_EnterEvent(QTabWidget* self, QEvent* event);
 void QTabWidget_OnEnterEvent(QTabWidget* self, intptr_t slot);
-void QTabWidget_QBaseEnterEvent(QTabWidget* self, QEnterEvent* event);
+void QTabWidget_QBaseEnterEvent(QTabWidget* self, QEvent* event);
 void QTabWidget_LeaveEvent(QTabWidget* self, QEvent* event);
 void QTabWidget_OnLeaveEvent(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseLeaveEvent(QTabWidget* self, QEvent* event);
@@ -265,9 +264,9 @@ void QTabWidget_QBaseDropEvent(QTabWidget* self, QDropEvent* event);
 void QTabWidget_HideEvent(QTabWidget* self, QHideEvent* event);
 void QTabWidget_OnHideEvent(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseHideEvent(QTabWidget* self, QHideEvent* event);
-bool QTabWidget_NativeEvent(QTabWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QTabWidget_NativeEvent(QTabWidget* self, libqt_string eventType, void* message, long* result);
 void QTabWidget_OnNativeEvent(QTabWidget* self, intptr_t slot);
-bool QTabWidget_QBaseNativeEvent(QTabWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QTabWidget_QBaseNativeEvent(QTabWidget* self, libqt_string eventType, void* message, long* result);
 void QTabWidget_InputMethodEvent(QTabWidget* self, QInputMethodEvent* param1);
 void QTabWidget_OnInputMethodEvent(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseInputMethodEvent(QTabWidget* self, QInputMethodEvent* param1);
@@ -310,6 +309,9 @@ QPainter* QTabWidget_QBaseSharedPainter(const QTabWidget* self);
 void QTabWidget_SetTabBar(QTabWidget* self, QTabBar* tabBar);
 void QTabWidget_OnSetTabBar(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseSetTabBar(QTabWidget* self, QTabBar* tabBar);
+void QTabWidget_InitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option);
+void QTabWidget_OnInitStyleOption(const QTabWidget* self, intptr_t slot);
+void QTabWidget_QBaseInitStyleOption(const QTabWidget* self, QStyleOptionTabWidgetFrame* option);
 void QTabWidget_UpdateMicroFocus(QTabWidget* self);
 void QTabWidget_OnUpdateMicroFocus(QTabWidget* self, intptr_t slot);
 void QTabWidget_QBaseUpdateMicroFocus(QTabWidget* self);

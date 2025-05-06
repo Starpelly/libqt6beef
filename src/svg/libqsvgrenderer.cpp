@@ -1,13 +1,13 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QList>
+#include <QMatrix>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QPainter>
 #include <QRect>
 #include <QRectF>
@@ -106,6 +106,18 @@ libqt_string QSvgRenderer_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSvgRenderer_TrUtf8(const char* s) {
+    QString _ret = QSvgRenderer::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QSvgRenderer_IsValid(const QSvgRenderer* self) {
     return self->isValid();
 }
@@ -172,6 +184,11 @@ bool QSvgRenderer_ElementExists(const QSvgRenderer* self, libqt_string id) {
     return self->elementExists(id_QString);
 }
 
+QMatrix* QSvgRenderer_MatrixForElement(const QSvgRenderer* self, libqt_string id) {
+    QString id_QString = QString::fromUtf8(id.data, id.len);
+    return new QMatrix(self->matrixForElement(id_QString));
+}
+
 QTransform* QSvgRenderer_TransformForElement(const QSvgRenderer* self, libqt_string id) {
     QString id_QString = QString::fromUtf8(id.data, id.len);
     return new QTransform(self->transformForElement(id_QString));
@@ -229,6 +246,30 @@ libqt_string QSvgRenderer_Tr2(const char* s, const char* c) {
 
 libqt_string QSvgRenderer_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSvgRenderer::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSvgRenderer_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSvgRenderer::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSvgRenderer_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSvgRenderer::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

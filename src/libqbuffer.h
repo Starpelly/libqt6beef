@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,17 +21,15 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBuffer QBuffer;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -43,6 +43,7 @@ int QBuffer_Metacall(QBuffer* self, int param1, int param2, void** param3);
 void QBuffer_OnMetacall(QBuffer* self, intptr_t slot);
 int QBuffer_QBaseMetacall(QBuffer* self, int param1, int param2, void** param3);
 libqt_string QBuffer_Tr(const char* s);
+libqt_string QBuffer_TrUtf8(const char* s);
 libqt_string QBuffer_Buffer(QBuffer* self);
 libqt_string QBuffer_Buffer2(const QBuffer* self);
 void QBuffer_SetData(QBuffer* self, libqt_string data);
@@ -83,6 +84,8 @@ void QBuffer_OnWriteData(QBuffer* self, intptr_t slot);
 long long QBuffer_QBaseWriteData(QBuffer* self, const char* data, long long lenVal);
 libqt_string QBuffer_Tr2(const char* s, const char* c);
 libqt_string QBuffer_Tr3(const char* s, const char* c, int n);
+libqt_string QBuffer_TrUtf82(const char* s, const char* c);
+libqt_string QBuffer_TrUtf83(const char* s, const char* c, int n);
 bool QBuffer_IsSequential(const QBuffer* self);
 void QBuffer_OnIsSequential(const QBuffer* self, intptr_t slot);
 bool QBuffer_QBaseIsSequential(const QBuffer* self);
@@ -104,9 +107,6 @@ bool QBuffer_QBaseWaitForBytesWritten(QBuffer* self, int msecs);
 long long QBuffer_ReadLineData(QBuffer* self, char* data, long long maxlen);
 void QBuffer_OnReadLineData(QBuffer* self, intptr_t slot);
 long long QBuffer_QBaseReadLineData(QBuffer* self, char* data, long long maxlen);
-long long QBuffer_SkipData(QBuffer* self, long long maxSize);
-void QBuffer_OnSkipData(QBuffer* self, intptr_t slot);
-long long QBuffer_QBaseSkipData(QBuffer* self, long long maxSize);
 bool QBuffer_Event(QBuffer* self, QEvent* event);
 void QBuffer_OnEvent(QBuffer* self, intptr_t slot);
 bool QBuffer_QBaseEvent(QBuffer* self, QEvent* event);

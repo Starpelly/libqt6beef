@@ -44,6 +44,11 @@ void QDir_OperatorAssign(QDir* self, QDir* param1) {
     self->operator=(*param1);
 }
 
+void QDir_OperatorAssignWithPath(QDir* self, libqt_string path) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    self->operator=(path_QString);
+}
+
 void QDir_Swap(QDir* self, QDir* other) {
     self->swap(*other);
 }
@@ -87,6 +92,11 @@ libqt_string QDir_CanonicalPath(const QDir* self) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+void QDir_AddResourceSearchPath(libqt_string path) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    QDir::addResourceSearchPath(path_QString);
 }
 
 void QDir_SetSearchPaths(libqt_string prefix, libqt_list /* of libqt_string */ searchPaths) {
@@ -390,11 +400,6 @@ libqt_list /* of QFileInfo* */ QDir_EntryInfoListWithNameFilters(const QDir* sel
 bool QDir_Mkdir(const QDir* self, libqt_string dirName) {
     QString dirName_QString = QString::fromUtf8(dirName.data, dirName.len);
     return self->mkdir(dirName_QString);
-}
-
-bool QDir_Mkdir2(const QDir* self, libqt_string dirName, int permissions) {
-    QString dirName_QString = QString::fromUtf8(dirName.data, dirName.len);
-    return self->mkdir(dirName_QString, static_cast<QFile::Permissions>(permissions));
 }
 
 bool QDir_Rmdir(const QDir* self, libqt_string dirName) {

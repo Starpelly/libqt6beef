@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QChildEvent QChildEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -58,6 +57,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -65,7 +65,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -99,6 +98,7 @@ int QToolButton_Metacall(QToolButton* self, int param1, int param2, void** param
 void QToolButton_OnMetacall(QToolButton* self, intptr_t slot);
 int QToolButton_QBaseMetacall(QToolButton* self, int param1, int param2, void** param3);
 libqt_string QToolButton_Tr(const char* s);
+libqt_string QToolButton_TrUtf8(const char* s);
 QSize* QToolButton_SizeHint(const QToolButton* self);
 void QToolButton_OnSizeHint(const QToolButton* self, intptr_t slot);
 QSize* QToolButton_QBaseSizeHint(const QToolButton* self);
@@ -135,9 +135,9 @@ void QToolButton_QBasePaintEvent(QToolButton* self, QPaintEvent* param1);
 void QToolButton_ActionEvent(QToolButton* self, QActionEvent* param1);
 void QToolButton_OnActionEvent(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseActionEvent(QToolButton* self, QActionEvent* param1);
-void QToolButton_EnterEvent(QToolButton* self, QEnterEvent* param1);
+void QToolButton_EnterEvent(QToolButton* self, QEvent* param1);
 void QToolButton_OnEnterEvent(QToolButton* self, intptr_t slot);
-void QToolButton_QBaseEnterEvent(QToolButton* self, QEnterEvent* param1);
+void QToolButton_QBaseEnterEvent(QToolButton* self, QEvent* param1);
 void QToolButton_LeaveEvent(QToolButton* self, QEvent* param1);
 void QToolButton_OnLeaveEvent(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseLeaveEvent(QToolButton* self, QEvent* param1);
@@ -150,17 +150,16 @@ void QToolButton_QBaseChangeEvent(QToolButton* self, QEvent* param1);
 bool QToolButton_HitButton(const QToolButton* self, QPoint* pos);
 void QToolButton_OnHitButton(const QToolButton* self, intptr_t slot);
 bool QToolButton_QBaseHitButton(const QToolButton* self, QPoint* pos);
-void QToolButton_CheckStateSet(QToolButton* self);
-void QToolButton_OnCheckStateSet(QToolButton* self, intptr_t slot);
-void QToolButton_QBaseCheckStateSet(QToolButton* self);
 void QToolButton_NextCheckState(QToolButton* self);
 void QToolButton_OnNextCheckState(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseNextCheckState(QToolButton* self);
-void QToolButton_InitStyleOption(const QToolButton* self, QStyleOptionToolButton* option);
-void QToolButton_OnInitStyleOption(const QToolButton* self, intptr_t slot);
-void QToolButton_QBaseInitStyleOption(const QToolButton* self, QStyleOptionToolButton* option);
 libqt_string QToolButton_Tr2(const char* s, const char* c);
 libqt_string QToolButton_Tr3(const char* s, const char* c, int n);
+libqt_string QToolButton_TrUtf82(const char* s, const char* c);
+libqt_string QToolButton_TrUtf83(const char* s, const char* c, int n);
+void QToolButton_CheckStateSet(QToolButton* self);
+void QToolButton_OnCheckStateSet(QToolButton* self, intptr_t slot);
+void QToolButton_QBaseCheckStateSet(QToolButton* self);
 void QToolButton_KeyPressEvent(QToolButton* self, QKeyEvent* e);
 void QToolButton_OnKeyPressEvent(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseKeyPressEvent(QToolButton* self, QKeyEvent* e);
@@ -230,9 +229,9 @@ void QToolButton_QBaseShowEvent(QToolButton* self, QShowEvent* event);
 void QToolButton_HideEvent(QToolButton* self, QHideEvent* event);
 void QToolButton_OnHideEvent(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseHideEvent(QToolButton* self, QHideEvent* event);
-bool QToolButton_NativeEvent(QToolButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QToolButton_NativeEvent(QToolButton* self, libqt_string eventType, void* message, long* result);
 void QToolButton_OnNativeEvent(QToolButton* self, intptr_t slot);
-bool QToolButton_QBaseNativeEvent(QToolButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QToolButton_QBaseNativeEvent(QToolButton* self, libqt_string eventType, void* message, long* result);
 void QToolButton_InputMethodEvent(QToolButton* self, QInputMethodEvent* param1);
 void QToolButton_OnInputMethodEvent(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseInputMethodEvent(QToolButton* self, QInputMethodEvent* param1);
@@ -269,6 +268,9 @@ QPaintDevice* QToolButton_QBaseRedirected(const QToolButton* self, QPoint* offse
 QPainter* QToolButton_SharedPainter(const QToolButton* self);
 void QToolButton_OnSharedPainter(const QToolButton* self, intptr_t slot);
 QPainter* QToolButton_QBaseSharedPainter(const QToolButton* self);
+void QToolButton_InitStyleOption(const QToolButton* self, QStyleOptionToolButton* option);
+void QToolButton_OnInitStyleOption(const QToolButton* self, intptr_t slot);
+void QToolButton_QBaseInitStyleOption(const QToolButton* self, QStyleOptionToolButton* option);
 void QToolButton_UpdateMicroFocus(QToolButton* self);
 void QToolButton_OnUpdateMicroFocus(QToolButton* self, intptr_t slot);
 void QToolButton_QBaseUpdateMicroFocus(QToolButton* self);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,27 +23,26 @@ typedef struct QArrayData QArrayData;
 
 #ifdef __cplusplus
 typedef QArrayData::AllocationOption AllocationOption;                            // C++ enum
-typedef QArrayData::ArrayOption ArrayOption;                                      // C++ enum
-typedef QArrayData::ArrayOptions ArrayOptions;                                    // C++ QFlags
-typedef QArrayData::GrowthPosition GrowthPosition;                                // C++ enum
+typedef QArrayData::AllocationOptions AllocationOptions;                          // C++ QFlags
 typedef QtPrivate::QContainerImplHelper::CutResult QContainerImplHelperCutResult; // C++ enum
 #else
 typedef int AllocationOption;              // C ABI enum
-typedef int ArrayOption;                   // C ABI enum
-typedef int ArrayOptions;                  // C ABI QFlags
-typedef int GrowthPosition;                // C ABI enum
+typedef int AllocationOptions;             // C ABI QFlags
 typedef int QContainerImplHelperCutResult; // C ABI enum
 #endif
 
-ptrdiff_t QArrayData_AllocatedCapacity(QArrayData* self);
-ptrdiff_t QArrayData_ConstAllocatedCapacity(const QArrayData* self);
-bool QArrayData_Ref(QArrayData* self);
-bool QArrayData_Deref(QArrayData* self);
-bool QArrayData_IsShared(const QArrayData* self);
-bool QArrayData_NeedsDetach(const QArrayData* self);
-ptrdiff_t QArrayData_DetachCapacity(const QArrayData* self, ptrdiff_t newSize);
-libqt_pair /* tuple of QArrayData* and void* */ QArrayData_ReallocateUnaligned(QArrayData* data, void* dataPointer, ptrdiff_t objectSize, ptrdiff_t newCapacity, int option);
-void QArrayData_Deallocate(QArrayData* data, ptrdiff_t objectSize, ptrdiff_t alignment);
+void* QArrayData_Data(QArrayData* self);
+const void* QArrayData_Data2(const QArrayData* self);
+bool QArrayData_IsMutable(const QArrayData* self);
+size_t QArrayData_DetachCapacity(const QArrayData* self, size_t newSize);
+int QArrayData_DetachFlags(const QArrayData* self);
+int QArrayData_CloneFlags(const QArrayData* self);
+QArrayData* QArrayData_Allocate(size_t objectSize, size_t alignment, size_t capacity);
+QArrayData* QArrayData_ReallocateUnaligned(QArrayData* data, size_t objectSize, size_t newCapacity);
+void QArrayData_Deallocate(QArrayData* data, size_t objectSize, size_t alignment);
+QArrayData* QArrayData_SharedNull();
+QArrayData* QArrayData_Allocate4(size_t objectSize, size_t alignment, size_t capacity, int options);
+QArrayData* QArrayData_ReallocateUnaligned4(QArrayData* data, size_t objectSize, size_t newCapacity, int newOptions);
 void QArrayData_Delete(QArrayData* self);
 
 #ifdef __cplusplus

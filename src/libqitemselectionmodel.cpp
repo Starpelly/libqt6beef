@@ -1,6 +1,4 @@
 #include <QAbstractItemModel>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -13,6 +11,7 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QModelIndex>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QString>
 #include <QByteArray>
@@ -28,16 +27,20 @@ QItemSelectionRange* QItemSelectionRange_new() {
     return new QItemSelectionRange();
 }
 
-QItemSelectionRange* QItemSelectionRange_new2(QModelIndex* topL, QModelIndex* bottomR) {
+QItemSelectionRange* QItemSelectionRange_new2(QItemSelectionRange* other) {
+    return new QItemSelectionRange(*other);
+}
+
+QItemSelectionRange* QItemSelectionRange_new3(QModelIndex* topL, QModelIndex* bottomR) {
     return new QItemSelectionRange(*topL, *bottomR);
 }
 
-QItemSelectionRange* QItemSelectionRange_new3(QModelIndex* index) {
+QItemSelectionRange* QItemSelectionRange_new4(QModelIndex* index) {
     return new QItemSelectionRange(*index);
 }
 
-QItemSelectionRange* QItemSelectionRange_new4(QItemSelectionRange* param1) {
-    return new QItemSelectionRange(*param1);
+void QItemSelectionRange_OperatorAssign(QItemSelectionRange* self, QItemSelectionRange* other) {
+    self->operator=(*other);
 }
 
 void QItemSelectionRange_Swap(QItemSelectionRange* self, QItemSelectionRange* other) {
@@ -112,6 +115,10 @@ bool QItemSelectionRange_OperatorNotEqual(const QItemSelectionRange* self, QItem
     return (*self != *other);
 }
 
+bool QItemSelectionRange_OperatorLesser(const QItemSelectionRange* self, QItemSelectionRange* other) {
+    return (*self < *other);
+}
+
 bool QItemSelectionRange_IsValid(const QItemSelectionRange* self) {
     return self->isValid();
 }
@@ -184,6 +191,18 @@ int QItemSelectionModel_QBaseMetacall(QItemSelectionModel* self, int param1, int
 
 libqt_string QItemSelectionModel_Tr(const char* s) {
     QString _ret = QItemSelectionModel::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QItemSelectionModel_TrUtf8(const char* s) {
+    QString _ret = QItemSelectionModel::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -375,6 +394,30 @@ libqt_string QItemSelectionModel_Tr2(const char* s, const char* c) {
 
 libqt_string QItemSelectionModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QItemSelectionModel::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QItemSelectionModel_TrUtf82(const char* s, const char* c) {
+    QString _ret = QItemSelectionModel::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QItemSelectionModel_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QItemSelectionModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -899,16 +942,12 @@ void QItemSelectionModel_Delete(QItemSelectionModel* self) {
     delete self;
 }
 
-QItemSelection* QItemSelection_new(QModelIndex* topLeft, QModelIndex* bottomRight) {
-    return new QItemSelection(*topLeft, *bottomRight);
-}
-
-QItemSelection* QItemSelection_new2() {
+QItemSelection* QItemSelection_new() {
     return new QItemSelection();
 }
 
-QItemSelection* QItemSelection_new3(QItemSelection* param1) {
-    return new QItemSelection(*param1);
+QItemSelection* QItemSelection_new2(QModelIndex* topLeft, QModelIndex* bottomRight) {
+    return new QItemSelection(*topLeft, *bottomRight);
 }
 
 void QItemSelection_Select(QItemSelection* self, QModelIndex* topLeft, QModelIndex* bottomRight) {
@@ -938,6 +977,10 @@ void QItemSelection_Merge(QItemSelection* self, QItemSelection* other, int comma
 
 void QItemSelection_Split(QItemSelectionRange* range, QItemSelectionRange* other, QItemSelection* result) {
     QItemSelection::split(*range, *other, result);
+}
+
+void QItemSelection_OperatorAssign(QItemSelection* self, QItemSelection* param1) {
+    self->operator=(*param1);
 }
 
 void QItemSelection_Delete(QItemSelection* self) {

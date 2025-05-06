@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QLayout QLayout;
@@ -30,6 +30,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QRect QRect;
 typedef struct QSize QSize;
 typedef struct QSpacerItem QSpacerItem;
@@ -55,6 +56,7 @@ int QStackedLayout_Metacall(QStackedLayout* self, int param1, int param2, void**
 void QStackedLayout_OnMetacall(QStackedLayout* self, intptr_t slot);
 int QStackedLayout_QBaseMetacall(QStackedLayout* self, int param1, int param2, void** param3);
 libqt_string QStackedLayout_Tr(const char* s);
+libqt_string QStackedLayout_TrUtf8(const char* s);
 int QStackedLayout_AddWidget(QStackedLayout* self, QWidget* w);
 int QStackedLayout_InsertWidget(QStackedLayout* self, int index, QWidget* w);
 QWidget* QStackedLayout_CurrentWidget(const QStackedLayout* self);
@@ -97,12 +99,8 @@ void QStackedLayout_SetCurrentIndex(QStackedLayout* self, int index);
 void QStackedLayout_SetCurrentWidget(QStackedLayout* self, QWidget* w);
 libqt_string QStackedLayout_Tr2(const char* s, const char* c);
 libqt_string QStackedLayout_Tr3(const char* s, const char* c, int n);
-int QStackedLayout_Spacing(const QStackedLayout* self);
-void QStackedLayout_OnSpacing(const QStackedLayout* self, intptr_t slot);
-int QStackedLayout_QBaseSpacing(const QStackedLayout* self);
-void QStackedLayout_SetSpacing(QStackedLayout* self, int spacing);
-void QStackedLayout_OnSetSpacing(QStackedLayout* self, intptr_t slot);
-void QStackedLayout_QBaseSetSpacing(QStackedLayout* self, int spacing);
+libqt_string QStackedLayout_TrUtf82(const char* s, const char* c);
+libqt_string QStackedLayout_TrUtf83(const char* s, const char* c, int n);
 void QStackedLayout_Invalidate(QStackedLayout* self);
 void QStackedLayout_OnInvalidate(QStackedLayout* self, intptr_t slot);
 void QStackedLayout_QBaseInvalidate(QStackedLayout* self);
@@ -118,16 +116,12 @@ QSize* QStackedLayout_QBaseMaximumSize(const QStackedLayout* self);
 int QStackedLayout_IndexOf(const QStackedLayout* self, QWidget* param1);
 void QStackedLayout_OnIndexOf(const QStackedLayout* self, intptr_t slot);
 int QStackedLayout_QBaseIndexOf(const QStackedLayout* self, QWidget* param1);
-int QStackedLayout_IndexOfWithQLayoutItem(const QStackedLayout* self, QLayoutItem* param1);
 bool QStackedLayout_IsEmpty(const QStackedLayout* self);
 void QStackedLayout_OnIsEmpty(const QStackedLayout* self, intptr_t slot);
 bool QStackedLayout_QBaseIsEmpty(const QStackedLayout* self);
 int QStackedLayout_ControlTypes(const QStackedLayout* self);
 void QStackedLayout_OnControlTypes(const QStackedLayout* self, intptr_t slot);
 int QStackedLayout_QBaseControlTypes(const QStackedLayout* self);
-QLayoutItem* QStackedLayout_ReplaceWidget(QStackedLayout* self, QWidget* from, QWidget* to, int options);
-void QStackedLayout_OnReplaceWidget(QStackedLayout* self, intptr_t slot);
-QLayoutItem* QStackedLayout_QBaseReplaceWidget(QStackedLayout* self, QWidget* from, QWidget* to, int options);
 QLayout* QStackedLayout_Layout(QStackedLayout* self);
 void QStackedLayout_OnLayout(QStackedLayout* self, intptr_t slot);
 QLayout* QStackedLayout_QBaseLayout(QStackedLayout* self);

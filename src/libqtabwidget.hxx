@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -28,7 +30,6 @@ class VirtualQTabWidget : public QTabWidget {
     using QTabWidget_PaintEvent_Callback = void (*)(QTabWidget*, QPaintEvent*);
     using QTabWidget_ChangeEvent_Callback = void (*)(QTabWidget*, QEvent*);
     using QTabWidget_Event_Callback = bool (*)(QTabWidget*, QEvent*);
-    using QTabWidget_InitStyleOption_Callback = void (*)(const QTabWidget*, QStyleOptionTabWidgetFrame*);
     using QTabWidget_DevType_Callback = int (*)();
     using QTabWidget_SetVisible_Callback = void (*)(QTabWidget*, bool);
     using QTabWidget_PaintEngine_Callback = QPaintEngine* (*)();
@@ -40,7 +41,7 @@ class VirtualQTabWidget : public QTabWidget {
     using QTabWidget_KeyReleaseEvent_Callback = void (*)(QTabWidget*, QKeyEvent*);
     using QTabWidget_FocusInEvent_Callback = void (*)(QTabWidget*, QFocusEvent*);
     using QTabWidget_FocusOutEvent_Callback = void (*)(QTabWidget*, QFocusEvent*);
-    using QTabWidget_EnterEvent_Callback = void (*)(QTabWidget*, QEnterEvent*);
+    using QTabWidget_EnterEvent_Callback = void (*)(QTabWidget*, QEvent*);
     using QTabWidget_LeaveEvent_Callback = void (*)(QTabWidget*, QEvent*);
     using QTabWidget_MoveEvent_Callback = void (*)(QTabWidget*, QMoveEvent*);
     using QTabWidget_CloseEvent_Callback = void (*)(QTabWidget*, QCloseEvent*);
@@ -52,7 +53,7 @@ class VirtualQTabWidget : public QTabWidget {
     using QTabWidget_DragLeaveEvent_Callback = void (*)(QTabWidget*, QDragLeaveEvent*);
     using QTabWidget_DropEvent_Callback = void (*)(QTabWidget*, QDropEvent*);
     using QTabWidget_HideEvent_Callback = void (*)(QTabWidget*, QHideEvent*);
-    using QTabWidget_NativeEvent_Callback = bool (*)(QTabWidget*, const QByteArray&, void*, qintptr*);
+    using QTabWidget_NativeEvent_Callback = bool (*)(QTabWidget*, const QByteArray&, void*, long*);
     using QTabWidget_Metric_Callback = int (*)(const QTabWidget*, QPaintDevice::PaintDeviceMetric);
     using QTabWidget_InitPainter_Callback = void (*)(const QTabWidget*, QPainter*);
     using QTabWidget_Redirected_Callback = QPaintDevice* (*)(const QTabWidget*, QPoint*);
@@ -67,6 +68,7 @@ class VirtualQTabWidget : public QTabWidget {
     using QTabWidget_ConnectNotify_Callback = void (*)(QTabWidget*, const QMetaMethod&);
     using QTabWidget_DisconnectNotify_Callback = void (*)(QTabWidget*, const QMetaMethod&);
     using QTabWidget_SetTabBar_Callback = void (*)(QTabWidget*, QTabBar*);
+    using QTabWidget_InitStyleOption_Callback = void (*)(const QTabWidget*, QStyleOptionTabWidgetFrame*);
     using QTabWidget_UpdateMicroFocus_Callback = void (*)();
     using QTabWidget_Create_Callback = void (*)();
     using QTabWidget_Destroy_Callback = void (*)();
@@ -92,7 +94,6 @@ class VirtualQTabWidget : public QTabWidget {
     QTabWidget_PaintEvent_Callback qtabwidget_paintevent_callback = nullptr;
     QTabWidget_ChangeEvent_Callback qtabwidget_changeevent_callback = nullptr;
     QTabWidget_Event_Callback qtabwidget_event_callback = nullptr;
-    QTabWidget_InitStyleOption_Callback qtabwidget_initstyleoption_callback = nullptr;
     QTabWidget_DevType_Callback qtabwidget_devtype_callback = nullptr;
     QTabWidget_SetVisible_Callback qtabwidget_setvisible_callback = nullptr;
     QTabWidget_PaintEngine_Callback qtabwidget_paintengine_callback = nullptr;
@@ -131,6 +132,7 @@ class VirtualQTabWidget : public QTabWidget {
     QTabWidget_ConnectNotify_Callback qtabwidget_connectnotify_callback = nullptr;
     QTabWidget_DisconnectNotify_Callback qtabwidget_disconnectnotify_callback = nullptr;
     QTabWidget_SetTabBar_Callback qtabwidget_settabbar_callback = nullptr;
+    QTabWidget_InitStyleOption_Callback qtabwidget_initstyleoption_callback = nullptr;
     QTabWidget_UpdateMicroFocus_Callback qtabwidget_updatemicrofocus_callback = nullptr;
     QTabWidget_Create_Callback qtabwidget_create_callback = nullptr;
     QTabWidget_Destroy_Callback qtabwidget_destroy_callback = nullptr;
@@ -155,7 +157,6 @@ class VirtualQTabWidget : public QTabWidget {
     mutable bool qtabwidget_paintevent_isbase = false;
     mutable bool qtabwidget_changeevent_isbase = false;
     mutable bool qtabwidget_event_isbase = false;
-    mutable bool qtabwidget_initstyleoption_isbase = false;
     mutable bool qtabwidget_devtype_isbase = false;
     mutable bool qtabwidget_setvisible_isbase = false;
     mutable bool qtabwidget_paintengine_isbase = false;
@@ -194,6 +195,7 @@ class VirtualQTabWidget : public QTabWidget {
     mutable bool qtabwidget_connectnotify_isbase = false;
     mutable bool qtabwidget_disconnectnotify_isbase = false;
     mutable bool qtabwidget_settabbar_isbase = false;
+    mutable bool qtabwidget_initstyleoption_isbase = false;
     mutable bool qtabwidget_updatemicrofocus_isbase = false;
     mutable bool qtabwidget_create_isbase = false;
     mutable bool qtabwidget_destroy_isbase = false;
@@ -222,7 +224,6 @@ class VirtualQTabWidget : public QTabWidget {
         qtabwidget_paintevent_callback = nullptr;
         qtabwidget_changeevent_callback = nullptr;
         qtabwidget_event_callback = nullptr;
-        qtabwidget_initstyleoption_callback = nullptr;
         qtabwidget_devtype_callback = nullptr;
         qtabwidget_setvisible_callback = nullptr;
         qtabwidget_paintengine_callback = nullptr;
@@ -261,6 +262,7 @@ class VirtualQTabWidget : public QTabWidget {
         qtabwidget_connectnotify_callback = nullptr;
         qtabwidget_disconnectnotify_callback = nullptr;
         qtabwidget_settabbar_callback = nullptr;
+        qtabwidget_initstyleoption_callback = nullptr;
         qtabwidget_updatemicrofocus_callback = nullptr;
         qtabwidget_create_callback = nullptr;
         qtabwidget_destroy_callback = nullptr;
@@ -286,7 +288,6 @@ class VirtualQTabWidget : public QTabWidget {
     void setQTabWidget_PaintEvent_Callback(QTabWidget_PaintEvent_Callback cb) { qtabwidget_paintevent_callback = cb; }
     void setQTabWidget_ChangeEvent_Callback(QTabWidget_ChangeEvent_Callback cb) { qtabwidget_changeevent_callback = cb; }
     void setQTabWidget_Event_Callback(QTabWidget_Event_Callback cb) { qtabwidget_event_callback = cb; }
-    void setQTabWidget_InitStyleOption_Callback(QTabWidget_InitStyleOption_Callback cb) { qtabwidget_initstyleoption_callback = cb; }
     void setQTabWidget_DevType_Callback(QTabWidget_DevType_Callback cb) { qtabwidget_devtype_callback = cb; }
     void setQTabWidget_SetVisible_Callback(QTabWidget_SetVisible_Callback cb) { qtabwidget_setvisible_callback = cb; }
     void setQTabWidget_PaintEngine_Callback(QTabWidget_PaintEngine_Callback cb) { qtabwidget_paintengine_callback = cb; }
@@ -325,6 +326,7 @@ class VirtualQTabWidget : public QTabWidget {
     void setQTabWidget_ConnectNotify_Callback(QTabWidget_ConnectNotify_Callback cb) { qtabwidget_connectnotify_callback = cb; }
     void setQTabWidget_DisconnectNotify_Callback(QTabWidget_DisconnectNotify_Callback cb) { qtabwidget_disconnectnotify_callback = cb; }
     void setQTabWidget_SetTabBar_Callback(QTabWidget_SetTabBar_Callback cb) { qtabwidget_settabbar_callback = cb; }
+    void setQTabWidget_InitStyleOption_Callback(QTabWidget_InitStyleOption_Callback cb) { qtabwidget_initstyleoption_callback = cb; }
     void setQTabWidget_UpdateMicroFocus_Callback(QTabWidget_UpdateMicroFocus_Callback cb) { qtabwidget_updatemicrofocus_callback = cb; }
     void setQTabWidget_Create_Callback(QTabWidget_Create_Callback cb) { qtabwidget_create_callback = cb; }
     void setQTabWidget_Destroy_Callback(QTabWidget_Destroy_Callback cb) { qtabwidget_destroy_callback = cb; }
@@ -349,7 +351,6 @@ class VirtualQTabWidget : public QTabWidget {
     void setQTabWidget_PaintEvent_IsBase(bool value) const { qtabwidget_paintevent_isbase = value; }
     void setQTabWidget_ChangeEvent_IsBase(bool value) const { qtabwidget_changeevent_isbase = value; }
     void setQTabWidget_Event_IsBase(bool value) const { qtabwidget_event_isbase = value; }
-    void setQTabWidget_InitStyleOption_IsBase(bool value) const { qtabwidget_initstyleoption_isbase = value; }
     void setQTabWidget_DevType_IsBase(bool value) const { qtabwidget_devtype_isbase = value; }
     void setQTabWidget_SetVisible_IsBase(bool value) const { qtabwidget_setvisible_isbase = value; }
     void setQTabWidget_PaintEngine_IsBase(bool value) const { qtabwidget_paintengine_isbase = value; }
@@ -388,6 +389,7 @@ class VirtualQTabWidget : public QTabWidget {
     void setQTabWidget_ConnectNotify_IsBase(bool value) const { qtabwidget_connectnotify_isbase = value; }
     void setQTabWidget_DisconnectNotify_IsBase(bool value) const { qtabwidget_disconnectnotify_isbase = value; }
     void setQTabWidget_SetTabBar_IsBase(bool value) const { qtabwidget_settabbar_isbase = value; }
+    void setQTabWidget_InitStyleOption_IsBase(bool value) const { qtabwidget_initstyleoption_isbase = value; }
     void setQTabWidget_UpdateMicroFocus_IsBase(bool value) const { qtabwidget_updatemicrofocus_isbase = value; }
     void setQTabWidget_Create_IsBase(bool value) const { qtabwidget_create_isbase = value; }
     void setQTabWidget_Destroy_IsBase(bool value) const { qtabwidget_destroy_isbase = value; }
@@ -555,18 +557,6 @@ class VirtualQTabWidget : public QTabWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionTabWidgetFrame* option) const override {
-        if (qtabwidget_initstyleoption_isbase) {
-            qtabwidget_initstyleoption_isbase = false;
-            QTabWidget::initStyleOption(option);
-        } else if (qtabwidget_initstyleoption_callback != nullptr) {
-            qtabwidget_initstyleoption_callback(this, option);
-        } else {
-            QTabWidget::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qtabwidget_devtype_isbase) {
             qtabwidget_devtype_isbase = false;
@@ -699,7 +689,7 @@ class VirtualQTabWidget : public QTabWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtabwidget_enterevent_isbase) {
             qtabwidget_enterevent_isbase = false;
             QTabWidget::enterEvent(event);
@@ -843,7 +833,7 @@ class VirtualQTabWidget : public QTabWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtabwidget_nativeevent_isbase) {
             qtabwidget_nativeevent_isbase = false;
             return QTabWidget::nativeEvent(eventType, message, result);
@@ -1019,6 +1009,18 @@ class VirtualQTabWidget : public QTabWidget {
             qtabwidget_settabbar_callback(this, tabBar);
         } else {
             QTabWidget::setTabBar(tabBar);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionTabWidgetFrame* option) const {
+        if (qtabwidget_initstyleoption_isbase) {
+            qtabwidget_initstyleoption_isbase = false;
+            QTabWidget::initStyleOption(option);
+        } else if (qtabwidget_initstyleoption_callback != nullptr) {
+            qtabwidget_initstyleoption_callback(this, option);
+        } else {
+            QTabWidget::initStyleOption(option);
         }
     }
 

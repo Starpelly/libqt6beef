@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,8 +24,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractListModel QAbstractListModel;
 typedef struct QAbstractTableModel QAbstractTableModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -32,9 +32,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleData QModelRoleData;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
@@ -52,32 +51,6 @@ typedef int CheckIndexOptions; // C ABI QFlags
 typedef int LayoutChangeHint;  // C ABI enum
 #endif
 
-QModelRoleData* QModelRoleData_new(int role);
-QModelRoleData* QModelRoleData_new2(QModelRoleData* param1);
-int QModelRoleData_Role(const QModelRoleData* self);
-QVariant* QModelRoleData_Data(QModelRoleData* self);
-QVariant* QModelRoleData_Data2(const QModelRoleData* self);
-void QModelRoleData_ClearData(QModelRoleData* self);
-void QModelRoleData_OperatorAssign(QModelRoleData* self, QModelRoleData* param1);
-void QModelRoleData_Delete(QModelRoleData* self);
-
-QModelRoleDataSpan* QModelRoleDataSpan_new(QModelRoleDataSpan* other);
-QModelRoleDataSpan* QModelRoleDataSpan_new2(QModelRoleDataSpan* other);
-QModelRoleDataSpan* QModelRoleDataSpan_new3();
-QModelRoleDataSpan* QModelRoleDataSpan_new4(QModelRoleData* modelRoleData);
-QModelRoleDataSpan* QModelRoleDataSpan_new5(QModelRoleData* modelRoleData, ptrdiff_t lenVal);
-QModelRoleDataSpan* QModelRoleDataSpan_new6(QModelRoleDataSpan* param1);
-void QModelRoleDataSpan_CopyAssign(QModelRoleDataSpan* self, QModelRoleDataSpan* other);
-void QModelRoleDataSpan_MoveAssign(QModelRoleDataSpan* self, QModelRoleDataSpan* other);
-ptrdiff_t QModelRoleDataSpan_Size(const QModelRoleDataSpan* self);
-ptrdiff_t QModelRoleDataSpan_Length(const QModelRoleDataSpan* self);
-QModelRoleData* QModelRoleDataSpan_Data(const QModelRoleDataSpan* self);
-QModelRoleData* QModelRoleDataSpan_Begin(const QModelRoleDataSpan* self);
-QModelRoleData* QModelRoleDataSpan_End(const QModelRoleDataSpan* self);
-QModelRoleData* QModelRoleDataSpan_OperatorSubscript(const QModelRoleDataSpan* self, ptrdiff_t index);
-QVariant* QModelRoleDataSpan_DataForRole(const QModelRoleDataSpan* self, int role);
-void QModelRoleDataSpan_Delete(QModelRoleDataSpan* self);
-
 QModelIndex* QModelIndex_new(QModelIndex* other);
 QModelIndex* QModelIndex_new2(QModelIndex* other);
 QModelIndex* QModelIndex_new3();
@@ -88,13 +61,12 @@ int QModelIndex_Row(const QModelIndex* self);
 int QModelIndex_Column(const QModelIndex* self);
 uintptr_t QModelIndex_InternalId(const QModelIndex* self);
 void* QModelIndex_InternalPointer(const QModelIndex* self);
-const void* QModelIndex_ConstInternalPointer(const QModelIndex* self);
 QModelIndex* QModelIndex_Parent(const QModelIndex* self);
 QModelIndex* QModelIndex_Sibling(const QModelIndex* self, int row, int column);
 QModelIndex* QModelIndex_SiblingAtColumn(const QModelIndex* self, int column);
 QModelIndex* QModelIndex_SiblingAtRow(const QModelIndex* self, int row);
+QModelIndex* QModelIndex_Child(const QModelIndex* self, int row, int column);
 QVariant* QModelIndex_Data(const QModelIndex* self);
-void QModelIndex_MultiData(const QModelIndex* self, QModelRoleDataSpan* roleDataSpan);
 int QModelIndex_Flags(const QModelIndex* self);
 QAbstractItemModel* QModelIndex_Model(const QModelIndex* self);
 bool QModelIndex_IsValid(const QModelIndex* self);
@@ -115,16 +87,15 @@ void QPersistentModelIndex_Swap(QPersistentModelIndex* self, QPersistentModelInd
 bool QPersistentModelIndex_OperatorEqualWithOther(const QPersistentModelIndex* self, QModelIndex* other);
 bool QPersistentModelIndex_OperatorNotEqualWithOther(const QPersistentModelIndex* self, QModelIndex* other);
 void QPersistentModelIndex_OperatorAssignWithOther(QPersistentModelIndex* self, QModelIndex* other);
-QModelIndex* QPersistentModelIndex_ToQModelIndex(const QPersistentModelIndex* self);
+QModelIndex* QPersistentModelIndex_ToConstQModelIndexBitwiseAnd(const QPersistentModelIndex* self);
 int QPersistentModelIndex_Row(const QPersistentModelIndex* self);
 int QPersistentModelIndex_Column(const QPersistentModelIndex* self);
 void* QPersistentModelIndex_InternalPointer(const QPersistentModelIndex* self);
-const void* QPersistentModelIndex_ConstInternalPointer(const QPersistentModelIndex* self);
 uintptr_t QPersistentModelIndex_InternalId(const QPersistentModelIndex* self);
 QModelIndex* QPersistentModelIndex_Parent(const QPersistentModelIndex* self);
 QModelIndex* QPersistentModelIndex_Sibling(const QPersistentModelIndex* self, int row, int column);
+QModelIndex* QPersistentModelIndex_Child(const QPersistentModelIndex* self, int row, int column);
 QVariant* QPersistentModelIndex_Data(const QPersistentModelIndex* self);
-void QPersistentModelIndex_MultiData(const QPersistentModelIndex* self, QModelRoleDataSpan* roleDataSpan);
 int QPersistentModelIndex_Flags(const QPersistentModelIndex* self);
 QAbstractItemModel* QPersistentModelIndex_Model(const QPersistentModelIndex* self);
 bool QPersistentModelIndex_IsValid(const QPersistentModelIndex* self);
@@ -139,6 +110,7 @@ int QAbstractItemModel_Metacall(QAbstractItemModel* self, int param1, int param2
 void QAbstractItemModel_OnMetacall(QAbstractItemModel* self, intptr_t slot);
 int QAbstractItemModel_QBaseMetacall(QAbstractItemModel* self, int param1, int param2, void** param3);
 libqt_string QAbstractItemModel_Tr(const char* s);
+libqt_string QAbstractItemModel_TrUtf8(const char* s);
 bool QAbstractItemModel_HasIndex(const QAbstractItemModel* self, int row, int column);
 QModelIndex* QAbstractItemModel_Index(const QAbstractItemModel* self, int row, int column, QModelIndex* parent);
 void QAbstractItemModel_OnIndex(const QAbstractItemModel* self, intptr_t slot);
@@ -176,9 +148,6 @@ libqt_map /* of int to QVariant* */ QAbstractItemModel_QBaseItemData(const QAbst
 bool QAbstractItemModel_SetItemData(QAbstractItemModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
 void QAbstractItemModel_OnSetItemData(QAbstractItemModel* self, intptr_t slot);
 bool QAbstractItemModel_QBaseSetItemData(QAbstractItemModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
-bool QAbstractItemModel_ClearItemData(QAbstractItemModel* self, QModelIndex* index);
-void QAbstractItemModel_OnClearItemData(QAbstractItemModel* self, intptr_t slot);
-bool QAbstractItemModel_QBaseClearItemData(QAbstractItemModel* self, QModelIndex* index);
 libqt_list /* of libqt_string */ QAbstractItemModel_MimeTypes(const QAbstractItemModel* self);
 void QAbstractItemModel_OnMimeTypes(const QAbstractItemModel* self, intptr_t slot);
 libqt_list /* of libqt_string */ QAbstractItemModel_QBaseMimeTypes(const QAbstractItemModel* self);
@@ -246,9 +215,6 @@ libqt_map /* of int to libqt_string */ QAbstractItemModel_RoleNames(const QAbstr
 void QAbstractItemModel_OnRoleNames(const QAbstractItemModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QAbstractItemModel_QBaseRoleNames(const QAbstractItemModel* self);
 bool QAbstractItemModel_CheckIndex(const QAbstractItemModel* self, QModelIndex* index);
-void QAbstractItemModel_MultiData(const QAbstractItemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QAbstractItemModel_OnMultiData(const QAbstractItemModel* self, intptr_t slot);
-void QAbstractItemModel_QBaseMultiData(const QAbstractItemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
 void QAbstractItemModel_DataChanged(QAbstractItemModel* self, QModelIndex* topLeft, QModelIndex* bottomRight);
 void QAbstractItemModel_Connect_DataChanged(QAbstractItemModel* self, intptr_t slot);
 void QAbstractItemModel_HeaderDataChanged(QAbstractItemModel* self, int orientation, int first, int last);
@@ -263,11 +229,10 @@ bool QAbstractItemModel_QBaseSubmit(QAbstractItemModel* self);
 void QAbstractItemModel_Revert(QAbstractItemModel* self);
 void QAbstractItemModel_OnRevert(QAbstractItemModel* self, intptr_t slot);
 void QAbstractItemModel_QBaseRevert(QAbstractItemModel* self);
-void QAbstractItemModel_ResetInternalData(QAbstractItemModel* self);
-void QAbstractItemModel_OnResetInternalData(QAbstractItemModel* self, intptr_t slot);
-void QAbstractItemModel_QBaseResetInternalData(QAbstractItemModel* self);
 libqt_string QAbstractItemModel_Tr2(const char* s, const char* c);
 libqt_string QAbstractItemModel_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractItemModel_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractItemModel_TrUtf83(const char* s, const char* c, int n);
 bool QAbstractItemModel_HasIndex3(const QAbstractItemModel* self, int row, int column, QModelIndex* parent);
 bool QAbstractItemModel_InsertRow2(QAbstractItemModel* self, int row, QModelIndex* parent);
 bool QAbstractItemModel_InsertColumn2(QAbstractItemModel* self, int column, QModelIndex* parent);
@@ -305,6 +270,9 @@ void QAbstractItemModel_QBaseConnectNotify(QAbstractItemModel* self, QMetaMethod
 void QAbstractItemModel_DisconnectNotify(QAbstractItemModel* self, QMetaMethod* signal);
 void QAbstractItemModel_OnDisconnectNotify(QAbstractItemModel* self, intptr_t slot);
 void QAbstractItemModel_QBaseDisconnectNotify(QAbstractItemModel* self, QMetaMethod* signal);
+void QAbstractItemModel_ResetInternalData(QAbstractItemModel* self);
+void QAbstractItemModel_OnResetInternalData(QAbstractItemModel* self, intptr_t slot);
+void QAbstractItemModel_QBaseResetInternalData(QAbstractItemModel* self);
 QModelIndex* QAbstractItemModel_CreateIndex(const QAbstractItemModel* self, int row, int column);
 void QAbstractItemModel_OnCreateIndex(const QAbstractItemModel* self, intptr_t slot);
 QModelIndex* QAbstractItemModel_QBaseCreateIndex(const QAbstractItemModel* self, int row, int column);
@@ -368,9 +336,9 @@ void QAbstractItemModel_QBaseChangePersistentIndexList(QAbstractItemModel* self,
 libqt_list /* of QModelIndex* */ QAbstractItemModel_PersistentIndexList(const QAbstractItemModel* self);
 void QAbstractItemModel_OnPersistentIndexList(const QAbstractItemModel* self, intptr_t slot);
 libqt_list /* of QModelIndex* */ QAbstractItemModel_QBasePersistentIndexList(const QAbstractItemModel* self);
-QModelIndex* QAbstractItemModel_CreateIndex3(const QAbstractItemModel* self, int row, int column, const void* data);
+QModelIndex* QAbstractItemModel_CreateIndex3(const QAbstractItemModel* self, int row, int column, void* data);
 void QAbstractItemModel_OnCreateIndex3(const QAbstractItemModel* self, intptr_t slot);
-QModelIndex* QAbstractItemModel_QBaseCreateIndex3(const QAbstractItemModel* self, int row, int column, const void* data);
+QModelIndex* QAbstractItemModel_QBaseCreateIndex3(const QAbstractItemModel* self, int row, int column, void* data);
 QObject* QAbstractItemModel_Sender(const QAbstractItemModel* self);
 void QAbstractItemModel_OnSender(const QAbstractItemModel* self, intptr_t slot);
 QObject* QAbstractItemModel_QBaseSender(const QAbstractItemModel* self);
@@ -393,6 +361,7 @@ int QAbstractTableModel_Metacall(QAbstractTableModel* self, int param1, int para
 void QAbstractTableModel_OnMetacall(QAbstractTableModel* self, intptr_t slot);
 int QAbstractTableModel_QBaseMetacall(QAbstractTableModel* self, int param1, int param2, void** param3);
 libqt_string QAbstractTableModel_Tr(const char* s);
+libqt_string QAbstractTableModel_TrUtf8(const char* s);
 QModelIndex* QAbstractTableModel_Index(const QAbstractTableModel* self, int row, int column, QModelIndex* parent);
 void QAbstractTableModel_OnIndex(const QAbstractTableModel* self, intptr_t slot);
 QModelIndex* QAbstractTableModel_QBaseIndex(const QAbstractTableModel* self, int row, int column, QModelIndex* parent);
@@ -407,6 +376,8 @@ void QAbstractTableModel_OnFlags(const QAbstractTableModel* self, intptr_t slot)
 int QAbstractTableModel_QBaseFlags(const QAbstractTableModel* self, QModelIndex* index);
 libqt_string QAbstractTableModel_Tr2(const char* s, const char* c);
 libqt_string QAbstractTableModel_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractTableModel_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractTableModel_TrUtf83(const char* s, const char* c, int n);
 int QAbstractTableModel_RowCount(const QAbstractTableModel* self, QModelIndex* parent);
 void QAbstractTableModel_OnRowCount(const QAbstractTableModel* self, intptr_t slot);
 int QAbstractTableModel_QBaseRowCount(const QAbstractTableModel* self, QModelIndex* parent);
@@ -431,9 +402,6 @@ libqt_map /* of int to QVariant* */ QAbstractTableModel_QBaseItemData(const QAbs
 bool QAbstractTableModel_SetItemData(QAbstractTableModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
 void QAbstractTableModel_OnSetItemData(QAbstractTableModel* self, intptr_t slot);
 bool QAbstractTableModel_QBaseSetItemData(QAbstractTableModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
-bool QAbstractTableModel_ClearItemData(QAbstractTableModel* self, QModelIndex* index);
-void QAbstractTableModel_OnClearItemData(QAbstractTableModel* self, intptr_t slot);
-bool QAbstractTableModel_QBaseClearItemData(QAbstractTableModel* self, QModelIndex* index);
 libqt_list /* of libqt_string */ QAbstractTableModel_MimeTypes(const QAbstractTableModel* self);
 void QAbstractTableModel_OnMimeTypes(const QAbstractTableModel* self, intptr_t slot);
 libqt_list /* of libqt_string */ QAbstractTableModel_QBaseMimeTypes(const QAbstractTableModel* self);
@@ -488,18 +456,12 @@ QSize* QAbstractTableModel_QBaseSpan(const QAbstractTableModel* self, QModelInde
 libqt_map /* of int to libqt_string */ QAbstractTableModel_RoleNames(const QAbstractTableModel* self);
 void QAbstractTableModel_OnRoleNames(const QAbstractTableModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QAbstractTableModel_QBaseRoleNames(const QAbstractTableModel* self);
-void QAbstractTableModel_MultiData(const QAbstractTableModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QAbstractTableModel_OnMultiData(const QAbstractTableModel* self, intptr_t slot);
-void QAbstractTableModel_QBaseMultiData(const QAbstractTableModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
 bool QAbstractTableModel_Submit(QAbstractTableModel* self);
 void QAbstractTableModel_OnSubmit(QAbstractTableModel* self, intptr_t slot);
 bool QAbstractTableModel_QBaseSubmit(QAbstractTableModel* self);
 void QAbstractTableModel_Revert(QAbstractTableModel* self);
 void QAbstractTableModel_OnRevert(QAbstractTableModel* self, intptr_t slot);
 void QAbstractTableModel_QBaseRevert(QAbstractTableModel* self);
-void QAbstractTableModel_ResetInternalData(QAbstractTableModel* self);
-void QAbstractTableModel_OnResetInternalData(QAbstractTableModel* self, intptr_t slot);
-void QAbstractTableModel_QBaseResetInternalData(QAbstractTableModel* self);
 bool QAbstractTableModel_Event(QAbstractTableModel* self, QEvent* event);
 void QAbstractTableModel_OnEvent(QAbstractTableModel* self, intptr_t slot);
 bool QAbstractTableModel_QBaseEvent(QAbstractTableModel* self, QEvent* event);
@@ -521,6 +483,9 @@ void QAbstractTableModel_QBaseConnectNotify(QAbstractTableModel* self, QMetaMeth
 void QAbstractTableModel_DisconnectNotify(QAbstractTableModel* self, QMetaMethod* signal);
 void QAbstractTableModel_OnDisconnectNotify(QAbstractTableModel* self, intptr_t slot);
 void QAbstractTableModel_QBaseDisconnectNotify(QAbstractTableModel* self, QMetaMethod* signal);
+void QAbstractTableModel_ResetInternalData(QAbstractTableModel* self);
+void QAbstractTableModel_OnResetInternalData(QAbstractTableModel* self, intptr_t slot);
+void QAbstractTableModel_QBaseResetInternalData(QAbstractTableModel* self);
 QModelIndex* QAbstractTableModel_CreateIndex(const QAbstractTableModel* self, int row, int column);
 void QAbstractTableModel_OnCreateIndex(const QAbstractTableModel* self, intptr_t slot);
 QModelIndex* QAbstractTableModel_QBaseCreateIndex(const QAbstractTableModel* self, int row, int column);
@@ -603,6 +568,7 @@ int QAbstractListModel_Metacall(QAbstractListModel* self, int param1, int param2
 void QAbstractListModel_OnMetacall(QAbstractListModel* self, intptr_t slot);
 int QAbstractListModel_QBaseMetacall(QAbstractListModel* self, int param1, int param2, void** param3);
 libqt_string QAbstractListModel_Tr(const char* s);
+libqt_string QAbstractListModel_TrUtf8(const char* s);
 QModelIndex* QAbstractListModel_Index(const QAbstractListModel* self, int row, int column, QModelIndex* parent);
 void QAbstractListModel_OnIndex(const QAbstractListModel* self, intptr_t slot);
 QModelIndex* QAbstractListModel_QBaseIndex(const QAbstractListModel* self, int row, int column, QModelIndex* parent);
@@ -617,6 +583,8 @@ void QAbstractListModel_OnFlags(const QAbstractListModel* self, intptr_t slot);
 int QAbstractListModel_QBaseFlags(const QAbstractListModel* self, QModelIndex* index);
 libqt_string QAbstractListModel_Tr2(const char* s, const char* c);
 libqt_string QAbstractListModel_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractListModel_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractListModel_TrUtf83(const char* s, const char* c, int n);
 bool QAbstractListModel_Event(QAbstractListModel* self, QEvent* event);
 void QAbstractListModel_OnEvent(QAbstractListModel* self, intptr_t slot);
 bool QAbstractListModel_QBaseEvent(QAbstractListModel* self, QEvent* event);
@@ -659,9 +627,6 @@ libqt_map /* of int to QVariant* */ QAbstractListModel_QBaseItemData(const QAbst
 bool QAbstractListModel_SetItemData(QAbstractListModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
 void QAbstractListModel_OnSetItemData(QAbstractListModel* self, intptr_t slot);
 bool QAbstractListModel_QBaseSetItemData(QAbstractListModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
-bool QAbstractListModel_ClearItemData(QAbstractListModel* self, QModelIndex* index);
-void QAbstractListModel_OnClearItemData(QAbstractListModel* self, intptr_t slot);
-bool QAbstractListModel_QBaseClearItemData(QAbstractListModel* self, QModelIndex* index);
 libqt_list /* of libqt_string */ QAbstractListModel_MimeTypes(const QAbstractListModel* self);
 void QAbstractListModel_OnMimeTypes(const QAbstractListModel* self, intptr_t slot);
 libqt_list /* of libqt_string */ QAbstractListModel_QBaseMimeTypes(const QAbstractListModel* self);
@@ -716,9 +681,6 @@ QSize* QAbstractListModel_QBaseSpan(const QAbstractListModel* self, QModelIndex*
 libqt_map /* of int to libqt_string */ QAbstractListModel_RoleNames(const QAbstractListModel* self);
 void QAbstractListModel_OnRoleNames(const QAbstractListModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QAbstractListModel_QBaseRoleNames(const QAbstractListModel* self);
-void QAbstractListModel_MultiData(const QAbstractListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QAbstractListModel_OnMultiData(const QAbstractListModel* self, intptr_t slot);
-void QAbstractListModel_QBaseMultiData(const QAbstractListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
 bool QAbstractListModel_Submit(QAbstractListModel* self);
 void QAbstractListModel_OnSubmit(QAbstractListModel* self, intptr_t slot);
 bool QAbstractListModel_QBaseSubmit(QAbstractListModel* self);

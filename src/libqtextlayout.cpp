@@ -179,8 +179,35 @@ libqt_string QTextLayout_PreeditAreaText(const QTextLayout* self) {
     return _str;
 }
 
-void QTextLayout_SetFormats(QTextLayout* self, libqt_list /* of QTextLayout__FormatRange* */ overrides) {
+void QTextLayout_SetAdditionalFormats(QTextLayout* self, libqt_list /* of QTextLayout__FormatRange* */ overrides) {
     QList<QTextLayout::FormatRange> overrides_QList;
+    overrides_QList.reserve(overrides.len);
+    QTextLayout__FormatRange** overrides_arr = static_cast<QTextLayout__FormatRange**>(overrides.data);
+    for (size_t i = 0; i < overrides.len; ++i) {
+        overrides_QList.push_back(*(overrides_arr[i]));
+    }
+    self->setAdditionalFormats(overrides_QList);
+}
+
+libqt_list /* of QTextLayout__FormatRange* */ QTextLayout_AdditionalFormats(const QTextLayout* self) {
+    QList<QTextLayout::FormatRange> _ret = self->additionalFormats();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QTextLayout__FormatRange** _arr = static_cast<QTextLayout__FormatRange**>(malloc(sizeof(QTextLayout__FormatRange*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QTextLayout::FormatRange(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+void QTextLayout_ClearAdditionalFormats(QTextLayout* self) {
+    self->clearAdditionalFormats();
+}
+
+void QTextLayout_SetFormats(QTextLayout* self, libqt_list /* of QTextLayout__FormatRange* */ overrides) {
+    QVector<QTextLayout::FormatRange> overrides_QList;
     overrides_QList.reserve(overrides.len);
     QTextLayout__FormatRange** overrides_arr = static_cast<QTextLayout__FormatRange**>(overrides.data);
     for (size_t i = 0; i < overrides.len; ++i) {
@@ -190,7 +217,7 @@ void QTextLayout_SetFormats(QTextLayout* self, libqt_list /* of QTextLayout__For
 }
 
 libqt_list /* of QTextLayout__FormatRange* */ QTextLayout_Formats(const QTextLayout* self) {
-    QList<QTextLayout::FormatRange> _ret = self->formats();
+    QVector<QTextLayout::FormatRange> _ret = self->formats();
     // Convert QList<> from C++ memory to manually-managed C memory
     QTextLayout__FormatRange** _arr = static_cast<QTextLayout__FormatRange**>(malloc(sizeof(QTextLayout__FormatRange*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -328,7 +355,7 @@ int QTextLayout_PreviousCursorPosition2(const QTextLayout* self, int oldPos, int
 }
 
 void QTextLayout_Draw3(const QTextLayout* self, QPainter* p, QPointF* pos, libqt_list /* of QTextLayout__FormatRange* */ selections) {
-    QList<QTextLayout::FormatRange> selections_QList;
+    QVector<QTextLayout::FormatRange> selections_QList;
     selections_QList.reserve(selections.len);
     QTextLayout__FormatRange** selections_arr = static_cast<QTextLayout__FormatRange**>(selections.data);
     for (size_t i = 0; i < selections.len; ++i) {
@@ -338,7 +365,7 @@ void QTextLayout_Draw3(const QTextLayout* self, QPainter* p, QPointF* pos, libqt
 }
 
 void QTextLayout_Draw4(const QTextLayout* self, QPainter* p, QPointF* pos, libqt_list /* of QTextLayout__FormatRange* */ selections, QRectF* clip) {
-    QList<QTextLayout::FormatRange> selections_QList;
+    QVector<QTextLayout::FormatRange> selections_QList;
     selections_QList.reserve(selections.len);
     QTextLayout__FormatRange** selections_arr = static_cast<QTextLayout__FormatRange**>(selections.data);
     for (size_t i = 0; i < selections.len; ++i) {
@@ -497,8 +524,8 @@ int QTextLine_LineNumber(const QTextLine* self) {
     return self->lineNumber();
 }
 
-void QTextLine_Draw(const QTextLine* self, QPainter* painter, QPointF* position) {
-    self->draw(painter, *position);
+void QTextLine_Draw(const QTextLine* self, QPainter* p, QPointF* point) {
+    self->draw(p, *point);
 }
 
 libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns(const QTextLine* self) {
@@ -524,6 +551,10 @@ double QTextLine_CursorToX22(const QTextLine* self, int cursorPos, int edge) {
 
 int QTextLine_XToCursor2(const QTextLine* self, double x, int param2) {
     return self->xToCursor(static_cast<qreal>(x), static_cast<QTextLine::CursorPosition>(param2));
+}
+
+void QTextLine_Draw3(const QTextLine* self, QPainter* p, QPointF* point, QTextLayout__FormatRange* selection) {
+    self->draw(p, *point, selection);
 }
 
 libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns1(const QTextLine* self, int from) {
@@ -553,17 +584,5 @@ libqt_list /* of QGlyphRun* */ QTextLine_GlyphRuns2(const QTextLine* self, int f
 }
 
 void QTextLine_Delete(QTextLine* self) {
-    delete self;
-}
-
-QTextLayout__FormatRange* QTextLayout__FormatRange_new(QTextLayout__FormatRange* param1) {
-    return new QTextLayout::FormatRange(*param1);
-}
-
-void QTextLayout__FormatRange_OperatorAssign(QTextLayout__FormatRange* self, QTextLayout__FormatRange* param1) {
-    self->operator=(*param1);
-}
-
-void QTextLayout__FormatRange_Delete(QTextLayout__FormatRange* self) {
     delete self;
 }

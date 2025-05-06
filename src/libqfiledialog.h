@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,14 +21,11 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAbstractFileIconProvider QAbstractFileIconProvider;
 typedef struct QAbstractItemDelegate QAbstractItemDelegate;
 typedef struct QAbstractProxyModel QAbstractProxyModel;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -38,9 +37,9 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFileDialog QFileDialog;
+typedef struct QFileIconProvider QFileIconProvider;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
 typedef struct QFontInfo QFontInfo;
@@ -61,6 +60,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -68,7 +68,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -115,6 +114,7 @@ int QFileDialog_Metacall(QFileDialog* self, int param1, int param2, void** param
 void QFileDialog_OnMetacall(QFileDialog* self, intptr_t slot);
 int QFileDialog_QBaseMetacall(QFileDialog* self, int param1, int param2, void** param3);
 libqt_string QFileDialog_Tr(const char* s);
+libqt_string QFileDialog_TrUtf8(const char* s);
 void QFileDialog_SetDirectory(QFileDialog* self, libqt_string directory);
 void QFileDialog_SetDirectoryWithDirectory(QFileDialog* self, QDir* directory);
 QDir* QFileDialog_Directory(const QFileDialog* self);
@@ -124,6 +124,8 @@ void QFileDialog_SelectFile(QFileDialog* self, libqt_string filename);
 libqt_list /* of libqt_string */ QFileDialog_SelectedFiles(const QFileDialog* self);
 void QFileDialog_SelectUrl(QFileDialog* self, QUrl* url);
 libqt_list /* of QUrl* */ QFileDialog_SelectedUrls(const QFileDialog* self);
+void QFileDialog_SetNameFilterDetailsVisible(QFileDialog* self, bool enabled);
+bool QFileDialog_IsNameFilterDetailsVisible(const QFileDialog* self);
 void QFileDialog_SetNameFilter(QFileDialog* self, libqt_string filter);
 void QFileDialog_SetNameFilters(QFileDialog* self, libqt_list /* of libqt_string */ filters);
 libqt_list /* of libqt_string */ QFileDialog_NameFilters(const QFileDialog* self);
@@ -141,18 +143,24 @@ void QFileDialog_SetFileMode(QFileDialog* self, int mode);
 int QFileDialog_FileMode(const QFileDialog* self);
 void QFileDialog_SetAcceptMode(QFileDialog* self, int mode);
 int QFileDialog_AcceptMode(const QFileDialog* self);
+void QFileDialog_SetReadOnly(QFileDialog* self, bool enabled);
+bool QFileDialog_IsReadOnly(const QFileDialog* self);
+void QFileDialog_SetResolveSymlinks(QFileDialog* self, bool enabled);
+bool QFileDialog_ResolveSymlinks(const QFileDialog* self);
 void QFileDialog_SetSidebarUrls(QFileDialog* self, libqt_list /* of QUrl* */ urls);
 libqt_list /* of QUrl* */ QFileDialog_SidebarUrls(const QFileDialog* self);
 libqt_string QFileDialog_SaveState(const QFileDialog* self);
 bool QFileDialog_RestoreState(QFileDialog* self, libqt_string state);
+void QFileDialog_SetConfirmOverwrite(QFileDialog* self, bool enabled);
+bool QFileDialog_ConfirmOverwrite(const QFileDialog* self);
 void QFileDialog_SetDefaultSuffix(QFileDialog* self, libqt_string suffix);
 libqt_string QFileDialog_DefaultSuffix(const QFileDialog* self);
 void QFileDialog_SetHistory(QFileDialog* self, libqt_list /* of libqt_string */ paths);
 libqt_list /* of libqt_string */ QFileDialog_History(const QFileDialog* self);
 void QFileDialog_SetItemDelegate(QFileDialog* self, QAbstractItemDelegate* delegate);
 QAbstractItemDelegate* QFileDialog_ItemDelegate(const QFileDialog* self);
-void QFileDialog_SetIconProvider(QFileDialog* self, QAbstractFileIconProvider* provider);
-QAbstractFileIconProvider* QFileDialog_IconProvider(const QFileDialog* self);
+void QFileDialog_SetIconProvider(QFileDialog* self, QFileIconProvider* provider);
+QFileIconProvider* QFileDialog_IconProvider(const QFileDialog* self);
 void QFileDialog_SetLabelText(QFileDialog* self, int label, libqt_string text);
 libqt_string QFileDialog_LabelText(const QFileDialog* self, int label);
 void QFileDialog_SetSupportedSchemes(QFileDialog* self, libqt_list /* of libqt_string */ schemes);
@@ -204,6 +212,8 @@ void QFileDialog_OnChangeEvent(QFileDialog* self, intptr_t slot);
 void QFileDialog_QBaseChangeEvent(QFileDialog* self, QEvent* e);
 libqt_string QFileDialog_Tr2(const char* s, const char* c);
 libqt_string QFileDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QFileDialog_TrUtf82(const char* s, const char* c);
+libqt_string QFileDialog_TrUtf83(const char* s, const char* c, int n);
 void QFileDialog_SetOption2(QFileDialog* self, int option, bool on);
 libqt_string QFileDialog_GetOpenFileName1(QWidget* parent);
 libqt_string QFileDialog_GetOpenFileName2(QWidget* parent, libqt_string caption);
@@ -310,9 +320,9 @@ void QFileDialog_QBaseFocusInEvent(QFileDialog* self, QFocusEvent* event);
 void QFileDialog_FocusOutEvent(QFileDialog* self, QFocusEvent* event);
 void QFileDialog_OnFocusOutEvent(QFileDialog* self, intptr_t slot);
 void QFileDialog_QBaseFocusOutEvent(QFileDialog* self, QFocusEvent* event);
-void QFileDialog_EnterEvent(QFileDialog* self, QEnterEvent* event);
+void QFileDialog_EnterEvent(QFileDialog* self, QEvent* event);
 void QFileDialog_OnEnterEvent(QFileDialog* self, intptr_t slot);
-void QFileDialog_QBaseEnterEvent(QFileDialog* self, QEnterEvent* event);
+void QFileDialog_QBaseEnterEvent(QFileDialog* self, QEvent* event);
 void QFileDialog_LeaveEvent(QFileDialog* self, QEvent* event);
 void QFileDialog_OnLeaveEvent(QFileDialog* self, intptr_t slot);
 void QFileDialog_QBaseLeaveEvent(QFileDialog* self, QEvent* event);
@@ -343,9 +353,9 @@ void QFileDialog_QBaseDropEvent(QFileDialog* self, QDropEvent* event);
 void QFileDialog_HideEvent(QFileDialog* self, QHideEvent* event);
 void QFileDialog_OnHideEvent(QFileDialog* self, intptr_t slot);
 void QFileDialog_QBaseHideEvent(QFileDialog* self, QHideEvent* event);
-bool QFileDialog_NativeEvent(QFileDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QFileDialog_NativeEvent(QFileDialog* self, libqt_string eventType, void* message, long* result);
 void QFileDialog_OnNativeEvent(QFileDialog* self, intptr_t slot);
-bool QFileDialog_QBaseNativeEvent(QFileDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QFileDialog_QBaseNativeEvent(QFileDialog* self, libqt_string eventType, void* message, long* result);
 void QFileDialog_InputMethodEvent(QFileDialog* self, QInputMethodEvent* param1);
 void QFileDialog_OnInputMethodEvent(QFileDialog* self, intptr_t slot);
 void QFileDialog_QBaseInputMethodEvent(QFileDialog* self, QInputMethodEvent* param1);

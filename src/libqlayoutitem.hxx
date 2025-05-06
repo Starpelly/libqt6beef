@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -213,7 +215,7 @@ class VirtualQLayoutItem : public QLayoutItem {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qlayoutitem_widget_isbase) {
             qlayoutitem_widget_isbase = false;
             return QLayoutItem::widget();
@@ -532,7 +534,7 @@ class VirtualQSpacerItem : public QSpacerItem {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qspaceritem_widget_isbase) {
             qspaceritem_widget_isbase = false;
             return QSpacerItem::widget();
@@ -583,8 +585,8 @@ class VirtualQWidgetItem : public QWidgetItem {
     using QWidgetItem_Widget_Callback = QWidget* (*)();
     using QWidgetItem_HasHeightForWidth_Callback = bool (*)();
     using QWidgetItem_HeightForWidth_Callback = int (*)(const QWidgetItem*, int);
-    using QWidgetItem_MinimumHeightForWidth_Callback = int (*)(const QWidgetItem*, int);
     using QWidgetItem_ControlTypes_Callback = QSizePolicy::ControlTypes (*)();
+    using QWidgetItem_MinimumHeightForWidth_Callback = int (*)(const QWidgetItem*, int);
     using QWidgetItem_Invalidate_Callback = void (*)();
     using QWidgetItem_Layout_Callback = QLayout* (*)();
     using QWidgetItem_SpacerItem_Callback = QSpacerItem* (*)();
@@ -601,8 +603,8 @@ class VirtualQWidgetItem : public QWidgetItem {
     QWidgetItem_Widget_Callback qwidgetitem_widget_callback = nullptr;
     QWidgetItem_HasHeightForWidth_Callback qwidgetitem_hasheightforwidth_callback = nullptr;
     QWidgetItem_HeightForWidth_Callback qwidgetitem_heightforwidth_callback = nullptr;
-    QWidgetItem_MinimumHeightForWidth_Callback qwidgetitem_minimumheightforwidth_callback = nullptr;
     QWidgetItem_ControlTypes_Callback qwidgetitem_controltypes_callback = nullptr;
+    QWidgetItem_MinimumHeightForWidth_Callback qwidgetitem_minimumheightforwidth_callback = nullptr;
     QWidgetItem_Invalidate_Callback qwidgetitem_invalidate_callback = nullptr;
     QWidgetItem_Layout_Callback qwidgetitem_layout_callback = nullptr;
     QWidgetItem_SpacerItem_Callback qwidgetitem_spaceritem_callback = nullptr;
@@ -618,8 +620,8 @@ class VirtualQWidgetItem : public QWidgetItem {
     mutable bool qwidgetitem_widget_isbase = false;
     mutable bool qwidgetitem_hasheightforwidth_isbase = false;
     mutable bool qwidgetitem_heightforwidth_isbase = false;
-    mutable bool qwidgetitem_minimumheightforwidth_isbase = false;
     mutable bool qwidgetitem_controltypes_isbase = false;
+    mutable bool qwidgetitem_minimumheightforwidth_isbase = false;
     mutable bool qwidgetitem_invalidate_isbase = false;
     mutable bool qwidgetitem_layout_isbase = false;
     mutable bool qwidgetitem_spaceritem_isbase = false;
@@ -638,8 +640,8 @@ class VirtualQWidgetItem : public QWidgetItem {
         qwidgetitem_widget_callback = nullptr;
         qwidgetitem_hasheightforwidth_callback = nullptr;
         qwidgetitem_heightforwidth_callback = nullptr;
-        qwidgetitem_minimumheightforwidth_callback = nullptr;
         qwidgetitem_controltypes_callback = nullptr;
+        qwidgetitem_minimumheightforwidth_callback = nullptr;
         qwidgetitem_invalidate_callback = nullptr;
         qwidgetitem_layout_callback = nullptr;
         qwidgetitem_spaceritem_callback = nullptr;
@@ -656,8 +658,8 @@ class VirtualQWidgetItem : public QWidgetItem {
     void setQWidgetItem_Widget_Callback(QWidgetItem_Widget_Callback cb) { qwidgetitem_widget_callback = cb; }
     void setQWidgetItem_HasHeightForWidth_Callback(QWidgetItem_HasHeightForWidth_Callback cb) { qwidgetitem_hasheightforwidth_callback = cb; }
     void setQWidgetItem_HeightForWidth_Callback(QWidgetItem_HeightForWidth_Callback cb) { qwidgetitem_heightforwidth_callback = cb; }
-    void setQWidgetItem_MinimumHeightForWidth_Callback(QWidgetItem_MinimumHeightForWidth_Callback cb) { qwidgetitem_minimumheightforwidth_callback = cb; }
     void setQWidgetItem_ControlTypes_Callback(QWidgetItem_ControlTypes_Callback cb) { qwidgetitem_controltypes_callback = cb; }
+    void setQWidgetItem_MinimumHeightForWidth_Callback(QWidgetItem_MinimumHeightForWidth_Callback cb) { qwidgetitem_minimumheightforwidth_callback = cb; }
     void setQWidgetItem_Invalidate_Callback(QWidgetItem_Invalidate_Callback cb) { qwidgetitem_invalidate_callback = cb; }
     void setQWidgetItem_Layout_Callback(QWidgetItem_Layout_Callback cb) { qwidgetitem_layout_callback = cb; }
     void setQWidgetItem_SpacerItem_Callback(QWidgetItem_SpacerItem_Callback cb) { qwidgetitem_spaceritem_callback = cb; }
@@ -673,8 +675,8 @@ class VirtualQWidgetItem : public QWidgetItem {
     void setQWidgetItem_Widget_IsBase(bool value) const { qwidgetitem_widget_isbase = value; }
     void setQWidgetItem_HasHeightForWidth_IsBase(bool value) const { qwidgetitem_hasheightforwidth_isbase = value; }
     void setQWidgetItem_HeightForWidth_IsBase(bool value) const { qwidgetitem_heightforwidth_isbase = value; }
-    void setQWidgetItem_MinimumHeightForWidth_IsBase(bool value) const { qwidgetitem_minimumheightforwidth_isbase = value; }
     void setQWidgetItem_ControlTypes_IsBase(bool value) const { qwidgetitem_controltypes_isbase = value; }
+    void setQWidgetItem_MinimumHeightForWidth_IsBase(bool value) const { qwidgetitem_minimumheightforwidth_isbase = value; }
     void setQWidgetItem_Invalidate_IsBase(bool value) const { qwidgetitem_invalidate_isbase = value; }
     void setQWidgetItem_Layout_IsBase(bool value) const { qwidgetitem_layout_isbase = value; }
     void setQWidgetItem_SpacerItem_IsBase(bool value) const { qwidgetitem_spaceritem_isbase = value; }
@@ -764,7 +766,7 @@ class VirtualQWidgetItem : public QWidgetItem {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qwidgetitem_widget_isbase) {
             qwidgetitem_widget_isbase = false;
             return QWidgetItem::widget();
@@ -800,18 +802,6 @@ class VirtualQWidgetItem : public QWidgetItem {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int minimumHeightForWidth(int param1) const override {
-        if (qwidgetitem_minimumheightforwidth_isbase) {
-            qwidgetitem_minimumheightforwidth_isbase = false;
-            return QWidgetItem::minimumHeightForWidth(param1);
-        } else if (qwidgetitem_minimumheightforwidth_callback != nullptr) {
-            return qwidgetitem_minimumheightforwidth_callback(this, param1);
-        } else {
-            return QWidgetItem::minimumHeightForWidth(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QSizePolicy::ControlTypes controlTypes() const override {
         if (qwidgetitem_controltypes_isbase) {
             qwidgetitem_controltypes_isbase = false;
@@ -820,6 +810,18 @@ class VirtualQWidgetItem : public QWidgetItem {
             return qwidgetitem_controltypes_callback();
         } else {
             return QWidgetItem::controlTypes();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual int minimumHeightForWidth(int param1) const override {
+        if (qwidgetitem_minimumheightforwidth_isbase) {
+            qwidgetitem_minimumheightforwidth_isbase = false;
+            return QWidgetItem::minimumHeightForWidth(param1);
+        } else if (qwidgetitem_minimumheightforwidth_callback != nullptr) {
+            return qwidgetitem_minimumheightforwidth_callback(this, param1);
+        } else {
+            return QWidgetItem::minimumHeightForWidth(param1);
         }
     }
 
@@ -875,8 +877,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     using QWidgetItemV2_Geometry_Callback = QRect (*)();
     using QWidgetItemV2_Widget_Callback = QWidget* (*)();
     using QWidgetItemV2_HasHeightForWidth_Callback = bool (*)();
-    using QWidgetItemV2_MinimumHeightForWidth_Callback = int (*)(const QWidgetItemV2*, int);
     using QWidgetItemV2_ControlTypes_Callback = QSizePolicy::ControlTypes (*)();
+    using QWidgetItemV2_MinimumHeightForWidth_Callback = int (*)(const QWidgetItemV2*, int);
     using QWidgetItemV2_Invalidate_Callback = void (*)();
     using QWidgetItemV2_Layout_Callback = QLayout* (*)();
     using QWidgetItemV2_SpacerItem_Callback = QSpacerItem* (*)();
@@ -893,8 +895,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     QWidgetItemV2_Geometry_Callback qwidgetitemv2_geometry_callback = nullptr;
     QWidgetItemV2_Widget_Callback qwidgetitemv2_widget_callback = nullptr;
     QWidgetItemV2_HasHeightForWidth_Callback qwidgetitemv2_hasheightforwidth_callback = nullptr;
-    QWidgetItemV2_MinimumHeightForWidth_Callback qwidgetitemv2_minimumheightforwidth_callback = nullptr;
     QWidgetItemV2_ControlTypes_Callback qwidgetitemv2_controltypes_callback = nullptr;
+    QWidgetItemV2_MinimumHeightForWidth_Callback qwidgetitemv2_minimumheightforwidth_callback = nullptr;
     QWidgetItemV2_Invalidate_Callback qwidgetitemv2_invalidate_callback = nullptr;
     QWidgetItemV2_Layout_Callback qwidgetitemv2_layout_callback = nullptr;
     QWidgetItemV2_SpacerItem_Callback qwidgetitemv2_spaceritem_callback = nullptr;
@@ -910,8 +912,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     mutable bool qwidgetitemv2_geometry_isbase = false;
     mutable bool qwidgetitemv2_widget_isbase = false;
     mutable bool qwidgetitemv2_hasheightforwidth_isbase = false;
-    mutable bool qwidgetitemv2_minimumheightforwidth_isbase = false;
     mutable bool qwidgetitemv2_controltypes_isbase = false;
+    mutable bool qwidgetitemv2_minimumheightforwidth_isbase = false;
     mutable bool qwidgetitemv2_invalidate_isbase = false;
     mutable bool qwidgetitemv2_layout_isbase = false;
     mutable bool qwidgetitemv2_spaceritem_isbase = false;
@@ -930,8 +932,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
         qwidgetitemv2_geometry_callback = nullptr;
         qwidgetitemv2_widget_callback = nullptr;
         qwidgetitemv2_hasheightforwidth_callback = nullptr;
-        qwidgetitemv2_minimumheightforwidth_callback = nullptr;
         qwidgetitemv2_controltypes_callback = nullptr;
+        qwidgetitemv2_minimumheightforwidth_callback = nullptr;
         qwidgetitemv2_invalidate_callback = nullptr;
         qwidgetitemv2_layout_callback = nullptr;
         qwidgetitemv2_spaceritem_callback = nullptr;
@@ -948,8 +950,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     void setQWidgetItemV2_Geometry_Callback(QWidgetItemV2_Geometry_Callback cb) { qwidgetitemv2_geometry_callback = cb; }
     void setQWidgetItemV2_Widget_Callback(QWidgetItemV2_Widget_Callback cb) { qwidgetitemv2_widget_callback = cb; }
     void setQWidgetItemV2_HasHeightForWidth_Callback(QWidgetItemV2_HasHeightForWidth_Callback cb) { qwidgetitemv2_hasheightforwidth_callback = cb; }
-    void setQWidgetItemV2_MinimumHeightForWidth_Callback(QWidgetItemV2_MinimumHeightForWidth_Callback cb) { qwidgetitemv2_minimumheightforwidth_callback = cb; }
     void setQWidgetItemV2_ControlTypes_Callback(QWidgetItemV2_ControlTypes_Callback cb) { qwidgetitemv2_controltypes_callback = cb; }
+    void setQWidgetItemV2_MinimumHeightForWidth_Callback(QWidgetItemV2_MinimumHeightForWidth_Callback cb) { qwidgetitemv2_minimumheightforwidth_callback = cb; }
     void setQWidgetItemV2_Invalidate_Callback(QWidgetItemV2_Invalidate_Callback cb) { qwidgetitemv2_invalidate_callback = cb; }
     void setQWidgetItemV2_Layout_Callback(QWidgetItemV2_Layout_Callback cb) { qwidgetitemv2_layout_callback = cb; }
     void setQWidgetItemV2_SpacerItem_Callback(QWidgetItemV2_SpacerItem_Callback cb) { qwidgetitemv2_spaceritem_callback = cb; }
@@ -965,8 +967,8 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     void setQWidgetItemV2_Geometry_IsBase(bool value) const { qwidgetitemv2_geometry_isbase = value; }
     void setQWidgetItemV2_Widget_IsBase(bool value) const { qwidgetitemv2_widget_isbase = value; }
     void setQWidgetItemV2_HasHeightForWidth_IsBase(bool value) const { qwidgetitemv2_hasheightforwidth_isbase = value; }
-    void setQWidgetItemV2_MinimumHeightForWidth_IsBase(bool value) const { qwidgetitemv2_minimumheightforwidth_isbase = value; }
     void setQWidgetItemV2_ControlTypes_IsBase(bool value) const { qwidgetitemv2_controltypes_isbase = value; }
+    void setQWidgetItemV2_MinimumHeightForWidth_IsBase(bool value) const { qwidgetitemv2_minimumheightforwidth_isbase = value; }
     void setQWidgetItemV2_Invalidate_IsBase(bool value) const { qwidgetitemv2_invalidate_isbase = value; }
     void setQWidgetItemV2_Layout_IsBase(bool value) const { qwidgetitemv2_layout_isbase = value; }
     void setQWidgetItemV2_SpacerItem_IsBase(bool value) const { qwidgetitemv2_spaceritem_isbase = value; }
@@ -1068,7 +1070,7 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qwidgetitemv2_widget_isbase) {
             qwidgetitemv2_widget_isbase = false;
             return QWidgetItemV2::widget();
@@ -1092,18 +1094,6 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int minimumHeightForWidth(int param1) const override {
-        if (qwidgetitemv2_minimumheightforwidth_isbase) {
-            qwidgetitemv2_minimumheightforwidth_isbase = false;
-            return QWidgetItemV2::minimumHeightForWidth(param1);
-        } else if (qwidgetitemv2_minimumheightforwidth_callback != nullptr) {
-            return qwidgetitemv2_minimumheightforwidth_callback(this, param1);
-        } else {
-            return QWidgetItemV2::minimumHeightForWidth(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QSizePolicy::ControlTypes controlTypes() const override {
         if (qwidgetitemv2_controltypes_isbase) {
             qwidgetitemv2_controltypes_isbase = false;
@@ -1112,6 +1102,18 @@ class VirtualQWidgetItemV2 : public QWidgetItemV2 {
             return qwidgetitemv2_controltypes_callback();
         } else {
             return QWidgetItemV2::controlTypes();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual int minimumHeightForWidth(int param1) const override {
+        if (qwidgetitemv2_minimumheightforwidth_isbase) {
+            qwidgetitemv2_minimumheightforwidth_isbase = false;
+            return QWidgetItemV2::minimumHeightForWidth(param1);
+        } else if (qwidgetitemv2_minimumheightforwidth_callback != nullptr) {
+            return qwidgetitemv2_minimumheightforwidth_callback(this, param1);
+        } else {
+            return QWidgetItemV2::minimumHeightForWidth(param1);
         }
     }
 

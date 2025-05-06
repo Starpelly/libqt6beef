@@ -1,10 +1,7 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
@@ -13,6 +10,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPair>
 #include <QSslConfiguration>
 #include <QSslError>
@@ -42,6 +40,18 @@ int QNetworkReply_Metacall(QNetworkReply* self, int param1, int param2, void** p
 
 libqt_string QNetworkReply_Tr(const char* s) {
     QString _ret = QNetworkReply::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QNetworkReply_TrUtf8(const char* s) {
+    QString _ret = QNetworkReply::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -199,28 +209,6 @@ void QNetworkReply_IgnoreSslErrors2(QNetworkReply* self) {
     self->ignoreSslErrors();
 }
 
-void QNetworkReply_SocketStartedConnecting(QNetworkReply* self) {
-    self->socketStartedConnecting();
-}
-
-void QNetworkReply_Connect_SocketStartedConnecting(QNetworkReply* self, intptr_t slot) {
-    void (*slotFunc)(QNetworkReply*) = reinterpret_cast<void (*)(QNetworkReply*)>(slot);
-    QNetworkReply::connect(self, &QNetworkReply::socketStartedConnecting, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QNetworkReply_RequestSent(QNetworkReply* self) {
-    self->requestSent();
-}
-
-void QNetworkReply_Connect_RequestSent(QNetworkReply* self, intptr_t slot) {
-    void (*slotFunc)(QNetworkReply*) = reinterpret_cast<void (*)(QNetworkReply*)>(slot);
-    QNetworkReply::connect(self, &QNetworkReply::requestSent, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
 void QNetworkReply_MetaDataChanged(QNetworkReply* self) {
     self->metaDataChanged();
 }
@@ -240,6 +228,18 @@ void QNetworkReply_Connect_Finished(QNetworkReply* self, intptr_t slot) {
     void (*slotFunc)(QNetworkReply*) = reinterpret_cast<void (*)(QNetworkReply*)>(slot);
     QNetworkReply::connect(self, &QNetworkReply::finished, [self, slotFunc]() {
         slotFunc(self);
+    });
+}
+
+void QNetworkReply_ErrorWithQNetworkReplyNetworkError(QNetworkReply* self, int param1) {
+    self->error(static_cast<QNetworkReply::NetworkError>(param1));
+}
+
+void QNetworkReply_Connect_ErrorWithQNetworkReplyNetworkError(QNetworkReply* self, intptr_t slot) {
+    void (*slotFunc)(QNetworkReply*, int) = reinterpret_cast<void (*)(QNetworkReply*, int)>(slot);
+    QNetworkReply::connect(self, &QNetworkReply::error, [self, slotFunc](QNetworkReply::NetworkError param1) {
+        int sigval1 = static_cast<int>(param1);
+        slotFunc(self, sigval1);
     });
 }
 
@@ -380,8 +380,32 @@ libqt_string QNetworkReply_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QNetworkReply_TrUtf82(const char* s, const char* c) {
+    QString _ret = QNetworkReply::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QNetworkReply_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QNetworkReply::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QNetworkReply_Open(QNetworkReply* self, int mode) {
-    return self->open(static_cast<QIODeviceBase::OpenMode>(mode));
+    return self->open(static_cast<QIODevice::OpenMode>(mode));
 }
 
 long long QNetworkReply_Pos(const QNetworkReply* self) {

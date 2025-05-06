@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,14 +25,13 @@ class VirtualQPushButton : public QPushButton {
     using QPushButton_KeyPressEvent_Callback = void (*)(QPushButton*, QKeyEvent*);
     using QPushButton_FocusInEvent_Callback = void (*)(QPushButton*, QFocusEvent*);
     using QPushButton_FocusOutEvent_Callback = void (*)(QPushButton*, QFocusEvent*);
-    using QPushButton_MouseMoveEvent_Callback = void (*)(QPushButton*, QMouseEvent*);
-    using QPushButton_InitStyleOption_Callback = void (*)(const QPushButton*, QStyleOptionButton*);
     using QPushButton_HitButton_Callback = bool (*)(const QPushButton*, const QPoint&);
     using QPushButton_CheckStateSet_Callback = void (*)();
     using QPushButton_NextCheckState_Callback = void (*)();
     using QPushButton_KeyReleaseEvent_Callback = void (*)(QPushButton*, QKeyEvent*);
     using QPushButton_MousePressEvent_Callback = void (*)(QPushButton*, QMouseEvent*);
     using QPushButton_MouseReleaseEvent_Callback = void (*)(QPushButton*, QMouseEvent*);
+    using QPushButton_MouseMoveEvent_Callback = void (*)(QPushButton*, QMouseEvent*);
     using QPushButton_ChangeEvent_Callback = void (*)(QPushButton*, QEvent*);
     using QPushButton_TimerEvent_Callback = void (*)(QPushButton*, QTimerEvent*);
     using QPushButton_DevType_Callback = int (*)();
@@ -40,7 +41,7 @@ class VirtualQPushButton : public QPushButton {
     using QPushButton_PaintEngine_Callback = QPaintEngine* (*)();
     using QPushButton_MouseDoubleClickEvent_Callback = void (*)(QPushButton*, QMouseEvent*);
     using QPushButton_WheelEvent_Callback = void (*)(QPushButton*, QWheelEvent*);
-    using QPushButton_EnterEvent_Callback = void (*)(QPushButton*, QEnterEvent*);
+    using QPushButton_EnterEvent_Callback = void (*)(QPushButton*, QEvent*);
     using QPushButton_LeaveEvent_Callback = void (*)(QPushButton*, QEvent*);
     using QPushButton_MoveEvent_Callback = void (*)(QPushButton*, QMoveEvent*);
     using QPushButton_ResizeEvent_Callback = void (*)(QPushButton*, QResizeEvent*);
@@ -54,7 +55,7 @@ class VirtualQPushButton : public QPushButton {
     using QPushButton_DropEvent_Callback = void (*)(QPushButton*, QDropEvent*);
     using QPushButton_ShowEvent_Callback = void (*)(QPushButton*, QShowEvent*);
     using QPushButton_HideEvent_Callback = void (*)(QPushButton*, QHideEvent*);
-    using QPushButton_NativeEvent_Callback = bool (*)(QPushButton*, const QByteArray&, void*, qintptr*);
+    using QPushButton_NativeEvent_Callback = bool (*)(QPushButton*, const QByteArray&, void*, long*);
     using QPushButton_Metric_Callback = int (*)(const QPushButton*, QPaintDevice::PaintDeviceMetric);
     using QPushButton_InitPainter_Callback = void (*)(const QPushButton*, QPainter*);
     using QPushButton_Redirected_Callback = QPaintDevice* (*)(const QPushButton*, QPoint*);
@@ -67,6 +68,7 @@ class VirtualQPushButton : public QPushButton {
     using QPushButton_CustomEvent_Callback = void (*)(QPushButton*, QEvent*);
     using QPushButton_ConnectNotify_Callback = void (*)(QPushButton*, const QMetaMethod&);
     using QPushButton_DisconnectNotify_Callback = void (*)(QPushButton*, const QMetaMethod&);
+    using QPushButton_InitStyleOption_Callback = void (*)(const QPushButton*, QStyleOptionButton*);
     using QPushButton_UpdateMicroFocus_Callback = void (*)();
     using QPushButton_Create_Callback = void (*)();
     using QPushButton_Destroy_Callback = void (*)();
@@ -87,14 +89,13 @@ class VirtualQPushButton : public QPushButton {
     QPushButton_KeyPressEvent_Callback qpushbutton_keypressevent_callback = nullptr;
     QPushButton_FocusInEvent_Callback qpushbutton_focusinevent_callback = nullptr;
     QPushButton_FocusOutEvent_Callback qpushbutton_focusoutevent_callback = nullptr;
-    QPushButton_MouseMoveEvent_Callback qpushbutton_mousemoveevent_callback = nullptr;
-    QPushButton_InitStyleOption_Callback qpushbutton_initstyleoption_callback = nullptr;
     QPushButton_HitButton_Callback qpushbutton_hitbutton_callback = nullptr;
     QPushButton_CheckStateSet_Callback qpushbutton_checkstateset_callback = nullptr;
     QPushButton_NextCheckState_Callback qpushbutton_nextcheckstate_callback = nullptr;
     QPushButton_KeyReleaseEvent_Callback qpushbutton_keyreleaseevent_callback = nullptr;
     QPushButton_MousePressEvent_Callback qpushbutton_mousepressevent_callback = nullptr;
     QPushButton_MouseReleaseEvent_Callback qpushbutton_mousereleaseevent_callback = nullptr;
+    QPushButton_MouseMoveEvent_Callback qpushbutton_mousemoveevent_callback = nullptr;
     QPushButton_ChangeEvent_Callback qpushbutton_changeevent_callback = nullptr;
     QPushButton_TimerEvent_Callback qpushbutton_timerevent_callback = nullptr;
     QPushButton_DevType_Callback qpushbutton_devtype_callback = nullptr;
@@ -131,6 +132,7 @@ class VirtualQPushButton : public QPushButton {
     QPushButton_CustomEvent_Callback qpushbutton_customevent_callback = nullptr;
     QPushButton_ConnectNotify_Callback qpushbutton_connectnotify_callback = nullptr;
     QPushButton_DisconnectNotify_Callback qpushbutton_disconnectnotify_callback = nullptr;
+    QPushButton_InitStyleOption_Callback qpushbutton_initstyleoption_callback = nullptr;
     QPushButton_UpdateMicroFocus_Callback qpushbutton_updatemicrofocus_callback = nullptr;
     QPushButton_Create_Callback qpushbutton_create_callback = nullptr;
     QPushButton_Destroy_Callback qpushbutton_destroy_callback = nullptr;
@@ -150,14 +152,13 @@ class VirtualQPushButton : public QPushButton {
     mutable bool qpushbutton_keypressevent_isbase = false;
     mutable bool qpushbutton_focusinevent_isbase = false;
     mutable bool qpushbutton_focusoutevent_isbase = false;
-    mutable bool qpushbutton_mousemoveevent_isbase = false;
-    mutable bool qpushbutton_initstyleoption_isbase = false;
     mutable bool qpushbutton_hitbutton_isbase = false;
     mutable bool qpushbutton_checkstateset_isbase = false;
     mutable bool qpushbutton_nextcheckstate_isbase = false;
     mutable bool qpushbutton_keyreleaseevent_isbase = false;
     mutable bool qpushbutton_mousepressevent_isbase = false;
     mutable bool qpushbutton_mousereleaseevent_isbase = false;
+    mutable bool qpushbutton_mousemoveevent_isbase = false;
     mutable bool qpushbutton_changeevent_isbase = false;
     mutable bool qpushbutton_timerevent_isbase = false;
     mutable bool qpushbutton_devtype_isbase = false;
@@ -194,6 +195,7 @@ class VirtualQPushButton : public QPushButton {
     mutable bool qpushbutton_customevent_isbase = false;
     mutable bool qpushbutton_connectnotify_isbase = false;
     mutable bool qpushbutton_disconnectnotify_isbase = false;
+    mutable bool qpushbutton_initstyleoption_isbase = false;
     mutable bool qpushbutton_updatemicrofocus_isbase = false;
     mutable bool qpushbutton_create_isbase = false;
     mutable bool qpushbutton_destroy_isbase = false;
@@ -221,14 +223,13 @@ class VirtualQPushButton : public QPushButton {
         qpushbutton_keypressevent_callback = nullptr;
         qpushbutton_focusinevent_callback = nullptr;
         qpushbutton_focusoutevent_callback = nullptr;
-        qpushbutton_mousemoveevent_callback = nullptr;
-        qpushbutton_initstyleoption_callback = nullptr;
         qpushbutton_hitbutton_callback = nullptr;
         qpushbutton_checkstateset_callback = nullptr;
         qpushbutton_nextcheckstate_callback = nullptr;
         qpushbutton_keyreleaseevent_callback = nullptr;
         qpushbutton_mousepressevent_callback = nullptr;
         qpushbutton_mousereleaseevent_callback = nullptr;
+        qpushbutton_mousemoveevent_callback = nullptr;
         qpushbutton_changeevent_callback = nullptr;
         qpushbutton_timerevent_callback = nullptr;
         qpushbutton_devtype_callback = nullptr;
@@ -265,6 +266,7 @@ class VirtualQPushButton : public QPushButton {
         qpushbutton_customevent_callback = nullptr;
         qpushbutton_connectnotify_callback = nullptr;
         qpushbutton_disconnectnotify_callback = nullptr;
+        qpushbutton_initstyleoption_callback = nullptr;
         qpushbutton_updatemicrofocus_callback = nullptr;
         qpushbutton_create_callback = nullptr;
         qpushbutton_destroy_callback = nullptr;
@@ -285,14 +287,13 @@ class VirtualQPushButton : public QPushButton {
     void setQPushButton_KeyPressEvent_Callback(QPushButton_KeyPressEvent_Callback cb) { qpushbutton_keypressevent_callback = cb; }
     void setQPushButton_FocusInEvent_Callback(QPushButton_FocusInEvent_Callback cb) { qpushbutton_focusinevent_callback = cb; }
     void setQPushButton_FocusOutEvent_Callback(QPushButton_FocusOutEvent_Callback cb) { qpushbutton_focusoutevent_callback = cb; }
-    void setQPushButton_MouseMoveEvent_Callback(QPushButton_MouseMoveEvent_Callback cb) { qpushbutton_mousemoveevent_callback = cb; }
-    void setQPushButton_InitStyleOption_Callback(QPushButton_InitStyleOption_Callback cb) { qpushbutton_initstyleoption_callback = cb; }
     void setQPushButton_HitButton_Callback(QPushButton_HitButton_Callback cb) { qpushbutton_hitbutton_callback = cb; }
     void setQPushButton_CheckStateSet_Callback(QPushButton_CheckStateSet_Callback cb) { qpushbutton_checkstateset_callback = cb; }
     void setQPushButton_NextCheckState_Callback(QPushButton_NextCheckState_Callback cb) { qpushbutton_nextcheckstate_callback = cb; }
     void setQPushButton_KeyReleaseEvent_Callback(QPushButton_KeyReleaseEvent_Callback cb) { qpushbutton_keyreleaseevent_callback = cb; }
     void setQPushButton_MousePressEvent_Callback(QPushButton_MousePressEvent_Callback cb) { qpushbutton_mousepressevent_callback = cb; }
     void setQPushButton_MouseReleaseEvent_Callback(QPushButton_MouseReleaseEvent_Callback cb) { qpushbutton_mousereleaseevent_callback = cb; }
+    void setQPushButton_MouseMoveEvent_Callback(QPushButton_MouseMoveEvent_Callback cb) { qpushbutton_mousemoveevent_callback = cb; }
     void setQPushButton_ChangeEvent_Callback(QPushButton_ChangeEvent_Callback cb) { qpushbutton_changeevent_callback = cb; }
     void setQPushButton_TimerEvent_Callback(QPushButton_TimerEvent_Callback cb) { qpushbutton_timerevent_callback = cb; }
     void setQPushButton_DevType_Callback(QPushButton_DevType_Callback cb) { qpushbutton_devtype_callback = cb; }
@@ -329,6 +330,7 @@ class VirtualQPushButton : public QPushButton {
     void setQPushButton_CustomEvent_Callback(QPushButton_CustomEvent_Callback cb) { qpushbutton_customevent_callback = cb; }
     void setQPushButton_ConnectNotify_Callback(QPushButton_ConnectNotify_Callback cb) { qpushbutton_connectnotify_callback = cb; }
     void setQPushButton_DisconnectNotify_Callback(QPushButton_DisconnectNotify_Callback cb) { qpushbutton_disconnectnotify_callback = cb; }
+    void setQPushButton_InitStyleOption_Callback(QPushButton_InitStyleOption_Callback cb) { qpushbutton_initstyleoption_callback = cb; }
     void setQPushButton_UpdateMicroFocus_Callback(QPushButton_UpdateMicroFocus_Callback cb) { qpushbutton_updatemicrofocus_callback = cb; }
     void setQPushButton_Create_Callback(QPushButton_Create_Callback cb) { qpushbutton_create_callback = cb; }
     void setQPushButton_Destroy_Callback(QPushButton_Destroy_Callback cb) { qpushbutton_destroy_callback = cb; }
@@ -348,14 +350,13 @@ class VirtualQPushButton : public QPushButton {
     void setQPushButton_KeyPressEvent_IsBase(bool value) const { qpushbutton_keypressevent_isbase = value; }
     void setQPushButton_FocusInEvent_IsBase(bool value) const { qpushbutton_focusinevent_isbase = value; }
     void setQPushButton_FocusOutEvent_IsBase(bool value) const { qpushbutton_focusoutevent_isbase = value; }
-    void setQPushButton_MouseMoveEvent_IsBase(bool value) const { qpushbutton_mousemoveevent_isbase = value; }
-    void setQPushButton_InitStyleOption_IsBase(bool value) const { qpushbutton_initstyleoption_isbase = value; }
     void setQPushButton_HitButton_IsBase(bool value) const { qpushbutton_hitbutton_isbase = value; }
     void setQPushButton_CheckStateSet_IsBase(bool value) const { qpushbutton_checkstateset_isbase = value; }
     void setQPushButton_NextCheckState_IsBase(bool value) const { qpushbutton_nextcheckstate_isbase = value; }
     void setQPushButton_KeyReleaseEvent_IsBase(bool value) const { qpushbutton_keyreleaseevent_isbase = value; }
     void setQPushButton_MousePressEvent_IsBase(bool value) const { qpushbutton_mousepressevent_isbase = value; }
     void setQPushButton_MouseReleaseEvent_IsBase(bool value) const { qpushbutton_mousereleaseevent_isbase = value; }
+    void setQPushButton_MouseMoveEvent_IsBase(bool value) const { qpushbutton_mousemoveevent_isbase = value; }
     void setQPushButton_ChangeEvent_IsBase(bool value) const { qpushbutton_changeevent_isbase = value; }
     void setQPushButton_TimerEvent_IsBase(bool value) const { qpushbutton_timerevent_isbase = value; }
     void setQPushButton_DevType_IsBase(bool value) const { qpushbutton_devtype_isbase = value; }
@@ -392,6 +393,7 @@ class VirtualQPushButton : public QPushButton {
     void setQPushButton_CustomEvent_IsBase(bool value) const { qpushbutton_customevent_isbase = value; }
     void setQPushButton_ConnectNotify_IsBase(bool value) const { qpushbutton_connectnotify_isbase = value; }
     void setQPushButton_DisconnectNotify_IsBase(bool value) const { qpushbutton_disconnectnotify_isbase = value; }
+    void setQPushButton_InitStyleOption_IsBase(bool value) const { qpushbutton_initstyleoption_isbase = value; }
     void setQPushButton_UpdateMicroFocus_IsBase(bool value) const { qpushbutton_updatemicrofocus_isbase = value; }
     void setQPushButton_Create_IsBase(bool value) const { qpushbutton_create_isbase = value; }
     void setQPushButton_Destroy_IsBase(bool value) const { qpushbutton_destroy_isbase = value; }
@@ -499,30 +501,6 @@ class VirtualQPushButton : public QPushButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void mouseMoveEvent(QMouseEvent* param1) override {
-        if (qpushbutton_mousemoveevent_isbase) {
-            qpushbutton_mousemoveevent_isbase = false;
-            QPushButton::mouseMoveEvent(param1);
-        } else if (qpushbutton_mousemoveevent_callback != nullptr) {
-            qpushbutton_mousemoveevent_callback(this, param1);
-        } else {
-            QPushButton::mouseMoveEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionButton* option) const override {
-        if (qpushbutton_initstyleoption_isbase) {
-            qpushbutton_initstyleoption_isbase = false;
-            QPushButton::initStyleOption(option);
-        } else if (qpushbutton_initstyleoption_callback != nullptr) {
-            qpushbutton_initstyleoption_callback(this, option);
-        } else {
-            QPushButton::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool hitButton(const QPoint& pos) const override {
         if (qpushbutton_hitbutton_isbase) {
             qpushbutton_hitbutton_isbase = false;
@@ -591,6 +569,18 @@ class VirtualQPushButton : public QPushButton {
             qpushbutton_mousereleaseevent_callback(this, e);
         } else {
             QPushButton::mouseReleaseEvent(e);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void mouseMoveEvent(QMouseEvent* e) override {
+        if (qpushbutton_mousemoveevent_isbase) {
+            qpushbutton_mousemoveevent_isbase = false;
+            QPushButton::mouseMoveEvent(e);
+        } else if (qpushbutton_mousemoveevent_callback != nullptr) {
+            qpushbutton_mousemoveevent_callback(this, e);
+        } else {
+            QPushButton::mouseMoveEvent(e);
         }
     }
 
@@ -703,7 +693,7 @@ class VirtualQPushButton : public QPushButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qpushbutton_enterevent_isbase) {
             qpushbutton_enterevent_isbase = false;
             QPushButton::enterEvent(event);
@@ -871,7 +861,7 @@ class VirtualQPushButton : public QPushButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qpushbutton_nativeevent_isbase) {
             qpushbutton_nativeevent_isbase = false;
             return QPushButton::nativeEvent(eventType, message, result);
@@ -1023,6 +1013,18 @@ class VirtualQPushButton : public QPushButton {
             qpushbutton_disconnectnotify_callback(this, signal);
         } else {
             QPushButton::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionButton* option) const {
+        if (qpushbutton_initstyleoption_isbase) {
+            qpushbutton_initstyleoption_isbase = false;
+            QPushButton::initStyleOption(option);
+        } else if (qpushbutton_initstyleoption_callback != nullptr) {
+            qpushbutton_initstyleoption_callback(this, option);
+        } else {
+            QPushButton::initStyleOption(option);
         }
     }
 

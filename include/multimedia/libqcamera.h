@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -15,173 +17,151 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
+#if defined(WORKAROUND_INNER_CLASS_DEFINITION_QCamera__FrameRateRange)
+typedef QCamera::FrameRateRange QCamera__FrameRateRange;
+#endif
 #if defined(WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection)
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
+typedef struct QAbstractVideoSurface QAbstractVideoSurface;
 typedef struct QCamera QCamera;
-typedef struct QCameraDevice QCameraDevice;
-typedef struct QCameraFormat QCameraFormat;
+typedef struct QCameraExposure QCameraExposure;
+typedef struct QCameraFocus QCameraFocus;
+typedef struct QCameraImageProcessing QCameraImageProcessing;
+typedef struct QCameraInfo QCameraInfo;
+typedef struct QCameraViewfinderSettings QCameraViewfinderSettings;
+typedef struct QCamera__FrameRateRange QCamera__FrameRateRange;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
-typedef struct QMediaCaptureSession QMediaCaptureSession;
+typedef struct QGraphicsVideoItem QGraphicsVideoItem;
+typedef struct QMediaObject QMediaObject;
+typedef struct QMediaService QMediaService;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
-typedef struct QPointF QPointF;
+typedef struct QObjectUserData QObjectUserData;
+typedef struct QSize QSize;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
+typedef struct QVideoWidget QVideoWidget;
 #endif
 
 #ifdef __cplusplus
+typedef QCamera::CaptureMode CaptureMode;           // C++ enum
+typedef QCamera::CaptureModes CaptureModes;         // C++ QFlags
 typedef QCamera::Error Error;                       // C++ enum
-typedef QCamera::ExposureMode ExposureMode;         // C++ enum
-typedef QCamera::Feature Feature;                   // C++ enum
-typedef QCamera::Features Features;                 // C++ QFlags
-typedef QCamera::FlashMode FlashMode;               // C++ enum
-typedef QCamera::FocusMode FocusMode;               // C++ enum
-typedef QCamera::TorchMode TorchMode;               // C++ enum
-typedef QCamera::WhiteBalanceMode WhiteBalanceMode; // C++ enum
+typedef QCamera::LockChangeReason LockChangeReason; // C++ enum
+typedef QCamera::LockStatus LockStatus;             // C++ enum
+typedef QCamera::LockType LockType;                 // C++ enum
+typedef QCamera::LockTypes LockTypes;               // C++ QFlags
+typedef QCamera::Position Position;                 // C++ enum
+typedef QCamera::State State;                       // C++ enum
+typedef QCamera::Status Status;                     // C++ enum
 #else
+typedef int CaptureMode;      // C ABI enum
+typedef int CaptureModes;     // C ABI QFlags
 typedef int Error;            // C ABI enum
-typedef int ExposureMode;     // C ABI enum
-typedef int Feature;          // C ABI enum
-typedef int Features;         // C ABI QFlags
-typedef int FlashMode;        // C ABI enum
-typedef int FocusMode;        // C ABI enum
-typedef int TorchMode;        // C ABI enum
-typedef int WhiteBalanceMode; // C ABI enum
+typedef int LockChangeReason; // C ABI enum
+typedef int LockStatus;       // C ABI enum
+typedef int LockType;         // C ABI enum
+typedef int LockTypes;        // C ABI QFlags
+typedef int Position;         // C ABI enum
+typedef int State;            // C ABI enum
+typedef int Status;           // C ABI enum
 #endif
 
 QCamera* QCamera_new();
-QCamera* QCamera_new2(QCameraDevice* cameraDevice);
-QCamera* QCamera_new3(int position);
-QCamera* QCamera_new4(QObject* parent);
-QCamera* QCamera_new5(QCameraDevice* cameraDevice, QObject* parent);
-QCamera* QCamera_new6(int position, QObject* parent);
+QCamera* QCamera_new2(libqt_string deviceName);
+QCamera* QCamera_new3(QCameraInfo* cameraInfo);
+QCamera* QCamera_new4(int position);
+QCamera* QCamera_new5(QObject* parent);
+QCamera* QCamera_new6(libqt_string deviceName, QObject* parent);
+QCamera* QCamera_new7(QCameraInfo* cameraInfo, QObject* parent);
+QCamera* QCamera_new8(int position, QObject* parent);
 QMetaObject* QCamera_MetaObject(const QCamera* self);
 void* QCamera_Metacast(QCamera* self, const char* param1);
 int QCamera_Metacall(QCamera* self, int param1, int param2, void** param3);
 void QCamera_OnMetacall(QCamera* self, intptr_t slot);
 int QCamera_QBaseMetacall(QCamera* self, int param1, int param2, void** param3);
 libqt_string QCamera_Tr(const char* s);
-bool QCamera_IsAvailable(const QCamera* self);
-bool QCamera_IsActive(const QCamera* self);
-QMediaCaptureSession* QCamera_CaptureSession(const QCamera* self);
-QCameraDevice* QCamera_CameraDevice(const QCamera* self);
-void QCamera_SetCameraDevice(QCamera* self, QCameraDevice* cameraDevice);
-QCameraFormat* QCamera_CameraFormat(const QCamera* self);
-void QCamera_SetCameraFormat(QCamera* self, QCameraFormat* format);
+libqt_string QCamera_TrUtf8(const char* s);
+libqt_list /* of libqt_string */ QCamera_AvailableDevices();
+libqt_string QCamera_DeviceDescription(libqt_string device);
+int QCamera_Availability(const QCamera* self);
+void QCamera_OnAvailability(const QCamera* self, intptr_t slot);
+int QCamera_QBaseAvailability(const QCamera* self);
+int QCamera_State(const QCamera* self);
+int QCamera_Status(const QCamera* self);
+int QCamera_CaptureMode(const QCamera* self);
+bool QCamera_IsCaptureModeSupported(const QCamera* self, int mode);
+QCameraExposure* QCamera_Exposure(const QCamera* self);
+QCameraFocus* QCamera_Focus(const QCamera* self);
+QCameraImageProcessing* QCamera_ImageProcessing(const QCamera* self);
+void QCamera_SetViewfinder(QCamera* self, QVideoWidget* viewfinder);
+void QCamera_SetViewfinderWithViewfinder(QCamera* self, QGraphicsVideoItem* viewfinder);
+void QCamera_SetViewfinderWithSurface(QCamera* self, QAbstractVideoSurface* surface);
+QCameraViewfinderSettings* QCamera_ViewfinderSettings(const QCamera* self);
+void QCamera_SetViewfinderSettings(QCamera* self, QCameraViewfinderSettings* settings);
+libqt_list /* of QCameraViewfinderSettings* */ QCamera_SupportedViewfinderSettings(const QCamera* self);
+libqt_list /* of QSize* */ QCamera_SupportedViewfinderResolutions(const QCamera* self);
+libqt_list /* of QCamera__FrameRateRange* */ QCamera_SupportedViewfinderFrameRateRanges(const QCamera* self);
+libqt_list /* of int */ QCamera_SupportedViewfinderPixelFormats(const QCamera* self);
 int QCamera_Error(const QCamera* self);
 libqt_string QCamera_ErrorString(const QCamera* self);
-int QCamera_SupportedFeatures(const QCamera* self);
-int QCamera_FocusMode(const QCamera* self);
-void QCamera_SetFocusMode(QCamera* self, int mode);
-bool QCamera_IsFocusModeSupported(const QCamera* self, int mode);
-QPointF* QCamera_FocusPoint(const QCamera* self);
-QPointF* QCamera_CustomFocusPoint(const QCamera* self);
-void QCamera_SetCustomFocusPoint(QCamera* self, QPointF* point);
-void QCamera_SetFocusDistance(QCamera* self, float d);
-float QCamera_FocusDistance(const QCamera* self);
-float QCamera_MinimumZoomFactor(const QCamera* self);
-float QCamera_MaximumZoomFactor(const QCamera* self);
-float QCamera_ZoomFactor(const QCamera* self);
-void QCamera_SetZoomFactor(QCamera* self, float factor);
-int QCamera_FlashMode(const QCamera* self);
-bool QCamera_IsFlashModeSupported(const QCamera* self, int mode);
-bool QCamera_IsFlashReady(const QCamera* self);
-int QCamera_TorchMode(const QCamera* self);
-bool QCamera_IsTorchModeSupported(const QCamera* self, int mode);
-int QCamera_ExposureMode(const QCamera* self);
-bool QCamera_IsExposureModeSupported(const QCamera* self, int mode);
-float QCamera_ExposureCompensation(const QCamera* self);
-int QCamera_IsoSensitivity(const QCamera* self);
-int QCamera_ManualIsoSensitivity(const QCamera* self);
-float QCamera_ExposureTime(const QCamera* self);
-float QCamera_ManualExposureTime(const QCamera* self);
-int QCamera_MinimumIsoSensitivity(const QCamera* self);
-int QCamera_MaximumIsoSensitivity(const QCamera* self);
-float QCamera_MinimumExposureTime(const QCamera* self);
-float QCamera_MaximumExposureTime(const QCamera* self);
-int QCamera_WhiteBalanceMode(const QCamera* self);
-bool QCamera_IsWhiteBalanceModeSupported(const QCamera* self, int mode);
-int QCamera_ColorTemperature(const QCamera* self);
-void QCamera_SetActive(QCamera* self, bool active);
+int QCamera_SupportedLocks(const QCamera* self);
+int QCamera_RequestedLocks(const QCamera* self);
+int QCamera_LockStatus(const QCamera* self);
+int QCamera_LockStatusWithLock(const QCamera* self, int lock);
+void QCamera_SetCaptureMode(QCamera* self, int mode);
+void QCamera_Load(QCamera* self);
+void QCamera_Unload(QCamera* self);
 void QCamera_Start(QCamera* self);
 void QCamera_Stop(QCamera* self);
-void QCamera_ZoomTo(QCamera* self, float zoom, float rate);
-void QCamera_SetFlashMode(QCamera* self, int mode);
-void QCamera_SetTorchMode(QCamera* self, int mode);
-void QCamera_SetExposureMode(QCamera* self, int mode);
-void QCamera_SetExposureCompensation(QCamera* self, float ev);
-void QCamera_SetManualIsoSensitivity(QCamera* self, int iso);
-void QCamera_SetAutoIsoSensitivity(QCamera* self);
-void QCamera_SetManualExposureTime(QCamera* self, float seconds);
-void QCamera_SetAutoExposureTime(QCamera* self);
-void QCamera_SetWhiteBalanceMode(QCamera* self, int mode);
-void QCamera_SetColorTemperature(QCamera* self, int colorTemperature);
-void QCamera_ActiveChanged(QCamera* self, bool param1);
-void QCamera_Connect_ActiveChanged(QCamera* self, intptr_t slot);
-void QCamera_ErrorChanged(QCamera* self);
-void QCamera_Connect_ErrorChanged(QCamera* self, intptr_t slot);
-void QCamera_ErrorOccurred(QCamera* self, int errorVal, libqt_string errorString);
+void QCamera_SearchAndLock(QCamera* self);
+void QCamera_Unlock(QCamera* self);
+void QCamera_SearchAndLockWithLocks(QCamera* self, int locks);
+void QCamera_UnlockWithLocks(QCamera* self, int locks);
+void QCamera_StateChanged(QCamera* self, int state);
+void QCamera_Connect_StateChanged(QCamera* self, intptr_t slot);
+void QCamera_CaptureModeChanged(QCamera* self, int param1);
+void QCamera_Connect_CaptureModeChanged(QCamera* self, intptr_t slot);
+void QCamera_StatusChanged(QCamera* self, int status);
+void QCamera_Connect_StatusChanged(QCamera* self, intptr_t slot);
+void QCamera_Locked(QCamera* self);
+void QCamera_Connect_Locked(QCamera* self, intptr_t slot);
+void QCamera_LockFailed(QCamera* self);
+void QCamera_Connect_LockFailed(QCamera* self, intptr_t slot);
+void QCamera_LockStatusChanged(QCamera* self, int status, int reason);
+void QCamera_Connect_LockStatusChanged(QCamera* self, intptr_t slot);
+void QCamera_LockStatusChanged2(QCamera* self, int lock, int status, int reason);
+void QCamera_Connect_LockStatusChanged2(QCamera* self, intptr_t slot);
+void QCamera_ErrorWithQCameraError(QCamera* self, int param1);
+void QCamera_Connect_ErrorWithQCameraError(QCamera* self, intptr_t slot);
+void QCamera_ErrorOccurred(QCamera* self, int param1);
 void QCamera_Connect_ErrorOccurred(QCamera* self, intptr_t slot);
-void QCamera_CameraDeviceChanged(QCamera* self);
-void QCamera_Connect_CameraDeviceChanged(QCamera* self, intptr_t slot);
-void QCamera_CameraFormatChanged(QCamera* self);
-void QCamera_Connect_CameraFormatChanged(QCamera* self, intptr_t slot);
-void QCamera_SupportedFeaturesChanged(QCamera* self);
-void QCamera_Connect_SupportedFeaturesChanged(QCamera* self, intptr_t slot);
-void QCamera_FocusModeChanged(QCamera* self);
-void QCamera_Connect_FocusModeChanged(QCamera* self, intptr_t slot);
-void QCamera_ZoomFactorChanged(QCamera* self, float param1);
-void QCamera_Connect_ZoomFactorChanged(QCamera* self, intptr_t slot);
-void QCamera_MinimumZoomFactorChanged(QCamera* self, float param1);
-void QCamera_Connect_MinimumZoomFactorChanged(QCamera* self, intptr_t slot);
-void QCamera_MaximumZoomFactorChanged(QCamera* self, float param1);
-void QCamera_Connect_MaximumZoomFactorChanged(QCamera* self, intptr_t slot);
-void QCamera_FocusDistanceChanged(QCamera* self, float param1);
-void QCamera_Connect_FocusDistanceChanged(QCamera* self, intptr_t slot);
-void QCamera_FocusPointChanged(QCamera* self);
-void QCamera_Connect_FocusPointChanged(QCamera* self, intptr_t slot);
-void QCamera_CustomFocusPointChanged(QCamera* self);
-void QCamera_Connect_CustomFocusPointChanged(QCamera* self, intptr_t slot);
-void QCamera_FlashReady(QCamera* self, bool param1);
-void QCamera_Connect_FlashReady(QCamera* self, intptr_t slot);
-void QCamera_FlashModeChanged(QCamera* self);
-void QCamera_Connect_FlashModeChanged(QCamera* self, intptr_t slot);
-void QCamera_TorchModeChanged(QCamera* self);
-void QCamera_Connect_TorchModeChanged(QCamera* self, intptr_t slot);
-void QCamera_ExposureTimeChanged(QCamera* self, float speed);
-void QCamera_Connect_ExposureTimeChanged(QCamera* self, intptr_t slot);
-void QCamera_ManualExposureTimeChanged(QCamera* self, float speed);
-void QCamera_Connect_ManualExposureTimeChanged(QCamera* self, intptr_t slot);
-void QCamera_IsoSensitivityChanged(QCamera* self, int param1);
-void QCamera_Connect_IsoSensitivityChanged(QCamera* self, intptr_t slot);
-void QCamera_ManualIsoSensitivityChanged(QCamera* self, int param1);
-void QCamera_Connect_ManualIsoSensitivityChanged(QCamera* self, intptr_t slot);
-void QCamera_ExposureCompensationChanged(QCamera* self, float param1);
-void QCamera_Connect_ExposureCompensationChanged(QCamera* self, intptr_t slot);
-void QCamera_ExposureModeChanged(QCamera* self);
-void QCamera_Connect_ExposureModeChanged(QCamera* self, intptr_t slot);
-void QCamera_WhiteBalanceModeChanged(const QCamera* self);
-void QCamera_Connect_WhiteBalanceModeChanged(QCamera* self, intptr_t slot);
-void QCamera_ColorTemperatureChanged(const QCamera* self);
-void QCamera_Connect_ColorTemperatureChanged(QCamera* self, intptr_t slot);
-void QCamera_BrightnessChanged(QCamera* self);
-void QCamera_Connect_BrightnessChanged(QCamera* self, intptr_t slot);
-void QCamera_ContrastChanged(QCamera* self);
-void QCamera_Connect_ContrastChanged(QCamera* self, intptr_t slot);
-void QCamera_SaturationChanged(QCamera* self);
-void QCamera_Connect_SaturationChanged(QCamera* self, intptr_t slot);
-void QCamera_HueChanged(QCamera* self);
-void QCamera_Connect_HueChanged(QCamera* self, intptr_t slot);
 libqt_string QCamera_Tr2(const char* s, const char* c);
 libqt_string QCamera_Tr3(const char* s, const char* c, int n);
+libqt_string QCamera_TrUtf82(const char* s, const char* c);
+libqt_string QCamera_TrUtf83(const char* s, const char* c, int n);
+libqt_list /* of QCameraViewfinderSettings* */ QCamera_SupportedViewfinderSettings1(const QCamera* self, QCameraViewfinderSettings* settings);
+libqt_list /* of QSize* */ QCamera_SupportedViewfinderResolutions1(const QCamera* self, QCameraViewfinderSettings* settings);
+libqt_list /* of QCamera__FrameRateRange* */ QCamera_SupportedViewfinderFrameRateRanges1(const QCamera* self, QCameraViewfinderSettings* settings);
+libqt_list /* of int */ QCamera_SupportedViewfinderPixelFormats1(const QCamera* self, QCameraViewfinderSettings* settings);
+bool QCamera_IsAvailable(const QCamera* self);
+void QCamera_OnIsAvailable(const QCamera* self, intptr_t slot);
+bool QCamera_QBaseIsAvailable(const QCamera* self);
+QMediaService* QCamera_Service(const QCamera* self);
+void QCamera_OnService(const QCamera* self, intptr_t slot);
+QMediaService* QCamera_QBaseService(const QCamera* self);
+bool QCamera_Bind(QCamera* self, QObject* param1);
+void QCamera_OnBind(QCamera* self, intptr_t slot);
+bool QCamera_QBaseBind(QCamera* self, QObject* param1);
+void QCamera_Unbind(QCamera* self, QObject* param1);
+void QCamera_OnUnbind(QCamera* self, intptr_t slot);
+void QCamera_QBaseUnbind(QCamera* self, QObject* param1);
 bool QCamera_Event(QCamera* self, QEvent* event);
 void QCamera_OnEvent(QCamera* self, intptr_t slot);
 bool QCamera_QBaseEvent(QCamera* self, QEvent* event);
@@ -203,6 +183,12 @@ void QCamera_QBaseConnectNotify(QCamera* self, QMetaMethod* signal);
 void QCamera_DisconnectNotify(QCamera* self, QMetaMethod* signal);
 void QCamera_OnDisconnectNotify(QCamera* self, intptr_t slot);
 void QCamera_QBaseDisconnectNotify(QCamera* self, QMetaMethod* signal);
+void QCamera_AddPropertyWatch(QCamera* self, libqt_string name);
+void QCamera_OnAddPropertyWatch(QCamera* self, intptr_t slot);
+void QCamera_QBaseAddPropertyWatch(QCamera* self, libqt_string name);
+void QCamera_RemovePropertyWatch(QCamera* self, libqt_string name);
+void QCamera_OnRemovePropertyWatch(QCamera* self, intptr_t slot);
+void QCamera_QBaseRemovePropertyWatch(QCamera* self, libqt_string name);
 QObject* QCamera_Sender(const QCamera* self);
 void QCamera_OnSender(const QCamera* self, intptr_t slot);
 QObject* QCamera_QBaseSender(const QCamera* self);
@@ -216,6 +202,15 @@ bool QCamera_IsSignalConnected(const QCamera* self, QMetaMethod* signal);
 void QCamera_OnIsSignalConnected(const QCamera* self, intptr_t slot);
 bool QCamera_QBaseIsSignalConnected(const QCamera* self, QMetaMethod* signal);
 void QCamera_Delete(QCamera* self);
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new(QCamera__FrameRateRange* other);
+QCamera__FrameRateRange* QCamera__FrameRateRange_new2(QCamera__FrameRateRange* other);
+QCamera__FrameRateRange* QCamera__FrameRateRange_new3();
+QCamera__FrameRateRange* QCamera__FrameRateRange_new4(double minimum, double maximum);
+QCamera__FrameRateRange* QCamera__FrameRateRange_new5(QCamera__FrameRateRange* param1);
+void QCamera__FrameRateRange_CopyAssign(QCamera__FrameRateRange* self, QCamera__FrameRateRange* other);
+void QCamera__FrameRateRange_MoveAssign(QCamera__FrameRateRange* self, QCamera__FrameRateRange* other);
+void QCamera__FrameRateRange_Delete(QCamera__FrameRateRange* self);
 
 #ifdef __cplusplus
 } /* extern C */

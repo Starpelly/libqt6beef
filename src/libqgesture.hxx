@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -1440,65 +1442,6 @@ class VirtualQTapAndHoldGesture : public QTapAndHoldGesture {
             return qtapandholdgesture_issignalconnected_callback(this, signal);
         } else {
             return QTapAndHoldGesture::isSignalConnected(signal);
-        }
-    }
-};
-
-// This class is a subclass of QGestureEvent so that we can call protected methods
-class VirtualQGestureEvent : public QGestureEvent {
-
-  public:
-    // Virtual class public types (including callbacks)
-    using QGestureEvent_SetAccepted_Callback = void (*)(QGestureEvent*, bool);
-    using QGestureEvent_Clone_Callback = QEvent* (*)();
-
-  protected:
-    // Instance callback storage
-    QGestureEvent_SetAccepted_Callback qgestureevent_setaccepted_callback = nullptr;
-    QGestureEvent_Clone_Callback qgestureevent_clone_callback = nullptr;
-
-    // Instance base flags
-    mutable bool qgestureevent_setaccepted_isbase = false;
-    mutable bool qgestureevent_clone_isbase = false;
-
-  public:
-    VirtualQGestureEvent(const QList<QGesture*>& gestures) : QGestureEvent(gestures){};
-    VirtualQGestureEvent(const QGestureEvent& param1) : QGestureEvent(param1){};
-
-    ~VirtualQGestureEvent() {
-        qgestureevent_setaccepted_callback = nullptr;
-        qgestureevent_clone_callback = nullptr;
-    }
-
-    // Callback setters
-    void setQGestureEvent_SetAccepted_Callback(QGestureEvent_SetAccepted_Callback cb) { qgestureevent_setaccepted_callback = cb; }
-    void setQGestureEvent_Clone_Callback(QGestureEvent_Clone_Callback cb) { qgestureevent_clone_callback = cb; }
-
-    // Base flag setters
-    void setQGestureEvent_SetAccepted_IsBase(bool value) const { qgestureevent_setaccepted_isbase = value; }
-    void setQGestureEvent_Clone_IsBase(bool value) const { qgestureevent_clone_isbase = value; }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setAccepted(bool accepted) override {
-        if (qgestureevent_setaccepted_isbase) {
-            qgestureevent_setaccepted_isbase = false;
-            QGestureEvent::setAccepted(accepted);
-        } else if (qgestureevent_setaccepted_callback != nullptr) {
-            qgestureevent_setaccepted_callback(this, accepted);
-        } else {
-            QGestureEvent::setAccepted(accepted);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QEvent* clone() const override {
-        if (qgestureevent_clone_isbase) {
-            qgestureevent_clone_isbase = false;
-            return QGestureEvent::clone();
-        } else if (qgestureevent_clone_callback != nullptr) {
-            return qgestureevent_clone_callback();
-        } else {
-            return QGestureEvent::clone();
         }
     }
 };

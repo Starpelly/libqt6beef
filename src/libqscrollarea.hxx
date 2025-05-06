@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -39,7 +41,6 @@ class VirtualQScrollArea : public QScrollArea {
     using QScrollArea_DropEvent_Callback = void (*)(QScrollArea*, QDropEvent*);
     using QScrollArea_KeyPressEvent_Callback = void (*)(QScrollArea*, QKeyEvent*);
     using QScrollArea_ChangeEvent_Callback = void (*)(QScrollArea*, QEvent*);
-    using QScrollArea_InitStyleOption_Callback = void (*)(const QScrollArea*, QStyleOptionFrame*);
     using QScrollArea_DevType_Callback = int (*)();
     using QScrollArea_SetVisible_Callback = void (*)(QScrollArea*, bool);
     using QScrollArea_HeightForWidth_Callback = int (*)(const QScrollArea*, int);
@@ -48,7 +49,7 @@ class VirtualQScrollArea : public QScrollArea {
     using QScrollArea_KeyReleaseEvent_Callback = void (*)(QScrollArea*, QKeyEvent*);
     using QScrollArea_FocusInEvent_Callback = void (*)(QScrollArea*, QFocusEvent*);
     using QScrollArea_FocusOutEvent_Callback = void (*)(QScrollArea*, QFocusEvent*);
-    using QScrollArea_EnterEvent_Callback = void (*)(QScrollArea*, QEnterEvent*);
+    using QScrollArea_EnterEvent_Callback = void (*)(QScrollArea*, QEvent*);
     using QScrollArea_LeaveEvent_Callback = void (*)(QScrollArea*, QEvent*);
     using QScrollArea_MoveEvent_Callback = void (*)(QScrollArea*, QMoveEvent*);
     using QScrollArea_CloseEvent_Callback = void (*)(QScrollArea*, QCloseEvent*);
@@ -56,7 +57,7 @@ class VirtualQScrollArea : public QScrollArea {
     using QScrollArea_ActionEvent_Callback = void (*)(QScrollArea*, QActionEvent*);
     using QScrollArea_ShowEvent_Callback = void (*)(QScrollArea*, QShowEvent*);
     using QScrollArea_HideEvent_Callback = void (*)(QScrollArea*, QHideEvent*);
-    using QScrollArea_NativeEvent_Callback = bool (*)(QScrollArea*, const QByteArray&, void*, qintptr*);
+    using QScrollArea_NativeEvent_Callback = bool (*)(QScrollArea*, const QByteArray&, void*, long*);
     using QScrollArea_Metric_Callback = int (*)(const QScrollArea*, QPaintDevice::PaintDeviceMetric);
     using QScrollArea_InitPainter_Callback = void (*)(const QScrollArea*, QPainter*);
     using QScrollArea_Redirected_Callback = QPaintDevice* (*)(const QScrollArea*, QPoint*);
@@ -71,6 +72,7 @@ class VirtualQScrollArea : public QScrollArea {
     using QScrollArea_SetViewportMargins_Callback = void (*)(QScrollArea*, int, int, int, int);
     using QScrollArea_ViewportMargins_Callback = QMargins (*)();
     using QScrollArea_DrawFrame_Callback = void (*)(QScrollArea*, QPainter*);
+    using QScrollArea_InitStyleOption_Callback = void (*)(const QScrollArea*, QStyleOptionFrame*);
     using QScrollArea_UpdateMicroFocus_Callback = void (*)();
     using QScrollArea_Create_Callback = void (*)();
     using QScrollArea_Destroy_Callback = void (*)();
@@ -107,7 +109,6 @@ class VirtualQScrollArea : public QScrollArea {
     QScrollArea_DropEvent_Callback qscrollarea_dropevent_callback = nullptr;
     QScrollArea_KeyPressEvent_Callback qscrollarea_keypressevent_callback = nullptr;
     QScrollArea_ChangeEvent_Callback qscrollarea_changeevent_callback = nullptr;
-    QScrollArea_InitStyleOption_Callback qscrollarea_initstyleoption_callback = nullptr;
     QScrollArea_DevType_Callback qscrollarea_devtype_callback = nullptr;
     QScrollArea_SetVisible_Callback qscrollarea_setvisible_callback = nullptr;
     QScrollArea_HeightForWidth_Callback qscrollarea_heightforwidth_callback = nullptr;
@@ -139,6 +140,7 @@ class VirtualQScrollArea : public QScrollArea {
     QScrollArea_SetViewportMargins_Callback qscrollarea_setviewportmargins_callback = nullptr;
     QScrollArea_ViewportMargins_Callback qscrollarea_viewportmargins_callback = nullptr;
     QScrollArea_DrawFrame_Callback qscrollarea_drawframe_callback = nullptr;
+    QScrollArea_InitStyleOption_Callback qscrollarea_initstyleoption_callback = nullptr;
     QScrollArea_UpdateMicroFocus_Callback qscrollarea_updatemicrofocus_callback = nullptr;
     QScrollArea_Create_Callback qscrollarea_create_callback = nullptr;
     QScrollArea_Destroy_Callback qscrollarea_destroy_callback = nullptr;
@@ -174,7 +176,6 @@ class VirtualQScrollArea : public QScrollArea {
     mutable bool qscrollarea_dropevent_isbase = false;
     mutable bool qscrollarea_keypressevent_isbase = false;
     mutable bool qscrollarea_changeevent_isbase = false;
-    mutable bool qscrollarea_initstyleoption_isbase = false;
     mutable bool qscrollarea_devtype_isbase = false;
     mutable bool qscrollarea_setvisible_isbase = false;
     mutable bool qscrollarea_heightforwidth_isbase = false;
@@ -206,6 +207,7 @@ class VirtualQScrollArea : public QScrollArea {
     mutable bool qscrollarea_setviewportmargins_isbase = false;
     mutable bool qscrollarea_viewportmargins_isbase = false;
     mutable bool qscrollarea_drawframe_isbase = false;
+    mutable bool qscrollarea_initstyleoption_isbase = false;
     mutable bool qscrollarea_updatemicrofocus_isbase = false;
     mutable bool qscrollarea_create_isbase = false;
     mutable bool qscrollarea_destroy_isbase = false;
@@ -245,7 +247,6 @@ class VirtualQScrollArea : public QScrollArea {
         qscrollarea_dropevent_callback = nullptr;
         qscrollarea_keypressevent_callback = nullptr;
         qscrollarea_changeevent_callback = nullptr;
-        qscrollarea_initstyleoption_callback = nullptr;
         qscrollarea_devtype_callback = nullptr;
         qscrollarea_setvisible_callback = nullptr;
         qscrollarea_heightforwidth_callback = nullptr;
@@ -277,6 +278,7 @@ class VirtualQScrollArea : public QScrollArea {
         qscrollarea_setviewportmargins_callback = nullptr;
         qscrollarea_viewportmargins_callback = nullptr;
         qscrollarea_drawframe_callback = nullptr;
+        qscrollarea_initstyleoption_callback = nullptr;
         qscrollarea_updatemicrofocus_callback = nullptr;
         qscrollarea_create_callback = nullptr;
         qscrollarea_destroy_callback = nullptr;
@@ -313,7 +315,6 @@ class VirtualQScrollArea : public QScrollArea {
     void setQScrollArea_DropEvent_Callback(QScrollArea_DropEvent_Callback cb) { qscrollarea_dropevent_callback = cb; }
     void setQScrollArea_KeyPressEvent_Callback(QScrollArea_KeyPressEvent_Callback cb) { qscrollarea_keypressevent_callback = cb; }
     void setQScrollArea_ChangeEvent_Callback(QScrollArea_ChangeEvent_Callback cb) { qscrollarea_changeevent_callback = cb; }
-    void setQScrollArea_InitStyleOption_Callback(QScrollArea_InitStyleOption_Callback cb) { qscrollarea_initstyleoption_callback = cb; }
     void setQScrollArea_DevType_Callback(QScrollArea_DevType_Callback cb) { qscrollarea_devtype_callback = cb; }
     void setQScrollArea_SetVisible_Callback(QScrollArea_SetVisible_Callback cb) { qscrollarea_setvisible_callback = cb; }
     void setQScrollArea_HeightForWidth_Callback(QScrollArea_HeightForWidth_Callback cb) { qscrollarea_heightforwidth_callback = cb; }
@@ -345,6 +346,7 @@ class VirtualQScrollArea : public QScrollArea {
     void setQScrollArea_SetViewportMargins_Callback(QScrollArea_SetViewportMargins_Callback cb) { qscrollarea_setviewportmargins_callback = cb; }
     void setQScrollArea_ViewportMargins_Callback(QScrollArea_ViewportMargins_Callback cb) { qscrollarea_viewportmargins_callback = cb; }
     void setQScrollArea_DrawFrame_Callback(QScrollArea_DrawFrame_Callback cb) { qscrollarea_drawframe_callback = cb; }
+    void setQScrollArea_InitStyleOption_Callback(QScrollArea_InitStyleOption_Callback cb) { qscrollarea_initstyleoption_callback = cb; }
     void setQScrollArea_UpdateMicroFocus_Callback(QScrollArea_UpdateMicroFocus_Callback cb) { qscrollarea_updatemicrofocus_callback = cb; }
     void setQScrollArea_Create_Callback(QScrollArea_Create_Callback cb) { qscrollarea_create_callback = cb; }
     void setQScrollArea_Destroy_Callback(QScrollArea_Destroy_Callback cb) { qscrollarea_destroy_callback = cb; }
@@ -380,7 +382,6 @@ class VirtualQScrollArea : public QScrollArea {
     void setQScrollArea_DropEvent_IsBase(bool value) const { qscrollarea_dropevent_isbase = value; }
     void setQScrollArea_KeyPressEvent_IsBase(bool value) const { qscrollarea_keypressevent_isbase = value; }
     void setQScrollArea_ChangeEvent_IsBase(bool value) const { qscrollarea_changeevent_isbase = value; }
-    void setQScrollArea_InitStyleOption_IsBase(bool value) const { qscrollarea_initstyleoption_isbase = value; }
     void setQScrollArea_DevType_IsBase(bool value) const { qscrollarea_devtype_isbase = value; }
     void setQScrollArea_SetVisible_IsBase(bool value) const { qscrollarea_setvisible_isbase = value; }
     void setQScrollArea_HeightForWidth_IsBase(bool value) const { qscrollarea_heightforwidth_isbase = value; }
@@ -412,6 +413,7 @@ class VirtualQScrollArea : public QScrollArea {
     void setQScrollArea_SetViewportMargins_IsBase(bool value) const { qscrollarea_setviewportmargins_isbase = value; }
     void setQScrollArea_ViewportMargins_IsBase(bool value) const { qscrollarea_viewportmargins_isbase = value; }
     void setQScrollArea_DrawFrame_IsBase(bool value) const { qscrollarea_drawframe_isbase = value; }
+    void setQScrollArea_InitStyleOption_IsBase(bool value) const { qscrollarea_initstyleoption_isbase = value; }
     void setQScrollArea_UpdateMicroFocus_IsBase(bool value) const { qscrollarea_updatemicrofocus_isbase = value; }
     void setQScrollArea_Create_IsBase(bool value) const { qscrollarea_create_isbase = value; }
     void setQScrollArea_Destroy_IsBase(bool value) const { qscrollarea_destroy_isbase = value; }
@@ -711,18 +713,6 @@ class VirtualQScrollArea : public QScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qscrollarea_initstyleoption_isbase) {
-            qscrollarea_initstyleoption_isbase = false;
-            QScrollArea::initStyleOption(option);
-        } else if (qscrollarea_initstyleoption_callback != nullptr) {
-            qscrollarea_initstyleoption_callback(this, option);
-        } else {
-            QScrollArea::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qscrollarea_devtype_isbase) {
             qscrollarea_devtype_isbase = false;
@@ -819,7 +809,7 @@ class VirtualQScrollArea : public QScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qscrollarea_enterevent_isbase) {
             qscrollarea_enterevent_isbase = false;
             QScrollArea::enterEvent(event);
@@ -915,7 +905,7 @@ class VirtualQScrollArea : public QScrollArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qscrollarea_nativeevent_isbase) {
             qscrollarea_nativeevent_isbase = false;
             return QScrollArea::nativeEvent(eventType, message, result);
@@ -1091,6 +1081,18 @@ class VirtualQScrollArea : public QScrollArea {
             qscrollarea_drawframe_callback(this, param1);
         } else {
             QScrollArea::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qscrollarea_initstyleoption_isbase) {
+            qscrollarea_initstyleoption_isbase = false;
+            QScrollArea::initStyleOption(option);
+        } else if (qscrollarea_initstyleoption_callback != nullptr) {
+            qscrollarea_initstyleoption_callback(this, option);
+        } else {
+            QScrollArea::initStyleOption(option);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractGraphicsShapeItem QAbstractGraphicsShapeItem;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBrush QBrush;
 typedef struct QChildEvent QChildEvent;
 typedef struct QColor QColor;
@@ -52,10 +52,12 @@ typedef struct QGraphicsWidget QGraphicsWidget;
 typedef struct QInputMethodEvent QInputMethodEvent;
 typedef struct QKeyEvent QKeyEvent;
 typedef struct QLineF QLineF;
+typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPen QPen;
@@ -174,6 +176,10 @@ void QGraphicsItem_SetPos2(QGraphicsItem* self, double x, double y);
 void QGraphicsItem_MoveBy(QGraphicsItem* self, double dx, double dy);
 void QGraphicsItem_EnsureVisible(QGraphicsItem* self);
 void QGraphicsItem_EnsureVisible2(QGraphicsItem* self, double x, double y, double w, double h);
+QMatrix* QGraphicsItem_Matrix(const QGraphicsItem* self);
+QMatrix* QGraphicsItem_SceneMatrix(const QGraphicsItem* self);
+void QGraphicsItem_SetMatrix(QGraphicsItem* self, QMatrix* matrix);
+void QGraphicsItem_ResetMatrix(QGraphicsItem* self);
 QTransform* QGraphicsItem_Transform(const QGraphicsItem* self);
 QTransform* QGraphicsItem_SceneTransform(const QGraphicsItem* self);
 QTransform* QGraphicsItem_DeviceTransform(const QGraphicsItem* self, QTransform* viewportTransform);
@@ -357,6 +363,7 @@ void QGraphicsItem_EnsureVisible22(QGraphicsItem* self, QRectF* rect, int xmargi
 void QGraphicsItem_EnsureVisible3(QGraphicsItem* self, QRectF* rect, int xmargin, int ymargin);
 void QGraphicsItem_EnsureVisible5(QGraphicsItem* self, double x, double y, double w, double h, int xmargin);
 void QGraphicsItem_EnsureVisible6(QGraphicsItem* self, double x, double y, double w, double h, int xmargin, int ymargin);
+void QGraphicsItem_SetMatrix2(QGraphicsItem* self, QMatrix* matrix, bool combine);
 QTransform* QGraphicsItem_ItemTransform2(const QGraphicsItem* self, QGraphicsItem* other, bool* ok);
 void QGraphicsItem_SetTransform2(QGraphicsItem* self, QTransform* matrix, bool combine);
 libqt_list /* of QGraphicsItem* */ QGraphicsItem_CollidingItems1(const QGraphicsItem* self, int mode);
@@ -385,6 +392,7 @@ int QGraphicsObject_Metacall(QGraphicsObject* self, int param1, int param2, void
 void QGraphicsObject_OnMetacall(QGraphicsObject* self, intptr_t slot);
 int QGraphicsObject_QBaseMetacall(QGraphicsObject* self, int param1, int param2, void** param3);
 libqt_string QGraphicsObject_Tr(const char* s);
+libqt_string QGraphicsObject_TrUtf8(const char* s);
 void QGraphicsObject_GrabGesture(QGraphicsObject* self, int typeVal);
 void QGraphicsObject_UngrabGesture(QGraphicsObject* self, int typeVal);
 void QGraphicsObject_ParentChanged(QGraphicsObject* self);
@@ -416,6 +424,8 @@ void QGraphicsObject_OnEvent(QGraphicsObject* self, intptr_t slot);
 bool QGraphicsObject_QBaseEvent(QGraphicsObject* self, QEvent* ev);
 libqt_string QGraphicsObject_Tr2(const char* s, const char* c);
 libqt_string QGraphicsObject_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsObject_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsObject_TrUtf83(const char* s, const char* c, int n);
 void QGraphicsObject_GrabGesture2(QGraphicsObject* self, int typeVal, int flags);
 bool QGraphicsObject_EventFilter(QGraphicsObject* self, QObject* watched, QEvent* event);
 void QGraphicsObject_OnEventFilter(QGraphicsObject* self, intptr_t slot);
@@ -1471,6 +1481,7 @@ int QGraphicsTextItem_Metacall(QGraphicsTextItem* self, int param1, int param2, 
 void QGraphicsTextItem_OnMetacall(QGraphicsTextItem* self, intptr_t slot);
 int QGraphicsTextItem_QBaseMetacall(QGraphicsTextItem* self, int param1, int param2, void** param3);
 libqt_string QGraphicsTextItem_Tr(const char* s);
+libqt_string QGraphicsTextItem_TrUtf8(const char* s);
 libqt_string QGraphicsTextItem_ToHtml(const QGraphicsTextItem* self);
 void QGraphicsTextItem_SetHtml(QGraphicsTextItem* self, libqt_string html);
 libqt_string QGraphicsTextItem_ToPlainText(const QGraphicsTextItem* self);
@@ -1585,6 +1596,8 @@ void QGraphicsTextItem_OnExtension(const QGraphicsTextItem* self, intptr_t slot)
 QVariant* QGraphicsTextItem_QBaseExtension(const QGraphicsTextItem* self, QVariant* variant);
 libqt_string QGraphicsTextItem_Tr2(const char* s, const char* c);
 libqt_string QGraphicsTextItem_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsTextItem_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsTextItem_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsTextItem_Event(QGraphicsTextItem* self, QEvent* ev);
 void QGraphicsTextItem_OnEvent(QGraphicsTextItem* self, intptr_t slot);
 bool QGraphicsTextItem_QBaseEvent(QGraphicsTextItem* self, QEvent* ev);

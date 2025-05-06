@@ -417,32 +417,6 @@ void QGraphicsGridLayout_OnWidgetEvent(QGraphicsGridLayout* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-bool QGraphicsGridLayout_IsEmpty(const QGraphicsGridLayout* self) {
-    if (auto* vqgraphicsgridlayout = const_cast<VirtualQGraphicsGridLayout*>(dynamic_cast<const VirtualQGraphicsGridLayout*>(self))) {
-        return vqgraphicsgridlayout->isEmpty();
-    } else {
-        return vqgraphicsgridlayout->isEmpty();
-    }
-}
-
-// Base class handler implementation
-bool QGraphicsGridLayout_QBaseIsEmpty(const QGraphicsGridLayout* self) {
-    if (auto* vqgraphicsgridlayout = const_cast<VirtualQGraphicsGridLayout*>(dynamic_cast<const VirtualQGraphicsGridLayout*>(self))) {
-        vqgraphicsgridlayout->setQGraphicsGridLayout_IsEmpty_IsBase(true);
-        return vqgraphicsgridlayout->isEmpty();
-    } else {
-        return vqgraphicsgridlayout->isEmpty();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGraphicsGridLayout_OnIsEmpty(const QGraphicsGridLayout* self, intptr_t slot) {
-    if (auto* vqgraphicsgridlayout = const_cast<VirtualQGraphicsGridLayout*>(dynamic_cast<const VirtualQGraphicsGridLayout*>(self))) {
-        vqgraphicsgridlayout->setQGraphicsGridLayout_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsGridLayout::QGraphicsGridLayout_IsEmpty_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QGraphicsGridLayout_AddChildLayoutItem(QGraphicsGridLayout* self, QGraphicsLayoutItem* layoutItem) {
     if (auto* vqgraphicsgridlayout = dynamic_cast<VirtualQGraphicsGridLayout*>(self)) {
         vqgraphicsgridlayout->addChildLayoutItem(layoutItem);

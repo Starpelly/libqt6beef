@@ -1,13 +1,11 @@
-#include <QAbstractFileIconProvider>
 #include <QAbstractItemModel>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
 #include <QDateTime>
 #include <QDir>
 #include <QEvent>
+#include <QFileIconProvider>
 #include <QFileInfo>
 #include <QFileSystemModel>
 #include <QIcon>
@@ -18,8 +16,8 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
-#include <QModelRoleDataSpan>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -75,6 +73,18 @@ int QFileSystemModel_QBaseMetacall(QFileSystemModel* self, int param1, int param
 
 libqt_string QFileSystemModel_Tr(const char* s) {
     QString _ret = QFileSystemModel::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFileSystemModel_TrUtf8(const char* s) {
+    QString _ret = QFileSystemModel::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -198,11 +208,11 @@ QDir* QFileSystemModel_RootDirectory(const QFileSystemModel* self) {
     return new QDir(self->rootDirectory());
 }
 
-void QFileSystemModel_SetIconProvider(QFileSystemModel* self, QAbstractFileIconProvider* provider) {
+void QFileSystemModel_SetIconProvider(QFileSystemModel* self, QFileIconProvider* provider) {
     self->setIconProvider(provider);
 }
 
-QAbstractFileIconProvider* QFileSystemModel_IconProvider(const QFileSystemModel* self) {
+QFileIconProvider* QFileSystemModel_IconProvider(const QFileSystemModel* self) {
     return self->iconProvider();
 }
 
@@ -373,6 +383,30 @@ libqt_string QFileSystemModel_Tr2(const char* s, const char* c) {
 
 libqt_string QFileSystemModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFileSystemModel::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFileSystemModel_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFileSystemModel::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFileSystemModel_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFileSystemModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -919,112 +953,6 @@ void QFileSystemModel_OnSupportedDropActions(const QFileSystemModel* self, intpt
 }
 
 // Derived class handler implementation
-libqt_map /* of int to libqt_string */ QFileSystemModel_RoleNames(const QFileSystemModel* self) {
-    if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
-        // Convert QMap<> from C++ memory to manually-managed C memory
-        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
-        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
-        int _ctr = 0;
-        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
-            _karr[_ctr] = _itr->first;
-            QByteArray _hashval_qb = _itr->second;
-            libqt_string _hashval_str;
-            _hashval_str.len = _hashval_qb.length();
-            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
-            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
-            _hashval_str.data[_hashval_str.len] = '\0';
-            _varr[_ctr] = _hashval_str;
-            _ctr++;
-        }
-        libqt_map _out;
-        _out.len = _ret.size();
-        _out.keys = static_cast<void*>(_karr);
-        _out.values = static_cast<void*>(_varr);
-        return _out;
-    } else {
-        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
-        // Convert QMap<> from C++ memory to manually-managed C memory
-        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
-        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
-        int _ctr = 0;
-        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
-            _karr[_ctr] = _itr->first;
-            QByteArray _hashval_qb = _itr->second;
-            libqt_string _hashval_str;
-            _hashval_str.len = _hashval_qb.length();
-            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
-            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
-            _hashval_str.data[_hashval_str.len] = '\0';
-            _varr[_ctr] = _hashval_str;
-            _ctr++;
-        }
-        libqt_map _out;
-        _out.len = _ret.size();
-        _out.keys = static_cast<void*>(_karr);
-        _out.values = static_cast<void*>(_varr);
-        return _out;
-    }
-}
-
-// Base class handler implementation
-libqt_map /* of int to libqt_string */ QFileSystemModel_QBaseRoleNames(const QFileSystemModel* self) {
-    if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        vqfilesystemmodel->setQFileSystemModel_RoleNames_IsBase(true);
-        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
-        // Convert QMap<> from C++ memory to manually-managed C memory
-        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
-        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
-        int _ctr = 0;
-        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
-            _karr[_ctr] = _itr->first;
-            QByteArray _hashval_qb = _itr->second;
-            libqt_string _hashval_str;
-            _hashval_str.len = _hashval_qb.length();
-            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
-            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
-            _hashval_str.data[_hashval_str.len] = '\0';
-            _varr[_ctr] = _hashval_str;
-            _ctr++;
-        }
-        libqt_map _out;
-        _out.len = _ret.size();
-        _out.keys = static_cast<void*>(_karr);
-        _out.values = static_cast<void*>(_varr);
-        return _out;
-    } else {
-        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
-        // Convert QMap<> from C++ memory to manually-managed C memory
-        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
-        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
-        int _ctr = 0;
-        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
-            _karr[_ctr] = _itr->first;
-            QByteArray _hashval_qb = _itr->second;
-            libqt_string _hashval_str;
-            _hashval_str.len = _hashval_qb.length();
-            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
-            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
-            _hashval_str.data[_hashval_str.len] = '\0';
-            _varr[_ctr] = _hashval_str;
-            _ctr++;
-        }
-        libqt_map _out;
-        _out.len = _ret.size();
-        _out.keys = static_cast<void*>(_karr);
-        _out.values = static_cast<void*>(_varr);
-        return _out;
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFileSystemModel_OnRoleNames(const QFileSystemModel* self, intptr_t slot) {
-    if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        vqfilesystemmodel->setQFileSystemModel_RoleNames_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_RoleNames_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QFileSystemModel_TimerEvent(QFileSystemModel* self, QTimerEvent* event) {
     if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
         vqfilesystemmodel->timerEvent(event);
@@ -1219,32 +1147,6 @@ bool QFileSystemModel_QBaseSetItemData(QFileSystemModel* self, QModelIndex* inde
 void QFileSystemModel_OnSetItemData(QFileSystemModel* self, intptr_t slot) {
     if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
         vqfilesystemmodel->setQFileSystemModel_SetItemData_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_SetItemData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QFileSystemModel_ClearItemData(QFileSystemModel* self, QModelIndex* index) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        return vqfilesystemmodel->clearItemData(*index);
-    } else {
-        return vqfilesystemmodel->clearItemData(*index);
-    }
-}
-
-// Base class handler implementation
-bool QFileSystemModel_QBaseClearItemData(QFileSystemModel* self, QModelIndex* index) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        vqfilesystemmodel->setQFileSystemModel_ClearItemData_IsBase(true);
-        return vqfilesystemmodel->clearItemData(*index);
-    } else {
-        return vqfilesystemmodel->clearItemData(*index);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFileSystemModel_OnClearItemData(QFileSystemModel* self, intptr_t slot) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        vqfilesystemmodel->setQFileSystemModel_ClearItemData_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_ClearItemData_Callback>(slot));
     }
 }
 
@@ -1571,28 +1473,108 @@ void QFileSystemModel_OnSpan(const QFileSystemModel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFileSystemModel_MultiData(const QFileSystemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+libqt_map /* of int to libqt_string */ QFileSystemModel_RoleNames(const QFileSystemModel* self) {
     if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        vqfilesystemmodel->multiData(*index, *roleDataSpan);
+        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
+        // Convert QMap<> from C++ memory to manually-managed C memory
+        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
+        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
+        int _ctr = 0;
+        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
+            _karr[_ctr] = _itr->first;
+            QByteArray _hashval_qb = _itr->second;
+            libqt_string _hashval_str;
+            _hashval_str.len = _hashval_qb.length();
+            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
+            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
+            _hashval_str.data[_hashval_str.len] = '\0';
+            _varr[_ctr] = _hashval_str;
+            _ctr++;
+        }
+        libqt_map _out;
+        _out.len = _ret.size();
+        _out.keys = static_cast<void*>(_karr);
+        _out.values = static_cast<void*>(_varr);
+        return _out;
     } else {
-        vqfilesystemmodel->multiData(*index, *roleDataSpan);
+        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
+        // Convert QMap<> from C++ memory to manually-managed C memory
+        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
+        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
+        int _ctr = 0;
+        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
+            _karr[_ctr] = _itr->first;
+            QByteArray _hashval_qb = _itr->second;
+            libqt_string _hashval_str;
+            _hashval_str.len = _hashval_qb.length();
+            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
+            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
+            _hashval_str.data[_hashval_str.len] = '\0';
+            _varr[_ctr] = _hashval_str;
+            _ctr++;
+        }
+        libqt_map _out;
+        _out.len = _ret.size();
+        _out.keys = static_cast<void*>(_karr);
+        _out.values = static_cast<void*>(_varr);
+        return _out;
     }
 }
 
 // Base class handler implementation
-void QFileSystemModel_QBaseMultiData(const QFileSystemModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
+libqt_map /* of int to libqt_string */ QFileSystemModel_QBaseRoleNames(const QFileSystemModel* self) {
     if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        vqfilesystemmodel->setQFileSystemModel_MultiData_IsBase(true);
-        vqfilesystemmodel->multiData(*index, *roleDataSpan);
+        vqfilesystemmodel->setQFileSystemModel_RoleNames_IsBase(true);
+        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
+        // Convert QMap<> from C++ memory to manually-managed C memory
+        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
+        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
+        int _ctr = 0;
+        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
+            _karr[_ctr] = _itr->first;
+            QByteArray _hashval_qb = _itr->second;
+            libqt_string _hashval_str;
+            _hashval_str.len = _hashval_qb.length();
+            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
+            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
+            _hashval_str.data[_hashval_str.len] = '\0';
+            _varr[_ctr] = _hashval_str;
+            _ctr++;
+        }
+        libqt_map _out;
+        _out.len = _ret.size();
+        _out.keys = static_cast<void*>(_karr);
+        _out.values = static_cast<void*>(_varr);
+        return _out;
     } else {
-        vqfilesystemmodel->multiData(*index, *roleDataSpan);
+        QHash<int, QByteArray> _ret = vqfilesystemmodel->roleNames();
+        // Convert QMap<> from C++ memory to manually-managed C memory
+        int* _karr = static_cast<int*>(malloc(sizeof(int) * _ret.size()));
+        libqt_string* _varr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.size()));
+        int _ctr = 0;
+        for (auto _itr = _ret.keyValueBegin(); _itr != _ret.keyValueEnd(); ++_itr) {
+            _karr[_ctr] = _itr->first;
+            QByteArray _hashval_qb = _itr->second;
+            libqt_string _hashval_str;
+            _hashval_str.len = _hashval_qb.length();
+            _hashval_str.data = static_cast<char*>(malloc((_hashval_str.len + 1) * sizeof(char)));
+            memcpy(_hashval_str.data, _hashval_qb.data(), _hashval_str.len);
+            _hashval_str.data[_hashval_str.len] = '\0';
+            _varr[_ctr] = _hashval_str;
+            _ctr++;
+        }
+        libqt_map _out;
+        _out.len = _ret.size();
+        _out.keys = static_cast<void*>(_karr);
+        _out.values = static_cast<void*>(_varr);
+        return _out;
     }
 }
 
 // Auxiliary method to allow providing re-implementation
-void QFileSystemModel_OnMultiData(const QFileSystemModel* self, intptr_t slot) {
+void QFileSystemModel_OnRoleNames(const QFileSystemModel* self, intptr_t slot) {
     if (auto* vqfilesystemmodel = const_cast<VirtualQFileSystemModel*>(dynamic_cast<const VirtualQFileSystemModel*>(self))) {
-        vqfilesystemmodel->setQFileSystemModel_MultiData_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_MultiData_Callback>(slot));
+        vqfilesystemmodel->setQFileSystemModel_RoleNames_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_RoleNames_Callback>(slot));
     }
 }
 
@@ -1645,32 +1627,6 @@ void QFileSystemModel_QBaseRevert(QFileSystemModel* self) {
 void QFileSystemModel_OnRevert(QFileSystemModel* self, intptr_t slot) {
     if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
         vqfilesystemmodel->setQFileSystemModel_Revert_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_Revert_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QFileSystemModel_ResetInternalData(QFileSystemModel* self) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        vqfilesystemmodel->resetInternalData();
-    } else {
-        vqfilesystemmodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QFileSystemModel_QBaseResetInternalData(QFileSystemModel* self) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        vqfilesystemmodel->setQFileSystemModel_ResetInternalData_IsBase(true);
-        vqfilesystemmodel->resetInternalData();
-    } else {
-        vqfilesystemmodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFileSystemModel_OnResetInternalData(QFileSystemModel* self, intptr_t slot) {
-    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
-        vqfilesystemmodel->setQFileSystemModel_ResetInternalData_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1801,6 +1757,32 @@ void QFileSystemModel_QBaseDisconnectNotify(QFileSystemModel* self, QMetaMethod*
 void QFileSystemModel_OnDisconnectNotify(QFileSystemModel* self, intptr_t slot) {
     if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
         vqfilesystemmodel->setQFileSystemModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QFileSystemModel_ResetInternalData(QFileSystemModel* self) {
+    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
+        vqfilesystemmodel->resetInternalData();
+    } else {
+        vqfilesystemmodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QFileSystemModel_QBaseResetInternalData(QFileSystemModel* self) {
+    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
+        vqfilesystemmodel->setQFileSystemModel_ResetInternalData_IsBase(true);
+        vqfilesystemmodel->resetInternalData();
+    } else {
+        vqfilesystemmodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QFileSystemModel_OnResetInternalData(QFileSystemModel* self, intptr_t slot) {
+    if (auto* vqfilesystemmodel = dynamic_cast<VirtualQFileSystemModel*>(self)) {
+        vqfilesystemmodel->setQFileSystemModel_ResetInternalData_Callback(reinterpret_cast<VirtualQFileSystemModel::QFileSystemModel_ResetInternalData_Callback>(slot));
     }
 }
 

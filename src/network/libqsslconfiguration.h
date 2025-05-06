@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -56,7 +58,6 @@ QSslKey* QSslConfiguration_PrivateKey(const QSslConfiguration* self);
 void QSslConfiguration_SetPrivateKey(QSslConfiguration* self, QSslKey* key);
 libqt_list /* of QSslCipher* */ QSslConfiguration_Ciphers(const QSslConfiguration* self);
 void QSslConfiguration_SetCiphers(QSslConfiguration* self, libqt_list /* of QSslCipher* */ ciphers);
-void QSslConfiguration_SetCiphersWithCiphers(QSslConfiguration* self, libqt_string ciphers);
 libqt_list /* of QSslCipher* */ QSslConfiguration_SupportedCiphers();
 libqt_list /* of QSslCertificate* */ QSslConfiguration_CaCertificates(const QSslConfiguration* self);
 void QSslConfiguration_SetCaCertificates(QSslConfiguration* self, libqt_list /* of QSslCertificate* */ certificates);
@@ -85,10 +86,6 @@ bool QSslConfiguration_DtlsCookieVerificationEnabled(const QSslConfiguration* se
 void QSslConfiguration_SetDtlsCookieVerificationEnabled(QSslConfiguration* self, bool enable);
 QSslConfiguration* QSslConfiguration_DefaultDtlsConfiguration();
 void QSslConfiguration_SetDefaultDtlsConfiguration(QSslConfiguration* configuration);
-bool QSslConfiguration_HandshakeMustInterruptOnError(const QSslConfiguration* self);
-void QSslConfiguration_SetHandshakeMustInterruptOnError(QSslConfiguration* self, bool interrupt);
-bool QSslConfiguration_MissingCertificateIsFatal(const QSslConfiguration* self);
-void QSslConfiguration_SetMissingCertificateIsFatal(QSslConfiguration* self, bool cannotRecover);
 void QSslConfiguration_SetOcspStaplingEnabled(QSslConfiguration* self, bool enable);
 bool QSslConfiguration_OcspStaplingEnabled(const QSslConfiguration* self);
 void QSslConfiguration_SetAllowedNextProtocols(QSslConfiguration* self, libqt_list /* of libqt_string */ protocols);

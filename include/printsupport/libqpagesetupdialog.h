@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPageSetupDialog QPageSetupDialog;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QPrinter QPrinter;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
@@ -93,6 +92,7 @@ int QPageSetupDialog_Metacall(QPageSetupDialog* self, int param1, int param2, vo
 void QPageSetupDialog_OnMetacall(QPageSetupDialog* self, intptr_t slot);
 int QPageSetupDialog_QBaseMetacall(QPageSetupDialog* self, int param1, int param2, void** param3);
 libqt_string QPageSetupDialog_Tr(const char* s);
+libqt_string QPageSetupDialog_TrUtf8(const char* s);
 int QPageSetupDialog_Exec(QPageSetupDialog* self);
 void QPageSetupDialog_OnExec(QPageSetupDialog* self, intptr_t slot);
 int QPageSetupDialog_QBaseExec(QPageSetupDialog* self);
@@ -102,6 +102,8 @@ void QPageSetupDialog_QBaseDone(QPageSetupDialog* self, int result);
 QPrinter* QPageSetupDialog_Printer(QPageSetupDialog* self);
 libqt_string QPageSetupDialog_Tr2(const char* s, const char* c);
 libqt_string QPageSetupDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QPageSetupDialog_TrUtf82(const char* s, const char* c);
+libqt_string QPageSetupDialog_TrUtf83(const char* s, const char* c, int n);
 void QPageSetupDialog_SetVisible(QPageSetupDialog* self, bool visible);
 void QPageSetupDialog_OnSetVisible(QPageSetupDialog* self, intptr_t slot);
 void QPageSetupDialog_QBaseSetVisible(QPageSetupDialog* self, bool visible);
@@ -177,9 +179,9 @@ void QPageSetupDialog_QBaseFocusInEvent(QPageSetupDialog* self, QFocusEvent* eve
 void QPageSetupDialog_FocusOutEvent(QPageSetupDialog* self, QFocusEvent* event);
 void QPageSetupDialog_OnFocusOutEvent(QPageSetupDialog* self, intptr_t slot);
 void QPageSetupDialog_QBaseFocusOutEvent(QPageSetupDialog* self, QFocusEvent* event);
-void QPageSetupDialog_EnterEvent(QPageSetupDialog* self, QEnterEvent* event);
+void QPageSetupDialog_EnterEvent(QPageSetupDialog* self, QEvent* event);
 void QPageSetupDialog_OnEnterEvent(QPageSetupDialog* self, intptr_t slot);
-void QPageSetupDialog_QBaseEnterEvent(QPageSetupDialog* self, QEnterEvent* event);
+void QPageSetupDialog_QBaseEnterEvent(QPageSetupDialog* self, QEvent* event);
 void QPageSetupDialog_LeaveEvent(QPageSetupDialog* self, QEvent* event);
 void QPageSetupDialog_OnLeaveEvent(QPageSetupDialog* self, intptr_t slot);
 void QPageSetupDialog_QBaseLeaveEvent(QPageSetupDialog* self, QEvent* event);
@@ -210,9 +212,9 @@ void QPageSetupDialog_QBaseDropEvent(QPageSetupDialog* self, QDropEvent* event);
 void QPageSetupDialog_HideEvent(QPageSetupDialog* self, QHideEvent* event);
 void QPageSetupDialog_OnHideEvent(QPageSetupDialog* self, intptr_t slot);
 void QPageSetupDialog_QBaseHideEvent(QPageSetupDialog* self, QHideEvent* event);
-bool QPageSetupDialog_NativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPageSetupDialog_NativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, long* result);
 void QPageSetupDialog_OnNativeEvent(QPageSetupDialog* self, intptr_t slot);
-bool QPageSetupDialog_QBaseNativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPageSetupDialog_QBaseNativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, long* result);
 void QPageSetupDialog_ChangeEvent(QPageSetupDialog* self, QEvent* param1);
 void QPageSetupDialog_OnChangeEvent(QPageSetupDialog* self, intptr_t slot);
 void QPageSetupDialog_QBaseChangeEvent(QPageSetupDialog* self, QEvent* param1);

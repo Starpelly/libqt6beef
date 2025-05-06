@@ -59,11 +59,7 @@ QPixmap* QIcon_PixmapWithExtent(const QIcon* self, int extent) {
     return new QPixmap(self->pixmap(static_cast<int>(extent)));
 }
 
-QPixmap* QIcon_Pixmap3(const QIcon* self, QSize* size, double devicePixelRatio) {
-    return new QPixmap(self->pixmap(*size, static_cast<qreal>(devicePixelRatio)));
-}
-
-QPixmap* QIcon_Pixmap4(const QIcon* self, QWindow* window, QSize* size) {
+QPixmap* QIcon_Pixmap3(const QIcon* self, QWindow* window, QSize* size) {
     return new QPixmap(self->pixmap(window, *size));
 }
 
@@ -266,7 +262,7 @@ QPixmap* QIcon_Pixmap33(const QIcon* self, int w, int h, int mode) {
     return new QPixmap(self->pixmap(static_cast<int>(w), static_cast<int>(h), static_cast<QIcon::Mode>(mode)));
 }
 
-QPixmap* QIcon_Pixmap42(const QIcon* self, int w, int h, int mode, int state) {
+QPixmap* QIcon_Pixmap4(const QIcon* self, int w, int h, int mode, int state) {
     return new QPixmap(self->pixmap(static_cast<int>(w), static_cast<int>(h), static_cast<QIcon::Mode>(mode), static_cast<QIcon::State>(state)));
 }
 
@@ -278,19 +274,11 @@ QPixmap* QIcon_Pixmap34(const QIcon* self, int extent, int mode, int state) {
     return new QPixmap(self->pixmap(static_cast<int>(extent), static_cast<QIcon::Mode>(mode), static_cast<QIcon::State>(state)));
 }
 
-QPixmap* QIcon_Pixmap35(const QIcon* self, QSize* size, double devicePixelRatio, int mode) {
-    return new QPixmap(self->pixmap(*size, static_cast<qreal>(devicePixelRatio), static_cast<QIcon::Mode>(mode)));
-}
-
-QPixmap* QIcon_Pixmap43(const QIcon* self, QSize* size, double devicePixelRatio, int mode, int state) {
-    return new QPixmap(self->pixmap(*size, static_cast<qreal>(devicePixelRatio), static_cast<QIcon::Mode>(mode), static_cast<QIcon::State>(state)));
-}
-
-QPixmap* QIcon_Pixmap36(const QIcon* self, QWindow* window, QSize* size, int mode) {
+QPixmap* QIcon_Pixmap35(const QIcon* self, QWindow* window, QSize* size, int mode) {
     return new QPixmap(self->pixmap(window, *size, static_cast<QIcon::Mode>(mode)));
 }
 
-QPixmap* QIcon_Pixmap44(const QIcon* self, QWindow* window, QSize* size, int mode, int state) {
+QPixmap* QIcon_Pixmap42(const QIcon* self, QWindow* window, QSize* size, int mode, int state) {
     return new QPixmap(self->pixmap(window, *size, static_cast<QIcon::Mode>(mode), static_cast<QIcon::State>(state)));
 }
 

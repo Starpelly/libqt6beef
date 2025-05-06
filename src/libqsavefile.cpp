@@ -1,17 +1,15 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDateTime>
 #include <QEvent>
 #include <QFileDevice>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QSaveFile>
 #include <QString>
 #include <QByteArray>
@@ -86,6 +84,18 @@ libqt_string QSaveFile_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSaveFile_TrUtf8(const char* s) {
+    QString _ret = QSaveFile::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QSaveFile_SetFileName(QSaveFile* self, libqt_string name) {
     QString name_QString = QString::fromUtf8(name.data, name.len);
     self->setFileName(name_QString);
@@ -121,6 +131,30 @@ libqt_string QSaveFile_Tr2(const char* s, const char* c) {
 
 libqt_string QSaveFile_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSaveFile::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSaveFile_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSaveFile::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSaveFile_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSaveFile::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -192,9 +226,9 @@ void QSaveFile_OnFileName(const QSaveFile* self, intptr_t slot) {
 // Derived class handler implementation
 bool QSaveFile_Open(QSaveFile* self, int flags) {
     if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
-        return vqsavefile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqsavefile->open(static_cast<QIODevice::OpenMode>(flags));
     } else {
-        return vqsavefile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqsavefile->open(static_cast<QIODevice::OpenMode>(flags));
     }
 }
 
@@ -202,9 +236,9 @@ bool QSaveFile_Open(QSaveFile* self, int flags) {
 bool QSaveFile_QBaseOpen(QSaveFile* self, int flags) {
     if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
         vqsavefile->setQSaveFile_Open_IsBase(true);
-        return vqsavefile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqsavefile->open(static_cast<QIODevice::OpenMode>(flags));
     } else {
-        return vqsavefile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqsavefile->open(static_cast<QIODevice::OpenMode>(flags));
     }
 }
 
@@ -658,32 +692,6 @@ void QSaveFile_OnWaitForBytesWritten(QSaveFile* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-long long QSaveFile_SkipData(QSaveFile* self, long long maxSize) {
-    if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
-        return static_cast<long long>(vqsavefile->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqsavefile->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Base class handler implementation
-long long QSaveFile_QBaseSkipData(QSaveFile* self, long long maxSize) {
-    if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
-        vqsavefile->setQSaveFile_SkipData_IsBase(true);
-        return static_cast<long long>(vqsavefile->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqsavefile->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSaveFile_OnSkipData(QSaveFile* self, intptr_t slot) {
-    if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
-        vqsavefile->setQSaveFile_SkipData_Callback(reinterpret_cast<VirtualQSaveFile::QSaveFile_SkipData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 bool QSaveFile_Event(QSaveFile* self, QEvent* event) {
     if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
         return vqsavefile->event(event);
@@ -868,9 +876,9 @@ void QSaveFile_OnDisconnectNotify(QSaveFile* self, intptr_t slot) {
 // Derived class handler implementation
 void QSaveFile_SetOpenMode(QSaveFile* self, int openMode) {
     if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
-        vqsavefile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsavefile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqsavefile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsavefile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -878,9 +886,9 @@ void QSaveFile_SetOpenMode(QSaveFile* self, int openMode) {
 void QSaveFile_QBaseSetOpenMode(QSaveFile* self, int openMode) {
     if (auto* vqsavefile = dynamic_cast<VirtualQSaveFile*>(self)) {
         vqsavefile->setQSaveFile_SetOpenMode_IsBase(true);
-        vqsavefile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsavefile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqsavefile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsavefile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 

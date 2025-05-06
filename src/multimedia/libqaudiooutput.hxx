@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -59,9 +61,11 @@ class VirtualQAudioOutput : public QAudioOutput {
 
   public:
     VirtualQAudioOutput() : QAudioOutput(){};
-    VirtualQAudioOutput(const QAudioDevice& device) : QAudioOutput(device){};
-    VirtualQAudioOutput(QObject* parent) : QAudioOutput(parent){};
-    VirtualQAudioOutput(const QAudioDevice& device, QObject* parent) : QAudioOutput(device, parent){};
+    VirtualQAudioOutput(const QAudioDeviceInfo& audioDeviceInfo) : QAudioOutput(audioDeviceInfo){};
+    VirtualQAudioOutput(const QAudioFormat& format) : QAudioOutput(format){};
+    VirtualQAudioOutput(const QAudioFormat& format, QObject* parent) : QAudioOutput(format, parent){};
+    VirtualQAudioOutput(const QAudioDeviceInfo& audioDeviceInfo, const QAudioFormat& format) : QAudioOutput(audioDeviceInfo, format){};
+    VirtualQAudioOutput(const QAudioDeviceInfo& audioDeviceInfo, const QAudioFormat& format, QObject* parent) : QAudioOutput(audioDeviceInfo, format, parent){};
 
     ~VirtualQAudioOutput() {
         qaudiooutput_metacall_callback = nullptr;

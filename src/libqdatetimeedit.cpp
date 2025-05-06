@@ -1,9 +1,7 @@
 #include <QAbstractSpinBox>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QCalendar>
@@ -20,7 +18,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -44,6 +41,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -51,7 +49,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -144,6 +141,18 @@ int QDateTimeEdit_QBaseMetacall(QDateTimeEdit* self, int param1, int param2, voi
 
 libqt_string QDateTimeEdit_Tr(const char* s) {
     QString _ret = QDateTimeEdit::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDateTimeEdit_TrUtf8(const char* s) {
+    QString _ret = QDateTimeEdit::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -363,8 +372,10 @@ void QDateTimeEdit_TimeChanged(QDateTimeEdit* self, QTime* time) {
 
 void QDateTimeEdit_Connect_TimeChanged(QDateTimeEdit* self, intptr_t slot) {
     void (*slotFunc)(QDateTimeEdit*, QTime*) = reinterpret_cast<void (*)(QDateTimeEdit*, QTime*)>(slot);
-    QDateTimeEdit::connect(self, &QDateTimeEdit::timeChanged, [self, slotFunc](QTime time) {
-        QTime* sigval1 = new QTime(time);
+    QDateTimeEdit::connect(self, &QDateTimeEdit::timeChanged, [self, slotFunc](const QTime& time) {
+        const QTime& time_ret = time;
+        // Cast returned reference into pointer
+        QTime* sigval1 = const_cast<QTime*>(&time_ret);
         slotFunc(self, sigval1);
     });
 }
@@ -375,8 +386,10 @@ void QDateTimeEdit_DateChanged(QDateTimeEdit* self, QDate* date) {
 
 void QDateTimeEdit_Connect_DateChanged(QDateTimeEdit* self, intptr_t slot) {
     void (*slotFunc)(QDateTimeEdit*, QDate*) = reinterpret_cast<void (*)(QDateTimeEdit*, QDate*)>(slot);
-    QDateTimeEdit::connect(self, &QDateTimeEdit::dateChanged, [self, slotFunc](QDate date) {
-        QDate* sigval1 = new QDate(date);
+    QDateTimeEdit::connect(self, &QDateTimeEdit::dateChanged, [self, slotFunc](const QDate& date) {
+        const QDate& date_ret = date;
+        // Cast returned reference into pointer
+        QDate* sigval1 = const_cast<QDate*>(&date_ret);
         slotFunc(self, sigval1);
     });
 }
@@ -407,6 +420,30 @@ libqt_string QDateTimeEdit_Tr2(const char* s, const char* c) {
 
 libqt_string QDateTimeEdit_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDateTimeEdit::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDateTimeEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDateTimeEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDateTimeEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDateTimeEdit::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -840,32 +877,6 @@ void QDateTimeEdit_QBasePaintEvent(QDateTimeEdit* self, QPaintEvent* event) {
 void QDateTimeEdit_OnPaintEvent(QDateTimeEdit* self, intptr_t slot) {
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
         vqdatetimeedit->setQDateTimeEdit_PaintEvent_Callback(reinterpret_cast<VirtualQDateTimeEdit::QDateTimeEdit_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QDateTimeEdit_InitStyleOption(const QDateTimeEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
-        vqdatetimeedit->initStyleOption(option);
-    } else {
-        vqdatetimeedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QDateTimeEdit_QBaseInitStyleOption(const QDateTimeEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
-        vqdatetimeedit->setQDateTimeEdit_InitStyleOption_IsBase(true);
-        vqdatetimeedit->initStyleOption(option);
-    } else {
-        vqdatetimeedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QDateTimeEdit_OnInitStyleOption(const QDateTimeEdit* self, intptr_t slot) {
-    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
-        vqdatetimeedit->setQDateTimeEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQDateTimeEdit::QDateTimeEdit_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -1364,7 +1375,7 @@ void QDateTimeEdit_OnMouseDoubleClickEvent(QDateTimeEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QDateTimeEdit_EnterEvent(QDateTimeEdit* self, QEnterEvent* event) {
+void QDateTimeEdit_EnterEvent(QDateTimeEdit* self, QEvent* event) {
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
         vqdatetimeedit->enterEvent(event);
     } else {
@@ -1373,7 +1384,7 @@ void QDateTimeEdit_EnterEvent(QDateTimeEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QDateTimeEdit_QBaseEnterEvent(QDateTimeEdit* self, QEnterEvent* event) {
+void QDateTimeEdit_QBaseEnterEvent(QDateTimeEdit* self, QEvent* event) {
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
         vqdatetimeedit->setQDateTimeEdit_EnterEvent_IsBase(true);
         vqdatetimeedit->enterEvent(event);
@@ -1598,23 +1609,23 @@ void QDateTimeEdit_OnDropEvent(QDateTimeEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QDateTimeEdit_NativeEvent(QDateTimeEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDateTimeEdit_NativeEvent(QDateTimeEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
-        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QDateTimeEdit_QBaseNativeEvent(QDateTimeEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDateTimeEdit_QBaseNativeEvent(QDateTimeEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
         vqdatetimeedit->setQDateTimeEdit_NativeEvent_IsBase(true);
-        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdatetimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1882,6 +1893,32 @@ void QDateTimeEdit_QBaseDisconnectNotify(QDateTimeEdit* self, QMetaMethod* signa
 void QDateTimeEdit_OnDisconnectNotify(QDateTimeEdit* self, intptr_t slot) {
     if (auto* vqdatetimeedit = dynamic_cast<VirtualQDateTimeEdit*>(self)) {
         vqdatetimeedit->setQDateTimeEdit_DisconnectNotify_Callback(reinterpret_cast<VirtualQDateTimeEdit::QDateTimeEdit_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QDateTimeEdit_InitStyleOption(const QDateTimeEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
+        vqdatetimeedit->initStyleOption(option);
+    } else {
+        vqdatetimeedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QDateTimeEdit_QBaseInitStyleOption(const QDateTimeEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
+        vqdatetimeedit->setQDateTimeEdit_InitStyleOption_IsBase(true);
+        vqdatetimeedit->initStyleOption(option);
+    } else {
+        vqdatetimeedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QDateTimeEdit_OnInitStyleOption(const QDateTimeEdit* self, intptr_t slot) {
+    if (auto* vqdatetimeedit = const_cast<VirtualQDateTimeEdit*>(dynamic_cast<const VirtualQDateTimeEdit*>(self))) {
+        vqdatetimeedit->setQDateTimeEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQDateTimeEdit::QDateTimeEdit_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -2236,14 +2273,28 @@ libqt_string QTimeEdit_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QTimeEdit_TrUtf8(const char* s) {
+    QString _ret = QTimeEdit::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QTimeEdit_UserTimeChanged(QTimeEdit* self, QTime* time) {
     self->userTimeChanged(*time);
 }
 
 void QTimeEdit_Connect_UserTimeChanged(QTimeEdit* self, intptr_t slot) {
     void (*slotFunc)(QTimeEdit*, QTime*) = reinterpret_cast<void (*)(QTimeEdit*, QTime*)>(slot);
-    QTimeEdit::connect(self, &QTimeEdit::userTimeChanged, [self, slotFunc](QTime time) {
-        QTime* sigval1 = new QTime(time);
+    QTimeEdit::connect(self, &QTimeEdit::userTimeChanged, [self, slotFunc](const QTime& time) {
+        const QTime& time_ret = time;
+        // Cast returned reference into pointer
+        QTime* sigval1 = const_cast<QTime*>(&time_ret);
         slotFunc(self, sigval1);
     });
 }
@@ -2262,6 +2313,30 @@ libqt_string QTimeEdit_Tr2(const char* s, const char* c) {
 
 libqt_string QTimeEdit_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTimeEdit::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTimeEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTimeEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTimeEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTimeEdit::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -2695,32 +2770,6 @@ void QTimeEdit_QBasePaintEvent(QTimeEdit* self, QPaintEvent* event) {
 void QTimeEdit_OnPaintEvent(QTimeEdit* self, intptr_t slot) {
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
         vqtimeedit->setQTimeEdit_PaintEvent_Callback(reinterpret_cast<VirtualQTimeEdit::QTimeEdit_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QTimeEdit_InitStyleOption(const QTimeEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
-        vqtimeedit->initStyleOption(option);
-    } else {
-        vqtimeedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTimeEdit_QBaseInitStyleOption(const QTimeEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
-        vqtimeedit->setQTimeEdit_InitStyleOption_IsBase(true);
-        vqtimeedit->initStyleOption(option);
-    } else {
-        vqtimeedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTimeEdit_OnInitStyleOption(const QTimeEdit* self, intptr_t slot) {
-    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
-        vqtimeedit->setQTimeEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQTimeEdit::QTimeEdit_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -3219,7 +3268,7 @@ void QTimeEdit_OnMouseDoubleClickEvent(QTimeEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTimeEdit_EnterEvent(QTimeEdit* self, QEnterEvent* event) {
+void QTimeEdit_EnterEvent(QTimeEdit* self, QEvent* event) {
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
         vqtimeedit->enterEvent(event);
     } else {
@@ -3228,7 +3277,7 @@ void QTimeEdit_EnterEvent(QTimeEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QTimeEdit_QBaseEnterEvent(QTimeEdit* self, QEnterEvent* event) {
+void QTimeEdit_QBaseEnterEvent(QTimeEdit* self, QEvent* event) {
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
         vqtimeedit->setQTimeEdit_EnterEvent_IsBase(true);
         vqtimeedit->enterEvent(event);
@@ -3453,23 +3502,23 @@ void QTimeEdit_OnDropEvent(QTimeEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTimeEdit_NativeEvent(QTimeEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTimeEdit_NativeEvent(QTimeEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
-        return vqtimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QTimeEdit_QBaseNativeEvent(QTimeEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTimeEdit_QBaseNativeEvent(QTimeEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
         vqtimeedit->setQTimeEdit_NativeEvent_IsBase(true);
-        return vqtimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtimeedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtimeedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -3737,6 +3786,32 @@ void QTimeEdit_QBaseDisconnectNotify(QTimeEdit* self, QMetaMethod* signal) {
 void QTimeEdit_OnDisconnectNotify(QTimeEdit* self, intptr_t slot) {
     if (auto* vqtimeedit = dynamic_cast<VirtualQTimeEdit*>(self)) {
         vqtimeedit->setQTimeEdit_DisconnectNotify_Callback(reinterpret_cast<VirtualQTimeEdit::QTimeEdit_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTimeEdit_InitStyleOption(const QTimeEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
+        vqtimeedit->initStyleOption(option);
+    } else {
+        vqtimeedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QTimeEdit_QBaseInitStyleOption(const QTimeEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
+        vqtimeedit->setQTimeEdit_InitStyleOption_IsBase(true);
+        vqtimeedit->initStyleOption(option);
+    } else {
+        vqtimeedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTimeEdit_OnInitStyleOption(const QTimeEdit* self, intptr_t slot) {
+    if (auto* vqtimeedit = const_cast<VirtualQTimeEdit*>(dynamic_cast<const VirtualQTimeEdit*>(self))) {
+        vqtimeedit->setQTimeEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQTimeEdit::QTimeEdit_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -4091,14 +4166,28 @@ libqt_string QDateEdit_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QDateEdit_TrUtf8(const char* s) {
+    QString _ret = QDateEdit::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QDateEdit_UserDateChanged(QDateEdit* self, QDate* date) {
     self->userDateChanged(*date);
 }
 
 void QDateEdit_Connect_UserDateChanged(QDateEdit* self, intptr_t slot) {
     void (*slotFunc)(QDateEdit*, QDate*) = reinterpret_cast<void (*)(QDateEdit*, QDate*)>(slot);
-    QDateEdit::connect(self, &QDateEdit::userDateChanged, [self, slotFunc](QDate date) {
-        QDate* sigval1 = new QDate(date);
+    QDateEdit::connect(self, &QDateEdit::userDateChanged, [self, slotFunc](const QDate& date) {
+        const QDate& date_ret = date;
+        // Cast returned reference into pointer
+        QDate* sigval1 = const_cast<QDate*>(&date_ret);
         slotFunc(self, sigval1);
     });
 }
@@ -4117,6 +4206,30 @@ libqt_string QDateEdit_Tr2(const char* s, const char* c) {
 
 libqt_string QDateEdit_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDateEdit::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDateEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDateEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDateEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDateEdit::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -4550,32 +4663,6 @@ void QDateEdit_QBasePaintEvent(QDateEdit* self, QPaintEvent* event) {
 void QDateEdit_OnPaintEvent(QDateEdit* self, intptr_t slot) {
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
         vqdateedit->setQDateEdit_PaintEvent_Callback(reinterpret_cast<VirtualQDateEdit::QDateEdit_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QDateEdit_InitStyleOption(const QDateEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
-        vqdateedit->initStyleOption(option);
-    } else {
-        vqdateedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QDateEdit_QBaseInitStyleOption(const QDateEdit* self, QStyleOptionSpinBox* option) {
-    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
-        vqdateedit->setQDateEdit_InitStyleOption_IsBase(true);
-        vqdateedit->initStyleOption(option);
-    } else {
-        vqdateedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QDateEdit_OnInitStyleOption(const QDateEdit* self, intptr_t slot) {
-    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
-        vqdateedit->setQDateEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQDateEdit::QDateEdit_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -5074,7 +5161,7 @@ void QDateEdit_OnMouseDoubleClickEvent(QDateEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QDateEdit_EnterEvent(QDateEdit* self, QEnterEvent* event) {
+void QDateEdit_EnterEvent(QDateEdit* self, QEvent* event) {
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
         vqdateedit->enterEvent(event);
     } else {
@@ -5083,7 +5170,7 @@ void QDateEdit_EnterEvent(QDateEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QDateEdit_QBaseEnterEvent(QDateEdit* self, QEnterEvent* event) {
+void QDateEdit_QBaseEnterEvent(QDateEdit* self, QEvent* event) {
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
         vqdateedit->setQDateEdit_EnterEvent_IsBase(true);
         vqdateedit->enterEvent(event);
@@ -5308,23 +5395,23 @@ void QDateEdit_OnDropEvent(QDateEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QDateEdit_NativeEvent(QDateEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDateEdit_NativeEvent(QDateEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
-        return vqdateedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdateedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdateedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdateedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QDateEdit_QBaseNativeEvent(QDateEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDateEdit_QBaseNativeEvent(QDateEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
         vqdateedit->setQDateEdit_NativeEvent_IsBase(true);
-        return vqdateedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdateedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdateedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdateedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -5592,6 +5679,32 @@ void QDateEdit_QBaseDisconnectNotify(QDateEdit* self, QMetaMethod* signal) {
 void QDateEdit_OnDisconnectNotify(QDateEdit* self, intptr_t slot) {
     if (auto* vqdateedit = dynamic_cast<VirtualQDateEdit*>(self)) {
         vqdateedit->setQDateEdit_DisconnectNotify_Callback(reinterpret_cast<VirtualQDateEdit::QDateEdit_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QDateEdit_InitStyleOption(const QDateEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
+        vqdateedit->initStyleOption(option);
+    } else {
+        vqdateedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QDateEdit_QBaseInitStyleOption(const QDateEdit* self, QStyleOptionSpinBox* option) {
+    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
+        vqdateedit->setQDateEdit_InitStyleOption_IsBase(true);
+        vqdateedit->initStyleOption(option);
+    } else {
+        vqdateedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QDateEdit_OnInitStyleOption(const QDateEdit* self, intptr_t slot) {
+    if (auto* vqdateedit = const_cast<VirtualQDateEdit*>(dynamic_cast<const VirtualQDateEdit*>(self))) {
+        vqdateedit->setQDateEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQDateEdit::QDateEdit_InitStyleOption_Callback>(slot));
     }
 }
 

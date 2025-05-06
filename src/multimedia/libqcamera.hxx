@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -16,6 +18,11 @@ class VirtualQCamera : public QCamera {
   public:
     // Virtual class public types (including callbacks)
     using QCamera_Metacall_Callback = int (*)(QCamera*, QMetaObject::Call, int, void**);
+    using QCamera_Availability_Callback = QMultimedia::AvailabilityStatus (*)();
+    using QCamera_IsAvailable_Callback = bool (*)();
+    using QCamera_Service_Callback = QMediaService* (*)();
+    using QCamera_Bind_Callback = bool (*)(QCamera*, QObject*);
+    using QCamera_Unbind_Callback = void (*)(QCamera*, QObject*);
     using QCamera_Event_Callback = bool (*)(QCamera*, QEvent*);
     using QCamera_EventFilter_Callback = bool (*)(QCamera*, QObject*, QEvent*);
     using QCamera_TimerEvent_Callback = void (*)(QCamera*, QTimerEvent*);
@@ -23,6 +30,8 @@ class VirtualQCamera : public QCamera {
     using QCamera_CustomEvent_Callback = void (*)(QCamera*, QEvent*);
     using QCamera_ConnectNotify_Callback = void (*)(QCamera*, const QMetaMethod&);
     using QCamera_DisconnectNotify_Callback = void (*)(QCamera*, const QMetaMethod&);
+    using QCamera_AddPropertyWatch_Callback = void (*)(QCamera*, const QByteArray&);
+    using QCamera_RemovePropertyWatch_Callback = void (*)(QCamera*, const QByteArray&);
     using QCamera_Sender_Callback = QObject* (*)();
     using QCamera_SenderSignalIndex_Callback = int (*)();
     using QCamera_Receivers_Callback = int (*)(const QCamera*, const char*);
@@ -31,6 +40,11 @@ class VirtualQCamera : public QCamera {
   protected:
     // Instance callback storage
     QCamera_Metacall_Callback qcamera_metacall_callback = nullptr;
+    QCamera_Availability_Callback qcamera_availability_callback = nullptr;
+    QCamera_IsAvailable_Callback qcamera_isavailable_callback = nullptr;
+    QCamera_Service_Callback qcamera_service_callback = nullptr;
+    QCamera_Bind_Callback qcamera_bind_callback = nullptr;
+    QCamera_Unbind_Callback qcamera_unbind_callback = nullptr;
     QCamera_Event_Callback qcamera_event_callback = nullptr;
     QCamera_EventFilter_Callback qcamera_eventfilter_callback = nullptr;
     QCamera_TimerEvent_Callback qcamera_timerevent_callback = nullptr;
@@ -38,6 +52,8 @@ class VirtualQCamera : public QCamera {
     QCamera_CustomEvent_Callback qcamera_customevent_callback = nullptr;
     QCamera_ConnectNotify_Callback qcamera_connectnotify_callback = nullptr;
     QCamera_DisconnectNotify_Callback qcamera_disconnectnotify_callback = nullptr;
+    QCamera_AddPropertyWatch_Callback qcamera_addpropertywatch_callback = nullptr;
+    QCamera_RemovePropertyWatch_Callback qcamera_removepropertywatch_callback = nullptr;
     QCamera_Sender_Callback qcamera_sender_callback = nullptr;
     QCamera_SenderSignalIndex_Callback qcamera_sendersignalindex_callback = nullptr;
     QCamera_Receivers_Callback qcamera_receivers_callback = nullptr;
@@ -45,6 +61,11 @@ class VirtualQCamera : public QCamera {
 
     // Instance base flags
     mutable bool qcamera_metacall_isbase = false;
+    mutable bool qcamera_availability_isbase = false;
+    mutable bool qcamera_isavailable_isbase = false;
+    mutable bool qcamera_service_isbase = false;
+    mutable bool qcamera_bind_isbase = false;
+    mutable bool qcamera_unbind_isbase = false;
     mutable bool qcamera_event_isbase = false;
     mutable bool qcamera_eventfilter_isbase = false;
     mutable bool qcamera_timerevent_isbase = false;
@@ -52,6 +73,8 @@ class VirtualQCamera : public QCamera {
     mutable bool qcamera_customevent_isbase = false;
     mutable bool qcamera_connectnotify_isbase = false;
     mutable bool qcamera_disconnectnotify_isbase = false;
+    mutable bool qcamera_addpropertywatch_isbase = false;
+    mutable bool qcamera_removepropertywatch_isbase = false;
     mutable bool qcamera_sender_isbase = false;
     mutable bool qcamera_sendersignalindex_isbase = false;
     mutable bool qcamera_receivers_isbase = false;
@@ -59,14 +82,21 @@ class VirtualQCamera : public QCamera {
 
   public:
     VirtualQCamera() : QCamera(){};
-    VirtualQCamera(const QCameraDevice& cameraDevice) : QCamera(cameraDevice){};
-    VirtualQCamera(QCameraDevice::Position position) : QCamera(position){};
+    VirtualQCamera(const QByteArray& deviceName) : QCamera(deviceName){};
+    VirtualQCamera(const QCameraInfo& cameraInfo) : QCamera(cameraInfo){};
+    VirtualQCamera(QCamera::Position position) : QCamera(position){};
     VirtualQCamera(QObject* parent) : QCamera(parent){};
-    VirtualQCamera(const QCameraDevice& cameraDevice, QObject* parent) : QCamera(cameraDevice, parent){};
-    VirtualQCamera(QCameraDevice::Position position, QObject* parent) : QCamera(position, parent){};
+    VirtualQCamera(const QByteArray& deviceName, QObject* parent) : QCamera(deviceName, parent){};
+    VirtualQCamera(const QCameraInfo& cameraInfo, QObject* parent) : QCamera(cameraInfo, parent){};
+    VirtualQCamera(QCamera::Position position, QObject* parent) : QCamera(position, parent){};
 
     ~VirtualQCamera() {
         qcamera_metacall_callback = nullptr;
+        qcamera_availability_callback = nullptr;
+        qcamera_isavailable_callback = nullptr;
+        qcamera_service_callback = nullptr;
+        qcamera_bind_callback = nullptr;
+        qcamera_unbind_callback = nullptr;
         qcamera_event_callback = nullptr;
         qcamera_eventfilter_callback = nullptr;
         qcamera_timerevent_callback = nullptr;
@@ -74,6 +104,8 @@ class VirtualQCamera : public QCamera {
         qcamera_customevent_callback = nullptr;
         qcamera_connectnotify_callback = nullptr;
         qcamera_disconnectnotify_callback = nullptr;
+        qcamera_addpropertywatch_callback = nullptr;
+        qcamera_removepropertywatch_callback = nullptr;
         qcamera_sender_callback = nullptr;
         qcamera_sendersignalindex_callback = nullptr;
         qcamera_receivers_callback = nullptr;
@@ -82,6 +114,11 @@ class VirtualQCamera : public QCamera {
 
     // Callback setters
     void setQCamera_Metacall_Callback(QCamera_Metacall_Callback cb) { qcamera_metacall_callback = cb; }
+    void setQCamera_Availability_Callback(QCamera_Availability_Callback cb) { qcamera_availability_callback = cb; }
+    void setQCamera_IsAvailable_Callback(QCamera_IsAvailable_Callback cb) { qcamera_isavailable_callback = cb; }
+    void setQCamera_Service_Callback(QCamera_Service_Callback cb) { qcamera_service_callback = cb; }
+    void setQCamera_Bind_Callback(QCamera_Bind_Callback cb) { qcamera_bind_callback = cb; }
+    void setQCamera_Unbind_Callback(QCamera_Unbind_Callback cb) { qcamera_unbind_callback = cb; }
     void setQCamera_Event_Callback(QCamera_Event_Callback cb) { qcamera_event_callback = cb; }
     void setQCamera_EventFilter_Callback(QCamera_EventFilter_Callback cb) { qcamera_eventfilter_callback = cb; }
     void setQCamera_TimerEvent_Callback(QCamera_TimerEvent_Callback cb) { qcamera_timerevent_callback = cb; }
@@ -89,6 +126,8 @@ class VirtualQCamera : public QCamera {
     void setQCamera_CustomEvent_Callback(QCamera_CustomEvent_Callback cb) { qcamera_customevent_callback = cb; }
     void setQCamera_ConnectNotify_Callback(QCamera_ConnectNotify_Callback cb) { qcamera_connectnotify_callback = cb; }
     void setQCamera_DisconnectNotify_Callback(QCamera_DisconnectNotify_Callback cb) { qcamera_disconnectnotify_callback = cb; }
+    void setQCamera_AddPropertyWatch_Callback(QCamera_AddPropertyWatch_Callback cb) { qcamera_addpropertywatch_callback = cb; }
+    void setQCamera_RemovePropertyWatch_Callback(QCamera_RemovePropertyWatch_Callback cb) { qcamera_removepropertywatch_callback = cb; }
     void setQCamera_Sender_Callback(QCamera_Sender_Callback cb) { qcamera_sender_callback = cb; }
     void setQCamera_SenderSignalIndex_Callback(QCamera_SenderSignalIndex_Callback cb) { qcamera_sendersignalindex_callback = cb; }
     void setQCamera_Receivers_Callback(QCamera_Receivers_Callback cb) { qcamera_receivers_callback = cb; }
@@ -96,6 +135,11 @@ class VirtualQCamera : public QCamera {
 
     // Base flag setters
     void setQCamera_Metacall_IsBase(bool value) const { qcamera_metacall_isbase = value; }
+    void setQCamera_Availability_IsBase(bool value) const { qcamera_availability_isbase = value; }
+    void setQCamera_IsAvailable_IsBase(bool value) const { qcamera_isavailable_isbase = value; }
+    void setQCamera_Service_IsBase(bool value) const { qcamera_service_isbase = value; }
+    void setQCamera_Bind_IsBase(bool value) const { qcamera_bind_isbase = value; }
+    void setQCamera_Unbind_IsBase(bool value) const { qcamera_unbind_isbase = value; }
     void setQCamera_Event_IsBase(bool value) const { qcamera_event_isbase = value; }
     void setQCamera_EventFilter_IsBase(bool value) const { qcamera_eventfilter_isbase = value; }
     void setQCamera_TimerEvent_IsBase(bool value) const { qcamera_timerevent_isbase = value; }
@@ -103,6 +147,8 @@ class VirtualQCamera : public QCamera {
     void setQCamera_CustomEvent_IsBase(bool value) const { qcamera_customevent_isbase = value; }
     void setQCamera_ConnectNotify_IsBase(bool value) const { qcamera_connectnotify_isbase = value; }
     void setQCamera_DisconnectNotify_IsBase(bool value) const { qcamera_disconnectnotify_isbase = value; }
+    void setQCamera_AddPropertyWatch_IsBase(bool value) const { qcamera_addpropertywatch_isbase = value; }
+    void setQCamera_RemovePropertyWatch_IsBase(bool value) const { qcamera_removepropertywatch_isbase = value; }
     void setQCamera_Sender_IsBase(bool value) const { qcamera_sender_isbase = value; }
     void setQCamera_SenderSignalIndex_IsBase(bool value) const { qcamera_sendersignalindex_isbase = value; }
     void setQCamera_Receivers_IsBase(bool value) const { qcamera_receivers_isbase = value; }
@@ -117,6 +163,66 @@ class VirtualQCamera : public QCamera {
             return qcamera_metacall_callback(this, param1, param2, param3);
         } else {
             return QCamera::qt_metacall(param1, param2, param3);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual QMultimedia::AvailabilityStatus availability() const override {
+        if (qcamera_availability_isbase) {
+            qcamera_availability_isbase = false;
+            return QCamera::availability();
+        } else if (qcamera_availability_callback != nullptr) {
+            return qcamera_availability_callback();
+        } else {
+            return QCamera::availability();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool isAvailable() const override {
+        if (qcamera_isavailable_isbase) {
+            qcamera_isavailable_isbase = false;
+            return QCamera::isAvailable();
+        } else if (qcamera_isavailable_callback != nullptr) {
+            return qcamera_isavailable_callback();
+        } else {
+            return QCamera::isAvailable();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual QMediaService* service() const override {
+        if (qcamera_service_isbase) {
+            qcamera_service_isbase = false;
+            return QCamera::service();
+        } else if (qcamera_service_callback != nullptr) {
+            return qcamera_service_callback();
+        } else {
+            return QCamera::service();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool bind(QObject* param1) override {
+        if (qcamera_bind_isbase) {
+            qcamera_bind_isbase = false;
+            return QCamera::bind(param1);
+        } else if (qcamera_bind_callback != nullptr) {
+            return qcamera_bind_callback(this, param1);
+        } else {
+            return QCamera::bind(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void unbind(QObject* param1) override {
+        if (qcamera_unbind_isbase) {
+            qcamera_unbind_isbase = false;
+            QCamera::unbind(param1);
+        } else if (qcamera_unbind_callback != nullptr) {
+            qcamera_unbind_callback(this, param1);
+        } else {
+            QCamera::unbind(param1);
         }
     }
 
@@ -201,6 +307,30 @@ class VirtualQCamera : public QCamera {
             qcamera_disconnectnotify_callback(this, signal);
         } else {
             QCamera::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void addPropertyWatch(const QByteArray& name) {
+        if (qcamera_addpropertywatch_isbase) {
+            qcamera_addpropertywatch_isbase = false;
+            QCamera::addPropertyWatch(name);
+        } else if (qcamera_addpropertywatch_callback != nullptr) {
+            qcamera_addpropertywatch_callback(this, name);
+        } else {
+            QCamera::addPropertyWatch(name);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void removePropertyWatch(const QByteArray& name) {
+        if (qcamera_removepropertywatch_isbase) {
+            qcamera_removepropertywatch_isbase = false;
+            QCamera::removePropertyWatch(name);
+        } else if (qcamera_removepropertywatch_callback != nullptr) {
+            qcamera_removepropertywatch_callback(this, name);
+        } else {
+            QCamera::removePropertyWatch(name);
         }
     }
 

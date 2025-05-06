@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -186,7 +188,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_SetSelectionModel_Callback = void (*)(QTreeWidget*, QItemSelectionModel*);
     using QTreeWidget_Event_Callback = bool (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_MimeTypes_Callback = QStringList (*)();
-    using QTreeWidget_MimeData_Callback = QMimeData* (*)(const QTreeWidget*, const QList<QTreeWidgetItem*>&);
+    using QTreeWidget_MimeData_Callback = QMimeData* (*)(const QTreeWidget*, const QList<QTreeWidgetItem*>);
     using QTreeWidget_DropMimeData_Callback = bool (*)(QTreeWidget*, QTreeWidgetItem*, int, const QMimeData*, Qt::DropAction);
     using QTreeWidget_SupportedDropActions_Callback = Qt::DropActions (*)();
     using QTreeWidget_DropEvent_Callback = void (*)(QTreeWidget*, QDropEvent*);
@@ -197,7 +199,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_IndexAt_Callback = QModelIndex (*)(const QTreeWidget*, const QPoint&);
     using QTreeWidget_DoItemsLayout_Callback = void (*)();
     using QTreeWidget_Reset_Callback = void (*)();
-    using QTreeWidget_DataChanged_Callback = void (*)(QTreeWidget*, const QModelIndex&, const QModelIndex&, const QList<int>&);
+    using QTreeWidget_DataChanged_Callback = void (*)(QTreeWidget*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
     using QTreeWidget_SelectAll_Callback = void (*)();
     using QTreeWidget_VerticalScrollbarValueChanged_Callback = void (*)(QTreeWidget*, int);
     using QTreeWidget_ScrollContentsBy_Callback = void (*)(QTreeWidget*, int, int);
@@ -209,7 +211,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_SetSelection_Callback = void (*)(QTreeWidget*, const QRect&, QItemSelectionModel::SelectionFlags);
     using QTreeWidget_VisualRegionForSelection_Callback = QRegion (*)(const QTreeWidget*, const QItemSelection&);
     using QTreeWidget_SelectedIndexes_Callback = QModelIndexList (*)();
-    using QTreeWidget_ChangeEvent_Callback = void (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_TimerEvent_Callback = void (*)(QTreeWidget*, QTimerEvent*);
     using QTreeWidget_PaintEvent_Callback = void (*)(QTreeWidget*, QPaintEvent*);
     using QTreeWidget_DrawRow_Callback = void (*)(const QTreeWidget*, QPainter*, const QStyleOptionViewItem&, const QModelIndex&);
@@ -229,7 +230,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_SelectionChanged_Callback = void (*)(QTreeWidget*, const QItemSelection&, const QItemSelection&);
     using QTreeWidget_CurrentChanged_Callback = void (*)(QTreeWidget*, const QModelIndex&, const QModelIndex&);
     using QTreeWidget_SizeHintForRow_Callback = int (*)(const QTreeWidget*, int);
-    using QTreeWidget_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QTreeWidget*, const QModelIndex&);
     using QTreeWidget_InputMethodQuery_Callback = QVariant (*)(const QTreeWidget*, Qt::InputMethodQuery);
     using QTreeWidget_UpdateEditorData_Callback = void (*)();
     using QTreeWidget_UpdateEditorGeometries_Callback = void (*)();
@@ -241,7 +241,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_Edit2_Callback = bool (*)(QTreeWidget*, const QModelIndex&, QAbstractItemView::EditTrigger, QEvent*);
     using QTreeWidget_SelectionCommand_Callback = QItemSelectionModel::SelectionFlags (*)(const QTreeWidget*, const QModelIndex&, const QEvent*);
     using QTreeWidget_StartDrag_Callback = void (*)(QTreeWidget*, Qt::DropActions);
-    using QTreeWidget_InitViewItemOption_Callback = void (*)(const QTreeWidget*, QStyleOptionViewItem*);
+    using QTreeWidget_ViewOptions_Callback = QStyleOptionViewItem (*)();
     using QTreeWidget_FocusNextPrevChild_Callback = bool (*)(QTreeWidget*, bool);
     using QTreeWidget_DragEnterEvent_Callback = void (*)(QTreeWidget*, QDragEnterEvent*);
     using QTreeWidget_DragLeaveEvent_Callback = void (*)(QTreeWidget*, QDragLeaveEvent*);
@@ -255,14 +255,14 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_SetupViewport_Callback = void (*)(QTreeWidget*, QWidget*);
     using QTreeWidget_WheelEvent_Callback = void (*)(QTreeWidget*, QWheelEvent*);
     using QTreeWidget_ContextMenuEvent_Callback = void (*)(QTreeWidget*, QContextMenuEvent*);
-    using QTreeWidget_InitStyleOption_Callback = void (*)(const QTreeWidget*, QStyleOptionFrame*);
+    using QTreeWidget_ChangeEvent_Callback = void (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_DevType_Callback = int (*)();
     using QTreeWidget_SetVisible_Callback = void (*)(QTreeWidget*, bool);
     using QTreeWidget_HeightForWidth_Callback = int (*)(const QTreeWidget*, int);
     using QTreeWidget_HasHeightForWidth_Callback = bool (*)();
     using QTreeWidget_PaintEngine_Callback = QPaintEngine* (*)();
     using QTreeWidget_KeyReleaseEvent_Callback = void (*)(QTreeWidget*, QKeyEvent*);
-    using QTreeWidget_EnterEvent_Callback = void (*)(QTreeWidget*, QEnterEvent*);
+    using QTreeWidget_EnterEvent_Callback = void (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_LeaveEvent_Callback = void (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_MoveEvent_Callback = void (*)(QTreeWidget*, QMoveEvent*);
     using QTreeWidget_CloseEvent_Callback = void (*)(QTreeWidget*, QCloseEvent*);
@@ -270,7 +270,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_ActionEvent_Callback = void (*)(QTreeWidget*, QActionEvent*);
     using QTreeWidget_ShowEvent_Callback = void (*)(QTreeWidget*, QShowEvent*);
     using QTreeWidget_HideEvent_Callback = void (*)(QTreeWidget*, QHideEvent*);
-    using QTreeWidget_NativeEvent_Callback = bool (*)(QTreeWidget*, const QByteArray&, void*, qintptr*);
+    using QTreeWidget_NativeEvent_Callback = bool (*)(QTreeWidget*, const QByteArray&, void*, long*);
     using QTreeWidget_Metric_Callback = int (*)(const QTreeWidget*, QPaintDevice::PaintDeviceMetric);
     using QTreeWidget_InitPainter_Callback = void (*)(const QTreeWidget*, QPainter*);
     using QTreeWidget_Redirected_Callback = QPaintDevice* (*)(const QTreeWidget*, QPoint*);
@@ -279,6 +279,12 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_CustomEvent_Callback = void (*)(QTreeWidget*, QEvent*);
     using QTreeWidget_ConnectNotify_Callback = void (*)(QTreeWidget*, const QMetaMethod&);
     using QTreeWidget_DisconnectNotify_Callback = void (*)(QTreeWidget*, const QMetaMethod&);
+    using QTreeWidget_Items_Callback = QList<QTreeWidgetItem*> (*)(const QTreeWidget*, const QMimeData*);
+    using QTreeWidget_IndexFromItem_Callback = QModelIndex (*)(const QTreeWidget*, const QTreeWidgetItem*);
+    using QTreeWidget_IndexFromItemWithItem_Callback = QModelIndex (*)(const QTreeWidget*, QTreeWidgetItem*);
+    using QTreeWidget_ItemFromIndex_Callback = QTreeWidgetItem* (*)(const QTreeWidget*, const QModelIndex&);
+    using QTreeWidget_IndexFromItem2_Callback = QModelIndex (*)(const QTreeWidget*, const QTreeWidgetItem*, int);
+    using QTreeWidget_IndexFromItem22_Callback = QModelIndex (*)(const QTreeWidget*, QTreeWidgetItem*, int);
     using QTreeWidget_ColumnResized_Callback = void (*)(QTreeWidget*, int, int, int);
     using QTreeWidget_ColumnCountChanged_Callback = void (*)(QTreeWidget*, int, int);
     using QTreeWidget_ColumnMoved_Callback = void (*)();
@@ -287,6 +293,10 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_DrawTree_Callback = void (*)(const QTreeWidget*, QPainter*, const QRegion&);
     using QTreeWidget_IndexRowSizeHint_Callback = int (*)(const QTreeWidget*, const QModelIndex&);
     using QTreeWidget_RowHeight_Callback = int (*)(const QTreeWidget*, const QModelIndex&);
+    using QTreeWidget_SetHorizontalStepsPerItem_Callback = void (*)(QTreeWidget*, int);
+    using QTreeWidget_HorizontalStepsPerItem_Callback = int (*)();
+    using QTreeWidget_SetVerticalStepsPerItem_Callback = void (*)(QTreeWidget*, int);
+    using QTreeWidget_VerticalStepsPerItem_Callback = int (*)();
     using QTreeWidget_State_Callback = QAbstractItemView::State (*)();
     using QTreeWidget_SetState_Callback = void (*)(QTreeWidget*, int);
     using QTreeWidget_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -301,6 +311,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     using QTreeWidget_SetViewportMargins_Callback = void (*)(QTreeWidget*, int, int, int, int);
     using QTreeWidget_ViewportMargins_Callback = QMargins (*)();
     using QTreeWidget_DrawFrame_Callback = void (*)(QTreeWidget*, QPainter*);
+    using QTreeWidget_InitStyleOption_Callback = void (*)(const QTreeWidget*, QStyleOptionFrame*);
     using QTreeWidget_UpdateMicroFocus_Callback = void (*)();
     using QTreeWidget_Create_Callback = void (*)();
     using QTreeWidget_Destroy_Callback = void (*)();
@@ -340,7 +351,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_SetSelection_Callback qtreewidget_setselection_callback = nullptr;
     QTreeWidget_VisualRegionForSelection_Callback qtreewidget_visualregionforselection_callback = nullptr;
     QTreeWidget_SelectedIndexes_Callback qtreewidget_selectedindexes_callback = nullptr;
-    QTreeWidget_ChangeEvent_Callback qtreewidget_changeevent_callback = nullptr;
     QTreeWidget_TimerEvent_Callback qtreewidget_timerevent_callback = nullptr;
     QTreeWidget_PaintEvent_Callback qtreewidget_paintevent_callback = nullptr;
     QTreeWidget_DrawRow_Callback qtreewidget_drawrow_callback = nullptr;
@@ -360,7 +370,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_SelectionChanged_Callback qtreewidget_selectionchanged_callback = nullptr;
     QTreeWidget_CurrentChanged_Callback qtreewidget_currentchanged_callback = nullptr;
     QTreeWidget_SizeHintForRow_Callback qtreewidget_sizehintforrow_callback = nullptr;
-    QTreeWidget_ItemDelegateForIndex_Callback qtreewidget_itemdelegateforindex_callback = nullptr;
     QTreeWidget_InputMethodQuery_Callback qtreewidget_inputmethodquery_callback = nullptr;
     QTreeWidget_UpdateEditorData_Callback qtreewidget_updateeditordata_callback = nullptr;
     QTreeWidget_UpdateEditorGeometries_Callback qtreewidget_updateeditorgeometries_callback = nullptr;
@@ -372,7 +381,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_Edit2_Callback qtreewidget_edit2_callback = nullptr;
     QTreeWidget_SelectionCommand_Callback qtreewidget_selectioncommand_callback = nullptr;
     QTreeWidget_StartDrag_Callback qtreewidget_startdrag_callback = nullptr;
-    QTreeWidget_InitViewItemOption_Callback qtreewidget_initviewitemoption_callback = nullptr;
+    QTreeWidget_ViewOptions_Callback qtreewidget_viewoptions_callback = nullptr;
     QTreeWidget_FocusNextPrevChild_Callback qtreewidget_focusnextprevchild_callback = nullptr;
     QTreeWidget_DragEnterEvent_Callback qtreewidget_dragenterevent_callback = nullptr;
     QTreeWidget_DragLeaveEvent_Callback qtreewidget_dragleaveevent_callback = nullptr;
@@ -386,7 +395,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_SetupViewport_Callback qtreewidget_setupviewport_callback = nullptr;
     QTreeWidget_WheelEvent_Callback qtreewidget_wheelevent_callback = nullptr;
     QTreeWidget_ContextMenuEvent_Callback qtreewidget_contextmenuevent_callback = nullptr;
-    QTreeWidget_InitStyleOption_Callback qtreewidget_initstyleoption_callback = nullptr;
+    QTreeWidget_ChangeEvent_Callback qtreewidget_changeevent_callback = nullptr;
     QTreeWidget_DevType_Callback qtreewidget_devtype_callback = nullptr;
     QTreeWidget_SetVisible_Callback qtreewidget_setvisible_callback = nullptr;
     QTreeWidget_HeightForWidth_Callback qtreewidget_heightforwidth_callback = nullptr;
@@ -410,6 +419,12 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_CustomEvent_Callback qtreewidget_customevent_callback = nullptr;
     QTreeWidget_ConnectNotify_Callback qtreewidget_connectnotify_callback = nullptr;
     QTreeWidget_DisconnectNotify_Callback qtreewidget_disconnectnotify_callback = nullptr;
+    QTreeWidget_Items_Callback qtreewidget_items_callback = nullptr;
+    QTreeWidget_IndexFromItem_Callback qtreewidget_indexfromitem_callback = nullptr;
+    QTreeWidget_IndexFromItemWithItem_Callback qtreewidget_indexfromitemwithitem_callback = nullptr;
+    QTreeWidget_ItemFromIndex_Callback qtreewidget_itemfromindex_callback = nullptr;
+    QTreeWidget_IndexFromItem2_Callback qtreewidget_indexfromitem2_callback = nullptr;
+    QTreeWidget_IndexFromItem22_Callback qtreewidget_indexfromitem22_callback = nullptr;
     QTreeWidget_ColumnResized_Callback qtreewidget_columnresized_callback = nullptr;
     QTreeWidget_ColumnCountChanged_Callback qtreewidget_columncountchanged_callback = nullptr;
     QTreeWidget_ColumnMoved_Callback qtreewidget_columnmoved_callback = nullptr;
@@ -418,6 +433,10 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_DrawTree_Callback qtreewidget_drawtree_callback = nullptr;
     QTreeWidget_IndexRowSizeHint_Callback qtreewidget_indexrowsizehint_callback = nullptr;
     QTreeWidget_RowHeight_Callback qtreewidget_rowheight_callback = nullptr;
+    QTreeWidget_SetHorizontalStepsPerItem_Callback qtreewidget_sethorizontalstepsperitem_callback = nullptr;
+    QTreeWidget_HorizontalStepsPerItem_Callback qtreewidget_horizontalstepsperitem_callback = nullptr;
+    QTreeWidget_SetVerticalStepsPerItem_Callback qtreewidget_setverticalstepsperitem_callback = nullptr;
+    QTreeWidget_VerticalStepsPerItem_Callback qtreewidget_verticalstepsperitem_callback = nullptr;
     QTreeWidget_State_Callback qtreewidget_state_callback = nullptr;
     QTreeWidget_SetState_Callback qtreewidget_setstate_callback = nullptr;
     QTreeWidget_ScheduleDelayedItemsLayout_Callback qtreewidget_scheduledelayeditemslayout_callback = nullptr;
@@ -432,6 +451,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     QTreeWidget_SetViewportMargins_Callback qtreewidget_setviewportmargins_callback = nullptr;
     QTreeWidget_ViewportMargins_Callback qtreewidget_viewportmargins_callback = nullptr;
     QTreeWidget_DrawFrame_Callback qtreewidget_drawframe_callback = nullptr;
+    QTreeWidget_InitStyleOption_Callback qtreewidget_initstyleoption_callback = nullptr;
     QTreeWidget_UpdateMicroFocus_Callback qtreewidget_updatemicrofocus_callback = nullptr;
     QTreeWidget_Create_Callback qtreewidget_create_callback = nullptr;
     QTreeWidget_Destroy_Callback qtreewidget_destroy_callback = nullptr;
@@ -470,7 +490,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_setselection_isbase = false;
     mutable bool qtreewidget_visualregionforselection_isbase = false;
     mutable bool qtreewidget_selectedindexes_isbase = false;
-    mutable bool qtreewidget_changeevent_isbase = false;
     mutable bool qtreewidget_timerevent_isbase = false;
     mutable bool qtreewidget_paintevent_isbase = false;
     mutable bool qtreewidget_drawrow_isbase = false;
@@ -490,7 +509,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_selectionchanged_isbase = false;
     mutable bool qtreewidget_currentchanged_isbase = false;
     mutable bool qtreewidget_sizehintforrow_isbase = false;
-    mutable bool qtreewidget_itemdelegateforindex_isbase = false;
     mutable bool qtreewidget_inputmethodquery_isbase = false;
     mutable bool qtreewidget_updateeditordata_isbase = false;
     mutable bool qtreewidget_updateeditorgeometries_isbase = false;
@@ -502,7 +520,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_edit2_isbase = false;
     mutable bool qtreewidget_selectioncommand_isbase = false;
     mutable bool qtreewidget_startdrag_isbase = false;
-    mutable bool qtreewidget_initviewitemoption_isbase = false;
+    mutable bool qtreewidget_viewoptions_isbase = false;
     mutable bool qtreewidget_focusnextprevchild_isbase = false;
     mutable bool qtreewidget_dragenterevent_isbase = false;
     mutable bool qtreewidget_dragleaveevent_isbase = false;
@@ -516,7 +534,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_setupviewport_isbase = false;
     mutable bool qtreewidget_wheelevent_isbase = false;
     mutable bool qtreewidget_contextmenuevent_isbase = false;
-    mutable bool qtreewidget_initstyleoption_isbase = false;
+    mutable bool qtreewidget_changeevent_isbase = false;
     mutable bool qtreewidget_devtype_isbase = false;
     mutable bool qtreewidget_setvisible_isbase = false;
     mutable bool qtreewidget_heightforwidth_isbase = false;
@@ -540,6 +558,12 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_customevent_isbase = false;
     mutable bool qtreewidget_connectnotify_isbase = false;
     mutable bool qtreewidget_disconnectnotify_isbase = false;
+    mutable bool qtreewidget_items_isbase = false;
+    mutable bool qtreewidget_indexfromitem_isbase = false;
+    mutable bool qtreewidget_indexfromitemwithitem_isbase = false;
+    mutable bool qtreewidget_itemfromindex_isbase = false;
+    mutable bool qtreewidget_indexfromitem2_isbase = false;
+    mutable bool qtreewidget_indexfromitem22_isbase = false;
     mutable bool qtreewidget_columnresized_isbase = false;
     mutable bool qtreewidget_columncountchanged_isbase = false;
     mutable bool qtreewidget_columnmoved_isbase = false;
@@ -548,6 +572,10 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_drawtree_isbase = false;
     mutable bool qtreewidget_indexrowsizehint_isbase = false;
     mutable bool qtreewidget_rowheight_isbase = false;
+    mutable bool qtreewidget_sethorizontalstepsperitem_isbase = false;
+    mutable bool qtreewidget_horizontalstepsperitem_isbase = false;
+    mutable bool qtreewidget_setverticalstepsperitem_isbase = false;
+    mutable bool qtreewidget_verticalstepsperitem_isbase = false;
     mutable bool qtreewidget_state_isbase = false;
     mutable bool qtreewidget_setstate_isbase = false;
     mutable bool qtreewidget_scheduledelayeditemslayout_isbase = false;
@@ -562,6 +590,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     mutable bool qtreewidget_setviewportmargins_isbase = false;
     mutable bool qtreewidget_viewportmargins_isbase = false;
     mutable bool qtreewidget_drawframe_isbase = false;
+    mutable bool qtreewidget_initstyleoption_isbase = false;
     mutable bool qtreewidget_updatemicrofocus_isbase = false;
     mutable bool qtreewidget_create_isbase = false;
     mutable bool qtreewidget_destroy_isbase = false;
@@ -604,7 +633,6 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_setselection_callback = nullptr;
         qtreewidget_visualregionforselection_callback = nullptr;
         qtreewidget_selectedindexes_callback = nullptr;
-        qtreewidget_changeevent_callback = nullptr;
         qtreewidget_timerevent_callback = nullptr;
         qtreewidget_paintevent_callback = nullptr;
         qtreewidget_drawrow_callback = nullptr;
@@ -624,7 +652,6 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_selectionchanged_callback = nullptr;
         qtreewidget_currentchanged_callback = nullptr;
         qtreewidget_sizehintforrow_callback = nullptr;
-        qtreewidget_itemdelegateforindex_callback = nullptr;
         qtreewidget_inputmethodquery_callback = nullptr;
         qtreewidget_updateeditordata_callback = nullptr;
         qtreewidget_updateeditorgeometries_callback = nullptr;
@@ -636,7 +663,7 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_edit2_callback = nullptr;
         qtreewidget_selectioncommand_callback = nullptr;
         qtreewidget_startdrag_callback = nullptr;
-        qtreewidget_initviewitemoption_callback = nullptr;
+        qtreewidget_viewoptions_callback = nullptr;
         qtreewidget_focusnextprevchild_callback = nullptr;
         qtreewidget_dragenterevent_callback = nullptr;
         qtreewidget_dragleaveevent_callback = nullptr;
@@ -650,7 +677,7 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_setupviewport_callback = nullptr;
         qtreewidget_wheelevent_callback = nullptr;
         qtreewidget_contextmenuevent_callback = nullptr;
-        qtreewidget_initstyleoption_callback = nullptr;
+        qtreewidget_changeevent_callback = nullptr;
         qtreewidget_devtype_callback = nullptr;
         qtreewidget_setvisible_callback = nullptr;
         qtreewidget_heightforwidth_callback = nullptr;
@@ -674,6 +701,12 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_customevent_callback = nullptr;
         qtreewidget_connectnotify_callback = nullptr;
         qtreewidget_disconnectnotify_callback = nullptr;
+        qtreewidget_items_callback = nullptr;
+        qtreewidget_indexfromitem_callback = nullptr;
+        qtreewidget_indexfromitemwithitem_callback = nullptr;
+        qtreewidget_itemfromindex_callback = nullptr;
+        qtreewidget_indexfromitem2_callback = nullptr;
+        qtreewidget_indexfromitem22_callback = nullptr;
         qtreewidget_columnresized_callback = nullptr;
         qtreewidget_columncountchanged_callback = nullptr;
         qtreewidget_columnmoved_callback = nullptr;
@@ -682,6 +715,10 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_drawtree_callback = nullptr;
         qtreewidget_indexrowsizehint_callback = nullptr;
         qtreewidget_rowheight_callback = nullptr;
+        qtreewidget_sethorizontalstepsperitem_callback = nullptr;
+        qtreewidget_horizontalstepsperitem_callback = nullptr;
+        qtreewidget_setverticalstepsperitem_callback = nullptr;
+        qtreewidget_verticalstepsperitem_callback = nullptr;
         qtreewidget_state_callback = nullptr;
         qtreewidget_setstate_callback = nullptr;
         qtreewidget_scheduledelayeditemslayout_callback = nullptr;
@@ -696,6 +733,7 @@ class VirtualQTreeWidget : public QTreeWidget {
         qtreewidget_setviewportmargins_callback = nullptr;
         qtreewidget_viewportmargins_callback = nullptr;
         qtreewidget_drawframe_callback = nullptr;
+        qtreewidget_initstyleoption_callback = nullptr;
         qtreewidget_updatemicrofocus_callback = nullptr;
         qtreewidget_create_callback = nullptr;
         qtreewidget_destroy_callback = nullptr;
@@ -735,7 +773,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetSelection_Callback(QTreeWidget_SetSelection_Callback cb) { qtreewidget_setselection_callback = cb; }
     void setQTreeWidget_VisualRegionForSelection_Callback(QTreeWidget_VisualRegionForSelection_Callback cb) { qtreewidget_visualregionforselection_callback = cb; }
     void setQTreeWidget_SelectedIndexes_Callback(QTreeWidget_SelectedIndexes_Callback cb) { qtreewidget_selectedindexes_callback = cb; }
-    void setQTreeWidget_ChangeEvent_Callback(QTreeWidget_ChangeEvent_Callback cb) { qtreewidget_changeevent_callback = cb; }
     void setQTreeWidget_TimerEvent_Callback(QTreeWidget_TimerEvent_Callback cb) { qtreewidget_timerevent_callback = cb; }
     void setQTreeWidget_PaintEvent_Callback(QTreeWidget_PaintEvent_Callback cb) { qtreewidget_paintevent_callback = cb; }
     void setQTreeWidget_DrawRow_Callback(QTreeWidget_DrawRow_Callback cb) { qtreewidget_drawrow_callback = cb; }
@@ -755,7 +792,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SelectionChanged_Callback(QTreeWidget_SelectionChanged_Callback cb) { qtreewidget_selectionchanged_callback = cb; }
     void setQTreeWidget_CurrentChanged_Callback(QTreeWidget_CurrentChanged_Callback cb) { qtreewidget_currentchanged_callback = cb; }
     void setQTreeWidget_SizeHintForRow_Callback(QTreeWidget_SizeHintForRow_Callback cb) { qtreewidget_sizehintforrow_callback = cb; }
-    void setQTreeWidget_ItemDelegateForIndex_Callback(QTreeWidget_ItemDelegateForIndex_Callback cb) { qtreewidget_itemdelegateforindex_callback = cb; }
     void setQTreeWidget_InputMethodQuery_Callback(QTreeWidget_InputMethodQuery_Callback cb) { qtreewidget_inputmethodquery_callback = cb; }
     void setQTreeWidget_UpdateEditorData_Callback(QTreeWidget_UpdateEditorData_Callback cb) { qtreewidget_updateeditordata_callback = cb; }
     void setQTreeWidget_UpdateEditorGeometries_Callback(QTreeWidget_UpdateEditorGeometries_Callback cb) { qtreewidget_updateeditorgeometries_callback = cb; }
@@ -767,7 +803,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_Edit2_Callback(QTreeWidget_Edit2_Callback cb) { qtreewidget_edit2_callback = cb; }
     void setQTreeWidget_SelectionCommand_Callback(QTreeWidget_SelectionCommand_Callback cb) { qtreewidget_selectioncommand_callback = cb; }
     void setQTreeWidget_StartDrag_Callback(QTreeWidget_StartDrag_Callback cb) { qtreewidget_startdrag_callback = cb; }
-    void setQTreeWidget_InitViewItemOption_Callback(QTreeWidget_InitViewItemOption_Callback cb) { qtreewidget_initviewitemoption_callback = cb; }
+    void setQTreeWidget_ViewOptions_Callback(QTreeWidget_ViewOptions_Callback cb) { qtreewidget_viewoptions_callback = cb; }
     void setQTreeWidget_FocusNextPrevChild_Callback(QTreeWidget_FocusNextPrevChild_Callback cb) { qtreewidget_focusnextprevchild_callback = cb; }
     void setQTreeWidget_DragEnterEvent_Callback(QTreeWidget_DragEnterEvent_Callback cb) { qtreewidget_dragenterevent_callback = cb; }
     void setQTreeWidget_DragLeaveEvent_Callback(QTreeWidget_DragLeaveEvent_Callback cb) { qtreewidget_dragleaveevent_callback = cb; }
@@ -781,7 +817,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetupViewport_Callback(QTreeWidget_SetupViewport_Callback cb) { qtreewidget_setupviewport_callback = cb; }
     void setQTreeWidget_WheelEvent_Callback(QTreeWidget_WheelEvent_Callback cb) { qtreewidget_wheelevent_callback = cb; }
     void setQTreeWidget_ContextMenuEvent_Callback(QTreeWidget_ContextMenuEvent_Callback cb) { qtreewidget_contextmenuevent_callback = cb; }
-    void setQTreeWidget_InitStyleOption_Callback(QTreeWidget_InitStyleOption_Callback cb) { qtreewidget_initstyleoption_callback = cb; }
+    void setQTreeWidget_ChangeEvent_Callback(QTreeWidget_ChangeEvent_Callback cb) { qtreewidget_changeevent_callback = cb; }
     void setQTreeWidget_DevType_Callback(QTreeWidget_DevType_Callback cb) { qtreewidget_devtype_callback = cb; }
     void setQTreeWidget_SetVisible_Callback(QTreeWidget_SetVisible_Callback cb) { qtreewidget_setvisible_callback = cb; }
     void setQTreeWidget_HeightForWidth_Callback(QTreeWidget_HeightForWidth_Callback cb) { qtreewidget_heightforwidth_callback = cb; }
@@ -805,6 +841,12 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_CustomEvent_Callback(QTreeWidget_CustomEvent_Callback cb) { qtreewidget_customevent_callback = cb; }
     void setQTreeWidget_ConnectNotify_Callback(QTreeWidget_ConnectNotify_Callback cb) { qtreewidget_connectnotify_callback = cb; }
     void setQTreeWidget_DisconnectNotify_Callback(QTreeWidget_DisconnectNotify_Callback cb) { qtreewidget_disconnectnotify_callback = cb; }
+    void setQTreeWidget_Items_Callback(QTreeWidget_Items_Callback cb) { qtreewidget_items_callback = cb; }
+    void setQTreeWidget_IndexFromItem_Callback(QTreeWidget_IndexFromItem_Callback cb) { qtreewidget_indexfromitem_callback = cb; }
+    void setQTreeWidget_IndexFromItemWithItem_Callback(QTreeWidget_IndexFromItemWithItem_Callback cb) { qtreewidget_indexfromitemwithitem_callback = cb; }
+    void setQTreeWidget_ItemFromIndex_Callback(QTreeWidget_ItemFromIndex_Callback cb) { qtreewidget_itemfromindex_callback = cb; }
+    void setQTreeWidget_IndexFromItem2_Callback(QTreeWidget_IndexFromItem2_Callback cb) { qtreewidget_indexfromitem2_callback = cb; }
+    void setQTreeWidget_IndexFromItem22_Callback(QTreeWidget_IndexFromItem22_Callback cb) { qtreewidget_indexfromitem22_callback = cb; }
     void setQTreeWidget_ColumnResized_Callback(QTreeWidget_ColumnResized_Callback cb) { qtreewidget_columnresized_callback = cb; }
     void setQTreeWidget_ColumnCountChanged_Callback(QTreeWidget_ColumnCountChanged_Callback cb) { qtreewidget_columncountchanged_callback = cb; }
     void setQTreeWidget_ColumnMoved_Callback(QTreeWidget_ColumnMoved_Callback cb) { qtreewidget_columnmoved_callback = cb; }
@@ -813,6 +855,10 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_DrawTree_Callback(QTreeWidget_DrawTree_Callback cb) { qtreewidget_drawtree_callback = cb; }
     void setQTreeWidget_IndexRowSizeHint_Callback(QTreeWidget_IndexRowSizeHint_Callback cb) { qtreewidget_indexrowsizehint_callback = cb; }
     void setQTreeWidget_RowHeight_Callback(QTreeWidget_RowHeight_Callback cb) { qtreewidget_rowheight_callback = cb; }
+    void setQTreeWidget_SetHorizontalStepsPerItem_Callback(QTreeWidget_SetHorizontalStepsPerItem_Callback cb) { qtreewidget_sethorizontalstepsperitem_callback = cb; }
+    void setQTreeWidget_HorizontalStepsPerItem_Callback(QTreeWidget_HorizontalStepsPerItem_Callback cb) { qtreewidget_horizontalstepsperitem_callback = cb; }
+    void setQTreeWidget_SetVerticalStepsPerItem_Callback(QTreeWidget_SetVerticalStepsPerItem_Callback cb) { qtreewidget_setverticalstepsperitem_callback = cb; }
+    void setQTreeWidget_VerticalStepsPerItem_Callback(QTreeWidget_VerticalStepsPerItem_Callback cb) { qtreewidget_verticalstepsperitem_callback = cb; }
     void setQTreeWidget_State_Callback(QTreeWidget_State_Callback cb) { qtreewidget_state_callback = cb; }
     void setQTreeWidget_SetState_Callback(QTreeWidget_SetState_Callback cb) { qtreewidget_setstate_callback = cb; }
     void setQTreeWidget_ScheduleDelayedItemsLayout_Callback(QTreeWidget_ScheduleDelayedItemsLayout_Callback cb) { qtreewidget_scheduledelayeditemslayout_callback = cb; }
@@ -827,6 +873,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetViewportMargins_Callback(QTreeWidget_SetViewportMargins_Callback cb) { qtreewidget_setviewportmargins_callback = cb; }
     void setQTreeWidget_ViewportMargins_Callback(QTreeWidget_ViewportMargins_Callback cb) { qtreewidget_viewportmargins_callback = cb; }
     void setQTreeWidget_DrawFrame_Callback(QTreeWidget_DrawFrame_Callback cb) { qtreewidget_drawframe_callback = cb; }
+    void setQTreeWidget_InitStyleOption_Callback(QTreeWidget_InitStyleOption_Callback cb) { qtreewidget_initstyleoption_callback = cb; }
     void setQTreeWidget_UpdateMicroFocus_Callback(QTreeWidget_UpdateMicroFocus_Callback cb) { qtreewidget_updatemicrofocus_callback = cb; }
     void setQTreeWidget_Create_Callback(QTreeWidget_Create_Callback cb) { qtreewidget_create_callback = cb; }
     void setQTreeWidget_Destroy_Callback(QTreeWidget_Destroy_Callback cb) { qtreewidget_destroy_callback = cb; }
@@ -865,7 +912,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetSelection_IsBase(bool value) const { qtreewidget_setselection_isbase = value; }
     void setQTreeWidget_VisualRegionForSelection_IsBase(bool value) const { qtreewidget_visualregionforselection_isbase = value; }
     void setQTreeWidget_SelectedIndexes_IsBase(bool value) const { qtreewidget_selectedindexes_isbase = value; }
-    void setQTreeWidget_ChangeEvent_IsBase(bool value) const { qtreewidget_changeevent_isbase = value; }
     void setQTreeWidget_TimerEvent_IsBase(bool value) const { qtreewidget_timerevent_isbase = value; }
     void setQTreeWidget_PaintEvent_IsBase(bool value) const { qtreewidget_paintevent_isbase = value; }
     void setQTreeWidget_DrawRow_IsBase(bool value) const { qtreewidget_drawrow_isbase = value; }
@@ -885,7 +931,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SelectionChanged_IsBase(bool value) const { qtreewidget_selectionchanged_isbase = value; }
     void setQTreeWidget_CurrentChanged_IsBase(bool value) const { qtreewidget_currentchanged_isbase = value; }
     void setQTreeWidget_SizeHintForRow_IsBase(bool value) const { qtreewidget_sizehintforrow_isbase = value; }
-    void setQTreeWidget_ItemDelegateForIndex_IsBase(bool value) const { qtreewidget_itemdelegateforindex_isbase = value; }
     void setQTreeWidget_InputMethodQuery_IsBase(bool value) const { qtreewidget_inputmethodquery_isbase = value; }
     void setQTreeWidget_UpdateEditorData_IsBase(bool value) const { qtreewidget_updateeditordata_isbase = value; }
     void setQTreeWidget_UpdateEditorGeometries_IsBase(bool value) const { qtreewidget_updateeditorgeometries_isbase = value; }
@@ -897,7 +942,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_Edit2_IsBase(bool value) const { qtreewidget_edit2_isbase = value; }
     void setQTreeWidget_SelectionCommand_IsBase(bool value) const { qtreewidget_selectioncommand_isbase = value; }
     void setQTreeWidget_StartDrag_IsBase(bool value) const { qtreewidget_startdrag_isbase = value; }
-    void setQTreeWidget_InitViewItemOption_IsBase(bool value) const { qtreewidget_initviewitemoption_isbase = value; }
+    void setQTreeWidget_ViewOptions_IsBase(bool value) const { qtreewidget_viewoptions_isbase = value; }
     void setQTreeWidget_FocusNextPrevChild_IsBase(bool value) const { qtreewidget_focusnextprevchild_isbase = value; }
     void setQTreeWidget_DragEnterEvent_IsBase(bool value) const { qtreewidget_dragenterevent_isbase = value; }
     void setQTreeWidget_DragLeaveEvent_IsBase(bool value) const { qtreewidget_dragleaveevent_isbase = value; }
@@ -911,7 +956,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetupViewport_IsBase(bool value) const { qtreewidget_setupviewport_isbase = value; }
     void setQTreeWidget_WheelEvent_IsBase(bool value) const { qtreewidget_wheelevent_isbase = value; }
     void setQTreeWidget_ContextMenuEvent_IsBase(bool value) const { qtreewidget_contextmenuevent_isbase = value; }
-    void setQTreeWidget_InitStyleOption_IsBase(bool value) const { qtreewidget_initstyleoption_isbase = value; }
+    void setQTreeWidget_ChangeEvent_IsBase(bool value) const { qtreewidget_changeevent_isbase = value; }
     void setQTreeWidget_DevType_IsBase(bool value) const { qtreewidget_devtype_isbase = value; }
     void setQTreeWidget_SetVisible_IsBase(bool value) const { qtreewidget_setvisible_isbase = value; }
     void setQTreeWidget_HeightForWidth_IsBase(bool value) const { qtreewidget_heightforwidth_isbase = value; }
@@ -935,6 +980,12 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_CustomEvent_IsBase(bool value) const { qtreewidget_customevent_isbase = value; }
     void setQTreeWidget_ConnectNotify_IsBase(bool value) const { qtreewidget_connectnotify_isbase = value; }
     void setQTreeWidget_DisconnectNotify_IsBase(bool value) const { qtreewidget_disconnectnotify_isbase = value; }
+    void setQTreeWidget_Items_IsBase(bool value) const { qtreewidget_items_isbase = value; }
+    void setQTreeWidget_IndexFromItem_IsBase(bool value) const { qtreewidget_indexfromitem_isbase = value; }
+    void setQTreeWidget_IndexFromItemWithItem_IsBase(bool value) const { qtreewidget_indexfromitemwithitem_isbase = value; }
+    void setQTreeWidget_ItemFromIndex_IsBase(bool value) const { qtreewidget_itemfromindex_isbase = value; }
+    void setQTreeWidget_IndexFromItem2_IsBase(bool value) const { qtreewidget_indexfromitem2_isbase = value; }
+    void setQTreeWidget_IndexFromItem22_IsBase(bool value) const { qtreewidget_indexfromitem22_isbase = value; }
     void setQTreeWidget_ColumnResized_IsBase(bool value) const { qtreewidget_columnresized_isbase = value; }
     void setQTreeWidget_ColumnCountChanged_IsBase(bool value) const { qtreewidget_columncountchanged_isbase = value; }
     void setQTreeWidget_ColumnMoved_IsBase(bool value) const { qtreewidget_columnmoved_isbase = value; }
@@ -943,6 +994,10 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_DrawTree_IsBase(bool value) const { qtreewidget_drawtree_isbase = value; }
     void setQTreeWidget_IndexRowSizeHint_IsBase(bool value) const { qtreewidget_indexrowsizehint_isbase = value; }
     void setQTreeWidget_RowHeight_IsBase(bool value) const { qtreewidget_rowheight_isbase = value; }
+    void setQTreeWidget_SetHorizontalStepsPerItem_IsBase(bool value) const { qtreewidget_sethorizontalstepsperitem_isbase = value; }
+    void setQTreeWidget_HorizontalStepsPerItem_IsBase(bool value) const { qtreewidget_horizontalstepsperitem_isbase = value; }
+    void setQTreeWidget_SetVerticalStepsPerItem_IsBase(bool value) const { qtreewidget_setverticalstepsperitem_isbase = value; }
+    void setQTreeWidget_VerticalStepsPerItem_IsBase(bool value) const { qtreewidget_verticalstepsperitem_isbase = value; }
     void setQTreeWidget_State_IsBase(bool value) const { qtreewidget_state_isbase = value; }
     void setQTreeWidget_SetState_IsBase(bool value) const { qtreewidget_setstate_isbase = value; }
     void setQTreeWidget_ScheduleDelayedItemsLayout_IsBase(bool value) const { qtreewidget_scheduledelayeditemslayout_isbase = value; }
@@ -957,6 +1012,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     void setQTreeWidget_SetViewportMargins_IsBase(bool value) const { qtreewidget_setviewportmargins_isbase = value; }
     void setQTreeWidget_ViewportMargins_IsBase(bool value) const { qtreewidget_viewportmargins_isbase = value; }
     void setQTreeWidget_DrawFrame_IsBase(bool value) const { qtreewidget_drawframe_isbase = value; }
+    void setQTreeWidget_InitStyleOption_IsBase(bool value) const { qtreewidget_initstyleoption_isbase = value; }
     void setQTreeWidget_UpdateMicroFocus_IsBase(bool value) const { qtreewidget_updatemicrofocus_isbase = value; }
     void setQTreeWidget_Create_IsBase(bool value) const { qtreewidget_create_isbase = value; }
     void setQTreeWidget_Destroy_IsBase(bool value) const { qtreewidget_destroy_isbase = value; }
@@ -1016,7 +1072,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QMimeData* mimeData(const QList<QTreeWidgetItem*>& items) const override {
+    virtual QMimeData* mimeData(const QList<QTreeWidgetItem*> items) const override {
         if (qtreewidget_mimedata_isbase) {
             qtreewidget_mimedata_isbase = false;
             return QTreeWidget::mimeData(items);
@@ -1148,7 +1204,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
         if (qtreewidget_datachanged_isbase) {
             qtreewidget_datachanged_isbase = false;
             QTreeWidget::dataChanged(topLeft, bottomRight, roles);
@@ -1288,18 +1344,6 @@ class VirtualQTreeWidget : public QTreeWidget {
             return qtreewidget_selectedindexes_callback();
         } else {
             return QTreeWidget::selectedIndexes();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void changeEvent(QEvent* event) override {
-        if (qtreewidget_changeevent_isbase) {
-            qtreewidget_changeevent_isbase = false;
-            QTreeWidget::changeEvent(event);
-        } else if (qtreewidget_changeevent_callback != nullptr) {
-            qtreewidget_changeevent_callback(this, event);
-        } else {
-            QTreeWidget::changeEvent(event);
         }
     }
 
@@ -1532,18 +1576,6 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
-        if (qtreewidget_itemdelegateforindex_isbase) {
-            qtreewidget_itemdelegateforindex_isbase = false;
-            return QTreeWidget::itemDelegateForIndex(index);
-        } else if (qtreewidget_itemdelegateforindex_callback != nullptr) {
-            return qtreewidget_itemdelegateforindex_callback(this, index);
-        } else {
-            return QTreeWidget::itemDelegateForIndex(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QVariant inputMethodQuery(Qt::InputMethodQuery query) const override {
         if (qtreewidget_inputmethodquery_isbase) {
             qtreewidget_inputmethodquery_isbase = false;
@@ -1676,14 +1708,14 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
-        if (qtreewidget_initviewitemoption_isbase) {
-            qtreewidget_initviewitemoption_isbase = false;
-            QTreeWidget::initViewItemOption(option);
-        } else if (qtreewidget_initviewitemoption_callback != nullptr) {
-            qtreewidget_initviewitemoption_callback(this, option);
+    virtual QStyleOptionViewItem viewOptions() const override {
+        if (qtreewidget_viewoptions_isbase) {
+            qtreewidget_viewoptions_isbase = false;
+            return QTreeWidget::viewOptions();
+        } else if (qtreewidget_viewoptions_callback != nullptr) {
+            return qtreewidget_viewoptions_callback();
         } else {
-            QTreeWidget::initViewItemOption(option);
+            return QTreeWidget::viewOptions();
         }
     }
 
@@ -1844,14 +1876,14 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qtreewidget_initstyleoption_isbase) {
-            qtreewidget_initstyleoption_isbase = false;
-            QTreeWidget::initStyleOption(option);
-        } else if (qtreewidget_initstyleoption_callback != nullptr) {
-            qtreewidget_initstyleoption_callback(this, option);
+    virtual void changeEvent(QEvent* param1) override {
+        if (qtreewidget_changeevent_isbase) {
+            qtreewidget_changeevent_isbase = false;
+            QTreeWidget::changeEvent(param1);
+        } else if (qtreewidget_changeevent_callback != nullptr) {
+            qtreewidget_changeevent_callback(this, param1);
         } else {
-            QTreeWidget::initStyleOption(option);
+            QTreeWidget::changeEvent(param1);
         }
     }
 
@@ -1928,7 +1960,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtreewidget_enterevent_isbase) {
             qtreewidget_enterevent_isbase = false;
             QTreeWidget::enterEvent(event);
@@ -2024,7 +2056,7 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtreewidget_nativeevent_isbase) {
             qtreewidget_nativeevent_isbase = false;
             return QTreeWidget::nativeEvent(eventType, message, result);
@@ -2132,6 +2164,78 @@ class VirtualQTreeWidget : public QTreeWidget {
     }
 
     // Virtual method for C ABI access and custom callback
+    QList<QTreeWidgetItem*> items(const QMimeData* data) const {
+        if (qtreewidget_items_isbase) {
+            qtreewidget_items_isbase = false;
+            return QTreeWidget::items(data);
+        } else if (qtreewidget_items_callback != nullptr) {
+            return qtreewidget_items_callback(this, data);
+        } else {
+            return QTreeWidget::items(data);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QModelIndex indexFromItem(const QTreeWidgetItem* item) const {
+        if (qtreewidget_indexfromitem_isbase) {
+            qtreewidget_indexfromitem_isbase = false;
+            return QTreeWidget::indexFromItem(item);
+        } else if (qtreewidget_indexfromitem_callback != nullptr) {
+            return qtreewidget_indexfromitem_callback(this, item);
+        } else {
+            return QTreeWidget::indexFromItem(item);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QModelIndex indexFromItem(QTreeWidgetItem* item) const {
+        if (qtreewidget_indexfromitemwithitem_isbase) {
+            qtreewidget_indexfromitemwithitem_isbase = false;
+            return QTreeWidget::indexFromItem(item);
+        } else if (qtreewidget_indexfromitemwithitem_callback != nullptr) {
+            return qtreewidget_indexfromitemwithitem_callback(this, item);
+        } else {
+            return QTreeWidget::indexFromItem(item);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QTreeWidgetItem* itemFromIndex(const QModelIndex& index) const {
+        if (qtreewidget_itemfromindex_isbase) {
+            qtreewidget_itemfromindex_isbase = false;
+            return QTreeWidget::itemFromIndex(index);
+        } else if (qtreewidget_itemfromindex_callback != nullptr) {
+            return qtreewidget_itemfromindex_callback(this, index);
+        } else {
+            return QTreeWidget::itemFromIndex(index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QModelIndex indexFromItem(const QTreeWidgetItem* item, int column) const {
+        if (qtreewidget_indexfromitem2_isbase) {
+            qtreewidget_indexfromitem2_isbase = false;
+            return QTreeWidget::indexFromItem(item, column);
+        } else if (qtreewidget_indexfromitem2_callback != nullptr) {
+            return qtreewidget_indexfromitem2_callback(this, item, column);
+        } else {
+            return QTreeWidget::indexFromItem(item, column);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QModelIndex indexFromItem(QTreeWidgetItem* item, int column) const {
+        if (qtreewidget_indexfromitem22_isbase) {
+            qtreewidget_indexfromitem22_isbase = false;
+            return QTreeWidget::indexFromItem(item, column);
+        } else if (qtreewidget_indexfromitem22_callback != nullptr) {
+            return qtreewidget_indexfromitem22_callback(this, item, column);
+        } else {
+            return QTreeWidget::indexFromItem(item, column);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     void columnResized(int column, int oldSize, int newSize) {
         if (qtreewidget_columnresized_isbase) {
             qtreewidget_columnresized_isbase = false;
@@ -2224,6 +2328,54 @@ class VirtualQTreeWidget : public QTreeWidget {
             return qtreewidget_rowheight_callback(this, index);
         } else {
             return QTreeWidget::rowHeight(index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void setHorizontalStepsPerItem(int steps) {
+        if (qtreewidget_sethorizontalstepsperitem_isbase) {
+            qtreewidget_sethorizontalstepsperitem_isbase = false;
+            QTreeWidget::setHorizontalStepsPerItem(steps);
+        } else if (qtreewidget_sethorizontalstepsperitem_callback != nullptr) {
+            qtreewidget_sethorizontalstepsperitem_callback(this, steps);
+        } else {
+            QTreeWidget::setHorizontalStepsPerItem(steps);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int horizontalStepsPerItem() const {
+        if (qtreewidget_horizontalstepsperitem_isbase) {
+            qtreewidget_horizontalstepsperitem_isbase = false;
+            return QTreeWidget::horizontalStepsPerItem();
+        } else if (qtreewidget_horizontalstepsperitem_callback != nullptr) {
+            return qtreewidget_horizontalstepsperitem_callback();
+        } else {
+            return QTreeWidget::horizontalStepsPerItem();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void setVerticalStepsPerItem(int steps) {
+        if (qtreewidget_setverticalstepsperitem_isbase) {
+            qtreewidget_setverticalstepsperitem_isbase = false;
+            QTreeWidget::setVerticalStepsPerItem(steps);
+        } else if (qtreewidget_setverticalstepsperitem_callback != nullptr) {
+            qtreewidget_setverticalstepsperitem_callback(this, steps);
+        } else {
+            QTreeWidget::setVerticalStepsPerItem(steps);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int verticalStepsPerItem() const {
+        if (qtreewidget_verticalstepsperitem_isbase) {
+            qtreewidget_verticalstepsperitem_isbase = false;
+            return QTreeWidget::verticalStepsPerItem();
+        } else if (qtreewidget_verticalstepsperitem_callback != nullptr) {
+            return qtreewidget_verticalstepsperitem_callback();
+        } else {
+            return QTreeWidget::verticalStepsPerItem();
         }
     }
 
@@ -2392,6 +2544,18 @@ class VirtualQTreeWidget : public QTreeWidget {
             qtreewidget_drawframe_callback(this, param1);
         } else {
             QTreeWidget::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qtreewidget_initstyleoption_isbase) {
+            qtreewidget_initstyleoption_isbase = false;
+            QTreeWidget::initStyleOption(option);
+        } else if (qtreewidget_initstyleoption_callback != nullptr) {
+            qtreewidget_initstyleoption_callback(this, option);
+        } else {
+            QTreeWidget::initStyleOption(option);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractProxyModel QAbstractProxyModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -32,8 +32,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
@@ -50,6 +50,7 @@ int QTransposeProxyModel_Metacall(QTransposeProxyModel* self, int param1, int pa
 void QTransposeProxyModel_OnMetacall(QTransposeProxyModel* self, intptr_t slot);
 int QTransposeProxyModel_QBaseMetacall(QTransposeProxyModel* self, int param1, int param2, void** param3);
 libqt_string QTransposeProxyModel_Tr(const char* s);
+libqt_string QTransposeProxyModel_TrUtf8(const char* s);
 void QTransposeProxyModel_SetSourceModel(QTransposeProxyModel* self, QAbstractItemModel* newSourceModel);
 void QTransposeProxyModel_OnSetSourceModel(QTransposeProxyModel* self, intptr_t slot);
 void QTransposeProxyModel_QBaseSetSourceModel(QTransposeProxyModel* self, QAbstractItemModel* newSourceModel);
@@ -109,6 +110,8 @@ void QTransposeProxyModel_OnSort(QTransposeProxyModel* self, intptr_t slot);
 void QTransposeProxyModel_QBaseSort(QTransposeProxyModel* self, int column, int order);
 libqt_string QTransposeProxyModel_Tr2(const char* s, const char* c);
 libqt_string QTransposeProxyModel_Tr3(const char* s, const char* c, int n);
+libqt_string QTransposeProxyModel_TrUtf82(const char* s, const char* c);
+libqt_string QTransposeProxyModel_TrUtf83(const char* s, const char* c, int n);
 QItemSelection* QTransposeProxyModel_MapSelectionToSource(const QTransposeProxyModel* self, QItemSelection* selection);
 void QTransposeProxyModel_OnMapSelectionToSource(const QTransposeProxyModel* self, intptr_t slot);
 QItemSelection* QTransposeProxyModel_QBaseMapSelectionToSource(const QTransposeProxyModel* self, QItemSelection* selection);
@@ -130,9 +133,6 @@ int QTransposeProxyModel_QBaseFlags(const QTransposeProxyModel* self, QModelInde
 bool QTransposeProxyModel_SetData(QTransposeProxyModel* self, QModelIndex* index, QVariant* value, int role);
 void QTransposeProxyModel_OnSetData(QTransposeProxyModel* self, intptr_t slot);
 bool QTransposeProxyModel_QBaseSetData(QTransposeProxyModel* self, QModelIndex* index, QVariant* value, int role);
-bool QTransposeProxyModel_ClearItemData(QTransposeProxyModel* self, QModelIndex* index);
-void QTransposeProxyModel_OnClearItemData(QTransposeProxyModel* self, intptr_t slot);
-bool QTransposeProxyModel_QBaseClearItemData(QTransposeProxyModel* self, QModelIndex* index);
 QModelIndex* QTransposeProxyModel_Buddy(const QTransposeProxyModel* self, QModelIndex* index);
 void QTransposeProxyModel_OnBuddy(const QTransposeProxyModel* self, intptr_t slot);
 QModelIndex* QTransposeProxyModel_QBaseBuddy(const QTransposeProxyModel* self, QModelIndex* index);
@@ -166,18 +166,12 @@ int QTransposeProxyModel_QBaseSupportedDragActions(const QTransposeProxyModel* s
 int QTransposeProxyModel_SupportedDropActions(const QTransposeProxyModel* self);
 void QTransposeProxyModel_OnSupportedDropActions(const QTransposeProxyModel* self, intptr_t slot);
 int QTransposeProxyModel_QBaseSupportedDropActions(const QTransposeProxyModel* self);
-libqt_map /* of int to libqt_string */ QTransposeProxyModel_RoleNames(const QTransposeProxyModel* self);
-void QTransposeProxyModel_OnRoleNames(const QTransposeProxyModel* self, intptr_t slot);
-libqt_map /* of int to libqt_string */ QTransposeProxyModel_QBaseRoleNames(const QTransposeProxyModel* self);
 libqt_list /* of QModelIndex* */ QTransposeProxyModel_Match(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags);
 void QTransposeProxyModel_OnMatch(const QTransposeProxyModel* self, intptr_t slot);
 libqt_list /* of QModelIndex* */ QTransposeProxyModel_QBaseMatch(const QTransposeProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags);
-void QTransposeProxyModel_MultiData(const QTransposeProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QTransposeProxyModel_OnMultiData(const QTransposeProxyModel* self, intptr_t slot);
-void QTransposeProxyModel_QBaseMultiData(const QTransposeProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QTransposeProxyModel_ResetInternalData(QTransposeProxyModel* self);
-void QTransposeProxyModel_OnResetInternalData(QTransposeProxyModel* self, intptr_t slot);
-void QTransposeProxyModel_QBaseResetInternalData(QTransposeProxyModel* self);
+libqt_map /* of int to libqt_string */ QTransposeProxyModel_RoleNames(const QTransposeProxyModel* self);
+void QTransposeProxyModel_OnRoleNames(const QTransposeProxyModel* self, intptr_t slot);
+libqt_map /* of int to libqt_string */ QTransposeProxyModel_QBaseRoleNames(const QTransposeProxyModel* self);
 bool QTransposeProxyModel_Event(QTransposeProxyModel* self, QEvent* event);
 void QTransposeProxyModel_OnEvent(QTransposeProxyModel* self, intptr_t slot);
 bool QTransposeProxyModel_QBaseEvent(QTransposeProxyModel* self, QEvent* event);
@@ -199,9 +193,9 @@ void QTransposeProxyModel_QBaseConnectNotify(QTransposeProxyModel* self, QMetaMe
 void QTransposeProxyModel_DisconnectNotify(QTransposeProxyModel* self, QMetaMethod* signal);
 void QTransposeProxyModel_OnDisconnectNotify(QTransposeProxyModel* self, intptr_t slot);
 void QTransposeProxyModel_QBaseDisconnectNotify(QTransposeProxyModel* self, QMetaMethod* signal);
-QModelIndex* QTransposeProxyModel_CreateSourceIndex(const QTransposeProxyModel* self, int row, int col, void* internalPtr);
-void QTransposeProxyModel_OnCreateSourceIndex(const QTransposeProxyModel* self, intptr_t slot);
-QModelIndex* QTransposeProxyModel_QBaseCreateSourceIndex(const QTransposeProxyModel* self, int row, int col, void* internalPtr);
+void QTransposeProxyModel_ResetInternalData(QTransposeProxyModel* self);
+void QTransposeProxyModel_OnResetInternalData(QTransposeProxyModel* self, intptr_t slot);
+void QTransposeProxyModel_QBaseResetInternalData(QTransposeProxyModel* self);
 QModelIndex* QTransposeProxyModel_CreateIndex(const QTransposeProxyModel* self, int row, int column);
 void QTransposeProxyModel_OnCreateIndex(const QTransposeProxyModel* self, intptr_t slot);
 QModelIndex* QTransposeProxyModel_QBaseCreateIndex(const QTransposeProxyModel* self, int row, int column);

@@ -46,7 +46,7 @@ QColor* QColormap_ColorAt(const QColormap* self, unsigned int pixel) {
 }
 
 libqt_list /* of QColor* */ QColormap_Colormap(const QColormap* self) {
-    const QList<QColor> _ret = self->colormap();
+    const QVector<QColor> _ret = self->colormap();
     // Convert QList<> from C++ memory to manually-managed C memory
     QColor** _arr = static_cast<QColor**>(malloc(sizeof(QColor*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

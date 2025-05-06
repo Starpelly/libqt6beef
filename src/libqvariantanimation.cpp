@@ -1,7 +1,5 @@
 #include <QAbstractAnimation>
 #include <QAnimationGroup>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEasingCurve>
@@ -11,6 +9,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QPair>
 #include <QString>
 #include <QByteArray>
@@ -76,6 +75,18 @@ libqt_string QVariantAnimation_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QVariantAnimation_TrUtf8(const char* s) {
+    QString _ret = QVariantAnimation::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QVariant* QVariantAnimation_StartValue(const QVariantAnimation* self) {
     return new QVariant(self->startValue());
 }
@@ -105,16 +116,16 @@ libqt_list /* of libqt_pair  tuple of double and QVariant*  */ QVariantAnimation
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_pair /* tuple of double and QVariant* */* _arr = static_cast<libqt_pair /* tuple of double and QVariant* */*>(malloc(sizeof(libqt_pair /* tuple of double and QVariant* */) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
-        QPair<double, QVariant> _lv_ret = _ret[i];
+        QPair<double, QVariant> _vv_ret = _ret[i];
         // Convert QPair<> from C++ memory to manually-managed C memory
-        double* _lv_first = static_cast<double*>(malloc(sizeof(double)));
-        QVariant** _lv_second = static_cast<QVariant**>(malloc(sizeof(QVariant*)));
-        *_lv_first = _lv_ret.first;
-        *_lv_second = new QVariant(_lv_ret.second);
-        libqt_pair _lv_out;
-        _lv_out.first = static_cast<void*>(_lv_first);
-        _lv_out.second = static_cast<void*>(_lv_second);
-        _arr[i] = _lv_out;
+        double* _vv_first = static_cast<double*>(malloc(sizeof(double)));
+        QVariant** _vv_second = static_cast<QVariant**>(malloc(sizeof(QVariant*)));
+        *_vv_first = _vv_ret.first;
+        *_vv_second = new QVariant(_vv_ret.second);
+        libqt_pair _vv_out;
+        _vv_out.first = static_cast<void*>(_vv_first);
+        _vv_out.second = static_cast<void*>(_vv_second);
+        _arr[i] = _vv_out;
     }
     libqt_list _out;
     _out.len = _ret.length();
@@ -181,6 +192,30 @@ libqt_string QVariantAnimation_Tr2(const char* s, const char* c) {
 
 libqt_string QVariantAnimation_Tr3(const char* s, const char* c, int n) {
     QString _ret = QVariantAnimation::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QVariantAnimation_TrUtf82(const char* s, const char* c) {
+    QString _ret = QVariantAnimation::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QVariantAnimation_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QVariantAnimation::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

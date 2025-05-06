@@ -1,19 +1,17 @@
 #include <QAbstractSocket>
-#include <QAnyStringView>
 #include <QAuthenticator>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QHostAddress>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QNetworkProxy>
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -73,6 +71,18 @@ libqt_string QAbstractSocket_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QAbstractSocket_TrUtf8(const char* s) {
+    QString _ret = QAbstractSocket::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 int QAbstractSocket_PauseMode(const QAbstractSocket* self) {
     return static_cast<int>(self->pauseMode());
 }
@@ -81,12 +91,12 @@ void QAbstractSocket_SetPauseMode(QAbstractSocket* self, int pauseMode) {
     self->setPauseMode(static_cast<QAbstractSocket::PauseModes>(pauseMode));
 }
 
-bool QAbstractSocket_Bind2(QAbstractSocket* self) {
-    return self->bind();
+bool QAbstractSocket_Bind(QAbstractSocket* self, QHostAddress* address) {
+    return self->bind(*address);
 }
 
-void QAbstractSocket_ConnectToHost2(QAbstractSocket* self, QHostAddress* address, uint16_t port) {
-    self->connectToHost(*address, static_cast<quint16>(port));
+bool QAbstractSocket_Bind2(QAbstractSocket* self) {
+    return self->bind();
 }
 
 bool QAbstractSocket_IsValid(const QAbstractSocket* self) {
@@ -215,6 +225,18 @@ void QAbstractSocket_Connect_StateChanged(QAbstractSocket* self, intptr_t slot) 
     });
 }
 
+void QAbstractSocket_ErrorWithQAbstractSocketSocketError(QAbstractSocket* self, int param1) {
+    self->error(static_cast<QAbstractSocket::SocketError>(param1));
+}
+
+void QAbstractSocket_Connect_ErrorWithQAbstractSocketSocketError(QAbstractSocket* self, intptr_t slot) {
+    void (*slotFunc)(QAbstractSocket*, int) = reinterpret_cast<void (*)(QAbstractSocket*, int)>(slot);
+    QAbstractSocket::connect(self, &QAbstractSocket::error, [self, slotFunc](QAbstractSocket::SocketError param1) {
+        int sigval1 = static_cast<int>(param1);
+        slotFunc(self, sigval1);
+    });
+}
+
 void QAbstractSocket_ErrorOccurred(QAbstractSocket* self, int param1) {
     self->errorOccurred(static_cast<QAbstractSocket::SocketError>(param1));
 }
@@ -266,16 +288,44 @@ libqt_string QAbstractSocket_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QAbstractSocket_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAbstractSocket::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractSocket_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAbstractSocket::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+bool QAbstractSocket_Bind22(QAbstractSocket* self, QHostAddress* address, uint16_t port) {
+    return self->bind(*address, static_cast<quint16>(port));
+}
+
+bool QAbstractSocket_Bind3(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    return self->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
+}
+
 bool QAbstractSocket_Bind1(QAbstractSocket* self, uint16_t port) {
     return self->bind(static_cast<quint16>(port));
 }
 
-bool QAbstractSocket_Bind22(QAbstractSocket* self, uint16_t port, int mode) {
+bool QAbstractSocket_Bind23(QAbstractSocket* self, uint16_t port, int mode) {
     return self->bind(static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-}
-
-void QAbstractSocket_ConnectToHost3(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode));
 }
 
 // Derived class handler implementation
@@ -305,38 +355,12 @@ void QAbstractSocket_OnResume(QAbstractSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractSocket_Bind(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        return vqabstractsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    } else {
-        return vqabstractsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    }
-}
-
-// Base class handler implementation
-bool QAbstractSocket_QBaseBind(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->setQAbstractSocket_Bind_IsBase(true);
-        return vqabstractsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    } else {
-        return vqabstractsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractSocket_OnBind(QAbstractSocket* self, intptr_t slot) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->setQAbstractSocket_Bind_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_Bind_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QAbstractSocket_ConnectToHost(QAbstractSocket* self, libqt_string hostName, uint16_t port, int mode, int protocol) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -345,9 +369,9 @@ void QAbstractSocket_QBaseConnectToHost(QAbstractSocket* self, libqt_string host
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_ConnectToHost_IsBase(true);
-        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqabstractsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -355,6 +379,32 @@ void QAbstractSocket_QBaseConnectToHost(QAbstractSocket* self, libqt_string host
 void QAbstractSocket_OnConnectToHost(QAbstractSocket* self, intptr_t slot) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_ConnectToHost_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_ConnectToHost_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractSocket_ConnectToHost2(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
+        vqabstractsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    } else {
+        vqabstractsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    }
+}
+
+// Base class handler implementation
+void QAbstractSocket_QBaseConnectToHost2(QAbstractSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
+        vqabstractsocket->setQAbstractSocket_ConnectToHost2_IsBase(true);
+        vqabstractsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    } else {
+        vqabstractsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractSocket_OnConnectToHost2(QAbstractSocket* self, intptr_t slot) {
+    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
+        vqabstractsocket->setQAbstractSocket_ConnectToHost2_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_ConnectToHost2_Callback>(slot));
     }
 }
 
@@ -437,6 +487,32 @@ void QAbstractSocket_OnBytesToWrite(const QAbstractSocket* self, intptr_t slot) 
 }
 
 // Derived class handler implementation
+bool QAbstractSocket_CanReadLine(const QAbstractSocket* self) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        return vqabstractsocket->canReadLine();
+    } else {
+        return vqabstractsocket->canReadLine();
+    }
+}
+
+// Base class handler implementation
+bool QAbstractSocket_QBaseCanReadLine(const QAbstractSocket* self) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        vqabstractsocket->setQAbstractSocket_CanReadLine_IsBase(true);
+        return vqabstractsocket->canReadLine();
+    } else {
+        return vqabstractsocket->canReadLine();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractSocket_OnCanReadLine(const QAbstractSocket* self, intptr_t slot) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        vqabstractsocket->setQAbstractSocket_CanReadLine_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_CanReadLine_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QAbstractSocket_SetReadBufferSize(QAbstractSocket* self, long long size) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setReadBufferSize(static_cast<qint64>(size));
@@ -495,9 +571,9 @@ void QAbstractSocket_OnSocketDescriptor(const QAbstractSocket* self, intptr_t sl
 // Derived class handler implementation
 bool QAbstractSocket_SetSocketDescriptor(QAbstractSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -505,9 +581,9 @@ bool QAbstractSocket_SetSocketDescriptor(QAbstractSocket* self, intptr_t socketD
 bool QAbstractSocket_QBaseSetSocketDescriptor(QAbstractSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_SetSocketDescriptor_IsBase(true);
-        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqabstractsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -619,6 +695,32 @@ bool QAbstractSocket_QBaseIsSequential(const QAbstractSocket* self) {
 void QAbstractSocket_OnIsSequential(const QAbstractSocket* self, intptr_t slot) {
     if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
         vqabstractsocket->setQAbstractSocket_IsSequential_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_IsSequential_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QAbstractSocket_AtEnd(const QAbstractSocket* self) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        return vqabstractsocket->atEnd();
+    } else {
+        return vqabstractsocket->atEnd();
+    }
+}
+
+// Base class handler implementation
+bool QAbstractSocket_QBaseAtEnd(const QAbstractSocket* self) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        vqabstractsocket->setQAbstractSocket_AtEnd_IsBase(true);
+        return vqabstractsocket->atEnd();
+    } else {
+        return vqabstractsocket->atEnd();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractSocket_OnAtEnd(const QAbstractSocket* self, intptr_t slot) {
+    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
+        vqabstractsocket->setQAbstractSocket_AtEnd_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_AtEnd_Callback>(slot));
     }
 }
 
@@ -779,32 +881,6 @@ void QAbstractSocket_OnReadLineData(QAbstractSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-long long QAbstractSocket_SkipData(QAbstractSocket* self, long long maxSize) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        return static_cast<long long>(vqabstractsocket->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqabstractsocket->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Base class handler implementation
-long long QAbstractSocket_QBaseSkipData(QAbstractSocket* self, long long maxSize) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->setQAbstractSocket_SkipData_IsBase(true);
-        return static_cast<long long>(vqabstractsocket->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqabstractsocket->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractSocket_OnSkipData(QAbstractSocket* self, intptr_t slot) {
-    if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->setQAbstractSocket_SkipData_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_SkipData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 long long QAbstractSocket_WriteData(QAbstractSocket* self, const char* data, long long lenVal) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         return static_cast<long long>(vqabstractsocket->writeData(data, static_cast<qint64>(lenVal)));
@@ -833,9 +909,9 @@ void QAbstractSocket_OnWriteData(QAbstractSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QAbstractSocket_Open(QAbstractSocket* self, int mode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        return vqabstractsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqabstractsocket->open(static_cast<QIODevice::OpenMode>(mode));
     } else {
-        return vqabstractsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqabstractsocket->open(static_cast<QIODevice::OpenMode>(mode));
     }
 }
 
@@ -843,9 +919,9 @@ bool QAbstractSocket_Open(QAbstractSocket* self, int mode) {
 bool QAbstractSocket_QBaseOpen(QAbstractSocket* self, int mode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_Open_IsBase(true);
-        return vqabstractsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqabstractsocket->open(static_cast<QIODevice::OpenMode>(mode));
     } else {
-        return vqabstractsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqabstractsocket->open(static_cast<QIODevice::OpenMode>(mode));
     }
 }
 
@@ -935,32 +1011,6 @@ void QAbstractSocket_OnSeek(QAbstractSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractSocket_AtEnd(const QAbstractSocket* self) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        return vqabstractsocket->atEnd();
-    } else {
-        return vqabstractsocket->atEnd();
-    }
-}
-
-// Base class handler implementation
-bool QAbstractSocket_QBaseAtEnd(const QAbstractSocket* self) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        vqabstractsocket->setQAbstractSocket_AtEnd_IsBase(true);
-        return vqabstractsocket->atEnd();
-    } else {
-        return vqabstractsocket->atEnd();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractSocket_OnAtEnd(const QAbstractSocket* self, intptr_t slot) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        vqabstractsocket->setQAbstractSocket_AtEnd_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_AtEnd_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 bool QAbstractSocket_Reset(QAbstractSocket* self) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         return vqabstractsocket->reset();
@@ -983,32 +1033,6 @@ bool QAbstractSocket_QBaseReset(QAbstractSocket* self) {
 void QAbstractSocket_OnReset(QAbstractSocket* self, intptr_t slot) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_Reset_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_Reset_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QAbstractSocket_CanReadLine(const QAbstractSocket* self) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        return vqabstractsocket->canReadLine();
-    } else {
-        return vqabstractsocket->canReadLine();
-    }
-}
-
-// Base class handler implementation
-bool QAbstractSocket_QBaseCanReadLine(const QAbstractSocket* self) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        vqabstractsocket->setQAbstractSocket_CanReadLine_IsBase(true);
-        return vqabstractsocket->canReadLine();
-    } else {
-        return vqabstractsocket->canReadLine();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractSocket_OnCanReadLine(const QAbstractSocket* self, intptr_t slot) {
-    if (auto* vqabstractsocket = const_cast<VirtualQAbstractSocket*>(dynamic_cast<const VirtualQAbstractSocket*>(self))) {
-        vqabstractsocket->setQAbstractSocket_CanReadLine_Callback(reinterpret_cast<VirtualQAbstractSocket::QAbstractSocket_CanReadLine_Callback>(slot));
     }
 }
 
@@ -1381,9 +1405,9 @@ void QAbstractSocket_OnSetPeerName(QAbstractSocket* self, intptr_t slot) {
 // Derived class handler implementation
 void QAbstractSocket_SetOpenMode(QAbstractSocket* self, int openMode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
-        vqabstractsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqabstractsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqabstractsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqabstractsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -1391,9 +1415,9 @@ void QAbstractSocket_SetOpenMode(QAbstractSocket* self, int openMode) {
 void QAbstractSocket_QBaseSetOpenMode(QAbstractSocket* self, int openMode) {
     if (auto* vqabstractsocket = dynamic_cast<VirtualQAbstractSocket*>(self)) {
         vqabstractsocket->setQAbstractSocket_SetOpenMode_IsBase(true);
-        vqabstractsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqabstractsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqabstractsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqabstractsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,7 +25,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     using QCalendarWidget_MousePressEvent_Callback = void (*)(QCalendarWidget*, QMouseEvent*);
     using QCalendarWidget_ResizeEvent_Callback = void (*)(QCalendarWidget*, QResizeEvent*);
     using QCalendarWidget_KeyPressEvent_Callback = void (*)(QCalendarWidget*, QKeyEvent*);
-    using QCalendarWidget_PaintCell_Callback = void (*)(const QCalendarWidget*, QPainter*, const QRect&, QDate);
+    using QCalendarWidget_PaintCell_Callback = void (*)(const QCalendarWidget*, QPainter*, const QRect&, const QDate&);
     using QCalendarWidget_DevType_Callback = int (*)();
     using QCalendarWidget_SetVisible_Callback = void (*)(QCalendarWidget*, bool);
     using QCalendarWidget_HeightForWidth_Callback = int (*)(const QCalendarWidget*, int);
@@ -36,7 +38,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     using QCalendarWidget_KeyReleaseEvent_Callback = void (*)(QCalendarWidget*, QKeyEvent*);
     using QCalendarWidget_FocusInEvent_Callback = void (*)(QCalendarWidget*, QFocusEvent*);
     using QCalendarWidget_FocusOutEvent_Callback = void (*)(QCalendarWidget*, QFocusEvent*);
-    using QCalendarWidget_EnterEvent_Callback = void (*)(QCalendarWidget*, QEnterEvent*);
+    using QCalendarWidget_EnterEvent_Callback = void (*)(QCalendarWidget*, QEvent*);
     using QCalendarWidget_LeaveEvent_Callback = void (*)(QCalendarWidget*, QEvent*);
     using QCalendarWidget_PaintEvent_Callback = void (*)(QCalendarWidget*, QPaintEvent*);
     using QCalendarWidget_MoveEvent_Callback = void (*)(QCalendarWidget*, QMoveEvent*);
@@ -50,7 +52,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     using QCalendarWidget_DropEvent_Callback = void (*)(QCalendarWidget*, QDropEvent*);
     using QCalendarWidget_ShowEvent_Callback = void (*)(QCalendarWidget*, QShowEvent*);
     using QCalendarWidget_HideEvent_Callback = void (*)(QCalendarWidget*, QHideEvent*);
-    using QCalendarWidget_NativeEvent_Callback = bool (*)(QCalendarWidget*, const QByteArray&, void*, qintptr*);
+    using QCalendarWidget_NativeEvent_Callback = bool (*)(QCalendarWidget*, const QByteArray&, void*, long*);
     using QCalendarWidget_ChangeEvent_Callback = void (*)(QCalendarWidget*, QEvent*);
     using QCalendarWidget_Metric_Callback = int (*)(const QCalendarWidget*, QPaintDevice::PaintDeviceMetric);
     using QCalendarWidget_InitPainter_Callback = void (*)(const QCalendarWidget*, QPainter*);
@@ -64,7 +66,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     using QCalendarWidget_CustomEvent_Callback = void (*)(QCalendarWidget*, QEvent*);
     using QCalendarWidget_ConnectNotify_Callback = void (*)(QCalendarWidget*, const QMetaMethod&);
     using QCalendarWidget_DisconnectNotify_Callback = void (*)(QCalendarWidget*, const QMetaMethod&);
-    using QCalendarWidget_UpdateCell_Callback = void (*)(QCalendarWidget*, QDate);
+    using QCalendarWidget_UpdateCell_Callback = void (*)(QCalendarWidget*, const QDate&);
     using QCalendarWidget_UpdateCells_Callback = void (*)();
     using QCalendarWidget_UpdateMicroFocus_Callback = void (*)();
     using QCalendarWidget_Create_Callback = void (*)();
@@ -489,7 +491,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void paintCell(QPainter* painter, const QRect& rect, QDate date) const override {
+    virtual void paintCell(QPainter* painter, const QRect& rect, const QDate& date) const override {
         if (qcalendarwidget_paintcell_isbase) {
             qcalendarwidget_paintcell_isbase = false;
             QCalendarWidget::paintCell(painter, rect, date);
@@ -645,7 +647,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qcalendarwidget_enterevent_isbase) {
             qcalendarwidget_enterevent_isbase = false;
             QCalendarWidget::enterEvent(event);
@@ -813,7 +815,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qcalendarwidget_nativeevent_isbase) {
             qcalendarwidget_nativeevent_isbase = false;
             return QCalendarWidget::nativeEvent(eventType, message, result);
@@ -981,7 +983,7 @@ class VirtualQCalendarWidget : public QCalendarWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    void updateCell(QDate date) {
+    void updateCell(const QDate& date) {
         if (qcalendarwidget_updatecell_isbase) {
             qcalendarwidget_updatecell_isbase = false;
             QCalendarWidget::updateCell(date);

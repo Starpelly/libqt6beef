@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QClipboard QClipboard;
 typedef struct QEvent QEvent;
@@ -30,6 +30,7 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPixmap QPixmap;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -46,6 +47,7 @@ QMetaObject* QClipboard_MetaObject(const QClipboard* self);
 void* QClipboard_Metacast(QClipboard* self, const char* param1);
 int QClipboard_Metacall(QClipboard* self, int param1, int param2, void** param3);
 libqt_string QClipboard_Tr(const char* s);
+libqt_string QClipboard_TrUtf8(const char* s);
 void QClipboard_Clear(QClipboard* self);
 bool QClipboard_SupportsSelection(const QClipboard* self);
 bool QClipboard_SupportsFindBuffer(const QClipboard* self);
@@ -71,6 +73,8 @@ void QClipboard_DataChanged(QClipboard* self);
 void QClipboard_Connect_DataChanged(QClipboard* self, intptr_t slot);
 libqt_string QClipboard_Tr2(const char* s, const char* c);
 libqt_string QClipboard_Tr3(const char* s, const char* c, int n);
+libqt_string QClipboard_TrUtf82(const char* s, const char* c);
+libqt_string QClipboard_TrUtf83(const char* s, const char* c, int n);
 void QClipboard_Clear1(QClipboard* self, int mode);
 libqt_string QClipboard_Text1(const QClipboard* self, int mode);
 libqt_string QClipboard_Text2(const QClipboard* self, libqt_string subtype, int mode);

@@ -56,7 +56,7 @@ void QPen_SetStyle(QPen* self, int style) {
 }
 
 libqt_list /* of double */ QPen_DashPattern(const QPen* self) {
-    QList<qreal> _ret = self->dashPattern();
+    QVector<qreal> _ret = self->dashPattern();
     // Convert QList<> from C++ memory to manually-managed C memory
     double* _arr = static_cast<double*>(malloc(sizeof(double) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -69,7 +69,7 @@ libqt_list /* of double */ QPen_DashPattern(const QPen* self) {
 }
 
 void QPen_SetDashPattern(QPen* self, libqt_list /* of double */ pattern) {
-    QList<qreal> pattern_QList;
+    QVector<qreal> pattern_QList;
     pattern_QList.reserve(pattern.len);
     double* pattern_arr = static_cast<double*>(pattern.data);
     for (size_t i = 0; i < pattern.len; ++i) {

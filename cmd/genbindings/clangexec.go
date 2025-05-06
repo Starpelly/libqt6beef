@@ -40,7 +40,7 @@ func (c *clangMatchUnderPath) Match(astNodeFilename string) bool {
 
 func clangExec(ctx context.Context, clangBin, inputHeader string, cflags []string, matcher ClangMatcher) ([]interface{}, error) {
 
-	clangArgs := []string{`-x`, `c++`}
+	clangArgs := []string{`-x`, `c++`, `-fPIC`}
 	clangArgs = append(clangArgs, cflags...)
 	clangArgs = append(clangArgs, `-Xclang`, `-ast-dump=json`, `-fsyntax-only`, inputHeader)
 

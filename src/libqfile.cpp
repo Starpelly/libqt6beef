@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDateTime>
@@ -7,12 +5,12 @@
 #include <QFile>
 #include <QFileDevice>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -86,6 +84,18 @@ libqt_string QFile_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QFile_TrUtf8(const char* s) {
+    QString _ret = QFile::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QFile_SetFileName(QFile* self, libqt_string name) {
     QString name_QString = QString::fromUtf8(name.data, name.len);
     self->setFileName(name_QString);
@@ -134,6 +144,31 @@ bool QFile_Exists(const QFile* self) {
 bool QFile_ExistsWithFileName(libqt_string fileName) {
     QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
     return QFile::exists(fileName_QString);
+}
+
+libqt_string QFile_ReadLink(const QFile* self) {
+    QString _ret = self->readLink();
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFile_ReadLinkWithFileName(libqt_string fileName) {
+    QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
+    QString _ret = QFile::readLink(fileName_QString);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 libqt_string QFile_SymLinkTarget(const QFile* self) {
@@ -195,10 +230,10 @@ bool QFile_Link(QFile* self, libqt_string newName) {
     return self->link(newName_QString);
 }
 
-bool QFile_Link2(libqt_string fileName, libqt_string newName) {
-    QString fileName_QString = QString::fromUtf8(fileName.data, fileName.len);
+bool QFile_Link2(libqt_string oldname, libqt_string newName) {
+    QString oldname_QString = QString::fromUtf8(oldname.data, oldname.len);
     QString newName_QString = QString::fromUtf8(newName.data, newName.len);
-    return QFile::link(fileName_QString, newName_QString);
+    return QFile::link(oldname_QString, newName_QString);
 }
 
 bool QFile_Copy(QFile* self, libqt_string newName) {
@@ -212,12 +247,8 @@ bool QFile_Copy2(libqt_string fileName, libqt_string newName) {
     return QFile::copy(fileName_QString, newName_QString);
 }
 
-bool QFile_Open2(QFile* self, int flags, int permissions) {
-    return self->open(static_cast<QIODeviceBase::OpenMode>(flags), static_cast<QFileDevice::Permissions>(permissions));
-}
-
-bool QFile_Open4(QFile* self, int fd, int ioFlags) {
-    return self->open(static_cast<int>(fd), static_cast<QIODeviceBase::OpenMode>(ioFlags));
+bool QFile_Open3(QFile* self, int fd, int ioFlags) {
+    return self->open(static_cast<int>(fd), static_cast<QIODevice::OpenMode>(ioFlags));
 }
 
 bool QFile_Resize2(libqt_string filename, long long sz) {
@@ -259,8 +290,32 @@ libqt_string QFile_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QFile_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFile::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFile_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFile::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QFile_Open33(QFile* self, int fd, int ioFlags, int handleFlags) {
-    return self->open(static_cast<int>(fd), static_cast<QIODeviceBase::OpenMode>(ioFlags), static_cast<QFileDevice::FileHandleFlags>(handleFlags));
+    return self->open(static_cast<int>(fd), static_cast<QIODevice::OpenMode>(ioFlags), static_cast<QFileDevice::FileHandleFlags>(handleFlags));
 }
 
 // Derived class handler implementation
@@ -324,9 +379,9 @@ void QFile_OnFileName(const QFile* self, intptr_t slot) {
 // Derived class handler implementation
 bool QFile_Open(QFile* self, int flags) {
     if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
-        return vqfile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqfile->open(static_cast<QIODevice::OpenMode>(flags));
     } else {
-        return vqfile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqfile->open(static_cast<QIODevice::OpenMode>(flags));
     }
 }
 
@@ -334,9 +389,9 @@ bool QFile_Open(QFile* self, int flags) {
 bool QFile_QBaseOpen(QFile* self, int flags) {
     if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
         vqfile->setQFile_Open_IsBase(true);
-        return vqfile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqfile->open(static_cast<QIODevice::OpenMode>(flags));
     } else {
-        return vqfile->open(static_cast<QIODeviceBase::OpenMode>(flags));
+        return vqfile->open(static_cast<QIODevice::OpenMode>(flags));
     }
 }
 
@@ -816,32 +871,6 @@ void QFile_OnWaitForBytesWritten(QFile* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-long long QFile_SkipData(QFile* self, long long maxSize) {
-    if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
-        return static_cast<long long>(vqfile->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqfile->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Base class handler implementation
-long long QFile_QBaseSkipData(QFile* self, long long maxSize) {
-    if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
-        vqfile->setQFile_SkipData_IsBase(true);
-        return static_cast<long long>(vqfile->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqfile->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFile_OnSkipData(QFile* self, intptr_t slot) {
-    if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
-        vqfile->setQFile_SkipData_Callback(reinterpret_cast<VirtualQFile::QFile_SkipData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 bool QFile_Event(QFile* self, QEvent* event) {
     if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
         return vqfile->event(event);
@@ -1026,9 +1055,9 @@ void QFile_OnDisconnectNotify(QFile* self, intptr_t slot) {
 // Derived class handler implementation
 void QFile_SetOpenMode(QFile* self, int openMode) {
     if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
-        vqfile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqfile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqfile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqfile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -1036,9 +1065,9 @@ void QFile_SetOpenMode(QFile* self, int openMode) {
 void QFile_QBaseSetOpenMode(QFile* self, int openMode) {
     if (auto* vqfile = dynamic_cast<VirtualQFile*>(self)) {
         vqfile->setQFile_SetOpenMode_IsBase(true);
-        vqfile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqfile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqfile->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqfile->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 

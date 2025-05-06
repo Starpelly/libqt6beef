@@ -1,8 +1,7 @@
+#include <QAbstractVideoSurface>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -30,12 +28,15 @@
 #include <QList>
 #include <QLocale>
 #include <QMargins>
+#include <QMediaBindableInterface>
+#include <QMediaObject>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,7 +44,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -59,7 +59,6 @@
 #include <QThread>
 #include <QTimerEvent>
 #include <QVariant>
-#include <QVideoSink>
 #include <QVideoWidget>
 #include <QWheelEvent>
 #include <QWidget>
@@ -121,12 +120,40 @@ libqt_string QVideoWidget_Tr(const char* s) {
     return _str;
 }
 
-QVideoSink* QVideoWidget_VideoSink(const QVideoWidget* self) {
-    return self->videoSink();
+libqt_string QVideoWidget_TrUtf8(const char* s) {
+    QString _ret = QVideoWidget::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+QAbstractVideoSurface* QVideoWidget_VideoSurface(const QVideoWidget* self) {
+    return self->videoSurface();
 }
 
 int QVideoWidget_AspectRatioMode(const QVideoWidget* self) {
     return static_cast<int>(self->aspectRatioMode());
+}
+
+int QVideoWidget_Brightness(const QVideoWidget* self) {
+    return self->brightness();
+}
+
+int QVideoWidget_Contrast(const QVideoWidget* self) {
+    return self->contrast();
+}
+
+int QVideoWidget_Hue(const QVideoWidget* self) {
+    return self->hue();
+}
+
+int QVideoWidget_Saturation(const QVideoWidget* self) {
+    return self->saturation();
 }
 
 void QVideoWidget_SetFullScreen(QVideoWidget* self, bool fullScreen) {
@@ -135,6 +162,22 @@ void QVideoWidget_SetFullScreen(QVideoWidget* self, bool fullScreen) {
 
 void QVideoWidget_SetAspectRatioMode(QVideoWidget* self, int mode) {
     self->setAspectRatioMode(static_cast<Qt::AspectRatioMode>(mode));
+}
+
+void QVideoWidget_SetBrightness(QVideoWidget* self, int brightness) {
+    self->setBrightness(static_cast<int>(brightness));
+}
+
+void QVideoWidget_SetContrast(QVideoWidget* self, int contrast) {
+    self->setContrast(static_cast<int>(contrast));
+}
+
+void QVideoWidget_SetHue(QVideoWidget* self, int hue) {
+    self->setHue(static_cast<int>(hue));
+}
+
+void QVideoWidget_SetSaturation(QVideoWidget* self, int saturation) {
+    self->setSaturation(static_cast<int>(saturation));
 }
 
 void QVideoWidget_FullScreenChanged(QVideoWidget* self, bool fullScreen) {
@@ -149,14 +192,50 @@ void QVideoWidget_Connect_FullScreenChanged(QVideoWidget* self, intptr_t slot) {
     });
 }
 
-void QVideoWidget_AspectRatioModeChanged(QVideoWidget* self, int mode) {
-    self->aspectRatioModeChanged(static_cast<Qt::AspectRatioMode>(mode));
+void QVideoWidget_BrightnessChanged(QVideoWidget* self, int brightness) {
+    self->brightnessChanged(static_cast<int>(brightness));
 }
 
-void QVideoWidget_Connect_AspectRatioModeChanged(QVideoWidget* self, intptr_t slot) {
+void QVideoWidget_Connect_BrightnessChanged(QVideoWidget* self, intptr_t slot) {
     void (*slotFunc)(QVideoWidget*, int) = reinterpret_cast<void (*)(QVideoWidget*, int)>(slot);
-    QVideoWidget::connect(self, &QVideoWidget::aspectRatioModeChanged, [self, slotFunc](Qt::AspectRatioMode mode) {
-        int sigval1 = static_cast<int>(mode);
+    QVideoWidget::connect(self, &QVideoWidget::brightnessChanged, [self, slotFunc](int brightness) {
+        int sigval1 = brightness;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QVideoWidget_ContrastChanged(QVideoWidget* self, int contrast) {
+    self->contrastChanged(static_cast<int>(contrast));
+}
+
+void QVideoWidget_Connect_ContrastChanged(QVideoWidget* self, intptr_t slot) {
+    void (*slotFunc)(QVideoWidget*, int) = reinterpret_cast<void (*)(QVideoWidget*, int)>(slot);
+    QVideoWidget::connect(self, &QVideoWidget::contrastChanged, [self, slotFunc](int contrast) {
+        int sigval1 = contrast;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QVideoWidget_HueChanged(QVideoWidget* self, int hue) {
+    self->hueChanged(static_cast<int>(hue));
+}
+
+void QVideoWidget_Connect_HueChanged(QVideoWidget* self, intptr_t slot) {
+    void (*slotFunc)(QVideoWidget*, int) = reinterpret_cast<void (*)(QVideoWidget*, int)>(slot);
+    QVideoWidget::connect(self, &QVideoWidget::hueChanged, [self, slotFunc](int hue) {
+        int sigval1 = hue;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QVideoWidget_SaturationChanged(QVideoWidget* self, int saturation) {
+    self->saturationChanged(static_cast<int>(saturation));
+}
+
+void QVideoWidget_Connect_SaturationChanged(QVideoWidget* self, intptr_t slot) {
+    void (*slotFunc)(QVideoWidget*, int) = reinterpret_cast<void (*)(QVideoWidget*, int)>(slot);
+    QVideoWidget::connect(self, &QVideoWidget::saturationChanged, [self, slotFunc](int saturation) {
+        int sigval1 = saturation;
         slotFunc(self, sigval1);
     });
 }
@@ -183,6 +262,56 @@ libqt_string QVideoWidget_Tr3(const char* s, const char* c, int n) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+libqt_string QVideoWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QVideoWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QVideoWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QVideoWidget::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+// Derived class handler implementation
+QMediaObject* QVideoWidget_MediaObject(const QVideoWidget* self) {
+    if (auto* vqvideowidget = const_cast<VirtualQVideoWidget*>(dynamic_cast<const VirtualQVideoWidget*>(self))) {
+        return vqvideowidget->mediaObject();
+    } else {
+        return vqvideowidget->mediaObject();
+    }
+}
+
+// Base class handler implementation
+QMediaObject* QVideoWidget_QBaseMediaObject(const QVideoWidget* self) {
+    if (auto* vqvideowidget = const_cast<VirtualQVideoWidget*>(dynamic_cast<const VirtualQVideoWidget*>(self))) {
+        vqvideowidget->setQVideoWidget_MediaObject_IsBase(true);
+        return vqvideowidget->mediaObject();
+    } else {
+        return vqvideowidget->mediaObject();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QVideoWidget_OnMediaObject(const QVideoWidget* self, intptr_t slot) {
+    if (auto* vqvideowidget = const_cast<VirtualQVideoWidget*>(dynamic_cast<const VirtualQVideoWidget*>(self))) {
+        vqvideowidget->setQVideoWidget_MediaObject_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_MediaObject_Callback>(slot));
+    }
 }
 
 // Derived class handler implementation
@@ -338,6 +467,58 @@ void QVideoWidget_QBaseMoveEvent(QVideoWidget* self, QMoveEvent* event) {
 void QVideoWidget_OnMoveEvent(QVideoWidget* self, intptr_t slot) {
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
         vqvideowidget->setQVideoWidget_MoveEvent_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_MoveEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QVideoWidget_PaintEvent(QVideoWidget* self, QPaintEvent* event) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        vqvideowidget->paintEvent(event);
+    } else {
+        vqvideowidget->paintEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QVideoWidget_QBasePaintEvent(QVideoWidget* self, QPaintEvent* event) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        vqvideowidget->setQVideoWidget_PaintEvent_IsBase(true);
+        vqvideowidget->paintEvent(event);
+    } else {
+        vqvideowidget->paintEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QVideoWidget_OnPaintEvent(QVideoWidget* self, intptr_t slot) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        vqvideowidget->setQVideoWidget_PaintEvent_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_PaintEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QVideoWidget_SetMediaObject(QVideoWidget* self, QMediaObject* object) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        return vqvideowidget->setMediaObject(object);
+    } else {
+        return vqvideowidget->setMediaObject(object);
+    }
+}
+
+// Base class handler implementation
+bool QVideoWidget_QBaseSetMediaObject(QVideoWidget* self, QMediaObject* object) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        vqvideowidget->setQVideoWidget_SetMediaObject_IsBase(true);
+        return vqvideowidget->setMediaObject(object);
+    } else {
+        return vqvideowidget->setMediaObject(object);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QVideoWidget_OnSetMediaObject(QVideoWidget* self, intptr_t slot) {
+    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
+        vqvideowidget->setQVideoWidget_SetMediaObject_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_SetMediaObject_Callback>(slot));
     }
 }
 
@@ -732,7 +913,7 @@ void QVideoWidget_OnFocusOutEvent(QVideoWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QVideoWidget_EnterEvent(QVideoWidget* self, QEnterEvent* event) {
+void QVideoWidget_EnterEvent(QVideoWidget* self, QEvent* event) {
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
         vqvideowidget->enterEvent(event);
     } else {
@@ -741,7 +922,7 @@ void QVideoWidget_EnterEvent(QVideoWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QVideoWidget_QBaseEnterEvent(QVideoWidget* self, QEnterEvent* event) {
+void QVideoWidget_QBaseEnterEvent(QVideoWidget* self, QEvent* event) {
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
         vqvideowidget->setQVideoWidget_EnterEvent_IsBase(true);
         vqvideowidget->enterEvent(event);
@@ -780,32 +961,6 @@ void QVideoWidget_QBaseLeaveEvent(QVideoWidget* self, QEvent* event) {
 void QVideoWidget_OnLeaveEvent(QVideoWidget* self, intptr_t slot) {
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
         vqvideowidget->setQVideoWidget_LeaveEvent_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_LeaveEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QVideoWidget_PaintEvent(QVideoWidget* self, QPaintEvent* event) {
-    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
-        vqvideowidget->paintEvent(event);
-    } else {
-        vqvideowidget->paintEvent(event);
-    }
-}
-
-// Base class handler implementation
-void QVideoWidget_QBasePaintEvent(QVideoWidget* self, QPaintEvent* event) {
-    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
-        vqvideowidget->setQVideoWidget_PaintEvent_IsBase(true);
-        vqvideowidget->paintEvent(event);
-    } else {
-        vqvideowidget->paintEvent(event);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QVideoWidget_OnPaintEvent(QVideoWidget* self, intptr_t slot) {
-    if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
-        vqvideowidget->setQVideoWidget_PaintEvent_Callback(reinterpret_cast<VirtualQVideoWidget::QVideoWidget_PaintEvent_Callback>(slot));
     }
 }
 
@@ -1018,23 +1173,23 @@ void QVideoWidget_OnDropEvent(QVideoWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QVideoWidget_NativeEvent(QVideoWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QVideoWidget_NativeEvent(QVideoWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
-        return vqvideowidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqvideowidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqvideowidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqvideowidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QVideoWidget_QBaseNativeEvent(QVideoWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QVideoWidget_QBaseNativeEvent(QVideoWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqvideowidget = dynamic_cast<VirtualQVideoWidget*>(self)) {
         vqvideowidget->setQVideoWidget_NativeEvent_IsBase(true);
-        return vqvideowidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqvideowidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqvideowidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqvideowidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

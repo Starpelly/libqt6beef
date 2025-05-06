@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,7 +22,6 @@ class VirtualQStackedWidget : public QStackedWidget {
     using QStackedWidget_SizeHint_Callback = QSize (*)();
     using QStackedWidget_PaintEvent_Callback = void (*)(QStackedWidget*, QPaintEvent*);
     using QStackedWidget_ChangeEvent_Callback = void (*)(QStackedWidget*, QEvent*);
-    using QStackedWidget_InitStyleOption_Callback = void (*)(const QStackedWidget*, QStyleOptionFrame*);
     using QStackedWidget_DevType_Callback = int (*)();
     using QStackedWidget_SetVisible_Callback = void (*)(QStackedWidget*, bool);
     using QStackedWidget_MinimumSizeHint_Callback = QSize (*)();
@@ -36,7 +37,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     using QStackedWidget_KeyReleaseEvent_Callback = void (*)(QStackedWidget*, QKeyEvent*);
     using QStackedWidget_FocusInEvent_Callback = void (*)(QStackedWidget*, QFocusEvent*);
     using QStackedWidget_FocusOutEvent_Callback = void (*)(QStackedWidget*, QFocusEvent*);
-    using QStackedWidget_EnterEvent_Callback = void (*)(QStackedWidget*, QEnterEvent*);
+    using QStackedWidget_EnterEvent_Callback = void (*)(QStackedWidget*, QEvent*);
     using QStackedWidget_LeaveEvent_Callback = void (*)(QStackedWidget*, QEvent*);
     using QStackedWidget_MoveEvent_Callback = void (*)(QStackedWidget*, QMoveEvent*);
     using QStackedWidget_ResizeEvent_Callback = void (*)(QStackedWidget*, QResizeEvent*);
@@ -50,7 +51,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     using QStackedWidget_DropEvent_Callback = void (*)(QStackedWidget*, QDropEvent*);
     using QStackedWidget_ShowEvent_Callback = void (*)(QStackedWidget*, QShowEvent*);
     using QStackedWidget_HideEvent_Callback = void (*)(QStackedWidget*, QHideEvent*);
-    using QStackedWidget_NativeEvent_Callback = bool (*)(QStackedWidget*, const QByteArray&, void*, qintptr*);
+    using QStackedWidget_NativeEvent_Callback = bool (*)(QStackedWidget*, const QByteArray&, void*, long*);
     using QStackedWidget_Metric_Callback = int (*)(const QStackedWidget*, QPaintDevice::PaintDeviceMetric);
     using QStackedWidget_InitPainter_Callback = void (*)(const QStackedWidget*, QPainter*);
     using QStackedWidget_Redirected_Callback = QPaintDevice* (*)(const QStackedWidget*, QPoint*);
@@ -65,6 +66,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     using QStackedWidget_ConnectNotify_Callback = void (*)(QStackedWidget*, const QMetaMethod&);
     using QStackedWidget_DisconnectNotify_Callback = void (*)(QStackedWidget*, const QMetaMethod&);
     using QStackedWidget_DrawFrame_Callback = void (*)(QStackedWidget*, QPainter*);
+    using QStackedWidget_InitStyleOption_Callback = void (*)(const QStackedWidget*, QStyleOptionFrame*);
     using QStackedWidget_UpdateMicroFocus_Callback = void (*)();
     using QStackedWidget_Create_Callback = void (*)();
     using QStackedWidget_Destroy_Callback = void (*)();
@@ -82,7 +84,6 @@ class VirtualQStackedWidget : public QStackedWidget {
     QStackedWidget_SizeHint_Callback qstackedwidget_sizehint_callback = nullptr;
     QStackedWidget_PaintEvent_Callback qstackedwidget_paintevent_callback = nullptr;
     QStackedWidget_ChangeEvent_Callback qstackedwidget_changeevent_callback = nullptr;
-    QStackedWidget_InitStyleOption_Callback qstackedwidget_initstyleoption_callback = nullptr;
     QStackedWidget_DevType_Callback qstackedwidget_devtype_callback = nullptr;
     QStackedWidget_SetVisible_Callback qstackedwidget_setvisible_callback = nullptr;
     QStackedWidget_MinimumSizeHint_Callback qstackedwidget_minimumsizehint_callback = nullptr;
@@ -127,6 +128,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     QStackedWidget_ConnectNotify_Callback qstackedwidget_connectnotify_callback = nullptr;
     QStackedWidget_DisconnectNotify_Callback qstackedwidget_disconnectnotify_callback = nullptr;
     QStackedWidget_DrawFrame_Callback qstackedwidget_drawframe_callback = nullptr;
+    QStackedWidget_InitStyleOption_Callback qstackedwidget_initstyleoption_callback = nullptr;
     QStackedWidget_UpdateMicroFocus_Callback qstackedwidget_updatemicrofocus_callback = nullptr;
     QStackedWidget_Create_Callback qstackedwidget_create_callback = nullptr;
     QStackedWidget_Destroy_Callback qstackedwidget_destroy_callback = nullptr;
@@ -143,7 +145,6 @@ class VirtualQStackedWidget : public QStackedWidget {
     mutable bool qstackedwidget_sizehint_isbase = false;
     mutable bool qstackedwidget_paintevent_isbase = false;
     mutable bool qstackedwidget_changeevent_isbase = false;
-    mutable bool qstackedwidget_initstyleoption_isbase = false;
     mutable bool qstackedwidget_devtype_isbase = false;
     mutable bool qstackedwidget_setvisible_isbase = false;
     mutable bool qstackedwidget_minimumsizehint_isbase = false;
@@ -188,6 +189,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     mutable bool qstackedwidget_connectnotify_isbase = false;
     mutable bool qstackedwidget_disconnectnotify_isbase = false;
     mutable bool qstackedwidget_drawframe_isbase = false;
+    mutable bool qstackedwidget_initstyleoption_isbase = false;
     mutable bool qstackedwidget_updatemicrofocus_isbase = false;
     mutable bool qstackedwidget_create_isbase = false;
     mutable bool qstackedwidget_destroy_isbase = false;
@@ -208,7 +210,6 @@ class VirtualQStackedWidget : public QStackedWidget {
         qstackedwidget_sizehint_callback = nullptr;
         qstackedwidget_paintevent_callback = nullptr;
         qstackedwidget_changeevent_callback = nullptr;
-        qstackedwidget_initstyleoption_callback = nullptr;
         qstackedwidget_devtype_callback = nullptr;
         qstackedwidget_setvisible_callback = nullptr;
         qstackedwidget_minimumsizehint_callback = nullptr;
@@ -253,6 +254,7 @@ class VirtualQStackedWidget : public QStackedWidget {
         qstackedwidget_connectnotify_callback = nullptr;
         qstackedwidget_disconnectnotify_callback = nullptr;
         qstackedwidget_drawframe_callback = nullptr;
+        qstackedwidget_initstyleoption_callback = nullptr;
         qstackedwidget_updatemicrofocus_callback = nullptr;
         qstackedwidget_create_callback = nullptr;
         qstackedwidget_destroy_callback = nullptr;
@@ -270,7 +272,6 @@ class VirtualQStackedWidget : public QStackedWidget {
     void setQStackedWidget_SizeHint_Callback(QStackedWidget_SizeHint_Callback cb) { qstackedwidget_sizehint_callback = cb; }
     void setQStackedWidget_PaintEvent_Callback(QStackedWidget_PaintEvent_Callback cb) { qstackedwidget_paintevent_callback = cb; }
     void setQStackedWidget_ChangeEvent_Callback(QStackedWidget_ChangeEvent_Callback cb) { qstackedwidget_changeevent_callback = cb; }
-    void setQStackedWidget_InitStyleOption_Callback(QStackedWidget_InitStyleOption_Callback cb) { qstackedwidget_initstyleoption_callback = cb; }
     void setQStackedWidget_DevType_Callback(QStackedWidget_DevType_Callback cb) { qstackedwidget_devtype_callback = cb; }
     void setQStackedWidget_SetVisible_Callback(QStackedWidget_SetVisible_Callback cb) { qstackedwidget_setvisible_callback = cb; }
     void setQStackedWidget_MinimumSizeHint_Callback(QStackedWidget_MinimumSizeHint_Callback cb) { qstackedwidget_minimumsizehint_callback = cb; }
@@ -315,6 +316,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     void setQStackedWidget_ConnectNotify_Callback(QStackedWidget_ConnectNotify_Callback cb) { qstackedwidget_connectnotify_callback = cb; }
     void setQStackedWidget_DisconnectNotify_Callback(QStackedWidget_DisconnectNotify_Callback cb) { qstackedwidget_disconnectnotify_callback = cb; }
     void setQStackedWidget_DrawFrame_Callback(QStackedWidget_DrawFrame_Callback cb) { qstackedwidget_drawframe_callback = cb; }
+    void setQStackedWidget_InitStyleOption_Callback(QStackedWidget_InitStyleOption_Callback cb) { qstackedwidget_initstyleoption_callback = cb; }
     void setQStackedWidget_UpdateMicroFocus_Callback(QStackedWidget_UpdateMicroFocus_Callback cb) { qstackedwidget_updatemicrofocus_callback = cb; }
     void setQStackedWidget_Create_Callback(QStackedWidget_Create_Callback cb) { qstackedwidget_create_callback = cb; }
     void setQStackedWidget_Destroy_Callback(QStackedWidget_Destroy_Callback cb) { qstackedwidget_destroy_callback = cb; }
@@ -331,7 +333,6 @@ class VirtualQStackedWidget : public QStackedWidget {
     void setQStackedWidget_SizeHint_IsBase(bool value) const { qstackedwidget_sizehint_isbase = value; }
     void setQStackedWidget_PaintEvent_IsBase(bool value) const { qstackedwidget_paintevent_isbase = value; }
     void setQStackedWidget_ChangeEvent_IsBase(bool value) const { qstackedwidget_changeevent_isbase = value; }
-    void setQStackedWidget_InitStyleOption_IsBase(bool value) const { qstackedwidget_initstyleoption_isbase = value; }
     void setQStackedWidget_DevType_IsBase(bool value) const { qstackedwidget_devtype_isbase = value; }
     void setQStackedWidget_SetVisible_IsBase(bool value) const { qstackedwidget_setvisible_isbase = value; }
     void setQStackedWidget_MinimumSizeHint_IsBase(bool value) const { qstackedwidget_minimumsizehint_isbase = value; }
@@ -376,6 +377,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     void setQStackedWidget_ConnectNotify_IsBase(bool value) const { qstackedwidget_connectnotify_isbase = value; }
     void setQStackedWidget_DisconnectNotify_IsBase(bool value) const { qstackedwidget_disconnectnotify_isbase = value; }
     void setQStackedWidget_DrawFrame_IsBase(bool value) const { qstackedwidget_drawframe_isbase = value; }
+    void setQStackedWidget_InitStyleOption_IsBase(bool value) const { qstackedwidget_initstyleoption_isbase = value; }
     void setQStackedWidget_UpdateMicroFocus_IsBase(bool value) const { qstackedwidget_updatemicrofocus_isbase = value; }
     void setQStackedWidget_Create_IsBase(bool value) const { qstackedwidget_create_isbase = value; }
     void setQStackedWidget_Destroy_IsBase(bool value) const { qstackedwidget_destroy_isbase = value; }
@@ -443,18 +445,6 @@ class VirtualQStackedWidget : public QStackedWidget {
             qstackedwidget_changeevent_callback(this, param1);
         } else {
             QStackedWidget::changeEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qstackedwidget_initstyleoption_isbase) {
-            qstackedwidget_initstyleoption_isbase = false;
-            QStackedWidget::initStyleOption(option);
-        } else if (qstackedwidget_initstyleoption_callback != nullptr) {
-            qstackedwidget_initstyleoption_callback(this, option);
-        } else {
-            QStackedWidget::initStyleOption(option);
         }
     }
 
@@ -639,7 +629,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qstackedwidget_enterevent_isbase) {
             qstackedwidget_enterevent_isbase = false;
             QStackedWidget::enterEvent(event);
@@ -807,7 +797,7 @@ class VirtualQStackedWidget : public QStackedWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qstackedwidget_nativeevent_isbase) {
             qstackedwidget_nativeevent_isbase = false;
             return QStackedWidget::nativeEvent(eventType, message, result);
@@ -983,6 +973,18 @@ class VirtualQStackedWidget : public QStackedWidget {
             qstackedwidget_drawframe_callback(this, param1);
         } else {
             QStackedWidget::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qstackedwidget_initstyleoption_isbase) {
+            qstackedwidget_initstyleoption_isbase = false;
+            QStackedWidget::initStyleOption(option);
+        } else if (qstackedwidget_initstyleoption_callback != nullptr) {
+            qstackedwidget_initstyleoption_callback(this, option);
+        } else {
+            QStackedWidget::initStyleOption(option);
         }
     }
 

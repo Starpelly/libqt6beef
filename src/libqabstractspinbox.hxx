@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -40,7 +42,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     using QAbstractSpinBox_TimerEvent_Callback = void (*)(QAbstractSpinBox*, QTimerEvent*);
     using QAbstractSpinBox_PaintEvent_Callback = void (*)(QAbstractSpinBox*, QPaintEvent*);
     using QAbstractSpinBox_ShowEvent_Callback = void (*)(QAbstractSpinBox*, QShowEvent*);
-    using QAbstractSpinBox_InitStyleOption_Callback = void (*)(const QAbstractSpinBox*, QStyleOptionSpinBox*);
     using QAbstractSpinBox_StepEnabled_Callback = QAbstractSpinBox::StepEnabled (*)();
     using QAbstractSpinBox_DevType_Callback = int (*)();
     using QAbstractSpinBox_SetVisible_Callback = void (*)(QAbstractSpinBox*, bool);
@@ -48,7 +49,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     using QAbstractSpinBox_HasHeightForWidth_Callback = bool (*)();
     using QAbstractSpinBox_PaintEngine_Callback = QPaintEngine* (*)();
     using QAbstractSpinBox_MouseDoubleClickEvent_Callback = void (*)(QAbstractSpinBox*, QMouseEvent*);
-    using QAbstractSpinBox_EnterEvent_Callback = void (*)(QAbstractSpinBox*, QEnterEvent*);
+    using QAbstractSpinBox_EnterEvent_Callback = void (*)(QAbstractSpinBox*, QEvent*);
     using QAbstractSpinBox_LeaveEvent_Callback = void (*)(QAbstractSpinBox*, QEvent*);
     using QAbstractSpinBox_MoveEvent_Callback = void (*)(QAbstractSpinBox*, QMoveEvent*);
     using QAbstractSpinBox_TabletEvent_Callback = void (*)(QAbstractSpinBox*, QTabletEvent*);
@@ -57,7 +58,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     using QAbstractSpinBox_DragMoveEvent_Callback = void (*)(QAbstractSpinBox*, QDragMoveEvent*);
     using QAbstractSpinBox_DragLeaveEvent_Callback = void (*)(QAbstractSpinBox*, QDragLeaveEvent*);
     using QAbstractSpinBox_DropEvent_Callback = void (*)(QAbstractSpinBox*, QDropEvent*);
-    using QAbstractSpinBox_NativeEvent_Callback = bool (*)(QAbstractSpinBox*, const QByteArray&, void*, qintptr*);
+    using QAbstractSpinBox_NativeEvent_Callback = bool (*)(QAbstractSpinBox*, const QByteArray&, void*, long*);
     using QAbstractSpinBox_Metric_Callback = int (*)(const QAbstractSpinBox*, QPaintDevice::PaintDeviceMetric);
     using QAbstractSpinBox_InitPainter_Callback = void (*)(const QAbstractSpinBox*, QPainter*);
     using QAbstractSpinBox_Redirected_Callback = QPaintDevice* (*)(const QAbstractSpinBox*, QPoint*);
@@ -69,6 +70,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     using QAbstractSpinBox_CustomEvent_Callback = void (*)(QAbstractSpinBox*, QEvent*);
     using QAbstractSpinBox_ConnectNotify_Callback = void (*)(QAbstractSpinBox*, const QMetaMethod&);
     using QAbstractSpinBox_DisconnectNotify_Callback = void (*)(QAbstractSpinBox*, const QMetaMethod&);
+    using QAbstractSpinBox_InitStyleOption_Callback = void (*)(const QAbstractSpinBox*, QStyleOptionSpinBox*);
     using QAbstractSpinBox_LineEdit_Callback = QLineEdit* (*)();
     using QAbstractSpinBox_SetLineEdit_Callback = void (*)(QAbstractSpinBox*, QLineEdit*);
     using QAbstractSpinBox_UpdateMicroFocus_Callback = void (*)();
@@ -108,7 +110,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     QAbstractSpinBox_TimerEvent_Callback qabstractspinbox_timerevent_callback = nullptr;
     QAbstractSpinBox_PaintEvent_Callback qabstractspinbox_paintevent_callback = nullptr;
     QAbstractSpinBox_ShowEvent_Callback qabstractspinbox_showevent_callback = nullptr;
-    QAbstractSpinBox_InitStyleOption_Callback qabstractspinbox_initstyleoption_callback = nullptr;
     QAbstractSpinBox_StepEnabled_Callback qabstractspinbox_stepenabled_callback = nullptr;
     QAbstractSpinBox_DevType_Callback qabstractspinbox_devtype_callback = nullptr;
     QAbstractSpinBox_SetVisible_Callback qabstractspinbox_setvisible_callback = nullptr;
@@ -137,6 +138,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     QAbstractSpinBox_CustomEvent_Callback qabstractspinbox_customevent_callback = nullptr;
     QAbstractSpinBox_ConnectNotify_Callback qabstractspinbox_connectnotify_callback = nullptr;
     QAbstractSpinBox_DisconnectNotify_Callback qabstractspinbox_disconnectnotify_callback = nullptr;
+    QAbstractSpinBox_InitStyleOption_Callback qabstractspinbox_initstyleoption_callback = nullptr;
     QAbstractSpinBox_LineEdit_Callback qabstractspinbox_lineedit_callback = nullptr;
     QAbstractSpinBox_SetLineEdit_Callback qabstractspinbox_setlineedit_callback = nullptr;
     QAbstractSpinBox_UpdateMicroFocus_Callback qabstractspinbox_updatemicrofocus_callback = nullptr;
@@ -175,7 +177,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     mutable bool qabstractspinbox_timerevent_isbase = false;
     mutable bool qabstractspinbox_paintevent_isbase = false;
     mutable bool qabstractspinbox_showevent_isbase = false;
-    mutable bool qabstractspinbox_initstyleoption_isbase = false;
     mutable bool qabstractspinbox_stepenabled_isbase = false;
     mutable bool qabstractspinbox_devtype_isbase = false;
     mutable bool qabstractspinbox_setvisible_isbase = false;
@@ -204,6 +205,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     mutable bool qabstractspinbox_customevent_isbase = false;
     mutable bool qabstractspinbox_connectnotify_isbase = false;
     mutable bool qabstractspinbox_disconnectnotify_isbase = false;
+    mutable bool qabstractspinbox_initstyleoption_isbase = false;
     mutable bool qabstractspinbox_lineedit_isbase = false;
     mutable bool qabstractspinbox_setlineedit_isbase = false;
     mutable bool qabstractspinbox_updatemicrofocus_isbase = false;
@@ -246,7 +248,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
         qabstractspinbox_timerevent_callback = nullptr;
         qabstractspinbox_paintevent_callback = nullptr;
         qabstractspinbox_showevent_callback = nullptr;
-        qabstractspinbox_initstyleoption_callback = nullptr;
         qabstractspinbox_stepenabled_callback = nullptr;
         qabstractspinbox_devtype_callback = nullptr;
         qabstractspinbox_setvisible_callback = nullptr;
@@ -275,6 +276,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
         qabstractspinbox_customevent_callback = nullptr;
         qabstractspinbox_connectnotify_callback = nullptr;
         qabstractspinbox_disconnectnotify_callback = nullptr;
+        qabstractspinbox_initstyleoption_callback = nullptr;
         qabstractspinbox_lineedit_callback = nullptr;
         qabstractspinbox_setlineedit_callback = nullptr;
         qabstractspinbox_updatemicrofocus_callback = nullptr;
@@ -314,7 +316,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     void setQAbstractSpinBox_TimerEvent_Callback(QAbstractSpinBox_TimerEvent_Callback cb) { qabstractspinbox_timerevent_callback = cb; }
     void setQAbstractSpinBox_PaintEvent_Callback(QAbstractSpinBox_PaintEvent_Callback cb) { qabstractspinbox_paintevent_callback = cb; }
     void setQAbstractSpinBox_ShowEvent_Callback(QAbstractSpinBox_ShowEvent_Callback cb) { qabstractspinbox_showevent_callback = cb; }
-    void setQAbstractSpinBox_InitStyleOption_Callback(QAbstractSpinBox_InitStyleOption_Callback cb) { qabstractspinbox_initstyleoption_callback = cb; }
     void setQAbstractSpinBox_StepEnabled_Callback(QAbstractSpinBox_StepEnabled_Callback cb) { qabstractspinbox_stepenabled_callback = cb; }
     void setQAbstractSpinBox_DevType_Callback(QAbstractSpinBox_DevType_Callback cb) { qabstractspinbox_devtype_callback = cb; }
     void setQAbstractSpinBox_SetVisible_Callback(QAbstractSpinBox_SetVisible_Callback cb) { qabstractspinbox_setvisible_callback = cb; }
@@ -343,6 +344,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     void setQAbstractSpinBox_CustomEvent_Callback(QAbstractSpinBox_CustomEvent_Callback cb) { qabstractspinbox_customevent_callback = cb; }
     void setQAbstractSpinBox_ConnectNotify_Callback(QAbstractSpinBox_ConnectNotify_Callback cb) { qabstractspinbox_connectnotify_callback = cb; }
     void setQAbstractSpinBox_DisconnectNotify_Callback(QAbstractSpinBox_DisconnectNotify_Callback cb) { qabstractspinbox_disconnectnotify_callback = cb; }
+    void setQAbstractSpinBox_InitStyleOption_Callback(QAbstractSpinBox_InitStyleOption_Callback cb) { qabstractspinbox_initstyleoption_callback = cb; }
     void setQAbstractSpinBox_LineEdit_Callback(QAbstractSpinBox_LineEdit_Callback cb) { qabstractspinbox_lineedit_callback = cb; }
     void setQAbstractSpinBox_SetLineEdit_Callback(QAbstractSpinBox_SetLineEdit_Callback cb) { qabstractspinbox_setlineedit_callback = cb; }
     void setQAbstractSpinBox_UpdateMicroFocus_Callback(QAbstractSpinBox_UpdateMicroFocus_Callback cb) { qabstractspinbox_updatemicrofocus_callback = cb; }
@@ -381,7 +383,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     void setQAbstractSpinBox_TimerEvent_IsBase(bool value) const { qabstractspinbox_timerevent_isbase = value; }
     void setQAbstractSpinBox_PaintEvent_IsBase(bool value) const { qabstractspinbox_paintevent_isbase = value; }
     void setQAbstractSpinBox_ShowEvent_IsBase(bool value) const { qabstractspinbox_showevent_isbase = value; }
-    void setQAbstractSpinBox_InitStyleOption_IsBase(bool value) const { qabstractspinbox_initstyleoption_isbase = value; }
     void setQAbstractSpinBox_StepEnabled_IsBase(bool value) const { qabstractspinbox_stepenabled_isbase = value; }
     void setQAbstractSpinBox_DevType_IsBase(bool value) const { qabstractspinbox_devtype_isbase = value; }
     void setQAbstractSpinBox_SetVisible_IsBase(bool value) const { qabstractspinbox_setvisible_isbase = value; }
@@ -410,6 +411,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     void setQAbstractSpinBox_CustomEvent_IsBase(bool value) const { qabstractspinbox_customevent_isbase = value; }
     void setQAbstractSpinBox_ConnectNotify_IsBase(bool value) const { qabstractspinbox_connectnotify_isbase = value; }
     void setQAbstractSpinBox_DisconnectNotify_IsBase(bool value) const { qabstractspinbox_disconnectnotify_isbase = value; }
+    void setQAbstractSpinBox_InitStyleOption_IsBase(bool value) const { qabstractspinbox_initstyleoption_isbase = value; }
     void setQAbstractSpinBox_LineEdit_IsBase(bool value) const { qabstractspinbox_lineedit_isbase = value; }
     void setQAbstractSpinBox_SetLineEdit_IsBase(bool value) const { qabstractspinbox_setlineedit_isbase = value; }
     void setQAbstractSpinBox_UpdateMicroFocus_IsBase(bool value) const { qabstractspinbox_updatemicrofocus_isbase = value; }
@@ -723,18 +725,6 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSpinBox* option) const override {
-        if (qabstractspinbox_initstyleoption_isbase) {
-            qabstractspinbox_initstyleoption_isbase = false;
-            QAbstractSpinBox::initStyleOption(option);
-        } else if (qabstractspinbox_initstyleoption_callback != nullptr) {
-            qabstractspinbox_initstyleoption_callback(this, option);
-        } else {
-            QAbstractSpinBox::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QAbstractSpinBox::StepEnabled stepEnabled() const override {
         if (qabstractspinbox_stepenabled_isbase) {
             qabstractspinbox_stepenabled_isbase = false;
@@ -819,7 +809,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qabstractspinbox_enterevent_isbase) {
             qabstractspinbox_enterevent_isbase = false;
             QAbstractSpinBox::enterEvent(event);
@@ -927,7 +917,7 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qabstractspinbox_nativeevent_isbase) {
             qabstractspinbox_nativeevent_isbase = false;
             return QAbstractSpinBox::nativeEvent(eventType, message, result);
@@ -1067,6 +1057,18 @@ class VirtualQAbstractSpinBox : public QAbstractSpinBox {
             qabstractspinbox_disconnectnotify_callback(this, signal);
         } else {
             QAbstractSpinBox::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSpinBox* option) const {
+        if (qabstractspinbox_initstyleoption_isbase) {
+            qabstractspinbox_initstyleoption_isbase = false;
+            QAbstractSpinBox::initStyleOption(option);
+        } else if (qabstractspinbox_initstyleoption_callback != nullptr) {
+            qabstractspinbox_initstyleoption_callback(this, option);
+        } else {
+            QAbstractSpinBox::initStyleOption(option);
         }
     }
 

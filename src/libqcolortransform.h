@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -25,7 +27,6 @@ QColorTransform* QColorTransform_new();
 QColorTransform* QColorTransform_new2(QColorTransform* colorTransform);
 void QColorTransform_OperatorAssign(QColorTransform* self, QColorTransform* other);
 void QColorTransform_Swap(QColorTransform* self, QColorTransform* other);
-bool QColorTransform_IsIdentity(const QColorTransform* self);
 unsigned int QColorTransform_Map(const QColorTransform* self, unsigned int argb);
 QRgba64* QColorTransform_MapWithRgba64(const QColorTransform* self, QRgba64* rgba64);
 QColor* QColorTransform_MapWithColor(const QColorTransform* self, QColor* color);

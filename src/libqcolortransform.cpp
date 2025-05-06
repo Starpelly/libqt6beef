@@ -21,10 +21,6 @@ void QColorTransform_Swap(QColorTransform* self, QColorTransform* other) {
     self->swap(*other);
 }
 
-bool QColorTransform_IsIdentity(const QColorTransform* self) {
-    return self->isIdentity();
-}
-
 unsigned int QColorTransform_Map(const QColorTransform* self, unsigned int argb) {
     return static_cast<unsigned int>(self->map(static_cast<QRgb>(argb)));
 }

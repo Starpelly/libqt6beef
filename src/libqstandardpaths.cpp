@@ -100,6 +100,10 @@ libqt_string QStandardPaths_FindExecutable(libqt_string executableName) {
     return _str;
 }
 
+void QStandardPaths_EnableTestMode(bool testMode) {
+    QStandardPaths::enableTestMode(testMode);
+}
+
 void QStandardPaths_SetTestModeEnabled(bool testMode) {
     QStandardPaths::setTestModeEnabled(testMode);
 }

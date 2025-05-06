@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,12 +19,14 @@ extern "C" {
 #ifdef __cplusplus
 #else
 typedef struct QIODevice QIODevice;
+typedef struct QTextCodec QTextCodec;
 typedef struct QXmlStreamAttribute QXmlStreamAttribute;
 typedef struct QXmlStreamEntityDeclaration QXmlStreamEntityDeclaration;
 typedef struct QXmlStreamEntityResolver QXmlStreamEntityResolver;
 typedef struct QXmlStreamNamespaceDeclaration QXmlStreamNamespaceDeclaration;
 typedef struct QXmlStreamNotationDeclaration QXmlStreamNotationDeclaration;
 typedef struct QXmlStreamReader QXmlStreamReader;
+typedef struct QXmlStreamStringRef QXmlStreamStringRef;
 typedef struct QXmlStreamWriter QXmlStreamWriter;
 #endif
 
@@ -36,28 +40,45 @@ typedef int ReadElementTextBehaviour; // C ABI enum
 typedef int TokenType;                // C ABI enum
 #endif
 
+QXmlStreamStringRef* QXmlStreamStringRef_new();
+QXmlStreamStringRef* QXmlStreamStringRef_new2(libqt_string aString);
+QXmlStreamStringRef* QXmlStreamStringRef_new3(QXmlStreamStringRef* other);
+void QXmlStreamStringRef_OperatorAssign(QXmlStreamStringRef* self, QXmlStreamStringRef* other);
+void QXmlStreamStringRef_Swap(QXmlStreamStringRef* self, QXmlStreamStringRef* other);
+void QXmlStreamStringRef_Clear(QXmlStreamStringRef* self);
+libqt_string QXmlStreamStringRef_String(const QXmlStreamStringRef* self);
+int QXmlStreamStringRef_Position(const QXmlStreamStringRef* self);
+int QXmlStreamStringRef_Size(const QXmlStreamStringRef* self);
+void QXmlStreamStringRef_Delete(QXmlStreamStringRef* self);
+
 QXmlStreamAttribute* QXmlStreamAttribute_new();
 QXmlStreamAttribute* QXmlStreamAttribute_new2(libqt_string qualifiedName, libqt_string value);
 QXmlStreamAttribute* QXmlStreamAttribute_new3(libqt_string namespaceUri, libqt_string name, libqt_string value);
 QXmlStreamAttribute* QXmlStreamAttribute_new4(QXmlStreamAttribute* param1);
+void QXmlStreamAttribute_OperatorAssign(QXmlStreamAttribute* self, QXmlStreamAttribute* param1);
 bool QXmlStreamAttribute_IsDefault(const QXmlStreamAttribute* self);
 bool QXmlStreamAttribute_OperatorEqual(const QXmlStreamAttribute* self, QXmlStreamAttribute* other);
 bool QXmlStreamAttribute_OperatorNotEqual(const QXmlStreamAttribute* self, QXmlStreamAttribute* other);
-void QXmlStreamAttribute_OperatorAssign(QXmlStreamAttribute* self, QXmlStreamAttribute* param1);
 void QXmlStreamAttribute_Delete(QXmlStreamAttribute* self);
 
 QXmlStreamNamespaceDeclaration* QXmlStreamNamespaceDeclaration_new();
 QXmlStreamNamespaceDeclaration* QXmlStreamNamespaceDeclaration_new2(libqt_string prefix, libqt_string namespaceUri);
+QXmlStreamNamespaceDeclaration* QXmlStreamNamespaceDeclaration_new3(QXmlStreamNamespaceDeclaration* param1);
+void QXmlStreamNamespaceDeclaration_OperatorAssign(QXmlStreamNamespaceDeclaration* self, QXmlStreamNamespaceDeclaration* param1);
 bool QXmlStreamNamespaceDeclaration_OperatorEqual(const QXmlStreamNamespaceDeclaration* self, QXmlStreamNamespaceDeclaration* other);
 bool QXmlStreamNamespaceDeclaration_OperatorNotEqual(const QXmlStreamNamespaceDeclaration* self, QXmlStreamNamespaceDeclaration* other);
 void QXmlStreamNamespaceDeclaration_Delete(QXmlStreamNamespaceDeclaration* self);
 
 QXmlStreamNotationDeclaration* QXmlStreamNotationDeclaration_new();
+QXmlStreamNotationDeclaration* QXmlStreamNotationDeclaration_new2(QXmlStreamNotationDeclaration* param1);
+void QXmlStreamNotationDeclaration_OperatorAssign(QXmlStreamNotationDeclaration* self, QXmlStreamNotationDeclaration* param1);
 bool QXmlStreamNotationDeclaration_OperatorEqual(const QXmlStreamNotationDeclaration* self, QXmlStreamNotationDeclaration* other);
 bool QXmlStreamNotationDeclaration_OperatorNotEqual(const QXmlStreamNotationDeclaration* self, QXmlStreamNotationDeclaration* other);
 void QXmlStreamNotationDeclaration_Delete(QXmlStreamNotationDeclaration* self);
 
 QXmlStreamEntityDeclaration* QXmlStreamEntityDeclaration_new();
+QXmlStreamEntityDeclaration* QXmlStreamEntityDeclaration_new2(QXmlStreamEntityDeclaration* param1);
+void QXmlStreamEntityDeclaration_OperatorAssign(QXmlStreamEntityDeclaration* self, QXmlStreamEntityDeclaration* param1);
 bool QXmlStreamEntityDeclaration_OperatorEqual(const QXmlStreamEntityDeclaration* self, QXmlStreamEntityDeclaration* other);
 bool QXmlStreamEntityDeclaration_OperatorNotEqual(const QXmlStreamEntityDeclaration* self, QXmlStreamEntityDeclaration* other);
 void QXmlStreamEntityDeclaration_Delete(QXmlStreamEntityDeclaration* self);
@@ -122,6 +143,9 @@ QXmlStreamWriter* QXmlStreamWriter_new();
 QXmlStreamWriter* QXmlStreamWriter_new2(QIODevice* device);
 void QXmlStreamWriter_SetDevice(QXmlStreamWriter* self, QIODevice* device);
 QIODevice* QXmlStreamWriter_Device(const QXmlStreamWriter* self);
+void QXmlStreamWriter_SetCodec(QXmlStreamWriter* self, QTextCodec* codec);
+void QXmlStreamWriter_SetCodecWithCodecName(QXmlStreamWriter* self, const char* codecName);
+QTextCodec* QXmlStreamWriter_Codec(const QXmlStreamWriter* self);
 void QXmlStreamWriter_SetAutoFormatting(QXmlStreamWriter* self, bool autoFormatting);
 bool QXmlStreamWriter_AutoFormatting(const QXmlStreamWriter* self);
 void QXmlStreamWriter_SetAutoFormattingIndent(QXmlStreamWriter* self, int spacesOrTabs);

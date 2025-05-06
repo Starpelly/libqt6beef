@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,7 +18,6 @@ class VirtualQComboBox : public QComboBox {
   public:
     // Virtual class public types (including callbacks)
     using QComboBox_Metacall_Callback = int (*)(QComboBox*, QMetaObject::Call, int, void**);
-    using QComboBox_SetModel_Callback = void (*)(QComboBox*, QAbstractItemModel*);
     using QComboBox_SizeHint_Callback = QSize (*)();
     using QComboBox_MinimumSizeHint_Callback = QSize (*)();
     using QComboBox_ShowPopup_Callback = void (*)();
@@ -37,7 +38,6 @@ class VirtualQComboBox : public QComboBox {
     using QComboBox_WheelEvent_Callback = void (*)(QComboBox*, QWheelEvent*);
     using QComboBox_ContextMenuEvent_Callback = void (*)(QComboBox*, QContextMenuEvent*);
     using QComboBox_InputMethodEvent_Callback = void (*)(QComboBox*, QInputMethodEvent*);
-    using QComboBox_InitStyleOption_Callback = void (*)(const QComboBox*, QStyleOptionComboBox*);
     using QComboBox_DevType_Callback = int (*)();
     using QComboBox_SetVisible_Callback = void (*)(QComboBox*, bool);
     using QComboBox_HeightForWidth_Callback = int (*)(const QComboBox*, int);
@@ -45,7 +45,7 @@ class VirtualQComboBox : public QComboBox {
     using QComboBox_PaintEngine_Callback = QPaintEngine* (*)();
     using QComboBox_MouseDoubleClickEvent_Callback = void (*)(QComboBox*, QMouseEvent*);
     using QComboBox_MouseMoveEvent_Callback = void (*)(QComboBox*, QMouseEvent*);
-    using QComboBox_EnterEvent_Callback = void (*)(QComboBox*, QEnterEvent*);
+    using QComboBox_EnterEvent_Callback = void (*)(QComboBox*, QEvent*);
     using QComboBox_LeaveEvent_Callback = void (*)(QComboBox*, QEvent*);
     using QComboBox_MoveEvent_Callback = void (*)(QComboBox*, QMoveEvent*);
     using QComboBox_CloseEvent_Callback = void (*)(QComboBox*, QCloseEvent*);
@@ -55,7 +55,7 @@ class VirtualQComboBox : public QComboBox {
     using QComboBox_DragMoveEvent_Callback = void (*)(QComboBox*, QDragMoveEvent*);
     using QComboBox_DragLeaveEvent_Callback = void (*)(QComboBox*, QDragLeaveEvent*);
     using QComboBox_DropEvent_Callback = void (*)(QComboBox*, QDropEvent*);
-    using QComboBox_NativeEvent_Callback = bool (*)(QComboBox*, const QByteArray&, void*, qintptr*);
+    using QComboBox_NativeEvent_Callback = bool (*)(QComboBox*, const QByteArray&, void*, long*);
     using QComboBox_Metric_Callback = int (*)(const QComboBox*, QPaintDevice::PaintDeviceMetric);
     using QComboBox_InitPainter_Callback = void (*)(const QComboBox*, QPainter*);
     using QComboBox_Redirected_Callback = QPaintDevice* (*)(const QComboBox*, QPoint*);
@@ -67,6 +67,7 @@ class VirtualQComboBox : public QComboBox {
     using QComboBox_CustomEvent_Callback = void (*)(QComboBox*, QEvent*);
     using QComboBox_ConnectNotify_Callback = void (*)(QComboBox*, const QMetaMethod&);
     using QComboBox_DisconnectNotify_Callback = void (*)(QComboBox*, const QMetaMethod&);
+    using QComboBox_InitStyleOption_Callback = void (*)(const QComboBox*, QStyleOptionComboBox*);
     using QComboBox_UpdateMicroFocus_Callback = void (*)();
     using QComboBox_Create_Callback = void (*)();
     using QComboBox_Destroy_Callback = void (*)();
@@ -80,7 +81,6 @@ class VirtualQComboBox : public QComboBox {
   protected:
     // Instance callback storage
     QComboBox_Metacall_Callback qcombobox_metacall_callback = nullptr;
-    QComboBox_SetModel_Callback qcombobox_setmodel_callback = nullptr;
     QComboBox_SizeHint_Callback qcombobox_sizehint_callback = nullptr;
     QComboBox_MinimumSizeHint_Callback qcombobox_minimumsizehint_callback = nullptr;
     QComboBox_ShowPopup_Callback qcombobox_showpopup_callback = nullptr;
@@ -101,7 +101,6 @@ class VirtualQComboBox : public QComboBox {
     QComboBox_WheelEvent_Callback qcombobox_wheelevent_callback = nullptr;
     QComboBox_ContextMenuEvent_Callback qcombobox_contextmenuevent_callback = nullptr;
     QComboBox_InputMethodEvent_Callback qcombobox_inputmethodevent_callback = nullptr;
-    QComboBox_InitStyleOption_Callback qcombobox_initstyleoption_callback = nullptr;
     QComboBox_DevType_Callback qcombobox_devtype_callback = nullptr;
     QComboBox_SetVisible_Callback qcombobox_setvisible_callback = nullptr;
     QComboBox_HeightForWidth_Callback qcombobox_heightforwidth_callback = nullptr;
@@ -131,6 +130,7 @@ class VirtualQComboBox : public QComboBox {
     QComboBox_CustomEvent_Callback qcombobox_customevent_callback = nullptr;
     QComboBox_ConnectNotify_Callback qcombobox_connectnotify_callback = nullptr;
     QComboBox_DisconnectNotify_Callback qcombobox_disconnectnotify_callback = nullptr;
+    QComboBox_InitStyleOption_Callback qcombobox_initstyleoption_callback = nullptr;
     QComboBox_UpdateMicroFocus_Callback qcombobox_updatemicrofocus_callback = nullptr;
     QComboBox_Create_Callback qcombobox_create_callback = nullptr;
     QComboBox_Destroy_Callback qcombobox_destroy_callback = nullptr;
@@ -143,7 +143,6 @@ class VirtualQComboBox : public QComboBox {
 
     // Instance base flags
     mutable bool qcombobox_metacall_isbase = false;
-    mutable bool qcombobox_setmodel_isbase = false;
     mutable bool qcombobox_sizehint_isbase = false;
     mutable bool qcombobox_minimumsizehint_isbase = false;
     mutable bool qcombobox_showpopup_isbase = false;
@@ -164,7 +163,6 @@ class VirtualQComboBox : public QComboBox {
     mutable bool qcombobox_wheelevent_isbase = false;
     mutable bool qcombobox_contextmenuevent_isbase = false;
     mutable bool qcombobox_inputmethodevent_isbase = false;
-    mutable bool qcombobox_initstyleoption_isbase = false;
     mutable bool qcombobox_devtype_isbase = false;
     mutable bool qcombobox_setvisible_isbase = false;
     mutable bool qcombobox_heightforwidth_isbase = false;
@@ -194,6 +192,7 @@ class VirtualQComboBox : public QComboBox {
     mutable bool qcombobox_customevent_isbase = false;
     mutable bool qcombobox_connectnotify_isbase = false;
     mutable bool qcombobox_disconnectnotify_isbase = false;
+    mutable bool qcombobox_initstyleoption_isbase = false;
     mutable bool qcombobox_updatemicrofocus_isbase = false;
     mutable bool qcombobox_create_isbase = false;
     mutable bool qcombobox_destroy_isbase = false;
@@ -210,7 +209,6 @@ class VirtualQComboBox : public QComboBox {
 
     ~VirtualQComboBox() {
         qcombobox_metacall_callback = nullptr;
-        qcombobox_setmodel_callback = nullptr;
         qcombobox_sizehint_callback = nullptr;
         qcombobox_minimumsizehint_callback = nullptr;
         qcombobox_showpopup_callback = nullptr;
@@ -231,7 +229,6 @@ class VirtualQComboBox : public QComboBox {
         qcombobox_wheelevent_callback = nullptr;
         qcombobox_contextmenuevent_callback = nullptr;
         qcombobox_inputmethodevent_callback = nullptr;
-        qcombobox_initstyleoption_callback = nullptr;
         qcombobox_devtype_callback = nullptr;
         qcombobox_setvisible_callback = nullptr;
         qcombobox_heightforwidth_callback = nullptr;
@@ -261,6 +258,7 @@ class VirtualQComboBox : public QComboBox {
         qcombobox_customevent_callback = nullptr;
         qcombobox_connectnotify_callback = nullptr;
         qcombobox_disconnectnotify_callback = nullptr;
+        qcombobox_initstyleoption_callback = nullptr;
         qcombobox_updatemicrofocus_callback = nullptr;
         qcombobox_create_callback = nullptr;
         qcombobox_destroy_callback = nullptr;
@@ -274,7 +272,6 @@ class VirtualQComboBox : public QComboBox {
 
     // Callback setters
     void setQComboBox_Metacall_Callback(QComboBox_Metacall_Callback cb) { qcombobox_metacall_callback = cb; }
-    void setQComboBox_SetModel_Callback(QComboBox_SetModel_Callback cb) { qcombobox_setmodel_callback = cb; }
     void setQComboBox_SizeHint_Callback(QComboBox_SizeHint_Callback cb) { qcombobox_sizehint_callback = cb; }
     void setQComboBox_MinimumSizeHint_Callback(QComboBox_MinimumSizeHint_Callback cb) { qcombobox_minimumsizehint_callback = cb; }
     void setQComboBox_ShowPopup_Callback(QComboBox_ShowPopup_Callback cb) { qcombobox_showpopup_callback = cb; }
@@ -295,7 +292,6 @@ class VirtualQComboBox : public QComboBox {
     void setQComboBox_WheelEvent_Callback(QComboBox_WheelEvent_Callback cb) { qcombobox_wheelevent_callback = cb; }
     void setQComboBox_ContextMenuEvent_Callback(QComboBox_ContextMenuEvent_Callback cb) { qcombobox_contextmenuevent_callback = cb; }
     void setQComboBox_InputMethodEvent_Callback(QComboBox_InputMethodEvent_Callback cb) { qcombobox_inputmethodevent_callback = cb; }
-    void setQComboBox_InitStyleOption_Callback(QComboBox_InitStyleOption_Callback cb) { qcombobox_initstyleoption_callback = cb; }
     void setQComboBox_DevType_Callback(QComboBox_DevType_Callback cb) { qcombobox_devtype_callback = cb; }
     void setQComboBox_SetVisible_Callback(QComboBox_SetVisible_Callback cb) { qcombobox_setvisible_callback = cb; }
     void setQComboBox_HeightForWidth_Callback(QComboBox_HeightForWidth_Callback cb) { qcombobox_heightforwidth_callback = cb; }
@@ -325,6 +321,7 @@ class VirtualQComboBox : public QComboBox {
     void setQComboBox_CustomEvent_Callback(QComboBox_CustomEvent_Callback cb) { qcombobox_customevent_callback = cb; }
     void setQComboBox_ConnectNotify_Callback(QComboBox_ConnectNotify_Callback cb) { qcombobox_connectnotify_callback = cb; }
     void setQComboBox_DisconnectNotify_Callback(QComboBox_DisconnectNotify_Callback cb) { qcombobox_disconnectnotify_callback = cb; }
+    void setQComboBox_InitStyleOption_Callback(QComboBox_InitStyleOption_Callback cb) { qcombobox_initstyleoption_callback = cb; }
     void setQComboBox_UpdateMicroFocus_Callback(QComboBox_UpdateMicroFocus_Callback cb) { qcombobox_updatemicrofocus_callback = cb; }
     void setQComboBox_Create_Callback(QComboBox_Create_Callback cb) { qcombobox_create_callback = cb; }
     void setQComboBox_Destroy_Callback(QComboBox_Destroy_Callback cb) { qcombobox_destroy_callback = cb; }
@@ -337,7 +334,6 @@ class VirtualQComboBox : public QComboBox {
 
     // Base flag setters
     void setQComboBox_Metacall_IsBase(bool value) const { qcombobox_metacall_isbase = value; }
-    void setQComboBox_SetModel_IsBase(bool value) const { qcombobox_setmodel_isbase = value; }
     void setQComboBox_SizeHint_IsBase(bool value) const { qcombobox_sizehint_isbase = value; }
     void setQComboBox_MinimumSizeHint_IsBase(bool value) const { qcombobox_minimumsizehint_isbase = value; }
     void setQComboBox_ShowPopup_IsBase(bool value) const { qcombobox_showpopup_isbase = value; }
@@ -358,7 +354,6 @@ class VirtualQComboBox : public QComboBox {
     void setQComboBox_WheelEvent_IsBase(bool value) const { qcombobox_wheelevent_isbase = value; }
     void setQComboBox_ContextMenuEvent_IsBase(bool value) const { qcombobox_contextmenuevent_isbase = value; }
     void setQComboBox_InputMethodEvent_IsBase(bool value) const { qcombobox_inputmethodevent_isbase = value; }
-    void setQComboBox_InitStyleOption_IsBase(bool value) const { qcombobox_initstyleoption_isbase = value; }
     void setQComboBox_DevType_IsBase(bool value) const { qcombobox_devtype_isbase = value; }
     void setQComboBox_SetVisible_IsBase(bool value) const { qcombobox_setvisible_isbase = value; }
     void setQComboBox_HeightForWidth_IsBase(bool value) const { qcombobox_heightforwidth_isbase = value; }
@@ -388,6 +383,7 @@ class VirtualQComboBox : public QComboBox {
     void setQComboBox_CustomEvent_IsBase(bool value) const { qcombobox_customevent_isbase = value; }
     void setQComboBox_ConnectNotify_IsBase(bool value) const { qcombobox_connectnotify_isbase = value; }
     void setQComboBox_DisconnectNotify_IsBase(bool value) const { qcombobox_disconnectnotify_isbase = value; }
+    void setQComboBox_InitStyleOption_IsBase(bool value) const { qcombobox_initstyleoption_isbase = value; }
     void setQComboBox_UpdateMicroFocus_IsBase(bool value) const { qcombobox_updatemicrofocus_isbase = value; }
     void setQComboBox_Create_IsBase(bool value) const { qcombobox_create_isbase = value; }
     void setQComboBox_Destroy_IsBase(bool value) const { qcombobox_destroy_isbase = value; }
@@ -407,18 +403,6 @@ class VirtualQComboBox : public QComboBox {
             return qcombobox_metacall_callback(this, param1, param2, param3);
         } else {
             return QComboBox::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setModel(QAbstractItemModel* model) override {
-        if (qcombobox_setmodel_isbase) {
-            qcombobox_setmodel_isbase = false;
-            QComboBox::setModel(model);
-        } else if (qcombobox_setmodel_callback != nullptr) {
-            qcombobox_setmodel_callback(this, model);
-        } else {
-            QComboBox::setModel(model);
         }
     }
 
@@ -663,18 +647,6 @@ class VirtualQComboBox : public QComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionComboBox* option) const override {
-        if (qcombobox_initstyleoption_isbase) {
-            qcombobox_initstyleoption_isbase = false;
-            QComboBox::initStyleOption(option);
-        } else if (qcombobox_initstyleoption_callback != nullptr) {
-            qcombobox_initstyleoption_callback(this, option);
-        } else {
-            QComboBox::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qcombobox_devtype_isbase) {
             qcombobox_devtype_isbase = false;
@@ -759,7 +731,7 @@ class VirtualQComboBox : public QComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qcombobox_enterevent_isbase) {
             qcombobox_enterevent_isbase = false;
             QComboBox::enterEvent(event);
@@ -879,7 +851,7 @@ class VirtualQComboBox : public QComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qcombobox_nativeevent_isbase) {
             qcombobox_nativeevent_isbase = false;
             return QComboBox::nativeEvent(eventType, message, result);
@@ -1019,6 +991,18 @@ class VirtualQComboBox : public QComboBox {
             qcombobox_disconnectnotify_callback(this, signal);
         } else {
             QComboBox::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionComboBox* option) const {
+        if (qcombobox_initstyleoption_isbase) {
+            qcombobox_initstyleoption_isbase = false;
+            QComboBox::initStyleOption(option);
+        } else if (qcombobox_initstyleoption_callback != nullptr) {
+            qcombobox_initstyleoption_callback(this, option);
+        } else {
+            QComboBox::initStyleOption(option);
         }
     }
 

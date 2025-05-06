@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,7 +23,6 @@ typedef struct QTemporaryDir QTemporaryDir;
 
 QTemporaryDir* QTemporaryDir_new();
 QTemporaryDir* QTemporaryDir_new2(libqt_string templateName);
-void QTemporaryDir_Swap(QTemporaryDir* self, QTemporaryDir* other);
 bool QTemporaryDir_IsValid(const QTemporaryDir* self);
 libqt_string QTemporaryDir_ErrorString(const QTemporaryDir* self);
 bool QTemporaryDir_AutoRemove(const QTemporaryDir* self);

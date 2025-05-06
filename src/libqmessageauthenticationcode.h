@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,7 @@ QMessageAuthenticationCode* QMessageAuthenticationCode_new(int method);
 QMessageAuthenticationCode* QMessageAuthenticationCode_new2(int method, libqt_string key);
 void QMessageAuthenticationCode_Reset(QMessageAuthenticationCode* self);
 void QMessageAuthenticationCode_SetKey(QMessageAuthenticationCode* self, libqt_string key);
-void QMessageAuthenticationCode_AddData(QMessageAuthenticationCode* self, const char* data, ptrdiff_t length);
+void QMessageAuthenticationCode_AddData(QMessageAuthenticationCode* self, const char* data, int length);
 void QMessageAuthenticationCode_AddDataWithData(QMessageAuthenticationCode* self, libqt_string data);
 bool QMessageAuthenticationCode_AddDataWithDevice(QMessageAuthenticationCode* self, QIODevice* device);
 libqt_string QMessageAuthenticationCode_Result(const QMessageAuthenticationCode* self);

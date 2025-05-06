@@ -85,10 +85,6 @@ libqt_string QDirIterator_Next(QDirIterator* self) {
     return _str;
 }
 
-QFileInfo* QDirIterator_NextFileInfo(QDirIterator* self) {
-    return new QFileInfo(self->nextFileInfo());
-}
-
 bool QDirIterator_HasNext(const QDirIterator* self) {
     return self->hasNext();
 }

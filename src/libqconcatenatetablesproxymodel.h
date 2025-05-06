@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QConcatenateTablesProxyModel QConcatenateTablesProxyModel;
 typedef struct QDataStream QDataStream;
@@ -31,8 +31,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
@@ -48,6 +48,7 @@ int QConcatenateTablesProxyModel_Metacall(QConcatenateTablesProxyModel* self, in
 void QConcatenateTablesProxyModel_OnMetacall(QConcatenateTablesProxyModel* self, intptr_t slot);
 int QConcatenateTablesProxyModel_QBaseMetacall(QConcatenateTablesProxyModel* self, int param1, int param2, void** param3);
 libqt_string QConcatenateTablesProxyModel_Tr(const char* s);
+libqt_string QConcatenateTablesProxyModel_TrUtf8(const char* s);
 libqt_list /* of QAbstractItemModel* */ QConcatenateTablesProxyModel_SourceModels(const QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_AddSourceModel(QConcatenateTablesProxyModel* self, QAbstractItemModel* sourceModel);
 void QConcatenateTablesProxyModel_RemoveSourceModel(QConcatenateTablesProxyModel* self, QAbstractItemModel* sourceModel);
@@ -100,6 +101,8 @@ void QConcatenateTablesProxyModel_OnSpan(const QConcatenateTablesProxyModel* sel
 QSize* QConcatenateTablesProxyModel_QBaseSpan(const QConcatenateTablesProxyModel* self, QModelIndex* index);
 libqt_string QConcatenateTablesProxyModel_Tr2(const char* s, const char* c);
 libqt_string QConcatenateTablesProxyModel_Tr3(const char* s, const char* c, int n);
+libqt_string QConcatenateTablesProxyModel_TrUtf82(const char* s, const char* c);
+libqt_string QConcatenateTablesProxyModel_TrUtf83(const char* s, const char* c, int n);
 QModelIndex* QConcatenateTablesProxyModel_Sibling(const QConcatenateTablesProxyModel* self, int row, int column, QModelIndex* idx);
 void QConcatenateTablesProxyModel_OnSibling(const QConcatenateTablesProxyModel* self, intptr_t slot);
 QModelIndex* QConcatenateTablesProxyModel_QBaseSibling(const QConcatenateTablesProxyModel* self, int row, int column, QModelIndex* idx);
@@ -109,9 +112,6 @@ bool QConcatenateTablesProxyModel_QBaseHasChildren(const QConcatenateTablesProxy
 bool QConcatenateTablesProxyModel_SetHeaderData(QConcatenateTablesProxyModel* self, int section, int orientation, QVariant* value, int role);
 void QConcatenateTablesProxyModel_OnSetHeaderData(QConcatenateTablesProxyModel* self, intptr_t slot);
 bool QConcatenateTablesProxyModel_QBaseSetHeaderData(QConcatenateTablesProxyModel* self, int section, int orientation, QVariant* value, int role);
-bool QConcatenateTablesProxyModel_ClearItemData(QConcatenateTablesProxyModel* self, QModelIndex* index);
-void QConcatenateTablesProxyModel_OnClearItemData(QConcatenateTablesProxyModel* self, intptr_t slot);
-bool QConcatenateTablesProxyModel_QBaseClearItemData(QConcatenateTablesProxyModel* self, QModelIndex* index);
 int QConcatenateTablesProxyModel_SupportedDropActions(const QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_OnSupportedDropActions(const QConcatenateTablesProxyModel* self, intptr_t slot);
 int QConcatenateTablesProxyModel_QBaseSupportedDropActions(const QConcatenateTablesProxyModel* self);
@@ -154,18 +154,12 @@ libqt_list /* of QModelIndex* */ QConcatenateTablesProxyModel_QBaseMatch(const Q
 libqt_map /* of int to libqt_string */ QConcatenateTablesProxyModel_RoleNames(const QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_OnRoleNames(const QConcatenateTablesProxyModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QConcatenateTablesProxyModel_QBaseRoleNames(const QConcatenateTablesProxyModel* self);
-void QConcatenateTablesProxyModel_MultiData(const QConcatenateTablesProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QConcatenateTablesProxyModel_OnMultiData(const QConcatenateTablesProxyModel* self, intptr_t slot);
-void QConcatenateTablesProxyModel_QBaseMultiData(const QConcatenateTablesProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
 bool QConcatenateTablesProxyModel_Submit(QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_OnSubmit(QConcatenateTablesProxyModel* self, intptr_t slot);
 bool QConcatenateTablesProxyModel_QBaseSubmit(QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_Revert(QConcatenateTablesProxyModel* self);
 void QConcatenateTablesProxyModel_OnRevert(QConcatenateTablesProxyModel* self, intptr_t slot);
 void QConcatenateTablesProxyModel_QBaseRevert(QConcatenateTablesProxyModel* self);
-void QConcatenateTablesProxyModel_ResetInternalData(QConcatenateTablesProxyModel* self);
-void QConcatenateTablesProxyModel_OnResetInternalData(QConcatenateTablesProxyModel* self, intptr_t slot);
-void QConcatenateTablesProxyModel_QBaseResetInternalData(QConcatenateTablesProxyModel* self);
 bool QConcatenateTablesProxyModel_Event(QConcatenateTablesProxyModel* self, QEvent* event);
 void QConcatenateTablesProxyModel_OnEvent(QConcatenateTablesProxyModel* self, intptr_t slot);
 bool QConcatenateTablesProxyModel_QBaseEvent(QConcatenateTablesProxyModel* self, QEvent* event);
@@ -187,6 +181,9 @@ void QConcatenateTablesProxyModel_QBaseConnectNotify(QConcatenateTablesProxyMode
 void QConcatenateTablesProxyModel_DisconnectNotify(QConcatenateTablesProxyModel* self, QMetaMethod* signal);
 void QConcatenateTablesProxyModel_OnDisconnectNotify(QConcatenateTablesProxyModel* self, intptr_t slot);
 void QConcatenateTablesProxyModel_QBaseDisconnectNotify(QConcatenateTablesProxyModel* self, QMetaMethod* signal);
+void QConcatenateTablesProxyModel_ResetInternalData(QConcatenateTablesProxyModel* self);
+void QConcatenateTablesProxyModel_OnResetInternalData(QConcatenateTablesProxyModel* self, intptr_t slot);
+void QConcatenateTablesProxyModel_QBaseResetInternalData(QConcatenateTablesProxyModel* self);
 QModelIndex* QConcatenateTablesProxyModel_CreateIndex(const QConcatenateTablesProxyModel* self, int row, int column);
 void QConcatenateTablesProxyModel_OnCreateIndex(const QConcatenateTablesProxyModel* self, intptr_t slot);
 QModelIndex* QConcatenateTablesProxyModel_QBaseCreateIndex(const QConcatenateTablesProxyModel* self, int row, int column);

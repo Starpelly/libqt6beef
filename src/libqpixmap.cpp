@@ -4,6 +4,8 @@
 #include <QIODevice>
 #include <QImage>
 #include <QImageReader>
+#include <QMatrix>
+#include <QObject>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPainter>
@@ -12,7 +14,6 @@
 #include <QRect>
 #include <QRegion>
 #include <QSize>
-#include <QSizeF>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -97,6 +98,14 @@ void QPixmap_Fill(QPixmap* self) {
     self->fill();
 }
 
+void QPixmap_Fill2(QPixmap* self, QPaintDevice* device, QPoint* ofs) {
+    self->fill(device, *ofs);
+}
+
+void QPixmap_Fill3(QPixmap* self, QPaintDevice* device, int xofs, int yofs) {
+    self->fill(device, static_cast<int>(xofs), static_cast<int>(yofs));
+}
+
 QBitmap* QPixmap_Mask(const QPixmap* self) {
     return new QBitmap(self->mask());
 }
@@ -111,10 +120,6 @@ double QPixmap_DevicePixelRatio(const QPixmap* self) {
 
 void QPixmap_SetDevicePixelRatio(QPixmap* self, double scaleFactor) {
     self->setDevicePixelRatio(static_cast<qreal>(scaleFactor));
-}
-
-QSizeF* QPixmap_DeviceIndependentSize(const QPixmap* self) {
-    return new QSizeF(self->deviceIndependentSize());
 }
 
 bool QPixmap_HasAlpha(const QPixmap* self) {
@@ -133,6 +138,18 @@ QBitmap* QPixmap_CreateMaskFromColor(const QPixmap* self, QColor* maskColor) {
     return new QBitmap(self->createMaskFromColor(*maskColor));
 }
 
+QPixmap* QPixmap_GrabWindow(unsigned long long param1) {
+    return new QPixmap(QPixmap::grabWindow(static_cast<unsigned long long>(param1)));
+}
+
+QPixmap* QPixmap_GrabWidget(QObject* widget, QRect* rect) {
+    return new QPixmap(QPixmap::grabWidget(widget, *rect));
+}
+
+QPixmap* QPixmap_GrabWidgetWithWidget(QObject* widget) {
+    return new QPixmap(QPixmap::grabWidget(widget));
+}
+
 QPixmap* QPixmap_Scaled(const QPixmap* self, int w, int h) {
     return new QPixmap(self->scaled(static_cast<int>(w), static_cast<int>(h)));
 }
@@ -149,11 +166,19 @@ QPixmap* QPixmap_ScaledToHeight(const QPixmap* self, int h) {
     return new QPixmap(self->scaledToHeight(static_cast<int>(h)));
 }
 
-QPixmap* QPixmap_Transformed(const QPixmap* self, QTransform* param1) {
+QPixmap* QPixmap_Transformed(const QPixmap* self, QMatrix* param1) {
     return new QPixmap(self->transformed(*param1));
 }
 
-QTransform* QPixmap_TrueMatrix(QTransform* m, int w, int h) {
+QMatrix* QPixmap_TrueMatrix(QMatrix* m, int w, int h) {
+    return new QMatrix(QPixmap::trueMatrix(*m, static_cast<int>(w), static_cast<int>(h)));
+}
+
+QPixmap* QPixmap_TransformedWithQTransform(const QPixmap* self, QTransform* param1) {
+    return new QPixmap(self->transformed(*param1));
+}
+
+QTransform* QPixmap_TrueMatrix2(QTransform* m, int w, int h) {
     return new QTransform(QPixmap::trueMatrix(*m, static_cast<int>(w), static_cast<int>(h)));
 }
 
@@ -244,6 +269,38 @@ QBitmap* QPixmap_CreateMaskFromColor2(const QPixmap* self, QColor* maskColor, in
     return new QBitmap(self->createMaskFromColor(*maskColor, static_cast<Qt::MaskMode>(mode)));
 }
 
+QPixmap* QPixmap_GrabWindow2(unsigned long long param1, int x) {
+    return new QPixmap(QPixmap::grabWindow(static_cast<unsigned long long>(param1), static_cast<int>(x)));
+}
+
+QPixmap* QPixmap_GrabWindow3(unsigned long long param1, int x, int y) {
+    return new QPixmap(QPixmap::grabWindow(static_cast<unsigned long long>(param1), static_cast<int>(x), static_cast<int>(y)));
+}
+
+QPixmap* QPixmap_GrabWindow4(unsigned long long param1, int x, int y, int w) {
+    return new QPixmap(QPixmap::grabWindow(static_cast<unsigned long long>(param1), static_cast<int>(x), static_cast<int>(y), static_cast<int>(w)));
+}
+
+QPixmap* QPixmap_GrabWindow5(unsigned long long param1, int x, int y, int w, int h) {
+    return new QPixmap(QPixmap::grabWindow(static_cast<unsigned long long>(param1), static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h)));
+}
+
+QPixmap* QPixmap_GrabWidget2(QObject* widget, int x) {
+    return new QPixmap(QPixmap::grabWidget(widget, static_cast<int>(x)));
+}
+
+QPixmap* QPixmap_GrabWidget3(QObject* widget, int x, int y) {
+    return new QPixmap(QPixmap::grabWidget(widget, static_cast<int>(x), static_cast<int>(y)));
+}
+
+QPixmap* QPixmap_GrabWidget4(QObject* widget, int x, int y, int w) {
+    return new QPixmap(QPixmap::grabWidget(widget, static_cast<int>(x), static_cast<int>(y), static_cast<int>(w)));
+}
+
+QPixmap* QPixmap_GrabWidget5(QObject* widget, int x, int y, int w, int h) {
+    return new QPixmap(QPixmap::grabWidget(widget, static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h)));
+}
+
 QPixmap* QPixmap_Scaled3(const QPixmap* self, int w, int h, int aspectMode) {
     return new QPixmap(self->scaled(static_cast<int>(w), static_cast<int>(h), static_cast<Qt::AspectRatioMode>(aspectMode)));
 }
@@ -268,7 +325,11 @@ QPixmap* QPixmap_ScaledToHeight2(const QPixmap* self, int h, int mode) {
     return new QPixmap(self->scaledToHeight(static_cast<int>(h), static_cast<Qt::TransformationMode>(mode)));
 }
 
-QPixmap* QPixmap_Transformed2(const QPixmap* self, QTransform* param1, int mode) {
+QPixmap* QPixmap_Transformed2(const QPixmap* self, QMatrix* param1, int mode) {
+    return new QPixmap(self->transformed(*param1, static_cast<Qt::TransformationMode>(mode)));
+}
+
+QPixmap* QPixmap_Transformed22(const QPixmap* self, QTransform* param1, int mode) {
     return new QPixmap(self->transformed(*param1, static_cast<Qt::TransformationMode>(mode)));
 }
 

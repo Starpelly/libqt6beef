@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,6 +33,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,7 +41,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -131,6 +128,18 @@ libqt_string QSvgWidget_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSvgWidget_TrUtf8(const char* s) {
+    QString _ret = QSvgWidget::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QSvgRenderer* QSvgWidget_Renderer(const QSvgWidget* self) {
     return self->renderer();
 }
@@ -159,6 +168,30 @@ libqt_string QSvgWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QSvgWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSvgWidget::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSvgWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSvgWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSvgWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSvgWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -638,7 +671,7 @@ void QSvgWidget_OnFocusOutEvent(QSvgWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSvgWidget_EnterEvent(QSvgWidget* self, QEnterEvent* event) {
+void QSvgWidget_EnterEvent(QSvgWidget* self, QEvent* event) {
     if (auto* vqsvgwidget = dynamic_cast<VirtualQSvgWidget*>(self)) {
         vqsvgwidget->enterEvent(event);
     } else {
@@ -647,7 +680,7 @@ void QSvgWidget_EnterEvent(QSvgWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QSvgWidget_QBaseEnterEvent(QSvgWidget* self, QEnterEvent* event) {
+void QSvgWidget_QBaseEnterEvent(QSvgWidget* self, QEvent* event) {
     if (auto* vqsvgwidget = dynamic_cast<VirtualQSvgWidget*>(self)) {
         vqsvgwidget->setQSvgWidget_EnterEvent_IsBase(true);
         vqsvgwidget->enterEvent(event);
@@ -1002,23 +1035,23 @@ void QSvgWidget_OnHideEvent(QSvgWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QSvgWidget_NativeEvent(QSvgWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSvgWidget_NativeEvent(QSvgWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsvgwidget = dynamic_cast<VirtualQSvgWidget*>(self)) {
-        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QSvgWidget_QBaseNativeEvent(QSvgWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSvgWidget_QBaseNativeEvent(QSvgWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsvgwidget = dynamic_cast<VirtualQSvgWidget*>(self)) {
         vqsvgwidget->setQSvgWidget_NativeEvent_IsBase(true);
-        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsvgwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

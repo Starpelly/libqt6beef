@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,14 +21,13 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
 typedef struct QRect QRect;
@@ -43,6 +44,7 @@ QMetaObject* QScreen_MetaObject(const QScreen* self);
 void* QScreen_Metacast(QScreen* self, const char* param1);
 int QScreen_Metacall(QScreen* self, int param1, int param2, void** param3);
 libqt_string QScreen_Tr(const char* s);
+libqt_string QScreen_TrUtf8(const char* s);
 libqt_string QScreen_Name(const QScreen* self);
 libqt_string QScreen_Manufacturer(const QScreen* self);
 libqt_string QScreen_Model(const QScreen* self);
@@ -69,12 +71,14 @@ QRect* QScreen_AvailableVirtualGeometry(const QScreen* self);
 int QScreen_PrimaryOrientation(const QScreen* self);
 int QScreen_Orientation(const QScreen* self);
 int QScreen_NativeOrientation(const QScreen* self);
+int QScreen_OrientationUpdateMask(const QScreen* self);
+void QScreen_SetOrientationUpdateMask(QScreen* self, int mask);
 int QScreen_AngleBetween(const QScreen* self, int a, int b);
 QTransform* QScreen_TransformBetween(const QScreen* self, int a, int b, QRect* target);
 QRect* QScreen_MapBetween(const QScreen* self, int a, int b, QRect* rect);
 bool QScreen_IsPortrait(const QScreen* self, int orientation);
 bool QScreen_IsLandscape(const QScreen* self, int orientation);
-QPixmap* QScreen_GrabWindow(QScreen* self);
+QPixmap* QScreen_GrabWindow(QScreen* self, uintptr_t window);
 double QScreen_RefreshRate(const QScreen* self);
 void QScreen_GeometryChanged(QScreen* self, QRect* geometry);
 void QScreen_Connect_GeometryChanged(QScreen* self, intptr_t slot);
@@ -96,7 +100,8 @@ void QScreen_RefreshRateChanged(QScreen* self, double refreshRate);
 void QScreen_Connect_RefreshRateChanged(QScreen* self, intptr_t slot);
 libqt_string QScreen_Tr2(const char* s, const char* c);
 libqt_string QScreen_Tr3(const char* s, const char* c, int n);
-QPixmap* QScreen_GrabWindow1(QScreen* self, uintptr_t window);
+libqt_string QScreen_TrUtf82(const char* s, const char* c);
+libqt_string QScreen_TrUtf83(const char* s, const char* c, int n);
 QPixmap* QScreen_GrabWindow2(QScreen* self, uintptr_t window, int x);
 QPixmap* QScreen_GrabWindow3(QScreen* self, uintptr_t window, int x, int y);
 QPixmap* QScreen_GrabWindow4(QScreen* self, uintptr_t window, int x, int y, int w);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -37,12 +39,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     using QGraphicsScene_InputMethodEvent_Callback = void (*)(QGraphicsScene*, QInputMethodEvent*);
     using QGraphicsScene_DrawBackground_Callback = void (*)(QGraphicsScene*, QPainter*, const QRectF&);
     using QGraphicsScene_DrawForeground_Callback = void (*)(QGraphicsScene*, QPainter*, const QRectF&);
-    using QGraphicsScene_FocusNextPrevChild_Callback = bool (*)(QGraphicsScene*, bool);
     using QGraphicsScene_TimerEvent_Callback = void (*)(QGraphicsScene*, QTimerEvent*);
     using QGraphicsScene_ChildEvent_Callback = void (*)(QGraphicsScene*, QChildEvent*);
     using QGraphicsScene_CustomEvent_Callback = void (*)(QGraphicsScene*, QEvent*);
     using QGraphicsScene_ConnectNotify_Callback = void (*)(QGraphicsScene*, const QMetaMethod&);
     using QGraphicsScene_DisconnectNotify_Callback = void (*)(QGraphicsScene*, const QMetaMethod&);
+    using QGraphicsScene_FocusNextPrevChild_Callback = bool (*)(QGraphicsScene*, bool);
     using QGraphicsScene_Sender_Callback = QObject* (*)();
     using QGraphicsScene_SenderSignalIndex_Callback = int (*)();
     using QGraphicsScene_Receivers_Callback = int (*)(const QGraphicsScene*, const char*);
@@ -72,12 +74,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     QGraphicsScene_InputMethodEvent_Callback qgraphicsscene_inputmethodevent_callback = nullptr;
     QGraphicsScene_DrawBackground_Callback qgraphicsscene_drawbackground_callback = nullptr;
     QGraphicsScene_DrawForeground_Callback qgraphicsscene_drawforeground_callback = nullptr;
-    QGraphicsScene_FocusNextPrevChild_Callback qgraphicsscene_focusnextprevchild_callback = nullptr;
     QGraphicsScene_TimerEvent_Callback qgraphicsscene_timerevent_callback = nullptr;
     QGraphicsScene_ChildEvent_Callback qgraphicsscene_childevent_callback = nullptr;
     QGraphicsScene_CustomEvent_Callback qgraphicsscene_customevent_callback = nullptr;
     QGraphicsScene_ConnectNotify_Callback qgraphicsscene_connectnotify_callback = nullptr;
     QGraphicsScene_DisconnectNotify_Callback qgraphicsscene_disconnectnotify_callback = nullptr;
+    QGraphicsScene_FocusNextPrevChild_Callback qgraphicsscene_focusnextprevchild_callback = nullptr;
     QGraphicsScene_Sender_Callback qgraphicsscene_sender_callback = nullptr;
     QGraphicsScene_SenderSignalIndex_Callback qgraphicsscene_sendersignalindex_callback = nullptr;
     QGraphicsScene_Receivers_Callback qgraphicsscene_receivers_callback = nullptr;
@@ -106,12 +108,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     mutable bool qgraphicsscene_inputmethodevent_isbase = false;
     mutable bool qgraphicsscene_drawbackground_isbase = false;
     mutable bool qgraphicsscene_drawforeground_isbase = false;
-    mutable bool qgraphicsscene_focusnextprevchild_isbase = false;
     mutable bool qgraphicsscene_timerevent_isbase = false;
     mutable bool qgraphicsscene_childevent_isbase = false;
     mutable bool qgraphicsscene_customevent_isbase = false;
     mutable bool qgraphicsscene_connectnotify_isbase = false;
     mutable bool qgraphicsscene_disconnectnotify_isbase = false;
+    mutable bool qgraphicsscene_focusnextprevchild_isbase = false;
     mutable bool qgraphicsscene_sender_isbase = false;
     mutable bool qgraphicsscene_sendersignalindex_isbase = false;
     mutable bool qgraphicsscene_receivers_isbase = false;
@@ -148,12 +150,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
         qgraphicsscene_inputmethodevent_callback = nullptr;
         qgraphicsscene_drawbackground_callback = nullptr;
         qgraphicsscene_drawforeground_callback = nullptr;
-        qgraphicsscene_focusnextprevchild_callback = nullptr;
         qgraphicsscene_timerevent_callback = nullptr;
         qgraphicsscene_childevent_callback = nullptr;
         qgraphicsscene_customevent_callback = nullptr;
         qgraphicsscene_connectnotify_callback = nullptr;
         qgraphicsscene_disconnectnotify_callback = nullptr;
+        qgraphicsscene_focusnextprevchild_callback = nullptr;
         qgraphicsscene_sender_callback = nullptr;
         qgraphicsscene_sendersignalindex_callback = nullptr;
         qgraphicsscene_receivers_callback = nullptr;
@@ -183,12 +185,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     void setQGraphicsScene_InputMethodEvent_Callback(QGraphicsScene_InputMethodEvent_Callback cb) { qgraphicsscene_inputmethodevent_callback = cb; }
     void setQGraphicsScene_DrawBackground_Callback(QGraphicsScene_DrawBackground_Callback cb) { qgraphicsscene_drawbackground_callback = cb; }
     void setQGraphicsScene_DrawForeground_Callback(QGraphicsScene_DrawForeground_Callback cb) { qgraphicsscene_drawforeground_callback = cb; }
-    void setQGraphicsScene_FocusNextPrevChild_Callback(QGraphicsScene_FocusNextPrevChild_Callback cb) { qgraphicsscene_focusnextprevchild_callback = cb; }
     void setQGraphicsScene_TimerEvent_Callback(QGraphicsScene_TimerEvent_Callback cb) { qgraphicsscene_timerevent_callback = cb; }
     void setQGraphicsScene_ChildEvent_Callback(QGraphicsScene_ChildEvent_Callback cb) { qgraphicsscene_childevent_callback = cb; }
     void setQGraphicsScene_CustomEvent_Callback(QGraphicsScene_CustomEvent_Callback cb) { qgraphicsscene_customevent_callback = cb; }
     void setQGraphicsScene_ConnectNotify_Callback(QGraphicsScene_ConnectNotify_Callback cb) { qgraphicsscene_connectnotify_callback = cb; }
     void setQGraphicsScene_DisconnectNotify_Callback(QGraphicsScene_DisconnectNotify_Callback cb) { qgraphicsscene_disconnectnotify_callback = cb; }
+    void setQGraphicsScene_FocusNextPrevChild_Callback(QGraphicsScene_FocusNextPrevChild_Callback cb) { qgraphicsscene_focusnextprevchild_callback = cb; }
     void setQGraphicsScene_Sender_Callback(QGraphicsScene_Sender_Callback cb) { qgraphicsscene_sender_callback = cb; }
     void setQGraphicsScene_SenderSignalIndex_Callback(QGraphicsScene_SenderSignalIndex_Callback cb) { qgraphicsscene_sendersignalindex_callback = cb; }
     void setQGraphicsScene_Receivers_Callback(QGraphicsScene_Receivers_Callback cb) { qgraphicsscene_receivers_callback = cb; }
@@ -217,12 +219,12 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     void setQGraphicsScene_InputMethodEvent_IsBase(bool value) const { qgraphicsscene_inputmethodevent_isbase = value; }
     void setQGraphicsScene_DrawBackground_IsBase(bool value) const { qgraphicsscene_drawbackground_isbase = value; }
     void setQGraphicsScene_DrawForeground_IsBase(bool value) const { qgraphicsscene_drawforeground_isbase = value; }
-    void setQGraphicsScene_FocusNextPrevChild_IsBase(bool value) const { qgraphicsscene_focusnextprevchild_isbase = value; }
     void setQGraphicsScene_TimerEvent_IsBase(bool value) const { qgraphicsscene_timerevent_isbase = value; }
     void setQGraphicsScene_ChildEvent_IsBase(bool value) const { qgraphicsscene_childevent_isbase = value; }
     void setQGraphicsScene_CustomEvent_IsBase(bool value) const { qgraphicsscene_customevent_isbase = value; }
     void setQGraphicsScene_ConnectNotify_IsBase(bool value) const { qgraphicsscene_connectnotify_isbase = value; }
     void setQGraphicsScene_DisconnectNotify_IsBase(bool value) const { qgraphicsscene_disconnectnotify_isbase = value; }
+    void setQGraphicsScene_FocusNextPrevChild_IsBase(bool value) const { qgraphicsscene_focusnextprevchild_isbase = value; }
     void setQGraphicsScene_Sender_IsBase(bool value) const { qgraphicsscene_sender_isbase = value; }
     void setQGraphicsScene_SenderSignalIndex_IsBase(bool value) const { qgraphicsscene_sendersignalindex_isbase = value; }
     void setQGraphicsScene_Receivers_IsBase(bool value) const { qgraphicsscene_receivers_isbase = value; }
@@ -493,18 +495,6 @@ class VirtualQGraphicsScene : public QGraphicsScene {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool focusNextPrevChild(bool next) override {
-        if (qgraphicsscene_focusnextprevchild_isbase) {
-            qgraphicsscene_focusnextprevchild_isbase = false;
-            return QGraphicsScene::focusNextPrevChild(next);
-        } else if (qgraphicsscene_focusnextprevchild_callback != nullptr) {
-            return qgraphicsscene_focusnextprevchild_callback(this, next);
-        } else {
-            return QGraphicsScene::focusNextPrevChild(next);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void timerEvent(QTimerEvent* event) override {
         if (qgraphicsscene_timerevent_isbase) {
             qgraphicsscene_timerevent_isbase = false;
@@ -561,6 +551,18 @@ class VirtualQGraphicsScene : public QGraphicsScene {
             qgraphicsscene_disconnectnotify_callback(this, signal);
         } else {
             QGraphicsScene::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    bool focusNextPrevChild(bool next) {
+        if (qgraphicsscene_focusnextprevchild_isbase) {
+            qgraphicsscene_focusnextprevchild_isbase = false;
+            return QGraphicsScene::focusNextPrevChild(next);
+        } else if (qgraphicsscene_focusnextprevchild_callback != nullptr) {
+            return qgraphicsscene_focusnextprevchild_callback(this, next);
+        } else {
+            return QGraphicsScene::focusNextPrevChild(next);
         }
     }
 

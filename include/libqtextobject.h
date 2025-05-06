@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -28,8 +30,6 @@ typedef QTextFrame::iterator QTextFrame__iterator;
 typedef QTextLayout::FormatRange QTextLayout__FormatRange;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QGlyphRun QGlyphRun;
@@ -37,6 +37,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QTextBlock QTextBlock;
 typedef struct QTextBlockFormat QTextBlockFormat;
 typedef struct QTextBlockGroup QTextBlockGroup;
@@ -70,12 +71,15 @@ QMetaObject* QTextObject_MetaObject(const QTextObject* self);
 void* QTextObject_Metacast(QTextObject* self, const char* param1);
 int QTextObject_Metacall(QTextObject* self, int param1, int param2, void** param3);
 libqt_string QTextObject_Tr(const char* s);
+libqt_string QTextObject_TrUtf8(const char* s);
 QTextFormat* QTextObject_Format(const QTextObject* self);
 int QTextObject_FormatIndex(const QTextObject* self);
 QTextDocument* QTextObject_Document(const QTextObject* self);
 int QTextObject_ObjectIndex(const QTextObject* self);
 libqt_string QTextObject_Tr2(const char* s, const char* c);
 libqt_string QTextObject_Tr3(const char* s, const char* c, int n);
+libqt_string QTextObject_TrUtf82(const char* s, const char* c);
+libqt_string QTextObject_TrUtf83(const char* s, const char* c, int n);
 bool QTextObject_Event(QTextObject* self, QEvent* event);
 bool QTextObject_EventFilter(QTextObject* self, QObject* watched, QEvent* event);
 
@@ -83,8 +87,11 @@ QMetaObject* QTextBlockGroup_MetaObject(const QTextBlockGroup* self);
 void* QTextBlockGroup_Metacast(QTextBlockGroup* self, const char* param1);
 int QTextBlockGroup_Metacall(QTextBlockGroup* self, int param1, int param2, void** param3);
 libqt_string QTextBlockGroup_Tr(const char* s);
+libqt_string QTextBlockGroup_TrUtf8(const char* s);
 libqt_string QTextBlockGroup_Tr2(const char* s, const char* c);
 libqt_string QTextBlockGroup_Tr3(const char* s, const char* c, int n);
+libqt_string QTextBlockGroup_TrUtf82(const char* s, const char* c);
+libqt_string QTextBlockGroup_TrUtf83(const char* s, const char* c, int n);
 bool QTextBlockGroup_Event(QTextBlockGroup* self, QEvent* event);
 bool QTextBlockGroup_EventFilter(QTextBlockGroup* self, QObject* watched, QEvent* event);
 
@@ -98,6 +105,7 @@ int QTextFrame_Metacall(QTextFrame* self, int param1, int param2, void** param3)
 void QTextFrame_OnMetacall(QTextFrame* self, intptr_t slot);
 int QTextFrame_QBaseMetacall(QTextFrame* self, int param1, int param2, void** param3);
 libqt_string QTextFrame_Tr(const char* s);
+libqt_string QTextFrame_TrUtf8(const char* s);
 void QTextFrame_SetFrameFormat(QTextFrame* self, QTextFrameFormat* format);
 QTextFrameFormat* QTextFrame_FrameFormat(const QTextFrame* self);
 QTextCursor* QTextFrame_FirstCursorPosition(const QTextFrame* self);
@@ -112,6 +120,8 @@ QTextFrame__iterator* QTextFrame_Begin(const QTextFrame* self);
 QTextFrame__iterator* QTextFrame_End(const QTextFrame* self);
 libqt_string QTextFrame_Tr2(const char* s, const char* c);
 libqt_string QTextFrame_Tr3(const char* s, const char* c, int n);
+libqt_string QTextFrame_TrUtf82(const char* s, const char* c);
+libqt_string QTextFrame_TrUtf83(const char* s, const char* c, int n);
 bool QTextFrame_Event(QTextFrame* self, QEvent* event);
 void QTextFrame_OnEvent(QTextFrame* self, intptr_t slot);
 bool QTextFrame_QBaseEvent(QTextFrame* self, QEvent* event);
@@ -211,12 +221,9 @@ libqt_list /* of QGlyphRun* */ QTextFragment_GlyphRuns1(const QTextFragment* sel
 libqt_list /* of QGlyphRun* */ QTextFragment_GlyphRuns2(const QTextFragment* self, int from, int length);
 void QTextFragment_Delete(QTextFragment* self);
 
-QTextFrame__iterator* QTextFrame__iterator_new(QTextFrame__iterator* other);
-QTextFrame__iterator* QTextFrame__iterator_new2(QTextFrame__iterator* other);
-QTextFrame__iterator* QTextFrame__iterator_new3();
-QTextFrame__iterator* QTextFrame__iterator_new4(QTextFrame__iterator* param1);
-void QTextFrame__iterator_CopyAssign(QTextFrame__iterator* self, QTextFrame__iterator* other);
-void QTextFrame__iterator_MoveAssign(QTextFrame__iterator* self, QTextFrame__iterator* other);
+QTextFrame__iterator* QTextFrame__iterator_new();
+QTextFrame__iterator* QTextFrame__iterator_new2(QTextFrame__iterator* o);
+void QTextFrame__iterator_OperatorAssign(QTextFrame__iterator* self, QTextFrame__iterator* o);
 QTextFrame* QTextFrame__iterator_ParentFrame(const QTextFrame__iterator* self);
 QTextFrame* QTextFrame__iterator_CurrentFrame(const QTextFrame__iterator* self);
 QTextBlock* QTextFrame__iterator_CurrentBlock(const QTextFrame__iterator* self);
@@ -229,12 +236,9 @@ QTextFrame__iterator* QTextFrame__iterator_OperatorMinusMinus(QTextFrame__iterat
 QTextFrame__iterator* QTextFrame__iterator_OperatorMinusMinusWithInt(QTextFrame__iterator* self, int param1);
 void QTextFrame__iterator_Delete(QTextFrame__iterator* self);
 
-QTextBlock__iterator* QTextBlock__iterator_new(QTextBlock__iterator* other);
-QTextBlock__iterator* QTextBlock__iterator_new2(QTextBlock__iterator* other);
-QTextBlock__iterator* QTextBlock__iterator_new3();
-QTextBlock__iterator* QTextBlock__iterator_new4(QTextBlock__iterator* param1);
-void QTextBlock__iterator_CopyAssign(QTextBlock__iterator* self, QTextBlock__iterator* other);
-void QTextBlock__iterator_MoveAssign(QTextBlock__iterator* self, QTextBlock__iterator* other);
+QTextBlock__iterator* QTextBlock__iterator_new();
+QTextBlock__iterator* QTextBlock__iterator_new2(QTextBlock__iterator* o);
+void QTextBlock__iterator_OperatorAssign(QTextBlock__iterator* self, QTextBlock__iterator* o);
 QTextFragment* QTextBlock__iterator_Fragment(const QTextBlock__iterator* self);
 bool QTextBlock__iterator_AtEnd(const QTextBlock__iterator* self);
 bool QTextBlock__iterator_OperatorEqual(const QTextBlock__iterator* self, QTextBlock__iterator* o);

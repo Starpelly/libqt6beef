@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QColor QColor;
 typedef struct QEvent QEvent;
@@ -31,6 +31,7 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMovie QMovie;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPixmap QPixmap;
 typedef struct QRect QRect;
 typedef struct QSize QSize;
@@ -61,6 +62,7 @@ int QMovie_Metacall(QMovie* self, int param1, int param2, void** param3);
 void QMovie_OnMetacall(QMovie* self, intptr_t slot);
 int QMovie_QBaseMetacall(QMovie* self, int param1, int param2, void** param3);
 libqt_string QMovie_Tr(const char* s);
+libqt_string QMovie_TrUtf8(const char* s);
 libqt_list /* of libqt_string */ QMovie_SupportedFormats();
 void QMovie_SetDevice(QMovie* self, QIODevice* device);
 QIODevice* QMovie_Device(const QMovie* self);
@@ -108,6 +110,8 @@ void QMovie_Stop(QMovie* self);
 void QMovie_SetSpeed(QMovie* self, int percentSpeed);
 libqt_string QMovie_Tr2(const char* s, const char* c);
 libqt_string QMovie_Tr3(const char* s, const char* c, int n);
+libqt_string QMovie_TrUtf82(const char* s, const char* c);
+libqt_string QMovie_TrUtf83(const char* s, const char* c, int n);
 bool QMovie_Event(QMovie* self, QEvent* event);
 void QMovie_OnEvent(QMovie* self, intptr_t slot);
 bool QMovie_QBaseEvent(QMovie* self, QEvent* event);

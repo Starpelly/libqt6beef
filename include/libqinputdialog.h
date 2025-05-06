@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -101,6 +100,7 @@ int QInputDialog_Metacall(QInputDialog* self, int param1, int param2, void** par
 void QInputDialog_OnMetacall(QInputDialog* self, intptr_t slot);
 int QInputDialog_QBaseMetacall(QInputDialog* self, int param1, int param2, void** param3);
 libqt_string QInputDialog_Tr(const char* s);
+libqt_string QInputDialog_TrUtf8(const char* s);
 void QInputDialog_SetInputMode(QInputDialog* self, int mode);
 int QInputDialog_InputMode(const QInputDialog* self);
 void QInputDialog_SetLabelText(QInputDialog* self, libqt_string text);
@@ -153,6 +153,7 @@ libqt_string QInputDialog_GetMultiLineText(QWidget* parent, libqt_string title, 
 libqt_string QInputDialog_GetItem(QWidget* parent, libqt_string title, libqt_string label, libqt_list /* of libqt_string */ items);
 int QInputDialog_GetInt(QWidget* parent, libqt_string title, libqt_string label);
 double QInputDialog_GetDouble(QWidget* parent, libqt_string title, libqt_string label);
+double QInputDialog_GetDouble2(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok, int flags, double step);
 void QInputDialog_SetDoubleStep(QInputDialog* self, double step);
 double QInputDialog_DoubleStep(const QInputDialog* self);
 void QInputDialog_TextValueChanged(QInputDialog* self, libqt_string text);
@@ -172,6 +173,8 @@ void QInputDialog_OnDone(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseDone(QInputDialog* self, int result);
 libqt_string QInputDialog_Tr2(const char* s, const char* c);
 libqt_string QInputDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QInputDialog_TrUtf82(const char* s, const char* c);
+libqt_string QInputDialog_TrUtf83(const char* s, const char* c, int n);
 void QInputDialog_SetOption2(QInputDialog* self, int option, bool on);
 libqt_string QInputDialog_GetText4(QWidget* parent, libqt_string title, libqt_string label, int echo);
 libqt_string QInputDialog_GetText5(QWidget* parent, libqt_string title, libqt_string label, int echo, libqt_string text);
@@ -199,7 +202,6 @@ double QInputDialog_GetDouble6(QWidget* parent, libqt_string title, libqt_string
 double QInputDialog_GetDouble7(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals);
 double QInputDialog_GetDouble8(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok);
 double QInputDialog_GetDouble9(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok, int flags);
-double QInputDialog_GetDouble10(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok, int flags, double step);
 void QInputDialog_Open(QInputDialog* self);
 void QInputDialog_OnOpen(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseOpen(QInputDialog* self);
@@ -269,9 +271,9 @@ void QInputDialog_QBaseFocusInEvent(QInputDialog* self, QFocusEvent* event);
 void QInputDialog_FocusOutEvent(QInputDialog* self, QFocusEvent* event);
 void QInputDialog_OnFocusOutEvent(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseFocusOutEvent(QInputDialog* self, QFocusEvent* event);
-void QInputDialog_EnterEvent(QInputDialog* self, QEnterEvent* event);
+void QInputDialog_EnterEvent(QInputDialog* self, QEvent* event);
 void QInputDialog_OnEnterEvent(QInputDialog* self, intptr_t slot);
-void QInputDialog_QBaseEnterEvent(QInputDialog* self, QEnterEvent* event);
+void QInputDialog_QBaseEnterEvent(QInputDialog* self, QEvent* event);
 void QInputDialog_LeaveEvent(QInputDialog* self, QEvent* event);
 void QInputDialog_OnLeaveEvent(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseLeaveEvent(QInputDialog* self, QEvent* event);
@@ -302,9 +304,9 @@ void QInputDialog_QBaseDropEvent(QInputDialog* self, QDropEvent* event);
 void QInputDialog_HideEvent(QInputDialog* self, QHideEvent* event);
 void QInputDialog_OnHideEvent(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseHideEvent(QInputDialog* self, QHideEvent* event);
-bool QInputDialog_NativeEvent(QInputDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QInputDialog_NativeEvent(QInputDialog* self, libqt_string eventType, void* message, long* result);
 void QInputDialog_OnNativeEvent(QInputDialog* self, intptr_t slot);
-bool QInputDialog_QBaseNativeEvent(QInputDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QInputDialog_QBaseNativeEvent(QInputDialog* self, libqt_string eventType, void* message, long* result);
 void QInputDialog_ChangeEvent(QInputDialog* self, QEvent* param1);
 void QInputDialog_OnChangeEvent(QInputDialog* self, intptr_t slot);
 void QInputDialog_QBaseChangeEvent(QInputDialog* self, QEvent* param1);

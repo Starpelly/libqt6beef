@@ -1,4 +1,3 @@
-#include <QKeyCombination>
 #include <QKeySequence>
 #include <QList>
 #include <QString>
@@ -22,45 +21,29 @@ QKeySequence* QKeySequence_new3(int k1) {
     return new QKeySequence(static_cast<int>(k1));
 }
 
-QKeySequence* QKeySequence_new4(QKeyCombination* k1) {
-    return new QKeySequence(*k1);
-}
-
-QKeySequence* QKeySequence_new5(QKeySequence* ks) {
+QKeySequence* QKeySequence_new4(QKeySequence* ks) {
     return new QKeySequence(*ks);
 }
 
-QKeySequence* QKeySequence_new6(int key) {
+QKeySequence* QKeySequence_new5(int key) {
     return new QKeySequence(static_cast<QKeySequence::StandardKey>(key));
 }
 
-QKeySequence* QKeySequence_new7(libqt_string key, int format) {
+QKeySequence* QKeySequence_new6(libqt_string key, int format) {
     QString key_QString = QString::fromUtf8(key.data, key.len);
     return new QKeySequence(key_QString, static_cast<QKeySequence::SequenceFormat>(format));
 }
 
-QKeySequence* QKeySequence_new8(int k1, int k2) {
+QKeySequence* QKeySequence_new7(int k1, int k2) {
     return new QKeySequence(static_cast<int>(k1), static_cast<int>(k2));
 }
 
-QKeySequence* QKeySequence_new9(int k1, int k2, int k3) {
+QKeySequence* QKeySequence_new8(int k1, int k2, int k3) {
     return new QKeySequence(static_cast<int>(k1), static_cast<int>(k2), static_cast<int>(k3));
 }
 
-QKeySequence* QKeySequence_new10(int k1, int k2, int k3, int k4) {
+QKeySequence* QKeySequence_new9(int k1, int k2, int k3, int k4) {
     return new QKeySequence(static_cast<int>(k1), static_cast<int>(k2), static_cast<int>(k3), static_cast<int>(k4));
-}
-
-QKeySequence* QKeySequence_new11(QKeyCombination* k1, QKeyCombination* k2) {
-    return new QKeySequence(*k1, *k2);
-}
-
-QKeySequence* QKeySequence_new12(QKeyCombination* k1, QKeyCombination* k2, QKeyCombination* k3) {
-    return new QKeySequence(*k1, *k2, *k3);
-}
-
-QKeySequence* QKeySequence_new13(QKeyCombination* k1, QKeyCombination* k2, QKeyCombination* k3, QKeyCombination* k4) {
-    return new QKeySequence(*k1, *k2, *k3, *k4);
 }
 
 int QKeySequence_Count(const QKeySequence* self) {
@@ -146,8 +129,8 @@ QVariant* QKeySequence_ToQVariant(const QKeySequence* self) {
     return new QVariant(self->operator QVariant());
 }
 
-QKeyCombination* QKeySequence_OperatorSubscript(const QKeySequence* self, unsigned int i) {
-    return new QKeyCombination(self->operator[](static_cast<uint>(i)));
+int QKeySequence_OperatorSubscript(const QKeySequence* self, unsigned int i) {
+    return self->operator[](static_cast<uint>(i));
 }
 
 void QKeySequence_OperatorAssign(QKeySequence* self, QKeySequence* other) {

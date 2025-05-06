@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -18,8 +20,8 @@ extern "C" {
 #else
 typedef struct QChar QChar;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QLocale QLocale;
+typedef struct QTextCodec QTextCodec;
 typedef struct QTextStream QTextStream;
 #endif
 
@@ -41,8 +43,9 @@ QTextStream* QTextStream_new();
 QTextStream* QTextStream_new2(QIODevice* device);
 QTextStream* QTextStream_new3(libqt_string array);
 QTextStream* QTextStream_new4(libqt_string array, int openMode);
-void QTextStream_SetEncoding(QTextStream* self, int encoding);
-int QTextStream_Encoding(const QTextStream* self);
+void QTextStream_SetCodec(QTextStream* self, QTextCodec* codec);
+void QTextStream_SetCodecWithCodecName(QTextStream* self, const char* codecName);
+QTextCodec* QTextStream_Codec(const QTextStream* self);
 void QTextStream_SetAutoDetectUnicode(QTextStream* self, bool enabled);
 bool QTextStream_AutoDetectUnicode(const QTextStream* self);
 void QTextStream_SetGenerateByteOrderMark(QTextStream* self, bool generate);

@@ -1,17 +1,15 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDateTime>
 #include <QEvent>
 #include <QFileDevice>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -36,6 +34,18 @@ int QFileDevice_Metacall(QFileDevice* self, int param1, int param2, void** param
 
 libqt_string QFileDevice_Tr(const char* s) {
     QString _ret = QFileDevice::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFileDevice_TrUtf8(const char* s) {
+    QString _ret = QFileDevice::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -150,12 +160,36 @@ libqt_string QFileDevice_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QFileDevice_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFileDevice::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFileDevice_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFileDevice::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 unsigned char* QFileDevice_Map3(QFileDevice* self, long long offset, long long size, int flags) {
     return static_cast<unsigned char*>(self->map(static_cast<qint64>(offset), static_cast<qint64>(size), static_cast<QFileDevice::MemoryMapFlags>(flags)));
 }
 
 bool QFileDevice_Open(QFileDevice* self, int mode) {
-    return self->open(static_cast<QIODeviceBase::OpenMode>(mode));
+    return self->open(static_cast<QIODevice::OpenMode>(mode));
 }
 
 bool QFileDevice_Reset(QFileDevice* self) {

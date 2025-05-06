@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -125,6 +122,18 @@ libqt_string QFrame_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QFrame_TrUtf8(const char* s) {
+    QString _ret = QFrame::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 int QFrame_FrameStyle(const QFrame* self) {
     return self->frameStyle();
 }
@@ -191,6 +200,30 @@ libqt_string QFrame_Tr2(const char* s, const char* c) {
 
 libqt_string QFrame_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFrame::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFrame_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFrame::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFrame_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFrame::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -302,32 +335,6 @@ void QFrame_QBaseChangeEvent(QFrame* self, QEvent* param1) {
 void QFrame_OnChangeEvent(QFrame* self, intptr_t slot) {
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
         vqframe->setQFrame_ChangeEvent_Callback(reinterpret_cast<VirtualQFrame::QFrame_ChangeEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QFrame_InitStyleOption(const QFrame* self, QStyleOptionFrame* option) {
-    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
-        vqframe->initStyleOption(option);
-    } else {
-        vqframe->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QFrame_QBaseInitStyleOption(const QFrame* self, QStyleOptionFrame* option) {
-    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
-        vqframe->setQFrame_InitStyleOption_IsBase(true);
-        vqframe->initStyleOption(option);
-    } else {
-        vqframe->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFrame_OnInitStyleOption(const QFrame* self, intptr_t slot) {
-    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
-        vqframe->setQFrame_InitStyleOption_Callback(reinterpret_cast<VirtualQFrame::QFrame_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -722,7 +729,7 @@ void QFrame_OnFocusOutEvent(QFrame* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFrame_EnterEvent(QFrame* self, QEnterEvent* event) {
+void QFrame_EnterEvent(QFrame* self, QEvent* event) {
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
         vqframe->enterEvent(event);
     } else {
@@ -731,7 +738,7 @@ void QFrame_EnterEvent(QFrame* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QFrame_QBaseEnterEvent(QFrame* self, QEnterEvent* event) {
+void QFrame_QBaseEnterEvent(QFrame* self, QEvent* event) {
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
         vqframe->setQFrame_EnterEvent_IsBase(true);
         vqframe->enterEvent(event);
@@ -1086,23 +1093,23 @@ void QFrame_OnHideEvent(QFrame* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QFrame_NativeEvent(QFrame* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFrame_NativeEvent(QFrame* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
-        return vqframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QFrame_QBaseNativeEvent(QFrame* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFrame_QBaseNativeEvent(QFrame* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
         vqframe->setQFrame_NativeEvent_IsBase(true);
-        return vqframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1474,6 +1481,32 @@ void QFrame_QBaseDrawFrame(QFrame* self, QPainter* param1) {
 void QFrame_OnDrawFrame(QFrame* self, intptr_t slot) {
     if (auto* vqframe = dynamic_cast<VirtualQFrame*>(self)) {
         vqframe->setQFrame_DrawFrame_Callback(reinterpret_cast<VirtualQFrame::QFrame_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QFrame_InitStyleOption(const QFrame* self, QStyleOptionFrame* option) {
+    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
+        vqframe->initStyleOption(option);
+    } else {
+        vqframe->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QFrame_QBaseInitStyleOption(const QFrame* self, QStyleOptionFrame* option) {
+    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
+        vqframe->setQFrame_InitStyleOption_IsBase(true);
+        vqframe->initStyleOption(option);
+    } else {
+        vqframe->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QFrame_OnInitStyleOption(const QFrame* self, intptr_t slot) {
+    if (auto* vqframe = const_cast<VirtualQFrame*>(dynamic_cast<const VirtualQFrame*>(self))) {
+        vqframe->setQFrame_InitStyleOption_Callback(reinterpret_cast<VirtualQFrame::QFrame_InitStyleOption_Callback>(slot));
     }
 }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QColor QColor;
 typedef struct QEvent QEvent;
@@ -29,6 +29,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QSyntaxHighlighter QSyntaxHighlighter;
 typedef struct QTextBlock QTextBlock;
 typedef struct QTextBlockUserData QTextBlockUserData;
@@ -47,6 +48,7 @@ int QSyntaxHighlighter_Metacall(QSyntaxHighlighter* self, int param1, int param2
 void QSyntaxHighlighter_OnMetacall(QSyntaxHighlighter* self, intptr_t slot);
 int QSyntaxHighlighter_QBaseMetacall(QSyntaxHighlighter* self, int param1, int param2, void** param3);
 libqt_string QSyntaxHighlighter_Tr(const char* s);
+libqt_string QSyntaxHighlighter_TrUtf8(const char* s);
 void QSyntaxHighlighter_SetDocument(QSyntaxHighlighter* self, QTextDocument* doc);
 QTextDocument* QSyntaxHighlighter_Document(const QSyntaxHighlighter* self);
 void QSyntaxHighlighter_Rehighlight(QSyntaxHighlighter* self);
@@ -56,6 +58,8 @@ void QSyntaxHighlighter_OnHighlightBlock(QSyntaxHighlighter* self, intptr_t slot
 void QSyntaxHighlighter_QBaseHighlightBlock(QSyntaxHighlighter* self, libqt_string text);
 libqt_string QSyntaxHighlighter_Tr2(const char* s, const char* c);
 libqt_string QSyntaxHighlighter_Tr3(const char* s, const char* c, int n);
+libqt_string QSyntaxHighlighter_TrUtf82(const char* s, const char* c);
+libqt_string QSyntaxHighlighter_TrUtf83(const char* s, const char* c, int n);
 bool QSyntaxHighlighter_Event(QSyntaxHighlighter* self, QEvent* event);
 void QSyntaxHighlighter_OnEvent(QSyntaxHighlighter* self, intptr_t slot);
 bool QSyntaxHighlighter_QBaseEvent(QSyntaxHighlighter* self, QEvent* event);

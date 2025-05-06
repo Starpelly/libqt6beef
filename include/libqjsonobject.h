@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -26,8 +28,9 @@ typedef struct QJsonObject QJsonObject;
 typedef struct QJsonObject__const_iterator QJsonObject__const_iterator;
 typedef struct QJsonObject__iterator QJsonObject__iterator;
 typedef struct QJsonValue QJsonValue;
-typedef struct QJsonValueConstRef QJsonValueConstRef;
+typedef struct QJsonValuePtr QJsonValuePtr;
 typedef struct QJsonValueRef QJsonValueRef;
+typedef struct QJsonValueRefPtr QJsonValueRefPtr;
 typedef struct QVariant QVariant;
 #endif
 
@@ -43,11 +46,11 @@ typedef QJsonObject::key_type key_type;                                     // C
 typedef QJsonObject::mapped_type mapped_type;                               // C++ QFlags
 typedef QJsonObject::size_type size_type;                                   // C++ QFlags
 #else
-typedef QJsonValue* iteratorvalue_type;    // C ABI QFlags
-typedef QJsonValueRef* iteratorpointer;    // C ABI QFlags
-typedef QJsonValueRef* iteratorreference;  // C ABI QFlags
-typedef ptrdiff_t iteratordifference_type; // C ABI QFlags
-typedef ptrdiff_t size_type;               // C ABI QFlags
+typedef QJsonValue* iteratorvalue_type;   // C ABI QFlags
+typedef QJsonValuePtr* iteratorpointer;   // C ABI QFlags
+typedef QJsonValueRef* iteratorreference; // C ABI QFlags
+typedef int iteratordifference_type;      // C ABI QFlags
+typedef int size_type;                    // C ABI QFlags
 #endif
 
 QJsonObject* QJsonObject_new();
@@ -59,9 +62,9 @@ libqt_map /* of libqt_string to QVariant* */ QJsonObject_ToVariantMap(const QJso
 QJsonObject* QJsonObject_FromVariantHash(libqt_map /* of libqt_string to QVariant* */ mapVal);
 libqt_map /* of libqt_string to QVariant* */ QJsonObject_ToVariantHash(const QJsonObject* self);
 libqt_list /* of libqt_string */ QJsonObject_Keys(const QJsonObject* self);
-ptrdiff_t QJsonObject_Size(const QJsonObject* self);
-ptrdiff_t QJsonObject_Count(const QJsonObject* self);
-ptrdiff_t QJsonObject_Length(const QJsonObject* self);
+int QJsonObject_Size(const QJsonObject* self);
+int QJsonObject_Count(const QJsonObject* self);
+int QJsonObject_Length(const QJsonObject* self);
 bool QJsonObject_IsEmpty(const QJsonObject* self);
 QJsonValue* QJsonObject_Value(const QJsonObject* self, libqt_string key);
 QJsonValue* QJsonObject_OperatorSubscript(const QJsonObject* self, libqt_string key);
@@ -86,16 +89,17 @@ bool QJsonObject_Empty(const QJsonObject* self);
 void QJsonObject_Delete(QJsonObject* self);
 
 QJsonObject__iterator* QJsonObject__iterator_new(QJsonObject__iterator* other);
-QJsonObject__iterator* QJsonObject__iterator_new2();
-QJsonObject__iterator* QJsonObject__iterator_new3(QJsonObject* obj, ptrdiff_t index);
-QJsonObject__iterator* QJsonObject__iterator_new4(QJsonObject__iterator* other);
-void QJsonObject__iterator_OperatorAssign(QJsonObject__iterator* self, QJsonObject__iterator* other);
+QJsonObject__iterator* QJsonObject__iterator_new2(QJsonObject__iterator* other);
+QJsonObject__iterator* QJsonObject__iterator_new3();
+QJsonObject__iterator* QJsonObject__iterator_new4(QJsonObject* obj, int index);
+QJsonObject__iterator* QJsonObject__iterator_new5(QJsonObject__iterator* param1);
+void QJsonObject__iterator_CopyAssign(QJsonObject__iterator* self, QJsonObject__iterator* other);
+void QJsonObject__iterator_MoveAssign(QJsonObject__iterator* self, QJsonObject__iterator* other);
 libqt_string QJsonObject__iterator_Key(const QJsonObject__iterator* self);
 QJsonValueRef* QJsonObject__iterator_Value(const QJsonObject__iterator* self);
 QJsonValueRef* QJsonObject__iterator_OperatorMultiply(const QJsonObject__iterator* self);
-QJsonValueConstRef* QJsonObject__iterator_OperatorMinusGreater(const QJsonObject__iterator* self);
-QJsonValueRef* QJsonObject__iterator_OperatorMinusGreater2(QJsonObject__iterator* self);
-QJsonValueRef* QJsonObject__iterator_OperatorSubscript(const QJsonObject__iterator* self, ptrdiff_t j);
+QJsonValueRefPtr* QJsonObject__iterator_OperatorMinusGreater(const QJsonObject__iterator* self);
+QJsonValueRef* QJsonObject__iterator_OperatorSubscript(QJsonObject__iterator* self, int j);
 bool QJsonObject__iterator_OperatorEqual(const QJsonObject__iterator* self, QJsonObject__iterator* other);
 bool QJsonObject__iterator_OperatorNotEqual(const QJsonObject__iterator* self, QJsonObject__iterator* other);
 bool QJsonObject__iterator_OperatorLesser(const QJsonObject__iterator* self, QJsonObject__iterator* other);
@@ -106,11 +110,11 @@ QJsonObject__iterator* QJsonObject__iterator_OperatorPlusPlus(QJsonObject__itera
 QJsonObject__iterator* QJsonObject__iterator_OperatorPlusPlusWithInt(QJsonObject__iterator* self, int param1);
 QJsonObject__iterator* QJsonObject__iterator_OperatorMinusMinus(QJsonObject__iterator* self);
 QJsonObject__iterator* QJsonObject__iterator_OperatorMinusMinusWithInt(QJsonObject__iterator* self, int param1);
-QJsonObject__iterator* QJsonObject__iterator_OperatorPlus(const QJsonObject__iterator* self, ptrdiff_t j);
-QJsonObject__iterator* QJsonObject__iterator_OperatorMinus(const QJsonObject__iterator* self, ptrdiff_t j);
-QJsonObject__iterator* QJsonObject__iterator_OperatorPlusAssign(QJsonObject__iterator* self, ptrdiff_t j);
-QJsonObject__iterator* QJsonObject__iterator_OperatorMinusAssign(QJsonObject__iterator* self, ptrdiff_t j);
-ptrdiff_t QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(const QJsonObject__iterator* self, QJsonObject__iterator* j);
+QJsonObject__iterator* QJsonObject__iterator_OperatorPlus(const QJsonObject__iterator* self, int j);
+QJsonObject__iterator* QJsonObject__iterator_OperatorMinus(const QJsonObject__iterator* self, int j);
+QJsonObject__iterator* QJsonObject__iterator_OperatorPlusAssign(QJsonObject__iterator* self, int j);
+QJsonObject__iterator* QJsonObject__iterator_OperatorMinusAssign(QJsonObject__iterator* self, int j);
+int QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(const QJsonObject__iterator* self, QJsonObject__iterator* j);
 bool QJsonObject__iterator_OperatorEqualWithOther(const QJsonObject__iterator* self, QJsonObject__const_iterator* other);
 bool QJsonObject__iterator_OperatorNotEqualWithOther(const QJsonObject__iterator* self, QJsonObject__const_iterator* other);
 bool QJsonObject__iterator_OperatorLesserWithOther(const QJsonObject__iterator* self, QJsonObject__const_iterator* other);
@@ -120,16 +124,18 @@ bool QJsonObject__iterator_OperatorGreaterOrEqualWithOther(const QJsonObject__it
 void QJsonObject__iterator_Delete(QJsonObject__iterator* self);
 
 QJsonObject__const_iterator* QJsonObject__const_iterator_new(QJsonObject__const_iterator* other);
-QJsonObject__const_iterator* QJsonObject__const_iterator_new2();
-QJsonObject__const_iterator* QJsonObject__const_iterator_new3(QJsonObject* obj, ptrdiff_t index);
-QJsonObject__const_iterator* QJsonObject__const_iterator_new4(QJsonObject__iterator* other);
-QJsonObject__const_iterator* QJsonObject__const_iterator_new5(QJsonObject__const_iterator* other);
-void QJsonObject__const_iterator_OperatorAssign(QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
+QJsonObject__const_iterator* QJsonObject__const_iterator_new2(QJsonObject__const_iterator* other);
+QJsonObject__const_iterator* QJsonObject__const_iterator_new3();
+QJsonObject__const_iterator* QJsonObject__const_iterator_new4(QJsonObject* obj, int index);
+QJsonObject__const_iterator* QJsonObject__const_iterator_new5(QJsonObject__iterator* other);
+QJsonObject__const_iterator* QJsonObject__const_iterator_new6(QJsonObject__const_iterator* param1);
+void QJsonObject__const_iterator_CopyAssign(QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
+void QJsonObject__const_iterator_MoveAssign(QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
 libqt_string QJsonObject__const_iterator_Key(const QJsonObject__const_iterator* self);
-QJsonValueConstRef* QJsonObject__const_iterator_Value(const QJsonObject__const_iterator* self);
-QJsonValueConstRef* QJsonObject__const_iterator_OperatorMultiply(const QJsonObject__const_iterator* self);
-QJsonValueConstRef* QJsonObject__const_iterator_OperatorMinusGreater(const QJsonObject__const_iterator* self);
-QJsonValueConstRef* QJsonObject__const_iterator_OperatorSubscript(const QJsonObject__const_iterator* self, ptrdiff_t j);
+QJsonValue* QJsonObject__const_iterator_Value(const QJsonObject__const_iterator* self);
+QJsonValue* QJsonObject__const_iterator_OperatorMultiply(const QJsonObject__const_iterator* self);
+QJsonValuePtr* QJsonObject__const_iterator_OperatorMinusGreater(const QJsonObject__const_iterator* self);
+QJsonValue* QJsonObject__const_iterator_OperatorSubscript(QJsonObject__const_iterator* self, int j);
 bool QJsonObject__const_iterator_OperatorEqual(const QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
 bool QJsonObject__const_iterator_OperatorNotEqual(const QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
 bool QJsonObject__const_iterator_OperatorLesser(const QJsonObject__const_iterator* self, QJsonObject__const_iterator* other);
@@ -140,11 +146,11 @@ QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusPlus(QJsonO
 QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusPlusWithInt(QJsonObject__const_iterator* self, int param1);
 QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusMinus(QJsonObject__const_iterator* self);
 QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusMinusWithInt(QJsonObject__const_iterator* self, int param1);
-QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlus(const QJsonObject__const_iterator* self, ptrdiff_t j);
-QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinus(const QJsonObject__const_iterator* self, ptrdiff_t j);
-QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusAssign(QJsonObject__const_iterator* self, ptrdiff_t j);
-QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusAssign(QJsonObject__const_iterator* self, ptrdiff_t j);
-ptrdiff_t QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(const QJsonObject__const_iterator* self, QJsonObject__const_iterator* j);
+QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlus(const QJsonObject__const_iterator* self, int j);
+QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinus(const QJsonObject__const_iterator* self, int j);
+QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusAssign(QJsonObject__const_iterator* self, int j);
+QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusAssign(QJsonObject__const_iterator* self, int j);
+int QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(const QJsonObject__const_iterator* self, QJsonObject__const_iterator* j);
 bool QJsonObject__const_iterator_OperatorEqualWithOther(const QJsonObject__const_iterator* self, QJsonObject__iterator* other);
 bool QJsonObject__const_iterator_OperatorNotEqualWithOther(const QJsonObject__const_iterator* self, QJsonObject__iterator* other);
 bool QJsonObject__const_iterator_OperatorLesserWithOther(const QJsonObject__const_iterator* self, QJsonObject__iterator* other);

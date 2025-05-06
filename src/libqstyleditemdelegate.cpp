@@ -1,11 +1,10 @@
 #include <QAbstractItemDelegate>
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
+#include <QFontMetrics>
 #include <QHelpEvent>
 #include <QItemEditorFactory>
 #include <QList>
@@ -15,6 +14,7 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QModelIndex>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPainter>
 #include <QSize>
 #include <QString>
@@ -83,6 +83,18 @@ libqt_string QStyledItemDelegate_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QStyledItemDelegate_TrUtf8(const char* s) {
+    QString _ret = QStyledItemDelegate::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QItemEditorFactory* QStyledItemDelegate_ItemEditorFactory(const QStyledItemDelegate* self) {
     return self->itemEditorFactory();
 }
@@ -105,6 +117,30 @@ libqt_string QStyledItemDelegate_Tr2(const char* s, const char* c) {
 
 libqt_string QStyledItemDelegate_Tr3(const char* s, const char* c, int n) {
     QString _ret = QStyledItemDelegate::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStyledItemDelegate_TrUtf82(const char* s, const char* c) {
+    QString _ret = QStyledItemDelegate::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStyledItemDelegate_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QStyledItemDelegate::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -462,7 +498,7 @@ void QStyledItemDelegate_OnHelpEvent(QStyledItemDelegate* self, intptr_t slot) {
 // Derived class handler implementation
 libqt_list /* of int */ QStyledItemDelegate_PaintingRoles(const QStyledItemDelegate* self) {
     if (auto* vqstyleditemdelegate = const_cast<VirtualQStyledItemDelegate*>(dynamic_cast<const VirtualQStyledItemDelegate*>(self))) {
-        QList<int> _ret = vqstyleditemdelegate->paintingRoles();
+        QVector<int> _ret = vqstyleditemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -473,7 +509,7 @@ libqt_list /* of int */ QStyledItemDelegate_PaintingRoles(const QStyledItemDeleg
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QList<int> _ret = vqstyleditemdelegate->paintingRoles();
+        QVector<int> _ret = vqstyleditemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -490,7 +526,7 @@ libqt_list /* of int */ QStyledItemDelegate_PaintingRoles(const QStyledItemDeleg
 libqt_list /* of int */ QStyledItemDelegate_QBasePaintingRoles(const QStyledItemDelegate* self) {
     if (auto* vqstyleditemdelegate = const_cast<VirtualQStyledItemDelegate*>(dynamic_cast<const VirtualQStyledItemDelegate*>(self))) {
         vqstyleditemdelegate->setQStyledItemDelegate_PaintingRoles_IsBase(true);
-        QList<int> _ret = vqstyleditemdelegate->paintingRoles();
+        QVector<int> _ret = vqstyleditemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -501,7 +537,7 @@ libqt_list /* of int */ QStyledItemDelegate_QBasePaintingRoles(const QStyledItem
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QList<int> _ret = vqstyleditemdelegate->paintingRoles();
+        QVector<int> _ret = vqstyleditemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {

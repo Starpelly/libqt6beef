@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDtls>
@@ -12,6 +10,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QSslCipher>
 #include <QSslConfiguration>
 #include <QSslError>
@@ -80,6 +79,18 @@ libqt_string QDtlsClientVerifier_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QDtlsClientVerifier_TrUtf8(const char* s) {
+    QString _ret = QDtlsClientVerifier::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QDtlsClientVerifier_SetCookieGeneratorParameters(QDtlsClientVerifier* self, QDtlsClientVerifier__GeneratorParameters* params) {
     return self->setCookieGeneratorParameters(*params);
 }
@@ -133,6 +144,30 @@ libqt_string QDtlsClientVerifier_Tr2(const char* s, const char* c) {
 
 libqt_string QDtlsClientVerifier_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDtlsClientVerifier::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDtlsClientVerifier_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDtlsClientVerifier::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDtlsClientVerifier_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDtlsClientVerifier::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -486,6 +521,18 @@ libqt_string QDtls_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QDtls_TrUtf8(const char* s) {
+    QString _ret = QDtls::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QDtls_SetPeer(QDtls* self, QHostAddress* address, uint16_t port) {
     return self->setPeer(*address, static_cast<quint16>(port));
 }
@@ -612,7 +659,7 @@ libqt_string QDtls_DtlsErrorString(const QDtls* self) {
 }
 
 libqt_list /* of QSslError* */ QDtls_PeerVerificationErrors(const QDtls* self) {
-    QList<QSslError> _ret = self->peerVerificationErrors();
+    QVector<QSslError> _ret = self->peerVerificationErrors();
     // Convert QList<> from C++ memory to manually-managed C memory
     QSslError** _arr = static_cast<QSslError**>(malloc(sizeof(QSslError*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -625,7 +672,7 @@ libqt_list /* of QSslError* */ QDtls_PeerVerificationErrors(const QDtls* self) {
 }
 
 void QDtls_IgnoreVerificationErrors(QDtls* self, libqt_list /* of QSslError* */ errorsToIgnore) {
-    QList<QSslError> errorsToIgnore_QList;
+    QVector<QSslError> errorsToIgnore_QList;
     errorsToIgnore_QList.reserve(errorsToIgnore.len);
     QSslError** errorsToIgnore_arr = static_cast<QSslError**>(errorsToIgnore.data);
     for (size_t i = 0; i < errorsToIgnore.len; ++i) {
@@ -671,6 +718,30 @@ libqt_string QDtls_Tr2(const char* s, const char* c) {
 
 libqt_string QDtls_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDtls::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDtls_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDtls::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDtls_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDtls::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

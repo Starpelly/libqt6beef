@@ -1,7 +1,5 @@
 #include <QAbstractItemModel>
 #include <QAbstractListModel>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDataStream>
@@ -13,8 +11,8 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QModelIndex>
-#include <QModelRoleDataSpan>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPersistentModelIndex>
 #include <QSize>
 #include <QString>
@@ -103,6 +101,18 @@ libqt_string QStringListModel_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QStringListModel_TrUtf8(const char* s) {
+    QString _ret = QStringListModel::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_list /* of libqt_string */ QStringListModel_StringList(const QStringListModel* self) {
     QStringList _ret = self->stringList();
     // Convert QList<> from C++ memory to manually-managed C memory
@@ -149,6 +159,30 @@ libqt_string QStringListModel_Tr2(const char* s, const char* c) {
 
 libqt_string QStringListModel_Tr3(const char* s, const char* c, int n) {
     QString _ret = QStringListModel::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStringListModel_TrUtf82(const char* s, const char* c) {
+    QString _ret = QStringListModel::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStringListModel_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QStringListModel::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -260,32 +294,6 @@ bool QStringListModel_QBaseSetData(QStringListModel* self, QModelIndex* index, Q
 void QStringListModel_OnSetData(QStringListModel* self, intptr_t slot) {
     if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
         vqstringlistmodel->setQStringListModel_SetData_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_SetData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QStringListModel_ClearItemData(QStringListModel* self, QModelIndex* index) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        return vqstringlistmodel->clearItemData(*index);
-    } else {
-        return vqstringlistmodel->clearItemData(*index);
-    }
-}
-
-// Base class handler implementation
-bool QStringListModel_QBaseClearItemData(QStringListModel* self, QModelIndex* index) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        vqstringlistmodel->setQStringListModel_ClearItemData_IsBase(true);
-        return vqstringlistmodel->clearItemData(*index);
-    } else {
-        return vqstringlistmodel->clearItemData(*index);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QStringListModel_OnClearItemData(QStringListModel* self, intptr_t slot) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        vqstringlistmodel->setQStringListModel_ClearItemData_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_ClearItemData_Callback>(slot));
     }
 }
 
@@ -1204,32 +1212,6 @@ void QStringListModel_OnRoleNames(const QStringListModel* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QStringListModel_MultiData(const QStringListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
-    if (auto* vqstringlistmodel = const_cast<VirtualQStringListModel*>(dynamic_cast<const VirtualQStringListModel*>(self))) {
-        vqstringlistmodel->multiData(*index, *roleDataSpan);
-    } else {
-        vqstringlistmodel->multiData(*index, *roleDataSpan);
-    }
-}
-
-// Base class handler implementation
-void QStringListModel_QBaseMultiData(const QStringListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan) {
-    if (auto* vqstringlistmodel = const_cast<VirtualQStringListModel*>(dynamic_cast<const VirtualQStringListModel*>(self))) {
-        vqstringlistmodel->setQStringListModel_MultiData_IsBase(true);
-        vqstringlistmodel->multiData(*index, *roleDataSpan);
-    } else {
-        vqstringlistmodel->multiData(*index, *roleDataSpan);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QStringListModel_OnMultiData(const QStringListModel* self, intptr_t slot) {
-    if (auto* vqstringlistmodel = const_cast<VirtualQStringListModel*>(dynamic_cast<const VirtualQStringListModel*>(self))) {
-        vqstringlistmodel->setQStringListModel_MultiData_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_MultiData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 bool QStringListModel_Submit(QStringListModel* self) {
     if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
         return vqstringlistmodel->submit();
@@ -1278,32 +1260,6 @@ void QStringListModel_QBaseRevert(QStringListModel* self) {
 void QStringListModel_OnRevert(QStringListModel* self, intptr_t slot) {
     if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
         vqstringlistmodel->setQStringListModel_Revert_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_Revert_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QStringListModel_ResetInternalData(QStringListModel* self) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        vqstringlistmodel->resetInternalData();
-    } else {
-        vqstringlistmodel->resetInternalData();
-    }
-}
-
-// Base class handler implementation
-void QStringListModel_QBaseResetInternalData(QStringListModel* self) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        vqstringlistmodel->setQStringListModel_ResetInternalData_IsBase(true);
-        vqstringlistmodel->resetInternalData();
-    } else {
-        vqstringlistmodel->resetInternalData();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QStringListModel_OnResetInternalData(QStringListModel* self, intptr_t slot) {
-    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
-        vqstringlistmodel->setQStringListModel_ResetInternalData_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_ResetInternalData_Callback>(slot));
     }
 }
 
@@ -1486,6 +1442,32 @@ void QStringListModel_QBaseDisconnectNotify(QStringListModel* self, QMetaMethod*
 void QStringListModel_OnDisconnectNotify(QStringListModel* self, intptr_t slot) {
     if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
         vqstringlistmodel->setQStringListModel_DisconnectNotify_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QStringListModel_ResetInternalData(QStringListModel* self) {
+    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
+        vqstringlistmodel->resetInternalData();
+    } else {
+        vqstringlistmodel->resetInternalData();
+    }
+}
+
+// Base class handler implementation
+void QStringListModel_QBaseResetInternalData(QStringListModel* self) {
+    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
+        vqstringlistmodel->setQStringListModel_ResetInternalData_IsBase(true);
+        vqstringlistmodel->resetInternalData();
+    } else {
+        vqstringlistmodel->resetInternalData();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QStringListModel_OnResetInternalData(QStringListModel* self, intptr_t slot) {
+    if (auto* vqstringlistmodel = dynamic_cast<VirtualQStringListModel*>(self)) {
+        vqstringlistmodel->setQStringListModel_ResetInternalData_Callback(reinterpret_cast<VirtualQStringListModel::QStringListModel_ResetInternalData_Callback>(slot));
     }
 }
 

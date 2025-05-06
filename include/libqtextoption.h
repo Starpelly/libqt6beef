@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -48,6 +50,8 @@ void QTextOption_SetWrapMode(QTextOption* self, int wrap);
 int QTextOption_WrapMode(const QTextOption* self);
 void QTextOption_SetFlags(QTextOption* self, int flags);
 int QTextOption_Flags(const QTextOption* self);
+void QTextOption_SetTabStop(QTextOption* self, double tabStop);
+double QTextOption_TabStop(const QTextOption* self);
 void QTextOption_SetTabStopDistance(QTextOption* self, double tabStopDistance);
 double QTextOption_TabStopDistance(const QTextOption* self);
 void QTextOption_SetTabArray(QTextOption* self, libqt_list /* of double */ tabStops);
@@ -62,7 +66,8 @@ QTextOption__Tab* QTextOption__Tab_new(QTextOption__Tab* other);
 QTextOption__Tab* QTextOption__Tab_new2(QTextOption__Tab* other);
 QTextOption__Tab* QTextOption__Tab_new3();
 QTextOption__Tab* QTextOption__Tab_new4(double pos, int tabType);
-QTextOption__Tab* QTextOption__Tab_new5(double pos, int tabType, QChar* delim);
+QTextOption__Tab* QTextOption__Tab_new5(QTextOption__Tab* param1);
+QTextOption__Tab* QTextOption__Tab_new6(double pos, int tabType, QChar* delim);
 void QTextOption__Tab_CopyAssign(QTextOption__Tab* self, QTextOption__Tab* other);
 void QTextOption__Tab_MoveAssign(QTextOption__Tab* self, QTextOption__Tab* other);
 bool QTextOption__Tab_OperatorEqual(const QTextOption__Tab* self, QTextOption__Tab* other);

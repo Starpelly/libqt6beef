@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -91,9 +90,8 @@ int QKeySequenceEdit_Metacall(QKeySequenceEdit* self, int param1, int param2, vo
 void QKeySequenceEdit_OnMetacall(QKeySequenceEdit* self, intptr_t slot);
 int QKeySequenceEdit_QBaseMetacall(QKeySequenceEdit* self, int param1, int param2, void** param3);
 libqt_string QKeySequenceEdit_Tr(const char* s);
+libqt_string QKeySequenceEdit_TrUtf8(const char* s);
 QKeySequence* QKeySequenceEdit_KeySequence(const QKeySequenceEdit* self);
-void QKeySequenceEdit_SetClearButtonEnabled(QKeySequenceEdit* self, bool enable);
-bool QKeySequenceEdit_IsClearButtonEnabled(const QKeySequenceEdit* self);
 void QKeySequenceEdit_SetKeySequence(QKeySequenceEdit* self, QKeySequence* keySequence);
 void QKeySequenceEdit_Clear(QKeySequenceEdit* self);
 void QKeySequenceEdit_EditingFinished(QKeySequenceEdit* self);
@@ -112,11 +110,10 @@ void QKeySequenceEdit_QBaseKeyReleaseEvent(QKeySequenceEdit* self, QKeyEvent* pa
 void QKeySequenceEdit_TimerEvent(QKeySequenceEdit* self, QTimerEvent* param1);
 void QKeySequenceEdit_OnTimerEvent(QKeySequenceEdit* self, intptr_t slot);
 void QKeySequenceEdit_QBaseTimerEvent(QKeySequenceEdit* self, QTimerEvent* param1);
-void QKeySequenceEdit_FocusOutEvent(QKeySequenceEdit* self, QFocusEvent* param1);
-void QKeySequenceEdit_OnFocusOutEvent(QKeySequenceEdit* self, intptr_t slot);
-void QKeySequenceEdit_QBaseFocusOutEvent(QKeySequenceEdit* self, QFocusEvent* param1);
 libqt_string QKeySequenceEdit_Tr2(const char* s, const char* c);
 libqt_string QKeySequenceEdit_Tr3(const char* s, const char* c, int n);
+libqt_string QKeySequenceEdit_TrUtf82(const char* s, const char* c);
+libqt_string QKeySequenceEdit_TrUtf83(const char* s, const char* c, int n);
 int QKeySequenceEdit_DevType(const QKeySequenceEdit* self);
 void QKeySequenceEdit_OnDevType(const QKeySequenceEdit* self, intptr_t slot);
 int QKeySequenceEdit_QBaseDevType(const QKeySequenceEdit* self);
@@ -156,9 +153,12 @@ void QKeySequenceEdit_QBaseWheelEvent(QKeySequenceEdit* self, QWheelEvent* event
 void QKeySequenceEdit_FocusInEvent(QKeySequenceEdit* self, QFocusEvent* event);
 void QKeySequenceEdit_OnFocusInEvent(QKeySequenceEdit* self, intptr_t slot);
 void QKeySequenceEdit_QBaseFocusInEvent(QKeySequenceEdit* self, QFocusEvent* event);
-void QKeySequenceEdit_EnterEvent(QKeySequenceEdit* self, QEnterEvent* event);
+void QKeySequenceEdit_FocusOutEvent(QKeySequenceEdit* self, QFocusEvent* event);
+void QKeySequenceEdit_OnFocusOutEvent(QKeySequenceEdit* self, intptr_t slot);
+void QKeySequenceEdit_QBaseFocusOutEvent(QKeySequenceEdit* self, QFocusEvent* event);
+void QKeySequenceEdit_EnterEvent(QKeySequenceEdit* self, QEvent* event);
 void QKeySequenceEdit_OnEnterEvent(QKeySequenceEdit* self, intptr_t slot);
-void QKeySequenceEdit_QBaseEnterEvent(QKeySequenceEdit* self, QEnterEvent* event);
+void QKeySequenceEdit_QBaseEnterEvent(QKeySequenceEdit* self, QEvent* event);
 void QKeySequenceEdit_LeaveEvent(QKeySequenceEdit* self, QEvent* event);
 void QKeySequenceEdit_OnLeaveEvent(QKeySequenceEdit* self, intptr_t slot);
 void QKeySequenceEdit_QBaseLeaveEvent(QKeySequenceEdit* self, QEvent* event);
@@ -201,9 +201,9 @@ void QKeySequenceEdit_QBaseShowEvent(QKeySequenceEdit* self, QShowEvent* event);
 void QKeySequenceEdit_HideEvent(QKeySequenceEdit* self, QHideEvent* event);
 void QKeySequenceEdit_OnHideEvent(QKeySequenceEdit* self, intptr_t slot);
 void QKeySequenceEdit_QBaseHideEvent(QKeySequenceEdit* self, QHideEvent* event);
-bool QKeySequenceEdit_NativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, intptr_t* result);
+bool QKeySequenceEdit_NativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, long* result);
 void QKeySequenceEdit_OnNativeEvent(QKeySequenceEdit* self, intptr_t slot);
-bool QKeySequenceEdit_QBaseNativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, intptr_t* result);
+bool QKeySequenceEdit_QBaseNativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, long* result);
 void QKeySequenceEdit_ChangeEvent(QKeySequenceEdit* self, QEvent* param1);
 void QKeySequenceEdit_OnChangeEvent(QKeySequenceEdit* self, intptr_t slot);
 void QKeySequenceEdit_QBaseChangeEvent(QKeySequenceEdit* self, QEvent* param1);

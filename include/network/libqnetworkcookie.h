@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -22,13 +24,9 @@ typedef struct QUrl QUrl;
 #endif
 
 #ifdef __cplusplus
-typedef QNetworkCookie::QtGadgetHelper QtGadgetHelper; // C++ QFlags
-typedef QNetworkCookie::RawForm RawForm;               // C++ enum
-typedef QNetworkCookie::SameSite SameSite;             // C++ enum
+typedef QNetworkCookie::RawForm RawForm; // C++ enum
 #else
-typedef int RawForm;         // C ABI enum
-typedef int SameSite;        // C ABI enum
-typedef void QtGadgetHelper; // C ABI QFlags
+typedef int RawForm; // C ABI enum
 #endif
 
 QNetworkCookie* QNetworkCookie_new();
@@ -43,8 +41,6 @@ bool QNetworkCookie_IsSecure(const QNetworkCookie* self);
 void QNetworkCookie_SetSecure(QNetworkCookie* self, bool enable);
 bool QNetworkCookie_IsHttpOnly(const QNetworkCookie* self);
 void QNetworkCookie_SetHttpOnly(QNetworkCookie* self, bool enable);
-int QNetworkCookie_SameSitePolicy(const QNetworkCookie* self);
-void QNetworkCookie_SetSameSitePolicy(QNetworkCookie* self, int sameSite);
 bool QNetworkCookie_IsSessionCookie(const QNetworkCookie* self);
 QDateTime* QNetworkCookie_ExpirationDate(const QNetworkCookie* self);
 void QNetworkCookie_SetExpirationDate(QNetworkCookie* self, QDateTime* date);

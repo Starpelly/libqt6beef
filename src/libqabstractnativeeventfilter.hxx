@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -15,7 +17,7 @@ class VirtualQAbstractNativeEventFilter : public QAbstractNativeEventFilter {
 
   public:
     // Virtual class public types (including callbacks)
-    using QAbstractNativeEventFilter_NativeEventFilter_Callback = bool (*)(QAbstractNativeEventFilter*, const QByteArray&, void*, qintptr*);
+    using QAbstractNativeEventFilter_NativeEventFilter_Callback = bool (*)(QAbstractNativeEventFilter*, const QByteArray&, void*, long*);
 
   protected:
     // Instance callback storage
@@ -38,7 +40,7 @@ class VirtualQAbstractNativeEventFilter : public QAbstractNativeEventFilter {
     void setQAbstractNativeEventFilter_NativeEventFilter_IsBase(bool value) const { qabstractnativeeventfilter_nativeeventfilter_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override {
         return qabstractnativeeventfilter_nativeeventfilter_callback(this, eventType, message, result);
     }
 };

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -64,7 +66,8 @@ libqt_list /* of QSslCertificateExtension* */ QSslCertificate_Extensions(const Q
 libqt_string QSslCertificate_ToPem(const QSslCertificate* self);
 libqt_string QSslCertificate_ToDer(const QSslCertificate* self);
 libqt_string QSslCertificate_ToText(const QSslCertificate* self);
-libqt_list /* of QSslCertificate* */ QSslCertificate_FromPath(libqt_string path);
+libqt_list /* of QSslCertificate* */ QSslCertificate_FromPath(libqt_string path, int format, int syntax);
+libqt_list /* of QSslCertificate* */ QSslCertificate_FromPathWithPath(libqt_string path);
 libqt_list /* of QSslCertificate* */ QSslCertificate_FromDevice(QIODevice* device);
 libqt_list /* of QSslCertificate* */ QSslCertificate_FromData(libqt_string data);
 libqt_list /* of QSslError* */ QSslCertificate_Verify(libqt_list /* of QSslCertificate* */ certificateChain);

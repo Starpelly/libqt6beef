@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractButton QAbstractButton;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
@@ -29,6 +29,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -42,6 +43,7 @@ int QButtonGroup_Metacall(QButtonGroup* self, int param1, int param2, void** par
 void QButtonGroup_OnMetacall(QButtonGroup* self, intptr_t slot);
 int QButtonGroup_QBaseMetacall(QButtonGroup* self, int param1, int param2, void** param3);
 libqt_string QButtonGroup_Tr(const char* s);
+libqt_string QButtonGroup_TrUtf8(const char* s);
 void QButtonGroup_SetExclusive(QButtonGroup* self, bool exclusive);
 bool QButtonGroup_Exclusive(const QButtonGroup* self);
 void QButtonGroup_AddButton(QButtonGroup* self, QAbstractButton* param1);
@@ -68,8 +70,18 @@ void QButtonGroup_IdReleased(QButtonGroup* self, int param1);
 void QButtonGroup_Connect_IdReleased(QButtonGroup* self, intptr_t slot);
 void QButtonGroup_IdToggled(QButtonGroup* self, int param1, bool param2);
 void QButtonGroup_Connect_IdToggled(QButtonGroup* self, intptr_t slot);
+void QButtonGroup_ButtonClickedWithInt(QButtonGroup* self, int param1);
+void QButtonGroup_Connect_ButtonClickedWithInt(QButtonGroup* self, intptr_t slot);
+void QButtonGroup_ButtonPressedWithInt(QButtonGroup* self, int param1);
+void QButtonGroup_Connect_ButtonPressedWithInt(QButtonGroup* self, intptr_t slot);
+void QButtonGroup_ButtonReleasedWithInt(QButtonGroup* self, int param1);
+void QButtonGroup_Connect_ButtonReleasedWithInt(QButtonGroup* self, intptr_t slot);
+void QButtonGroup_ButtonToggled2(QButtonGroup* self, int param1, bool param2);
+void QButtonGroup_Connect_ButtonToggled2(QButtonGroup* self, intptr_t slot);
 libqt_string QButtonGroup_Tr2(const char* s, const char* c);
 libqt_string QButtonGroup_Tr3(const char* s, const char* c, int n);
+libqt_string QButtonGroup_TrUtf82(const char* s, const char* c);
+libqt_string QButtonGroup_TrUtf83(const char* s, const char* c, int n);
 void QButtonGroup_AddButton2(QButtonGroup* self, QAbstractButton* param1, int id);
 bool QButtonGroup_Event(QButtonGroup* self, QEvent* event);
 void QButtonGroup_OnEvent(QButtonGroup* self, intptr_t slot);

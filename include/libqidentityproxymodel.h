@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractProxyModel QAbstractProxyModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -33,8 +33,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
@@ -50,6 +50,7 @@ int QIdentityProxyModel_Metacall(QIdentityProxyModel* self, int param1, int para
 void QIdentityProxyModel_OnMetacall(QIdentityProxyModel* self, intptr_t slot);
 int QIdentityProxyModel_QBaseMetacall(QIdentityProxyModel* self, int param1, int param2, void** param3);
 libqt_string QIdentityProxyModel_Tr(const char* s);
+libqt_string QIdentityProxyModel_TrUtf8(const char* s);
 int QIdentityProxyModel_ColumnCount(const QIdentityProxyModel* self, QModelIndex* parent);
 void QIdentityProxyModel_OnColumnCount(const QIdentityProxyModel* self, intptr_t slot);
 int QIdentityProxyModel_QBaseColumnCount(const QIdentityProxyModel* self, QModelIndex* parent);
@@ -109,6 +110,8 @@ void QIdentityProxyModel_OnMoveColumns(QIdentityProxyModel* self, intptr_t slot)
 bool QIdentityProxyModel_QBaseMoveColumns(QIdentityProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild);
 libqt_string QIdentityProxyModel_Tr2(const char* s, const char* c);
 libqt_string QIdentityProxyModel_Tr3(const char* s, const char* c, int n);
+libqt_string QIdentityProxyModel_TrUtf82(const char* s, const char* c);
+libqt_string QIdentityProxyModel_TrUtf83(const char* s, const char* c, int n);
 bool QIdentityProxyModel_Submit(QIdentityProxyModel* self);
 void QIdentityProxyModel_OnSubmit(QIdentityProxyModel* self, intptr_t slot);
 bool QIdentityProxyModel_QBaseSubmit(QIdentityProxyModel* self);
@@ -133,9 +136,6 @@ bool QIdentityProxyModel_QBaseSetItemData(QIdentityProxyModel* self, QModelIndex
 bool QIdentityProxyModel_SetHeaderData(QIdentityProxyModel* self, int section, int orientation, QVariant* value, int role);
 void QIdentityProxyModel_OnSetHeaderData(QIdentityProxyModel* self, intptr_t slot);
 bool QIdentityProxyModel_QBaseSetHeaderData(QIdentityProxyModel* self, int section, int orientation, QVariant* value, int role);
-bool QIdentityProxyModel_ClearItemData(QIdentityProxyModel* self, QModelIndex* index);
-void QIdentityProxyModel_OnClearItemData(QIdentityProxyModel* self, intptr_t slot);
-bool QIdentityProxyModel_QBaseClearItemData(QIdentityProxyModel* self, QModelIndex* index);
 QModelIndex* QIdentityProxyModel_Buddy(const QIdentityProxyModel* self, QModelIndex* index);
 void QIdentityProxyModel_OnBuddy(const QIdentityProxyModel* self, intptr_t slot);
 QModelIndex* QIdentityProxyModel_QBaseBuddy(const QIdentityProxyModel* self, QModelIndex* index);
@@ -172,12 +172,6 @@ int QIdentityProxyModel_QBaseSupportedDropActions(const QIdentityProxyModel* sel
 libqt_map /* of int to libqt_string */ QIdentityProxyModel_RoleNames(const QIdentityProxyModel* self);
 void QIdentityProxyModel_OnRoleNames(const QIdentityProxyModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QIdentityProxyModel_QBaseRoleNames(const QIdentityProxyModel* self);
-void QIdentityProxyModel_MultiData(const QIdentityProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QIdentityProxyModel_OnMultiData(const QIdentityProxyModel* self, intptr_t slot);
-void QIdentityProxyModel_QBaseMultiData(const QIdentityProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QIdentityProxyModel_ResetInternalData(QIdentityProxyModel* self);
-void QIdentityProxyModel_OnResetInternalData(QIdentityProxyModel* self, intptr_t slot);
-void QIdentityProxyModel_QBaseResetInternalData(QIdentityProxyModel* self);
 bool QIdentityProxyModel_Event(QIdentityProxyModel* self, QEvent* event);
 void QIdentityProxyModel_OnEvent(QIdentityProxyModel* self, intptr_t slot);
 bool QIdentityProxyModel_QBaseEvent(QIdentityProxyModel* self, QEvent* event);
@@ -199,9 +193,9 @@ void QIdentityProxyModel_QBaseConnectNotify(QIdentityProxyModel* self, QMetaMeth
 void QIdentityProxyModel_DisconnectNotify(QIdentityProxyModel* self, QMetaMethod* signal);
 void QIdentityProxyModel_OnDisconnectNotify(QIdentityProxyModel* self, intptr_t slot);
 void QIdentityProxyModel_QBaseDisconnectNotify(QIdentityProxyModel* self, QMetaMethod* signal);
-QModelIndex* QIdentityProxyModel_CreateSourceIndex(const QIdentityProxyModel* self, int row, int col, void* internalPtr);
-void QIdentityProxyModel_OnCreateSourceIndex(const QIdentityProxyModel* self, intptr_t slot);
-QModelIndex* QIdentityProxyModel_QBaseCreateSourceIndex(const QIdentityProxyModel* self, int row, int col, void* internalPtr);
+void QIdentityProxyModel_ResetInternalData(QIdentityProxyModel* self);
+void QIdentityProxyModel_OnResetInternalData(QIdentityProxyModel* self, intptr_t slot);
+void QIdentityProxyModel_QBaseResetInternalData(QIdentityProxyModel* self);
 QModelIndex* QIdentityProxyModel_CreateIndex(const QIdentityProxyModel* self, int row, int column);
 void QIdentityProxyModel_OnCreateIndex(const QIdentityProxyModel* self, intptr_t slot);
 QModelIndex* QIdentityProxyModel_QBaseCreateIndex(const QIdentityProxyModel* self, int row, int column);

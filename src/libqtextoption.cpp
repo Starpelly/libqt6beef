@@ -54,6 +54,14 @@ int QTextOption_Flags(const QTextOption* self) {
     return static_cast<int>(self->flags());
 }
 
+void QTextOption_SetTabStop(QTextOption* self, double tabStop) {
+    self->setTabStop(static_cast<qreal>(tabStop));
+}
+
+double QTextOption_TabStop(const QTextOption* self) {
+    return static_cast<double>(self->tabStop());
+}
+
 void QTextOption_SetTabStopDistance(QTextOption* self, double tabStopDistance) {
     self->setTabStopDistance(static_cast<qreal>(tabStopDistance));
 }
@@ -136,7 +144,11 @@ QTextOption__Tab* QTextOption__Tab_new4(double pos, int tabType) {
     return new QTextOption::Tab(static_cast<qreal>(pos), static_cast<QTextOption::TabType>(tabType));
 }
 
-QTextOption__Tab* QTextOption__Tab_new5(double pos, int tabType, QChar* delim) {
+QTextOption__Tab* QTextOption__Tab_new5(QTextOption__Tab* param1) {
+    return new QTextOption::Tab(*param1);
+}
+
+QTextOption__Tab* QTextOption__Tab_new6(double pos, int tabType, QChar* delim) {
     return new QTextOption::Tab(static_cast<qreal>(pos), static_cast<QTextOption::TabType>(tabType), *delim);
 }
 

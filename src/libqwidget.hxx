@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -33,7 +35,7 @@ class VirtualQWidget : public QWidget {
     using QWidget_KeyReleaseEvent_Callback = void (*)(QWidget*, QKeyEvent*);
     using QWidget_FocusInEvent_Callback = void (*)(QWidget*, QFocusEvent*);
     using QWidget_FocusOutEvent_Callback = void (*)(QWidget*, QFocusEvent*);
-    using QWidget_EnterEvent_Callback = void (*)(QWidget*, QEnterEvent*);
+    using QWidget_EnterEvent_Callback = void (*)(QWidget*, QEvent*);
     using QWidget_LeaveEvent_Callback = void (*)(QWidget*, QEvent*);
     using QWidget_PaintEvent_Callback = void (*)(QWidget*, QPaintEvent*);
     using QWidget_MoveEvent_Callback = void (*)(QWidget*, QMoveEvent*);
@@ -48,7 +50,7 @@ class VirtualQWidget : public QWidget {
     using QWidget_DropEvent_Callback = void (*)(QWidget*, QDropEvent*);
     using QWidget_ShowEvent_Callback = void (*)(QWidget*, QShowEvent*);
     using QWidget_HideEvent_Callback = void (*)(QWidget*, QHideEvent*);
-    using QWidget_NativeEvent_Callback = bool (*)(QWidget*, const QByteArray&, void*, qintptr*);
+    using QWidget_NativeEvent_Callback = bool (*)(QWidget*, const QByteArray&, void*, long*);
     using QWidget_ChangeEvent_Callback = void (*)(QWidget*, QEvent*);
     using QWidget_Metric_Callback = int (*)(const QWidget*, QPaintDevice::PaintDeviceMetric);
     using QWidget_InitPainter_Callback = void (*)(const QWidget*, QPainter*);
@@ -68,7 +70,6 @@ class VirtualQWidget : public QWidget {
     using QWidget_Destroy_Callback = void (*)();
     using QWidget_FocusNextChild_Callback = bool (*)();
     using QWidget_FocusPreviousChild_Callback = bool (*)();
-    using QWidget_UpdateMicroFocus1_Callback = void (*)(QWidget*, Qt::InputMethodQuery);
     using QWidget_Create1_Callback = void (*)(QWidget*, unsigned long long);
     using QWidget_Create2_Callback = void (*)(QWidget*, unsigned long long, bool);
     using QWidget_Create3_Callback = void (*)(QWidget*, unsigned long long, bool, bool);
@@ -134,7 +135,6 @@ class VirtualQWidget : public QWidget {
     QWidget_Destroy_Callback qwidget_destroy_callback = nullptr;
     QWidget_FocusNextChild_Callback qwidget_focusnextchild_callback = nullptr;
     QWidget_FocusPreviousChild_Callback qwidget_focuspreviouschild_callback = nullptr;
-    QWidget_UpdateMicroFocus1_Callback qwidget_updatemicrofocus1_callback = nullptr;
     QWidget_Create1_Callback qwidget_create1_callback = nullptr;
     QWidget_Create2_Callback qwidget_create2_callback = nullptr;
     QWidget_Create3_Callback qwidget_create3_callback = nullptr;
@@ -199,7 +199,6 @@ class VirtualQWidget : public QWidget {
     mutable bool qwidget_destroy_isbase = false;
     mutable bool qwidget_focusnextchild_isbase = false;
     mutable bool qwidget_focuspreviouschild_isbase = false;
-    mutable bool qwidget_updatemicrofocus1_isbase = false;
     mutable bool qwidget_create1_isbase = false;
     mutable bool qwidget_create2_isbase = false;
     mutable bool qwidget_create3_isbase = false;
@@ -269,7 +268,6 @@ class VirtualQWidget : public QWidget {
         qwidget_destroy_callback = nullptr;
         qwidget_focusnextchild_callback = nullptr;
         qwidget_focuspreviouschild_callback = nullptr;
-        qwidget_updatemicrofocus1_callback = nullptr;
         qwidget_create1_callback = nullptr;
         qwidget_create2_callback = nullptr;
         qwidget_create3_callback = nullptr;
@@ -335,7 +333,6 @@ class VirtualQWidget : public QWidget {
     void setQWidget_Destroy_Callback(QWidget_Destroy_Callback cb) { qwidget_destroy_callback = cb; }
     void setQWidget_FocusNextChild_Callback(QWidget_FocusNextChild_Callback cb) { qwidget_focusnextchild_callback = cb; }
     void setQWidget_FocusPreviousChild_Callback(QWidget_FocusPreviousChild_Callback cb) { qwidget_focuspreviouschild_callback = cb; }
-    void setQWidget_UpdateMicroFocus1_Callback(QWidget_UpdateMicroFocus1_Callback cb) { qwidget_updatemicrofocus1_callback = cb; }
     void setQWidget_Create1_Callback(QWidget_Create1_Callback cb) { qwidget_create1_callback = cb; }
     void setQWidget_Create2_Callback(QWidget_Create2_Callback cb) { qwidget_create2_callback = cb; }
     void setQWidget_Create3_Callback(QWidget_Create3_Callback cb) { qwidget_create3_callback = cb; }
@@ -400,7 +397,6 @@ class VirtualQWidget : public QWidget {
     void setQWidget_Destroy_IsBase(bool value) const { qwidget_destroy_isbase = value; }
     void setQWidget_FocusNextChild_IsBase(bool value) const { qwidget_focusnextchild_isbase = value; }
     void setQWidget_FocusPreviousChild_IsBase(bool value) const { qwidget_focuspreviouschild_isbase = value; }
-    void setQWidget_UpdateMicroFocus1_IsBase(bool value) const { qwidget_updatemicrofocus1_isbase = value; }
     void setQWidget_Create1_IsBase(bool value) const { qwidget_create1_isbase = value; }
     void setQWidget_Create2_IsBase(bool value) const { qwidget_create2_isbase = value; }
     void setQWidget_Create3_IsBase(bool value) const { qwidget_create3_isbase = value; }
@@ -628,7 +624,7 @@ class VirtualQWidget : public QWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qwidget_enterevent_isbase) {
             qwidget_enterevent_isbase = false;
             QWidget::enterEvent(event);
@@ -808,7 +804,7 @@ class VirtualQWidget : public QWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qwidget_nativeevent_isbase) {
             qwidget_nativeevent_isbase = false;
             return QWidget::nativeEvent(eventType, message, result);
@@ -1044,18 +1040,6 @@ class VirtualQWidget : public QWidget {
             return qwidget_focuspreviouschild_callback();
         } else {
             return QWidget::focusPreviousChild();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void updateMicroFocus(Qt::InputMethodQuery query) {
-        if (qwidget_updatemicrofocus1_isbase) {
-            qwidget_updatemicrofocus1_isbase = false;
-            QWidget::updateMicroFocus(query);
-        } else if (qwidget_updatemicrofocus1_callback != nullptr) {
-            qwidget_updatemicrofocus1_callback(this, query);
-        } else {
-            QWidget::updateMicroFocus(query);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -101,6 +100,7 @@ int QFrame_Metacall(QFrame* self, int param1, int param2, void** param3);
 void QFrame_OnMetacall(QFrame* self, intptr_t slot);
 int QFrame_QBaseMetacall(QFrame* self, int param1, int param2, void** param3);
 libqt_string QFrame_Tr(const char* s);
+libqt_string QFrame_TrUtf8(const char* s);
 int QFrame_FrameStyle(const QFrame* self);
 void QFrame_SetFrameStyle(QFrame* self, int frameStyle);
 int QFrame_FrameWidth(const QFrame* self);
@@ -126,11 +126,10 @@ void QFrame_QBasePaintEvent(QFrame* self, QPaintEvent* param1);
 void QFrame_ChangeEvent(QFrame* self, QEvent* param1);
 void QFrame_OnChangeEvent(QFrame* self, intptr_t slot);
 void QFrame_QBaseChangeEvent(QFrame* self, QEvent* param1);
-void QFrame_InitStyleOption(const QFrame* self, QStyleOptionFrame* option);
-void QFrame_OnInitStyleOption(const QFrame* self, intptr_t slot);
-void QFrame_QBaseInitStyleOption(const QFrame* self, QStyleOptionFrame* option);
 libqt_string QFrame_Tr2(const char* s, const char* c);
 libqt_string QFrame_Tr3(const char* s, const char* c, int n);
+libqt_string QFrame_TrUtf82(const char* s, const char* c);
+libqt_string QFrame_TrUtf83(const char* s, const char* c, int n);
 int QFrame_DevType(const QFrame* self);
 void QFrame_OnDevType(const QFrame* self, intptr_t slot);
 int QFrame_QBaseDevType(const QFrame* self);
@@ -176,9 +175,9 @@ void QFrame_QBaseFocusInEvent(QFrame* self, QFocusEvent* event);
 void QFrame_FocusOutEvent(QFrame* self, QFocusEvent* event);
 void QFrame_OnFocusOutEvent(QFrame* self, intptr_t slot);
 void QFrame_QBaseFocusOutEvent(QFrame* self, QFocusEvent* event);
-void QFrame_EnterEvent(QFrame* self, QEnterEvent* event);
+void QFrame_EnterEvent(QFrame* self, QEvent* event);
 void QFrame_OnEnterEvent(QFrame* self, intptr_t slot);
-void QFrame_QBaseEnterEvent(QFrame* self, QEnterEvent* event);
+void QFrame_QBaseEnterEvent(QFrame* self, QEvent* event);
 void QFrame_LeaveEvent(QFrame* self, QEvent* event);
 void QFrame_OnLeaveEvent(QFrame* self, intptr_t slot);
 void QFrame_QBaseLeaveEvent(QFrame* self, QEvent* event);
@@ -218,9 +217,9 @@ void QFrame_QBaseShowEvent(QFrame* self, QShowEvent* event);
 void QFrame_HideEvent(QFrame* self, QHideEvent* event);
 void QFrame_OnHideEvent(QFrame* self, intptr_t slot);
 void QFrame_QBaseHideEvent(QFrame* self, QHideEvent* event);
-bool QFrame_NativeEvent(QFrame* self, libqt_string eventType, void* message, intptr_t* result);
+bool QFrame_NativeEvent(QFrame* self, libqt_string eventType, void* message, long* result);
 void QFrame_OnNativeEvent(QFrame* self, intptr_t slot);
-bool QFrame_QBaseNativeEvent(QFrame* self, libqt_string eventType, void* message, intptr_t* result);
+bool QFrame_QBaseNativeEvent(QFrame* self, libqt_string eventType, void* message, long* result);
 void QFrame_InputMethodEvent(QFrame* self, QInputMethodEvent* param1);
 void QFrame_OnInputMethodEvent(QFrame* self, intptr_t slot);
 void QFrame_QBaseInputMethodEvent(QFrame* self, QInputMethodEvent* param1);
@@ -263,6 +262,9 @@ QPainter* QFrame_QBaseSharedPainter(const QFrame* self);
 void QFrame_DrawFrame(QFrame* self, QPainter* param1);
 void QFrame_OnDrawFrame(QFrame* self, intptr_t slot);
 void QFrame_QBaseDrawFrame(QFrame* self, QPainter* param1);
+void QFrame_InitStyleOption(const QFrame* self, QStyleOptionFrame* option);
+void QFrame_OnInitStyleOption(const QFrame* self, intptr_t slot);
+void QFrame_QBaseInitStyleOption(const QFrame* self, QStyleOptionFrame* option);
 void QFrame_UpdateMicroFocus(QFrame* self);
 void QFrame_OnUpdateMicroFocus(QFrame* self, intptr_t slot);
 void QFrame_QBaseUpdateMicroFocus(QFrame* self);

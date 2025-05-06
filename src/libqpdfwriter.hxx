@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,6 +19,9 @@ class VirtualQPdfWriter : public QPdfWriter {
     // Virtual class public types (including callbacks)
     using QPdfWriter_Metacall_Callback = int (*)(QPdfWriter*, QMetaObject::Call, int, void**);
     using QPdfWriter_NewPage_Callback = bool (*)();
+    using QPdfWriter_SetPageSize_Callback = void (*)(QPdfWriter*, QPagedPaintDevice::PageSize);
+    using QPdfWriter_SetPageSizeMM_Callback = void (*)(QPdfWriter*, const QSizeF&);
+    using QPdfWriter_SetMargins_Callback = void (*)(QPdfWriter*, const QPagedPaintDevice::Margins&);
     using QPdfWriter_PaintEngine_Callback = QPaintEngine* (*)();
     using QPdfWriter_Metric_Callback = int (*)(const QPdfWriter*, QPaintDevice::PaintDeviceMetric);
     using QPdfWriter_Event_Callback = bool (*)(QPdfWriter*, QEvent*);
@@ -26,11 +31,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     using QPdfWriter_CustomEvent_Callback = void (*)(QPdfWriter*, QEvent*);
     using QPdfWriter_ConnectNotify_Callback = void (*)(QPdfWriter*, const QMetaMethod&);
     using QPdfWriter_DisconnectNotify_Callback = void (*)(QPdfWriter*, const QMetaMethod&);
-    using QPdfWriter_SetPageLayout_Callback = bool (*)(QPdfWriter*, const QPageLayout&);
-    using QPdfWriter_SetPageSize_Callback = bool (*)(QPdfWriter*, const QPageSize&);
-    using QPdfWriter_SetPageOrientation_Callback = bool (*)(QPdfWriter*, QPageLayout::Orientation);
-    using QPdfWriter_SetPageMargins_Callback = bool (*)(QPdfWriter*, const QMarginsF&, QPageLayout::Unit);
-    using QPdfWriter_SetPageRanges_Callback = void (*)(QPdfWriter*, const QPageRanges&);
     using QPdfWriter_DevType_Callback = int (*)();
     using QPdfWriter_InitPainter_Callback = void (*)(const QPdfWriter*, QPainter*);
     using QPdfWriter_Redirected_Callback = QPaintDevice* (*)(const QPdfWriter*, QPoint*);
@@ -39,11 +39,15 @@ class VirtualQPdfWriter : public QPdfWriter {
     using QPdfWriter_SenderSignalIndex_Callback = int (*)();
     using QPdfWriter_Receivers_Callback = int (*)(const QPdfWriter*, const char*);
     using QPdfWriter_IsSignalConnected_Callback = bool (*)(const QPdfWriter*, const QMetaMethod&);
+    using QPdfWriter_DevicePageLayout_Callback = QPageLayout (*)();
 
   protected:
     // Instance callback storage
     QPdfWriter_Metacall_Callback qpdfwriter_metacall_callback = nullptr;
     QPdfWriter_NewPage_Callback qpdfwriter_newpage_callback = nullptr;
+    QPdfWriter_SetPageSize_Callback qpdfwriter_setpagesize_callback = nullptr;
+    QPdfWriter_SetPageSizeMM_Callback qpdfwriter_setpagesizemm_callback = nullptr;
+    QPdfWriter_SetMargins_Callback qpdfwriter_setmargins_callback = nullptr;
     QPdfWriter_PaintEngine_Callback qpdfwriter_paintengine_callback = nullptr;
     QPdfWriter_Metric_Callback qpdfwriter_metric_callback = nullptr;
     QPdfWriter_Event_Callback qpdfwriter_event_callback = nullptr;
@@ -53,11 +57,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     QPdfWriter_CustomEvent_Callback qpdfwriter_customevent_callback = nullptr;
     QPdfWriter_ConnectNotify_Callback qpdfwriter_connectnotify_callback = nullptr;
     QPdfWriter_DisconnectNotify_Callback qpdfwriter_disconnectnotify_callback = nullptr;
-    QPdfWriter_SetPageLayout_Callback qpdfwriter_setpagelayout_callback = nullptr;
-    QPdfWriter_SetPageSize_Callback qpdfwriter_setpagesize_callback = nullptr;
-    QPdfWriter_SetPageOrientation_Callback qpdfwriter_setpageorientation_callback = nullptr;
-    QPdfWriter_SetPageMargins_Callback qpdfwriter_setpagemargins_callback = nullptr;
-    QPdfWriter_SetPageRanges_Callback qpdfwriter_setpageranges_callback = nullptr;
     QPdfWriter_DevType_Callback qpdfwriter_devtype_callback = nullptr;
     QPdfWriter_InitPainter_Callback qpdfwriter_initpainter_callback = nullptr;
     QPdfWriter_Redirected_Callback qpdfwriter_redirected_callback = nullptr;
@@ -66,10 +65,14 @@ class VirtualQPdfWriter : public QPdfWriter {
     QPdfWriter_SenderSignalIndex_Callback qpdfwriter_sendersignalindex_callback = nullptr;
     QPdfWriter_Receivers_Callback qpdfwriter_receivers_callback = nullptr;
     QPdfWriter_IsSignalConnected_Callback qpdfwriter_issignalconnected_callback = nullptr;
+    QPdfWriter_DevicePageLayout_Callback qpdfwriter_devicepagelayout_callback = nullptr;
 
     // Instance base flags
     mutable bool qpdfwriter_metacall_isbase = false;
     mutable bool qpdfwriter_newpage_isbase = false;
+    mutable bool qpdfwriter_setpagesize_isbase = false;
+    mutable bool qpdfwriter_setpagesizemm_isbase = false;
+    mutable bool qpdfwriter_setmargins_isbase = false;
     mutable bool qpdfwriter_paintengine_isbase = false;
     mutable bool qpdfwriter_metric_isbase = false;
     mutable bool qpdfwriter_event_isbase = false;
@@ -79,11 +82,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     mutable bool qpdfwriter_customevent_isbase = false;
     mutable bool qpdfwriter_connectnotify_isbase = false;
     mutable bool qpdfwriter_disconnectnotify_isbase = false;
-    mutable bool qpdfwriter_setpagelayout_isbase = false;
-    mutable bool qpdfwriter_setpagesize_isbase = false;
-    mutable bool qpdfwriter_setpageorientation_isbase = false;
-    mutable bool qpdfwriter_setpagemargins_isbase = false;
-    mutable bool qpdfwriter_setpageranges_isbase = false;
     mutable bool qpdfwriter_devtype_isbase = false;
     mutable bool qpdfwriter_initpainter_isbase = false;
     mutable bool qpdfwriter_redirected_isbase = false;
@@ -92,6 +90,7 @@ class VirtualQPdfWriter : public QPdfWriter {
     mutable bool qpdfwriter_sendersignalindex_isbase = false;
     mutable bool qpdfwriter_receivers_isbase = false;
     mutable bool qpdfwriter_issignalconnected_isbase = false;
+    mutable bool qpdfwriter_devicepagelayout_isbase = false;
 
   public:
     VirtualQPdfWriter(const QString& filename) : QPdfWriter(filename){};
@@ -100,6 +99,9 @@ class VirtualQPdfWriter : public QPdfWriter {
     ~VirtualQPdfWriter() {
         qpdfwriter_metacall_callback = nullptr;
         qpdfwriter_newpage_callback = nullptr;
+        qpdfwriter_setpagesize_callback = nullptr;
+        qpdfwriter_setpagesizemm_callback = nullptr;
+        qpdfwriter_setmargins_callback = nullptr;
         qpdfwriter_paintengine_callback = nullptr;
         qpdfwriter_metric_callback = nullptr;
         qpdfwriter_event_callback = nullptr;
@@ -109,11 +111,6 @@ class VirtualQPdfWriter : public QPdfWriter {
         qpdfwriter_customevent_callback = nullptr;
         qpdfwriter_connectnotify_callback = nullptr;
         qpdfwriter_disconnectnotify_callback = nullptr;
-        qpdfwriter_setpagelayout_callback = nullptr;
-        qpdfwriter_setpagesize_callback = nullptr;
-        qpdfwriter_setpageorientation_callback = nullptr;
-        qpdfwriter_setpagemargins_callback = nullptr;
-        qpdfwriter_setpageranges_callback = nullptr;
         qpdfwriter_devtype_callback = nullptr;
         qpdfwriter_initpainter_callback = nullptr;
         qpdfwriter_redirected_callback = nullptr;
@@ -122,11 +119,15 @@ class VirtualQPdfWriter : public QPdfWriter {
         qpdfwriter_sendersignalindex_callback = nullptr;
         qpdfwriter_receivers_callback = nullptr;
         qpdfwriter_issignalconnected_callback = nullptr;
+        qpdfwriter_devicepagelayout_callback = nullptr;
     }
 
     // Callback setters
     void setQPdfWriter_Metacall_Callback(QPdfWriter_Metacall_Callback cb) { qpdfwriter_metacall_callback = cb; }
     void setQPdfWriter_NewPage_Callback(QPdfWriter_NewPage_Callback cb) { qpdfwriter_newpage_callback = cb; }
+    void setQPdfWriter_SetPageSize_Callback(QPdfWriter_SetPageSize_Callback cb) { qpdfwriter_setpagesize_callback = cb; }
+    void setQPdfWriter_SetPageSizeMM_Callback(QPdfWriter_SetPageSizeMM_Callback cb) { qpdfwriter_setpagesizemm_callback = cb; }
+    void setQPdfWriter_SetMargins_Callback(QPdfWriter_SetMargins_Callback cb) { qpdfwriter_setmargins_callback = cb; }
     void setQPdfWriter_PaintEngine_Callback(QPdfWriter_PaintEngine_Callback cb) { qpdfwriter_paintengine_callback = cb; }
     void setQPdfWriter_Metric_Callback(QPdfWriter_Metric_Callback cb) { qpdfwriter_metric_callback = cb; }
     void setQPdfWriter_Event_Callback(QPdfWriter_Event_Callback cb) { qpdfwriter_event_callback = cb; }
@@ -136,11 +137,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     void setQPdfWriter_CustomEvent_Callback(QPdfWriter_CustomEvent_Callback cb) { qpdfwriter_customevent_callback = cb; }
     void setQPdfWriter_ConnectNotify_Callback(QPdfWriter_ConnectNotify_Callback cb) { qpdfwriter_connectnotify_callback = cb; }
     void setQPdfWriter_DisconnectNotify_Callback(QPdfWriter_DisconnectNotify_Callback cb) { qpdfwriter_disconnectnotify_callback = cb; }
-    void setQPdfWriter_SetPageLayout_Callback(QPdfWriter_SetPageLayout_Callback cb) { qpdfwriter_setpagelayout_callback = cb; }
-    void setQPdfWriter_SetPageSize_Callback(QPdfWriter_SetPageSize_Callback cb) { qpdfwriter_setpagesize_callback = cb; }
-    void setQPdfWriter_SetPageOrientation_Callback(QPdfWriter_SetPageOrientation_Callback cb) { qpdfwriter_setpageorientation_callback = cb; }
-    void setQPdfWriter_SetPageMargins_Callback(QPdfWriter_SetPageMargins_Callback cb) { qpdfwriter_setpagemargins_callback = cb; }
-    void setQPdfWriter_SetPageRanges_Callback(QPdfWriter_SetPageRanges_Callback cb) { qpdfwriter_setpageranges_callback = cb; }
     void setQPdfWriter_DevType_Callback(QPdfWriter_DevType_Callback cb) { qpdfwriter_devtype_callback = cb; }
     void setQPdfWriter_InitPainter_Callback(QPdfWriter_InitPainter_Callback cb) { qpdfwriter_initpainter_callback = cb; }
     void setQPdfWriter_Redirected_Callback(QPdfWriter_Redirected_Callback cb) { qpdfwriter_redirected_callback = cb; }
@@ -149,10 +145,14 @@ class VirtualQPdfWriter : public QPdfWriter {
     void setQPdfWriter_SenderSignalIndex_Callback(QPdfWriter_SenderSignalIndex_Callback cb) { qpdfwriter_sendersignalindex_callback = cb; }
     void setQPdfWriter_Receivers_Callback(QPdfWriter_Receivers_Callback cb) { qpdfwriter_receivers_callback = cb; }
     void setQPdfWriter_IsSignalConnected_Callback(QPdfWriter_IsSignalConnected_Callback cb) { qpdfwriter_issignalconnected_callback = cb; }
+    void setQPdfWriter_DevicePageLayout_Callback(QPdfWriter_DevicePageLayout_Callback cb) { qpdfwriter_devicepagelayout_callback = cb; }
 
     // Base flag setters
     void setQPdfWriter_Metacall_IsBase(bool value) const { qpdfwriter_metacall_isbase = value; }
     void setQPdfWriter_NewPage_IsBase(bool value) const { qpdfwriter_newpage_isbase = value; }
+    void setQPdfWriter_SetPageSize_IsBase(bool value) const { qpdfwriter_setpagesize_isbase = value; }
+    void setQPdfWriter_SetPageSizeMM_IsBase(bool value) const { qpdfwriter_setpagesizemm_isbase = value; }
+    void setQPdfWriter_SetMargins_IsBase(bool value) const { qpdfwriter_setmargins_isbase = value; }
     void setQPdfWriter_PaintEngine_IsBase(bool value) const { qpdfwriter_paintengine_isbase = value; }
     void setQPdfWriter_Metric_IsBase(bool value) const { qpdfwriter_metric_isbase = value; }
     void setQPdfWriter_Event_IsBase(bool value) const { qpdfwriter_event_isbase = value; }
@@ -162,11 +162,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     void setQPdfWriter_CustomEvent_IsBase(bool value) const { qpdfwriter_customevent_isbase = value; }
     void setQPdfWriter_ConnectNotify_IsBase(bool value) const { qpdfwriter_connectnotify_isbase = value; }
     void setQPdfWriter_DisconnectNotify_IsBase(bool value) const { qpdfwriter_disconnectnotify_isbase = value; }
-    void setQPdfWriter_SetPageLayout_IsBase(bool value) const { qpdfwriter_setpagelayout_isbase = value; }
-    void setQPdfWriter_SetPageSize_IsBase(bool value) const { qpdfwriter_setpagesize_isbase = value; }
-    void setQPdfWriter_SetPageOrientation_IsBase(bool value) const { qpdfwriter_setpageorientation_isbase = value; }
-    void setQPdfWriter_SetPageMargins_IsBase(bool value) const { qpdfwriter_setpagemargins_isbase = value; }
-    void setQPdfWriter_SetPageRanges_IsBase(bool value) const { qpdfwriter_setpageranges_isbase = value; }
     void setQPdfWriter_DevType_IsBase(bool value) const { qpdfwriter_devtype_isbase = value; }
     void setQPdfWriter_InitPainter_IsBase(bool value) const { qpdfwriter_initpainter_isbase = value; }
     void setQPdfWriter_Redirected_IsBase(bool value) const { qpdfwriter_redirected_isbase = value; }
@@ -175,6 +170,7 @@ class VirtualQPdfWriter : public QPdfWriter {
     void setQPdfWriter_SenderSignalIndex_IsBase(bool value) const { qpdfwriter_sendersignalindex_isbase = value; }
     void setQPdfWriter_Receivers_IsBase(bool value) const { qpdfwriter_receivers_isbase = value; }
     void setQPdfWriter_IsSignalConnected_IsBase(bool value) const { qpdfwriter_issignalconnected_isbase = value; }
+    void setQPdfWriter_DevicePageLayout_IsBase(bool value) const { qpdfwriter_devicepagelayout_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
     virtual int qt_metacall(QMetaObject::Call param1, int param2, void** param3) override {
@@ -197,6 +193,42 @@ class VirtualQPdfWriter : public QPdfWriter {
             return qpdfwriter_newpage_callback();
         } else {
             return QPdfWriter::newPage();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void setPageSize(QPagedPaintDevice::PageSize size) override {
+        if (qpdfwriter_setpagesize_isbase) {
+            qpdfwriter_setpagesize_isbase = false;
+            QPdfWriter::setPageSize(size);
+        } else if (qpdfwriter_setpagesize_callback != nullptr) {
+            qpdfwriter_setpagesize_callback(this, size);
+        } else {
+            QPdfWriter::setPageSize(size);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void setPageSizeMM(const QSizeF& size) override {
+        if (qpdfwriter_setpagesizemm_isbase) {
+            qpdfwriter_setpagesizemm_isbase = false;
+            QPdfWriter::setPageSizeMM(size);
+        } else if (qpdfwriter_setpagesizemm_callback != nullptr) {
+            qpdfwriter_setpagesizemm_callback(this, size);
+        } else {
+            QPdfWriter::setPageSizeMM(size);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void setMargins(const QPagedPaintDevice::Margins& m) override {
+        if (qpdfwriter_setmargins_isbase) {
+            qpdfwriter_setmargins_isbase = false;
+            QPdfWriter::setMargins(m);
+        } else if (qpdfwriter_setmargins_callback != nullptr) {
+            qpdfwriter_setmargins_callback(this, m);
+        } else {
+            QPdfWriter::setMargins(m);
         }
     }
 
@@ -309,66 +341,6 @@ class VirtualQPdfWriter : public QPdfWriter {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool setPageLayout(const QPageLayout& pageLayout) override {
-        if (qpdfwriter_setpagelayout_isbase) {
-            qpdfwriter_setpagelayout_isbase = false;
-            return QPdfWriter::setPageLayout(pageLayout);
-        } else if (qpdfwriter_setpagelayout_callback != nullptr) {
-            return qpdfwriter_setpagelayout_callback(this, pageLayout);
-        } else {
-            return QPdfWriter::setPageLayout(pageLayout);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setPageSize(const QPageSize& pageSize) override {
-        if (qpdfwriter_setpagesize_isbase) {
-            qpdfwriter_setpagesize_isbase = false;
-            return QPdfWriter::setPageSize(pageSize);
-        } else if (qpdfwriter_setpagesize_callback != nullptr) {
-            return qpdfwriter_setpagesize_callback(this, pageSize);
-        } else {
-            return QPdfWriter::setPageSize(pageSize);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setPageOrientation(QPageLayout::Orientation orientation) override {
-        if (qpdfwriter_setpageorientation_isbase) {
-            qpdfwriter_setpageorientation_isbase = false;
-            return QPdfWriter::setPageOrientation(orientation);
-        } else if (qpdfwriter_setpageorientation_callback != nullptr) {
-            return qpdfwriter_setpageorientation_callback(this, orientation);
-        } else {
-            return QPdfWriter::setPageOrientation(orientation);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool setPageMargins(const QMarginsF& margins, QPageLayout::Unit units) override {
-        if (qpdfwriter_setpagemargins_isbase) {
-            qpdfwriter_setpagemargins_isbase = false;
-            return QPdfWriter::setPageMargins(margins, units);
-        } else if (qpdfwriter_setpagemargins_callback != nullptr) {
-            return qpdfwriter_setpagemargins_callback(this, margins, units);
-        } else {
-            return QPdfWriter::setPageMargins(margins, units);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setPageRanges(const QPageRanges& ranges) override {
-        if (qpdfwriter_setpageranges_isbase) {
-            qpdfwriter_setpageranges_isbase = false;
-            QPdfWriter::setPageRanges(ranges);
-        } else if (qpdfwriter_setpageranges_callback != nullptr) {
-            qpdfwriter_setpageranges_callback(this, ranges);
-        } else {
-            QPdfWriter::setPageRanges(ranges);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qpdfwriter_devtype_isbase) {
             qpdfwriter_devtype_isbase = false;
@@ -461,6 +433,18 @@ class VirtualQPdfWriter : public QPdfWriter {
             return qpdfwriter_issignalconnected_callback(this, signal);
         } else {
             return QPdfWriter::isSignalConnected(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QPageLayout devicePageLayout() const {
+        if (qpdfwriter_devicepagelayout_isbase) {
+            qpdfwriter_devicepagelayout_isbase = false;
+            return QPdfWriter::devicePageLayout();
+        } else if (qpdfwriter_devicepagelayout_callback != nullptr) {
+            return qpdfwriter_devicepagelayout_callback();
+        } else {
+            return QPdfWriter::devicePageLayout();
         }
     }
 };

@@ -1,9 +1,7 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QButtonGroup>
 #include <QByteArray>
@@ -15,7 +13,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -39,6 +36,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -46,7 +44,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -114,6 +111,18 @@ int QToolButton_QBaseMetacall(QToolButton* self, int param1, int param2, void** 
 
 libqt_string QToolButton_Tr(const char* s) {
     QString _ret = QToolButton::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolButton_TrUtf8(const char* s) {
+    QString _ret = QToolButton::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -202,6 +211,30 @@ libqt_string QToolButton_Tr2(const char* s, const char* c) {
 
 libqt_string QToolButton_Tr3(const char* s, const char* c, int n) {
     QString _ret = QToolButton::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolButton_TrUtf82(const char* s, const char* c) {
+    QString _ret = QToolButton::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolButton_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QToolButton::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -395,7 +428,7 @@ void QToolButton_OnActionEvent(QToolButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QToolButton_EnterEvent(QToolButton* self, QEnterEvent* param1) {
+void QToolButton_EnterEvent(QToolButton* self, QEvent* param1) {
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
         vqtoolbutton->enterEvent(param1);
     } else {
@@ -404,7 +437,7 @@ void QToolButton_EnterEvent(QToolButton* self, QEnterEvent* param1) {
 }
 
 // Base class handler implementation
-void QToolButton_QBaseEnterEvent(QToolButton* self, QEnterEvent* param1) {
+void QToolButton_QBaseEnterEvent(QToolButton* self, QEvent* param1) {
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
         vqtoolbutton->setQToolButton_EnterEvent_IsBase(true);
         vqtoolbutton->enterEvent(param1);
@@ -525,32 +558,6 @@ void QToolButton_OnHitButton(const QToolButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QToolButton_CheckStateSet(QToolButton* self) {
-    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
-        vqtoolbutton->checkStateSet();
-    } else {
-        vqtoolbutton->checkStateSet();
-    }
-}
-
-// Base class handler implementation
-void QToolButton_QBaseCheckStateSet(QToolButton* self) {
-    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
-        vqtoolbutton->setQToolButton_CheckStateSet_IsBase(true);
-        vqtoolbutton->checkStateSet();
-    } else {
-        vqtoolbutton->checkStateSet();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QToolButton_OnCheckStateSet(QToolButton* self, intptr_t slot) {
-    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
-        vqtoolbutton->setQToolButton_CheckStateSet_Callback(reinterpret_cast<VirtualQToolButton::QToolButton_CheckStateSet_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QToolButton_NextCheckState(QToolButton* self) {
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
         vqtoolbutton->nextCheckState();
@@ -577,28 +584,28 @@ void QToolButton_OnNextCheckState(QToolButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QToolButton_InitStyleOption(const QToolButton* self, QStyleOptionToolButton* option) {
-    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
-        vqtoolbutton->initStyleOption(option);
+void QToolButton_CheckStateSet(QToolButton* self) {
+    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
+        vqtoolbutton->checkStateSet();
     } else {
-        vqtoolbutton->initStyleOption(option);
+        vqtoolbutton->checkStateSet();
     }
 }
 
 // Base class handler implementation
-void QToolButton_QBaseInitStyleOption(const QToolButton* self, QStyleOptionToolButton* option) {
-    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
-        vqtoolbutton->setQToolButton_InitStyleOption_IsBase(true);
-        vqtoolbutton->initStyleOption(option);
+void QToolButton_QBaseCheckStateSet(QToolButton* self) {
+    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
+        vqtoolbutton->setQToolButton_CheckStateSet_IsBase(true);
+        vqtoolbutton->checkStateSet();
     } else {
-        vqtoolbutton->initStyleOption(option);
+        vqtoolbutton->checkStateSet();
     }
 }
 
 // Auxiliary method to allow providing re-implementation
-void QToolButton_OnInitStyleOption(const QToolButton* self, intptr_t slot) {
-    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
-        vqtoolbutton->setQToolButton_InitStyleOption_Callback(reinterpret_cast<VirtualQToolButton::QToolButton_InitStyleOption_Callback>(slot));
+void QToolButton_OnCheckStateSet(QToolButton* self, intptr_t slot) {
+    if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
+        vqtoolbutton->setQToolButton_CheckStateSet_Callback(reinterpret_cast<VirtualQToolButton::QToolButton_CheckStateSet_Callback>(slot));
     }
 }
 
@@ -1201,23 +1208,23 @@ void QToolButton_OnHideEvent(QToolButton* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QToolButton_NativeEvent(QToolButton* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolButton_NativeEvent(QToolButton* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
-        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QToolButton_QBaseNativeEvent(QToolButton* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolButton_QBaseNativeEvent(QToolButton* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
         vqtoolbutton->setQToolButton_NativeEvent_IsBase(true);
-        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbutton->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1537,6 +1544,32 @@ void QToolButton_QBaseDisconnectNotify(QToolButton* self, QMetaMethod* signal) {
 void QToolButton_OnDisconnectNotify(QToolButton* self, intptr_t slot) {
     if (auto* vqtoolbutton = dynamic_cast<VirtualQToolButton*>(self)) {
         vqtoolbutton->setQToolButton_DisconnectNotify_Callback(reinterpret_cast<VirtualQToolButton::QToolButton_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QToolButton_InitStyleOption(const QToolButton* self, QStyleOptionToolButton* option) {
+    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
+        vqtoolbutton->initStyleOption(option);
+    } else {
+        vqtoolbutton->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QToolButton_QBaseInitStyleOption(const QToolButton* self, QStyleOptionToolButton* option) {
+    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
+        vqtoolbutton->setQToolButton_InitStyleOption_IsBase(true);
+        vqtoolbutton->initStyleOption(option);
+    } else {
+        vqtoolbutton->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QToolButton_OnInitStyleOption(const QToolButton* self, intptr_t slot) {
+    if (auto* vqtoolbutton = const_cast<VirtualQToolButton*>(dynamic_cast<const VirtualQToolButton*>(self))) {
+        vqtoolbutton->setQToolButton_InitStyleOption_Callback(reinterpret_cast<VirtualQToolButton::QToolButton_InitStyleOption_Callback>(slot));
     }
 }
 

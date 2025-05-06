@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,7 +22,6 @@ class VirtualQToolBar : public QToolBar {
     using QToolBar_ChangeEvent_Callback = void (*)(QToolBar*, QEvent*);
     using QToolBar_PaintEvent_Callback = void (*)(QToolBar*, QPaintEvent*);
     using QToolBar_Event_Callback = bool (*)(QToolBar*, QEvent*);
-    using QToolBar_InitStyleOption_Callback = void (*)(const QToolBar*, QStyleOptionToolBar*);
     using QToolBar_DevType_Callback = int (*)();
     using QToolBar_SetVisible_Callback = void (*)(QToolBar*, bool);
     using QToolBar_SizeHint_Callback = QSize (*)();
@@ -37,7 +38,7 @@ class VirtualQToolBar : public QToolBar {
     using QToolBar_KeyReleaseEvent_Callback = void (*)(QToolBar*, QKeyEvent*);
     using QToolBar_FocusInEvent_Callback = void (*)(QToolBar*, QFocusEvent*);
     using QToolBar_FocusOutEvent_Callback = void (*)(QToolBar*, QFocusEvent*);
-    using QToolBar_EnterEvent_Callback = void (*)(QToolBar*, QEnterEvent*);
+    using QToolBar_EnterEvent_Callback = void (*)(QToolBar*, QEvent*);
     using QToolBar_LeaveEvent_Callback = void (*)(QToolBar*, QEvent*);
     using QToolBar_MoveEvent_Callback = void (*)(QToolBar*, QMoveEvent*);
     using QToolBar_ResizeEvent_Callback = void (*)(QToolBar*, QResizeEvent*);
@@ -50,7 +51,7 @@ class VirtualQToolBar : public QToolBar {
     using QToolBar_DropEvent_Callback = void (*)(QToolBar*, QDropEvent*);
     using QToolBar_ShowEvent_Callback = void (*)(QToolBar*, QShowEvent*);
     using QToolBar_HideEvent_Callback = void (*)(QToolBar*, QHideEvent*);
-    using QToolBar_NativeEvent_Callback = bool (*)(QToolBar*, const QByteArray&, void*, qintptr*);
+    using QToolBar_NativeEvent_Callback = bool (*)(QToolBar*, const QByteArray&, void*, long*);
     using QToolBar_Metric_Callback = int (*)(const QToolBar*, QPaintDevice::PaintDeviceMetric);
     using QToolBar_InitPainter_Callback = void (*)(const QToolBar*, QPainter*);
     using QToolBar_Redirected_Callback = QPaintDevice* (*)(const QToolBar*, QPoint*);
@@ -64,6 +65,7 @@ class VirtualQToolBar : public QToolBar {
     using QToolBar_CustomEvent_Callback = void (*)(QToolBar*, QEvent*);
     using QToolBar_ConnectNotify_Callback = void (*)(QToolBar*, const QMetaMethod&);
     using QToolBar_DisconnectNotify_Callback = void (*)(QToolBar*, const QMetaMethod&);
+    using QToolBar_InitStyleOption_Callback = void (*)(const QToolBar*, QStyleOptionToolBar*);
     using QToolBar_UpdateMicroFocus_Callback = void (*)();
     using QToolBar_Create_Callback = void (*)();
     using QToolBar_Destroy_Callback = void (*)();
@@ -81,7 +83,6 @@ class VirtualQToolBar : public QToolBar {
     QToolBar_ChangeEvent_Callback qtoolbar_changeevent_callback = nullptr;
     QToolBar_PaintEvent_Callback qtoolbar_paintevent_callback = nullptr;
     QToolBar_Event_Callback qtoolbar_event_callback = nullptr;
-    QToolBar_InitStyleOption_Callback qtoolbar_initstyleoption_callback = nullptr;
     QToolBar_DevType_Callback qtoolbar_devtype_callback = nullptr;
     QToolBar_SetVisible_Callback qtoolbar_setvisible_callback = nullptr;
     QToolBar_SizeHint_Callback qtoolbar_sizehint_callback = nullptr;
@@ -125,6 +126,7 @@ class VirtualQToolBar : public QToolBar {
     QToolBar_CustomEvent_Callback qtoolbar_customevent_callback = nullptr;
     QToolBar_ConnectNotify_Callback qtoolbar_connectnotify_callback = nullptr;
     QToolBar_DisconnectNotify_Callback qtoolbar_disconnectnotify_callback = nullptr;
+    QToolBar_InitStyleOption_Callback qtoolbar_initstyleoption_callback = nullptr;
     QToolBar_UpdateMicroFocus_Callback qtoolbar_updatemicrofocus_callback = nullptr;
     QToolBar_Create_Callback qtoolbar_create_callback = nullptr;
     QToolBar_Destroy_Callback qtoolbar_destroy_callback = nullptr;
@@ -141,7 +143,6 @@ class VirtualQToolBar : public QToolBar {
     mutable bool qtoolbar_changeevent_isbase = false;
     mutable bool qtoolbar_paintevent_isbase = false;
     mutable bool qtoolbar_event_isbase = false;
-    mutable bool qtoolbar_initstyleoption_isbase = false;
     mutable bool qtoolbar_devtype_isbase = false;
     mutable bool qtoolbar_setvisible_isbase = false;
     mutable bool qtoolbar_sizehint_isbase = false;
@@ -185,6 +186,7 @@ class VirtualQToolBar : public QToolBar {
     mutable bool qtoolbar_customevent_isbase = false;
     mutable bool qtoolbar_connectnotify_isbase = false;
     mutable bool qtoolbar_disconnectnotify_isbase = false;
+    mutable bool qtoolbar_initstyleoption_isbase = false;
     mutable bool qtoolbar_updatemicrofocus_isbase = false;
     mutable bool qtoolbar_create_isbase = false;
     mutable bool qtoolbar_destroy_isbase = false;
@@ -207,7 +209,6 @@ class VirtualQToolBar : public QToolBar {
         qtoolbar_changeevent_callback = nullptr;
         qtoolbar_paintevent_callback = nullptr;
         qtoolbar_event_callback = nullptr;
-        qtoolbar_initstyleoption_callback = nullptr;
         qtoolbar_devtype_callback = nullptr;
         qtoolbar_setvisible_callback = nullptr;
         qtoolbar_sizehint_callback = nullptr;
@@ -251,6 +252,7 @@ class VirtualQToolBar : public QToolBar {
         qtoolbar_customevent_callback = nullptr;
         qtoolbar_connectnotify_callback = nullptr;
         qtoolbar_disconnectnotify_callback = nullptr;
+        qtoolbar_initstyleoption_callback = nullptr;
         qtoolbar_updatemicrofocus_callback = nullptr;
         qtoolbar_create_callback = nullptr;
         qtoolbar_destroy_callback = nullptr;
@@ -268,7 +270,6 @@ class VirtualQToolBar : public QToolBar {
     void setQToolBar_ChangeEvent_Callback(QToolBar_ChangeEvent_Callback cb) { qtoolbar_changeevent_callback = cb; }
     void setQToolBar_PaintEvent_Callback(QToolBar_PaintEvent_Callback cb) { qtoolbar_paintevent_callback = cb; }
     void setQToolBar_Event_Callback(QToolBar_Event_Callback cb) { qtoolbar_event_callback = cb; }
-    void setQToolBar_InitStyleOption_Callback(QToolBar_InitStyleOption_Callback cb) { qtoolbar_initstyleoption_callback = cb; }
     void setQToolBar_DevType_Callback(QToolBar_DevType_Callback cb) { qtoolbar_devtype_callback = cb; }
     void setQToolBar_SetVisible_Callback(QToolBar_SetVisible_Callback cb) { qtoolbar_setvisible_callback = cb; }
     void setQToolBar_SizeHint_Callback(QToolBar_SizeHint_Callback cb) { qtoolbar_sizehint_callback = cb; }
@@ -312,6 +313,7 @@ class VirtualQToolBar : public QToolBar {
     void setQToolBar_CustomEvent_Callback(QToolBar_CustomEvent_Callback cb) { qtoolbar_customevent_callback = cb; }
     void setQToolBar_ConnectNotify_Callback(QToolBar_ConnectNotify_Callback cb) { qtoolbar_connectnotify_callback = cb; }
     void setQToolBar_DisconnectNotify_Callback(QToolBar_DisconnectNotify_Callback cb) { qtoolbar_disconnectnotify_callback = cb; }
+    void setQToolBar_InitStyleOption_Callback(QToolBar_InitStyleOption_Callback cb) { qtoolbar_initstyleoption_callback = cb; }
     void setQToolBar_UpdateMicroFocus_Callback(QToolBar_UpdateMicroFocus_Callback cb) { qtoolbar_updatemicrofocus_callback = cb; }
     void setQToolBar_Create_Callback(QToolBar_Create_Callback cb) { qtoolbar_create_callback = cb; }
     void setQToolBar_Destroy_Callback(QToolBar_Destroy_Callback cb) { qtoolbar_destroy_callback = cb; }
@@ -328,7 +330,6 @@ class VirtualQToolBar : public QToolBar {
     void setQToolBar_ChangeEvent_IsBase(bool value) const { qtoolbar_changeevent_isbase = value; }
     void setQToolBar_PaintEvent_IsBase(bool value) const { qtoolbar_paintevent_isbase = value; }
     void setQToolBar_Event_IsBase(bool value) const { qtoolbar_event_isbase = value; }
-    void setQToolBar_InitStyleOption_IsBase(bool value) const { qtoolbar_initstyleoption_isbase = value; }
     void setQToolBar_DevType_IsBase(bool value) const { qtoolbar_devtype_isbase = value; }
     void setQToolBar_SetVisible_IsBase(bool value) const { qtoolbar_setvisible_isbase = value; }
     void setQToolBar_SizeHint_IsBase(bool value) const { qtoolbar_sizehint_isbase = value; }
@@ -372,6 +373,7 @@ class VirtualQToolBar : public QToolBar {
     void setQToolBar_CustomEvent_IsBase(bool value) const { qtoolbar_customevent_isbase = value; }
     void setQToolBar_ConnectNotify_IsBase(bool value) const { qtoolbar_connectnotify_isbase = value; }
     void setQToolBar_DisconnectNotify_IsBase(bool value) const { qtoolbar_disconnectnotify_isbase = value; }
+    void setQToolBar_InitStyleOption_IsBase(bool value) const { qtoolbar_initstyleoption_isbase = value; }
     void setQToolBar_UpdateMicroFocus_IsBase(bool value) const { qtoolbar_updatemicrofocus_isbase = value; }
     void setQToolBar_Create_IsBase(bool value) const { qtoolbar_create_isbase = value; }
     void setQToolBar_Destroy_IsBase(bool value) const { qtoolbar_destroy_isbase = value; }
@@ -439,18 +441,6 @@ class VirtualQToolBar : public QToolBar {
             return qtoolbar_event_callback(this, event);
         } else {
             return QToolBar::event(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionToolBar* option) const override {
-        if (qtoolbar_initstyleoption_isbase) {
-            qtoolbar_initstyleoption_isbase = false;
-            QToolBar::initStyleOption(option);
-        } else if (qtoolbar_initstyleoption_callback != nullptr) {
-            qtoolbar_initstyleoption_callback(this, option);
-        } else {
-            QToolBar::initStyleOption(option);
         }
     }
 
@@ -647,7 +637,7 @@ class VirtualQToolBar : public QToolBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtoolbar_enterevent_isbase) {
             qtoolbar_enterevent_isbase = false;
             QToolBar::enterEvent(event);
@@ -803,7 +793,7 @@ class VirtualQToolBar : public QToolBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtoolbar_nativeevent_isbase) {
             qtoolbar_nativeevent_isbase = false;
             return QToolBar::nativeEvent(eventType, message, result);
@@ -967,6 +957,18 @@ class VirtualQToolBar : public QToolBar {
             qtoolbar_disconnectnotify_callback(this, signal);
         } else {
             QToolBar::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionToolBar* option) const {
+        if (qtoolbar_initstyleoption_isbase) {
+            qtoolbar_initstyleoption_isbase = false;
+            QToolBar::initStyleOption(option);
+        } else if (qtoolbar_initstyleoption_callback != nullptr) {
+            qtoolbar_initstyleoption_callback(this, option);
+        } else {
+            QToolBar::initStyleOption(option);
         }
     }
 

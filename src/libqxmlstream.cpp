@@ -4,16 +4,67 @@
 #include <QString>
 #include <QByteArray>
 #include <cstring>
+#include <QTextCodec>
 #include <QXmlStreamAttribute>
 #include <QXmlStreamEntityDeclaration>
 #include <QXmlStreamEntityResolver>
 #include <QXmlStreamNamespaceDeclaration>
 #include <QXmlStreamNotationDeclaration>
 #include <QXmlStreamReader>
+#include <QXmlStreamStringRef>
 #include <QXmlStreamWriter>
 #include <qxmlstream.h>
 #include "libqxmlstream.h"
 #include "libqxmlstream.hxx"
+
+QXmlStreamStringRef* QXmlStreamStringRef_new() {
+    return new QXmlStreamStringRef();
+}
+
+QXmlStreamStringRef* QXmlStreamStringRef_new2(libqt_string aString) {
+    QString aString_QString = QString::fromUtf8(aString.data, aString.len);
+    return new QXmlStreamStringRef(aString_QString);
+}
+
+QXmlStreamStringRef* QXmlStreamStringRef_new3(QXmlStreamStringRef* other) {
+    return new QXmlStreamStringRef(*other);
+}
+
+void QXmlStreamStringRef_OperatorAssign(QXmlStreamStringRef* self, QXmlStreamStringRef* other) {
+    self->operator=(*other);
+}
+
+void QXmlStreamStringRef_Swap(QXmlStreamStringRef* self, QXmlStreamStringRef* other) {
+    self->swap(*other);
+}
+
+void QXmlStreamStringRef_Clear(QXmlStreamStringRef* self) {
+    self->clear();
+}
+
+libqt_string QXmlStreamStringRef_String(const QXmlStreamStringRef* self) {
+    const QString* _ret = self->string();
+    // Convert QString pointer from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret->toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+int QXmlStreamStringRef_Position(const QXmlStreamStringRef* self) {
+    return self->position();
+}
+
+int QXmlStreamStringRef_Size(const QXmlStreamStringRef* self) {
+    return self->size();
+}
+
+void QXmlStreamStringRef_Delete(QXmlStreamStringRef* self) {
+    delete self;
+}
 
 QXmlStreamAttribute* QXmlStreamAttribute_new() {
     return new QXmlStreamAttribute();
@@ -36,6 +87,10 @@ QXmlStreamAttribute* QXmlStreamAttribute_new4(QXmlStreamAttribute* param1) {
     return new QXmlStreamAttribute(*param1);
 }
 
+void QXmlStreamAttribute_OperatorAssign(QXmlStreamAttribute* self, QXmlStreamAttribute* param1) {
+    self->operator=(*param1);
+}
+
 bool QXmlStreamAttribute_IsDefault(const QXmlStreamAttribute* self) {
     return self->isDefault();
 }
@@ -46,10 +101,6 @@ bool QXmlStreamAttribute_OperatorEqual(const QXmlStreamAttribute* self, QXmlStre
 
 bool QXmlStreamAttribute_OperatorNotEqual(const QXmlStreamAttribute* self, QXmlStreamAttribute* other) {
     return (*self != *other);
-}
-
-void QXmlStreamAttribute_OperatorAssign(QXmlStreamAttribute* self, QXmlStreamAttribute* param1) {
-    self->operator=(*param1);
 }
 
 void QXmlStreamAttribute_Delete(QXmlStreamAttribute* self) {
@@ -64,6 +115,14 @@ QXmlStreamNamespaceDeclaration* QXmlStreamNamespaceDeclaration_new2(libqt_string
     QString prefix_QString = QString::fromUtf8(prefix.data, prefix.len);
     QString namespaceUri_QString = QString::fromUtf8(namespaceUri.data, namespaceUri.len);
     return new QXmlStreamNamespaceDeclaration(prefix_QString, namespaceUri_QString);
+}
+
+QXmlStreamNamespaceDeclaration* QXmlStreamNamespaceDeclaration_new3(QXmlStreamNamespaceDeclaration* param1) {
+    return new QXmlStreamNamespaceDeclaration(*param1);
+}
+
+void QXmlStreamNamespaceDeclaration_OperatorAssign(QXmlStreamNamespaceDeclaration* self, QXmlStreamNamespaceDeclaration* param1) {
+    self->operator=(*param1);
 }
 
 bool QXmlStreamNamespaceDeclaration_OperatorEqual(const QXmlStreamNamespaceDeclaration* self, QXmlStreamNamespaceDeclaration* other) {
@@ -82,6 +141,14 @@ QXmlStreamNotationDeclaration* QXmlStreamNotationDeclaration_new() {
     return new QXmlStreamNotationDeclaration();
 }
 
+QXmlStreamNotationDeclaration* QXmlStreamNotationDeclaration_new2(QXmlStreamNotationDeclaration* param1) {
+    return new QXmlStreamNotationDeclaration(*param1);
+}
+
+void QXmlStreamNotationDeclaration_OperatorAssign(QXmlStreamNotationDeclaration* self, QXmlStreamNotationDeclaration* param1) {
+    self->operator=(*param1);
+}
+
 bool QXmlStreamNotationDeclaration_OperatorEqual(const QXmlStreamNotationDeclaration* self, QXmlStreamNotationDeclaration* other) {
     return (*self == *other);
 }
@@ -96,6 +163,14 @@ void QXmlStreamNotationDeclaration_Delete(QXmlStreamNotationDeclaration* self) {
 
 QXmlStreamEntityDeclaration* QXmlStreamEntityDeclaration_new() {
     return new QXmlStreamEntityDeclaration();
+}
+
+QXmlStreamEntityDeclaration* QXmlStreamEntityDeclaration_new2(QXmlStreamEntityDeclaration* param1) {
+    return new QXmlStreamEntityDeclaration(*param1);
+}
+
+void QXmlStreamEntityDeclaration_OperatorAssign(QXmlStreamEntityDeclaration* self, QXmlStreamEntityDeclaration* param1) {
+    self->operator=(*param1);
 }
 
 bool QXmlStreamEntityDeclaration_OperatorEqual(const QXmlStreamEntityDeclaration* self, QXmlStreamEntityDeclaration* other) {
@@ -429,6 +504,18 @@ void QXmlStreamWriter_SetDevice(QXmlStreamWriter* self, QIODevice* device) {
 
 QIODevice* QXmlStreamWriter_Device(const QXmlStreamWriter* self) {
     return self->device();
+}
+
+void QXmlStreamWriter_SetCodec(QXmlStreamWriter* self, QTextCodec* codec) {
+    self->setCodec(codec);
+}
+
+void QXmlStreamWriter_SetCodecWithCodecName(QXmlStreamWriter* self, const char* codecName) {
+    self->setCodec(codecName);
+}
+
+QTextCodec* QXmlStreamWriter_Codec(const QXmlStreamWriter* self) {
+    return self->codec();
 }
 
 void QXmlStreamWriter_SetAutoFormatting(QXmlStreamWriter* self, bool autoFormatting) {

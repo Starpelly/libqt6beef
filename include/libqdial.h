@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractSlider QAbstractSlider;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -91,6 +90,7 @@ int QDial_Metacall(QDial* self, int param1, int param2, void** param3);
 void QDial_OnMetacall(QDial* self, intptr_t slot);
 int QDial_QBaseMetacall(QDial* self, int param1, int param2, void** param3);
 libqt_string QDial_Tr(const char* s);
+libqt_string QDial_TrUtf8(const char* s);
 bool QDial_Wrapping(const QDial* self);
 int QDial_NotchSize(const QDial* self);
 void QDial_SetNotchTarget(QDial* self, double target);
@@ -125,11 +125,10 @@ void QDial_QBaseMouseMoveEvent(QDial* self, QMouseEvent* me);
 void QDial_SliderChange(QDial* self, int change);
 void QDial_OnSliderChange(QDial* self, intptr_t slot);
 void QDial_QBaseSliderChange(QDial* self, int change);
-void QDial_InitStyleOption(const QDial* self, QStyleOptionSlider* option);
-void QDial_OnInitStyleOption(const QDial* self, intptr_t slot);
-void QDial_QBaseInitStyleOption(const QDial* self, QStyleOptionSlider* option);
 libqt_string QDial_Tr2(const char* s, const char* c);
 libqt_string QDial_Tr3(const char* s, const char* c, int n);
+libqt_string QDial_TrUtf82(const char* s, const char* c);
+libqt_string QDial_TrUtf83(const char* s, const char* c, int n);
 void QDial_KeyPressEvent(QDial* self, QKeyEvent* ev);
 void QDial_OnKeyPressEvent(QDial* self, intptr_t slot);
 void QDial_QBaseKeyPressEvent(QDial* self, QKeyEvent* ev);
@@ -169,9 +168,9 @@ void QDial_QBaseFocusInEvent(QDial* self, QFocusEvent* event);
 void QDial_FocusOutEvent(QDial* self, QFocusEvent* event);
 void QDial_OnFocusOutEvent(QDial* self, intptr_t slot);
 void QDial_QBaseFocusOutEvent(QDial* self, QFocusEvent* event);
-void QDial_EnterEvent(QDial* self, QEnterEvent* event);
+void QDial_EnterEvent(QDial* self, QEvent* event);
 void QDial_OnEnterEvent(QDial* self, intptr_t slot);
-void QDial_QBaseEnterEvent(QDial* self, QEnterEvent* event);
+void QDial_QBaseEnterEvent(QDial* self, QEvent* event);
 void QDial_LeaveEvent(QDial* self, QEvent* event);
 void QDial_OnLeaveEvent(QDial* self, intptr_t slot);
 void QDial_QBaseLeaveEvent(QDial* self, QEvent* event);
@@ -208,9 +207,9 @@ void QDial_QBaseShowEvent(QDial* self, QShowEvent* event);
 void QDial_HideEvent(QDial* self, QHideEvent* event);
 void QDial_OnHideEvent(QDial* self, intptr_t slot);
 void QDial_QBaseHideEvent(QDial* self, QHideEvent* event);
-bool QDial_NativeEvent(QDial* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDial_NativeEvent(QDial* self, libqt_string eventType, void* message, long* result);
 void QDial_OnNativeEvent(QDial* self, intptr_t slot);
-bool QDial_QBaseNativeEvent(QDial* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDial_QBaseNativeEvent(QDial* self, libqt_string eventType, void* message, long* result);
 void QDial_InputMethodEvent(QDial* self, QInputMethodEvent* param1);
 void QDial_OnInputMethodEvent(QDial* self, intptr_t slot);
 void QDial_QBaseInputMethodEvent(QDial* self, QInputMethodEvent* param1);
@@ -247,6 +246,9 @@ QPaintDevice* QDial_QBaseRedirected(const QDial* self, QPoint* offset);
 QPainter* QDial_SharedPainter(const QDial* self);
 void QDial_OnSharedPainter(const QDial* self, intptr_t slot);
 QPainter* QDial_QBaseSharedPainter(const QDial* self);
+void QDial_InitStyleOption(const QDial* self, QStyleOptionSlider* option);
+void QDial_OnInitStyleOption(const QDial* self, intptr_t slot);
+void QDial_QBaseInitStyleOption(const QDial* self, QStyleOptionSlider* option);
 void QDial_SetRepeatAction(QDial* self, int action);
 void QDial_OnSetRepeatAction(QDial* self, intptr_t slot);
 void QDial_QBaseSetRepeatAction(QDial* self, int action);

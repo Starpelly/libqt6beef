@@ -3,9 +3,7 @@
 #include <QAbstractItemView>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -18,7 +16,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -44,6 +41,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -51,7 +49,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -129,6 +126,18 @@ libqt_string QFontComboBox_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QFontComboBox_TrUtf8(const char* s) {
+    QString _ret = QFontComboBox::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QFontComboBox_SetWritingSystem(QFontComboBox* self, int writingSystem) {
     self->setWritingSystem(static_cast<QFontDatabase::WritingSystem>(writingSystem));
 }
@@ -147,47 +156,6 @@ int QFontComboBox_FontFilters(const QFontComboBox* self) {
 
 QFont* QFontComboBox_CurrentFont(const QFontComboBox* self) {
     return new QFont(self->currentFont());
-}
-
-void QFontComboBox_SetSampleTextForSystem(QFontComboBox* self, int writingSystem, libqt_string sampleText) {
-    QString sampleText_QString = QString::fromUtf8(sampleText.data, sampleText.len);
-    self->setSampleTextForSystem(static_cast<QFontDatabase::WritingSystem>(writingSystem), sampleText_QString);
-}
-
-libqt_string QFontComboBox_SampleTextForSystem(const QFontComboBox* self, int writingSystem) {
-    QString _ret = self->sampleTextForSystem(static_cast<QFontDatabase::WritingSystem>(writingSystem));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QFontComboBox_SetSampleTextForFont(QFontComboBox* self, libqt_string fontFamily, libqt_string sampleText) {
-    QString fontFamily_QString = QString::fromUtf8(fontFamily.data, fontFamily.len);
-    QString sampleText_QString = QString::fromUtf8(sampleText.data, sampleText.len);
-    self->setSampleTextForFont(fontFamily_QString, sampleText_QString);
-}
-
-libqt_string QFontComboBox_SampleTextForFont(const QFontComboBox* self, libqt_string fontFamily) {
-    QString fontFamily_QString = QString::fromUtf8(fontFamily.data, fontFamily.len);
-    QString _ret = self->sampleTextForFont(fontFamily_QString);
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-void QFontComboBox_SetDisplayFont(QFontComboBox* self, libqt_string fontFamily, QFont* font) {
-    QString fontFamily_QString = QString::fromUtf8(fontFamily.data, fontFamily.len);
-    self->setDisplayFont(fontFamily_QString, *font);
 }
 
 void QFontComboBox_SetCurrentFont(QFontComboBox* self, QFont* f) {
@@ -222,6 +190,30 @@ libqt_string QFontComboBox_Tr2(const char* s, const char* c) {
 
 libqt_string QFontComboBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFontComboBox::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFontComboBox_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFontComboBox::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFontComboBox_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFontComboBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -281,32 +273,6 @@ bool QFontComboBox_QBaseEvent(QFontComboBox* self, QEvent* e) {
 void QFontComboBox_OnEvent(QFontComboBox* self, intptr_t slot) {
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
         vqfontcombobox->setQFontComboBox_Event_Callback(reinterpret_cast<VirtualQFontComboBox::QFontComboBox_Event_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QFontComboBox_SetModel(QFontComboBox* self, QAbstractItemModel* model) {
-    if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
-        vqfontcombobox->setModel(model);
-    } else {
-        vqfontcombobox->setModel(model);
-    }
-}
-
-// Base class handler implementation
-void QFontComboBox_QBaseSetModel(QFontComboBox* self, QAbstractItemModel* model) {
-    if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
-        vqfontcombobox->setQFontComboBox_SetModel_IsBase(true);
-        vqfontcombobox->setModel(model);
-    } else {
-        vqfontcombobox->setModel(model);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFontComboBox_OnSetModel(QFontComboBox* self, intptr_t slot) {
-    if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
-        vqfontcombobox->setQFontComboBox_SetModel_Callback(reinterpret_cast<VirtualQFontComboBox::QFontComboBox_SetModel_Callback>(slot));
     }
 }
 
@@ -779,32 +745,6 @@ void QFontComboBox_OnInputMethodEvent(QFontComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFontComboBox_InitStyleOption(const QFontComboBox* self, QStyleOptionComboBox* option) {
-    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
-        vqfontcombobox->initStyleOption(option);
-    } else {
-        vqfontcombobox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QFontComboBox_QBaseInitStyleOption(const QFontComboBox* self, QStyleOptionComboBox* option) {
-    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
-        vqfontcombobox->setQFontComboBox_InitStyleOption_IsBase(true);
-        vqfontcombobox->initStyleOption(option);
-    } else {
-        vqfontcombobox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFontComboBox_OnInitStyleOption(const QFontComboBox* self, intptr_t slot) {
-    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
-        vqfontcombobox->setQFontComboBox_InitStyleOption_Callback(reinterpret_cast<VirtualQFontComboBox::QFontComboBox_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QFontComboBox_DevType(const QFontComboBox* self) {
     if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
         return vqfontcombobox->devType();
@@ -987,7 +927,7 @@ void QFontComboBox_OnMouseMoveEvent(QFontComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFontComboBox_EnterEvent(QFontComboBox* self, QEnterEvent* event) {
+void QFontComboBox_EnterEvent(QFontComboBox* self, QEvent* event) {
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
         vqfontcombobox->enterEvent(event);
     } else {
@@ -996,7 +936,7 @@ void QFontComboBox_EnterEvent(QFontComboBox* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QFontComboBox_QBaseEnterEvent(QFontComboBox* self, QEnterEvent* event) {
+void QFontComboBox_QBaseEnterEvent(QFontComboBox* self, QEvent* event) {
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
         vqfontcombobox->setQFontComboBox_EnterEvent_IsBase(true);
         vqfontcombobox->enterEvent(event);
@@ -1247,23 +1187,23 @@ void QFontComboBox_OnDropEvent(QFontComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QFontComboBox_NativeEvent(QFontComboBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFontComboBox_NativeEvent(QFontComboBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
-        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QFontComboBox_QBaseNativeEvent(QFontComboBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFontComboBox_QBaseNativeEvent(QFontComboBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
         vqfontcombobox->setQFontComboBox_NativeEvent_IsBase(true);
-        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1557,6 +1497,32 @@ void QFontComboBox_QBaseDisconnectNotify(QFontComboBox* self, QMetaMethod* signa
 void QFontComboBox_OnDisconnectNotify(QFontComboBox* self, intptr_t slot) {
     if (auto* vqfontcombobox = dynamic_cast<VirtualQFontComboBox*>(self)) {
         vqfontcombobox->setQFontComboBox_DisconnectNotify_Callback(reinterpret_cast<VirtualQFontComboBox::QFontComboBox_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QFontComboBox_InitStyleOption(const QFontComboBox* self, QStyleOptionComboBox* option) {
+    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
+        vqfontcombobox->initStyleOption(option);
+    } else {
+        vqfontcombobox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QFontComboBox_QBaseInitStyleOption(const QFontComboBox* self, QStyleOptionComboBox* option) {
+    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
+        vqfontcombobox->setQFontComboBox_InitStyleOption_IsBase(true);
+        vqfontcombobox->initStyleOption(option);
+    } else {
+        vqfontcombobox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QFontComboBox_OnInitStyleOption(const QFontComboBox* self, intptr_t slot) {
+    if (auto* vqfontcombobox = const_cast<VirtualQFontComboBox*>(dynamic_cast<const VirtualQFontComboBox*>(self))) {
+        vqfontcombobox->setQFontComboBox_InitStyleOption_Callback(reinterpret_cast<VirtualQFontComboBox::QFontComboBox_InitStyleOption_Callback>(slot));
     }
 }
 

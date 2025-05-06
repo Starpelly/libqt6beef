@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -26,7 +28,6 @@ typedef int LockError; // C ABI enum
 #endif
 
 QLockFile* QLockFile_new(libqt_string fileName);
-libqt_string QLockFile_FileName(const QLockFile* self);
 bool QLockFile_Lock(QLockFile* self);
 bool QLockFile_TryLock(QLockFile* self);
 void QLockFile_Unlock(QLockFile* self);

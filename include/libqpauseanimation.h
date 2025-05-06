@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,14 +23,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPauseAnimation QPauseAnimation;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -45,6 +46,7 @@ int QPauseAnimation_Metacall(QPauseAnimation* self, int param1, int param2, void
 void QPauseAnimation_OnMetacall(QPauseAnimation* self, intptr_t slot);
 int QPauseAnimation_QBaseMetacall(QPauseAnimation* self, int param1, int param2, void** param3);
 libqt_string QPauseAnimation_Tr(const char* s);
+libqt_string QPauseAnimation_TrUtf8(const char* s);
 int QPauseAnimation_Duration(const QPauseAnimation* self);
 void QPauseAnimation_OnDuration(const QPauseAnimation* self, intptr_t slot);
 int QPauseAnimation_QBaseDuration(const QPauseAnimation* self);
@@ -57,6 +59,8 @@ void QPauseAnimation_OnUpdateCurrentTime(QPauseAnimation* self, intptr_t slot);
 void QPauseAnimation_QBaseUpdateCurrentTime(QPauseAnimation* self, int param1);
 libqt_string QPauseAnimation_Tr2(const char* s, const char* c);
 libqt_string QPauseAnimation_Tr3(const char* s, const char* c, int n);
+libqt_string QPauseAnimation_TrUtf82(const char* s, const char* c);
+libqt_string QPauseAnimation_TrUtf83(const char* s, const char* c, int n);
 void QPauseAnimation_UpdateState(QPauseAnimation* self, int newState, int oldState);
 void QPauseAnimation_OnUpdateState(QPauseAnimation* self, intptr_t slot);
 void QPauseAnimation_QBaseUpdateState(QPauseAnimation* self, int newState, int oldState);

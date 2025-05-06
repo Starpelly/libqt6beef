@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,7 +23,6 @@ class VirtualQProgressBar : public QProgressBar {
     using QProgressBar_MinimumSizeHint_Callback = QSize (*)();
     using QProgressBar_Event_Callback = bool (*)(QProgressBar*, QEvent*);
     using QProgressBar_PaintEvent_Callback = void (*)(QProgressBar*, QPaintEvent*);
-    using QProgressBar_InitStyleOption_Callback = void (*)(const QProgressBar*, QStyleOptionProgressBar*);
     using QProgressBar_DevType_Callback = int (*)();
     using QProgressBar_SetVisible_Callback = void (*)(QProgressBar*, bool);
     using QProgressBar_HeightForWidth_Callback = int (*)(const QProgressBar*, int);
@@ -36,7 +37,7 @@ class VirtualQProgressBar : public QProgressBar {
     using QProgressBar_KeyReleaseEvent_Callback = void (*)(QProgressBar*, QKeyEvent*);
     using QProgressBar_FocusInEvent_Callback = void (*)(QProgressBar*, QFocusEvent*);
     using QProgressBar_FocusOutEvent_Callback = void (*)(QProgressBar*, QFocusEvent*);
-    using QProgressBar_EnterEvent_Callback = void (*)(QProgressBar*, QEnterEvent*);
+    using QProgressBar_EnterEvent_Callback = void (*)(QProgressBar*, QEvent*);
     using QProgressBar_LeaveEvent_Callback = void (*)(QProgressBar*, QEvent*);
     using QProgressBar_MoveEvent_Callback = void (*)(QProgressBar*, QMoveEvent*);
     using QProgressBar_ResizeEvent_Callback = void (*)(QProgressBar*, QResizeEvent*);
@@ -50,7 +51,7 @@ class VirtualQProgressBar : public QProgressBar {
     using QProgressBar_DropEvent_Callback = void (*)(QProgressBar*, QDropEvent*);
     using QProgressBar_ShowEvent_Callback = void (*)(QProgressBar*, QShowEvent*);
     using QProgressBar_HideEvent_Callback = void (*)(QProgressBar*, QHideEvent*);
-    using QProgressBar_NativeEvent_Callback = bool (*)(QProgressBar*, const QByteArray&, void*, qintptr*);
+    using QProgressBar_NativeEvent_Callback = bool (*)(QProgressBar*, const QByteArray&, void*, long*);
     using QProgressBar_ChangeEvent_Callback = void (*)(QProgressBar*, QEvent*);
     using QProgressBar_Metric_Callback = int (*)(const QProgressBar*, QPaintDevice::PaintDeviceMetric);
     using QProgressBar_InitPainter_Callback = void (*)(const QProgressBar*, QPainter*);
@@ -65,6 +66,7 @@ class VirtualQProgressBar : public QProgressBar {
     using QProgressBar_CustomEvent_Callback = void (*)(QProgressBar*, QEvent*);
     using QProgressBar_ConnectNotify_Callback = void (*)(QProgressBar*, const QMetaMethod&);
     using QProgressBar_DisconnectNotify_Callback = void (*)(QProgressBar*, const QMetaMethod&);
+    using QProgressBar_InitStyleOption_Callback = void (*)(const QProgressBar*, QStyleOptionProgressBar*);
     using QProgressBar_UpdateMicroFocus_Callback = void (*)();
     using QProgressBar_Create_Callback = void (*)();
     using QProgressBar_Destroy_Callback = void (*)();
@@ -83,7 +85,6 @@ class VirtualQProgressBar : public QProgressBar {
     QProgressBar_MinimumSizeHint_Callback qprogressbar_minimumsizehint_callback = nullptr;
     QProgressBar_Event_Callback qprogressbar_event_callback = nullptr;
     QProgressBar_PaintEvent_Callback qprogressbar_paintevent_callback = nullptr;
-    QProgressBar_InitStyleOption_Callback qprogressbar_initstyleoption_callback = nullptr;
     QProgressBar_DevType_Callback qprogressbar_devtype_callback = nullptr;
     QProgressBar_SetVisible_Callback qprogressbar_setvisible_callback = nullptr;
     QProgressBar_HeightForWidth_Callback qprogressbar_heightforwidth_callback = nullptr;
@@ -127,6 +128,7 @@ class VirtualQProgressBar : public QProgressBar {
     QProgressBar_CustomEvent_Callback qprogressbar_customevent_callback = nullptr;
     QProgressBar_ConnectNotify_Callback qprogressbar_connectnotify_callback = nullptr;
     QProgressBar_DisconnectNotify_Callback qprogressbar_disconnectnotify_callback = nullptr;
+    QProgressBar_InitStyleOption_Callback qprogressbar_initstyleoption_callback = nullptr;
     QProgressBar_UpdateMicroFocus_Callback qprogressbar_updatemicrofocus_callback = nullptr;
     QProgressBar_Create_Callback qprogressbar_create_callback = nullptr;
     QProgressBar_Destroy_Callback qprogressbar_destroy_callback = nullptr;
@@ -144,7 +146,6 @@ class VirtualQProgressBar : public QProgressBar {
     mutable bool qprogressbar_minimumsizehint_isbase = false;
     mutable bool qprogressbar_event_isbase = false;
     mutable bool qprogressbar_paintevent_isbase = false;
-    mutable bool qprogressbar_initstyleoption_isbase = false;
     mutable bool qprogressbar_devtype_isbase = false;
     mutable bool qprogressbar_setvisible_isbase = false;
     mutable bool qprogressbar_heightforwidth_isbase = false;
@@ -188,6 +189,7 @@ class VirtualQProgressBar : public QProgressBar {
     mutable bool qprogressbar_customevent_isbase = false;
     mutable bool qprogressbar_connectnotify_isbase = false;
     mutable bool qprogressbar_disconnectnotify_isbase = false;
+    mutable bool qprogressbar_initstyleoption_isbase = false;
     mutable bool qprogressbar_updatemicrofocus_isbase = false;
     mutable bool qprogressbar_create_isbase = false;
     mutable bool qprogressbar_destroy_isbase = false;
@@ -209,7 +211,6 @@ class VirtualQProgressBar : public QProgressBar {
         qprogressbar_minimumsizehint_callback = nullptr;
         qprogressbar_event_callback = nullptr;
         qprogressbar_paintevent_callback = nullptr;
-        qprogressbar_initstyleoption_callback = nullptr;
         qprogressbar_devtype_callback = nullptr;
         qprogressbar_setvisible_callback = nullptr;
         qprogressbar_heightforwidth_callback = nullptr;
@@ -253,6 +254,7 @@ class VirtualQProgressBar : public QProgressBar {
         qprogressbar_customevent_callback = nullptr;
         qprogressbar_connectnotify_callback = nullptr;
         qprogressbar_disconnectnotify_callback = nullptr;
+        qprogressbar_initstyleoption_callback = nullptr;
         qprogressbar_updatemicrofocus_callback = nullptr;
         qprogressbar_create_callback = nullptr;
         qprogressbar_destroy_callback = nullptr;
@@ -271,7 +273,6 @@ class VirtualQProgressBar : public QProgressBar {
     void setQProgressBar_MinimumSizeHint_Callback(QProgressBar_MinimumSizeHint_Callback cb) { qprogressbar_minimumsizehint_callback = cb; }
     void setQProgressBar_Event_Callback(QProgressBar_Event_Callback cb) { qprogressbar_event_callback = cb; }
     void setQProgressBar_PaintEvent_Callback(QProgressBar_PaintEvent_Callback cb) { qprogressbar_paintevent_callback = cb; }
-    void setQProgressBar_InitStyleOption_Callback(QProgressBar_InitStyleOption_Callback cb) { qprogressbar_initstyleoption_callback = cb; }
     void setQProgressBar_DevType_Callback(QProgressBar_DevType_Callback cb) { qprogressbar_devtype_callback = cb; }
     void setQProgressBar_SetVisible_Callback(QProgressBar_SetVisible_Callback cb) { qprogressbar_setvisible_callback = cb; }
     void setQProgressBar_HeightForWidth_Callback(QProgressBar_HeightForWidth_Callback cb) { qprogressbar_heightforwidth_callback = cb; }
@@ -315,6 +316,7 @@ class VirtualQProgressBar : public QProgressBar {
     void setQProgressBar_CustomEvent_Callback(QProgressBar_CustomEvent_Callback cb) { qprogressbar_customevent_callback = cb; }
     void setQProgressBar_ConnectNotify_Callback(QProgressBar_ConnectNotify_Callback cb) { qprogressbar_connectnotify_callback = cb; }
     void setQProgressBar_DisconnectNotify_Callback(QProgressBar_DisconnectNotify_Callback cb) { qprogressbar_disconnectnotify_callback = cb; }
+    void setQProgressBar_InitStyleOption_Callback(QProgressBar_InitStyleOption_Callback cb) { qprogressbar_initstyleoption_callback = cb; }
     void setQProgressBar_UpdateMicroFocus_Callback(QProgressBar_UpdateMicroFocus_Callback cb) { qprogressbar_updatemicrofocus_callback = cb; }
     void setQProgressBar_Create_Callback(QProgressBar_Create_Callback cb) { qprogressbar_create_callback = cb; }
     void setQProgressBar_Destroy_Callback(QProgressBar_Destroy_Callback cb) { qprogressbar_destroy_callback = cb; }
@@ -332,7 +334,6 @@ class VirtualQProgressBar : public QProgressBar {
     void setQProgressBar_MinimumSizeHint_IsBase(bool value) const { qprogressbar_minimumsizehint_isbase = value; }
     void setQProgressBar_Event_IsBase(bool value) const { qprogressbar_event_isbase = value; }
     void setQProgressBar_PaintEvent_IsBase(bool value) const { qprogressbar_paintevent_isbase = value; }
-    void setQProgressBar_InitStyleOption_IsBase(bool value) const { qprogressbar_initstyleoption_isbase = value; }
     void setQProgressBar_DevType_IsBase(bool value) const { qprogressbar_devtype_isbase = value; }
     void setQProgressBar_SetVisible_IsBase(bool value) const { qprogressbar_setvisible_isbase = value; }
     void setQProgressBar_HeightForWidth_IsBase(bool value) const { qprogressbar_heightforwidth_isbase = value; }
@@ -376,6 +377,7 @@ class VirtualQProgressBar : public QProgressBar {
     void setQProgressBar_CustomEvent_IsBase(bool value) const { qprogressbar_customevent_isbase = value; }
     void setQProgressBar_ConnectNotify_IsBase(bool value) const { qprogressbar_connectnotify_isbase = value; }
     void setQProgressBar_DisconnectNotify_IsBase(bool value) const { qprogressbar_disconnectnotify_isbase = value; }
+    void setQProgressBar_InitStyleOption_IsBase(bool value) const { qprogressbar_initstyleoption_isbase = value; }
     void setQProgressBar_UpdateMicroFocus_IsBase(bool value) const { qprogressbar_updatemicrofocus_isbase = value; }
     void setQProgressBar_Create_IsBase(bool value) const { qprogressbar_create_isbase = value; }
     void setQProgressBar_Destroy_IsBase(bool value) const { qprogressbar_destroy_isbase = value; }
@@ -455,18 +457,6 @@ class VirtualQProgressBar : public QProgressBar {
             qprogressbar_paintevent_callback(this, param1);
         } else {
             QProgressBar::paintEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionProgressBar* option) const override {
-        if (qprogressbar_initstyleoption_isbase) {
-            qprogressbar_initstyleoption_isbase = false;
-            QProgressBar::initStyleOption(option);
-        } else if (qprogressbar_initstyleoption_callback != nullptr) {
-            qprogressbar_initstyleoption_callback(this, option);
-        } else {
-            QProgressBar::initStyleOption(option);
         }
     }
 
@@ -639,7 +629,7 @@ class VirtualQProgressBar : public QProgressBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qprogressbar_enterevent_isbase) {
             qprogressbar_enterevent_isbase = false;
             QProgressBar::enterEvent(event);
@@ -807,7 +797,7 @@ class VirtualQProgressBar : public QProgressBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qprogressbar_nativeevent_isbase) {
             qprogressbar_nativeevent_isbase = false;
             return QProgressBar::nativeEvent(eventType, message, result);
@@ -983,6 +973,18 @@ class VirtualQProgressBar : public QProgressBar {
             qprogressbar_disconnectnotify_callback(this, signal);
         } else {
             QProgressBar::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionProgressBar* option) const {
+        if (qprogressbar_initstyleoption_isbase) {
+            qprogressbar_initstyleoption_isbase = false;
+            QProgressBar::initStyleOption(option);
+        } else if (qprogressbar_initstyleoption_callback != nullptr) {
+            qprogressbar_initstyleoption_callback(this, option);
+        } else {
+            QProgressBar::initStyleOption(option);
         }
     }
 

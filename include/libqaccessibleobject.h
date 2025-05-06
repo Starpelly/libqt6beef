@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,7 +24,6 @@ typedef QAccessible::State QAccessible__State;
 typedef struct QAccessibleActionInterface QAccessibleActionInterface;
 typedef struct QAccessibleApplication QAccessibleApplication;
 typedef struct QAccessibleEditableTextInterface QAccessibleEditableTextInterface;
-typedef struct QAccessibleHyperlinkInterface QAccessibleHyperlinkInterface;
 typedef struct QAccessibleImageInterface QAccessibleImageInterface;
 typedef struct QAccessibleInterface QAccessibleInterface;
 typedef struct QAccessibleObject QAccessibleObject;

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -20,19 +22,17 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractSocket QAbstractSocket;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QAuthenticator QAuthenticator;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QHostAddress QHostAddress;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkProxy QNetworkProxy;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QOcspResponse QOcspResponse;
 typedef struct QSslCertificate QSslCertificate;
 typedef struct QSslCipher QSslCipher;
@@ -63,6 +63,7 @@ int QSslSocket_Metacall(QSslSocket* self, int param1, int param2, void** param3)
 void QSslSocket_OnMetacall(QSslSocket* self, intptr_t slot);
 int QSslSocket_QBaseMetacall(QSslSocket* self, int param1, int param2, void** param3);
 libqt_string QSslSocket_Tr(const char* s);
+libqt_string QSslSocket_TrUtf8(const char* s);
 void QSslSocket_Resume(QSslSocket* self);
 void QSslSocket_OnResume(QSslSocket* self, intptr_t slot);
 void QSslSocket_QBaseResume(QSslSocket* self);
@@ -108,6 +109,8 @@ void QSslSocket_QBaseClose(QSslSocket* self);
 bool QSslSocket_AtEnd(const QSslSocket* self);
 void QSslSocket_OnAtEnd(const QSslSocket* self, intptr_t slot);
 bool QSslSocket_QBaseAtEnd(const QSslSocket* self);
+bool QSslSocket_Flush(QSslSocket* self);
+void QSslSocket_Abort(QSslSocket* self);
 void QSslSocket_SetReadBufferSize(QSslSocket* self, long long size);
 void QSslSocket_OnSetReadBufferSize(QSslSocket* self, intptr_t slot);
 void QSslSocket_QBaseSetReadBufferSize(QSslSocket* self, long long size);
@@ -128,6 +131,23 @@ libqt_list /* of QOcspResponse* */ QSslSocket_OcspResponses(const QSslSocket* se
 void QSslSocket_SetPrivateKey(QSslSocket* self, QSslKey* key);
 void QSslSocket_SetPrivateKeyWithFileName(QSslSocket* self, libqt_string fileName);
 QSslKey* QSslSocket_PrivateKey(const QSslSocket* self);
+libqt_list /* of QSslCipher* */ QSslSocket_Ciphers(const QSslSocket* self);
+void QSslSocket_SetCiphers(QSslSocket* self, libqt_list /* of QSslCipher* */ ciphers);
+void QSslSocket_SetCiphersWithCiphers(QSslSocket* self, libqt_string ciphers);
+void QSslSocket_SetDefaultCiphers(libqt_list /* of QSslCipher* */ ciphers);
+libqt_list /* of QSslCipher* */ QSslSocket_DefaultCiphers();
+libqt_list /* of QSslCipher* */ QSslSocket_SupportedCiphers();
+bool QSslSocket_AddCaCertificates(QSslSocket* self, libqt_string path);
+void QSslSocket_AddCaCertificate(QSslSocket* self, QSslCertificate* certificate);
+void QSslSocket_AddCaCertificatesWithCertificates(QSslSocket* self, libqt_list /* of QSslCertificate* */ certificates);
+void QSslSocket_SetCaCertificates(QSslSocket* self, libqt_list /* of QSslCertificate* */ certificates);
+libqt_list /* of QSslCertificate* */ QSslSocket_CaCertificates(const QSslSocket* self);
+bool QSslSocket_AddDefaultCaCertificates(libqt_string path);
+void QSslSocket_AddDefaultCaCertificate(QSslCertificate* certificate);
+void QSslSocket_AddDefaultCaCertificatesWithCertificates(libqt_list /* of QSslCertificate* */ certificates);
+void QSslSocket_SetDefaultCaCertificates(libqt_list /* of QSslCertificate* */ certificates);
+libqt_list /* of QSslCertificate* */ QSslSocket_DefaultCaCertificates();
+libqt_list /* of QSslCertificate* */ QSslSocket_SystemCaCertificates();
 bool QSslSocket_WaitForConnected(QSslSocket* self, int msecs);
 void QSslSocket_OnWaitForConnected(QSslSocket* self, intptr_t slot);
 bool QSslSocket_QBaseWaitForConnected(QSslSocket* self, int msecs);
@@ -141,23 +161,14 @@ bool QSslSocket_QBaseWaitForBytesWritten(QSslSocket* self, int msecs);
 bool QSslSocket_WaitForDisconnected(QSslSocket* self, int msecs);
 void QSslSocket_OnWaitForDisconnected(QSslSocket* self, intptr_t slot);
 bool QSslSocket_QBaseWaitForDisconnected(QSslSocket* self, int msecs);
+libqt_list /* of QSslError* */ QSslSocket_SslErrors(const QSslSocket* self);
 libqt_list /* of QSslError* */ QSslSocket_SslHandshakeErrors(const QSslSocket* self);
 bool QSslSocket_SupportsSsl();
 long QSslSocket_SslLibraryVersionNumber();
 libqt_string QSslSocket_SslLibraryVersionString();
 long QSslSocket_SslLibraryBuildVersionNumber();
 libqt_string QSslSocket_SslLibraryBuildVersionString();
-libqt_list /* of libqt_string */ QSslSocket_AvailableBackends();
-libqt_string QSslSocket_ActiveBackend();
-bool QSslSocket_SetActiveBackend(libqt_string backendName);
-libqt_list /* of int */ QSslSocket_SupportedProtocols();
-bool QSslSocket_IsProtocolSupported(int protocol);
-libqt_list /* of int */ QSslSocket_ImplementedClasses();
-bool QSslSocket_IsClassImplemented(int cl);
-libqt_list /* of int */ QSslSocket_SupportedFeatures();
-bool QSslSocket_IsFeatureSupported(int feat);
 void QSslSocket_IgnoreSslErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors);
-void QSslSocket_ContinueInterruptedHandshake(QSslSocket* self);
 void QSslSocket_StartClientEncryption(QSslSocket* self);
 void QSslSocket_StartServerEncryption(QSslSocket* self);
 void QSslSocket_IgnoreSslErrors2(QSslSocket* self);
@@ -165,8 +176,8 @@ void QSslSocket_Encrypted(QSslSocket* self);
 void QSslSocket_Connect_Encrypted(QSslSocket* self, intptr_t slot);
 void QSslSocket_PeerVerifyError(QSslSocket* self, QSslError* errorVal);
 void QSslSocket_Connect_PeerVerifyError(QSslSocket* self, intptr_t slot);
-void QSslSocket_SslErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors);
-void QSslSocket_Connect_SslErrors(QSslSocket* self, intptr_t slot);
+void QSslSocket_SslErrorsWithErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors);
+void QSslSocket_Connect_SslErrorsWithErrors(QSslSocket* self, intptr_t slot);
 void QSslSocket_ModeChanged(QSslSocket* self, int newMode);
 void QSslSocket_Connect_ModeChanged(QSslSocket* self, intptr_t slot);
 void QSslSocket_EncryptedBytesWritten(QSslSocket* self, long long totalBytes);
@@ -175,23 +186,16 @@ void QSslSocket_PreSharedKeyAuthenticationRequired(QSslSocket* self, QSslPreShar
 void QSslSocket_Connect_PreSharedKeyAuthenticationRequired(QSslSocket* self, intptr_t slot);
 void QSslSocket_NewSessionTicketReceived(QSslSocket* self);
 void QSslSocket_Connect_NewSessionTicketReceived(QSslSocket* self, intptr_t slot);
-void QSslSocket_AlertSent(QSslSocket* self, int level, int typeVal, libqt_string description);
-void QSslSocket_Connect_AlertSent(QSslSocket* self, intptr_t slot);
-void QSslSocket_AlertReceived(QSslSocket* self, int level, int typeVal, libqt_string description);
-void QSslSocket_Connect_AlertReceived(QSslSocket* self, intptr_t slot);
-void QSslSocket_HandshakeInterruptedOnError(QSslSocket* self, QSslError* errorVal);
-void QSslSocket_Connect_HandshakeInterruptedOnError(QSslSocket* self, intptr_t slot);
 long long QSslSocket_ReadData(QSslSocket* self, char* data, long long maxlen);
 void QSslSocket_OnReadData(QSslSocket* self, intptr_t slot);
 long long QSslSocket_QBaseReadData(QSslSocket* self, char* data, long long maxlen);
-long long QSslSocket_SkipData(QSslSocket* self, long long maxSize);
-void QSslSocket_OnSkipData(QSslSocket* self, intptr_t slot);
-long long QSslSocket_QBaseSkipData(QSslSocket* self, long long maxSize);
 long long QSslSocket_WriteData(QSslSocket* self, const char* data, long long lenVal);
 void QSslSocket_OnWriteData(QSslSocket* self, intptr_t slot);
 long long QSslSocket_QBaseWriteData(QSslSocket* self, const char* data, long long lenVal);
 libqt_string QSslSocket_Tr2(const char* s, const char* c);
 libqt_string QSslSocket_Tr3(const char* s, const char* c, int n);
+libqt_string QSslSocket_TrUtf82(const char* s, const char* c);
+libqt_string QSslSocket_TrUtf83(const char* s, const char* c, int n);
 void QSslSocket_ConnectToHostEncrypted3(QSslSocket* self, libqt_string hostName, uint16_t port, int mode);
 void QSslSocket_ConnectToHostEncrypted4(QSslSocket* self, libqt_string hostName, uint16_t port, int mode, int protocol);
 void QSslSocket_ConnectToHostEncrypted42(QSslSocket* self, libqt_string hostName, uint16_t port, libqt_string sslPeerName, int mode);
@@ -200,13 +204,14 @@ void QSslSocket_SetLocalCertificate2(QSslSocket* self, libqt_string fileName, in
 void QSslSocket_SetPrivateKey2(QSslSocket* self, libqt_string fileName, int algorithm);
 void QSslSocket_SetPrivateKey3(QSslSocket* self, libqt_string fileName, int algorithm, int format);
 void QSslSocket_SetPrivateKey4(QSslSocket* self, libqt_string fileName, int algorithm, int format, libqt_string passPhrase);
+bool QSslSocket_AddCaCertificates2(QSslSocket* self, libqt_string path, int format);
+bool QSslSocket_AddCaCertificates3(QSslSocket* self, libqt_string path, int format, int syntax);
+bool QSslSocket_AddDefaultCaCertificates2(libqt_string path, int format);
+bool QSslSocket_AddDefaultCaCertificates3(libqt_string path, int format, int syntax);
 bool QSslSocket_WaitForEncrypted1(QSslSocket* self, int msecs);
-libqt_list /* of int */ QSslSocket_SupportedProtocols1(libqt_string backendName);
-bool QSslSocket_IsProtocolSupported2(int protocol, libqt_string backendName);
-libqt_list /* of int */ QSslSocket_ImplementedClasses1(libqt_string backendName);
-bool QSslSocket_IsClassImplemented2(int cl, libqt_string backendName);
-libqt_list /* of int */ QSslSocket_SupportedFeatures1(libqt_string backendName);
-bool QSslSocket_IsFeatureSupported2(int feat, libqt_string backendName);
+void QSslSocket_ConnectToHost2(QSslSocket* self, QHostAddress* address, uint16_t port, int mode);
+void QSslSocket_OnConnectToHost2(QSslSocket* self, intptr_t slot);
+void QSslSocket_QBaseConnectToHost2(QSslSocket* self, QHostAddress* address, uint16_t port, int mode);
 intptr_t QSslSocket_SocketDescriptor(const QSslSocket* self);
 void QSslSocket_OnSocketDescriptor(const QSslSocket* self, intptr_t slot);
 intptr_t QSslSocket_QBaseSocketDescriptor(const QSslSocket* self);
@@ -252,9 +257,6 @@ void QSslSocket_QBaseConnectNotify(QSslSocket* self, QMetaMethod* signal);
 void QSslSocket_DisconnectNotify(QSslSocket* self, QMetaMethod* signal);
 void QSslSocket_OnDisconnectNotify(QSslSocket* self, intptr_t slot);
 void QSslSocket_QBaseDisconnectNotify(QSslSocket* self, QMetaMethod* signal);
-bool QSslSocket_Bind(QSslSocket* self, QHostAddress* address, uint16_t port, int mode);
-void QSslSocket_OnBind(QSslSocket* self, intptr_t slot);
-bool QSslSocket_QBaseBind(QSslSocket* self, QHostAddress* address, uint16_t port, int mode);
 void QSslSocket_SetSocketState(QSslSocket* self, int state);
 void QSslSocket_OnSetSocketState(QSslSocket* self, intptr_t slot);
 void QSslSocket_QBaseSetSocketState(QSslSocket* self, int state);

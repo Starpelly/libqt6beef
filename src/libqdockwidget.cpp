@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -130,6 +127,18 @@ int QDockWidget_QBaseMetacall(QDockWidget* self, int param1, int param2, void** 
 
 libqt_string QDockWidget_Tr(const char* s) {
     QString _ret = QDockWidget::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDockWidget_TrUtf8(const char* s) {
+    QString _ret = QDockWidget::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -272,6 +281,30 @@ libqt_string QDockWidget_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QDockWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDockWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDockWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDockWidget::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 // Derived class handler implementation
 void QDockWidget_ChangeEvent(QDockWidget* self, QEvent* event) {
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
@@ -373,32 +406,6 @@ bool QDockWidget_QBaseEvent(QDockWidget* self, QEvent* event) {
 void QDockWidget_OnEvent(QDockWidget* self, intptr_t slot) {
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
         vqdockwidget->setQDockWidget_Event_Callback(reinterpret_cast<VirtualQDockWidget::QDockWidget_Event_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QDockWidget_InitStyleOption(const QDockWidget* self, QStyleOptionDockWidget* option) {
-    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
-        vqdockwidget->initStyleOption(option);
-    } else {
-        vqdockwidget->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QDockWidget_QBaseInitStyleOption(const QDockWidget* self, QStyleOptionDockWidget* option) {
-    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
-        vqdockwidget->setQDockWidget_InitStyleOption_IsBase(true);
-        vqdockwidget->initStyleOption(option);
-    } else {
-        vqdockwidget->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QDockWidget_OnInitStyleOption(const QDockWidget* self, intptr_t slot) {
-    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
-        vqdockwidget->setQDockWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQDockWidget::QDockWidget_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -819,7 +826,7 @@ void QDockWidget_OnFocusOutEvent(QDockWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QDockWidget_EnterEvent(QDockWidget* self, QEnterEvent* event) {
+void QDockWidget_EnterEvent(QDockWidget* self, QEvent* event) {
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
         vqdockwidget->enterEvent(event);
     } else {
@@ -828,7 +835,7 @@ void QDockWidget_EnterEvent(QDockWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QDockWidget_QBaseEnterEvent(QDockWidget* self, QEnterEvent* event) {
+void QDockWidget_QBaseEnterEvent(QDockWidget* self, QEvent* event) {
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
         vqdockwidget->setQDockWidget_EnterEvent_IsBase(true);
         vqdockwidget->enterEvent(event);
@@ -1157,23 +1164,23 @@ void QDockWidget_OnHideEvent(QDockWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QDockWidget_NativeEvent(QDockWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDockWidget_NativeEvent(QDockWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
-        return vqdockwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdockwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdockwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdockwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QDockWidget_QBaseNativeEvent(QDockWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDockWidget_QBaseNativeEvent(QDockWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
         vqdockwidget->setQDockWidget_NativeEvent_IsBase(true);
-        return vqdockwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdockwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdockwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdockwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1519,6 +1526,32 @@ void QDockWidget_QBaseDisconnectNotify(QDockWidget* self, QMetaMethod* signal) {
 void QDockWidget_OnDisconnectNotify(QDockWidget* self, intptr_t slot) {
     if (auto* vqdockwidget = dynamic_cast<VirtualQDockWidget*>(self)) {
         vqdockwidget->setQDockWidget_DisconnectNotify_Callback(reinterpret_cast<VirtualQDockWidget::QDockWidget_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QDockWidget_InitStyleOption(const QDockWidget* self, QStyleOptionDockWidget* option) {
+    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
+        vqdockwidget->initStyleOption(option);
+    } else {
+        vqdockwidget->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QDockWidget_QBaseInitStyleOption(const QDockWidget* self, QStyleOptionDockWidget* option) {
+    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
+        vqdockwidget->setQDockWidget_InitStyleOption_IsBase(true);
+        vqdockwidget->initStyleOption(option);
+    } else {
+        vqdockwidget->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QDockWidget_OnInitStyleOption(const QDockWidget* self, intptr_t slot) {
+    if (auto* vqdockwidget = const_cast<VirtualQDockWidget*>(dynamic_cast<const VirtualQDockWidget*>(self))) {
+        vqdockwidget->setQDockWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQDockWidget::QDockWidget_InitStyleOption_Callback>(slot));
     }
 }
 

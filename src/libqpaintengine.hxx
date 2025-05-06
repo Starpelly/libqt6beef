@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -35,8 +37,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     using QPaintEngine_DrawImage_Callback = void (*)(QPaintEngine*, const QRectF&, const QImage&, const QRectF&, Qt::ImageConversionFlags);
     using QPaintEngine_CoordinateOffset_Callback = QPoint (*)();
     using QPaintEngine_Type_Callback = QPaintEngine::Type (*)();
-    using QPaintEngine_CreatePixmap_Callback = QPixmap (*)(QPaintEngine*, QSize);
-    using QPaintEngine_CreatePixmapFromImage_Callback = QPixmap (*)(QPaintEngine*, QImage, Qt::ImageConversionFlags);
 
   protected:
     // Instance callback storage
@@ -60,8 +60,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     QPaintEngine_DrawImage_Callback qpaintengine_drawimage_callback = nullptr;
     QPaintEngine_CoordinateOffset_Callback qpaintengine_coordinateoffset_callback = nullptr;
     QPaintEngine_Type_Callback qpaintengine_type_callback = nullptr;
-    QPaintEngine_CreatePixmap_Callback qpaintengine_createpixmap_callback = nullptr;
-    QPaintEngine_CreatePixmapFromImage_Callback qpaintengine_createpixmapfromimage_callback = nullptr;
 
     // Instance base flags
     mutable bool qpaintengine_begin_isbase = false;
@@ -84,8 +82,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     mutable bool qpaintengine_drawimage_isbase = false;
     mutable bool qpaintengine_coordinateoffset_isbase = false;
     mutable bool qpaintengine_type_isbase = false;
-    mutable bool qpaintengine_createpixmap_isbase = false;
-    mutable bool qpaintengine_createpixmapfromimage_isbase = false;
 
   public:
     VirtualQPaintEngine() : QPaintEngine(){};
@@ -112,8 +108,6 @@ class VirtualQPaintEngine : public QPaintEngine {
         qpaintengine_drawimage_callback = nullptr;
         qpaintengine_coordinateoffset_callback = nullptr;
         qpaintengine_type_callback = nullptr;
-        qpaintengine_createpixmap_callback = nullptr;
-        qpaintengine_createpixmapfromimage_callback = nullptr;
     }
 
     // Callback setters
@@ -137,8 +131,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     void setQPaintEngine_DrawImage_Callback(QPaintEngine_DrawImage_Callback cb) { qpaintengine_drawimage_callback = cb; }
     void setQPaintEngine_CoordinateOffset_Callback(QPaintEngine_CoordinateOffset_Callback cb) { qpaintengine_coordinateoffset_callback = cb; }
     void setQPaintEngine_Type_Callback(QPaintEngine_Type_Callback cb) { qpaintengine_type_callback = cb; }
-    void setQPaintEngine_CreatePixmap_Callback(QPaintEngine_CreatePixmap_Callback cb) { qpaintengine_createpixmap_callback = cb; }
-    void setQPaintEngine_CreatePixmapFromImage_Callback(QPaintEngine_CreatePixmapFromImage_Callback cb) { qpaintengine_createpixmapfromimage_callback = cb; }
 
     // Base flag setters
     void setQPaintEngine_Begin_IsBase(bool value) const { qpaintengine_begin_isbase = value; }
@@ -161,8 +153,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     void setQPaintEngine_DrawImage_IsBase(bool value) const { qpaintengine_drawimage_isbase = value; }
     void setQPaintEngine_CoordinateOffset_IsBase(bool value) const { qpaintengine_coordinateoffset_isbase = value; }
     void setQPaintEngine_Type_IsBase(bool value) const { qpaintengine_type_isbase = value; }
-    void setQPaintEngine_CreatePixmap_IsBase(bool value) const { qpaintengine_createpixmap_isbase = value; }
-    void setQPaintEngine_CreatePixmapFromImage_IsBase(bool value) const { qpaintengine_createpixmapfromimage_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
     virtual bool begin(QPaintDevice* pdev) override {
@@ -367,30 +357,6 @@ class VirtualQPaintEngine : public QPaintEngine {
     // Virtual method for C ABI access and custom callback
     virtual QPaintEngine::Type type() const override {
         return qpaintengine_type_callback();
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QPixmap createPixmap(QSize size) override {
-        if (qpaintengine_createpixmap_isbase) {
-            qpaintengine_createpixmap_isbase = false;
-            return QPaintEngine::createPixmap(size);
-        } else if (qpaintengine_createpixmap_callback != nullptr) {
-            return qpaintengine_createpixmap_callback(this, size);
-        } else {
-            return QPaintEngine::createPixmap(size);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QPixmap createPixmapFromImage(QImage image, Qt::ImageConversionFlags flags) override {
-        if (qpaintengine_createpixmapfromimage_isbase) {
-            qpaintengine_createpixmapfromimage_isbase = false;
-            return QPaintEngine::createPixmapFromImage(image, flags);
-        } else if (qpaintengine_createpixmapfromimage_callback != nullptr) {
-            return qpaintengine_createpixmapfromimage_callback(this, image, flags);
-        } else {
-            return QPaintEngine::createPixmapFromImage(image, flags);
-        }
     }
 };
 

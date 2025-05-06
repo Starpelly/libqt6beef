@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionGroup QActionGroup;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIcon QIcon;
@@ -30,6 +30,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -48,6 +49,7 @@ int QActionGroup_Metacall(QActionGroup* self, int param1, int param2, void** par
 void QActionGroup_OnMetacall(QActionGroup* self, intptr_t slot);
 int QActionGroup_QBaseMetacall(QActionGroup* self, int param1, int param2, void** param3);
 libqt_string QActionGroup_Tr(const char* s);
+libqt_string QActionGroup_TrUtf8(const char* s);
 QAction* QActionGroup_AddAction(QActionGroup* self, QAction* a);
 QAction* QActionGroup_AddActionWithText(QActionGroup* self, libqt_string text);
 QAction* QActionGroup_AddAction2(QActionGroup* self, QIcon* icon, libqt_string text);
@@ -69,6 +71,8 @@ void QActionGroup_Hovered(QActionGroup* self, QAction* param1);
 void QActionGroup_Connect_Hovered(QActionGroup* self, intptr_t slot);
 libqt_string QActionGroup_Tr2(const char* s, const char* c);
 libqt_string QActionGroup_Tr3(const char* s, const char* c, int n);
+libqt_string QActionGroup_TrUtf82(const char* s, const char* c);
+libqt_string QActionGroup_TrUtf83(const char* s, const char* c, int n);
 bool QActionGroup_Event(QActionGroup* self, QEvent* event);
 void QActionGroup_OnEvent(QActionGroup* self, intptr_t slot);
 bool QActionGroup_QBaseEvent(QActionGroup* self, QEvent* event);

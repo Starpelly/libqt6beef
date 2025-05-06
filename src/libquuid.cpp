@@ -1,6 +1,4 @@
-#include <QAnyStringView>
 #include <QByteArray>
-#include <QByteArrayView>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -25,12 +23,18 @@ QUuid* QUuid_new4(unsigned int l, uint16_t w1, uint16_t w2, unsigned char b1, un
     return new QUuid(static_cast<uint>(l), static_cast<ushort>(w1), static_cast<ushort>(w2), static_cast<uchar>(b1), static_cast<uchar>(b2), static_cast<uchar>(b3), static_cast<uchar>(b4), static_cast<uchar>(b5), static_cast<uchar>(b6), static_cast<uchar>(b7), static_cast<uchar>(b8));
 }
 
-QUuid* QUuid_new5(char* stringVal) {
-    return new QUuid(QAnyStringView(stringVal));
+QUuid* QUuid_new5(libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    return new QUuid(param1_QString);
 }
 
-QUuid* QUuid_new6(QUuid* param1) {
-    return new QUuid(*param1);
+QUuid* QUuid_new6(const char* param1) {
+    return new QUuid(param1);
+}
+
+QUuid* QUuid_new7(libqt_string param1) {
+    QByteArray param1_QByteArray(param1.data, param1.len);
+    return new QUuid(param1_QByteArray);
 }
 
 void QUuid_CopyAssign(QUuid* self, QUuid* other) {
@@ -41,12 +45,20 @@ void QUuid_MoveAssign(QUuid* self, QUuid* other) {
     *self = std::move(*other);
 }
 
-QUuid* QUuid_FromString(char* stringVal) {
-    return new QUuid(QUuid::fromString(QAnyStringView(stringVal)));
-}
-
 libqt_string QUuid_ToString(const QUuid* self) {
     QString _ret = self->toString();
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QUuid_ToStringWithMode(const QUuid* self, int mode) {
+    QString _ret = self->toString(static_cast<QUuid::StringFormat>(mode));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -67,6 +79,16 @@ libqt_string QUuid_ToByteArray(const QUuid* self) {
     return _str;
 }
 
+libqt_string QUuid_ToByteArrayWithMode(const QUuid* self, int mode) {
+    QByteArray _qb = self->toByteArray(static_cast<QUuid::StringFormat>(mode));
+    libqt_string _str;
+    _str.len = _qb.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _qb.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QUuid_ToRfc4122(const QUuid* self) {
     QByteArray _qb = self->toRfc4122();
     libqt_string _str;
@@ -77,8 +99,9 @@ libqt_string QUuid_ToRfc4122(const QUuid* self) {
     return _str;
 }
 
-QUuid* QUuid_FromRfc4122(QByteArrayView* param1) {
-    return new QUuid(QUuid::fromRfc4122(*param1));
+QUuid* QUuid_FromRfc4122(libqt_string param1) {
+    QByteArray param1_QByteArray(param1.data, param1.len);
+    return new QUuid(QUuid::fromRfc4122(param1_QByteArray));
 }
 
 bool QUuid_IsNull(const QUuid* self) {
@@ -131,28 +154,6 @@ int QUuid_Variant(const QUuid* self) {
 
 int QUuid_Version(const QUuid* self) {
     return static_cast<int>(self->version());
-}
-
-libqt_string QUuid_ToString1(const QUuid* self, int mode) {
-    QString _ret = self->toString(static_cast<QUuid::StringFormat>(mode));
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-libqt_string QUuid_ToByteArray1(const QUuid* self, int mode) {
-    QByteArray _qb = self->toByteArray(static_cast<QUuid::StringFormat>(mode));
-    libqt_string _str;
-    _str.len = _qb.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _qb.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
 }
 
 void QUuid_Delete(QUuid* self) {

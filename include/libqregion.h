@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -59,6 +61,7 @@ QRegion* QRegion_Xored(const QRegion* self, QRegion* r);
 bool QRegion_Intersects(const QRegion* self, QRegion* r);
 bool QRegion_IntersectsWithQRect(const QRegion* self, QRect* r);
 QRect* QRegion_BoundingRect(const QRegion* self);
+libqt_list /* of QRect* */ QRegion_Rects(const QRegion* self);
 void QRegion_SetRects(QRegion* self, QRect* rect, int num);
 int QRegion_RectCount(const QRegion* self);
 QRegion* QRegion_OperatorBitwiseOr(const QRegion* self, QRegion* r);

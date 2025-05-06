@@ -1,9 +1,7 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,7 +13,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -127,6 +124,18 @@ libqt_string QWizard_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QWizard_TrUtf8(const char* s) {
+    QString _ret = QWizard::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 int QWizard_AddPage(QWizard* self, QWizardPage* page) {
     return self->addPage(page);
 }
@@ -145,6 +154,19 @@ QWizardPage* QWizard_Page(const QWizard* self, int id) {
 
 bool QWizard_HasVisitedPage(const QWizard* self, int id) {
     return self->hasVisitedPage(static_cast<int>(id));
+}
+
+libqt_list /* of int */ QWizard_VisitedPages(const QWizard* self) {
+    QList<int> _ret = self->visitedPages();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = _ret[i];
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 libqt_list /* of int */ QWizard_VisitedIds(const QWizard* self) {
@@ -361,10 +383,6 @@ void QWizard_Next(QWizard* self) {
     self->next();
 }
 
-void QWizard_SetCurrentId(QWizard* self, int id) {
-    self->setCurrentId(static_cast<int>(id));
-}
-
 void QWizard_Restart(QWizard* self) {
     self->restart();
 }
@@ -383,6 +401,30 @@ libqt_string QWizard_Tr2(const char* s, const char* c) {
 
 libqt_string QWizard_Tr3(const char* s, const char* c, int n) {
     QString _ret = QWizard::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWizard_TrUtf82(const char* s, const char* c) {
+    QString _ret = QWizard::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWizard_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QWizard::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1230,7 +1272,7 @@ void QWizard_OnFocusOutEvent(QWizard* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QWizard_EnterEvent(QWizard* self, QEnterEvent* event) {
+void QWizard_EnterEvent(QWizard* self, QEvent* event) {
     if (auto* vqwizard = dynamic_cast<VirtualQWizard*>(self)) {
         vqwizard->enterEvent(event);
     } else {
@@ -1239,7 +1281,7 @@ void QWizard_EnterEvent(QWizard* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QWizard_QBaseEnterEvent(QWizard* self, QEnterEvent* event) {
+void QWizard_QBaseEnterEvent(QWizard* self, QEvent* event) {
     if (auto* vqwizard = dynamic_cast<VirtualQWizard*>(self)) {
         vqwizard->setQWizard_EnterEvent_IsBase(true);
         vqwizard->enterEvent(event);
@@ -1490,23 +1532,23 @@ void QWizard_OnHideEvent(QWizard* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QWizard_NativeEvent(QWizard* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWizard_NativeEvent(QWizard* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwizard = dynamic_cast<VirtualQWizard*>(self)) {
-        return vqwizard->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizard->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwizard->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizard->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QWizard_QBaseNativeEvent(QWizard* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWizard_QBaseNativeEvent(QWizard* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwizard = dynamic_cast<VirtualQWizard*>(self)) {
         vqwizard->setQWizard_NativeEvent_IsBase(true);
-        return vqwizard->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizard->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwizard->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizard->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -2172,6 +2214,18 @@ libqt_string QWizardPage_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QWizardPage_TrUtf8(const char* s) {
+    QString _ret = QWizardPage::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QWizardPage_SetTitle(QWizardPage* self, libqt_string title) {
     QString title_QString = QString::fromUtf8(title.data, title.len);
     self->setTitle(title_QString);
@@ -2272,6 +2326,30 @@ libqt_string QWizardPage_Tr2(const char* s, const char* c) {
 
 libqt_string QWizardPage_Tr3(const char* s, const char* c, int n) {
     QString _ret = QWizardPage::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWizardPage_TrUtf82(const char* s, const char* c) {
+    QString _ret = QWizardPage::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWizardPage_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QWizardPage::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -2855,7 +2933,7 @@ void QWizardPage_OnFocusOutEvent(QWizardPage* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QWizardPage_EnterEvent(QWizardPage* self, QEnterEvent* event) {
+void QWizardPage_EnterEvent(QWizardPage* self, QEvent* event) {
     if (auto* vqwizardpage = dynamic_cast<VirtualQWizardPage*>(self)) {
         vqwizardpage->enterEvent(event);
     } else {
@@ -2864,7 +2942,7 @@ void QWizardPage_EnterEvent(QWizardPage* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QWizardPage_QBaseEnterEvent(QWizardPage* self, QEnterEvent* event) {
+void QWizardPage_QBaseEnterEvent(QWizardPage* self, QEvent* event) {
     if (auto* vqwizardpage = dynamic_cast<VirtualQWizardPage*>(self)) {
         vqwizardpage->setQWizardPage_EnterEvent_IsBase(true);
         vqwizardpage->enterEvent(event);
@@ -3245,23 +3323,23 @@ void QWizardPage_OnHideEvent(QWizardPage* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QWizardPage_NativeEvent(QWizardPage* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWizardPage_NativeEvent(QWizardPage* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwizardpage = dynamic_cast<VirtualQWizardPage*>(self)) {
-        return vqwizardpage->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizardpage->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwizardpage->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizardpage->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QWizardPage_QBaseNativeEvent(QWizardPage* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWizardPage_QBaseNativeEvent(QWizardPage* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwizardpage = dynamic_cast<VirtualQWizardPage*>(self)) {
         vqwizardpage->setQWizardPage_NativeEvent_IsBase(true);
-        return vqwizardpage->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizardpage->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwizardpage->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwizardpage->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

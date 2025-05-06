@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -128,16 +125,20 @@ libqt_string QKeySequenceEdit_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QKeySequenceEdit_TrUtf8(const char* s) {
+    QString _ret = QKeySequenceEdit::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QKeySequence* QKeySequenceEdit_KeySequence(const QKeySequenceEdit* self) {
     return new QKeySequence(self->keySequence());
-}
-
-void QKeySequenceEdit_SetClearButtonEnabled(QKeySequenceEdit* self, bool enable) {
-    self->setClearButtonEnabled(enable);
-}
-
-bool QKeySequenceEdit_IsClearButtonEnabled(const QKeySequenceEdit* self) {
-    return self->isClearButtonEnabled();
 }
 
 void QKeySequenceEdit_SetKeySequence(QKeySequenceEdit* self, QKeySequence* keySequence) {
@@ -187,6 +188,30 @@ libqt_string QKeySequenceEdit_Tr2(const char* s, const char* c) {
 
 libqt_string QKeySequenceEdit_Tr3(const char* s, const char* c, int n) {
     QString _ret = QKeySequenceEdit::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QKeySequenceEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QKeySequenceEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QKeySequenceEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QKeySequenceEdit::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -298,32 +323,6 @@ void QKeySequenceEdit_QBaseTimerEvent(QKeySequenceEdit* self, QTimerEvent* param
 void QKeySequenceEdit_OnTimerEvent(QKeySequenceEdit* self, intptr_t slot) {
     if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
         vqkeysequenceedit->setQKeySequenceEdit_TimerEvent_Callback(reinterpret_cast<VirtualQKeySequenceEdit::QKeySequenceEdit_TimerEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QKeySequenceEdit_FocusOutEvent(QKeySequenceEdit* self, QFocusEvent* param1) {
-    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
-        vqkeysequenceedit->focusOutEvent(param1);
-    } else {
-        vqkeysequenceedit->focusOutEvent(param1);
-    }
-}
-
-// Base class handler implementation
-void QKeySequenceEdit_QBaseFocusOutEvent(QKeySequenceEdit* self, QFocusEvent* param1) {
-    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
-        vqkeysequenceedit->setQKeySequenceEdit_FocusOutEvent_IsBase(true);
-        vqkeysequenceedit->focusOutEvent(param1);
-    } else {
-        vqkeysequenceedit->focusOutEvent(param1);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QKeySequenceEdit_OnFocusOutEvent(QKeySequenceEdit* self, intptr_t slot) {
-    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
-        vqkeysequenceedit->setQKeySequenceEdit_FocusOutEvent_Callback(reinterpret_cast<VirtualQKeySequenceEdit::QKeySequenceEdit_FocusOutEvent_Callback>(slot));
     }
 }
 
@@ -666,7 +665,33 @@ void QKeySequenceEdit_OnFocusInEvent(QKeySequenceEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QKeySequenceEdit_EnterEvent(QKeySequenceEdit* self, QEnterEvent* event) {
+void QKeySequenceEdit_FocusOutEvent(QKeySequenceEdit* self, QFocusEvent* event) {
+    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
+        vqkeysequenceedit->focusOutEvent(event);
+    } else {
+        vqkeysequenceedit->focusOutEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QKeySequenceEdit_QBaseFocusOutEvent(QKeySequenceEdit* self, QFocusEvent* event) {
+    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
+        vqkeysequenceedit->setQKeySequenceEdit_FocusOutEvent_IsBase(true);
+        vqkeysequenceedit->focusOutEvent(event);
+    } else {
+        vqkeysequenceedit->focusOutEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QKeySequenceEdit_OnFocusOutEvent(QKeySequenceEdit* self, intptr_t slot) {
+    if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
+        vqkeysequenceedit->setQKeySequenceEdit_FocusOutEvent_Callback(reinterpret_cast<VirtualQKeySequenceEdit::QKeySequenceEdit_FocusOutEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QKeySequenceEdit_EnterEvent(QKeySequenceEdit* self, QEvent* event) {
     if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
         vqkeysequenceedit->enterEvent(event);
     } else {
@@ -675,7 +700,7 @@ void QKeySequenceEdit_EnterEvent(QKeySequenceEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QKeySequenceEdit_QBaseEnterEvent(QKeySequenceEdit* self, QEnterEvent* event) {
+void QKeySequenceEdit_QBaseEnterEvent(QKeySequenceEdit* self, QEvent* event) {
     if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
         vqkeysequenceedit->setQKeySequenceEdit_EnterEvent_IsBase(true);
         vqkeysequenceedit->enterEvent(event);
@@ -1056,23 +1081,23 @@ void QKeySequenceEdit_OnHideEvent(QKeySequenceEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QKeySequenceEdit_NativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QKeySequenceEdit_NativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
-        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QKeySequenceEdit_QBaseNativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QKeySequenceEdit_QBaseNativeEvent(QKeySequenceEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqkeysequenceedit = dynamic_cast<VirtualQKeySequenceEdit*>(self)) {
         vqkeysequenceedit->setQKeySequenceEdit_NativeEvent_IsBase(true);
-        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqkeysequenceedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

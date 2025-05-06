@@ -205,6 +205,14 @@ void QUrlQuery_RemoveAllQueryItems(QUrlQuery* self, libqt_string key) {
     self->removeAllQueryItems(key_QString);
 }
 
+QChar* QUrlQuery_DefaultQueryValueDelimiter() {
+    return new QChar(QUrlQuery::defaultQueryValueDelimiter());
+}
+
+QChar* QUrlQuery_DefaultQueryPairDelimiter() {
+    return new QChar(QUrlQuery::defaultQueryPairDelimiter());
+}
+
 libqt_string QUrlQuery_Query1(const QUrlQuery* self, int encoding) {
     QString _ret = self->query(static_cast<QUrl::ComponentFormattingOptions>(encoding));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory

@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -8,6 +6,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QSharedMemory>
 #include <QString>
 #include <QByteArray>
@@ -82,6 +81,18 @@ libqt_string QSharedMemory_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSharedMemory_TrUtf8(const char* s) {
+    QString _ret = QSharedMemory::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QSharedMemory_SetKey(QSharedMemory* self, libqt_string key) {
     QString key_QString = QString::fromUtf8(key.data, key.len);
     self->setKey(key_QString);
@@ -116,12 +127,12 @@ libqt_string QSharedMemory_NativeKey(const QSharedMemory* self) {
     return _str;
 }
 
-bool QSharedMemory_Create(QSharedMemory* self, ptrdiff_t size) {
-    return self->create((qsizetype)(size));
+bool QSharedMemory_Create(QSharedMemory* self, int size) {
+    return self->create(static_cast<int>(size));
 }
 
-ptrdiff_t QSharedMemory_Size(const QSharedMemory* self) {
-    return static_cast<ptrdiff_t>(self->size());
+int QSharedMemory_Size(const QSharedMemory* self) {
+    return self->size();
 }
 
 bool QSharedMemory_Attach(QSharedMemory* self) {
@@ -196,8 +207,32 @@ libqt_string QSharedMemory_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-bool QSharedMemory_Create2(QSharedMemory* self, ptrdiff_t size, int mode) {
-    return self->create((qsizetype)(size), static_cast<QSharedMemory::AccessMode>(mode));
+libqt_string QSharedMemory_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSharedMemory::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSharedMemory_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSharedMemory::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+bool QSharedMemory_Create2(QSharedMemory* self, int size, int mode) {
+    return self->create(static_cast<int>(size), static_cast<QSharedMemory::AccessMode>(mode));
 }
 
 bool QSharedMemory_Attach1(QSharedMemory* self, int mode) {

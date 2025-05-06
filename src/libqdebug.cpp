@@ -1,10 +1,8 @@
 #include <QByteArray>
-#include <QByteArrayView>
 #include <QChar>
 #include <QDebug>
 #include <QDebugStateSaver>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QNoDebug>
 #include <QString>
 #include <QByteArray>
@@ -187,12 +185,6 @@ QDebug* QDebug_OperatorShiftLeftWithQString(QDebug* self, libqt_string t) {
 QDebug* QDebug_OperatorShiftLeftWithQByteArray(QDebug* self, libqt_string t) {
     QByteArray t_QByteArray(t.data, t.len);
     QDebug& _ret = self->operator<<(t_QByteArray);
-    // Cast returned reference into pointer
-    return &_ret;
-}
-
-QDebug* QDebug_OperatorShiftLeftWithQByteArrayView(QDebug* self, QByteArrayView* t) {
-    QDebug& _ret = self->operator<<(*t);
     // Cast returned reference into pointer
     return &_ret;
 }

@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -39,6 +36,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -46,7 +44,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -124,6 +121,18 @@ int QLineEdit_QBaseMetacall(QLineEdit* self, int param1, int param2, void** para
 
 libqt_string QLineEdit_Tr(const char* s) {
     QString _ret = QLineEdit::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QLineEdit_TrUtf8(const char* s) {
+    QString _ret = QLineEdit::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -376,6 +385,10 @@ void QLineEdit_SetTextMarginsWithMargins(QLineEdit* self, QMargins* margins) {
     self->setTextMargins(*margins);
 }
 
+void QLineEdit_GetTextMargins(const QLineEdit* self, int* left, int* top, int* right, int* bottom) {
+    self->getTextMargins(static_cast<int*>(left), static_cast<int*>(top), static_cast<int*>(right), static_cast<int*>(bottom));
+}
+
 QMargins* QLineEdit_TextMargins(const QLineEdit* self) {
     return new QMargins(self->textMargins());
 }
@@ -551,6 +564,30 @@ libqt_string QLineEdit_Tr2(const char* s, const char* c) {
 
 libqt_string QLineEdit_Tr3(const char* s, const char* c, int n) {
     QString _ret = QLineEdit::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QLineEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QLineEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QLineEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QLineEdit::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -748,32 +785,6 @@ void QLineEdit_QBaseKeyPressEvent(QLineEdit* self, QKeyEvent* param1) {
 void QLineEdit_OnKeyPressEvent(QLineEdit* self, intptr_t slot) {
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->setQLineEdit_KeyPressEvent_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_KeyPressEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QLineEdit_KeyReleaseEvent(QLineEdit* self, QKeyEvent* param1) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->keyReleaseEvent(param1);
-    } else {
-        vqlineedit->keyReleaseEvent(param1);
-    }
-}
-
-// Base class handler implementation
-void QLineEdit_QBaseKeyReleaseEvent(QLineEdit* self, QKeyEvent* param1) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->setQLineEdit_KeyReleaseEvent_IsBase(true);
-        vqlineedit->keyReleaseEvent(param1);
-    } else {
-        vqlineedit->keyReleaseEvent(param1);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLineEdit_OnKeyReleaseEvent(QLineEdit* self, intptr_t slot) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->setQLineEdit_KeyReleaseEvent_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_KeyReleaseEvent_Callback>(slot));
     }
 }
 
@@ -1038,32 +1049,6 @@ void QLineEdit_OnInputMethodEvent(QLineEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QLineEdit_InitStyleOption(const QLineEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
-        vqlineedit->initStyleOption(option);
-    } else {
-        vqlineedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QLineEdit_QBaseInitStyleOption(const QLineEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
-        vqlineedit->setQLineEdit_InitStyleOption_IsBase(true);
-        vqlineedit->initStyleOption(option);
-    } else {
-        vqlineedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLineEdit_OnInitStyleOption(const QLineEdit* self, intptr_t slot) {
-    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
-        vqlineedit->setQLineEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QVariant* QLineEdit_InputMethodQuery(const QLineEdit* self, int param1) {
     if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
         return new QVariant(vqlineedit->inputMethodQuery(static_cast<Qt::InputMethodQuery>(param1)));
@@ -1086,32 +1071,6 @@ QVariant* QLineEdit_QBaseInputMethodQuery(const QLineEdit* self, int param1) {
 void QLineEdit_OnInputMethodQuery(const QLineEdit* self, intptr_t slot) {
     if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
         vqlineedit->setQLineEdit_InputMethodQuery_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_InputMethodQuery_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QLineEdit_TimerEvent(QLineEdit* self, QTimerEvent* param1) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->timerEvent(param1);
-    } else {
-        vqlineedit->timerEvent(param1);
-    }
-}
-
-// Base class handler implementation
-void QLineEdit_QBaseTimerEvent(QLineEdit* self, QTimerEvent* param1) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->setQLineEdit_TimerEvent_IsBase(true);
-        vqlineedit->timerEvent(param1);
-    } else {
-        vqlineedit->timerEvent(param1);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLineEdit_OnTimerEvent(QLineEdit* self, intptr_t slot) {
-    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        vqlineedit->setQLineEdit_TimerEvent_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_TimerEvent_Callback>(slot));
     }
 }
 
@@ -1298,7 +1257,33 @@ void QLineEdit_OnWheelEvent(QLineEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QLineEdit_EnterEvent(QLineEdit* self, QEnterEvent* event) {
+void QLineEdit_KeyReleaseEvent(QLineEdit* self, QKeyEvent* event) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->keyReleaseEvent(event);
+    } else {
+        vqlineedit->keyReleaseEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QLineEdit_QBaseKeyReleaseEvent(QLineEdit* self, QKeyEvent* event) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->setQLineEdit_KeyReleaseEvent_IsBase(true);
+        vqlineedit->keyReleaseEvent(event);
+    } else {
+        vqlineedit->keyReleaseEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLineEdit_OnKeyReleaseEvent(QLineEdit* self, intptr_t slot) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->setQLineEdit_KeyReleaseEvent_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_KeyReleaseEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QLineEdit_EnterEvent(QLineEdit* self, QEvent* event) {
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->enterEvent(event);
     } else {
@@ -1307,7 +1292,7 @@ void QLineEdit_EnterEvent(QLineEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QLineEdit_QBaseEnterEvent(QLineEdit* self, QEnterEvent* event) {
+void QLineEdit_QBaseEnterEvent(QLineEdit* self, QEvent* event) {
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->setQLineEdit_EnterEvent_IsBase(true);
         vqlineedit->enterEvent(event);
@@ -1532,23 +1517,23 @@ void QLineEdit_OnHideEvent(QLineEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QLineEdit_NativeEvent(QLineEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QLineEdit_NativeEvent(QLineEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
-        return vqlineedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlineedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlineedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlineedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QLineEdit_QBaseNativeEvent(QLineEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QLineEdit_QBaseNativeEvent(QLineEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->setQLineEdit_NativeEvent_IsBase(true);
-        return vqlineedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlineedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlineedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlineedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1716,6 +1701,32 @@ void QLineEdit_OnEventFilter(QLineEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QLineEdit_TimerEvent(QLineEdit* self, QTimerEvent* event) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->timerEvent(event);
+    } else {
+        vqlineedit->timerEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QLineEdit_QBaseTimerEvent(QLineEdit* self, QTimerEvent* event) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->setQLineEdit_TimerEvent_IsBase(true);
+        vqlineedit->timerEvent(event);
+    } else {
+        vqlineedit->timerEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLineEdit_OnTimerEvent(QLineEdit* self, intptr_t slot) {
+    if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
+        vqlineedit->setQLineEdit_TimerEvent_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_TimerEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 void QLineEdit_ChildEvent(QLineEdit* self, QChildEvent* event) {
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->childEvent(event);
@@ -1816,6 +1827,32 @@ void QLineEdit_QBaseDisconnectNotify(QLineEdit* self, QMetaMethod* signal) {
 void QLineEdit_OnDisconnectNotify(QLineEdit* self, intptr_t slot) {
     if (auto* vqlineedit = dynamic_cast<VirtualQLineEdit*>(self)) {
         vqlineedit->setQLineEdit_DisconnectNotify_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QLineEdit_InitStyleOption(const QLineEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
+        vqlineedit->initStyleOption(option);
+    } else {
+        vqlineedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QLineEdit_QBaseInitStyleOption(const QLineEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
+        vqlineedit->setQLineEdit_InitStyleOption_IsBase(true);
+        vqlineedit->initStyleOption(option);
+    } else {
+        vqlineedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLineEdit_OnInitStyleOption(const QLineEdit* self, intptr_t slot) {
+    if (auto* vqlineedit = const_cast<VirtualQLineEdit*>(dynamic_cast<const VirtualQLineEdit*>(self))) {
+        vqlineedit->setQLineEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQLineEdit::QLineEdit_InitStyleOption_Callback>(slot));
     }
 }
 

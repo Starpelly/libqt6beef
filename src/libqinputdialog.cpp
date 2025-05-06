@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -115,6 +112,18 @@ int QInputDialog_QBaseMetacall(QInputDialog* self, int param1, int param2, void*
 
 libqt_string QInputDialog_Tr(const char* s) {
     QString _ret = QInputDialog::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QInputDialog_TrUtf8(const char* s) {
+    QString _ret = QInputDialog::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -398,6 +407,12 @@ double QInputDialog_GetDouble(QWidget* parent, libqt_string title, libqt_string 
     return QInputDialog::getDouble(parent, title_QString, label_QString);
 }
 
+double QInputDialog_GetDouble2(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok, int flags, double step) {
+    QString title_QString = QString::fromUtf8(title.data, title.len);
+    QString label_QString = QString::fromUtf8(label.data, label.len);
+    return QInputDialog::getDouble(parent, title_QString, label_QString, static_cast<double>(value), static_cast<double>(minValue), static_cast<double>(maxValue), static_cast<int>(decimals), ok, static_cast<Qt::WindowFlags>(flags), static_cast<double>(step));
+}
+
 void QInputDialog_SetDoubleStep(QInputDialog* self, double step) {
     self->setDoubleStep(static_cast<double>(step));
 }
@@ -510,6 +525,30 @@ libqt_string QInputDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QInputDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QInputDialog::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QInputDialog_TrUtf82(const char* s, const char* c) {
+    QString _ret = QInputDialog::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QInputDialog_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QInputDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -833,12 +872,6 @@ double QInputDialog_GetDouble9(QWidget* parent, libqt_string title, libqt_string
     QString title_QString = QString::fromUtf8(title.data, title.len);
     QString label_QString = QString::fromUtf8(label.data, label.len);
     return QInputDialog::getDouble(parent, title_QString, label_QString, static_cast<double>(value), static_cast<double>(minValue), static_cast<double>(maxValue), static_cast<int>(decimals), ok, static_cast<Qt::WindowFlags>(flags));
-}
-
-double QInputDialog_GetDouble10(QWidget* parent, libqt_string title, libqt_string label, double value, double minValue, double maxValue, int decimals, bool* ok, int flags, double step) {
-    QString title_QString = QString::fromUtf8(title.data, title.len);
-    QString label_QString = QString::fromUtf8(label.data, label.len);
-    return QInputDialog::getDouble(parent, title_QString, label_QString, static_cast<double>(value), static_cast<double>(minValue), static_cast<double>(maxValue), static_cast<int>(decimals), ok, static_cast<Qt::WindowFlags>(flags), static_cast<double>(step));
 }
 
 // Derived class handler implementation
@@ -1544,7 +1577,7 @@ void QInputDialog_OnFocusOutEvent(QInputDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QInputDialog_EnterEvent(QInputDialog* self, QEnterEvent* event) {
+void QInputDialog_EnterEvent(QInputDialog* self, QEvent* event) {
     if (auto* vqinputdialog = dynamic_cast<VirtualQInputDialog*>(self)) {
         vqinputdialog->enterEvent(event);
     } else {
@@ -1553,7 +1586,7 @@ void QInputDialog_EnterEvent(QInputDialog* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QInputDialog_QBaseEnterEvent(QInputDialog* self, QEnterEvent* event) {
+void QInputDialog_QBaseEnterEvent(QInputDialog* self, QEvent* event) {
     if (auto* vqinputdialog = dynamic_cast<VirtualQInputDialog*>(self)) {
         vqinputdialog->setQInputDialog_EnterEvent_IsBase(true);
         vqinputdialog->enterEvent(event);
@@ -1830,23 +1863,23 @@ void QInputDialog_OnHideEvent(QInputDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QInputDialog_NativeEvent(QInputDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QInputDialog_NativeEvent(QInputDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqinputdialog = dynamic_cast<VirtualQInputDialog*>(self)) {
-        return vqinputdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqinputdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqinputdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqinputdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QInputDialog_QBaseNativeEvent(QInputDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QInputDialog_QBaseNativeEvent(QInputDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqinputdialog = dynamic_cast<VirtualQInputDialog*>(self)) {
         vqinputdialog->setQInputDialog_NativeEvent_IsBase(true);
-        return vqinputdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqinputdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqinputdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqinputdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

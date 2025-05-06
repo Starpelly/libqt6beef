@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -18,7 +20,7 @@ class VirtualQMimeData : public QMimeData {
     using QMimeData_Metacall_Callback = int (*)(QMimeData*, QMetaObject::Call, int, void**);
     using QMimeData_HasFormat_Callback = bool (*)(const QMimeData*, const QString&);
     using QMimeData_Formats_Callback = QStringList (*)();
-    using QMimeData_RetrieveData_Callback = QVariant (*)(const QMimeData*, const QString&, QMetaType);
+    using QMimeData_RetrieveData_Callback = QVariant (*)(const QMimeData*, const QString&, QVariant::Type);
     using QMimeData_Event_Callback = bool (*)(QMimeData*, QEvent*);
     using QMimeData_EventFilter_Callback = bool (*)(QMimeData*, QObject*, QEvent*);
     using QMimeData_TimerEvent_Callback = void (*)(QMimeData*, QTimerEvent*);
@@ -158,7 +160,7 @@ class VirtualQMimeData : public QMimeData {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QVariant retrieveData(const QString& mimetype, QMetaType preferredType) const override {
+    virtual QVariant retrieveData(const QString& mimetype, QVariant::Type preferredType) const override {
         if (qmimedata_retrievedata_isbase) {
             qmimedata_retrievedata_isbase = false;
             return QMimeData::retrieveData(mimetype, preferredType);

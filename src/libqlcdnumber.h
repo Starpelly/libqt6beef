@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -101,6 +100,7 @@ int QLCDNumber_Metacall(QLCDNumber* self, int param1, int param2, void** param3)
 void QLCDNumber_OnMetacall(QLCDNumber* self, intptr_t slot);
 int QLCDNumber_QBaseMetacall(QLCDNumber* self, int param1, int param2, void** param3);
 libqt_string QLCDNumber_Tr(const char* s);
+libqt_string QLCDNumber_TrUtf8(const char* s);
 bool QLCDNumber_SmallDecimalPoint(const QLCDNumber* self);
 int QLCDNumber_DigitCount(const QLCDNumber* self);
 void QLCDNumber_SetDigitCount(QLCDNumber* self, int nDigits);
@@ -133,6 +133,8 @@ void QLCDNumber_OnPaintEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBasePaintEvent(QLCDNumber* self, QPaintEvent* param1);
 libqt_string QLCDNumber_Tr2(const char* s, const char* c);
 libqt_string QLCDNumber_Tr3(const char* s, const char* c, int n);
+libqt_string QLCDNumber_TrUtf82(const char* s, const char* c);
+libqt_string QLCDNumber_TrUtf83(const char* s, const char* c, int n);
 void QLCDNumber_ChangeEvent(QLCDNumber* self, QEvent* param1);
 void QLCDNumber_OnChangeEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseChangeEvent(QLCDNumber* self, QEvent* param1);
@@ -181,9 +183,9 @@ void QLCDNumber_QBaseFocusInEvent(QLCDNumber* self, QFocusEvent* event);
 void QLCDNumber_FocusOutEvent(QLCDNumber* self, QFocusEvent* event);
 void QLCDNumber_OnFocusOutEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseFocusOutEvent(QLCDNumber* self, QFocusEvent* event);
-void QLCDNumber_EnterEvent(QLCDNumber* self, QEnterEvent* event);
+void QLCDNumber_EnterEvent(QLCDNumber* self, QEvent* event);
 void QLCDNumber_OnEnterEvent(QLCDNumber* self, intptr_t slot);
-void QLCDNumber_QBaseEnterEvent(QLCDNumber* self, QEnterEvent* event);
+void QLCDNumber_QBaseEnterEvent(QLCDNumber* self, QEvent* event);
 void QLCDNumber_LeaveEvent(QLCDNumber* self, QEvent* event);
 void QLCDNumber_OnLeaveEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseLeaveEvent(QLCDNumber* self, QEvent* event);
@@ -223,9 +225,9 @@ void QLCDNumber_QBaseShowEvent(QLCDNumber* self, QShowEvent* event);
 void QLCDNumber_HideEvent(QLCDNumber* self, QHideEvent* event);
 void QLCDNumber_OnHideEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseHideEvent(QLCDNumber* self, QHideEvent* event);
-bool QLCDNumber_NativeEvent(QLCDNumber* self, libqt_string eventType, void* message, intptr_t* result);
+bool QLCDNumber_NativeEvent(QLCDNumber* self, libqt_string eventType, void* message, long* result);
 void QLCDNumber_OnNativeEvent(QLCDNumber* self, intptr_t slot);
-bool QLCDNumber_QBaseNativeEvent(QLCDNumber* self, libqt_string eventType, void* message, intptr_t* result);
+bool QLCDNumber_QBaseNativeEvent(QLCDNumber* self, libqt_string eventType, void* message, long* result);
 void QLCDNumber_InputMethodEvent(QLCDNumber* self, QInputMethodEvent* param1);
 void QLCDNumber_OnInputMethodEvent(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseInputMethodEvent(QLCDNumber* self, QInputMethodEvent* param1);
@@ -253,9 +255,6 @@ void QLCDNumber_QBaseConnectNotify(QLCDNumber* self, QMetaMethod* signal);
 void QLCDNumber_DisconnectNotify(QLCDNumber* self, QMetaMethod* signal);
 void QLCDNumber_OnDisconnectNotify(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseDisconnectNotify(QLCDNumber* self, QMetaMethod* signal);
-void QLCDNumber_InitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option);
-void QLCDNumber_OnInitStyleOption(const QLCDNumber* self, intptr_t slot);
-void QLCDNumber_QBaseInitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option);
 int QLCDNumber_Metric(const QLCDNumber* self, int param1);
 void QLCDNumber_OnMetric(const QLCDNumber* self, intptr_t slot);
 int QLCDNumber_QBaseMetric(const QLCDNumber* self, int param1);
@@ -271,6 +270,9 @@ QPainter* QLCDNumber_QBaseSharedPainter(const QLCDNumber* self);
 void QLCDNumber_DrawFrame(QLCDNumber* self, QPainter* param1);
 void QLCDNumber_OnDrawFrame(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseDrawFrame(QLCDNumber* self, QPainter* param1);
+void QLCDNumber_InitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option);
+void QLCDNumber_OnInitStyleOption(const QLCDNumber* self, intptr_t slot);
+void QLCDNumber_QBaseInitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option);
 void QLCDNumber_UpdateMicroFocus(QLCDNumber* self);
 void QLCDNumber_OnUpdateMicroFocus(QLCDNumber* self, intptr_t slot);
 void QLCDNumber_QBaseUpdateMicroFocus(QLCDNumber* self);

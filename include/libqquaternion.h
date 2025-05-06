@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -52,6 +54,7 @@ QQuaternion* QQuaternion_Normalized(const QQuaternion* self);
 void QQuaternion_Normalize(QQuaternion* self);
 QQuaternion* QQuaternion_Inverted(const QQuaternion* self);
 QQuaternion* QQuaternion_Conjugated(const QQuaternion* self);
+QQuaternion* QQuaternion_Conjugate(const QQuaternion* self);
 QVector3D* QQuaternion_RotatedVector(const QQuaternion* self, QVector3D* vector);
 QQuaternion* QQuaternion_OperatorPlusAssign(QQuaternion* self, QQuaternion* quaternion);
 QQuaternion* QQuaternion_OperatorMinusAssign(QQuaternion* self, QQuaternion* quaternion);

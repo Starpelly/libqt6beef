@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -42,6 +44,9 @@ const unsigned char* QResource_Data(const QResource* self);
 long long QResource_UncompressedSize(const QResource* self);
 libqt_string QResource_UncompressedData(const QResource* self);
 QDateTime* QResource_LastModified(const QResource* self);
+void QResource_AddSearchPath(libqt_string path);
+libqt_list /* of libqt_string */ QResource_SearchPaths();
+bool QResource_IsCompressed(const QResource* self);
 bool QResource_RegisterResource(libqt_string rccFilename);
 bool QResource_UnregisterResource(libqt_string rccFilename);
 bool QResource_RegisterResourceWithRccData(const unsigned char* rccData);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -31,7 +33,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     using QDateTimeEdit_StepEnabled_Callback = QAbstractSpinBox::StepEnabled (*)();
     using QDateTimeEdit_MousePressEvent_Callback = void (*)(QDateTimeEdit*, QMouseEvent*);
     using QDateTimeEdit_PaintEvent_Callback = void (*)(QDateTimeEdit*, QPaintEvent*);
-    using QDateTimeEdit_InitStyleOption_Callback = void (*)(const QDateTimeEdit*, QStyleOptionSpinBox*);
     using QDateTimeEdit_MinimumSizeHint_Callback = QSize (*)();
     using QDateTimeEdit_InputMethodQuery_Callback = QVariant (*)(const QDateTimeEdit*, Qt::InputMethodQuery);
     using QDateTimeEdit_ResizeEvent_Callback = void (*)(QDateTimeEdit*, QResizeEvent*);
@@ -51,7 +52,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     using QDateTimeEdit_HasHeightForWidth_Callback = bool (*)();
     using QDateTimeEdit_PaintEngine_Callback = QPaintEngine* (*)();
     using QDateTimeEdit_MouseDoubleClickEvent_Callback = void (*)(QDateTimeEdit*, QMouseEvent*);
-    using QDateTimeEdit_EnterEvent_Callback = void (*)(QDateTimeEdit*, QEnterEvent*);
+    using QDateTimeEdit_EnterEvent_Callback = void (*)(QDateTimeEdit*, QEvent*);
     using QDateTimeEdit_LeaveEvent_Callback = void (*)(QDateTimeEdit*, QEvent*);
     using QDateTimeEdit_MoveEvent_Callback = void (*)(QDateTimeEdit*, QMoveEvent*);
     using QDateTimeEdit_TabletEvent_Callback = void (*)(QDateTimeEdit*, QTabletEvent*);
@@ -60,7 +61,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     using QDateTimeEdit_DragMoveEvent_Callback = void (*)(QDateTimeEdit*, QDragMoveEvent*);
     using QDateTimeEdit_DragLeaveEvent_Callback = void (*)(QDateTimeEdit*, QDragLeaveEvent*);
     using QDateTimeEdit_DropEvent_Callback = void (*)(QDateTimeEdit*, QDropEvent*);
-    using QDateTimeEdit_NativeEvent_Callback = bool (*)(QDateTimeEdit*, const QByteArray&, void*, qintptr*);
+    using QDateTimeEdit_NativeEvent_Callback = bool (*)(QDateTimeEdit*, const QByteArray&, void*, long*);
     using QDateTimeEdit_Metric_Callback = int (*)(const QDateTimeEdit*, QPaintDevice::PaintDeviceMetric);
     using QDateTimeEdit_InitPainter_Callback = void (*)(const QDateTimeEdit*, QPainter*);
     using QDateTimeEdit_Redirected_Callback = QPaintDevice* (*)(const QDateTimeEdit*, QPoint*);
@@ -71,6 +72,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     using QDateTimeEdit_CustomEvent_Callback = void (*)(QDateTimeEdit*, QEvent*);
     using QDateTimeEdit_ConnectNotify_Callback = void (*)(QDateTimeEdit*, const QMetaMethod&);
     using QDateTimeEdit_DisconnectNotify_Callback = void (*)(QDateTimeEdit*, const QMetaMethod&);
+    using QDateTimeEdit_InitStyleOption_Callback = void (*)(const QDateTimeEdit*, QStyleOptionSpinBox*);
     using QDateTimeEdit_LineEdit_Callback = QLineEdit* (*)();
     using QDateTimeEdit_SetLineEdit_Callback = void (*)(QDateTimeEdit*, QLineEdit*);
     using QDateTimeEdit_UpdateMicroFocus_Callback = void (*)();
@@ -101,7 +103,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     QDateTimeEdit_StepEnabled_Callback qdatetimeedit_stepenabled_callback = nullptr;
     QDateTimeEdit_MousePressEvent_Callback qdatetimeedit_mousepressevent_callback = nullptr;
     QDateTimeEdit_PaintEvent_Callback qdatetimeedit_paintevent_callback = nullptr;
-    QDateTimeEdit_InitStyleOption_Callback qdatetimeedit_initstyleoption_callback = nullptr;
     QDateTimeEdit_MinimumSizeHint_Callback qdatetimeedit_minimumsizehint_callback = nullptr;
     QDateTimeEdit_InputMethodQuery_Callback qdatetimeedit_inputmethodquery_callback = nullptr;
     QDateTimeEdit_ResizeEvent_Callback qdatetimeedit_resizeevent_callback = nullptr;
@@ -141,6 +142,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     QDateTimeEdit_CustomEvent_Callback qdatetimeedit_customevent_callback = nullptr;
     QDateTimeEdit_ConnectNotify_Callback qdatetimeedit_connectnotify_callback = nullptr;
     QDateTimeEdit_DisconnectNotify_Callback qdatetimeedit_disconnectnotify_callback = nullptr;
+    QDateTimeEdit_InitStyleOption_Callback qdatetimeedit_initstyleoption_callback = nullptr;
     QDateTimeEdit_LineEdit_Callback qdatetimeedit_lineedit_callback = nullptr;
     QDateTimeEdit_SetLineEdit_Callback qdatetimeedit_setlineedit_callback = nullptr;
     QDateTimeEdit_UpdateMicroFocus_Callback qdatetimeedit_updatemicrofocus_callback = nullptr;
@@ -170,7 +172,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     mutable bool qdatetimeedit_stepenabled_isbase = false;
     mutable bool qdatetimeedit_mousepressevent_isbase = false;
     mutable bool qdatetimeedit_paintevent_isbase = false;
-    mutable bool qdatetimeedit_initstyleoption_isbase = false;
     mutable bool qdatetimeedit_minimumsizehint_isbase = false;
     mutable bool qdatetimeedit_inputmethodquery_isbase = false;
     mutable bool qdatetimeedit_resizeevent_isbase = false;
@@ -210,6 +211,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     mutable bool qdatetimeedit_customevent_isbase = false;
     mutable bool qdatetimeedit_connectnotify_isbase = false;
     mutable bool qdatetimeedit_disconnectnotify_isbase = false;
+    mutable bool qdatetimeedit_initstyleoption_isbase = false;
     mutable bool qdatetimeedit_lineedit_isbase = false;
     mutable bool qdatetimeedit_setlineedit_isbase = false;
     mutable bool qdatetimeedit_updatemicrofocus_isbase = false;
@@ -226,11 +228,11 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     VirtualQDateTimeEdit(QWidget* parent) : QDateTimeEdit(parent){};
     VirtualQDateTimeEdit() : QDateTimeEdit(){};
     VirtualQDateTimeEdit(const QDateTime& dt) : QDateTimeEdit(dt){};
-    VirtualQDateTimeEdit(QDate d) : QDateTimeEdit(d){};
-    VirtualQDateTimeEdit(QTime t) : QDateTimeEdit(t){};
+    VirtualQDateTimeEdit(const QDate& d) : QDateTimeEdit(d){};
+    VirtualQDateTimeEdit(const QTime& t) : QDateTimeEdit(t){};
     VirtualQDateTimeEdit(const QDateTime& dt, QWidget* parent) : QDateTimeEdit(dt, parent){};
-    VirtualQDateTimeEdit(QDate d, QWidget* parent) : QDateTimeEdit(d, parent){};
-    VirtualQDateTimeEdit(QTime t, QWidget* parent) : QDateTimeEdit(t, parent){};
+    VirtualQDateTimeEdit(const QDate& d, QWidget* parent) : QDateTimeEdit(d, parent){};
+    VirtualQDateTimeEdit(const QTime& t, QWidget* parent) : QDateTimeEdit(t, parent){};
 
     ~VirtualQDateTimeEdit() {
         qdatetimeedit_metacall_callback = nullptr;
@@ -249,7 +251,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
         qdatetimeedit_stepenabled_callback = nullptr;
         qdatetimeedit_mousepressevent_callback = nullptr;
         qdatetimeedit_paintevent_callback = nullptr;
-        qdatetimeedit_initstyleoption_callback = nullptr;
         qdatetimeedit_minimumsizehint_callback = nullptr;
         qdatetimeedit_inputmethodquery_callback = nullptr;
         qdatetimeedit_resizeevent_callback = nullptr;
@@ -289,6 +290,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
         qdatetimeedit_customevent_callback = nullptr;
         qdatetimeedit_connectnotify_callback = nullptr;
         qdatetimeedit_disconnectnotify_callback = nullptr;
+        qdatetimeedit_initstyleoption_callback = nullptr;
         qdatetimeedit_lineedit_callback = nullptr;
         qdatetimeedit_setlineedit_callback = nullptr;
         qdatetimeedit_updatemicrofocus_callback = nullptr;
@@ -319,7 +321,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     void setQDateTimeEdit_StepEnabled_Callback(QDateTimeEdit_StepEnabled_Callback cb) { qdatetimeedit_stepenabled_callback = cb; }
     void setQDateTimeEdit_MousePressEvent_Callback(QDateTimeEdit_MousePressEvent_Callback cb) { qdatetimeedit_mousepressevent_callback = cb; }
     void setQDateTimeEdit_PaintEvent_Callback(QDateTimeEdit_PaintEvent_Callback cb) { qdatetimeedit_paintevent_callback = cb; }
-    void setQDateTimeEdit_InitStyleOption_Callback(QDateTimeEdit_InitStyleOption_Callback cb) { qdatetimeedit_initstyleoption_callback = cb; }
     void setQDateTimeEdit_MinimumSizeHint_Callback(QDateTimeEdit_MinimumSizeHint_Callback cb) { qdatetimeedit_minimumsizehint_callback = cb; }
     void setQDateTimeEdit_InputMethodQuery_Callback(QDateTimeEdit_InputMethodQuery_Callback cb) { qdatetimeedit_inputmethodquery_callback = cb; }
     void setQDateTimeEdit_ResizeEvent_Callback(QDateTimeEdit_ResizeEvent_Callback cb) { qdatetimeedit_resizeevent_callback = cb; }
@@ -359,6 +360,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     void setQDateTimeEdit_CustomEvent_Callback(QDateTimeEdit_CustomEvent_Callback cb) { qdatetimeedit_customevent_callback = cb; }
     void setQDateTimeEdit_ConnectNotify_Callback(QDateTimeEdit_ConnectNotify_Callback cb) { qdatetimeedit_connectnotify_callback = cb; }
     void setQDateTimeEdit_DisconnectNotify_Callback(QDateTimeEdit_DisconnectNotify_Callback cb) { qdatetimeedit_disconnectnotify_callback = cb; }
+    void setQDateTimeEdit_InitStyleOption_Callback(QDateTimeEdit_InitStyleOption_Callback cb) { qdatetimeedit_initstyleoption_callback = cb; }
     void setQDateTimeEdit_LineEdit_Callback(QDateTimeEdit_LineEdit_Callback cb) { qdatetimeedit_lineedit_callback = cb; }
     void setQDateTimeEdit_SetLineEdit_Callback(QDateTimeEdit_SetLineEdit_Callback cb) { qdatetimeedit_setlineedit_callback = cb; }
     void setQDateTimeEdit_UpdateMicroFocus_Callback(QDateTimeEdit_UpdateMicroFocus_Callback cb) { qdatetimeedit_updatemicrofocus_callback = cb; }
@@ -388,7 +390,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     void setQDateTimeEdit_StepEnabled_IsBase(bool value) const { qdatetimeedit_stepenabled_isbase = value; }
     void setQDateTimeEdit_MousePressEvent_IsBase(bool value) const { qdatetimeedit_mousepressevent_isbase = value; }
     void setQDateTimeEdit_PaintEvent_IsBase(bool value) const { qdatetimeedit_paintevent_isbase = value; }
-    void setQDateTimeEdit_InitStyleOption_IsBase(bool value) const { qdatetimeedit_initstyleoption_isbase = value; }
     void setQDateTimeEdit_MinimumSizeHint_IsBase(bool value) const { qdatetimeedit_minimumsizehint_isbase = value; }
     void setQDateTimeEdit_InputMethodQuery_IsBase(bool value) const { qdatetimeedit_inputmethodquery_isbase = value; }
     void setQDateTimeEdit_ResizeEvent_IsBase(bool value) const { qdatetimeedit_resizeevent_isbase = value; }
@@ -428,6 +429,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     void setQDateTimeEdit_CustomEvent_IsBase(bool value) const { qdatetimeedit_customevent_isbase = value; }
     void setQDateTimeEdit_ConnectNotify_IsBase(bool value) const { qdatetimeedit_connectnotify_isbase = value; }
     void setQDateTimeEdit_DisconnectNotify_IsBase(bool value) const { qdatetimeedit_disconnectnotify_isbase = value; }
+    void setQDateTimeEdit_InitStyleOption_IsBase(bool value) const { qdatetimeedit_initstyleoption_isbase = value; }
     void setQDateTimeEdit_LineEdit_IsBase(bool value) const { qdatetimeedit_lineedit_isbase = value; }
     void setQDateTimeEdit_SetLineEdit_IsBase(bool value) const { qdatetimeedit_setlineedit_isbase = value; }
     void setQDateTimeEdit_UpdateMicroFocus_IsBase(bool value) const { qdatetimeedit_updatemicrofocus_isbase = value; }
@@ -629,18 +631,6 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
             qdatetimeedit_paintevent_callback(this, event);
         } else {
             QDateTimeEdit::paintEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSpinBox* option) const override {
-        if (qdatetimeedit_initstyleoption_isbase) {
-            qdatetimeedit_initstyleoption_isbase = false;
-            QDateTimeEdit::initStyleOption(option);
-        } else if (qdatetimeedit_initstyleoption_callback != nullptr) {
-            qdatetimeedit_initstyleoption_callback(this, option);
-        } else {
-            QDateTimeEdit::initStyleOption(option);
         }
     }
 
@@ -873,7 +863,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qdatetimeedit_enterevent_isbase) {
             qdatetimeedit_enterevent_isbase = false;
             QDateTimeEdit::enterEvent(event);
@@ -981,7 +971,7 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qdatetimeedit_nativeevent_isbase) {
             qdatetimeedit_nativeevent_isbase = false;
             return QDateTimeEdit::nativeEvent(eventType, message, result);
@@ -1109,6 +1099,18 @@ class VirtualQDateTimeEdit : public QDateTimeEdit {
             qdatetimeedit_disconnectnotify_callback(this, signal);
         } else {
             QDateTimeEdit::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSpinBox* option) const {
+        if (qdatetimeedit_initstyleoption_isbase) {
+            qdatetimeedit_initstyleoption_isbase = false;
+            QDateTimeEdit::initStyleOption(option);
+        } else if (qdatetimeedit_initstyleoption_callback != nullptr) {
+            qdatetimeedit_initstyleoption_callback(this, option);
+        } else {
+            QDateTimeEdit::initStyleOption(option);
         }
     }
 
@@ -1266,7 +1268,6 @@ class VirtualQTimeEdit : public QTimeEdit {
     using QTimeEdit_StepEnabled_Callback = QAbstractSpinBox::StepEnabled (*)();
     using QTimeEdit_MousePressEvent_Callback = void (*)(QTimeEdit*, QMouseEvent*);
     using QTimeEdit_PaintEvent_Callback = void (*)(QTimeEdit*, QPaintEvent*);
-    using QTimeEdit_InitStyleOption_Callback = void (*)(const QTimeEdit*, QStyleOptionSpinBox*);
     using QTimeEdit_MinimumSizeHint_Callback = QSize (*)();
     using QTimeEdit_InputMethodQuery_Callback = QVariant (*)(const QTimeEdit*, Qt::InputMethodQuery);
     using QTimeEdit_ResizeEvent_Callback = void (*)(QTimeEdit*, QResizeEvent*);
@@ -1286,7 +1287,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     using QTimeEdit_HasHeightForWidth_Callback = bool (*)();
     using QTimeEdit_PaintEngine_Callback = QPaintEngine* (*)();
     using QTimeEdit_MouseDoubleClickEvent_Callback = void (*)(QTimeEdit*, QMouseEvent*);
-    using QTimeEdit_EnterEvent_Callback = void (*)(QTimeEdit*, QEnterEvent*);
+    using QTimeEdit_EnterEvent_Callback = void (*)(QTimeEdit*, QEvent*);
     using QTimeEdit_LeaveEvent_Callback = void (*)(QTimeEdit*, QEvent*);
     using QTimeEdit_MoveEvent_Callback = void (*)(QTimeEdit*, QMoveEvent*);
     using QTimeEdit_TabletEvent_Callback = void (*)(QTimeEdit*, QTabletEvent*);
@@ -1295,7 +1296,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     using QTimeEdit_DragMoveEvent_Callback = void (*)(QTimeEdit*, QDragMoveEvent*);
     using QTimeEdit_DragLeaveEvent_Callback = void (*)(QTimeEdit*, QDragLeaveEvent*);
     using QTimeEdit_DropEvent_Callback = void (*)(QTimeEdit*, QDropEvent*);
-    using QTimeEdit_NativeEvent_Callback = bool (*)(QTimeEdit*, const QByteArray&, void*, qintptr*);
+    using QTimeEdit_NativeEvent_Callback = bool (*)(QTimeEdit*, const QByteArray&, void*, long*);
     using QTimeEdit_Metric_Callback = int (*)(const QTimeEdit*, QPaintDevice::PaintDeviceMetric);
     using QTimeEdit_InitPainter_Callback = void (*)(const QTimeEdit*, QPainter*);
     using QTimeEdit_Redirected_Callback = QPaintDevice* (*)(const QTimeEdit*, QPoint*);
@@ -1306,6 +1307,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     using QTimeEdit_CustomEvent_Callback = void (*)(QTimeEdit*, QEvent*);
     using QTimeEdit_ConnectNotify_Callback = void (*)(QTimeEdit*, const QMetaMethod&);
     using QTimeEdit_DisconnectNotify_Callback = void (*)(QTimeEdit*, const QMetaMethod&);
+    using QTimeEdit_InitStyleOption_Callback = void (*)(const QTimeEdit*, QStyleOptionSpinBox*);
     using QTimeEdit_LineEdit_Callback = QLineEdit* (*)();
     using QTimeEdit_SetLineEdit_Callback = void (*)(QTimeEdit*, QLineEdit*);
     using QTimeEdit_UpdateMicroFocus_Callback = void (*)();
@@ -1336,7 +1338,6 @@ class VirtualQTimeEdit : public QTimeEdit {
     QTimeEdit_StepEnabled_Callback qtimeedit_stepenabled_callback = nullptr;
     QTimeEdit_MousePressEvent_Callback qtimeedit_mousepressevent_callback = nullptr;
     QTimeEdit_PaintEvent_Callback qtimeedit_paintevent_callback = nullptr;
-    QTimeEdit_InitStyleOption_Callback qtimeedit_initstyleoption_callback = nullptr;
     QTimeEdit_MinimumSizeHint_Callback qtimeedit_minimumsizehint_callback = nullptr;
     QTimeEdit_InputMethodQuery_Callback qtimeedit_inputmethodquery_callback = nullptr;
     QTimeEdit_ResizeEvent_Callback qtimeedit_resizeevent_callback = nullptr;
@@ -1376,6 +1377,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     QTimeEdit_CustomEvent_Callback qtimeedit_customevent_callback = nullptr;
     QTimeEdit_ConnectNotify_Callback qtimeedit_connectnotify_callback = nullptr;
     QTimeEdit_DisconnectNotify_Callback qtimeedit_disconnectnotify_callback = nullptr;
+    QTimeEdit_InitStyleOption_Callback qtimeedit_initstyleoption_callback = nullptr;
     QTimeEdit_LineEdit_Callback qtimeedit_lineedit_callback = nullptr;
     QTimeEdit_SetLineEdit_Callback qtimeedit_setlineedit_callback = nullptr;
     QTimeEdit_UpdateMicroFocus_Callback qtimeedit_updatemicrofocus_callback = nullptr;
@@ -1405,7 +1407,6 @@ class VirtualQTimeEdit : public QTimeEdit {
     mutable bool qtimeedit_stepenabled_isbase = false;
     mutable bool qtimeedit_mousepressevent_isbase = false;
     mutable bool qtimeedit_paintevent_isbase = false;
-    mutable bool qtimeedit_initstyleoption_isbase = false;
     mutable bool qtimeedit_minimumsizehint_isbase = false;
     mutable bool qtimeedit_inputmethodquery_isbase = false;
     mutable bool qtimeedit_resizeevent_isbase = false;
@@ -1445,6 +1446,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     mutable bool qtimeedit_customevent_isbase = false;
     mutable bool qtimeedit_connectnotify_isbase = false;
     mutable bool qtimeedit_disconnectnotify_isbase = false;
+    mutable bool qtimeedit_initstyleoption_isbase = false;
     mutable bool qtimeedit_lineedit_isbase = false;
     mutable bool qtimeedit_setlineedit_isbase = false;
     mutable bool qtimeedit_updatemicrofocus_isbase = false;
@@ -1460,8 +1462,8 @@ class VirtualQTimeEdit : public QTimeEdit {
   public:
     VirtualQTimeEdit(QWidget* parent) : QTimeEdit(parent){};
     VirtualQTimeEdit() : QTimeEdit(){};
-    VirtualQTimeEdit(QTime time) : QTimeEdit(time){};
-    VirtualQTimeEdit(QTime time, QWidget* parent) : QTimeEdit(time, parent){};
+    VirtualQTimeEdit(const QTime& time) : QTimeEdit(time){};
+    VirtualQTimeEdit(const QTime& time, QWidget* parent) : QTimeEdit(time, parent){};
 
     ~VirtualQTimeEdit() {
         qtimeedit_metacall_callback = nullptr;
@@ -1480,7 +1482,6 @@ class VirtualQTimeEdit : public QTimeEdit {
         qtimeedit_stepenabled_callback = nullptr;
         qtimeedit_mousepressevent_callback = nullptr;
         qtimeedit_paintevent_callback = nullptr;
-        qtimeedit_initstyleoption_callback = nullptr;
         qtimeedit_minimumsizehint_callback = nullptr;
         qtimeedit_inputmethodquery_callback = nullptr;
         qtimeedit_resizeevent_callback = nullptr;
@@ -1520,6 +1521,7 @@ class VirtualQTimeEdit : public QTimeEdit {
         qtimeedit_customevent_callback = nullptr;
         qtimeedit_connectnotify_callback = nullptr;
         qtimeedit_disconnectnotify_callback = nullptr;
+        qtimeedit_initstyleoption_callback = nullptr;
         qtimeedit_lineedit_callback = nullptr;
         qtimeedit_setlineedit_callback = nullptr;
         qtimeedit_updatemicrofocus_callback = nullptr;
@@ -1550,7 +1552,6 @@ class VirtualQTimeEdit : public QTimeEdit {
     void setQTimeEdit_StepEnabled_Callback(QTimeEdit_StepEnabled_Callback cb) { qtimeedit_stepenabled_callback = cb; }
     void setQTimeEdit_MousePressEvent_Callback(QTimeEdit_MousePressEvent_Callback cb) { qtimeedit_mousepressevent_callback = cb; }
     void setQTimeEdit_PaintEvent_Callback(QTimeEdit_PaintEvent_Callback cb) { qtimeedit_paintevent_callback = cb; }
-    void setQTimeEdit_InitStyleOption_Callback(QTimeEdit_InitStyleOption_Callback cb) { qtimeedit_initstyleoption_callback = cb; }
     void setQTimeEdit_MinimumSizeHint_Callback(QTimeEdit_MinimumSizeHint_Callback cb) { qtimeedit_minimumsizehint_callback = cb; }
     void setQTimeEdit_InputMethodQuery_Callback(QTimeEdit_InputMethodQuery_Callback cb) { qtimeedit_inputmethodquery_callback = cb; }
     void setQTimeEdit_ResizeEvent_Callback(QTimeEdit_ResizeEvent_Callback cb) { qtimeedit_resizeevent_callback = cb; }
@@ -1590,6 +1591,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     void setQTimeEdit_CustomEvent_Callback(QTimeEdit_CustomEvent_Callback cb) { qtimeedit_customevent_callback = cb; }
     void setQTimeEdit_ConnectNotify_Callback(QTimeEdit_ConnectNotify_Callback cb) { qtimeedit_connectnotify_callback = cb; }
     void setQTimeEdit_DisconnectNotify_Callback(QTimeEdit_DisconnectNotify_Callback cb) { qtimeedit_disconnectnotify_callback = cb; }
+    void setQTimeEdit_InitStyleOption_Callback(QTimeEdit_InitStyleOption_Callback cb) { qtimeedit_initstyleoption_callback = cb; }
     void setQTimeEdit_LineEdit_Callback(QTimeEdit_LineEdit_Callback cb) { qtimeedit_lineedit_callback = cb; }
     void setQTimeEdit_SetLineEdit_Callback(QTimeEdit_SetLineEdit_Callback cb) { qtimeedit_setlineedit_callback = cb; }
     void setQTimeEdit_UpdateMicroFocus_Callback(QTimeEdit_UpdateMicroFocus_Callback cb) { qtimeedit_updatemicrofocus_callback = cb; }
@@ -1619,7 +1621,6 @@ class VirtualQTimeEdit : public QTimeEdit {
     void setQTimeEdit_StepEnabled_IsBase(bool value) const { qtimeedit_stepenabled_isbase = value; }
     void setQTimeEdit_MousePressEvent_IsBase(bool value) const { qtimeedit_mousepressevent_isbase = value; }
     void setQTimeEdit_PaintEvent_IsBase(bool value) const { qtimeedit_paintevent_isbase = value; }
-    void setQTimeEdit_InitStyleOption_IsBase(bool value) const { qtimeedit_initstyleoption_isbase = value; }
     void setQTimeEdit_MinimumSizeHint_IsBase(bool value) const { qtimeedit_minimumsizehint_isbase = value; }
     void setQTimeEdit_InputMethodQuery_IsBase(bool value) const { qtimeedit_inputmethodquery_isbase = value; }
     void setQTimeEdit_ResizeEvent_IsBase(bool value) const { qtimeedit_resizeevent_isbase = value; }
@@ -1659,6 +1660,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     void setQTimeEdit_CustomEvent_IsBase(bool value) const { qtimeedit_customevent_isbase = value; }
     void setQTimeEdit_ConnectNotify_IsBase(bool value) const { qtimeedit_connectnotify_isbase = value; }
     void setQTimeEdit_DisconnectNotify_IsBase(bool value) const { qtimeedit_disconnectnotify_isbase = value; }
+    void setQTimeEdit_InitStyleOption_IsBase(bool value) const { qtimeedit_initstyleoption_isbase = value; }
     void setQTimeEdit_LineEdit_IsBase(bool value) const { qtimeedit_lineedit_isbase = value; }
     void setQTimeEdit_SetLineEdit_IsBase(bool value) const { qtimeedit_setlineedit_isbase = value; }
     void setQTimeEdit_UpdateMicroFocus_IsBase(bool value) const { qtimeedit_updatemicrofocus_isbase = value; }
@@ -1860,18 +1862,6 @@ class VirtualQTimeEdit : public QTimeEdit {
             qtimeedit_paintevent_callback(this, event);
         } else {
             QTimeEdit::paintEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSpinBox* option) const override {
-        if (qtimeedit_initstyleoption_isbase) {
-            qtimeedit_initstyleoption_isbase = false;
-            QTimeEdit::initStyleOption(option);
-        } else if (qtimeedit_initstyleoption_callback != nullptr) {
-            qtimeedit_initstyleoption_callback(this, option);
-        } else {
-            QTimeEdit::initStyleOption(option);
         }
     }
 
@@ -2104,7 +2094,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtimeedit_enterevent_isbase) {
             qtimeedit_enterevent_isbase = false;
             QTimeEdit::enterEvent(event);
@@ -2212,7 +2202,7 @@ class VirtualQTimeEdit : public QTimeEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtimeedit_nativeevent_isbase) {
             qtimeedit_nativeevent_isbase = false;
             return QTimeEdit::nativeEvent(eventType, message, result);
@@ -2340,6 +2330,18 @@ class VirtualQTimeEdit : public QTimeEdit {
             qtimeedit_disconnectnotify_callback(this, signal);
         } else {
             QTimeEdit::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSpinBox* option) const {
+        if (qtimeedit_initstyleoption_isbase) {
+            qtimeedit_initstyleoption_isbase = false;
+            QTimeEdit::initStyleOption(option);
+        } else if (qtimeedit_initstyleoption_callback != nullptr) {
+            qtimeedit_initstyleoption_callback(this, option);
+        } else {
+            QTimeEdit::initStyleOption(option);
         }
     }
 
@@ -2497,7 +2499,6 @@ class VirtualQDateEdit : public QDateEdit {
     using QDateEdit_StepEnabled_Callback = QAbstractSpinBox::StepEnabled (*)();
     using QDateEdit_MousePressEvent_Callback = void (*)(QDateEdit*, QMouseEvent*);
     using QDateEdit_PaintEvent_Callback = void (*)(QDateEdit*, QPaintEvent*);
-    using QDateEdit_InitStyleOption_Callback = void (*)(const QDateEdit*, QStyleOptionSpinBox*);
     using QDateEdit_MinimumSizeHint_Callback = QSize (*)();
     using QDateEdit_InputMethodQuery_Callback = QVariant (*)(const QDateEdit*, Qt::InputMethodQuery);
     using QDateEdit_ResizeEvent_Callback = void (*)(QDateEdit*, QResizeEvent*);
@@ -2517,7 +2518,7 @@ class VirtualQDateEdit : public QDateEdit {
     using QDateEdit_HasHeightForWidth_Callback = bool (*)();
     using QDateEdit_PaintEngine_Callback = QPaintEngine* (*)();
     using QDateEdit_MouseDoubleClickEvent_Callback = void (*)(QDateEdit*, QMouseEvent*);
-    using QDateEdit_EnterEvent_Callback = void (*)(QDateEdit*, QEnterEvent*);
+    using QDateEdit_EnterEvent_Callback = void (*)(QDateEdit*, QEvent*);
     using QDateEdit_LeaveEvent_Callback = void (*)(QDateEdit*, QEvent*);
     using QDateEdit_MoveEvent_Callback = void (*)(QDateEdit*, QMoveEvent*);
     using QDateEdit_TabletEvent_Callback = void (*)(QDateEdit*, QTabletEvent*);
@@ -2526,7 +2527,7 @@ class VirtualQDateEdit : public QDateEdit {
     using QDateEdit_DragMoveEvent_Callback = void (*)(QDateEdit*, QDragMoveEvent*);
     using QDateEdit_DragLeaveEvent_Callback = void (*)(QDateEdit*, QDragLeaveEvent*);
     using QDateEdit_DropEvent_Callback = void (*)(QDateEdit*, QDropEvent*);
-    using QDateEdit_NativeEvent_Callback = bool (*)(QDateEdit*, const QByteArray&, void*, qintptr*);
+    using QDateEdit_NativeEvent_Callback = bool (*)(QDateEdit*, const QByteArray&, void*, long*);
     using QDateEdit_Metric_Callback = int (*)(const QDateEdit*, QPaintDevice::PaintDeviceMetric);
     using QDateEdit_InitPainter_Callback = void (*)(const QDateEdit*, QPainter*);
     using QDateEdit_Redirected_Callback = QPaintDevice* (*)(const QDateEdit*, QPoint*);
@@ -2537,6 +2538,7 @@ class VirtualQDateEdit : public QDateEdit {
     using QDateEdit_CustomEvent_Callback = void (*)(QDateEdit*, QEvent*);
     using QDateEdit_ConnectNotify_Callback = void (*)(QDateEdit*, const QMetaMethod&);
     using QDateEdit_DisconnectNotify_Callback = void (*)(QDateEdit*, const QMetaMethod&);
+    using QDateEdit_InitStyleOption_Callback = void (*)(const QDateEdit*, QStyleOptionSpinBox*);
     using QDateEdit_LineEdit_Callback = QLineEdit* (*)();
     using QDateEdit_SetLineEdit_Callback = void (*)(QDateEdit*, QLineEdit*);
     using QDateEdit_UpdateMicroFocus_Callback = void (*)();
@@ -2567,7 +2569,6 @@ class VirtualQDateEdit : public QDateEdit {
     QDateEdit_StepEnabled_Callback qdateedit_stepenabled_callback = nullptr;
     QDateEdit_MousePressEvent_Callback qdateedit_mousepressevent_callback = nullptr;
     QDateEdit_PaintEvent_Callback qdateedit_paintevent_callback = nullptr;
-    QDateEdit_InitStyleOption_Callback qdateedit_initstyleoption_callback = nullptr;
     QDateEdit_MinimumSizeHint_Callback qdateedit_minimumsizehint_callback = nullptr;
     QDateEdit_InputMethodQuery_Callback qdateedit_inputmethodquery_callback = nullptr;
     QDateEdit_ResizeEvent_Callback qdateedit_resizeevent_callback = nullptr;
@@ -2607,6 +2608,7 @@ class VirtualQDateEdit : public QDateEdit {
     QDateEdit_CustomEvent_Callback qdateedit_customevent_callback = nullptr;
     QDateEdit_ConnectNotify_Callback qdateedit_connectnotify_callback = nullptr;
     QDateEdit_DisconnectNotify_Callback qdateedit_disconnectnotify_callback = nullptr;
+    QDateEdit_InitStyleOption_Callback qdateedit_initstyleoption_callback = nullptr;
     QDateEdit_LineEdit_Callback qdateedit_lineedit_callback = nullptr;
     QDateEdit_SetLineEdit_Callback qdateedit_setlineedit_callback = nullptr;
     QDateEdit_UpdateMicroFocus_Callback qdateedit_updatemicrofocus_callback = nullptr;
@@ -2636,7 +2638,6 @@ class VirtualQDateEdit : public QDateEdit {
     mutable bool qdateedit_stepenabled_isbase = false;
     mutable bool qdateedit_mousepressevent_isbase = false;
     mutable bool qdateedit_paintevent_isbase = false;
-    mutable bool qdateedit_initstyleoption_isbase = false;
     mutable bool qdateedit_minimumsizehint_isbase = false;
     mutable bool qdateedit_inputmethodquery_isbase = false;
     mutable bool qdateedit_resizeevent_isbase = false;
@@ -2676,6 +2677,7 @@ class VirtualQDateEdit : public QDateEdit {
     mutable bool qdateedit_customevent_isbase = false;
     mutable bool qdateedit_connectnotify_isbase = false;
     mutable bool qdateedit_disconnectnotify_isbase = false;
+    mutable bool qdateedit_initstyleoption_isbase = false;
     mutable bool qdateedit_lineedit_isbase = false;
     mutable bool qdateedit_setlineedit_isbase = false;
     mutable bool qdateedit_updatemicrofocus_isbase = false;
@@ -2691,8 +2693,8 @@ class VirtualQDateEdit : public QDateEdit {
   public:
     VirtualQDateEdit(QWidget* parent) : QDateEdit(parent){};
     VirtualQDateEdit() : QDateEdit(){};
-    VirtualQDateEdit(QDate date) : QDateEdit(date){};
-    VirtualQDateEdit(QDate date, QWidget* parent) : QDateEdit(date, parent){};
+    VirtualQDateEdit(const QDate& date) : QDateEdit(date){};
+    VirtualQDateEdit(const QDate& date, QWidget* parent) : QDateEdit(date, parent){};
 
     ~VirtualQDateEdit() {
         qdateedit_metacall_callback = nullptr;
@@ -2711,7 +2713,6 @@ class VirtualQDateEdit : public QDateEdit {
         qdateedit_stepenabled_callback = nullptr;
         qdateedit_mousepressevent_callback = nullptr;
         qdateedit_paintevent_callback = nullptr;
-        qdateedit_initstyleoption_callback = nullptr;
         qdateedit_minimumsizehint_callback = nullptr;
         qdateedit_inputmethodquery_callback = nullptr;
         qdateedit_resizeevent_callback = nullptr;
@@ -2751,6 +2752,7 @@ class VirtualQDateEdit : public QDateEdit {
         qdateedit_customevent_callback = nullptr;
         qdateedit_connectnotify_callback = nullptr;
         qdateedit_disconnectnotify_callback = nullptr;
+        qdateedit_initstyleoption_callback = nullptr;
         qdateedit_lineedit_callback = nullptr;
         qdateedit_setlineedit_callback = nullptr;
         qdateedit_updatemicrofocus_callback = nullptr;
@@ -2781,7 +2783,6 @@ class VirtualQDateEdit : public QDateEdit {
     void setQDateEdit_StepEnabled_Callback(QDateEdit_StepEnabled_Callback cb) { qdateedit_stepenabled_callback = cb; }
     void setQDateEdit_MousePressEvent_Callback(QDateEdit_MousePressEvent_Callback cb) { qdateedit_mousepressevent_callback = cb; }
     void setQDateEdit_PaintEvent_Callback(QDateEdit_PaintEvent_Callback cb) { qdateedit_paintevent_callback = cb; }
-    void setQDateEdit_InitStyleOption_Callback(QDateEdit_InitStyleOption_Callback cb) { qdateedit_initstyleoption_callback = cb; }
     void setQDateEdit_MinimumSizeHint_Callback(QDateEdit_MinimumSizeHint_Callback cb) { qdateedit_minimumsizehint_callback = cb; }
     void setQDateEdit_InputMethodQuery_Callback(QDateEdit_InputMethodQuery_Callback cb) { qdateedit_inputmethodquery_callback = cb; }
     void setQDateEdit_ResizeEvent_Callback(QDateEdit_ResizeEvent_Callback cb) { qdateedit_resizeevent_callback = cb; }
@@ -2821,6 +2822,7 @@ class VirtualQDateEdit : public QDateEdit {
     void setQDateEdit_CustomEvent_Callback(QDateEdit_CustomEvent_Callback cb) { qdateedit_customevent_callback = cb; }
     void setQDateEdit_ConnectNotify_Callback(QDateEdit_ConnectNotify_Callback cb) { qdateedit_connectnotify_callback = cb; }
     void setQDateEdit_DisconnectNotify_Callback(QDateEdit_DisconnectNotify_Callback cb) { qdateedit_disconnectnotify_callback = cb; }
+    void setQDateEdit_InitStyleOption_Callback(QDateEdit_InitStyleOption_Callback cb) { qdateedit_initstyleoption_callback = cb; }
     void setQDateEdit_LineEdit_Callback(QDateEdit_LineEdit_Callback cb) { qdateedit_lineedit_callback = cb; }
     void setQDateEdit_SetLineEdit_Callback(QDateEdit_SetLineEdit_Callback cb) { qdateedit_setlineedit_callback = cb; }
     void setQDateEdit_UpdateMicroFocus_Callback(QDateEdit_UpdateMicroFocus_Callback cb) { qdateedit_updatemicrofocus_callback = cb; }
@@ -2850,7 +2852,6 @@ class VirtualQDateEdit : public QDateEdit {
     void setQDateEdit_StepEnabled_IsBase(bool value) const { qdateedit_stepenabled_isbase = value; }
     void setQDateEdit_MousePressEvent_IsBase(bool value) const { qdateedit_mousepressevent_isbase = value; }
     void setQDateEdit_PaintEvent_IsBase(bool value) const { qdateedit_paintevent_isbase = value; }
-    void setQDateEdit_InitStyleOption_IsBase(bool value) const { qdateedit_initstyleoption_isbase = value; }
     void setQDateEdit_MinimumSizeHint_IsBase(bool value) const { qdateedit_minimumsizehint_isbase = value; }
     void setQDateEdit_InputMethodQuery_IsBase(bool value) const { qdateedit_inputmethodquery_isbase = value; }
     void setQDateEdit_ResizeEvent_IsBase(bool value) const { qdateedit_resizeevent_isbase = value; }
@@ -2890,6 +2891,7 @@ class VirtualQDateEdit : public QDateEdit {
     void setQDateEdit_CustomEvent_IsBase(bool value) const { qdateedit_customevent_isbase = value; }
     void setQDateEdit_ConnectNotify_IsBase(bool value) const { qdateedit_connectnotify_isbase = value; }
     void setQDateEdit_DisconnectNotify_IsBase(bool value) const { qdateedit_disconnectnotify_isbase = value; }
+    void setQDateEdit_InitStyleOption_IsBase(bool value) const { qdateedit_initstyleoption_isbase = value; }
     void setQDateEdit_LineEdit_IsBase(bool value) const { qdateedit_lineedit_isbase = value; }
     void setQDateEdit_SetLineEdit_IsBase(bool value) const { qdateedit_setlineedit_isbase = value; }
     void setQDateEdit_UpdateMicroFocus_IsBase(bool value) const { qdateedit_updatemicrofocus_isbase = value; }
@@ -3091,18 +3093,6 @@ class VirtualQDateEdit : public QDateEdit {
             qdateedit_paintevent_callback(this, event);
         } else {
             QDateEdit::paintEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSpinBox* option) const override {
-        if (qdateedit_initstyleoption_isbase) {
-            qdateedit_initstyleoption_isbase = false;
-            QDateEdit::initStyleOption(option);
-        } else if (qdateedit_initstyleoption_callback != nullptr) {
-            qdateedit_initstyleoption_callback(this, option);
-        } else {
-            QDateEdit::initStyleOption(option);
         }
     }
 
@@ -3335,7 +3325,7 @@ class VirtualQDateEdit : public QDateEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qdateedit_enterevent_isbase) {
             qdateedit_enterevent_isbase = false;
             QDateEdit::enterEvent(event);
@@ -3443,7 +3433,7 @@ class VirtualQDateEdit : public QDateEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qdateedit_nativeevent_isbase) {
             qdateedit_nativeevent_isbase = false;
             return QDateEdit::nativeEvent(eventType, message, result);
@@ -3571,6 +3561,18 @@ class VirtualQDateEdit : public QDateEdit {
             qdateedit_disconnectnotify_callback(this, signal);
         } else {
             QDateEdit::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSpinBox* option) const {
+        if (qdateedit_initstyleoption_isbase) {
+            qdateedit_initstyleoption_isbase = false;
+            QDateEdit::initStyleOption(option);
+        } else if (qdateedit_initstyleoption_callback != nullptr) {
+            qdateedit_initstyleoption_callback(this, option);
+        } else {
+            QDateEdit::initStyleOption(option);
         }
     }
 

@@ -1,9 +1,7 @@
 #include <QAbstractButton>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QButtonGroup>
 #include <QByteArray>
@@ -16,7 +14,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -39,6 +36,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -46,7 +44,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -133,6 +130,18 @@ libqt_string QCheckBox_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QCheckBox_TrUtf8(const char* s) {
+    QString _ret = QCheckBox::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QCheckBox_SetTristate(QCheckBox* self) {
     self->setTristate();
 }
@@ -175,6 +184,30 @@ libqt_string QCheckBox_Tr2(const char* s, const char* c) {
 
 libqt_string QCheckBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QCheckBox::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QCheckBox_TrUtf82(const char* s, const char* c) {
+    QString _ret = QCheckBox::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QCheckBox_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QCheckBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -394,32 +427,6 @@ void QCheckBox_QBaseMouseMoveEvent(QCheckBox* self, QMouseEvent* param1) {
 void QCheckBox_OnMouseMoveEvent(QCheckBox* self, intptr_t slot) {
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
         vqcheckbox->setQCheckBox_MouseMoveEvent_Callback(reinterpret_cast<VirtualQCheckBox::QCheckBox_MouseMoveEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QCheckBox_InitStyleOption(const QCheckBox* self, QStyleOptionButton* option) {
-    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
-        vqcheckbox->initStyleOption(option);
-    } else {
-        vqcheckbox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QCheckBox_QBaseInitStyleOption(const QCheckBox* self, QStyleOptionButton* option) {
-    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
-        vqcheckbox->setQCheckBox_InitStyleOption_IsBase(true);
-        vqcheckbox->initStyleOption(option);
-    } else {
-        vqcheckbox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QCheckBox_OnInitStyleOption(const QCheckBox* self, intptr_t slot) {
-    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
-        vqcheckbox->setQCheckBox_InitStyleOption_Callback(reinterpret_cast<VirtualQCheckBox::QCheckBox_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -814,7 +821,7 @@ void QCheckBox_OnWheelEvent(QCheckBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QCheckBox_EnterEvent(QCheckBox* self, QEnterEvent* event) {
+void QCheckBox_EnterEvent(QCheckBox* self, QEvent* event) {
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
         vqcheckbox->enterEvent(event);
     } else {
@@ -823,7 +830,7 @@ void QCheckBox_EnterEvent(QCheckBox* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QCheckBox_QBaseEnterEvent(QCheckBox* self, QEnterEvent* event) {
+void QCheckBox_QBaseEnterEvent(QCheckBox* self, QEvent* event) {
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
         vqcheckbox->setQCheckBox_EnterEvent_IsBase(true);
         vqcheckbox->enterEvent(event);
@@ -1178,23 +1185,23 @@ void QCheckBox_OnHideEvent(QCheckBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QCheckBox_NativeEvent(QCheckBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QCheckBox_NativeEvent(QCheckBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
-        return vqcheckbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcheckbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqcheckbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcheckbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QCheckBox_QBaseNativeEvent(QCheckBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QCheckBox_QBaseNativeEvent(QCheckBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
         vqcheckbox->setQCheckBox_NativeEvent_IsBase(true);
-        return vqcheckbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcheckbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqcheckbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcheckbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1514,6 +1521,32 @@ void QCheckBox_QBaseDisconnectNotify(QCheckBox* self, QMetaMethod* signal) {
 void QCheckBox_OnDisconnectNotify(QCheckBox* self, intptr_t slot) {
     if (auto* vqcheckbox = dynamic_cast<VirtualQCheckBox*>(self)) {
         vqcheckbox->setQCheckBox_DisconnectNotify_Callback(reinterpret_cast<VirtualQCheckBox::QCheckBox_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QCheckBox_InitStyleOption(const QCheckBox* self, QStyleOptionButton* option) {
+    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
+        vqcheckbox->initStyleOption(option);
+    } else {
+        vqcheckbox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QCheckBox_QBaseInitStyleOption(const QCheckBox* self, QStyleOptionButton* option) {
+    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
+        vqcheckbox->setQCheckBox_InitStyleOption_IsBase(true);
+        vqcheckbox->initStyleOption(option);
+    } else {
+        vqcheckbox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCheckBox_OnInitStyleOption(const QCheckBox* self, intptr_t slot) {
+    if (auto* vqcheckbox = const_cast<VirtualQCheckBox*>(dynamic_cast<const VirtualQCheckBox*>(self))) {
+        vqcheckbox->setQCheckBox_InitStyleOption_Callback(reinterpret_cast<VirtualQCheckBox::QCheckBox_InitStyleOption_Callback>(slot));
     }
 }
 

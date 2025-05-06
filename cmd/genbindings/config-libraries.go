@@ -1,10 +1,7 @@
 package main
 
 import (
-	"os"
-	"os/exec"
 	"path/filepath"
-	"sort"
 	"strings"
 )
 
@@ -20,13 +17,13 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 	zigIncMap := map[string]string{}
 	qtstructdefs := make(map[string]struct{})
 
-	// Qt 6
+	// Qt 5
 	generate(
 		"src",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtCore",
-			"/usr/include/x86_64-linux-gnu/qt6/QtGui",
-			"/usr/include/x86_64-linux-gnu/qt6/QtWidgets",
+			"/usr/include/x86_64-linux-gnu/qt5/QtCore",
+			"/usr/include/x86_64-linux-gnu/qt5/QtGui",
+			"/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
 		},
 		func(fullpath string) bool {
 			// Block cbor and generate it separately
@@ -38,7 +35,7 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 			return Widgets_AllowHeader(fullpath)
 		},
 		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6Widgets"),
+		"--std=c++17 "+pkgConfigCflags("Qt5Widgets"),
 		outDir,
 		"include",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -50,7 +47,7 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 	generate(
 		"src/cbor",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtCore",
+			"/usr/include/x86_64-linux-gnu/qt5/QtCore",
 		},
 		func(fullpath string) bool {
 			// Only include the same json, xml, cbor files excluded above
@@ -58,7 +55,7 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 			return strings.HasPrefix(fname, "qcbor")
 		},
 		clangBin,
-		"--std=c++20 "+pkgConfigCflags("Qt6Core"),
+		"--std=c++17 "+pkgConfigCflags("Qt5Core"),
 		outDir,
 		"include/cbor",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -67,15 +64,15 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 		qtstructdefs,
 	)
 
-	// Qt 6 QtPrintSupport
+	// Qt 5 QtPrintSupport
 	generate(
 		"src/printsupport",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport",
+			"/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport",
 		},
 		AllowAllHeaders,
 		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6PrintSupport"),
+		"--std=c++17 "+pkgConfigCflags("Qt5PrintSupport"),
 		outDir,
 		"include/printsupport",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -84,16 +81,15 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 		qtstructdefs,
 	)
 
-	// Qt 6 SVG
+	// Qt 5 SVG
 	generate(
 		"src/svg",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtSvg",
-			"/usr/include/x86_64-linux-gnu/qt6/QtSvgWidgets",
+			"/usr/include/x86_64-linux-gnu/qt5/QtSvg",
 		},
 		AllowAllHeaders,
 		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6SvgWidgets"),
+		"--std=c++17 "+pkgConfigCflags("Qt5Svg"),
 		outDir,
 		"include/svg",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -102,18 +98,18 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 		qtstructdefs,
 	)
 
-	// Qt 6 QtNetwork
+	// Qt 5 QtNetwork
 	generate(
 		"src/network",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtNetwork",
+			"/usr/include/x86_64-linux-gnu/qt5/QtNetwork",
 		},
 		func(fullpath string) bool {
 			fname := filepath.Base(fullpath)
 			return fname != "qtnetwork-config.h"
 		},
 		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6Network"),
+		"--std=c++17 "+pkgConfigCflags("Qt5Network"),
 		outDir,
 		"include/network",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -122,16 +118,16 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 		qtstructdefs,
 	)
 
-	// Qt 6 QtMultimedia
+	// Qt 5 QtMultimedia
 	generate(
 		"src/multimedia",
 		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtMultimedia",
-			"/usr/include/x86_64-linux-gnu/qt6/QtMultimediaWidgets",
+			"/usr/include/x86_64-linux-gnu/qt5/QtMultimedia",
+			"/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets",
 		},
 		AllowAllHeaders,
 		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6MultimediaWidgets"),
+		"--std=c++17 "+pkgConfigCflags("Qt5MultimediaWidgets"),
 		outDir,
 		"include/multimedia",
 		ClangMatchSameHeaderDefinitionOnly,
@@ -140,235 +136,222 @@ func ProcessLibraries(clangBin, outDir, extraLibsDir string) {
 		qtstructdefs,
 	)
 
-	// Qt 6 Spatial Audio (on Debian this is a dependency of Qt6Multimedia)
-	generate(
-		"src/spatialaudio",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtSpatialAudio",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6SpatialAudio"),
-		outDir,
-		"include/spatialaudio",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+	/*
+		// Qt 5 QWebChannel
+		generate(
+			"src/webchannel",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt5/QtWebChannel",
+			},
+			AllowAllHeaders,
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt5WebChannel"),
+			outDir,
+			"include/webchannel",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
 
-	// Qt 6 QWebChannel
-	generate(
-		"src/webchannel",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtWebChannel",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6WebChannel"),
-		outDir,
-		"include/webchannel",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+		// Qt 5 QWebEngine
+		generate(
+			"src/webengine",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt5/QtWebEngineCore",
+				"/usr/include/x86_64-linux-gnu/qt5/QtWebEngineWidgets",
+			},
+			func(fullpath string) bool {
+				baseName := filepath.Base(fullpath)
+				return baseName != "qtwebenginewidgets-config.h"
+			},
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt5WebEngineWidgets"),
+			outDir,
+			"include/webengine",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
 
-	// Qt 6 QWebEngine
-	generate(
-		"src/webengine",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtWebEngineCore",
-			"/usr/include/x86_64-linux-gnu/qt6/QtWebEngineWidgets",
-		},
-		func(fullpath string) bool {
-			baseName := filepath.Base(fullpath)
-			return baseName != "qtwebenginewidgets-config.h"
-		},
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6WebEngineWidgets"),
-		outDir,
-		"include/webengine",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+		// Qt 5 PDF
+		// Depends on QtCore/Gui/Widgets
+		generate(
+			"src/pdf",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt5/QtPdf",
+				"/usr/include/x86_64-linux-gnu/qt5/QtPdfWidgets",
+			},
+			AllowAllHeaders,
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt5PdfWidgets"),
+			outDir,
+			"include/pdf",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
 
-	// Qt 6 PDF
-	// Depends on QtCore/Gui/Widgets
-	generate(
-		"src/pdf",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtPdf",
-			"/usr/include/x86_64-linux-gnu/qt6/QtPdfWidgets",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6PdfWidgets"),
-		outDir,
-		"include/pdf",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+		// Qt 5 Charts
+		// Depends on QtCore/Gui/Widgets
+		generate(
+			"src/restricted-extras-charts",
+			[]string{
+				"/usr/include/x86_64-linux-gnu/qt5/QtCharts",
+			},
+			AllowAllHeaders,
+			clangBin,
+			"--std=c++17 "+pkgConfigCflags("Qt5Charts"),
+			outDir,
+			"include/restricted-extras-charts",
+			ClangMatchSameHeaderDefinitionOnly,
+			&headerList,
+			zigIncMap,
+			qtstructdefs,
+		)
 
-	// Qt 6 Charts
-	// Depends on QtCore/Gui/Widgets
-	generate(
-		"src/restricted-extras-charts",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/QtCharts",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6Charts"),
-		outDir,
-		"include/restricted-extras-charts",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+		// Qt 5 QScintilla
+		// Depends on QtCore/Gui/Widgets, QPrintSupport
+			generate(
+				"src/restricted-extras-qscintilla",
+				[]string{
+					"/usr/include/x86_64-linux-gnu/qt5/Qsci",
+				},
+				AllowAllHeaders,
+				clangBin,
+				"--std=c++17 "+pkgConfigCflags("Qt5PrintSupport"),
+				outDir,
+				"include/restricted-extras-qscintilla",
+				ClangMatchSameHeaderDefinitionOnly,
+				&headerList,
+				zigIncMap,
+				qtstructdefs,
+			)
+	*/
 
-	// Qt 6 QScintilla
-	// Depends on QtCore/Gui/Widgets, QPrintSupport
-	generate(
-		"src/restricted-extras-qscintilla",
-		[]string{
-			"/usr/include/x86_64-linux-gnu/qt6/Qsci",
-		},
-		AllowAllHeaders,
-		clangBin,
-		"--std=c++17 "+pkgConfigCflags("Qt6PrintSupport"),
-		outDir,
-		"include/restricted-extras-qscintilla",
-		ClangMatchSameHeaderDefinitionOnly,
-		&headerList,
-		zigIncMap,
-		qtstructdefs,
-	)
+	/*
+		// Post-processing to generate auxiliary files
+		structdefs := make([]string, 0, len(qtstructdefs))
+		for k := range qtstructdefs {
+			structdefs = append(structdefs, "pub const "+k+" = C."+k+";")
+		}
+		sort.Strings(structdefs)
 
-	// Post-processing to generate auxiliary files
-	structdefs := make([]string, 0, len(qtstructdefs))
-	for k := range qtstructdefs {
-		structdefs = append(structdefs, "pub const "+k+" = C."+k+";")
-	}
-	sort.Strings(structdefs)
+		typedefHeader := "// THIS FILE IS AUTOMATICALLY GENERATED\n\nconst C = @import(\"qt5c\");\n\n"
+		for _, k := range structdefs {
+			typedefHeader += k + "\n"
+		}
 
-	typedefHeader := "// THIS FILE IS AUTOMATICALLY GENERATED\n\nconst C = @import(\"qt6c\");\n\n"
-	for _, k := range structdefs {
-		typedefHeader += k + "\n"
-	}
+		zigCLibPath := filepath.Join(outDir, "src", "libqtc.zig")
+		err := os.WriteFile(zigCLibPath, []byte(typedefHeader), 0644)
+		if err != nil {
+			panic(err)
+		}
+		cmd := exec.Command("zig", "fmt", zigCLibPath)
+		cmd.Stderr = os.Stderr
+		err = cmd.Start()
+		if err != nil {
+			panic(err)
+		}
 
-	zigCLibPath := filepath.Join(outDir, "src", "libqtc.zig")
-	err := os.WriteFile(zigCLibPath, []byte(typedefHeader), 0644)
-	if err != nil {
-		panic(err)
-	}
-	cmd := exec.Command("zig", "fmt", zigCLibPath)
-	cmd.Stderr = os.Stderr
-	err = cmd.Start()
-	if err != nil {
-		panic(err)
-	}
+		qt5cHeader := "// THIS FILE IS AUTOMATICALLY GENERATED\n#pragma once\n\n#include \"qtlibc.h\"\n#include \"threading/libqt5zigthreading.h\"\n"
+		for _, k := range headerList {
+			qt5cHeader += "#include \"" + k + "\"\n"
+		}
 
-	qt6cHeader := "// THIS FILE IS AUTOMATICALLY GENERATED\n#pragma once\n\n#include \"qtlibc.h\"\n#include \"threading/libqt6zigthreading.h\"\n"
-	for _, k := range headerList {
-		qt6cHeader += "#include \"" + k + "\"\n"
-	}
+		err = os.WriteFile(filepath.Join(outDir, "src", "libqt5c.h"), []byte(qt5cHeader), 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	err = os.WriteFile(filepath.Join(outDir, "src", "libqt6c.h"), []byte(qt6cHeader), 0644)
-	if err != nil {
-		panic(err)
-	}
+		includeHeader := filepath.Join(outDir, "include", "libqt5c.h")
+		err = os.MkdirAll(filepath.Dir(includeHeader), 0755)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(includeHeader, []byte(qt5cHeader), 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	includeHeader := filepath.Join(outDir, "include", "libqt6c.h")
-	err = os.MkdirAll(filepath.Dir(includeHeader), 0755)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(includeHeader, []byte(qt6cHeader), 0644)
-	if err != nil {
-		panic(err)
-	}
+		qtLibHeader := filepath.Join(outDir, "src", "qtlibc.h")
+		includeQtLibHeader := filepath.Join(outDir, "include", "qtlibc.h")
+		qtHeaderFile, err := os.ReadFile(qtLibHeader)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(includeQtLibHeader, qtHeaderFile, 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	qtLibHeader := filepath.Join(outDir, "src", "qtlibc.h")
-	includeQtLibHeader := filepath.Join(outDir, "include", "qtlibc.h")
-	qtHeaderFile, err := os.ReadFile(qtLibHeader)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(includeQtLibHeader, qtHeaderFile, 0644)
-	if err != nil {
-		panic(err)
-	}
+		zigIncList := []string{
+			"pub const threading = @import(\"threading/libqt5zigthreading.zig\").Threading;",
+		}
+		for _, v := range zigIncMap {
+			zigIncList = append(zigIncList, v)
+		}
+		sort.Strings(zigIncList)
+		zigDefs := "// THIS FILE IS AUTOMATICALLY GENERATED\n\npub const C = @import(\"libqtc.zig\");\n\n"
+		zigDefs = zigDefs + strings.Join(zigIncList, "\n")
+		zigQtPath := filepath.Join(outDir, "src", "libqt5.zig")
+		err = os.WriteFile(zigQtPath, []byte(zigDefs), 0644)
+		if err != nil {
+			panic(err)
+		}
+		cmd = exec.Command("zig", "fmt", zigQtPath)
+		cmd.Stderr = os.Stderr
+		err = cmd.Start()
+		if err != nil {
+			panic(err)
+		}
 
-	zigIncList := []string{
-		"pub const threading = @import(\"threading/libqt6zigthreading.zig\").Threading;",
-	}
-	for _, v := range zigIncMap {
-		zigIncList = append(zigIncList, v)
-	}
-	sort.Strings(zigIncList)
-	zigDefs := "// THIS FILE IS AUTOMATICALLY GENERATED\n\npub const C = @import(\"libqtc.zig\");\n\n"
-	zigDefs = zigDefs + strings.Join(zigIncList, "\n")
-	zigQtPath := filepath.Join(outDir, "src", "libqt6.zig")
-	err = os.WriteFile(zigQtPath, []byte(zigDefs), 0644)
-	if err != nil {
-		panic(err)
-	}
-	cmd = exec.Command("zig", "fmt", zigQtPath)
-	cmd.Stderr = os.Stderr
-	err = cmd.Start()
-	if err != nil {
-		panic(err)
-	}
+		threadingQtLibHeader := filepath.Join(outDir, "src", "threading", "libqt5zigthreading.h")
+		threadingIncludeQtLibHeader := filepath.Join(outDir, "include", "threading", "libqt5zigthreading.h")
+		threadingQtHeaderFile, err := os.ReadFile(threadingQtLibHeader)
+		if err != nil {
+			panic(err)
+		}
+		err = os.MkdirAll(filepath.Dir(threadingIncludeQtLibHeader), 0755)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(threadingIncludeQtLibHeader, threadingQtHeaderFile, 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	threadingQtLibHeader := filepath.Join(outDir, "src", "threading", "libqt6zigthreading.h")
-	threadingIncludeQtLibHeader := filepath.Join(outDir, "include", "threading", "libqt6zigthreading.h")
-	threadingQtHeaderFile, err := os.ReadFile(threadingQtLibHeader)
-	if err != nil {
-		panic(err)
-	}
-	err = os.MkdirAll(filepath.Dir(threadingIncludeQtLibHeader), 0755)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(threadingIncludeQtLibHeader, threadingQtHeaderFile, 0644)
-	if err != nil {
-		panic(err)
-	}
+		zigThreadingQtLib := filepath.Join(outDir, "src", "threading", "libqt5zigthreading.zig")
+		zigThreadingIncludeQtLib := filepath.Join(outDir, "include", "threading", "libqt5zigthreading.zig")
+		zigThreadingQtFile, err := os.ReadFile(zigThreadingQtLib)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(zigThreadingIncludeQtLib, zigThreadingQtFile, 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	zigThreadingQtLib := filepath.Join(outDir, "src", "threading", "libqt6zigthreading.zig")
-	zigThreadingIncludeQtLib := filepath.Join(outDir, "include", "threading", "libqt6zigthreading.zig")
-	zigThreadingQtFile, err := os.ReadFile(zigThreadingQtLib)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(zigThreadingIncludeQtLib, zigThreadingQtFile, 0644)
-	if err != nil {
-		panic(err)
-	}
+		zigCLibIncludePath := filepath.Join(outDir, "include", "libqtc.zig")
+		zigCLibQtInclude, err := os.ReadFile(zigCLibPath)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(zigCLibIncludePath, zigCLibQtInclude, 0644)
+		if err != nil {
+			panic(err)
+		}
 
-	zigCLibIncludePath := filepath.Join(outDir, "include", "libqtc.zig")
-	zigCLibQtInclude, err := os.ReadFile(zigCLibPath)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(zigCLibIncludePath, zigCLibQtInclude, 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	zigQtIncludePath := filepath.Join(outDir, "include", "libqt6.zig")
-	zigQtInclude, err := os.ReadFile(zigQtPath)
-	if err != nil {
-		panic(err)
-	}
-	err = os.WriteFile(zigQtIncludePath, zigQtInclude, 0644)
-	if err != nil {
-		panic(err)
-	}
+		zigQtIncludePath := filepath.Join(outDir, "include", "libqt5.zig")
+		zigQtInclude, err := os.ReadFile(zigQtPath)
+		if err != nil {
+			panic(err)
+		}
+		err = os.WriteFile(zigQtIncludePath, zigQtInclude, 0644)
+		if err != nil {
+			panic(err)
+		}
+	*/
 }

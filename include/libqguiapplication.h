@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractEventDispatcher QAbstractEventDispatcher;
 typedef struct QAbstractNativeEventFilter QAbstractNativeEventFilter;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QClipboard QClipboard;
 typedef struct QCoreApplication QCoreApplication;
@@ -36,6 +36,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPalette QPalette;
 typedef struct QPoint QPoint;
 typedef struct QScreen QScreen;
@@ -56,6 +57,7 @@ int QGuiApplication_Metacall(QGuiApplication* self, int param1, int param2, void
 void QGuiApplication_OnMetacall(QGuiApplication* self, intptr_t slot);
 int QGuiApplication_QBaseMetacall(QGuiApplication* self, int param1, int param2, void** param3);
 libqt_string QGuiApplication_Tr(const char* s);
+libqt_string QGuiApplication_TrUtf8(const char* s);
 void QGuiApplication_SetApplicationDisplayName(libqt_string name);
 libqt_string QGuiApplication_ApplicationDisplayName();
 void QGuiApplication_SetDesktopFileName(libqt_string name);
@@ -106,6 +108,8 @@ bool QGuiApplication_IsSessionRestored(const QGuiApplication* self);
 libqt_string QGuiApplication_SessionId(const QGuiApplication* self);
 libqt_string QGuiApplication_SessionKey(const QGuiApplication* self);
 bool QGuiApplication_IsSavingSession(const QGuiApplication* self);
+bool QGuiApplication_IsFallbackSessionManagementEnabled();
+void QGuiApplication_SetFallbackSessionManagementEnabled(bool fallbackSessionManagementEnabled);
 void QGuiApplication_Sync();
 void QGuiApplication_FontDatabaseChanged(QGuiApplication* self);
 void QGuiApplication_Connect_FontDatabaseChanged(QGuiApplication* self, intptr_t slot);
@@ -129,10 +133,10 @@ void QGuiApplication_CommitDataRequest(QGuiApplication* self, QSessionManager* s
 void QGuiApplication_Connect_CommitDataRequest(QGuiApplication* self, intptr_t slot);
 void QGuiApplication_SaveStateRequest(QGuiApplication* self, QSessionManager* sessionManager);
 void QGuiApplication_Connect_SaveStateRequest(QGuiApplication* self, intptr_t slot);
-void QGuiApplication_ApplicationDisplayNameChanged(QGuiApplication* self);
-void QGuiApplication_Connect_ApplicationDisplayNameChanged(QGuiApplication* self, intptr_t slot);
 void QGuiApplication_PaletteChanged(QGuiApplication* self, QPalette* pal);
 void QGuiApplication_Connect_PaletteChanged(QGuiApplication* self, intptr_t slot);
+void QGuiApplication_ApplicationDisplayNameChanged(QGuiApplication* self);
+void QGuiApplication_Connect_ApplicationDisplayNameChanged(QGuiApplication* self, intptr_t slot);
 void QGuiApplication_FontChanged(QGuiApplication* self, QFont* font);
 void QGuiApplication_Connect_FontChanged(QGuiApplication* self, intptr_t slot);
 bool QGuiApplication_Event(QGuiApplication* self, QEvent* param1);
@@ -140,6 +144,8 @@ void QGuiApplication_OnEvent(QGuiApplication* self, intptr_t slot);
 bool QGuiApplication_QBaseEvent(QGuiApplication* self, QEvent* param1);
 libqt_string QGuiApplication_Tr2(const char* s, const char* c);
 libqt_string QGuiApplication_Tr3(const char* s, const char* c, int n);
+libqt_string QGuiApplication_TrUtf82(const char* s, const char* c);
+libqt_string QGuiApplication_TrUtf83(const char* s, const char* c, int n);
 bool QGuiApplication_EventFilter(QGuiApplication* self, QObject* watched, QEvent* event);
 void QGuiApplication_OnEventFilter(QGuiApplication* self, intptr_t slot);
 bool QGuiApplication_QBaseEventFilter(QGuiApplication* self, QObject* watched, QEvent* event);
@@ -158,9 +164,6 @@ void QGuiApplication_QBaseConnectNotify(QGuiApplication* self, QMetaMethod* sign
 void QGuiApplication_DisconnectNotify(QGuiApplication* self, QMetaMethod* signal);
 void QGuiApplication_OnDisconnectNotify(QGuiApplication* self, intptr_t slot);
 void QGuiApplication_QBaseDisconnectNotify(QGuiApplication* self, QMetaMethod* signal);
-void* QGuiApplication_ResolveInterface(const QGuiApplication* self, const char* name, int revision);
-void QGuiApplication_OnResolveInterface(const QGuiApplication* self, intptr_t slot);
-void* QGuiApplication_QBaseResolveInterface(const QGuiApplication* self, const char* name, int revision);
 QObject* QGuiApplication_Sender(const QGuiApplication* self);
 void QGuiApplication_OnSender(const QGuiApplication* self, intptr_t slot);
 QObject* QGuiApplication_QBaseSender(const QGuiApplication* self);

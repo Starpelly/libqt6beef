@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QLocalServer QLocalServer;
@@ -29,6 +29,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -50,6 +51,7 @@ int QLocalServer_Metacall(QLocalServer* self, int param1, int param2, void** par
 void QLocalServer_OnMetacall(QLocalServer* self, intptr_t slot);
 int QLocalServer_QBaseMetacall(QLocalServer* self, int param1, int param2, void** param3);
 libqt_string QLocalServer_Tr(const char* s);
+libqt_string QLocalServer_TrUtf8(const char* s);
 void QLocalServer_NewConnection(QLocalServer* self);
 void QLocalServer_Connect_NewConnection(QLocalServer* self, intptr_t slot);
 void QLocalServer_Close(QLocalServer* self);
@@ -70,8 +72,6 @@ bool QLocalServer_RemoveServer(libqt_string name);
 int QLocalServer_ServerError(const QLocalServer* self);
 void QLocalServer_SetMaxPendingConnections(QLocalServer* self, int numConnections);
 bool QLocalServer_WaitForNewConnection(QLocalServer* self);
-void QLocalServer_SetListenBacklogSize(QLocalServer* self, int size);
-int QLocalServer_ListenBacklogSize(const QLocalServer* self);
 void QLocalServer_SetSocketOptions(QLocalServer* self, int options);
 int QLocalServer_SocketOptions(const QLocalServer* self);
 intptr_t QLocalServer_SocketDescriptor(const QLocalServer* self);
@@ -80,6 +80,8 @@ void QLocalServer_OnIncomingConnection(QLocalServer* self, intptr_t slot);
 void QLocalServer_QBaseIncomingConnection(QLocalServer* self, uintptr_t socketDescriptor);
 libqt_string QLocalServer_Tr2(const char* s, const char* c);
 libqt_string QLocalServer_Tr3(const char* s, const char* c, int n);
+libqt_string QLocalServer_TrUtf82(const char* s, const char* c);
+libqt_string QLocalServer_TrUtf83(const char* s, const char* c, int n);
 bool QLocalServer_WaitForNewConnection1(QLocalServer* self, int msec);
 bool QLocalServer_WaitForNewConnection2(QLocalServer* self, int msec, bool* timedOut);
 bool QLocalServer_Event(QLocalServer* self, QEvent* event);

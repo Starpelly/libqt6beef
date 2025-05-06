@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -26,12 +28,10 @@ typedef struct QVariant QVariant;
 typedef QPalette::ColorGroup ColorGroup;         // C++ enum
 typedef QPalette::ColorRole ColorRole;           // C++ enum
 typedef QPalette::QtGadgetHelper QtGadgetHelper; // C++ QFlags
-typedef QPalette::ResolveMask ResolveMask;       // C++ QFlags
 #else
-typedef int ColorGroup;       // C ABI enum
-typedef int ColorRole;        // C ABI enum
-typedef uint64_t ResolveMask; // C ABI QFlags
-typedef void QtGadgetHelper;  // C ABI QFlags
+typedef int ColorGroup;      // C ABI enum
+typedef int ColorRole;       // C ABI enum
+typedef void QtGadgetHelper; // C ABI QFlags
 #endif
 
 QPalette* QPalette_new();
@@ -77,13 +77,15 @@ QBrush* QPalette_HighlightedText(const QPalette* self);
 QBrush* QPalette_Link(const QPalette* self);
 QBrush* QPalette_LinkVisited(const QPalette* self);
 QBrush* QPalette_PlaceholderText(const QPalette* self);
+QBrush* QPalette_Foreground(const QPalette* self);
+QBrush* QPalette_Background(const QPalette* self);
 bool QPalette_OperatorEqual(const QPalette* self, QPalette* p);
 bool QPalette_OperatorNotEqual(const QPalette* self, QPalette* p);
 bool QPalette_IsCopyOf(const QPalette* self, QPalette* p);
 long long QPalette_CacheKey(const QPalette* self);
-QPalette* QPalette_Resolve(const QPalette* self, QPalette* other);
-unsigned long long QPalette_ResolveMask(const QPalette* self);
-void QPalette_SetResolveMask(QPalette* self, unsigned long long mask);
+QPalette* QPalette_Resolve(const QPalette* self, QPalette* param1);
+unsigned int QPalette_Resolve2(const QPalette* self);
+void QPalette_ResolveWithMask(QPalette* self, unsigned int mask);
 void QPalette_Delete(QPalette* self);
 
 #ifdef __cplusplus

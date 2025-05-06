@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -45,7 +47,7 @@ class VirtualQBitmap : public QBitmap {
     VirtualQBitmap(int w, int h) : QBitmap(w, h){};
     VirtualQBitmap(const QSize& param1) : QBitmap(param1){};
     VirtualQBitmap(const QString& fileName) : QBitmap(fileName){};
-    VirtualQBitmap(const QBitmap& param1) : QBitmap(param1){};
+    VirtualQBitmap(const QBitmap& other) : QBitmap(other){};
     VirtualQBitmap(const QString& fileName, const char* format) : QBitmap(fileName, format){};
 
     ~VirtualQBitmap() {

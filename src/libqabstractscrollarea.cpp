@@ -1,9 +1,7 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -113,6 +110,18 @@ int QAbstractScrollArea_QBaseMetacall(QAbstractScrollArea* self, int param1, int
 
 libqt_string QAbstractScrollArea_Tr(const char* s) {
     QString _ret = QAbstractScrollArea::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractScrollArea_TrUtf8(const char* s) {
+    QString _ret = QAbstractScrollArea::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -214,6 +223,30 @@ libqt_string QAbstractScrollArea_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractScrollArea_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractScrollArea::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractScrollArea_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAbstractScrollArea::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractScrollArea_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAbstractScrollArea::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -795,32 +828,6 @@ void QAbstractScrollArea_OnChangeEvent(QAbstractScrollArea* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-void QAbstractScrollArea_InitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option) {
-    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
-        vqabstractscrollarea->initStyleOption(option);
-    } else {
-        vqabstractscrollarea->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QAbstractScrollArea_QBaseInitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option) {
-    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
-        vqabstractscrollarea->setQAbstractScrollArea_InitStyleOption_IsBase(true);
-        vqabstractscrollarea->initStyleOption(option);
-    } else {
-        vqabstractscrollarea->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractScrollArea_OnInitStyleOption(const QAbstractScrollArea* self, intptr_t slot) {
-    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
-        vqabstractscrollarea->setQAbstractScrollArea_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractScrollArea::QAbstractScrollArea_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QAbstractScrollArea_DevType(const QAbstractScrollArea* self) {
     if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
         return vqabstractscrollarea->devType();
@@ -1029,7 +1036,7 @@ void QAbstractScrollArea_OnFocusOutEvent(QAbstractScrollArea* self, intptr_t slo
 }
 
 // Derived class handler implementation
-void QAbstractScrollArea_EnterEvent(QAbstractScrollArea* self, QEnterEvent* event) {
+void QAbstractScrollArea_EnterEvent(QAbstractScrollArea* self, QEvent* event) {
     if (auto* vqabstractscrollarea = dynamic_cast<VirtualQAbstractScrollArea*>(self)) {
         vqabstractscrollarea->enterEvent(event);
     } else {
@@ -1038,7 +1045,7 @@ void QAbstractScrollArea_EnterEvent(QAbstractScrollArea* self, QEnterEvent* even
 }
 
 // Base class handler implementation
-void QAbstractScrollArea_QBaseEnterEvent(QAbstractScrollArea* self, QEnterEvent* event) {
+void QAbstractScrollArea_QBaseEnterEvent(QAbstractScrollArea* self, QEvent* event) {
     if (auto* vqabstractscrollarea = dynamic_cast<VirtualQAbstractScrollArea*>(self)) {
         vqabstractscrollarea->setQAbstractScrollArea_EnterEvent_IsBase(true);
         vqabstractscrollarea->enterEvent(event);
@@ -1237,23 +1244,23 @@ void QAbstractScrollArea_OnHideEvent(QAbstractScrollArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractScrollArea_NativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QAbstractScrollArea_NativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractscrollarea = dynamic_cast<VirtualQAbstractScrollArea*>(self)) {
-        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractScrollArea_QBaseNativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QAbstractScrollArea_QBaseNativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractscrollarea = dynamic_cast<VirtualQAbstractScrollArea*>(self)) {
         vqabstractscrollarea->setQAbstractScrollArea_NativeEvent_IsBase(true);
-        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractscrollarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1675,6 +1682,32 @@ void QAbstractScrollArea_QBaseDrawFrame(QAbstractScrollArea* self, QPainter* par
 void QAbstractScrollArea_OnDrawFrame(QAbstractScrollArea* self, intptr_t slot) {
     if (auto* vqabstractscrollarea = dynamic_cast<VirtualQAbstractScrollArea*>(self)) {
         vqabstractscrollarea->setQAbstractScrollArea_DrawFrame_Callback(reinterpret_cast<VirtualQAbstractScrollArea::QAbstractScrollArea_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractScrollArea_InitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option) {
+    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
+        vqabstractscrollarea->initStyleOption(option);
+    } else {
+        vqabstractscrollarea->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QAbstractScrollArea_QBaseInitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option) {
+    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
+        vqabstractscrollarea->setQAbstractScrollArea_InitStyleOption_IsBase(true);
+        vqabstractscrollarea->initStyleOption(option);
+    } else {
+        vqabstractscrollarea->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractScrollArea_OnInitStyleOption(const QAbstractScrollArea* self, intptr_t slot) {
+    if (auto* vqabstractscrollarea = const_cast<VirtualQAbstractScrollArea*>(dynamic_cast<const VirtualQAbstractScrollArea*>(self))) {
+        vqabstractscrollarea->setQAbstractScrollArea_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractScrollArea::QAbstractScrollArea_InitStyleOption_Callback>(slot));
     }
 }
 

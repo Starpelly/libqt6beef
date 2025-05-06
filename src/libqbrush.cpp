@@ -7,6 +7,7 @@
 #include <QImage>
 #include <QLinearGradient>
 #include <QList>
+#include <QMatrix>
 #include <QPair>
 #include <QPixmap>
 #include <QPointF>
@@ -83,6 +84,16 @@ int QBrush_Style(const QBrush* self) {
 
 void QBrush_SetStyle(QBrush* self, int style) {
     self->setStyle(static_cast<Qt::BrushStyle>(style));
+}
+
+QMatrix* QBrush_Matrix(const QBrush* self) {
+    const QMatrix& _ret = self->matrix();
+    // Cast returned reference into pointer
+    return const_cast<QMatrix*>(&_ret);
+}
+
+void QBrush_SetMatrix(QBrush* self, QMatrix* mat) {
+    self->setMatrix(*mat);
 }
 
 QTransform* QBrush_Transform(const QBrush* self) {
@@ -192,16 +203,16 @@ libqt_list /* of libqt_pair  tuple of double and QColor*  */ QGradient_Stops(con
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_pair /* tuple of double and QColor* */* _arr = static_cast<libqt_pair /* tuple of double and QColor* */*>(malloc(sizeof(libqt_pair /* tuple of double and QColor* */) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
-        QPair<double, QColor> _lv_ret = _ret[i];
+        QPair<double, QColor> _vv_ret = _ret[i];
         // Convert QPair<> from C++ memory to manually-managed C memory
-        double* _lv_first = static_cast<double*>(malloc(sizeof(double)));
-        QColor** _lv_second = static_cast<QColor**>(malloc(sizeof(QColor*)));
-        *_lv_first = _lv_ret.first;
-        *_lv_second = new QColor(_lv_ret.second);
-        libqt_pair _lv_out;
-        _lv_out.first = static_cast<void*>(_lv_first);
-        _lv_out.second = static_cast<void*>(_lv_second);
-        _arr[i] = _lv_out;
+        double* _vv_first = static_cast<double*>(malloc(sizeof(double)));
+        QColor** _vv_second = static_cast<QColor**>(malloc(sizeof(QColor*)));
+        *_vv_first = _vv_ret.first;
+        *_vv_second = new QColor(_vv_ret.second);
+        libqt_pair _vv_out;
+        _vv_out.first = static_cast<void*>(_vv_first);
+        _vv_out.second = static_cast<void*>(_vv_second);
+        _arr[i] = _vv_out;
     }
     libqt_list _out;
     _out.len = _ret.length();
@@ -407,6 +418,10 @@ void QConicalGradient_Delete(QConicalGradient* self) {
 
 QGradient__QGradientData* QGradient__QGradientData_new(QGradient__QGradientData* param1) {
     return new QGradient::QGradientData(*param1);
+}
+
+void QGradient__QGradientData_OperatorAssign(QGradient__QGradientData* self, QGradient__QGradientData* param1) {
+    self->operator=(*param1);
 }
 
 void QGradient__QGradientData_Delete(QGradient__QGradientData* self) {

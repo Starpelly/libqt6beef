@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,16 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
-typedef struct QMetaType QMetaType;
 typedef struct QMimeData QMimeData;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
@@ -42,6 +42,7 @@ int QMimeData_Metacall(QMimeData* self, int param1, int param2, void** param3);
 void QMimeData_OnMetacall(QMimeData* self, intptr_t slot);
 int QMimeData_QBaseMetacall(QMimeData* self, int param1, int param2, void** param3);
 libqt_string QMimeData_Tr(const char* s);
+libqt_string QMimeData_TrUtf8(const char* s);
 libqt_list /* of QUrl* */ QMimeData_Urls(const QMimeData* self);
 void QMimeData_SetUrls(QMimeData* self, libqt_list /* of QUrl* */ urls);
 bool QMimeData_HasUrls(const QMimeData* self);
@@ -67,11 +68,13 @@ libqt_list /* of libqt_string */ QMimeData_Formats(const QMimeData* self);
 void QMimeData_OnFormats(const QMimeData* self, intptr_t slot);
 libqt_list /* of libqt_string */ QMimeData_QBaseFormats(const QMimeData* self);
 void QMimeData_Clear(QMimeData* self);
-QVariant* QMimeData_RetrieveData(const QMimeData* self, libqt_string mimetype, QMetaType* preferredType);
+QVariant* QMimeData_RetrieveData(const QMimeData* self, libqt_string mimetype, int preferredType);
 void QMimeData_OnRetrieveData(const QMimeData* self, intptr_t slot);
-QVariant* QMimeData_QBaseRetrieveData(const QMimeData* self, libqt_string mimetype, QMetaType* preferredType);
+QVariant* QMimeData_QBaseRetrieveData(const QMimeData* self, libqt_string mimetype, int preferredType);
 libqt_string QMimeData_Tr2(const char* s, const char* c);
 libqt_string QMimeData_Tr3(const char* s, const char* c, int n);
+libqt_string QMimeData_TrUtf82(const char* s, const char* c);
+libqt_string QMimeData_TrUtf83(const char* s, const char* c, int n);
 bool QMimeData_Event(QMimeData* self, QEvent* event);
 void QMimeData_OnEvent(QMimeData* self, intptr_t slot);
 bool QMimeData_QBaseEvent(QMimeData* self, QEvent* event);

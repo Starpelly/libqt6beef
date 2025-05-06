@@ -322,14 +322,6 @@ QRect* QRect_OperatorMinusAssign(QRect* self, QMargins* margins) {
     return &_ret;
 }
 
-QRect* QRect_Span(QPoint* p1, QPoint* p2) {
-    return new QRect(QRect::span(*p1, *p2));
-}
-
-QRectF* QRect_ToRectF(const QRect* self) {
-    return new QRectF(self->toRectF());
-}
-
 bool QRect_Contains22(const QRect* self, QRect* r, bool proper) {
     return self->contains(*r, proper);
 }

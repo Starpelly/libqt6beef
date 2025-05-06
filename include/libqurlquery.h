@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -52,6 +54,8 @@ void QUrlQuery_RemoveQueryItem(QUrlQuery* self, libqt_string key);
 libqt_string QUrlQuery_QueryItemValue(const QUrlQuery* self, libqt_string key);
 libqt_list /* of libqt_string */ QUrlQuery_AllQueryItemValues(const QUrlQuery* self, libqt_string key);
 void QUrlQuery_RemoveAllQueryItems(QUrlQuery* self, libqt_string key);
+QChar* QUrlQuery_DefaultQueryValueDelimiter();
+QChar* QUrlQuery_DefaultQueryPairDelimiter();
 libqt_string QUrlQuery_Query1(const QUrlQuery* self, int encoding);
 libqt_string QUrlQuery_ToString1(const QUrlQuery* self, int encoding);
 libqt_list /* of libqt_pair  tuple of libqt_string and libqt_string  */ QUrlQuery_QueryItems1(const QUrlQuery* self, int encoding);

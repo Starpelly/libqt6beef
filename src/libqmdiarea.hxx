@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -41,7 +43,6 @@ class VirtualQMdiArea : public QMdiArea {
     using QMdiArea_KeyPressEvent_Callback = void (*)(QMdiArea*, QKeyEvent*);
     using QMdiArea_ViewportSizeHint_Callback = QSize (*)();
     using QMdiArea_ChangeEvent_Callback = void (*)(QMdiArea*, QEvent*);
-    using QMdiArea_InitStyleOption_Callback = void (*)(const QMdiArea*, QStyleOptionFrame*);
     using QMdiArea_DevType_Callback = int (*)();
     using QMdiArea_SetVisible_Callback = void (*)(QMdiArea*, bool);
     using QMdiArea_HeightForWidth_Callback = int (*)(const QMdiArea*, int);
@@ -50,14 +51,14 @@ class VirtualQMdiArea : public QMdiArea {
     using QMdiArea_KeyReleaseEvent_Callback = void (*)(QMdiArea*, QKeyEvent*);
     using QMdiArea_FocusInEvent_Callback = void (*)(QMdiArea*, QFocusEvent*);
     using QMdiArea_FocusOutEvent_Callback = void (*)(QMdiArea*, QFocusEvent*);
-    using QMdiArea_EnterEvent_Callback = void (*)(QMdiArea*, QEnterEvent*);
+    using QMdiArea_EnterEvent_Callback = void (*)(QMdiArea*, QEvent*);
     using QMdiArea_LeaveEvent_Callback = void (*)(QMdiArea*, QEvent*);
     using QMdiArea_MoveEvent_Callback = void (*)(QMdiArea*, QMoveEvent*);
     using QMdiArea_CloseEvent_Callback = void (*)(QMdiArea*, QCloseEvent*);
     using QMdiArea_TabletEvent_Callback = void (*)(QMdiArea*, QTabletEvent*);
     using QMdiArea_ActionEvent_Callback = void (*)(QMdiArea*, QActionEvent*);
     using QMdiArea_HideEvent_Callback = void (*)(QMdiArea*, QHideEvent*);
-    using QMdiArea_NativeEvent_Callback = bool (*)(QMdiArea*, const QByteArray&, void*, qintptr*);
+    using QMdiArea_NativeEvent_Callback = bool (*)(QMdiArea*, const QByteArray&, void*, long*);
     using QMdiArea_Metric_Callback = int (*)(const QMdiArea*, QPaintDevice::PaintDeviceMetric);
     using QMdiArea_InitPainter_Callback = void (*)(const QMdiArea*, QPainter*);
     using QMdiArea_Redirected_Callback = QPaintDevice* (*)(const QMdiArea*, QPoint*);
@@ -71,6 +72,7 @@ class VirtualQMdiArea : public QMdiArea {
     using QMdiArea_SetViewportMargins_Callback = void (*)(QMdiArea*, int, int, int, int);
     using QMdiArea_ViewportMargins_Callback = QMargins (*)();
     using QMdiArea_DrawFrame_Callback = void (*)(QMdiArea*, QPainter*);
+    using QMdiArea_InitStyleOption_Callback = void (*)(const QMdiArea*, QStyleOptionFrame*);
     using QMdiArea_UpdateMicroFocus_Callback = void (*)();
     using QMdiArea_Create_Callback = void (*)();
     using QMdiArea_Destroy_Callback = void (*)();
@@ -109,7 +111,6 @@ class VirtualQMdiArea : public QMdiArea {
     QMdiArea_KeyPressEvent_Callback qmdiarea_keypressevent_callback = nullptr;
     QMdiArea_ViewportSizeHint_Callback qmdiarea_viewportsizehint_callback = nullptr;
     QMdiArea_ChangeEvent_Callback qmdiarea_changeevent_callback = nullptr;
-    QMdiArea_InitStyleOption_Callback qmdiarea_initstyleoption_callback = nullptr;
     QMdiArea_DevType_Callback qmdiarea_devtype_callback = nullptr;
     QMdiArea_SetVisible_Callback qmdiarea_setvisible_callback = nullptr;
     QMdiArea_HeightForWidth_Callback qmdiarea_heightforwidth_callback = nullptr;
@@ -139,6 +140,7 @@ class VirtualQMdiArea : public QMdiArea {
     QMdiArea_SetViewportMargins_Callback qmdiarea_setviewportmargins_callback = nullptr;
     QMdiArea_ViewportMargins_Callback qmdiarea_viewportmargins_callback = nullptr;
     QMdiArea_DrawFrame_Callback qmdiarea_drawframe_callback = nullptr;
+    QMdiArea_InitStyleOption_Callback qmdiarea_initstyleoption_callback = nullptr;
     QMdiArea_UpdateMicroFocus_Callback qmdiarea_updatemicrofocus_callback = nullptr;
     QMdiArea_Create_Callback qmdiarea_create_callback = nullptr;
     QMdiArea_Destroy_Callback qmdiarea_destroy_callback = nullptr;
@@ -176,7 +178,6 @@ class VirtualQMdiArea : public QMdiArea {
     mutable bool qmdiarea_keypressevent_isbase = false;
     mutable bool qmdiarea_viewportsizehint_isbase = false;
     mutable bool qmdiarea_changeevent_isbase = false;
-    mutable bool qmdiarea_initstyleoption_isbase = false;
     mutable bool qmdiarea_devtype_isbase = false;
     mutable bool qmdiarea_setvisible_isbase = false;
     mutable bool qmdiarea_heightforwidth_isbase = false;
@@ -206,6 +207,7 @@ class VirtualQMdiArea : public QMdiArea {
     mutable bool qmdiarea_setviewportmargins_isbase = false;
     mutable bool qmdiarea_viewportmargins_isbase = false;
     mutable bool qmdiarea_drawframe_isbase = false;
+    mutable bool qmdiarea_initstyleoption_isbase = false;
     mutable bool qmdiarea_updatemicrofocus_isbase = false;
     mutable bool qmdiarea_create_isbase = false;
     mutable bool qmdiarea_destroy_isbase = false;
@@ -247,7 +249,6 @@ class VirtualQMdiArea : public QMdiArea {
         qmdiarea_keypressevent_callback = nullptr;
         qmdiarea_viewportsizehint_callback = nullptr;
         qmdiarea_changeevent_callback = nullptr;
-        qmdiarea_initstyleoption_callback = nullptr;
         qmdiarea_devtype_callback = nullptr;
         qmdiarea_setvisible_callback = nullptr;
         qmdiarea_heightforwidth_callback = nullptr;
@@ -277,6 +278,7 @@ class VirtualQMdiArea : public QMdiArea {
         qmdiarea_setviewportmargins_callback = nullptr;
         qmdiarea_viewportmargins_callback = nullptr;
         qmdiarea_drawframe_callback = nullptr;
+        qmdiarea_initstyleoption_callback = nullptr;
         qmdiarea_updatemicrofocus_callback = nullptr;
         qmdiarea_create_callback = nullptr;
         qmdiarea_destroy_callback = nullptr;
@@ -315,7 +317,6 @@ class VirtualQMdiArea : public QMdiArea {
     void setQMdiArea_KeyPressEvent_Callback(QMdiArea_KeyPressEvent_Callback cb) { qmdiarea_keypressevent_callback = cb; }
     void setQMdiArea_ViewportSizeHint_Callback(QMdiArea_ViewportSizeHint_Callback cb) { qmdiarea_viewportsizehint_callback = cb; }
     void setQMdiArea_ChangeEvent_Callback(QMdiArea_ChangeEvent_Callback cb) { qmdiarea_changeevent_callback = cb; }
-    void setQMdiArea_InitStyleOption_Callback(QMdiArea_InitStyleOption_Callback cb) { qmdiarea_initstyleoption_callback = cb; }
     void setQMdiArea_DevType_Callback(QMdiArea_DevType_Callback cb) { qmdiarea_devtype_callback = cb; }
     void setQMdiArea_SetVisible_Callback(QMdiArea_SetVisible_Callback cb) { qmdiarea_setvisible_callback = cb; }
     void setQMdiArea_HeightForWidth_Callback(QMdiArea_HeightForWidth_Callback cb) { qmdiarea_heightforwidth_callback = cb; }
@@ -345,6 +346,7 @@ class VirtualQMdiArea : public QMdiArea {
     void setQMdiArea_SetViewportMargins_Callback(QMdiArea_SetViewportMargins_Callback cb) { qmdiarea_setviewportmargins_callback = cb; }
     void setQMdiArea_ViewportMargins_Callback(QMdiArea_ViewportMargins_Callback cb) { qmdiarea_viewportmargins_callback = cb; }
     void setQMdiArea_DrawFrame_Callback(QMdiArea_DrawFrame_Callback cb) { qmdiarea_drawframe_callback = cb; }
+    void setQMdiArea_InitStyleOption_Callback(QMdiArea_InitStyleOption_Callback cb) { qmdiarea_initstyleoption_callback = cb; }
     void setQMdiArea_UpdateMicroFocus_Callback(QMdiArea_UpdateMicroFocus_Callback cb) { qmdiarea_updatemicrofocus_callback = cb; }
     void setQMdiArea_Create_Callback(QMdiArea_Create_Callback cb) { qmdiarea_create_callback = cb; }
     void setQMdiArea_Destroy_Callback(QMdiArea_Destroy_Callback cb) { qmdiarea_destroy_callback = cb; }
@@ -382,7 +384,6 @@ class VirtualQMdiArea : public QMdiArea {
     void setQMdiArea_KeyPressEvent_IsBase(bool value) const { qmdiarea_keypressevent_isbase = value; }
     void setQMdiArea_ViewportSizeHint_IsBase(bool value) const { qmdiarea_viewportsizehint_isbase = value; }
     void setQMdiArea_ChangeEvent_IsBase(bool value) const { qmdiarea_changeevent_isbase = value; }
-    void setQMdiArea_InitStyleOption_IsBase(bool value) const { qmdiarea_initstyleoption_isbase = value; }
     void setQMdiArea_DevType_IsBase(bool value) const { qmdiarea_devtype_isbase = value; }
     void setQMdiArea_SetVisible_IsBase(bool value) const { qmdiarea_setvisible_isbase = value; }
     void setQMdiArea_HeightForWidth_IsBase(bool value) const { qmdiarea_heightforwidth_isbase = value; }
@@ -412,6 +413,7 @@ class VirtualQMdiArea : public QMdiArea {
     void setQMdiArea_SetViewportMargins_IsBase(bool value) const { qmdiarea_setviewportmargins_isbase = value; }
     void setQMdiArea_ViewportMargins_IsBase(bool value) const { qmdiarea_viewportmargins_isbase = value; }
     void setQMdiArea_DrawFrame_IsBase(bool value) const { qmdiarea_drawframe_isbase = value; }
+    void setQMdiArea_InitStyleOption_IsBase(bool value) const { qmdiarea_initstyleoption_isbase = value; }
     void setQMdiArea_UpdateMicroFocus_IsBase(bool value) const { qmdiarea_updatemicrofocus_isbase = value; }
     void setQMdiArea_Create_IsBase(bool value) const { qmdiarea_create_isbase = value; }
     void setQMdiArea_Destroy_IsBase(bool value) const { qmdiarea_destroy_isbase = value; }
@@ -735,18 +737,6 @@ class VirtualQMdiArea : public QMdiArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qmdiarea_initstyleoption_isbase) {
-            qmdiarea_initstyleoption_isbase = false;
-            QMdiArea::initStyleOption(option);
-        } else if (qmdiarea_initstyleoption_callback != nullptr) {
-            qmdiarea_initstyleoption_callback(this, option);
-        } else {
-            QMdiArea::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qmdiarea_devtype_isbase) {
             qmdiarea_devtype_isbase = false;
@@ -843,7 +833,7 @@ class VirtualQMdiArea : public QMdiArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qmdiarea_enterevent_isbase) {
             qmdiarea_enterevent_isbase = false;
             QMdiArea::enterEvent(event);
@@ -927,7 +917,7 @@ class VirtualQMdiArea : public QMdiArea {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qmdiarea_nativeevent_isbase) {
             qmdiarea_nativeevent_isbase = false;
             return QMdiArea::nativeEvent(eventType, message, result);
@@ -1091,6 +1081,18 @@ class VirtualQMdiArea : public QMdiArea {
             qmdiarea_drawframe_callback(this, param1);
         } else {
             QMdiArea::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qmdiarea_initstyleoption_isbase) {
+            qmdiarea_initstyleoption_isbase = false;
+            QMdiArea::initStyleOption(option);
+        } else if (qmdiarea_initstyleoption_callback != nullptr) {
+            qmdiarea_initstyleoption_callback(this, option);
+        } else {
+            QMdiArea::initStyleOption(option);
         }
     }
 

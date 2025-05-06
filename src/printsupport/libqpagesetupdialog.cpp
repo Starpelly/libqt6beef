@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPageSetupDialog>
 #include <QPaintDevice>
 #include <QPaintEngine>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QPrinter>
 #include <QRect>
 #include <QRegion>
@@ -130,6 +127,18 @@ libqt_string QPageSetupDialog_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QPageSetupDialog_TrUtf8(const char* s) {
+    QString _ret = QPageSetupDialog::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QPrinter* QPageSetupDialog_Printer(QPageSetupDialog* self) {
     return self->printer();
 }
@@ -148,6 +157,30 @@ libqt_string QPageSetupDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QPageSetupDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QPageSetupDialog::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QPageSetupDialog_TrUtf82(const char* s, const char* c) {
+    QString _ret = QPageSetupDialog::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QPageSetupDialog_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QPageSetupDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -861,7 +894,7 @@ void QPageSetupDialog_OnFocusOutEvent(QPageSetupDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QPageSetupDialog_EnterEvent(QPageSetupDialog* self, QEnterEvent* event) {
+void QPageSetupDialog_EnterEvent(QPageSetupDialog* self, QEvent* event) {
     if (auto* vqpagesetupdialog = dynamic_cast<VirtualQPageSetupDialog*>(self)) {
         vqpagesetupdialog->enterEvent(event);
     } else {
@@ -870,7 +903,7 @@ void QPageSetupDialog_EnterEvent(QPageSetupDialog* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QPageSetupDialog_QBaseEnterEvent(QPageSetupDialog* self, QEnterEvent* event) {
+void QPageSetupDialog_QBaseEnterEvent(QPageSetupDialog* self, QEvent* event) {
     if (auto* vqpagesetupdialog = dynamic_cast<VirtualQPageSetupDialog*>(self)) {
         vqpagesetupdialog->setQPageSetupDialog_EnterEvent_IsBase(true);
         vqpagesetupdialog->enterEvent(event);
@@ -1147,23 +1180,23 @@ void QPageSetupDialog_OnHideEvent(QPageSetupDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QPageSetupDialog_NativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QPageSetupDialog_NativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqpagesetupdialog = dynamic_cast<VirtualQPageSetupDialog*>(self)) {
-        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QPageSetupDialog_QBaseNativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QPageSetupDialog_QBaseNativeEvent(QPageSetupDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqpagesetupdialog = dynamic_cast<VirtualQPageSetupDialog*>(self)) {
         vqpagesetupdialog->setQPageSetupDialog_NativeEvent_IsBase(true);
-        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqpagesetupdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

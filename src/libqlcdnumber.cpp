@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -120,6 +117,18 @@ int QLCDNumber_QBaseMetacall(QLCDNumber* self, int param1, int param2, void** pa
 
 libqt_string QLCDNumber_Tr(const char* s) {
     QString _ret = QLCDNumber::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QLCDNumber_TrUtf8(const char* s) {
+    QString _ret = QLCDNumber::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -242,6 +251,30 @@ libqt_string QLCDNumber_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QLCDNumber_TrUtf82(const char* s, const char* c) {
+    QString _ret = QLCDNumber::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QLCDNumber_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QLCDNumber::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 // Derived class handler implementation
 QSize* QLCDNumber_SizeHint(const QLCDNumber* self) {
     if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
@@ -343,32 +376,6 @@ void QLCDNumber_QBaseChangeEvent(QLCDNumber* self, QEvent* param1) {
 void QLCDNumber_OnChangeEvent(QLCDNumber* self, intptr_t slot) {
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
         vqlcdnumber->setQLCDNumber_ChangeEvent_Callback(reinterpret_cast<VirtualQLCDNumber::QLCDNumber_ChangeEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QLCDNumber_InitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option) {
-    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
-        vqlcdnumber->initStyleOption(option);
-    } else {
-        vqlcdnumber->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QLCDNumber_QBaseInitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option) {
-    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
-        vqlcdnumber->setQLCDNumber_InitStyleOption_IsBase(true);
-        vqlcdnumber->initStyleOption(option);
-    } else {
-        vqlcdnumber->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QLCDNumber_OnInitStyleOption(const QLCDNumber* self, intptr_t slot) {
-    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
-        vqlcdnumber->setQLCDNumber_InitStyleOption_Callback(reinterpret_cast<VirtualQLCDNumber::QLCDNumber_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -763,7 +770,7 @@ void QLCDNumber_OnFocusOutEvent(QLCDNumber* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QLCDNumber_EnterEvent(QLCDNumber* self, QEnterEvent* event) {
+void QLCDNumber_EnterEvent(QLCDNumber* self, QEvent* event) {
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
         vqlcdnumber->enterEvent(event);
     } else {
@@ -772,7 +779,7 @@ void QLCDNumber_EnterEvent(QLCDNumber* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QLCDNumber_QBaseEnterEvent(QLCDNumber* self, QEnterEvent* event) {
+void QLCDNumber_QBaseEnterEvent(QLCDNumber* self, QEvent* event) {
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
         vqlcdnumber->setQLCDNumber_EnterEvent_IsBase(true);
         vqlcdnumber->enterEvent(event);
@@ -1127,23 +1134,23 @@ void QLCDNumber_OnHideEvent(QLCDNumber* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QLCDNumber_NativeEvent(QLCDNumber* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QLCDNumber_NativeEvent(QLCDNumber* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
-        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QLCDNumber_QBaseNativeEvent(QLCDNumber* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QLCDNumber_QBaseNativeEvent(QLCDNumber* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
         vqlcdnumber->setQLCDNumber_NativeEvent_IsBase(true);
-        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlcdnumber->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1515,6 +1522,32 @@ void QLCDNumber_QBaseDrawFrame(QLCDNumber* self, QPainter* param1) {
 void QLCDNumber_OnDrawFrame(QLCDNumber* self, intptr_t slot) {
     if (auto* vqlcdnumber = dynamic_cast<VirtualQLCDNumber*>(self)) {
         vqlcdnumber->setQLCDNumber_DrawFrame_Callback(reinterpret_cast<VirtualQLCDNumber::QLCDNumber_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QLCDNumber_InitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option) {
+    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
+        vqlcdnumber->initStyleOption(option);
+    } else {
+        vqlcdnumber->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QLCDNumber_QBaseInitStyleOption(const QLCDNumber* self, QStyleOptionFrame* option) {
+    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
+        vqlcdnumber->setQLCDNumber_InitStyleOption_IsBase(true);
+        vqlcdnumber->initStyleOption(option);
+    } else {
+        vqlcdnumber->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QLCDNumber_OnInitStyleOption(const QLCDNumber* self, intptr_t slot) {
+    if (auto* vqlcdnumber = const_cast<VirtualQLCDNumber*>(dynamic_cast<const VirtualQLCDNumber*>(self))) {
+        vqlcdnumber->setQLCDNumber_InitStyleOption_Callback(reinterpret_cast<VirtualQLCDNumber::QLCDNumber_InitStyleOption_Callback>(slot));
     }
 }
 

@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QBoxLayout>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,6 +11,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QRect>
 #include <QSize>
 #include <QSpacerItem>
@@ -81,6 +80,18 @@ libqt_string QBoxLayout_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QBoxLayout_TrUtf8(const char* s) {
+    QString _ret = QBoxLayout::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 int QBoxLayout_Direction(const QBoxLayout* self) {
     return static_cast<int>(self->direction());
 }
@@ -137,6 +148,14 @@ void QBoxLayout_InsertItem(QBoxLayout* self, int index, QLayoutItem* param2) {
     self->insertItem(static_cast<int>(index), param2);
 }
 
+int QBoxLayout_Spacing(const QBoxLayout* self) {
+    return self->spacing();
+}
+
+void QBoxLayout_SetSpacing(QBoxLayout* self, int spacing) {
+    self->setSpacing(static_cast<int>(spacing));
+}
+
 bool QBoxLayout_SetStretchFactor(QBoxLayout* self, QWidget* w, int stretch) {
     return self->setStretchFactor(w, static_cast<int>(stretch));
 }
@@ -167,6 +186,30 @@ libqt_string QBoxLayout_Tr2(const char* s, const char* c) {
 
 libqt_string QBoxLayout_Tr3(const char* s, const char* c, int n) {
     QString _ret = QBoxLayout::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QBoxLayout_TrUtf82(const char* s, const char* c) {
+    QString _ret = QBoxLayout::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QBoxLayout_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QBoxLayout::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -209,14 +252,6 @@ void QBoxLayout_InsertLayout3(QBoxLayout* self, int index, QLayout* layout, int 
     self->insertLayout(static_cast<int>(index), layout, static_cast<int>(stretch));
 }
 
-int QBoxLayout_IndexOfWithQLayoutItem(const QBoxLayout* self, QLayoutItem* param1) {
-    if (auto* vqboxlayout = dynamic_cast<const VirtualQBoxLayout*>(self)) {
-        return self->indexOf(param1);
-    } else {
-        return self->indexOf(param1);
-    }
-}
-
 // Derived class handler implementation
 void QBoxLayout_AddItem(QBoxLayout* self, QLayoutItem* param1) {
     if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
@@ -240,58 +275,6 @@ void QBoxLayout_QBaseAddItem(QBoxLayout* self, QLayoutItem* param1) {
 void QBoxLayout_OnAddItem(QBoxLayout* self, intptr_t slot) {
     if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
         vqboxlayout->setQBoxLayout_AddItem_Callback(reinterpret_cast<VirtualQBoxLayout::QBoxLayout_AddItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QBoxLayout_Spacing(const QBoxLayout* self) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
-        return vqboxlayout->spacing();
-    } else {
-        return vqboxlayout->spacing();
-    }
-}
-
-// Base class handler implementation
-int QBoxLayout_QBaseSpacing(const QBoxLayout* self) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
-        vqboxlayout->setQBoxLayout_Spacing_IsBase(true);
-        return vqboxlayout->spacing();
-    } else {
-        return vqboxlayout->spacing();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QBoxLayout_OnSpacing(const QBoxLayout* self, intptr_t slot) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
-        vqboxlayout->setQBoxLayout_Spacing_Callback(reinterpret_cast<VirtualQBoxLayout::QBoxLayout_Spacing_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QBoxLayout_SetSpacing(QBoxLayout* self, int spacing) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        vqboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Base class handler implementation
-void QBoxLayout_QBaseSetSpacing(QBoxLayout* self, int spacing) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        vqboxlayout->setQBoxLayout_SetSpacing_IsBase(true);
-        vqboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QBoxLayout_OnSetSpacing(QBoxLayout* self, intptr_t slot) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        vqboxlayout->setQBoxLayout_SetSpacing_Callback(reinterpret_cast<VirtualQBoxLayout::QBoxLayout_SetSpacing_Callback>(slot));
     }
 }
 
@@ -712,32 +695,6 @@ void QBoxLayout_OnControlTypes(const QBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QLayoutItem* QBoxLayout_ReplaceWidget(QBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        return vqboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Base class handler implementation
-QLayoutItem* QBoxLayout_QBaseReplaceWidget(QBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        vqboxlayout->setQBoxLayout_ReplaceWidget_IsBase(true);
-        return vqboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QBoxLayout_OnReplaceWidget(QBoxLayout* self, intptr_t slot) {
-    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
-        vqboxlayout->setQBoxLayout_ReplaceWidget_Callback(reinterpret_cast<VirtualQBoxLayout::QBoxLayout_ReplaceWidget_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QLayout* QBoxLayout_Layout(QBoxLayout* self) {
     if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
         return vqboxlayout->layout();
@@ -946,8 +903,8 @@ void QBoxLayout_OnDisconnectNotify(QBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QBoxLayout_Widget(const QBoxLayout* self) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
+QWidget* QBoxLayout_Widget(QBoxLayout* self) {
+    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
         return vqboxlayout->widget();
     } else {
         return vqboxlayout->widget();
@@ -955,8 +912,8 @@ QWidget* QBoxLayout_Widget(const QBoxLayout* self) {
 }
 
 // Base class handler implementation
-QWidget* QBoxLayout_QBaseWidget(const QBoxLayout* self) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
+QWidget* QBoxLayout_QBaseWidget(QBoxLayout* self) {
+    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
         vqboxlayout->setQBoxLayout_Widget_IsBase(true);
         return vqboxlayout->widget();
     } else {
@@ -965,8 +922,8 @@ QWidget* QBoxLayout_QBaseWidget(const QBoxLayout* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QBoxLayout_OnWidget(const QBoxLayout* self, intptr_t slot) {
-    if (auto* vqboxlayout = const_cast<VirtualQBoxLayout*>(dynamic_cast<const VirtualQBoxLayout*>(self))) {
+void QBoxLayout_OnWidget(QBoxLayout* self, intptr_t slot) {
+    if (auto* vqboxlayout = dynamic_cast<VirtualQBoxLayout*>(self)) {
         vqboxlayout->setQBoxLayout_Widget_Callback(reinterpret_cast<VirtualQBoxLayout::QBoxLayout_Widget_Callback>(slot));
     }
 }
@@ -1286,6 +1243,18 @@ libqt_string QHBoxLayout_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QHBoxLayout_TrUtf8(const char* s) {
+    QString _ret = QHBoxLayout::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QHBoxLayout_Tr2(const char* s, const char* c) {
     QString _ret = QHBoxLayout::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -1310,12 +1279,28 @@ libqt_string QHBoxLayout_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-int QHBoxLayout_IndexOfWithQLayoutItem(const QHBoxLayout* self, QLayoutItem* param1) {
-    if (auto* vqhboxlayout = dynamic_cast<const VirtualQHBoxLayout*>(self)) {
-        return self->indexOf(param1);
-    } else {
-        return self->indexOf(param1);
-    }
+libqt_string QHBoxLayout_TrUtf82(const char* s, const char* c) {
+    QString _ret = QHBoxLayout::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QHBoxLayout_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QHBoxLayout::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 // Derived class handler implementation
@@ -1341,58 +1326,6 @@ void QHBoxLayout_QBaseAddItem(QHBoxLayout* self, QLayoutItem* param1) {
 void QHBoxLayout_OnAddItem(QHBoxLayout* self, intptr_t slot) {
     if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
         vqhboxlayout->setQHBoxLayout_AddItem_Callback(reinterpret_cast<VirtualQHBoxLayout::QHBoxLayout_AddItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QHBoxLayout_Spacing(const QHBoxLayout* self) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
-        return vqhboxlayout->spacing();
-    } else {
-        return vqhboxlayout->spacing();
-    }
-}
-
-// Base class handler implementation
-int QHBoxLayout_QBaseSpacing(const QHBoxLayout* self) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
-        vqhboxlayout->setQHBoxLayout_Spacing_IsBase(true);
-        return vqhboxlayout->spacing();
-    } else {
-        return vqhboxlayout->spacing();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHBoxLayout_OnSpacing(const QHBoxLayout* self, intptr_t slot) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
-        vqhboxlayout->setQHBoxLayout_Spacing_Callback(reinterpret_cast<VirtualQHBoxLayout::QHBoxLayout_Spacing_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QHBoxLayout_SetSpacing(QHBoxLayout* self, int spacing) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        vqhboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqhboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Base class handler implementation
-void QHBoxLayout_QBaseSetSpacing(QHBoxLayout* self, int spacing) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        vqhboxlayout->setQHBoxLayout_SetSpacing_IsBase(true);
-        vqhboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqhboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHBoxLayout_OnSetSpacing(QHBoxLayout* self, intptr_t slot) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        vqhboxlayout->setQHBoxLayout_SetSpacing_Callback(reinterpret_cast<VirtualQHBoxLayout::QHBoxLayout_SetSpacing_Callback>(slot));
     }
 }
 
@@ -1813,32 +1746,6 @@ void QHBoxLayout_OnControlTypes(const QHBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QLayoutItem* QHBoxLayout_ReplaceWidget(QHBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        return vqhboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqhboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Base class handler implementation
-QLayoutItem* QHBoxLayout_QBaseReplaceWidget(QHBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        vqhboxlayout->setQHBoxLayout_ReplaceWidget_IsBase(true);
-        return vqhboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqhboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QHBoxLayout_OnReplaceWidget(QHBoxLayout* self, intptr_t slot) {
-    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
-        vqhboxlayout->setQHBoxLayout_ReplaceWidget_Callback(reinterpret_cast<VirtualQHBoxLayout::QHBoxLayout_ReplaceWidget_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QLayout* QHBoxLayout_Layout(QHBoxLayout* self) {
     if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
         return vqhboxlayout->layout();
@@ -2047,8 +1954,8 @@ void QHBoxLayout_OnDisconnectNotify(QHBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QHBoxLayout_Widget(const QHBoxLayout* self) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
+QWidget* QHBoxLayout_Widget(QHBoxLayout* self) {
+    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
         return vqhboxlayout->widget();
     } else {
         return vqhboxlayout->widget();
@@ -2056,8 +1963,8 @@ QWidget* QHBoxLayout_Widget(const QHBoxLayout* self) {
 }
 
 // Base class handler implementation
-QWidget* QHBoxLayout_QBaseWidget(const QHBoxLayout* self) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
+QWidget* QHBoxLayout_QBaseWidget(QHBoxLayout* self) {
+    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
         vqhboxlayout->setQHBoxLayout_Widget_IsBase(true);
         return vqhboxlayout->widget();
     } else {
@@ -2066,8 +1973,8 @@ QWidget* QHBoxLayout_QBaseWidget(const QHBoxLayout* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QHBoxLayout_OnWidget(const QHBoxLayout* self, intptr_t slot) {
-    if (auto* vqhboxlayout = const_cast<VirtualQHBoxLayout*>(dynamic_cast<const VirtualQHBoxLayout*>(self))) {
+void QHBoxLayout_OnWidget(QHBoxLayout* self, intptr_t slot) {
+    if (auto* vqhboxlayout = dynamic_cast<VirtualQHBoxLayout*>(self)) {
         vqhboxlayout->setQHBoxLayout_Widget_Callback(reinterpret_cast<VirtualQHBoxLayout::QHBoxLayout_Widget_Callback>(slot));
     }
 }
@@ -2387,6 +2294,18 @@ libqt_string QVBoxLayout_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QVBoxLayout_TrUtf8(const char* s) {
+    QString _ret = QVBoxLayout::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QVBoxLayout_Tr2(const char* s, const char* c) {
     QString _ret = QVBoxLayout::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -2411,12 +2330,28 @@ libqt_string QVBoxLayout_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-int QVBoxLayout_IndexOfWithQLayoutItem(const QVBoxLayout* self, QLayoutItem* param1) {
-    if (auto* vqvboxlayout = dynamic_cast<const VirtualQVBoxLayout*>(self)) {
-        return self->indexOf(param1);
-    } else {
-        return self->indexOf(param1);
-    }
+libqt_string QVBoxLayout_TrUtf82(const char* s, const char* c) {
+    QString _ret = QVBoxLayout::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QVBoxLayout_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QVBoxLayout::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 // Derived class handler implementation
@@ -2442,58 +2377,6 @@ void QVBoxLayout_QBaseAddItem(QVBoxLayout* self, QLayoutItem* param1) {
 void QVBoxLayout_OnAddItem(QVBoxLayout* self, intptr_t slot) {
     if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
         vqvboxlayout->setQVBoxLayout_AddItem_Callback(reinterpret_cast<VirtualQVBoxLayout::QVBoxLayout_AddItem_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QVBoxLayout_Spacing(const QVBoxLayout* self) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
-        return vqvboxlayout->spacing();
-    } else {
-        return vqvboxlayout->spacing();
-    }
-}
-
-// Base class handler implementation
-int QVBoxLayout_QBaseSpacing(const QVBoxLayout* self) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
-        vqvboxlayout->setQVBoxLayout_Spacing_IsBase(true);
-        return vqvboxlayout->spacing();
-    } else {
-        return vqvboxlayout->spacing();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QVBoxLayout_OnSpacing(const QVBoxLayout* self, intptr_t slot) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
-        vqvboxlayout->setQVBoxLayout_Spacing_Callback(reinterpret_cast<VirtualQVBoxLayout::QVBoxLayout_Spacing_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QVBoxLayout_SetSpacing(QVBoxLayout* self, int spacing) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        vqvboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqvboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Base class handler implementation
-void QVBoxLayout_QBaseSetSpacing(QVBoxLayout* self, int spacing) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        vqvboxlayout->setQVBoxLayout_SetSpacing_IsBase(true);
-        vqvboxlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqvboxlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QVBoxLayout_OnSetSpacing(QVBoxLayout* self, intptr_t slot) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        vqvboxlayout->setQVBoxLayout_SetSpacing_Callback(reinterpret_cast<VirtualQVBoxLayout::QVBoxLayout_SetSpacing_Callback>(slot));
     }
 }
 
@@ -2914,32 +2797,6 @@ void QVBoxLayout_OnControlTypes(const QVBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QLayoutItem* QVBoxLayout_ReplaceWidget(QVBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        return vqvboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqvboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Base class handler implementation
-QLayoutItem* QVBoxLayout_QBaseReplaceWidget(QVBoxLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        vqvboxlayout->setQVBoxLayout_ReplaceWidget_IsBase(true);
-        return vqvboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqvboxlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QVBoxLayout_OnReplaceWidget(QVBoxLayout* self, intptr_t slot) {
-    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
-        vqvboxlayout->setQVBoxLayout_ReplaceWidget_Callback(reinterpret_cast<VirtualQVBoxLayout::QVBoxLayout_ReplaceWidget_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QLayout* QVBoxLayout_Layout(QVBoxLayout* self) {
     if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
         return vqvboxlayout->layout();
@@ -3148,8 +3005,8 @@ void QVBoxLayout_OnDisconnectNotify(QVBoxLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QVBoxLayout_Widget(const QVBoxLayout* self) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
+QWidget* QVBoxLayout_Widget(QVBoxLayout* self) {
+    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
         return vqvboxlayout->widget();
     } else {
         return vqvboxlayout->widget();
@@ -3157,8 +3014,8 @@ QWidget* QVBoxLayout_Widget(const QVBoxLayout* self) {
 }
 
 // Base class handler implementation
-QWidget* QVBoxLayout_QBaseWidget(const QVBoxLayout* self) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
+QWidget* QVBoxLayout_QBaseWidget(QVBoxLayout* self) {
+    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
         vqvboxlayout->setQVBoxLayout_Widget_IsBase(true);
         return vqvboxlayout->widget();
     } else {
@@ -3167,8 +3024,8 @@ QWidget* QVBoxLayout_QBaseWidget(const QVBoxLayout* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QVBoxLayout_OnWidget(const QVBoxLayout* self, intptr_t slot) {
-    if (auto* vqvboxlayout = const_cast<VirtualQVBoxLayout*>(dynamic_cast<const VirtualQVBoxLayout*>(self))) {
+void QVBoxLayout_OnWidget(QVBoxLayout* self, intptr_t slot) {
+    if (auto* vqvboxlayout = dynamic_cast<VirtualQVBoxLayout*>(self)) {
         vqvboxlayout->setQVBoxLayout_Widget_Callback(reinterpret_cast<VirtualQVBoxLayout::QVBoxLayout_Widget_Callback>(slot));
     }
 }

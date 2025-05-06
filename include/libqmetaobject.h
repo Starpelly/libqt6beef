@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,9 +25,7 @@ typedef struct QMetaEnum QMetaEnum;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaProperty QMetaProperty;
-typedef struct QMetaType QMetaType;
 typedef struct QObject QObject;
-typedef struct QUntypedBindable QUntypedBindable;
 typedef struct QVariant QVariant;
 #endif
 
@@ -49,22 +49,17 @@ libqt_string QMetaMethod_MethodSignature(const QMetaMethod* self);
 libqt_string QMetaMethod_Name(const QMetaMethod* self);
 const char* QMetaMethod_TypeName(const QMetaMethod* self);
 int QMetaMethod_ReturnType(const QMetaMethod* self);
-QMetaType* QMetaMethod_ReturnMetaType(const QMetaMethod* self);
 int QMetaMethod_ParameterCount(const QMetaMethod* self);
 int QMetaMethod_ParameterType(const QMetaMethod* self, int index);
-QMetaType* QMetaMethod_ParameterMetaType(const QMetaMethod* self, int index);
 void QMetaMethod_GetParameterTypes(const QMetaMethod* self, int* types);
 libqt_list /* of libqt_string */ QMetaMethod_ParameterTypes(const QMetaMethod* self);
-libqt_string QMetaMethod_ParameterTypeName(const QMetaMethod* self, int index);
 libqt_list /* of libqt_string */ QMetaMethod_ParameterNames(const QMetaMethod* self);
 const char* QMetaMethod_Tag(const QMetaMethod* self);
 int QMetaMethod_Access(const QMetaMethod* self);
 int QMetaMethod_MethodType(const QMetaMethod* self);
 int QMetaMethod_Attributes(const QMetaMethod* self);
 int QMetaMethod_MethodIndex(const QMetaMethod* self);
-int QMetaMethod_RelativeMethodIndex(const QMetaMethod* self);
 int QMetaMethod_Revision(const QMetaMethod* self);
-bool QMetaMethod_IsConst(const QMetaMethod* self);
 QMetaObject* QMetaMethod_EnclosingMetaObject(const QMetaMethod* self);
 bool QMetaMethod_Invoke(const QMetaMethod* self, QObject* object, int connectionType, QGenericReturnArgument* returnValue);
 bool QMetaMethod_Invoke2(const QMetaMethod* self, QObject* object, QGenericReturnArgument* returnValue);
@@ -138,7 +133,6 @@ void QMetaMethod_Delete(QMetaMethod* self);
 QMetaEnum* QMetaEnum_new(QMetaEnum* other);
 QMetaEnum* QMetaEnum_new2(QMetaEnum* other);
 QMetaEnum* QMetaEnum_new3();
-QMetaEnum* QMetaEnum_new4(QMetaEnum* param1);
 void QMetaEnum_CopyAssign(QMetaEnum* self, QMetaEnum* other);
 void QMetaEnum_MoveAssign(QMetaEnum* self, QMetaEnum* other);
 const char* QMetaEnum_Name(const QMetaEnum* self);
@@ -168,8 +162,6 @@ const char* QMetaProperty_Name(const QMetaProperty* self);
 const char* QMetaProperty_TypeName(const QMetaProperty* self);
 int QMetaProperty_Type(const QMetaProperty* self);
 int QMetaProperty_UserType(const QMetaProperty* self);
-int QMetaProperty_TypeId(const QMetaProperty* self);
-QMetaType* QMetaProperty_MetaType(const QMetaProperty* self);
 int QMetaProperty_PropertyIndex(const QMetaProperty* self);
 int QMetaProperty_RelativePropertyIndex(const QMetaProperty* self);
 bool QMetaProperty_IsReadable(const QMetaProperty* self);
@@ -178,11 +170,11 @@ bool QMetaProperty_IsResettable(const QMetaProperty* self);
 bool QMetaProperty_IsDesignable(const QMetaProperty* self);
 bool QMetaProperty_IsScriptable(const QMetaProperty* self);
 bool QMetaProperty_IsStored(const QMetaProperty* self);
+bool QMetaProperty_IsEditable(const QMetaProperty* self);
 bool QMetaProperty_IsUser(const QMetaProperty* self);
 bool QMetaProperty_IsConstant(const QMetaProperty* self);
 bool QMetaProperty_IsFinal(const QMetaProperty* self);
 bool QMetaProperty_IsRequired(const QMetaProperty* self);
-bool QMetaProperty_IsBindable(const QMetaProperty* self);
 bool QMetaProperty_IsFlagType(const QMetaProperty* self);
 bool QMetaProperty_IsEnumType(const QMetaProperty* self);
 QMetaEnum* QMetaProperty_Enumerator(const QMetaProperty* self);
@@ -193,14 +185,17 @@ int QMetaProperty_Revision(const QMetaProperty* self);
 QVariant* QMetaProperty_Read(const QMetaProperty* self, QObject* obj);
 bool QMetaProperty_Write(const QMetaProperty* self, QObject* obj, QVariant* value);
 bool QMetaProperty_Reset(const QMetaProperty* self, QObject* obj);
-QUntypedBindable* QMetaProperty_Bindable(const QMetaProperty* self, QObject* object);
 QVariant* QMetaProperty_ReadOnGadget(const QMetaProperty* self, const void* gadget);
 bool QMetaProperty_WriteOnGadget(const QMetaProperty* self, void* gadget, QVariant* value);
 bool QMetaProperty_ResetOnGadget(const QMetaProperty* self, void* gadget);
 bool QMetaProperty_HasStdCppSet(const QMetaProperty* self);
-bool QMetaProperty_IsAlias(const QMetaProperty* self);
 bool QMetaProperty_IsValid(const QMetaProperty* self);
 QMetaObject* QMetaProperty_EnclosingMetaObject(const QMetaProperty* self);
+bool QMetaProperty_IsDesignable1(const QMetaProperty* self, QObject* obj);
+bool QMetaProperty_IsScriptable1(const QMetaProperty* self, QObject* obj);
+bool QMetaProperty_IsStored1(const QMetaProperty* self, QObject* obj);
+bool QMetaProperty_IsEditable1(const QMetaProperty* self, QObject* obj);
+bool QMetaProperty_IsUser1(const QMetaProperty* self, QObject* obj);
 void QMetaProperty_Delete(QMetaProperty* self);
 
 QMetaClassInfo* QMetaClassInfo_new(QMetaClassInfo* other);

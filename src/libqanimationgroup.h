@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,14 +23,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -42,6 +43,7 @@ int QAnimationGroup_Metacall(QAnimationGroup* self, int param1, int param2, void
 void QAnimationGroup_OnMetacall(QAnimationGroup* self, intptr_t slot);
 int QAnimationGroup_QBaseMetacall(QAnimationGroup* self, int param1, int param2, void** param3);
 libqt_string QAnimationGroup_Tr(const char* s);
+libqt_string QAnimationGroup_TrUtf8(const char* s);
 QAbstractAnimation* QAnimationGroup_AnimationAt(const QAnimationGroup* self, int index);
 int QAnimationGroup_AnimationCount(const QAnimationGroup* self);
 int QAnimationGroup_IndexOfAnimation(const QAnimationGroup* self, QAbstractAnimation* animation);
@@ -55,6 +57,8 @@ void QAnimationGroup_OnEvent(QAnimationGroup* self, intptr_t slot);
 bool QAnimationGroup_QBaseEvent(QAnimationGroup* self, QEvent* event);
 libqt_string QAnimationGroup_Tr2(const char* s, const char* c);
 libqt_string QAnimationGroup_Tr3(const char* s, const char* c, int n);
+libqt_string QAnimationGroup_TrUtf82(const char* s, const char* c);
+libqt_string QAnimationGroup_TrUtf83(const char* s, const char* c, int n);
 int QAnimationGroup_Duration(const QAnimationGroup* self);
 void QAnimationGroup_OnDuration(const QAnimationGroup* self, intptr_t slot);
 int QAnimationGroup_QBaseDuration(const QAnimationGroup* self);

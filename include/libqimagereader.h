@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -36,6 +38,7 @@ QImageReader* QImageReader_new3(libqt_string fileName);
 QImageReader* QImageReader_new4(QIODevice* device, libqt_string format);
 QImageReader* QImageReader_new5(libqt_string fileName, libqt_string format);
 libqt_string QImageReader_Tr(const char* sourceText);
+libqt_string QImageReader_TrUtf8(const char* sourceText);
 void QImageReader_SetFormat(QImageReader* self, libqt_string format);
 libqt_string QImageReader_Format(const QImageReader* self);
 void QImageReader_SetAutoDetectImageFormat(QImageReader* self, bool enabled);
@@ -64,6 +67,8 @@ bool QImageReader_SupportsAnimation(const QImageReader* self);
 int QImageReader_Transformation(const QImageReader* self);
 void QImageReader_SetAutoTransform(QImageReader* self, bool enabled);
 bool QImageReader_AutoTransform(const QImageReader* self);
+void QImageReader_SetGamma(QImageReader* self, float gamma);
+float QImageReader_Gamma(const QImageReader* self);
 libqt_string QImageReader_SubType(const QImageReader* self);
 libqt_list /* of libqt_string */ QImageReader_SupportedSubTypes(const QImageReader* self);
 bool QImageReader_CanRead(const QImageReader* self);
@@ -84,10 +89,10 @@ libqt_string QImageReader_ImageFormatWithDevice(QIODevice* device);
 libqt_list /* of libqt_string */ QImageReader_SupportedImageFormats();
 libqt_list /* of libqt_string */ QImageReader_SupportedMimeTypes();
 libqt_list /* of libqt_string */ QImageReader_ImageFormatsForMimeType(libqt_string mimeType);
-int QImageReader_AllocationLimit();
-void QImageReader_SetAllocationLimit(int mbLimit);
 libqt_string QImageReader_Tr2(const char* sourceText, const char* disambiguation);
 libqt_string QImageReader_Tr3(const char* sourceText, const char* disambiguation, int n);
+libqt_string QImageReader_TrUtf82(const char* sourceText, const char* disambiguation);
+libqt_string QImageReader_TrUtf83(const char* sourceText, const char* disambiguation, int n);
 void QImageReader_Delete(QImageReader* self);
 
 #ifdef __cplusplus

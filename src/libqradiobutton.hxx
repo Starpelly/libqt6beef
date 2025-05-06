@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,7 +24,6 @@ class VirtualQRadioButton : public QRadioButton {
     using QRadioButton_HitButton_Callback = bool (*)(const QRadioButton*, const QPoint&);
     using QRadioButton_PaintEvent_Callback = void (*)(QRadioButton*, QPaintEvent*);
     using QRadioButton_MouseMoveEvent_Callback = void (*)(QRadioButton*, QMouseEvent*);
-    using QRadioButton_InitStyleOption_Callback = void (*)(const QRadioButton*, QStyleOptionButton*);
     using QRadioButton_CheckStateSet_Callback = void (*)();
     using QRadioButton_NextCheckState_Callback = void (*)();
     using QRadioButton_KeyPressEvent_Callback = void (*)(QRadioButton*, QKeyEvent*);
@@ -40,7 +41,7 @@ class VirtualQRadioButton : public QRadioButton {
     using QRadioButton_PaintEngine_Callback = QPaintEngine* (*)();
     using QRadioButton_MouseDoubleClickEvent_Callback = void (*)(QRadioButton*, QMouseEvent*);
     using QRadioButton_WheelEvent_Callback = void (*)(QRadioButton*, QWheelEvent*);
-    using QRadioButton_EnterEvent_Callback = void (*)(QRadioButton*, QEnterEvent*);
+    using QRadioButton_EnterEvent_Callback = void (*)(QRadioButton*, QEvent*);
     using QRadioButton_LeaveEvent_Callback = void (*)(QRadioButton*, QEvent*);
     using QRadioButton_MoveEvent_Callback = void (*)(QRadioButton*, QMoveEvent*);
     using QRadioButton_ResizeEvent_Callback = void (*)(QRadioButton*, QResizeEvent*);
@@ -54,7 +55,7 @@ class VirtualQRadioButton : public QRadioButton {
     using QRadioButton_DropEvent_Callback = void (*)(QRadioButton*, QDropEvent*);
     using QRadioButton_ShowEvent_Callback = void (*)(QRadioButton*, QShowEvent*);
     using QRadioButton_HideEvent_Callback = void (*)(QRadioButton*, QHideEvent*);
-    using QRadioButton_NativeEvent_Callback = bool (*)(QRadioButton*, const QByteArray&, void*, qintptr*);
+    using QRadioButton_NativeEvent_Callback = bool (*)(QRadioButton*, const QByteArray&, void*, long*);
     using QRadioButton_Metric_Callback = int (*)(const QRadioButton*, QPaintDevice::PaintDeviceMetric);
     using QRadioButton_InitPainter_Callback = void (*)(const QRadioButton*, QPainter*);
     using QRadioButton_Redirected_Callback = QPaintDevice* (*)(const QRadioButton*, QPoint*);
@@ -67,6 +68,7 @@ class VirtualQRadioButton : public QRadioButton {
     using QRadioButton_CustomEvent_Callback = void (*)(QRadioButton*, QEvent*);
     using QRadioButton_ConnectNotify_Callback = void (*)(QRadioButton*, const QMetaMethod&);
     using QRadioButton_DisconnectNotify_Callback = void (*)(QRadioButton*, const QMetaMethod&);
+    using QRadioButton_InitStyleOption_Callback = void (*)(const QRadioButton*, QStyleOptionButton*);
     using QRadioButton_UpdateMicroFocus_Callback = void (*)();
     using QRadioButton_Create_Callback = void (*)();
     using QRadioButton_Destroy_Callback = void (*)();
@@ -86,7 +88,6 @@ class VirtualQRadioButton : public QRadioButton {
     QRadioButton_HitButton_Callback qradiobutton_hitbutton_callback = nullptr;
     QRadioButton_PaintEvent_Callback qradiobutton_paintevent_callback = nullptr;
     QRadioButton_MouseMoveEvent_Callback qradiobutton_mousemoveevent_callback = nullptr;
-    QRadioButton_InitStyleOption_Callback qradiobutton_initstyleoption_callback = nullptr;
     QRadioButton_CheckStateSet_Callback qradiobutton_checkstateset_callback = nullptr;
     QRadioButton_NextCheckState_Callback qradiobutton_nextcheckstate_callback = nullptr;
     QRadioButton_KeyPressEvent_Callback qradiobutton_keypressevent_callback = nullptr;
@@ -131,6 +132,7 @@ class VirtualQRadioButton : public QRadioButton {
     QRadioButton_CustomEvent_Callback qradiobutton_customevent_callback = nullptr;
     QRadioButton_ConnectNotify_Callback qradiobutton_connectnotify_callback = nullptr;
     QRadioButton_DisconnectNotify_Callback qradiobutton_disconnectnotify_callback = nullptr;
+    QRadioButton_InitStyleOption_Callback qradiobutton_initstyleoption_callback = nullptr;
     QRadioButton_UpdateMicroFocus_Callback qradiobutton_updatemicrofocus_callback = nullptr;
     QRadioButton_Create_Callback qradiobutton_create_callback = nullptr;
     QRadioButton_Destroy_Callback qradiobutton_destroy_callback = nullptr;
@@ -149,7 +151,6 @@ class VirtualQRadioButton : public QRadioButton {
     mutable bool qradiobutton_hitbutton_isbase = false;
     mutable bool qradiobutton_paintevent_isbase = false;
     mutable bool qradiobutton_mousemoveevent_isbase = false;
-    mutable bool qradiobutton_initstyleoption_isbase = false;
     mutable bool qradiobutton_checkstateset_isbase = false;
     mutable bool qradiobutton_nextcheckstate_isbase = false;
     mutable bool qradiobutton_keypressevent_isbase = false;
@@ -194,6 +195,7 @@ class VirtualQRadioButton : public QRadioButton {
     mutable bool qradiobutton_customevent_isbase = false;
     mutable bool qradiobutton_connectnotify_isbase = false;
     mutable bool qradiobutton_disconnectnotify_isbase = false;
+    mutable bool qradiobutton_initstyleoption_isbase = false;
     mutable bool qradiobutton_updatemicrofocus_isbase = false;
     mutable bool qradiobutton_create_isbase = false;
     mutable bool qradiobutton_destroy_isbase = false;
@@ -218,7 +220,6 @@ class VirtualQRadioButton : public QRadioButton {
         qradiobutton_hitbutton_callback = nullptr;
         qradiobutton_paintevent_callback = nullptr;
         qradiobutton_mousemoveevent_callback = nullptr;
-        qradiobutton_initstyleoption_callback = nullptr;
         qradiobutton_checkstateset_callback = nullptr;
         qradiobutton_nextcheckstate_callback = nullptr;
         qradiobutton_keypressevent_callback = nullptr;
@@ -263,6 +264,7 @@ class VirtualQRadioButton : public QRadioButton {
         qradiobutton_customevent_callback = nullptr;
         qradiobutton_connectnotify_callback = nullptr;
         qradiobutton_disconnectnotify_callback = nullptr;
+        qradiobutton_initstyleoption_callback = nullptr;
         qradiobutton_updatemicrofocus_callback = nullptr;
         qradiobutton_create_callback = nullptr;
         qradiobutton_destroy_callback = nullptr;
@@ -282,7 +284,6 @@ class VirtualQRadioButton : public QRadioButton {
     void setQRadioButton_HitButton_Callback(QRadioButton_HitButton_Callback cb) { qradiobutton_hitbutton_callback = cb; }
     void setQRadioButton_PaintEvent_Callback(QRadioButton_PaintEvent_Callback cb) { qradiobutton_paintevent_callback = cb; }
     void setQRadioButton_MouseMoveEvent_Callback(QRadioButton_MouseMoveEvent_Callback cb) { qradiobutton_mousemoveevent_callback = cb; }
-    void setQRadioButton_InitStyleOption_Callback(QRadioButton_InitStyleOption_Callback cb) { qradiobutton_initstyleoption_callback = cb; }
     void setQRadioButton_CheckStateSet_Callback(QRadioButton_CheckStateSet_Callback cb) { qradiobutton_checkstateset_callback = cb; }
     void setQRadioButton_NextCheckState_Callback(QRadioButton_NextCheckState_Callback cb) { qradiobutton_nextcheckstate_callback = cb; }
     void setQRadioButton_KeyPressEvent_Callback(QRadioButton_KeyPressEvent_Callback cb) { qradiobutton_keypressevent_callback = cb; }
@@ -327,6 +328,7 @@ class VirtualQRadioButton : public QRadioButton {
     void setQRadioButton_CustomEvent_Callback(QRadioButton_CustomEvent_Callback cb) { qradiobutton_customevent_callback = cb; }
     void setQRadioButton_ConnectNotify_Callback(QRadioButton_ConnectNotify_Callback cb) { qradiobutton_connectnotify_callback = cb; }
     void setQRadioButton_DisconnectNotify_Callback(QRadioButton_DisconnectNotify_Callback cb) { qradiobutton_disconnectnotify_callback = cb; }
+    void setQRadioButton_InitStyleOption_Callback(QRadioButton_InitStyleOption_Callback cb) { qradiobutton_initstyleoption_callback = cb; }
     void setQRadioButton_UpdateMicroFocus_Callback(QRadioButton_UpdateMicroFocus_Callback cb) { qradiobutton_updatemicrofocus_callback = cb; }
     void setQRadioButton_Create_Callback(QRadioButton_Create_Callback cb) { qradiobutton_create_callback = cb; }
     void setQRadioButton_Destroy_Callback(QRadioButton_Destroy_Callback cb) { qradiobutton_destroy_callback = cb; }
@@ -345,7 +347,6 @@ class VirtualQRadioButton : public QRadioButton {
     void setQRadioButton_HitButton_IsBase(bool value) const { qradiobutton_hitbutton_isbase = value; }
     void setQRadioButton_PaintEvent_IsBase(bool value) const { qradiobutton_paintevent_isbase = value; }
     void setQRadioButton_MouseMoveEvent_IsBase(bool value) const { qradiobutton_mousemoveevent_isbase = value; }
-    void setQRadioButton_InitStyleOption_IsBase(bool value) const { qradiobutton_initstyleoption_isbase = value; }
     void setQRadioButton_CheckStateSet_IsBase(bool value) const { qradiobutton_checkstateset_isbase = value; }
     void setQRadioButton_NextCheckState_IsBase(bool value) const { qradiobutton_nextcheckstate_isbase = value; }
     void setQRadioButton_KeyPressEvent_IsBase(bool value) const { qradiobutton_keypressevent_isbase = value; }
@@ -390,6 +391,7 @@ class VirtualQRadioButton : public QRadioButton {
     void setQRadioButton_CustomEvent_IsBase(bool value) const { qradiobutton_customevent_isbase = value; }
     void setQRadioButton_ConnectNotify_IsBase(bool value) const { qradiobutton_connectnotify_isbase = value; }
     void setQRadioButton_DisconnectNotify_IsBase(bool value) const { qradiobutton_disconnectnotify_isbase = value; }
+    void setQRadioButton_InitStyleOption_IsBase(bool value) const { qradiobutton_initstyleoption_isbase = value; }
     void setQRadioButton_UpdateMicroFocus_IsBase(bool value) const { qradiobutton_updatemicrofocus_isbase = value; }
     void setQRadioButton_Create_IsBase(bool value) const { qradiobutton_create_isbase = value; }
     void setQRadioButton_Destroy_IsBase(bool value) const { qradiobutton_destroy_isbase = value; }
@@ -481,18 +483,6 @@ class VirtualQRadioButton : public QRadioButton {
             qradiobutton_mousemoveevent_callback(this, param1);
         } else {
             QRadioButton::mouseMoveEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionButton* button) const override {
-        if (qradiobutton_initstyleoption_isbase) {
-            qradiobutton_initstyleoption_isbase = false;
-            QRadioButton::initStyleOption(button);
-        } else if (qradiobutton_initstyleoption_callback != nullptr) {
-            qradiobutton_initstyleoption_callback(this, button);
-        } else {
-            QRadioButton::initStyleOption(button);
         }
     }
 
@@ -701,7 +691,7 @@ class VirtualQRadioButton : public QRadioButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qradiobutton_enterevent_isbase) {
             qradiobutton_enterevent_isbase = false;
             QRadioButton::enterEvent(event);
@@ -869,7 +859,7 @@ class VirtualQRadioButton : public QRadioButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qradiobutton_nativeevent_isbase) {
             qradiobutton_nativeevent_isbase = false;
             return QRadioButton::nativeEvent(eventType, message, result);
@@ -1021,6 +1011,18 @@ class VirtualQRadioButton : public QRadioButton {
             qradiobutton_disconnectnotify_callback(this, signal);
         } else {
             QRadioButton::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionButton* button) const {
+        if (qradiobutton_initstyleoption_isbase) {
+            qradiobutton_initstyleoption_isbase = false;
+            QRadioButton::initStyleOption(button);
+        } else if (qradiobutton_initstyleoption_callback != nullptr) {
+            qradiobutton_initstyleoption_callback(this, button);
+        } else {
+            QRadioButton::initStyleOption(button);
         }
     }
 

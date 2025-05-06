@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,14 +22,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAction QAction;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUndoGroup QUndoGroup;
@@ -43,6 +44,7 @@ int QUndoGroup_Metacall(QUndoGroup* self, int param1, int param2, void** param3)
 void QUndoGroup_OnMetacall(QUndoGroup* self, intptr_t slot);
 int QUndoGroup_QBaseMetacall(QUndoGroup* self, int param1, int param2, void** param3);
 libqt_string QUndoGroup_Tr(const char* s);
+libqt_string QUndoGroup_TrUtf8(const char* s);
 void QUndoGroup_AddStack(QUndoGroup* self, QUndoStack* stack);
 void QUndoGroup_RemoveStack(QUndoGroup* self, QUndoStack* stack);
 libqt_list /* of QUndoStack* */ QUndoGroup_Stacks(const QUndoGroup* self);
@@ -73,6 +75,8 @@ void QUndoGroup_RedoTextChanged(QUndoGroup* self, libqt_string redoText);
 void QUndoGroup_Connect_RedoTextChanged(QUndoGroup* self, intptr_t slot);
 libqt_string QUndoGroup_Tr2(const char* s, const char* c);
 libqt_string QUndoGroup_Tr3(const char* s, const char* c, int n);
+libqt_string QUndoGroup_TrUtf82(const char* s, const char* c);
+libqt_string QUndoGroup_TrUtf83(const char* s, const char* c, int n);
 QAction* QUndoGroup_CreateUndoAction2(const QUndoGroup* self, QObject* parent, libqt_string prefix);
 QAction* QUndoGroup_CreateRedoAction2(const QUndoGroup* self, QObject* parent, libqt_string prefix);
 bool QUndoGroup_Event(QUndoGroup* self, QEvent* event);

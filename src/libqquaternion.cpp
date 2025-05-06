@@ -126,6 +126,10 @@ QQuaternion* QQuaternion_Conjugated(const QQuaternion* self) {
     return new QQuaternion(self->conjugated());
 }
 
+QQuaternion* QQuaternion_Conjugate(const QQuaternion* self) {
+    return new QQuaternion(self->conjugate());
+}
+
 QVector3D* QQuaternion_RotatedVector(const QQuaternion* self, QVector3D* vector) {
     return new QVector3D(self->rotatedVector(*vector));
 }

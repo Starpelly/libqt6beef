@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -21,10 +23,14 @@ extern "C" {
 
 #ifdef __cplusplus
 typedef QAudio::Error Error;             // C++ enum
+typedef QAudio::Mode Mode;               // C++ enum
+typedef QAudio::Role Role;               // C++ enum
 typedef QAudio::State State;             // C++ enum
 typedef QAudio::VolumeScale VolumeScale; // C++ enum
 #else
 typedef int Error;       // C ABI enum
+typedef int Mode;        // C ABI enum
+typedef int Role;        // C ABI enum
 typedef int State;       // C ABI enum
 typedef int VolumeScale; // C ABI enum
 #endif

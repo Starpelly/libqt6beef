@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -12,6 +10,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -76,6 +75,18 @@ libqt_string QGraphicsTransform_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGraphicsTransform_TrUtf8(const char* s) {
+    QString _ret = QGraphicsTransform::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QGraphicsTransform_Tr2(const char* s, const char* c) {
     QString _ret = QGraphicsTransform::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -90,6 +101,30 @@ libqt_string QGraphicsTransform_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsTransform_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsTransform::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsTransform_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsTransform::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsTransform_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsTransform::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -495,6 +530,18 @@ libqt_string QGraphicsScale_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGraphicsScale_TrUtf8(const char* s) {
+    QString _ret = QGraphicsScale::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QVector3D* QGraphicsScale_Origin(const QGraphicsScale* self) {
     return new QVector3D(self->origin());
 }
@@ -596,6 +643,30 @@ libqt_string QGraphicsScale_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsScale_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsScale::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsScale_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsScale::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsScale_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsScale::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1001,6 +1072,18 @@ libqt_string QGraphicsRotation_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGraphicsRotation_TrUtf8(const char* s) {
+    QString _ret = QGraphicsRotation::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QVector3D* QGraphicsRotation_Origin(const QGraphicsRotation* self) {
     return new QVector3D(self->origin());
 }
@@ -1076,6 +1159,30 @@ libqt_string QGraphicsRotation_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsRotation_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsRotation::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsRotation_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsRotation::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsRotation_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsRotation::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -1,9 +1,7 @@
 #include <QAbstractSlider>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -130,6 +127,18 @@ libqt_string QSlider_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSlider_TrUtf8(const char* s) {
+    QString _ret = QSlider::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QSlider_SetTickPosition(QSlider* self, int position) {
     self->setTickPosition(static_cast<QSlider::TickPosition>(position));
 }
@@ -160,6 +169,30 @@ libqt_string QSlider_Tr2(const char* s, const char* c) {
 
 libqt_string QSlider_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSlider::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSlider_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSlider::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSlider_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSlider::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -349,32 +382,6 @@ void QSlider_QBaseMouseMoveEvent(QSlider* self, QMouseEvent* ev) {
 void QSlider_OnMouseMoveEvent(QSlider* self, intptr_t slot) {
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
         vqslider->setQSlider_MouseMoveEvent_Callback(reinterpret_cast<VirtualQSlider::QSlider_MouseMoveEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QSlider_InitStyleOption(const QSlider* self, QStyleOptionSlider* option) {
-    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
-        vqslider->initStyleOption(option);
-    } else {
-        vqslider->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QSlider_QBaseInitStyleOption(const QSlider* self, QStyleOptionSlider* option) {
-    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
-        vqslider->setQSlider_InitStyleOption_IsBase(true);
-        vqslider->initStyleOption(option);
-    } else {
-        vqslider->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSlider_OnInitStyleOption(const QSlider* self, intptr_t slot) {
-    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
-        vqslider->setQSlider_InitStyleOption_Callback(reinterpret_cast<VirtualQSlider::QSlider_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -743,7 +750,7 @@ void QSlider_OnFocusOutEvent(QSlider* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSlider_EnterEvent(QSlider* self, QEnterEvent* event) {
+void QSlider_EnterEvent(QSlider* self, QEvent* event) {
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
         vqslider->enterEvent(event);
     } else {
@@ -752,7 +759,7 @@ void QSlider_EnterEvent(QSlider* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QSlider_QBaseEnterEvent(QSlider* self, QEnterEvent* event) {
+void QSlider_QBaseEnterEvent(QSlider* self, QEvent* event) {
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
         vqslider->setQSlider_EnterEvent_IsBase(true);
         vqslider->enterEvent(event);
@@ -1107,23 +1114,23 @@ void QSlider_OnHideEvent(QSlider* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QSlider_NativeEvent(QSlider* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSlider_NativeEvent(QSlider* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
-        return vqslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QSlider_QBaseNativeEvent(QSlider* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSlider_QBaseNativeEvent(QSlider* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
         vqslider->setQSlider_NativeEvent_IsBase(true);
-        return vqslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqslider->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqslider->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1443,6 +1450,32 @@ void QSlider_QBaseDisconnectNotify(QSlider* self, QMetaMethod* signal) {
 void QSlider_OnDisconnectNotify(QSlider* self, intptr_t slot) {
     if (auto* vqslider = dynamic_cast<VirtualQSlider*>(self)) {
         vqslider->setQSlider_DisconnectNotify_Callback(reinterpret_cast<VirtualQSlider::QSlider_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QSlider_InitStyleOption(const QSlider* self, QStyleOptionSlider* option) {
+    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
+        vqslider->initStyleOption(option);
+    } else {
+        vqslider->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QSlider_QBaseInitStyleOption(const QSlider* self, QStyleOptionSlider* option) {
+    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
+        vqslider->setQSlider_InitStyleOption_IsBase(true);
+        vqslider->initStyleOption(option);
+    } else {
+        vqslider->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QSlider_OnInitStyleOption(const QSlider* self, intptr_t slot) {
+    if (auto* vqslider = const_cast<VirtualQSlider*>(dynamic_cast<const VirtualQSlider*>(self))) {
+        vqslider->setQSlider_InitStyleOption_Callback(reinterpret_cast<VirtualQSlider::QSlider_InitStyleOption_Callback>(slot));
     }
 }
 

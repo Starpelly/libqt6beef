@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -42,7 +44,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     using QTransposeProxyModel_Data_Callback = QVariant (*)(const QTransposeProxyModel*, const QModelIndex&, int);
     using QTransposeProxyModel_Flags_Callback = Qt::ItemFlags (*)(const QTransposeProxyModel*, const QModelIndex&);
     using QTransposeProxyModel_SetData_Callback = bool (*)(QTransposeProxyModel*, const QModelIndex&, const QVariant&, int);
-    using QTransposeProxyModel_ClearItemData_Callback = bool (*)(QTransposeProxyModel*, const QModelIndex&);
     using QTransposeProxyModel_Buddy_Callback = QModelIndex (*)(const QTransposeProxyModel*, const QModelIndex&);
     using QTransposeProxyModel_CanFetchMore_Callback = bool (*)(const QTransposeProxyModel*, const QModelIndex&);
     using QTransposeProxyModel_FetchMore_Callback = void (*)(QTransposeProxyModel*, const QModelIndex&);
@@ -54,10 +55,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     using QTransposeProxyModel_MimeTypes_Callback = QStringList (*)();
     using QTransposeProxyModel_SupportedDragActions_Callback = Qt::DropActions (*)();
     using QTransposeProxyModel_SupportedDropActions_Callback = Qt::DropActions (*)();
-    using QTransposeProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QTransposeProxyModel_Match_Callback = QModelIndexList (*)(const QTransposeProxyModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
-    using QTransposeProxyModel_MultiData_Callback = void (*)(const QTransposeProxyModel*, const QModelIndex&, QModelRoleDataSpan);
-    using QTransposeProxyModel_ResetInternalData_Callback = void (*)();
+    using QTransposeProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QTransposeProxyModel_Event_Callback = bool (*)(QTransposeProxyModel*, QEvent*);
     using QTransposeProxyModel_EventFilter_Callback = bool (*)(QTransposeProxyModel*, QObject*, QEvent*);
     using QTransposeProxyModel_TimerEvent_Callback = void (*)(QTransposeProxyModel*, QTimerEvent*);
@@ -65,7 +64,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     using QTransposeProxyModel_CustomEvent_Callback = void (*)(QTransposeProxyModel*, QEvent*);
     using QTransposeProxyModel_ConnectNotify_Callback = void (*)(QTransposeProxyModel*, const QMetaMethod&);
     using QTransposeProxyModel_DisconnectNotify_Callback = void (*)(QTransposeProxyModel*, const QMetaMethod&);
-    using QTransposeProxyModel_CreateSourceIndex_Callback = QModelIndex (*)(const QTransposeProxyModel*, int, int, void*);
+    using QTransposeProxyModel_ResetInternalData_Callback = void (*)();
     using QTransposeProxyModel_CreateIndex_Callback = QModelIndex (*)(const QTransposeProxyModel*, int, int);
     using QTransposeProxyModel_EncodeData_Callback = void (*)(const QTransposeProxyModel*, const QModelIndexList&, QDataStream&);
     using QTransposeProxyModel_DecodeData_Callback = bool (*)(QTransposeProxyModel*, int, int, const QModelIndex&, QDataStream&);
@@ -120,7 +119,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     QTransposeProxyModel_Data_Callback qtransposeproxymodel_data_callback = nullptr;
     QTransposeProxyModel_Flags_Callback qtransposeproxymodel_flags_callback = nullptr;
     QTransposeProxyModel_SetData_Callback qtransposeproxymodel_setdata_callback = nullptr;
-    QTransposeProxyModel_ClearItemData_Callback qtransposeproxymodel_clearitemdata_callback = nullptr;
     QTransposeProxyModel_Buddy_Callback qtransposeproxymodel_buddy_callback = nullptr;
     QTransposeProxyModel_CanFetchMore_Callback qtransposeproxymodel_canfetchmore_callback = nullptr;
     QTransposeProxyModel_FetchMore_Callback qtransposeproxymodel_fetchmore_callback = nullptr;
@@ -132,10 +130,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     QTransposeProxyModel_MimeTypes_Callback qtransposeproxymodel_mimetypes_callback = nullptr;
     QTransposeProxyModel_SupportedDragActions_Callback qtransposeproxymodel_supporteddragactions_callback = nullptr;
     QTransposeProxyModel_SupportedDropActions_Callback qtransposeproxymodel_supporteddropactions_callback = nullptr;
-    QTransposeProxyModel_RoleNames_Callback qtransposeproxymodel_rolenames_callback = nullptr;
     QTransposeProxyModel_Match_Callback qtransposeproxymodel_match_callback = nullptr;
-    QTransposeProxyModel_MultiData_Callback qtransposeproxymodel_multidata_callback = nullptr;
-    QTransposeProxyModel_ResetInternalData_Callback qtransposeproxymodel_resetinternaldata_callback = nullptr;
+    QTransposeProxyModel_RoleNames_Callback qtransposeproxymodel_rolenames_callback = nullptr;
     QTransposeProxyModel_Event_Callback qtransposeproxymodel_event_callback = nullptr;
     QTransposeProxyModel_EventFilter_Callback qtransposeproxymodel_eventfilter_callback = nullptr;
     QTransposeProxyModel_TimerEvent_Callback qtransposeproxymodel_timerevent_callback = nullptr;
@@ -143,7 +139,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     QTransposeProxyModel_CustomEvent_Callback qtransposeproxymodel_customevent_callback = nullptr;
     QTransposeProxyModel_ConnectNotify_Callback qtransposeproxymodel_connectnotify_callback = nullptr;
     QTransposeProxyModel_DisconnectNotify_Callback qtransposeproxymodel_disconnectnotify_callback = nullptr;
-    QTransposeProxyModel_CreateSourceIndex_Callback qtransposeproxymodel_createsourceindex_callback = nullptr;
+    QTransposeProxyModel_ResetInternalData_Callback qtransposeproxymodel_resetinternaldata_callback = nullptr;
     QTransposeProxyModel_CreateIndex_Callback qtransposeproxymodel_createindex_callback = nullptr;
     QTransposeProxyModel_EncodeData_Callback qtransposeproxymodel_encodedata_callback = nullptr;
     QTransposeProxyModel_DecodeData_Callback qtransposeproxymodel_decodedata_callback = nullptr;
@@ -197,7 +193,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     mutable bool qtransposeproxymodel_data_isbase = false;
     mutable bool qtransposeproxymodel_flags_isbase = false;
     mutable bool qtransposeproxymodel_setdata_isbase = false;
-    mutable bool qtransposeproxymodel_clearitemdata_isbase = false;
     mutable bool qtransposeproxymodel_buddy_isbase = false;
     mutable bool qtransposeproxymodel_canfetchmore_isbase = false;
     mutable bool qtransposeproxymodel_fetchmore_isbase = false;
@@ -209,10 +204,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     mutable bool qtransposeproxymodel_mimetypes_isbase = false;
     mutable bool qtransposeproxymodel_supporteddragactions_isbase = false;
     mutable bool qtransposeproxymodel_supporteddropactions_isbase = false;
-    mutable bool qtransposeproxymodel_rolenames_isbase = false;
     mutable bool qtransposeproxymodel_match_isbase = false;
-    mutable bool qtransposeproxymodel_multidata_isbase = false;
-    mutable bool qtransposeproxymodel_resetinternaldata_isbase = false;
+    mutable bool qtransposeproxymodel_rolenames_isbase = false;
     mutable bool qtransposeproxymodel_event_isbase = false;
     mutable bool qtransposeproxymodel_eventfilter_isbase = false;
     mutable bool qtransposeproxymodel_timerevent_isbase = false;
@@ -220,7 +213,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     mutable bool qtransposeproxymodel_customevent_isbase = false;
     mutable bool qtransposeproxymodel_connectnotify_isbase = false;
     mutable bool qtransposeproxymodel_disconnectnotify_isbase = false;
-    mutable bool qtransposeproxymodel_createsourceindex_isbase = false;
+    mutable bool qtransposeproxymodel_resetinternaldata_isbase = false;
     mutable bool qtransposeproxymodel_createindex_isbase = false;
     mutable bool qtransposeproxymodel_encodedata_isbase = false;
     mutable bool qtransposeproxymodel_decodedata_isbase = false;
@@ -278,7 +271,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
         qtransposeproxymodel_data_callback = nullptr;
         qtransposeproxymodel_flags_callback = nullptr;
         qtransposeproxymodel_setdata_callback = nullptr;
-        qtransposeproxymodel_clearitemdata_callback = nullptr;
         qtransposeproxymodel_buddy_callback = nullptr;
         qtransposeproxymodel_canfetchmore_callback = nullptr;
         qtransposeproxymodel_fetchmore_callback = nullptr;
@@ -290,10 +282,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
         qtransposeproxymodel_mimetypes_callback = nullptr;
         qtransposeproxymodel_supporteddragactions_callback = nullptr;
         qtransposeproxymodel_supporteddropactions_callback = nullptr;
-        qtransposeproxymodel_rolenames_callback = nullptr;
         qtransposeproxymodel_match_callback = nullptr;
-        qtransposeproxymodel_multidata_callback = nullptr;
-        qtransposeproxymodel_resetinternaldata_callback = nullptr;
+        qtransposeproxymodel_rolenames_callback = nullptr;
         qtransposeproxymodel_event_callback = nullptr;
         qtransposeproxymodel_eventfilter_callback = nullptr;
         qtransposeproxymodel_timerevent_callback = nullptr;
@@ -301,7 +291,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
         qtransposeproxymodel_customevent_callback = nullptr;
         qtransposeproxymodel_connectnotify_callback = nullptr;
         qtransposeproxymodel_disconnectnotify_callback = nullptr;
-        qtransposeproxymodel_createsourceindex_callback = nullptr;
+        qtransposeproxymodel_resetinternaldata_callback = nullptr;
         qtransposeproxymodel_createindex_callback = nullptr;
         qtransposeproxymodel_encodedata_callback = nullptr;
         qtransposeproxymodel_decodedata_callback = nullptr;
@@ -356,7 +346,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_Data_Callback(QTransposeProxyModel_Data_Callback cb) { qtransposeproxymodel_data_callback = cb; }
     void setQTransposeProxyModel_Flags_Callback(QTransposeProxyModel_Flags_Callback cb) { qtransposeproxymodel_flags_callback = cb; }
     void setQTransposeProxyModel_SetData_Callback(QTransposeProxyModel_SetData_Callback cb) { qtransposeproxymodel_setdata_callback = cb; }
-    void setQTransposeProxyModel_ClearItemData_Callback(QTransposeProxyModel_ClearItemData_Callback cb) { qtransposeproxymodel_clearitemdata_callback = cb; }
     void setQTransposeProxyModel_Buddy_Callback(QTransposeProxyModel_Buddy_Callback cb) { qtransposeproxymodel_buddy_callback = cb; }
     void setQTransposeProxyModel_CanFetchMore_Callback(QTransposeProxyModel_CanFetchMore_Callback cb) { qtransposeproxymodel_canfetchmore_callback = cb; }
     void setQTransposeProxyModel_FetchMore_Callback(QTransposeProxyModel_FetchMore_Callback cb) { qtransposeproxymodel_fetchmore_callback = cb; }
@@ -368,10 +357,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_MimeTypes_Callback(QTransposeProxyModel_MimeTypes_Callback cb) { qtransposeproxymodel_mimetypes_callback = cb; }
     void setQTransposeProxyModel_SupportedDragActions_Callback(QTransposeProxyModel_SupportedDragActions_Callback cb) { qtransposeproxymodel_supporteddragactions_callback = cb; }
     void setQTransposeProxyModel_SupportedDropActions_Callback(QTransposeProxyModel_SupportedDropActions_Callback cb) { qtransposeproxymodel_supporteddropactions_callback = cb; }
-    void setQTransposeProxyModel_RoleNames_Callback(QTransposeProxyModel_RoleNames_Callback cb) { qtransposeproxymodel_rolenames_callback = cb; }
     void setQTransposeProxyModel_Match_Callback(QTransposeProxyModel_Match_Callback cb) { qtransposeproxymodel_match_callback = cb; }
-    void setQTransposeProxyModel_MultiData_Callback(QTransposeProxyModel_MultiData_Callback cb) { qtransposeproxymodel_multidata_callback = cb; }
-    void setQTransposeProxyModel_ResetInternalData_Callback(QTransposeProxyModel_ResetInternalData_Callback cb) { qtransposeproxymodel_resetinternaldata_callback = cb; }
+    void setQTransposeProxyModel_RoleNames_Callback(QTransposeProxyModel_RoleNames_Callback cb) { qtransposeproxymodel_rolenames_callback = cb; }
     void setQTransposeProxyModel_Event_Callback(QTransposeProxyModel_Event_Callback cb) { qtransposeproxymodel_event_callback = cb; }
     void setQTransposeProxyModel_EventFilter_Callback(QTransposeProxyModel_EventFilter_Callback cb) { qtransposeproxymodel_eventfilter_callback = cb; }
     void setQTransposeProxyModel_TimerEvent_Callback(QTransposeProxyModel_TimerEvent_Callback cb) { qtransposeproxymodel_timerevent_callback = cb; }
@@ -379,7 +366,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_CustomEvent_Callback(QTransposeProxyModel_CustomEvent_Callback cb) { qtransposeproxymodel_customevent_callback = cb; }
     void setQTransposeProxyModel_ConnectNotify_Callback(QTransposeProxyModel_ConnectNotify_Callback cb) { qtransposeproxymodel_connectnotify_callback = cb; }
     void setQTransposeProxyModel_DisconnectNotify_Callback(QTransposeProxyModel_DisconnectNotify_Callback cb) { qtransposeproxymodel_disconnectnotify_callback = cb; }
-    void setQTransposeProxyModel_CreateSourceIndex_Callback(QTransposeProxyModel_CreateSourceIndex_Callback cb) { qtransposeproxymodel_createsourceindex_callback = cb; }
+    void setQTransposeProxyModel_ResetInternalData_Callback(QTransposeProxyModel_ResetInternalData_Callback cb) { qtransposeproxymodel_resetinternaldata_callback = cb; }
     void setQTransposeProxyModel_CreateIndex_Callback(QTransposeProxyModel_CreateIndex_Callback cb) { qtransposeproxymodel_createindex_callback = cb; }
     void setQTransposeProxyModel_EncodeData_Callback(QTransposeProxyModel_EncodeData_Callback cb) { qtransposeproxymodel_encodedata_callback = cb; }
     void setQTransposeProxyModel_DecodeData_Callback(QTransposeProxyModel_DecodeData_Callback cb) { qtransposeproxymodel_decodedata_callback = cb; }
@@ -433,7 +420,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_Data_IsBase(bool value) const { qtransposeproxymodel_data_isbase = value; }
     void setQTransposeProxyModel_Flags_IsBase(bool value) const { qtransposeproxymodel_flags_isbase = value; }
     void setQTransposeProxyModel_SetData_IsBase(bool value) const { qtransposeproxymodel_setdata_isbase = value; }
-    void setQTransposeProxyModel_ClearItemData_IsBase(bool value) const { qtransposeproxymodel_clearitemdata_isbase = value; }
     void setQTransposeProxyModel_Buddy_IsBase(bool value) const { qtransposeproxymodel_buddy_isbase = value; }
     void setQTransposeProxyModel_CanFetchMore_IsBase(bool value) const { qtransposeproxymodel_canfetchmore_isbase = value; }
     void setQTransposeProxyModel_FetchMore_IsBase(bool value) const { qtransposeproxymodel_fetchmore_isbase = value; }
@@ -445,10 +431,8 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_MimeTypes_IsBase(bool value) const { qtransposeproxymodel_mimetypes_isbase = value; }
     void setQTransposeProxyModel_SupportedDragActions_IsBase(bool value) const { qtransposeproxymodel_supporteddragactions_isbase = value; }
     void setQTransposeProxyModel_SupportedDropActions_IsBase(bool value) const { qtransposeproxymodel_supporteddropactions_isbase = value; }
-    void setQTransposeProxyModel_RoleNames_IsBase(bool value) const { qtransposeproxymodel_rolenames_isbase = value; }
     void setQTransposeProxyModel_Match_IsBase(bool value) const { qtransposeproxymodel_match_isbase = value; }
-    void setQTransposeProxyModel_MultiData_IsBase(bool value) const { qtransposeproxymodel_multidata_isbase = value; }
-    void setQTransposeProxyModel_ResetInternalData_IsBase(bool value) const { qtransposeproxymodel_resetinternaldata_isbase = value; }
+    void setQTransposeProxyModel_RoleNames_IsBase(bool value) const { qtransposeproxymodel_rolenames_isbase = value; }
     void setQTransposeProxyModel_Event_IsBase(bool value) const { qtransposeproxymodel_event_isbase = value; }
     void setQTransposeProxyModel_EventFilter_IsBase(bool value) const { qtransposeproxymodel_eventfilter_isbase = value; }
     void setQTransposeProxyModel_TimerEvent_IsBase(bool value) const { qtransposeproxymodel_timerevent_isbase = value; }
@@ -456,7 +440,7 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     void setQTransposeProxyModel_CustomEvent_IsBase(bool value) const { qtransposeproxymodel_customevent_isbase = value; }
     void setQTransposeProxyModel_ConnectNotify_IsBase(bool value) const { qtransposeproxymodel_connectnotify_isbase = value; }
     void setQTransposeProxyModel_DisconnectNotify_IsBase(bool value) const { qtransposeproxymodel_disconnectnotify_isbase = value; }
-    void setQTransposeProxyModel_CreateSourceIndex_IsBase(bool value) const { qtransposeproxymodel_createsourceindex_isbase = value; }
+    void setQTransposeProxyModel_ResetInternalData_IsBase(bool value) const { qtransposeproxymodel_resetinternaldata_isbase = value; }
     void setQTransposeProxyModel_CreateIndex_IsBase(bool value) const { qtransposeproxymodel_createindex_isbase = value; }
     void setQTransposeProxyModel_EncodeData_IsBase(bool value) const { qtransposeproxymodel_encodedata_isbase = value; }
     void setQTransposeProxyModel_DecodeData_IsBase(bool value) const { qtransposeproxymodel_decodedata_isbase = value; }
@@ -807,18 +791,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool clearItemData(const QModelIndex& index) override {
-        if (qtransposeproxymodel_clearitemdata_isbase) {
-            qtransposeproxymodel_clearitemdata_isbase = false;
-            return QTransposeProxyModel::clearItemData(index);
-        } else if (qtransposeproxymodel_clearitemdata_callback != nullptr) {
-            return qtransposeproxymodel_clearitemdata_callback(this, index);
-        } else {
-            return QTransposeProxyModel::clearItemData(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QModelIndex buddy(const QModelIndex& index) const override {
         if (qtransposeproxymodel_buddy_isbase) {
             qtransposeproxymodel_buddy_isbase = false;
@@ -951,18 +923,6 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QHash<int, QByteArray> roleNames() const override {
-        if (qtransposeproxymodel_rolenames_isbase) {
-            qtransposeproxymodel_rolenames_isbase = false;
-            return QTransposeProxyModel::roleNames();
-        } else if (qtransposeproxymodel_rolenames_callback != nullptr) {
-            return qtransposeproxymodel_rolenames_callback();
-        } else {
-            return QTransposeProxyModel::roleNames();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits, Qt::MatchFlags flags) const override {
         if (qtransposeproxymodel_match_isbase) {
             qtransposeproxymodel_match_isbase = false;
@@ -975,26 +935,14 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
-        if (qtransposeproxymodel_multidata_isbase) {
-            qtransposeproxymodel_multidata_isbase = false;
-            QTransposeProxyModel::multiData(index, roleDataSpan);
-        } else if (qtransposeproxymodel_multidata_callback != nullptr) {
-            qtransposeproxymodel_multidata_callback(this, index, roleDataSpan);
+    virtual QHash<int, QByteArray> roleNames() const override {
+        if (qtransposeproxymodel_rolenames_isbase) {
+            qtransposeproxymodel_rolenames_isbase = false;
+            return QTransposeProxyModel::roleNames();
+        } else if (qtransposeproxymodel_rolenames_callback != nullptr) {
+            return qtransposeproxymodel_rolenames_callback();
         } else {
-            QTransposeProxyModel::multiData(index, roleDataSpan);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void resetInternalData() override {
-        if (qtransposeproxymodel_resetinternaldata_isbase) {
-            qtransposeproxymodel_resetinternaldata_isbase = false;
-            QTransposeProxyModel::resetInternalData();
-        } else if (qtransposeproxymodel_resetinternaldata_callback != nullptr) {
-            qtransposeproxymodel_resetinternaldata_callback();
-        } else {
-            QTransposeProxyModel::resetInternalData();
+            return QTransposeProxyModel::roleNames();
         }
     }
 
@@ -1083,14 +1031,14 @@ class VirtualQTransposeProxyModel : public QTransposeProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    QModelIndex createSourceIndex(int row, int col, void* internalPtr) const {
-        if (qtransposeproxymodel_createsourceindex_isbase) {
-            qtransposeproxymodel_createsourceindex_isbase = false;
-            return QTransposeProxyModel::createSourceIndex(row, col, internalPtr);
-        } else if (qtransposeproxymodel_createsourceindex_callback != nullptr) {
-            return qtransposeproxymodel_createsourceindex_callback(this, row, col, internalPtr);
+    void resetInternalData() {
+        if (qtransposeproxymodel_resetinternaldata_isbase) {
+            qtransposeproxymodel_resetinternaldata_isbase = false;
+            QTransposeProxyModel::resetInternalData();
+        } else if (qtransposeproxymodel_resetinternaldata_callback != nullptr) {
+            qtransposeproxymodel_resetinternaldata_callback();
         } else {
-            return QTransposeProxyModel::createSourceIndex(row, col, internalPtr);
+            QTransposeProxyModel::resetInternalData();
         }
     }
 

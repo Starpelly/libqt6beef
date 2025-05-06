@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,7 +22,6 @@ class VirtualQStringListModel : public QStringListModel {
     using QStringListModel_Sibling_Callback = QModelIndex (*)(const QStringListModel*, int, int, const QModelIndex&);
     using QStringListModel_Data_Callback = QVariant (*)(const QStringListModel*, const QModelIndex&, int);
     using QStringListModel_SetData_Callback = bool (*)(QStringListModel*, const QModelIndex&, const QVariant&, int);
-    using QStringListModel_ClearItemData_Callback = bool (*)(QStringListModel*, const QModelIndex&);
     using QStringListModel_Flags_Callback = Qt::ItemFlags (*)(const QStringListModel*, const QModelIndex&);
     using QStringListModel_InsertRows_Callback = bool (*)(QStringListModel*, int, int, const QModelIndex&);
     using QStringListModel_RemoveRows_Callback = bool (*)(QStringListModel*, int, int, const QModelIndex&);
@@ -46,10 +47,8 @@ class VirtualQStringListModel : public QStringListModel {
     using QStringListModel_Match_Callback = QModelIndexList (*)(const QStringListModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
     using QStringListModel_Span_Callback = QSize (*)(const QStringListModel*, const QModelIndex&);
     using QStringListModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
-    using QStringListModel_MultiData_Callback = void (*)(const QStringListModel*, const QModelIndex&, QModelRoleDataSpan);
     using QStringListModel_Submit_Callback = bool (*)();
     using QStringListModel_Revert_Callback = void (*)();
-    using QStringListModel_ResetInternalData_Callback = void (*)();
     using QStringListModel_Event_Callback = bool (*)(QStringListModel*, QEvent*);
     using QStringListModel_EventFilter_Callback = bool (*)(QStringListModel*, QObject*, QEvent*);
     using QStringListModel_TimerEvent_Callback = void (*)(QStringListModel*, QTimerEvent*);
@@ -57,6 +56,7 @@ class VirtualQStringListModel : public QStringListModel {
     using QStringListModel_CustomEvent_Callback = void (*)(QStringListModel*, QEvent*);
     using QStringListModel_ConnectNotify_Callback = void (*)(QStringListModel*, const QMetaMethod&);
     using QStringListModel_DisconnectNotify_Callback = void (*)(QStringListModel*, const QMetaMethod&);
+    using QStringListModel_ResetInternalData_Callback = void (*)();
     using QStringListModel_CreateIndex_Callback = QModelIndex (*)(const QStringListModel*, int, int);
     using QStringListModel_EncodeData_Callback = void (*)(const QStringListModel*, const QModelIndexList&, QDataStream&);
     using QStringListModel_DecodeData_Callback = bool (*)(QStringListModel*, int, int, const QModelIndex&, QDataStream&);
@@ -89,7 +89,6 @@ class VirtualQStringListModel : public QStringListModel {
     QStringListModel_Sibling_Callback qstringlistmodel_sibling_callback = nullptr;
     QStringListModel_Data_Callback qstringlistmodel_data_callback = nullptr;
     QStringListModel_SetData_Callback qstringlistmodel_setdata_callback = nullptr;
-    QStringListModel_ClearItemData_Callback qstringlistmodel_clearitemdata_callback = nullptr;
     QStringListModel_Flags_Callback qstringlistmodel_flags_callback = nullptr;
     QStringListModel_InsertRows_Callback qstringlistmodel_insertrows_callback = nullptr;
     QStringListModel_RemoveRows_Callback qstringlistmodel_removerows_callback = nullptr;
@@ -115,10 +114,8 @@ class VirtualQStringListModel : public QStringListModel {
     QStringListModel_Match_Callback qstringlistmodel_match_callback = nullptr;
     QStringListModel_Span_Callback qstringlistmodel_span_callback = nullptr;
     QStringListModel_RoleNames_Callback qstringlistmodel_rolenames_callback = nullptr;
-    QStringListModel_MultiData_Callback qstringlistmodel_multidata_callback = nullptr;
     QStringListModel_Submit_Callback qstringlistmodel_submit_callback = nullptr;
     QStringListModel_Revert_Callback qstringlistmodel_revert_callback = nullptr;
-    QStringListModel_ResetInternalData_Callback qstringlistmodel_resetinternaldata_callback = nullptr;
     QStringListModel_Event_Callback qstringlistmodel_event_callback = nullptr;
     QStringListModel_EventFilter_Callback qstringlistmodel_eventfilter_callback = nullptr;
     QStringListModel_TimerEvent_Callback qstringlistmodel_timerevent_callback = nullptr;
@@ -126,6 +123,7 @@ class VirtualQStringListModel : public QStringListModel {
     QStringListModel_CustomEvent_Callback qstringlistmodel_customevent_callback = nullptr;
     QStringListModel_ConnectNotify_Callback qstringlistmodel_connectnotify_callback = nullptr;
     QStringListModel_DisconnectNotify_Callback qstringlistmodel_disconnectnotify_callback = nullptr;
+    QStringListModel_ResetInternalData_Callback qstringlistmodel_resetinternaldata_callback = nullptr;
     QStringListModel_CreateIndex_Callback qstringlistmodel_createindex_callback = nullptr;
     QStringListModel_EncodeData_Callback qstringlistmodel_encodedata_callback = nullptr;
     QStringListModel_DecodeData_Callback qstringlistmodel_decodedata_callback = nullptr;
@@ -157,7 +155,6 @@ class VirtualQStringListModel : public QStringListModel {
     mutable bool qstringlistmodel_sibling_isbase = false;
     mutable bool qstringlistmodel_data_isbase = false;
     mutable bool qstringlistmodel_setdata_isbase = false;
-    mutable bool qstringlistmodel_clearitemdata_isbase = false;
     mutable bool qstringlistmodel_flags_isbase = false;
     mutable bool qstringlistmodel_insertrows_isbase = false;
     mutable bool qstringlistmodel_removerows_isbase = false;
@@ -183,10 +180,8 @@ class VirtualQStringListModel : public QStringListModel {
     mutable bool qstringlistmodel_match_isbase = false;
     mutable bool qstringlistmodel_span_isbase = false;
     mutable bool qstringlistmodel_rolenames_isbase = false;
-    mutable bool qstringlistmodel_multidata_isbase = false;
     mutable bool qstringlistmodel_submit_isbase = false;
     mutable bool qstringlistmodel_revert_isbase = false;
-    mutable bool qstringlistmodel_resetinternaldata_isbase = false;
     mutable bool qstringlistmodel_event_isbase = false;
     mutable bool qstringlistmodel_eventfilter_isbase = false;
     mutable bool qstringlistmodel_timerevent_isbase = false;
@@ -194,6 +189,7 @@ class VirtualQStringListModel : public QStringListModel {
     mutable bool qstringlistmodel_customevent_isbase = false;
     mutable bool qstringlistmodel_connectnotify_isbase = false;
     mutable bool qstringlistmodel_disconnectnotify_isbase = false;
+    mutable bool qstringlistmodel_resetinternaldata_isbase = false;
     mutable bool qstringlistmodel_createindex_isbase = false;
     mutable bool qstringlistmodel_encodedata_isbase = false;
     mutable bool qstringlistmodel_decodedata_isbase = false;
@@ -231,7 +227,6 @@ class VirtualQStringListModel : public QStringListModel {
         qstringlistmodel_sibling_callback = nullptr;
         qstringlistmodel_data_callback = nullptr;
         qstringlistmodel_setdata_callback = nullptr;
-        qstringlistmodel_clearitemdata_callback = nullptr;
         qstringlistmodel_flags_callback = nullptr;
         qstringlistmodel_insertrows_callback = nullptr;
         qstringlistmodel_removerows_callback = nullptr;
@@ -257,10 +252,8 @@ class VirtualQStringListModel : public QStringListModel {
         qstringlistmodel_match_callback = nullptr;
         qstringlistmodel_span_callback = nullptr;
         qstringlistmodel_rolenames_callback = nullptr;
-        qstringlistmodel_multidata_callback = nullptr;
         qstringlistmodel_submit_callback = nullptr;
         qstringlistmodel_revert_callback = nullptr;
-        qstringlistmodel_resetinternaldata_callback = nullptr;
         qstringlistmodel_event_callback = nullptr;
         qstringlistmodel_eventfilter_callback = nullptr;
         qstringlistmodel_timerevent_callback = nullptr;
@@ -268,6 +261,7 @@ class VirtualQStringListModel : public QStringListModel {
         qstringlistmodel_customevent_callback = nullptr;
         qstringlistmodel_connectnotify_callback = nullptr;
         qstringlistmodel_disconnectnotify_callback = nullptr;
+        qstringlistmodel_resetinternaldata_callback = nullptr;
         qstringlistmodel_createindex_callback = nullptr;
         qstringlistmodel_encodedata_callback = nullptr;
         qstringlistmodel_decodedata_callback = nullptr;
@@ -300,7 +294,6 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_Sibling_Callback(QStringListModel_Sibling_Callback cb) { qstringlistmodel_sibling_callback = cb; }
     void setQStringListModel_Data_Callback(QStringListModel_Data_Callback cb) { qstringlistmodel_data_callback = cb; }
     void setQStringListModel_SetData_Callback(QStringListModel_SetData_Callback cb) { qstringlistmodel_setdata_callback = cb; }
-    void setQStringListModel_ClearItemData_Callback(QStringListModel_ClearItemData_Callback cb) { qstringlistmodel_clearitemdata_callback = cb; }
     void setQStringListModel_Flags_Callback(QStringListModel_Flags_Callback cb) { qstringlistmodel_flags_callback = cb; }
     void setQStringListModel_InsertRows_Callback(QStringListModel_InsertRows_Callback cb) { qstringlistmodel_insertrows_callback = cb; }
     void setQStringListModel_RemoveRows_Callback(QStringListModel_RemoveRows_Callback cb) { qstringlistmodel_removerows_callback = cb; }
@@ -326,10 +319,8 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_Match_Callback(QStringListModel_Match_Callback cb) { qstringlistmodel_match_callback = cb; }
     void setQStringListModel_Span_Callback(QStringListModel_Span_Callback cb) { qstringlistmodel_span_callback = cb; }
     void setQStringListModel_RoleNames_Callback(QStringListModel_RoleNames_Callback cb) { qstringlistmodel_rolenames_callback = cb; }
-    void setQStringListModel_MultiData_Callback(QStringListModel_MultiData_Callback cb) { qstringlistmodel_multidata_callback = cb; }
     void setQStringListModel_Submit_Callback(QStringListModel_Submit_Callback cb) { qstringlistmodel_submit_callback = cb; }
     void setQStringListModel_Revert_Callback(QStringListModel_Revert_Callback cb) { qstringlistmodel_revert_callback = cb; }
-    void setQStringListModel_ResetInternalData_Callback(QStringListModel_ResetInternalData_Callback cb) { qstringlistmodel_resetinternaldata_callback = cb; }
     void setQStringListModel_Event_Callback(QStringListModel_Event_Callback cb) { qstringlistmodel_event_callback = cb; }
     void setQStringListModel_EventFilter_Callback(QStringListModel_EventFilter_Callback cb) { qstringlistmodel_eventfilter_callback = cb; }
     void setQStringListModel_TimerEvent_Callback(QStringListModel_TimerEvent_Callback cb) { qstringlistmodel_timerevent_callback = cb; }
@@ -337,6 +328,7 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_CustomEvent_Callback(QStringListModel_CustomEvent_Callback cb) { qstringlistmodel_customevent_callback = cb; }
     void setQStringListModel_ConnectNotify_Callback(QStringListModel_ConnectNotify_Callback cb) { qstringlistmodel_connectnotify_callback = cb; }
     void setQStringListModel_DisconnectNotify_Callback(QStringListModel_DisconnectNotify_Callback cb) { qstringlistmodel_disconnectnotify_callback = cb; }
+    void setQStringListModel_ResetInternalData_Callback(QStringListModel_ResetInternalData_Callback cb) { qstringlistmodel_resetinternaldata_callback = cb; }
     void setQStringListModel_CreateIndex_Callback(QStringListModel_CreateIndex_Callback cb) { qstringlistmodel_createindex_callback = cb; }
     void setQStringListModel_EncodeData_Callback(QStringListModel_EncodeData_Callback cb) { qstringlistmodel_encodedata_callback = cb; }
     void setQStringListModel_DecodeData_Callback(QStringListModel_DecodeData_Callback cb) { qstringlistmodel_decodedata_callback = cb; }
@@ -368,7 +360,6 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_Sibling_IsBase(bool value) const { qstringlistmodel_sibling_isbase = value; }
     void setQStringListModel_Data_IsBase(bool value) const { qstringlistmodel_data_isbase = value; }
     void setQStringListModel_SetData_IsBase(bool value) const { qstringlistmodel_setdata_isbase = value; }
-    void setQStringListModel_ClearItemData_IsBase(bool value) const { qstringlistmodel_clearitemdata_isbase = value; }
     void setQStringListModel_Flags_IsBase(bool value) const { qstringlistmodel_flags_isbase = value; }
     void setQStringListModel_InsertRows_IsBase(bool value) const { qstringlistmodel_insertrows_isbase = value; }
     void setQStringListModel_RemoveRows_IsBase(bool value) const { qstringlistmodel_removerows_isbase = value; }
@@ -394,10 +385,8 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_Match_IsBase(bool value) const { qstringlistmodel_match_isbase = value; }
     void setQStringListModel_Span_IsBase(bool value) const { qstringlistmodel_span_isbase = value; }
     void setQStringListModel_RoleNames_IsBase(bool value) const { qstringlistmodel_rolenames_isbase = value; }
-    void setQStringListModel_MultiData_IsBase(bool value) const { qstringlistmodel_multidata_isbase = value; }
     void setQStringListModel_Submit_IsBase(bool value) const { qstringlistmodel_submit_isbase = value; }
     void setQStringListModel_Revert_IsBase(bool value) const { qstringlistmodel_revert_isbase = value; }
-    void setQStringListModel_ResetInternalData_IsBase(bool value) const { qstringlistmodel_resetinternaldata_isbase = value; }
     void setQStringListModel_Event_IsBase(bool value) const { qstringlistmodel_event_isbase = value; }
     void setQStringListModel_EventFilter_IsBase(bool value) const { qstringlistmodel_eventfilter_isbase = value; }
     void setQStringListModel_TimerEvent_IsBase(bool value) const { qstringlistmodel_timerevent_isbase = value; }
@@ -405,6 +394,7 @@ class VirtualQStringListModel : public QStringListModel {
     void setQStringListModel_CustomEvent_IsBase(bool value) const { qstringlistmodel_customevent_isbase = value; }
     void setQStringListModel_ConnectNotify_IsBase(bool value) const { qstringlistmodel_connectnotify_isbase = value; }
     void setQStringListModel_DisconnectNotify_IsBase(bool value) const { qstringlistmodel_disconnectnotify_isbase = value; }
+    void setQStringListModel_ResetInternalData_IsBase(bool value) const { qstringlistmodel_resetinternaldata_isbase = value; }
     void setQStringListModel_CreateIndex_IsBase(bool value) const { qstringlistmodel_createindex_isbase = value; }
     void setQStringListModel_EncodeData_IsBase(bool value) const { qstringlistmodel_encodedata_isbase = value; }
     void setQStringListModel_DecodeData_IsBase(bool value) const { qstringlistmodel_decodedata_isbase = value; }
@@ -487,18 +477,6 @@ class VirtualQStringListModel : public QStringListModel {
             return qstringlistmodel_setdata_callback(this, index, value, role);
         } else {
             return QStringListModel::setData(index, value, role);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool clearItemData(const QModelIndex& index) override {
-        if (qstringlistmodel_clearitemdata_isbase) {
-            qstringlistmodel_clearitemdata_isbase = false;
-            return QStringListModel::clearItemData(index);
-        } else if (qstringlistmodel_clearitemdata_callback != nullptr) {
-            return qstringlistmodel_clearitemdata_callback(this, index);
-        } else {
-            return QStringListModel::clearItemData(index);
         }
     }
 
@@ -803,18 +781,6 @@ class VirtualQStringListModel : public QStringListModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
-        if (qstringlistmodel_multidata_isbase) {
-            qstringlistmodel_multidata_isbase = false;
-            QStringListModel::multiData(index, roleDataSpan);
-        } else if (qstringlistmodel_multidata_callback != nullptr) {
-            qstringlistmodel_multidata_callback(this, index, roleDataSpan);
-        } else {
-            QStringListModel::multiData(index, roleDataSpan);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool submit() override {
         if (qstringlistmodel_submit_isbase) {
             qstringlistmodel_submit_isbase = false;
@@ -835,18 +801,6 @@ class VirtualQStringListModel : public QStringListModel {
             qstringlistmodel_revert_callback();
         } else {
             QStringListModel::revert();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void resetInternalData() override {
-        if (qstringlistmodel_resetinternaldata_isbase) {
-            qstringlistmodel_resetinternaldata_isbase = false;
-            QStringListModel::resetInternalData();
-        } else if (qstringlistmodel_resetinternaldata_callback != nullptr) {
-            qstringlistmodel_resetinternaldata_callback();
-        } else {
-            QStringListModel::resetInternalData();
         }
     }
 
@@ -931,6 +885,18 @@ class VirtualQStringListModel : public QStringListModel {
             qstringlistmodel_disconnectnotify_callback(this, signal);
         } else {
             QStringListModel::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void resetInternalData() {
+        if (qstringlistmodel_resetinternaldata_isbase) {
+            qstringlistmodel_resetinternaldata_isbase = false;
+            QStringListModel::resetInternalData();
+        } else if (qstringlistmodel_resetinternaldata_callback != nullptr) {
+            qstringlistmodel_resetinternaldata_callback();
+        } else {
+            QStringListModel::resetInternalData();
         }
     }
 

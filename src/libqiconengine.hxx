@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,10 +26,8 @@ class VirtualQIconEngine : public QIconEngine {
     using QIconEngine_Clone_Callback = QIconEngine* (*)();
     using QIconEngine_Read_Callback = bool (*)(QIconEngine*, QDataStream&);
     using QIconEngine_Write_Callback = bool (*)(const QIconEngine*, QDataStream&);
-    using QIconEngine_AvailableSizes_Callback = QList<QSize> (*)(QIconEngine*, QIcon::Mode, QIcon::State);
+    using QIconEngine_AvailableSizes_Callback = QList<QSize> (*)(const QIconEngine*, QIcon::Mode, QIcon::State);
     using QIconEngine_IconName_Callback = QString (*)();
-    using QIconEngine_IsNull_Callback = bool (*)();
-    using QIconEngine_ScaledPixmap_Callback = QPixmap (*)(QIconEngine*, const QSize&, QIcon::Mode, QIcon::State, qreal);
     using QIconEngine_VirtualHook_Callback = void (*)(QIconEngine*, int, void*);
 
   protected:
@@ -43,8 +43,6 @@ class VirtualQIconEngine : public QIconEngine {
     QIconEngine_Write_Callback qiconengine_write_callback = nullptr;
     QIconEngine_AvailableSizes_Callback qiconengine_availablesizes_callback = nullptr;
     QIconEngine_IconName_Callback qiconengine_iconname_callback = nullptr;
-    QIconEngine_IsNull_Callback qiconengine_isnull_callback = nullptr;
-    QIconEngine_ScaledPixmap_Callback qiconengine_scaledpixmap_callback = nullptr;
     QIconEngine_VirtualHook_Callback qiconengine_virtualhook_callback = nullptr;
 
     // Instance base flags
@@ -59,12 +57,11 @@ class VirtualQIconEngine : public QIconEngine {
     mutable bool qiconengine_write_isbase = false;
     mutable bool qiconengine_availablesizes_isbase = false;
     mutable bool qiconengine_iconname_isbase = false;
-    mutable bool qiconengine_isnull_isbase = false;
-    mutable bool qiconengine_scaledpixmap_isbase = false;
     mutable bool qiconengine_virtualhook_isbase = false;
 
   public:
     VirtualQIconEngine() : QIconEngine(){};
+    VirtualQIconEngine(const QIconEngine& other) : QIconEngine(other){};
 
     ~VirtualQIconEngine() {
         qiconengine_paint_callback = nullptr;
@@ -78,8 +75,6 @@ class VirtualQIconEngine : public QIconEngine {
         qiconengine_write_callback = nullptr;
         qiconengine_availablesizes_callback = nullptr;
         qiconengine_iconname_callback = nullptr;
-        qiconengine_isnull_callback = nullptr;
-        qiconengine_scaledpixmap_callback = nullptr;
         qiconengine_virtualhook_callback = nullptr;
     }
 
@@ -95,8 +90,6 @@ class VirtualQIconEngine : public QIconEngine {
     void setQIconEngine_Write_Callback(QIconEngine_Write_Callback cb) { qiconengine_write_callback = cb; }
     void setQIconEngine_AvailableSizes_Callback(QIconEngine_AvailableSizes_Callback cb) { qiconengine_availablesizes_callback = cb; }
     void setQIconEngine_IconName_Callback(QIconEngine_IconName_Callback cb) { qiconengine_iconname_callback = cb; }
-    void setQIconEngine_IsNull_Callback(QIconEngine_IsNull_Callback cb) { qiconengine_isnull_callback = cb; }
-    void setQIconEngine_ScaledPixmap_Callback(QIconEngine_ScaledPixmap_Callback cb) { qiconengine_scaledpixmap_callback = cb; }
     void setQIconEngine_VirtualHook_Callback(QIconEngine_VirtualHook_Callback cb) { qiconengine_virtualhook_callback = cb; }
 
     // Base flag setters
@@ -111,8 +104,6 @@ class VirtualQIconEngine : public QIconEngine {
     void setQIconEngine_Write_IsBase(bool value) const { qiconengine_write_isbase = value; }
     void setQIconEngine_AvailableSizes_IsBase(bool value) const { qiconengine_availablesizes_isbase = value; }
     void setQIconEngine_IconName_IsBase(bool value) const { qiconengine_iconname_isbase = value; }
-    void setQIconEngine_IsNull_IsBase(bool value) const { qiconengine_isnull_isbase = value; }
-    void setQIconEngine_ScaledPixmap_IsBase(bool value) const { qiconengine_scaledpixmap_isbase = value; }
     void setQIconEngine_VirtualHook_IsBase(bool value) const { qiconengine_virtualhook_isbase = value; }
 
     // Virtual method for C ABI access and custom callback
@@ -210,7 +201,7 @@ class VirtualQIconEngine : public QIconEngine {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) override {
+    virtual QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) const override {
         if (qiconengine_availablesizes_isbase) {
             qiconengine_availablesizes_isbase = false;
             return QIconEngine::availableSizes(mode, state);
@@ -222,7 +213,7 @@ class VirtualQIconEngine : public QIconEngine {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QString iconName() override {
+    virtual QString iconName() const override {
         if (qiconengine_iconname_isbase) {
             qiconengine_iconname_isbase = false;
             return QIconEngine::iconName();
@@ -230,30 +221,6 @@ class VirtualQIconEngine : public QIconEngine {
             return qiconengine_iconname_callback();
         } else {
             return QIconEngine::iconName();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool isNull() override {
-        if (qiconengine_isnull_isbase) {
-            qiconengine_isnull_isbase = false;
-            return QIconEngine::isNull();
-        } else if (qiconengine_isnull_callback != nullptr) {
-            return qiconengine_isnull_callback();
-        } else {
-            return QIconEngine::isNull();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QPixmap scaledPixmap(const QSize& size, QIcon::Mode mode, QIcon::State state, qreal scale) override {
-        if (qiconengine_scaledpixmap_isbase) {
-            qiconengine_scaledpixmap_isbase = false;
-            return QIconEngine::scaledPixmap(size, mode, state, scale);
-        } else if (qiconengine_scaledpixmap_callback != nullptr) {
-            return qiconengine_scaledpixmap_callback(this, size, mode, state, scale);
-        } else {
-            return QIconEngine::scaledPixmap(size, mode, state, scale);
         }
     }
 

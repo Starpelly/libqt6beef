@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,6 @@ class VirtualQSlider : public QSlider {
     using QSlider_MousePressEvent_Callback = void (*)(QSlider*, QMouseEvent*);
     using QSlider_MouseReleaseEvent_Callback = void (*)(QSlider*, QMouseEvent*);
     using QSlider_MouseMoveEvent_Callback = void (*)(QSlider*, QMouseEvent*);
-    using QSlider_InitStyleOption_Callback = void (*)(const QSlider*, QStyleOptionSlider*);
     using QSlider_SliderChange_Callback = void (*)(QSlider*, int);
     using QSlider_KeyPressEvent_Callback = void (*)(QSlider*, QKeyEvent*);
     using QSlider_TimerEvent_Callback = void (*)(QSlider*, QTimerEvent*);
@@ -39,7 +40,7 @@ class VirtualQSlider : public QSlider {
     using QSlider_KeyReleaseEvent_Callback = void (*)(QSlider*, QKeyEvent*);
     using QSlider_FocusInEvent_Callback = void (*)(QSlider*, QFocusEvent*);
     using QSlider_FocusOutEvent_Callback = void (*)(QSlider*, QFocusEvent*);
-    using QSlider_EnterEvent_Callback = void (*)(QSlider*, QEnterEvent*);
+    using QSlider_EnterEvent_Callback = void (*)(QSlider*, QEvent*);
     using QSlider_LeaveEvent_Callback = void (*)(QSlider*, QEvent*);
     using QSlider_MoveEvent_Callback = void (*)(QSlider*, QMoveEvent*);
     using QSlider_ResizeEvent_Callback = void (*)(QSlider*, QResizeEvent*);
@@ -53,7 +54,7 @@ class VirtualQSlider : public QSlider {
     using QSlider_DropEvent_Callback = void (*)(QSlider*, QDropEvent*);
     using QSlider_ShowEvent_Callback = void (*)(QSlider*, QShowEvent*);
     using QSlider_HideEvent_Callback = void (*)(QSlider*, QHideEvent*);
-    using QSlider_NativeEvent_Callback = bool (*)(QSlider*, const QByteArray&, void*, qintptr*);
+    using QSlider_NativeEvent_Callback = bool (*)(QSlider*, const QByteArray&, void*, long*);
     using QSlider_Metric_Callback = int (*)(const QSlider*, QPaintDevice::PaintDeviceMetric);
     using QSlider_InitPainter_Callback = void (*)(const QSlider*, QPainter*);
     using QSlider_Redirected_Callback = QPaintDevice* (*)(const QSlider*, QPoint*);
@@ -66,6 +67,7 @@ class VirtualQSlider : public QSlider {
     using QSlider_CustomEvent_Callback = void (*)(QSlider*, QEvent*);
     using QSlider_ConnectNotify_Callback = void (*)(QSlider*, const QMetaMethod&);
     using QSlider_DisconnectNotify_Callback = void (*)(QSlider*, const QMetaMethod&);
+    using QSlider_InitStyleOption_Callback = void (*)(const QSlider*, QStyleOptionSlider*);
     using QSlider_SetRepeatAction_Callback = void (*)(QSlider*, QAbstractSlider::SliderAction);
     using QSlider_RepeatAction_Callback = QAbstractSlider::SliderAction (*)();
     using QSlider_UpdateMicroFocus_Callback = void (*)();
@@ -88,7 +90,6 @@ class VirtualQSlider : public QSlider {
     QSlider_MousePressEvent_Callback qslider_mousepressevent_callback = nullptr;
     QSlider_MouseReleaseEvent_Callback qslider_mousereleaseevent_callback = nullptr;
     QSlider_MouseMoveEvent_Callback qslider_mousemoveevent_callback = nullptr;
-    QSlider_InitStyleOption_Callback qslider_initstyleoption_callback = nullptr;
     QSlider_SliderChange_Callback qslider_sliderchange_callback = nullptr;
     QSlider_KeyPressEvent_Callback qslider_keypressevent_callback = nullptr;
     QSlider_TimerEvent_Callback qslider_timerevent_callback = nullptr;
@@ -130,6 +131,7 @@ class VirtualQSlider : public QSlider {
     QSlider_CustomEvent_Callback qslider_customevent_callback = nullptr;
     QSlider_ConnectNotify_Callback qslider_connectnotify_callback = nullptr;
     QSlider_DisconnectNotify_Callback qslider_disconnectnotify_callback = nullptr;
+    QSlider_InitStyleOption_Callback qslider_initstyleoption_callback = nullptr;
     QSlider_SetRepeatAction_Callback qslider_setrepeataction_callback = nullptr;
     QSlider_RepeatAction_Callback qslider_repeataction_callback = nullptr;
     QSlider_UpdateMicroFocus_Callback qslider_updatemicrofocus_callback = nullptr;
@@ -151,7 +153,6 @@ class VirtualQSlider : public QSlider {
     mutable bool qslider_mousepressevent_isbase = false;
     mutable bool qslider_mousereleaseevent_isbase = false;
     mutable bool qslider_mousemoveevent_isbase = false;
-    mutable bool qslider_initstyleoption_isbase = false;
     mutable bool qslider_sliderchange_isbase = false;
     mutable bool qslider_keypressevent_isbase = false;
     mutable bool qslider_timerevent_isbase = false;
@@ -193,6 +194,7 @@ class VirtualQSlider : public QSlider {
     mutable bool qslider_customevent_isbase = false;
     mutable bool qslider_connectnotify_isbase = false;
     mutable bool qslider_disconnectnotify_isbase = false;
+    mutable bool qslider_initstyleoption_isbase = false;
     mutable bool qslider_setrepeataction_isbase = false;
     mutable bool qslider_repeataction_isbase = false;
     mutable bool qslider_updatemicrofocus_isbase = false;
@@ -220,7 +222,6 @@ class VirtualQSlider : public QSlider {
         qslider_mousepressevent_callback = nullptr;
         qslider_mousereleaseevent_callback = nullptr;
         qslider_mousemoveevent_callback = nullptr;
-        qslider_initstyleoption_callback = nullptr;
         qslider_sliderchange_callback = nullptr;
         qslider_keypressevent_callback = nullptr;
         qslider_timerevent_callback = nullptr;
@@ -262,6 +263,7 @@ class VirtualQSlider : public QSlider {
         qslider_customevent_callback = nullptr;
         qslider_connectnotify_callback = nullptr;
         qslider_disconnectnotify_callback = nullptr;
+        qslider_initstyleoption_callback = nullptr;
         qslider_setrepeataction_callback = nullptr;
         qslider_repeataction_callback = nullptr;
         qslider_updatemicrofocus_callback = nullptr;
@@ -284,7 +286,6 @@ class VirtualQSlider : public QSlider {
     void setQSlider_MousePressEvent_Callback(QSlider_MousePressEvent_Callback cb) { qslider_mousepressevent_callback = cb; }
     void setQSlider_MouseReleaseEvent_Callback(QSlider_MouseReleaseEvent_Callback cb) { qslider_mousereleaseevent_callback = cb; }
     void setQSlider_MouseMoveEvent_Callback(QSlider_MouseMoveEvent_Callback cb) { qslider_mousemoveevent_callback = cb; }
-    void setQSlider_InitStyleOption_Callback(QSlider_InitStyleOption_Callback cb) { qslider_initstyleoption_callback = cb; }
     void setQSlider_SliderChange_Callback(QSlider_SliderChange_Callback cb) { qslider_sliderchange_callback = cb; }
     void setQSlider_KeyPressEvent_Callback(QSlider_KeyPressEvent_Callback cb) { qslider_keypressevent_callback = cb; }
     void setQSlider_TimerEvent_Callback(QSlider_TimerEvent_Callback cb) { qslider_timerevent_callback = cb; }
@@ -326,6 +327,7 @@ class VirtualQSlider : public QSlider {
     void setQSlider_CustomEvent_Callback(QSlider_CustomEvent_Callback cb) { qslider_customevent_callback = cb; }
     void setQSlider_ConnectNotify_Callback(QSlider_ConnectNotify_Callback cb) { qslider_connectnotify_callback = cb; }
     void setQSlider_DisconnectNotify_Callback(QSlider_DisconnectNotify_Callback cb) { qslider_disconnectnotify_callback = cb; }
+    void setQSlider_InitStyleOption_Callback(QSlider_InitStyleOption_Callback cb) { qslider_initstyleoption_callback = cb; }
     void setQSlider_SetRepeatAction_Callback(QSlider_SetRepeatAction_Callback cb) { qslider_setrepeataction_callback = cb; }
     void setQSlider_RepeatAction_Callback(QSlider_RepeatAction_Callback cb) { qslider_repeataction_callback = cb; }
     void setQSlider_UpdateMicroFocus_Callback(QSlider_UpdateMicroFocus_Callback cb) { qslider_updatemicrofocus_callback = cb; }
@@ -347,7 +349,6 @@ class VirtualQSlider : public QSlider {
     void setQSlider_MousePressEvent_IsBase(bool value) const { qslider_mousepressevent_isbase = value; }
     void setQSlider_MouseReleaseEvent_IsBase(bool value) const { qslider_mousereleaseevent_isbase = value; }
     void setQSlider_MouseMoveEvent_IsBase(bool value) const { qslider_mousemoveevent_isbase = value; }
-    void setQSlider_InitStyleOption_IsBase(bool value) const { qslider_initstyleoption_isbase = value; }
     void setQSlider_SliderChange_IsBase(bool value) const { qslider_sliderchange_isbase = value; }
     void setQSlider_KeyPressEvent_IsBase(bool value) const { qslider_keypressevent_isbase = value; }
     void setQSlider_TimerEvent_IsBase(bool value) const { qslider_timerevent_isbase = value; }
@@ -389,6 +390,7 @@ class VirtualQSlider : public QSlider {
     void setQSlider_CustomEvent_IsBase(bool value) const { qslider_customevent_isbase = value; }
     void setQSlider_ConnectNotify_IsBase(bool value) const { qslider_connectnotify_isbase = value; }
     void setQSlider_DisconnectNotify_IsBase(bool value) const { qslider_disconnectnotify_isbase = value; }
+    void setQSlider_InitStyleOption_IsBase(bool value) const { qslider_initstyleoption_isbase = value; }
     void setQSlider_SetRepeatAction_IsBase(bool value) const { qslider_setrepeataction_isbase = value; }
     void setQSlider_RepeatAction_IsBase(bool value) const { qslider_repeataction_isbase = value; }
     void setQSlider_UpdateMicroFocus_IsBase(bool value) const { qslider_updatemicrofocus_isbase = value; }
@@ -494,18 +496,6 @@ class VirtualQSlider : public QSlider {
             qslider_mousemoveevent_callback(this, ev);
         } else {
             QSlider::mouseMoveEvent(ev);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSlider* option) const override {
-        if (qslider_initstyleoption_isbase) {
-            qslider_initstyleoption_isbase = false;
-            QSlider::initStyleOption(option);
-        } else if (qslider_initstyleoption_callback != nullptr) {
-            qslider_initstyleoption_callback(this, option);
-        } else {
-            QSlider::initStyleOption(option);
         }
     }
 
@@ -678,7 +668,7 @@ class VirtualQSlider : public QSlider {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qslider_enterevent_isbase) {
             qslider_enterevent_isbase = false;
             QSlider::enterEvent(event);
@@ -846,7 +836,7 @@ class VirtualQSlider : public QSlider {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qslider_nativeevent_isbase) {
             qslider_nativeevent_isbase = false;
             return QSlider::nativeEvent(eventType, message, result);
@@ -998,6 +988,18 @@ class VirtualQSlider : public QSlider {
             qslider_disconnectnotify_callback(this, signal);
         } else {
             QSlider::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSlider* option) const {
+        if (qslider_initstyleoption_isbase) {
+            qslider_initstyleoption_isbase = false;
+            QSlider::initStyleOption(option);
+        } else if (qslider_initstyleoption_callback != nullptr) {
+            qslider_initstyleoption_callback(this, option);
+        } else {
+            QSlider::initStyleOption(option);
         }
     }
 

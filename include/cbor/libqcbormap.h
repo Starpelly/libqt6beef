@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -26,7 +28,6 @@ typedef struct QCborMap QCborMap;
 typedef struct QCborMap__ConstIterator QCborMap__ConstIterator;
 typedef struct QCborMap__Iterator QCborMap__Iterator;
 typedef struct QCborValue QCborValue;
-typedef struct QCborValueConstRef QCborValueConstRef;
 typedef struct QCborValueRef QCborValueRef;
 typedef struct QJsonObject QJsonObject;
 typedef struct QVariant QVariant;
@@ -125,10 +126,8 @@ QCborMap__Iterator* QCborMap__Iterator_new(QCborMap__Iterator* other);
 QCborMap__Iterator* QCborMap__Iterator_new2();
 QCborMap__Iterator* QCborMap__Iterator_new3(QCborMap__Iterator* param1);
 void QCborMap__Iterator_OperatorAssign(QCborMap__Iterator* self, QCborMap__Iterator* other);
-libqt_pair /* tuple of QCborValueConstRef* and QCborValueRef* */ QCborMap__Iterator_OperatorMultiply(const QCborMap__Iterator* self);
-libqt_pair /* tuple of QCborValueConstRef* and QCborValueRef* */ QCborMap__Iterator_OperatorSubscript(const QCborMap__Iterator* self, ptrdiff_t j);
-QCborValueRef* QCborMap__Iterator_OperatorMinusGreater(QCborMap__Iterator* self);
-QCborValueConstRef* QCborMap__Iterator_OperatorMinusGreater2(const QCborMap__Iterator* self);
+libqt_pair /* tuple of QCborValueRef* and QCborValueRef* */ QCborMap__Iterator_OperatorMultiply(const QCborMap__Iterator* self);
+QCborValueRef* QCborMap__Iterator_OperatorMinusGreater(const QCborMap__Iterator* self);
 QCborValue* QCborMap__Iterator_Key(const QCborMap__Iterator* self);
 QCborValueRef* QCborMap__Iterator_Value(const QCborMap__Iterator* self);
 bool QCborMap__Iterator_OperatorEqual(const QCborMap__Iterator* self, QCborMap__Iterator* o);
@@ -158,11 +157,10 @@ QCborMap__ConstIterator* QCborMap__ConstIterator_new(QCborMap__ConstIterator* ot
 QCborMap__ConstIterator* QCborMap__ConstIterator_new2();
 QCborMap__ConstIterator* QCborMap__ConstIterator_new3(QCborMap__ConstIterator* param1);
 void QCborMap__ConstIterator_OperatorAssign(QCborMap__ConstIterator* self, QCborMap__ConstIterator* other);
-libqt_pair /* tuple of QCborValueConstRef* and QCborValueConstRef* */ QCborMap__ConstIterator_OperatorMultiply(const QCborMap__ConstIterator* self);
-libqt_pair /* tuple of QCborValueConstRef* and QCborValueConstRef* */ QCborMap__ConstIterator_OperatorSubscript(const QCborMap__ConstIterator* self, ptrdiff_t j);
-QCborValueConstRef* QCborMap__ConstIterator_OperatorMinusGreater(const QCborMap__ConstIterator* self);
+libqt_pair /* tuple of QCborValueRef* and QCborValueRef* */ QCborMap__ConstIterator_OperatorMultiply(const QCborMap__ConstIterator* self);
+QCborValueRef* QCborMap__ConstIterator_OperatorMinusGreater(const QCborMap__ConstIterator* self);
 QCborValue* QCborMap__ConstIterator_Key(const QCborMap__ConstIterator* self);
-QCborValueConstRef* QCborMap__ConstIterator_Value(const QCborMap__ConstIterator* self);
+QCborValueRef* QCborMap__ConstIterator_Value(const QCborMap__ConstIterator* self);
 bool QCborMap__ConstIterator_OperatorEqual(const QCborMap__ConstIterator* self, QCborMap__Iterator* o);
 bool QCborMap__ConstIterator_OperatorNotEqual(const QCborMap__ConstIterator* self, QCborMap__Iterator* o);
 bool QCborMap__ConstIterator_OperatorLesser(const QCborMap__ConstIterator* self, QCborMap__Iterator* other);

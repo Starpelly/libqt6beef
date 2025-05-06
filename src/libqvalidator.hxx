@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -286,6 +288,7 @@ class VirtualQIntValidator : public QIntValidator {
     using QIntValidator_Metacall_Callback = int (*)(QIntValidator*, QMetaObject::Call, int, void**);
     using QIntValidator_Validate_Callback = QValidator::State (*)(const QIntValidator*, QString&, int&);
     using QIntValidator_Fixup_Callback = void (*)(const QIntValidator*, QString&);
+    using QIntValidator_SetRange_Callback = void (*)(QIntValidator*, int, int);
     using QIntValidator_Event_Callback = bool (*)(QIntValidator*, QEvent*);
     using QIntValidator_EventFilter_Callback = bool (*)(QIntValidator*, QObject*, QEvent*);
     using QIntValidator_TimerEvent_Callback = void (*)(QIntValidator*, QTimerEvent*);
@@ -303,6 +306,7 @@ class VirtualQIntValidator : public QIntValidator {
     QIntValidator_Metacall_Callback qintvalidator_metacall_callback = nullptr;
     QIntValidator_Validate_Callback qintvalidator_validate_callback = nullptr;
     QIntValidator_Fixup_Callback qintvalidator_fixup_callback = nullptr;
+    QIntValidator_SetRange_Callback qintvalidator_setrange_callback = nullptr;
     QIntValidator_Event_Callback qintvalidator_event_callback = nullptr;
     QIntValidator_EventFilter_Callback qintvalidator_eventfilter_callback = nullptr;
     QIntValidator_TimerEvent_Callback qintvalidator_timerevent_callback = nullptr;
@@ -319,6 +323,7 @@ class VirtualQIntValidator : public QIntValidator {
     mutable bool qintvalidator_metacall_isbase = false;
     mutable bool qintvalidator_validate_isbase = false;
     mutable bool qintvalidator_fixup_isbase = false;
+    mutable bool qintvalidator_setrange_isbase = false;
     mutable bool qintvalidator_event_isbase = false;
     mutable bool qintvalidator_eventfilter_isbase = false;
     mutable bool qintvalidator_timerevent_isbase = false;
@@ -341,6 +346,7 @@ class VirtualQIntValidator : public QIntValidator {
         qintvalidator_metacall_callback = nullptr;
         qintvalidator_validate_callback = nullptr;
         qintvalidator_fixup_callback = nullptr;
+        qintvalidator_setrange_callback = nullptr;
         qintvalidator_event_callback = nullptr;
         qintvalidator_eventfilter_callback = nullptr;
         qintvalidator_timerevent_callback = nullptr;
@@ -358,6 +364,7 @@ class VirtualQIntValidator : public QIntValidator {
     void setQIntValidator_Metacall_Callback(QIntValidator_Metacall_Callback cb) { qintvalidator_metacall_callback = cb; }
     void setQIntValidator_Validate_Callback(QIntValidator_Validate_Callback cb) { qintvalidator_validate_callback = cb; }
     void setQIntValidator_Fixup_Callback(QIntValidator_Fixup_Callback cb) { qintvalidator_fixup_callback = cb; }
+    void setQIntValidator_SetRange_Callback(QIntValidator_SetRange_Callback cb) { qintvalidator_setrange_callback = cb; }
     void setQIntValidator_Event_Callback(QIntValidator_Event_Callback cb) { qintvalidator_event_callback = cb; }
     void setQIntValidator_EventFilter_Callback(QIntValidator_EventFilter_Callback cb) { qintvalidator_eventfilter_callback = cb; }
     void setQIntValidator_TimerEvent_Callback(QIntValidator_TimerEvent_Callback cb) { qintvalidator_timerevent_callback = cb; }
@@ -374,6 +381,7 @@ class VirtualQIntValidator : public QIntValidator {
     void setQIntValidator_Metacall_IsBase(bool value) const { qintvalidator_metacall_isbase = value; }
     void setQIntValidator_Validate_IsBase(bool value) const { qintvalidator_validate_isbase = value; }
     void setQIntValidator_Fixup_IsBase(bool value) const { qintvalidator_fixup_isbase = value; }
+    void setQIntValidator_SetRange_IsBase(bool value) const { qintvalidator_setrange_isbase = value; }
     void setQIntValidator_Event_IsBase(bool value) const { qintvalidator_event_isbase = value; }
     void setQIntValidator_EventFilter_IsBase(bool value) const { qintvalidator_eventfilter_isbase = value; }
     void setQIntValidator_TimerEvent_IsBase(bool value) const { qintvalidator_timerevent_isbase = value; }
@@ -419,6 +427,18 @@ class VirtualQIntValidator : public QIntValidator {
             qintvalidator_fixup_callback(this, input);
         } else {
             QIntValidator::fixup(input);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void setRange(int bottom, int top) override {
+        if (qintvalidator_setrange_isbase) {
+            qintvalidator_setrange_isbase = false;
+            QIntValidator::setRange(bottom, top);
+        } else if (qintvalidator_setrange_callback != nullptr) {
+            qintvalidator_setrange_callback(this, bottom, top);
+        } else {
+            QIntValidator::setRange(bottom, top);
         }
     }
 
@@ -562,6 +582,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     // Virtual class public types (including callbacks)
     using QDoubleValidator_Metacall_Callback = int (*)(QDoubleValidator*, QMetaObject::Call, int, void**);
     using QDoubleValidator_Validate_Callback = QValidator::State (*)(const QDoubleValidator*, QString&, int&);
+    using QDoubleValidator_SetRange_Callback = void (*)(QDoubleValidator*, double, double, int);
     using QDoubleValidator_Fixup_Callback = void (*)(const QDoubleValidator*, QString&);
     using QDoubleValidator_Event_Callback = bool (*)(QDoubleValidator*, QEvent*);
     using QDoubleValidator_EventFilter_Callback = bool (*)(QDoubleValidator*, QObject*, QEvent*);
@@ -579,6 +600,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     // Instance callback storage
     QDoubleValidator_Metacall_Callback qdoublevalidator_metacall_callback = nullptr;
     QDoubleValidator_Validate_Callback qdoublevalidator_validate_callback = nullptr;
+    QDoubleValidator_SetRange_Callback qdoublevalidator_setrange_callback = nullptr;
     QDoubleValidator_Fixup_Callback qdoublevalidator_fixup_callback = nullptr;
     QDoubleValidator_Event_Callback qdoublevalidator_event_callback = nullptr;
     QDoubleValidator_EventFilter_Callback qdoublevalidator_eventfilter_callback = nullptr;
@@ -595,6 +617,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     // Instance base flags
     mutable bool qdoublevalidator_metacall_isbase = false;
     mutable bool qdoublevalidator_validate_isbase = false;
+    mutable bool qdoublevalidator_setrange_isbase = false;
     mutable bool qdoublevalidator_fixup_isbase = false;
     mutable bool qdoublevalidator_event_isbase = false;
     mutable bool qdoublevalidator_eventfilter_isbase = false;
@@ -617,6 +640,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     ~VirtualQDoubleValidator() {
         qdoublevalidator_metacall_callback = nullptr;
         qdoublevalidator_validate_callback = nullptr;
+        qdoublevalidator_setrange_callback = nullptr;
         qdoublevalidator_fixup_callback = nullptr;
         qdoublevalidator_event_callback = nullptr;
         qdoublevalidator_eventfilter_callback = nullptr;
@@ -634,6 +658,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     // Callback setters
     void setQDoubleValidator_Metacall_Callback(QDoubleValidator_Metacall_Callback cb) { qdoublevalidator_metacall_callback = cb; }
     void setQDoubleValidator_Validate_Callback(QDoubleValidator_Validate_Callback cb) { qdoublevalidator_validate_callback = cb; }
+    void setQDoubleValidator_SetRange_Callback(QDoubleValidator_SetRange_Callback cb) { qdoublevalidator_setrange_callback = cb; }
     void setQDoubleValidator_Fixup_Callback(QDoubleValidator_Fixup_Callback cb) { qdoublevalidator_fixup_callback = cb; }
     void setQDoubleValidator_Event_Callback(QDoubleValidator_Event_Callback cb) { qdoublevalidator_event_callback = cb; }
     void setQDoubleValidator_EventFilter_Callback(QDoubleValidator_EventFilter_Callback cb) { qdoublevalidator_eventfilter_callback = cb; }
@@ -650,6 +675,7 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     // Base flag setters
     void setQDoubleValidator_Metacall_IsBase(bool value) const { qdoublevalidator_metacall_isbase = value; }
     void setQDoubleValidator_Validate_IsBase(bool value) const { qdoublevalidator_validate_isbase = value; }
+    void setQDoubleValidator_SetRange_IsBase(bool value) const { qdoublevalidator_setrange_isbase = value; }
     void setQDoubleValidator_Fixup_IsBase(bool value) const { qdoublevalidator_fixup_isbase = value; }
     void setQDoubleValidator_Event_IsBase(bool value) const { qdoublevalidator_event_isbase = value; }
     void setQDoubleValidator_EventFilter_IsBase(bool value) const { qdoublevalidator_eventfilter_isbase = value; }
@@ -688,14 +714,26 @@ class VirtualQDoubleValidator : public QDoubleValidator {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void fixup(QString& input) const override {
+    virtual void setRange(double bottom, double top, int decimals) override {
+        if (qdoublevalidator_setrange_isbase) {
+            qdoublevalidator_setrange_isbase = false;
+            QDoubleValidator::setRange(bottom, top, decimals);
+        } else if (qdoublevalidator_setrange_callback != nullptr) {
+            qdoublevalidator_setrange_callback(this, bottom, top, decimals);
+        } else {
+            QDoubleValidator::setRange(bottom, top, decimals);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void fixup(QString& param1) const override {
         if (qdoublevalidator_fixup_isbase) {
             qdoublevalidator_fixup_isbase = false;
-            QDoubleValidator::fixup(input);
+            QDoubleValidator::fixup(param1);
         } else if (qdoublevalidator_fixup_callback != nullptr) {
-            qdoublevalidator_fixup_callback(this, input);
+            qdoublevalidator_fixup_callback(this, param1);
         } else {
-            QDoubleValidator::fixup(input);
+            QDoubleValidator::fixup(param1);
         }
     }
 
@@ -828,6 +866,283 @@ class VirtualQDoubleValidator : public QDoubleValidator {
             return qdoublevalidator_issignalconnected_callback(this, signal);
         } else {
             return QDoubleValidator::isSignalConnected(signal);
+        }
+    }
+};
+
+// This class is a subclass of QRegExpValidator so that we can call protected methods
+class VirtualQRegExpValidator : public QRegExpValidator {
+
+  public:
+    // Virtual class public types (including callbacks)
+    using QRegExpValidator_Metacall_Callback = int (*)(QRegExpValidator*, QMetaObject::Call, int, void**);
+    using QRegExpValidator_Validate_Callback = QValidator::State (*)(const QRegExpValidator*, QString&, int&);
+    using QRegExpValidator_Fixup_Callback = void (*)(const QRegExpValidator*, QString&);
+    using QRegExpValidator_Event_Callback = bool (*)(QRegExpValidator*, QEvent*);
+    using QRegExpValidator_EventFilter_Callback = bool (*)(QRegExpValidator*, QObject*, QEvent*);
+    using QRegExpValidator_TimerEvent_Callback = void (*)(QRegExpValidator*, QTimerEvent*);
+    using QRegExpValidator_ChildEvent_Callback = void (*)(QRegExpValidator*, QChildEvent*);
+    using QRegExpValidator_CustomEvent_Callback = void (*)(QRegExpValidator*, QEvent*);
+    using QRegExpValidator_ConnectNotify_Callback = void (*)(QRegExpValidator*, const QMetaMethod&);
+    using QRegExpValidator_DisconnectNotify_Callback = void (*)(QRegExpValidator*, const QMetaMethod&);
+    using QRegExpValidator_Sender_Callback = QObject* (*)();
+    using QRegExpValidator_SenderSignalIndex_Callback = int (*)();
+    using QRegExpValidator_Receivers_Callback = int (*)(const QRegExpValidator*, const char*);
+    using QRegExpValidator_IsSignalConnected_Callback = bool (*)(const QRegExpValidator*, const QMetaMethod&);
+
+  protected:
+    // Instance callback storage
+    QRegExpValidator_Metacall_Callback qregexpvalidator_metacall_callback = nullptr;
+    QRegExpValidator_Validate_Callback qregexpvalidator_validate_callback = nullptr;
+    QRegExpValidator_Fixup_Callback qregexpvalidator_fixup_callback = nullptr;
+    QRegExpValidator_Event_Callback qregexpvalidator_event_callback = nullptr;
+    QRegExpValidator_EventFilter_Callback qregexpvalidator_eventfilter_callback = nullptr;
+    QRegExpValidator_TimerEvent_Callback qregexpvalidator_timerevent_callback = nullptr;
+    QRegExpValidator_ChildEvent_Callback qregexpvalidator_childevent_callback = nullptr;
+    QRegExpValidator_CustomEvent_Callback qregexpvalidator_customevent_callback = nullptr;
+    QRegExpValidator_ConnectNotify_Callback qregexpvalidator_connectnotify_callback = nullptr;
+    QRegExpValidator_DisconnectNotify_Callback qregexpvalidator_disconnectnotify_callback = nullptr;
+    QRegExpValidator_Sender_Callback qregexpvalidator_sender_callback = nullptr;
+    QRegExpValidator_SenderSignalIndex_Callback qregexpvalidator_sendersignalindex_callback = nullptr;
+    QRegExpValidator_Receivers_Callback qregexpvalidator_receivers_callback = nullptr;
+    QRegExpValidator_IsSignalConnected_Callback qregexpvalidator_issignalconnected_callback = nullptr;
+
+    // Instance base flags
+    mutable bool qregexpvalidator_metacall_isbase = false;
+    mutable bool qregexpvalidator_validate_isbase = false;
+    mutable bool qregexpvalidator_fixup_isbase = false;
+    mutable bool qregexpvalidator_event_isbase = false;
+    mutable bool qregexpvalidator_eventfilter_isbase = false;
+    mutable bool qregexpvalidator_timerevent_isbase = false;
+    mutable bool qregexpvalidator_childevent_isbase = false;
+    mutable bool qregexpvalidator_customevent_isbase = false;
+    mutable bool qregexpvalidator_connectnotify_isbase = false;
+    mutable bool qregexpvalidator_disconnectnotify_isbase = false;
+    mutable bool qregexpvalidator_sender_isbase = false;
+    mutable bool qregexpvalidator_sendersignalindex_isbase = false;
+    mutable bool qregexpvalidator_receivers_isbase = false;
+    mutable bool qregexpvalidator_issignalconnected_isbase = false;
+
+  public:
+    VirtualQRegExpValidator() : QRegExpValidator(){};
+    VirtualQRegExpValidator(const QRegExp& rx) : QRegExpValidator(rx){};
+    VirtualQRegExpValidator(QObject* parent) : QRegExpValidator(parent){};
+    VirtualQRegExpValidator(const QRegExp& rx, QObject* parent) : QRegExpValidator(rx, parent){};
+
+    ~VirtualQRegExpValidator() {
+        qregexpvalidator_metacall_callback = nullptr;
+        qregexpvalidator_validate_callback = nullptr;
+        qregexpvalidator_fixup_callback = nullptr;
+        qregexpvalidator_event_callback = nullptr;
+        qregexpvalidator_eventfilter_callback = nullptr;
+        qregexpvalidator_timerevent_callback = nullptr;
+        qregexpvalidator_childevent_callback = nullptr;
+        qregexpvalidator_customevent_callback = nullptr;
+        qregexpvalidator_connectnotify_callback = nullptr;
+        qregexpvalidator_disconnectnotify_callback = nullptr;
+        qregexpvalidator_sender_callback = nullptr;
+        qregexpvalidator_sendersignalindex_callback = nullptr;
+        qregexpvalidator_receivers_callback = nullptr;
+        qregexpvalidator_issignalconnected_callback = nullptr;
+    }
+
+    // Callback setters
+    void setQRegExpValidator_Metacall_Callback(QRegExpValidator_Metacall_Callback cb) { qregexpvalidator_metacall_callback = cb; }
+    void setQRegExpValidator_Validate_Callback(QRegExpValidator_Validate_Callback cb) { qregexpvalidator_validate_callback = cb; }
+    void setQRegExpValidator_Fixup_Callback(QRegExpValidator_Fixup_Callback cb) { qregexpvalidator_fixup_callback = cb; }
+    void setQRegExpValidator_Event_Callback(QRegExpValidator_Event_Callback cb) { qregexpvalidator_event_callback = cb; }
+    void setQRegExpValidator_EventFilter_Callback(QRegExpValidator_EventFilter_Callback cb) { qregexpvalidator_eventfilter_callback = cb; }
+    void setQRegExpValidator_TimerEvent_Callback(QRegExpValidator_TimerEvent_Callback cb) { qregexpvalidator_timerevent_callback = cb; }
+    void setQRegExpValidator_ChildEvent_Callback(QRegExpValidator_ChildEvent_Callback cb) { qregexpvalidator_childevent_callback = cb; }
+    void setQRegExpValidator_CustomEvent_Callback(QRegExpValidator_CustomEvent_Callback cb) { qregexpvalidator_customevent_callback = cb; }
+    void setQRegExpValidator_ConnectNotify_Callback(QRegExpValidator_ConnectNotify_Callback cb) { qregexpvalidator_connectnotify_callback = cb; }
+    void setQRegExpValidator_DisconnectNotify_Callback(QRegExpValidator_DisconnectNotify_Callback cb) { qregexpvalidator_disconnectnotify_callback = cb; }
+    void setQRegExpValidator_Sender_Callback(QRegExpValidator_Sender_Callback cb) { qregexpvalidator_sender_callback = cb; }
+    void setQRegExpValidator_SenderSignalIndex_Callback(QRegExpValidator_SenderSignalIndex_Callback cb) { qregexpvalidator_sendersignalindex_callback = cb; }
+    void setQRegExpValidator_Receivers_Callback(QRegExpValidator_Receivers_Callback cb) { qregexpvalidator_receivers_callback = cb; }
+    void setQRegExpValidator_IsSignalConnected_Callback(QRegExpValidator_IsSignalConnected_Callback cb) { qregexpvalidator_issignalconnected_callback = cb; }
+
+    // Base flag setters
+    void setQRegExpValidator_Metacall_IsBase(bool value) const { qregexpvalidator_metacall_isbase = value; }
+    void setQRegExpValidator_Validate_IsBase(bool value) const { qregexpvalidator_validate_isbase = value; }
+    void setQRegExpValidator_Fixup_IsBase(bool value) const { qregexpvalidator_fixup_isbase = value; }
+    void setQRegExpValidator_Event_IsBase(bool value) const { qregexpvalidator_event_isbase = value; }
+    void setQRegExpValidator_EventFilter_IsBase(bool value) const { qregexpvalidator_eventfilter_isbase = value; }
+    void setQRegExpValidator_TimerEvent_IsBase(bool value) const { qregexpvalidator_timerevent_isbase = value; }
+    void setQRegExpValidator_ChildEvent_IsBase(bool value) const { qregexpvalidator_childevent_isbase = value; }
+    void setQRegExpValidator_CustomEvent_IsBase(bool value) const { qregexpvalidator_customevent_isbase = value; }
+    void setQRegExpValidator_ConnectNotify_IsBase(bool value) const { qregexpvalidator_connectnotify_isbase = value; }
+    void setQRegExpValidator_DisconnectNotify_IsBase(bool value) const { qregexpvalidator_disconnectnotify_isbase = value; }
+    void setQRegExpValidator_Sender_IsBase(bool value) const { qregexpvalidator_sender_isbase = value; }
+    void setQRegExpValidator_SenderSignalIndex_IsBase(bool value) const { qregexpvalidator_sendersignalindex_isbase = value; }
+    void setQRegExpValidator_Receivers_IsBase(bool value) const { qregexpvalidator_receivers_isbase = value; }
+    void setQRegExpValidator_IsSignalConnected_IsBase(bool value) const { qregexpvalidator_issignalconnected_isbase = value; }
+
+    // Virtual method for C ABI access and custom callback
+    virtual int qt_metacall(QMetaObject::Call param1, int param2, void** param3) override {
+        if (qregexpvalidator_metacall_isbase) {
+            qregexpvalidator_metacall_isbase = false;
+            return QRegExpValidator::qt_metacall(param1, param2, param3);
+        } else if (qregexpvalidator_metacall_callback != nullptr) {
+            return qregexpvalidator_metacall_callback(this, param1, param2, param3);
+        } else {
+            return QRegExpValidator::qt_metacall(param1, param2, param3);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual QValidator::State validate(QString& input, int& pos) const override {
+        if (qregexpvalidator_validate_isbase) {
+            qregexpvalidator_validate_isbase = false;
+            return QRegExpValidator::validate(input, pos);
+        } else if (qregexpvalidator_validate_callback != nullptr) {
+            return qregexpvalidator_validate_callback(this, input, pos);
+        } else {
+            return QRegExpValidator::validate(input, pos);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void fixup(QString& param1) const override {
+        if (qregexpvalidator_fixup_isbase) {
+            qregexpvalidator_fixup_isbase = false;
+            QRegExpValidator::fixup(param1);
+        } else if (qregexpvalidator_fixup_callback != nullptr) {
+            qregexpvalidator_fixup_callback(this, param1);
+        } else {
+            QRegExpValidator::fixup(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool event(QEvent* event) override {
+        if (qregexpvalidator_event_isbase) {
+            qregexpvalidator_event_isbase = false;
+            return QRegExpValidator::event(event);
+        } else if (qregexpvalidator_event_callback != nullptr) {
+            return qregexpvalidator_event_callback(this, event);
+        } else {
+            return QRegExpValidator::event(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool eventFilter(QObject* watched, QEvent* event) override {
+        if (qregexpvalidator_eventfilter_isbase) {
+            qregexpvalidator_eventfilter_isbase = false;
+            return QRegExpValidator::eventFilter(watched, event);
+        } else if (qregexpvalidator_eventfilter_callback != nullptr) {
+            return qregexpvalidator_eventfilter_callback(this, watched, event);
+        } else {
+            return QRegExpValidator::eventFilter(watched, event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void timerEvent(QTimerEvent* event) override {
+        if (qregexpvalidator_timerevent_isbase) {
+            qregexpvalidator_timerevent_isbase = false;
+            QRegExpValidator::timerEvent(event);
+        } else if (qregexpvalidator_timerevent_callback != nullptr) {
+            qregexpvalidator_timerevent_callback(this, event);
+        } else {
+            QRegExpValidator::timerEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void childEvent(QChildEvent* event) override {
+        if (qregexpvalidator_childevent_isbase) {
+            qregexpvalidator_childevent_isbase = false;
+            QRegExpValidator::childEvent(event);
+        } else if (qregexpvalidator_childevent_callback != nullptr) {
+            qregexpvalidator_childevent_callback(this, event);
+        } else {
+            QRegExpValidator::childEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void customEvent(QEvent* event) override {
+        if (qregexpvalidator_customevent_isbase) {
+            qregexpvalidator_customevent_isbase = false;
+            QRegExpValidator::customEvent(event);
+        } else if (qregexpvalidator_customevent_callback != nullptr) {
+            qregexpvalidator_customevent_callback(this, event);
+        } else {
+            QRegExpValidator::customEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void connectNotify(const QMetaMethod& signal) override {
+        if (qregexpvalidator_connectnotify_isbase) {
+            qregexpvalidator_connectnotify_isbase = false;
+            QRegExpValidator::connectNotify(signal);
+        } else if (qregexpvalidator_connectnotify_callback != nullptr) {
+            qregexpvalidator_connectnotify_callback(this, signal);
+        } else {
+            QRegExpValidator::connectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void disconnectNotify(const QMetaMethod& signal) override {
+        if (qregexpvalidator_disconnectnotify_isbase) {
+            qregexpvalidator_disconnectnotify_isbase = false;
+            QRegExpValidator::disconnectNotify(signal);
+        } else if (qregexpvalidator_disconnectnotify_callback != nullptr) {
+            qregexpvalidator_disconnectnotify_callback(this, signal);
+        } else {
+            QRegExpValidator::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    QObject* sender() const {
+        if (qregexpvalidator_sender_isbase) {
+            qregexpvalidator_sender_isbase = false;
+            return QRegExpValidator::sender();
+        } else if (qregexpvalidator_sender_callback != nullptr) {
+            return qregexpvalidator_sender_callback();
+        } else {
+            return QRegExpValidator::sender();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int senderSignalIndex() const {
+        if (qregexpvalidator_sendersignalindex_isbase) {
+            qregexpvalidator_sendersignalindex_isbase = false;
+            return QRegExpValidator::senderSignalIndex();
+        } else if (qregexpvalidator_sendersignalindex_callback != nullptr) {
+            return qregexpvalidator_sendersignalindex_callback();
+        } else {
+            return QRegExpValidator::senderSignalIndex();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int receivers(const char* signal) const {
+        if (qregexpvalidator_receivers_isbase) {
+            qregexpvalidator_receivers_isbase = false;
+            return QRegExpValidator::receivers(signal);
+        } else if (qregexpvalidator_receivers_callback != nullptr) {
+            return qregexpvalidator_receivers_callback(this, signal);
+        } else {
+            return QRegExpValidator::receivers(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    bool isSignalConnected(const QMetaMethod& signal) const {
+        if (qregexpvalidator_issignalconnected_isbase) {
+            qregexpvalidator_issignalconnected_isbase = false;
+            return QRegExpValidator::isSignalConnected(signal);
+        } else if (qregexpvalidator_issignalconnected_callback != nullptr) {
+            return qregexpvalidator_issignalconnected_callback(this, signal);
+        } else {
+            return QRegExpValidator::isSignalConnected(signal);
         }
     }
 };

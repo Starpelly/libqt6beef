@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,19 +21,17 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDateTime QDateTime;
 typedef struct QEvent QEvent;
 typedef struct QFile QFile;
 typedef struct QFileDevice QFileDevice;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -47,6 +47,7 @@ int QFile_Metacall(QFile* self, int param1, int param2, void** param3);
 void QFile_OnMetacall(QFile* self, intptr_t slot);
 int QFile_QBaseMetacall(QFile* self, int param1, int param2, void** param3);
 libqt_string QFile_Tr(const char* s);
+libqt_string QFile_TrUtf8(const char* s);
 libqt_string QFile_FileName(const QFile* self);
 void QFile_OnFileName(const QFile* self, intptr_t slot);
 libqt_string QFile_QBaseFileName(const QFile* self);
@@ -56,6 +57,8 @@ libqt_string QFile_DecodeName(libqt_string localFileName);
 libqt_string QFile_DecodeNameWithLocalFileName(const char* localFileName);
 bool QFile_Exists(const QFile* self);
 bool QFile_ExistsWithFileName(libqt_string fileName);
+libqt_string QFile_ReadLink(const QFile* self);
+libqt_string QFile_ReadLinkWithFileName(libqt_string fileName);
 libqt_string QFile_SymLinkTarget(const QFile* self);
 libqt_string QFile_SymLinkTargetWithFileName(libqt_string fileName);
 bool QFile_Remove(QFile* self);
@@ -65,14 +68,13 @@ bool QFile_MoveToTrashWithFileName(libqt_string fileName);
 bool QFile_Rename(QFile* self, libqt_string newName);
 bool QFile_Rename2(libqt_string oldName, libqt_string newName);
 bool QFile_Link(QFile* self, libqt_string newName);
-bool QFile_Link2(libqt_string fileName, libqt_string newName);
+bool QFile_Link2(libqt_string oldname, libqt_string newName);
 bool QFile_Copy(QFile* self, libqt_string newName);
 bool QFile_Copy2(libqt_string fileName, libqt_string newName);
 bool QFile_Open(QFile* self, int flags);
 void QFile_OnOpen(QFile* self, intptr_t slot);
 bool QFile_QBaseOpen(QFile* self, int flags);
-bool QFile_Open2(QFile* self, int flags, int permissions);
-bool QFile_Open4(QFile* self, int fd, int ioFlags);
+bool QFile_Open3(QFile* self, int fd, int ioFlags);
 long long QFile_Size(const QFile* self);
 void QFile_OnSize(const QFile* self, intptr_t slot);
 long long QFile_QBaseSize(const QFile* self);
@@ -90,6 +92,8 @@ bool QFile_QBaseSetPermissions(QFile* self, int permissionSpec);
 bool QFile_SetPermissions2(libqt_string filename, int permissionSpec);
 libqt_string QFile_Tr2(const char* s, const char* c);
 libqt_string QFile_Tr3(const char* s, const char* c, int n);
+libqt_string QFile_TrUtf82(const char* s, const char* c);
+libqt_string QFile_TrUtf83(const char* s, const char* c, int n);
 bool QFile_Open33(QFile* self, int fd, int ioFlags, int handleFlags);
 void QFile_Close(QFile* self);
 void QFile_OnClose(QFile* self, intptr_t slot);
@@ -133,9 +137,6 @@ bool QFile_QBaseWaitForReadyRead(QFile* self, int msecs);
 bool QFile_WaitForBytesWritten(QFile* self, int msecs);
 void QFile_OnWaitForBytesWritten(QFile* self, intptr_t slot);
 bool QFile_QBaseWaitForBytesWritten(QFile* self, int msecs);
-long long QFile_SkipData(QFile* self, long long maxSize);
-void QFile_OnSkipData(QFile* self, intptr_t slot);
-long long QFile_QBaseSkipData(QFile* self, long long maxSize);
 bool QFile_Event(QFile* self, QEvent* event);
 void QFile_OnEvent(QFile* self, intptr_t slot);
 bool QFile_QBaseEvent(QFile* self, QEvent* event);

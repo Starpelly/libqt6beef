@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -44,7 +46,7 @@ class VirtualQMessageBox : public QMessageBox {
     using QMessageBox_KeyReleaseEvent_Callback = void (*)(QMessageBox*, QKeyEvent*);
     using QMessageBox_FocusInEvent_Callback = void (*)(QMessageBox*, QFocusEvent*);
     using QMessageBox_FocusOutEvent_Callback = void (*)(QMessageBox*, QFocusEvent*);
-    using QMessageBox_EnterEvent_Callback = void (*)(QMessageBox*, QEnterEvent*);
+    using QMessageBox_EnterEvent_Callback = void (*)(QMessageBox*, QEvent*);
     using QMessageBox_LeaveEvent_Callback = void (*)(QMessageBox*, QEvent*);
     using QMessageBox_PaintEvent_Callback = void (*)(QMessageBox*, QPaintEvent*);
     using QMessageBox_MoveEvent_Callback = void (*)(QMessageBox*, QMoveEvent*);
@@ -55,7 +57,7 @@ class VirtualQMessageBox : public QMessageBox {
     using QMessageBox_DragLeaveEvent_Callback = void (*)(QMessageBox*, QDragLeaveEvent*);
     using QMessageBox_DropEvent_Callback = void (*)(QMessageBox*, QDropEvent*);
     using QMessageBox_HideEvent_Callback = void (*)(QMessageBox*, QHideEvent*);
-    using QMessageBox_NativeEvent_Callback = bool (*)(QMessageBox*, const QByteArray&, void*, qintptr*);
+    using QMessageBox_NativeEvent_Callback = bool (*)(QMessageBox*, const QByteArray&, void*, long*);
     using QMessageBox_Metric_Callback = int (*)(const QMessageBox*, QPaintDevice::PaintDeviceMetric);
     using QMessageBox_InitPainter_Callback = void (*)(const QMessageBox*, QPainter*);
     using QMessageBox_Redirected_Callback = QPaintDevice* (*)(const QMessageBox*, QPoint*);
@@ -766,7 +768,7 @@ class VirtualQMessageBox : public QMessageBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qmessagebox_enterevent_isbase) {
             qmessagebox_enterevent_isbase = false;
             QMessageBox::enterEvent(event);
@@ -898,7 +900,7 @@ class VirtualQMessageBox : public QMessageBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qmessagebox_nativeevent_isbase) {
             qmessagebox_nativeevent_isbase = false;
             return QMessageBox::nativeEvent(eventType, message, result);

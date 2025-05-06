@@ -35,32 +35,24 @@ void QAudioBuffer_OperatorAssign(QAudioBuffer* self, QAudioBuffer* other) {
     self->operator=(*other);
 }
 
-void QAudioBuffer_Swap(QAudioBuffer* self, QAudioBuffer* other) {
-    self->swap(*other);
-}
-
 bool QAudioBuffer_IsValid(const QAudioBuffer* self) {
     return self->isValid();
-}
-
-void QAudioBuffer_Detach(QAudioBuffer* self) {
-    self->detach();
 }
 
 QAudioFormat* QAudioBuffer_Format(const QAudioBuffer* self) {
     return new QAudioFormat(self->format());
 }
 
-ptrdiff_t QAudioBuffer_FrameCount(const QAudioBuffer* self) {
-    return static_cast<ptrdiff_t>(self->frameCount());
+int QAudioBuffer_FrameCount(const QAudioBuffer* self) {
+    return self->frameCount();
 }
 
-ptrdiff_t QAudioBuffer_SampleCount(const QAudioBuffer* self) {
-    return static_cast<ptrdiff_t>(self->sampleCount());
+int QAudioBuffer_SampleCount(const QAudioBuffer* self) {
+    return self->sampleCount();
 }
 
-ptrdiff_t QAudioBuffer_ByteCount(const QAudioBuffer* self) {
-    return static_cast<ptrdiff_t>(self->byteCount());
+int QAudioBuffer_ByteCount(const QAudioBuffer* self) {
+    return self->byteCount();
 }
 
 long long QAudioBuffer_Duration(const QAudioBuffer* self) {
@@ -69,6 +61,18 @@ long long QAudioBuffer_Duration(const QAudioBuffer* self) {
 
 long long QAudioBuffer_StartTime(const QAudioBuffer* self) {
     return static_cast<long long>(self->startTime());
+}
+
+const void* QAudioBuffer_ConstData(const QAudioBuffer* self) {
+    return (const void*)self->constData();
+}
+
+const void* QAudioBuffer_Data(const QAudioBuffer* self) {
+    return (const void*)self->data();
+}
+
+void* QAudioBuffer_Data2(QAudioBuffer* self) {
+    return self->data();
 }
 
 void QAudioBuffer_Delete(QAudioBuffer* self) {

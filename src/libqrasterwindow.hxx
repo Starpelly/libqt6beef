@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -18,8 +20,8 @@ class VirtualQRasterWindow : public QRasterWindow {
     using QRasterWindow_Metacall_Callback = int (*)(QRasterWindow*, QMetaObject::Call, int, void**);
     using QRasterWindow_Metric_Callback = int (*)(const QRasterWindow*, QPaintDevice::PaintDeviceMetric);
     using QRasterWindow_Redirected_Callback = QPaintDevice* (*)(const QRasterWindow*, QPoint*);
-    using QRasterWindow_ExposeEvent_Callback = void (*)(QRasterWindow*, QExposeEvent*);
     using QRasterWindow_PaintEvent_Callback = void (*)(QRasterWindow*, QPaintEvent*);
+    using QRasterWindow_ExposeEvent_Callback = void (*)(QRasterWindow*, QExposeEvent*);
     using QRasterWindow_Event_Callback = bool (*)(QRasterWindow*, QEvent*);
     using QRasterWindow_SurfaceType_Callback = QSurface::SurfaceType (*)();
     using QRasterWindow_Format_Callback = QSurfaceFormat (*)();
@@ -32,7 +34,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     using QRasterWindow_FocusOutEvent_Callback = void (*)(QRasterWindow*, QFocusEvent*);
     using QRasterWindow_ShowEvent_Callback = void (*)(QRasterWindow*, QShowEvent*);
     using QRasterWindow_HideEvent_Callback = void (*)(QRasterWindow*, QHideEvent*);
-    using QRasterWindow_CloseEvent_Callback = void (*)(QRasterWindow*, QCloseEvent*);
     using QRasterWindow_KeyPressEvent_Callback = void (*)(QRasterWindow*, QKeyEvent*);
     using QRasterWindow_KeyReleaseEvent_Callback = void (*)(QRasterWindow*, QKeyEvent*);
     using QRasterWindow_MousePressEvent_Callback = void (*)(QRasterWindow*, QMouseEvent*);
@@ -42,7 +43,7 @@ class VirtualQRasterWindow : public QRasterWindow {
     using QRasterWindow_WheelEvent_Callback = void (*)(QRasterWindow*, QWheelEvent*);
     using QRasterWindow_TouchEvent_Callback = void (*)(QRasterWindow*, QTouchEvent*);
     using QRasterWindow_TabletEvent_Callback = void (*)(QRasterWindow*, QTabletEvent*);
-    using QRasterWindow_NativeEvent_Callback = bool (*)(QRasterWindow*, const QByteArray&, void*, qintptr*);
+    using QRasterWindow_NativeEvent_Callback = bool (*)(QRasterWindow*, const QByteArray&, void*, long*);
     using QRasterWindow_EventFilter_Callback = bool (*)(QRasterWindow*, QObject*, QEvent*);
     using QRasterWindow_TimerEvent_Callback = void (*)(QRasterWindow*, QTimerEvent*);
     using QRasterWindow_ChildEvent_Callback = void (*)(QRasterWindow*, QChildEvent*);
@@ -52,7 +53,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     using QRasterWindow_DevType_Callback = int (*)();
     using QRasterWindow_InitPainter_Callback = void (*)(const QRasterWindow*, QPainter*);
     using QRasterWindow_SharedPainter_Callback = QPainter* (*)();
-    using QRasterWindow_ResolveInterface_Callback = void* (*)(const QRasterWindow*, const char*, int);
     using QRasterWindow_Sender_Callback = QObject* (*)();
     using QRasterWindow_SenderSignalIndex_Callback = int (*)();
     using QRasterWindow_Receivers_Callback = int (*)(const QRasterWindow*, const char*);
@@ -63,8 +63,8 @@ class VirtualQRasterWindow : public QRasterWindow {
     QRasterWindow_Metacall_Callback qrasterwindow_metacall_callback = nullptr;
     QRasterWindow_Metric_Callback qrasterwindow_metric_callback = nullptr;
     QRasterWindow_Redirected_Callback qrasterwindow_redirected_callback = nullptr;
-    QRasterWindow_ExposeEvent_Callback qrasterwindow_exposeevent_callback = nullptr;
     QRasterWindow_PaintEvent_Callback qrasterwindow_paintevent_callback = nullptr;
+    QRasterWindow_ExposeEvent_Callback qrasterwindow_exposeevent_callback = nullptr;
     QRasterWindow_Event_Callback qrasterwindow_event_callback = nullptr;
     QRasterWindow_SurfaceType_Callback qrasterwindow_surfacetype_callback = nullptr;
     QRasterWindow_Format_Callback qrasterwindow_format_callback = nullptr;
@@ -77,7 +77,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     QRasterWindow_FocusOutEvent_Callback qrasterwindow_focusoutevent_callback = nullptr;
     QRasterWindow_ShowEvent_Callback qrasterwindow_showevent_callback = nullptr;
     QRasterWindow_HideEvent_Callback qrasterwindow_hideevent_callback = nullptr;
-    QRasterWindow_CloseEvent_Callback qrasterwindow_closeevent_callback = nullptr;
     QRasterWindow_KeyPressEvent_Callback qrasterwindow_keypressevent_callback = nullptr;
     QRasterWindow_KeyReleaseEvent_Callback qrasterwindow_keyreleaseevent_callback = nullptr;
     QRasterWindow_MousePressEvent_Callback qrasterwindow_mousepressevent_callback = nullptr;
@@ -97,7 +96,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     QRasterWindow_DevType_Callback qrasterwindow_devtype_callback = nullptr;
     QRasterWindow_InitPainter_Callback qrasterwindow_initpainter_callback = nullptr;
     QRasterWindow_SharedPainter_Callback qrasterwindow_sharedpainter_callback = nullptr;
-    QRasterWindow_ResolveInterface_Callback qrasterwindow_resolveinterface_callback = nullptr;
     QRasterWindow_Sender_Callback qrasterwindow_sender_callback = nullptr;
     QRasterWindow_SenderSignalIndex_Callback qrasterwindow_sendersignalindex_callback = nullptr;
     QRasterWindow_Receivers_Callback qrasterwindow_receivers_callback = nullptr;
@@ -107,8 +105,8 @@ class VirtualQRasterWindow : public QRasterWindow {
     mutable bool qrasterwindow_metacall_isbase = false;
     mutable bool qrasterwindow_metric_isbase = false;
     mutable bool qrasterwindow_redirected_isbase = false;
-    mutable bool qrasterwindow_exposeevent_isbase = false;
     mutable bool qrasterwindow_paintevent_isbase = false;
+    mutable bool qrasterwindow_exposeevent_isbase = false;
     mutable bool qrasterwindow_event_isbase = false;
     mutable bool qrasterwindow_surfacetype_isbase = false;
     mutable bool qrasterwindow_format_isbase = false;
@@ -121,7 +119,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     mutable bool qrasterwindow_focusoutevent_isbase = false;
     mutable bool qrasterwindow_showevent_isbase = false;
     mutable bool qrasterwindow_hideevent_isbase = false;
-    mutable bool qrasterwindow_closeevent_isbase = false;
     mutable bool qrasterwindow_keypressevent_isbase = false;
     mutable bool qrasterwindow_keyreleaseevent_isbase = false;
     mutable bool qrasterwindow_mousepressevent_isbase = false;
@@ -141,7 +138,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     mutable bool qrasterwindow_devtype_isbase = false;
     mutable bool qrasterwindow_initpainter_isbase = false;
     mutable bool qrasterwindow_sharedpainter_isbase = false;
-    mutable bool qrasterwindow_resolveinterface_isbase = false;
     mutable bool qrasterwindow_sender_isbase = false;
     mutable bool qrasterwindow_sendersignalindex_isbase = false;
     mutable bool qrasterwindow_receivers_isbase = false;
@@ -155,8 +151,8 @@ class VirtualQRasterWindow : public QRasterWindow {
         qrasterwindow_metacall_callback = nullptr;
         qrasterwindow_metric_callback = nullptr;
         qrasterwindow_redirected_callback = nullptr;
-        qrasterwindow_exposeevent_callback = nullptr;
         qrasterwindow_paintevent_callback = nullptr;
+        qrasterwindow_exposeevent_callback = nullptr;
         qrasterwindow_event_callback = nullptr;
         qrasterwindow_surfacetype_callback = nullptr;
         qrasterwindow_format_callback = nullptr;
@@ -169,7 +165,6 @@ class VirtualQRasterWindow : public QRasterWindow {
         qrasterwindow_focusoutevent_callback = nullptr;
         qrasterwindow_showevent_callback = nullptr;
         qrasterwindow_hideevent_callback = nullptr;
-        qrasterwindow_closeevent_callback = nullptr;
         qrasterwindow_keypressevent_callback = nullptr;
         qrasterwindow_keyreleaseevent_callback = nullptr;
         qrasterwindow_mousepressevent_callback = nullptr;
@@ -189,7 +184,6 @@ class VirtualQRasterWindow : public QRasterWindow {
         qrasterwindow_devtype_callback = nullptr;
         qrasterwindow_initpainter_callback = nullptr;
         qrasterwindow_sharedpainter_callback = nullptr;
-        qrasterwindow_resolveinterface_callback = nullptr;
         qrasterwindow_sender_callback = nullptr;
         qrasterwindow_sendersignalindex_callback = nullptr;
         qrasterwindow_receivers_callback = nullptr;
@@ -200,8 +194,8 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_Metacall_Callback(QRasterWindow_Metacall_Callback cb) { qrasterwindow_metacall_callback = cb; }
     void setQRasterWindow_Metric_Callback(QRasterWindow_Metric_Callback cb) { qrasterwindow_metric_callback = cb; }
     void setQRasterWindow_Redirected_Callback(QRasterWindow_Redirected_Callback cb) { qrasterwindow_redirected_callback = cb; }
-    void setQRasterWindow_ExposeEvent_Callback(QRasterWindow_ExposeEvent_Callback cb) { qrasterwindow_exposeevent_callback = cb; }
     void setQRasterWindow_PaintEvent_Callback(QRasterWindow_PaintEvent_Callback cb) { qrasterwindow_paintevent_callback = cb; }
+    void setQRasterWindow_ExposeEvent_Callback(QRasterWindow_ExposeEvent_Callback cb) { qrasterwindow_exposeevent_callback = cb; }
     void setQRasterWindow_Event_Callback(QRasterWindow_Event_Callback cb) { qrasterwindow_event_callback = cb; }
     void setQRasterWindow_SurfaceType_Callback(QRasterWindow_SurfaceType_Callback cb) { qrasterwindow_surfacetype_callback = cb; }
     void setQRasterWindow_Format_Callback(QRasterWindow_Format_Callback cb) { qrasterwindow_format_callback = cb; }
@@ -214,7 +208,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_FocusOutEvent_Callback(QRasterWindow_FocusOutEvent_Callback cb) { qrasterwindow_focusoutevent_callback = cb; }
     void setQRasterWindow_ShowEvent_Callback(QRasterWindow_ShowEvent_Callback cb) { qrasterwindow_showevent_callback = cb; }
     void setQRasterWindow_HideEvent_Callback(QRasterWindow_HideEvent_Callback cb) { qrasterwindow_hideevent_callback = cb; }
-    void setQRasterWindow_CloseEvent_Callback(QRasterWindow_CloseEvent_Callback cb) { qrasterwindow_closeevent_callback = cb; }
     void setQRasterWindow_KeyPressEvent_Callback(QRasterWindow_KeyPressEvent_Callback cb) { qrasterwindow_keypressevent_callback = cb; }
     void setQRasterWindow_KeyReleaseEvent_Callback(QRasterWindow_KeyReleaseEvent_Callback cb) { qrasterwindow_keyreleaseevent_callback = cb; }
     void setQRasterWindow_MousePressEvent_Callback(QRasterWindow_MousePressEvent_Callback cb) { qrasterwindow_mousepressevent_callback = cb; }
@@ -234,7 +227,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_DevType_Callback(QRasterWindow_DevType_Callback cb) { qrasterwindow_devtype_callback = cb; }
     void setQRasterWindow_InitPainter_Callback(QRasterWindow_InitPainter_Callback cb) { qrasterwindow_initpainter_callback = cb; }
     void setQRasterWindow_SharedPainter_Callback(QRasterWindow_SharedPainter_Callback cb) { qrasterwindow_sharedpainter_callback = cb; }
-    void setQRasterWindow_ResolveInterface_Callback(QRasterWindow_ResolveInterface_Callback cb) { qrasterwindow_resolveinterface_callback = cb; }
     void setQRasterWindow_Sender_Callback(QRasterWindow_Sender_Callback cb) { qrasterwindow_sender_callback = cb; }
     void setQRasterWindow_SenderSignalIndex_Callback(QRasterWindow_SenderSignalIndex_Callback cb) { qrasterwindow_sendersignalindex_callback = cb; }
     void setQRasterWindow_Receivers_Callback(QRasterWindow_Receivers_Callback cb) { qrasterwindow_receivers_callback = cb; }
@@ -244,8 +236,8 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_Metacall_IsBase(bool value) const { qrasterwindow_metacall_isbase = value; }
     void setQRasterWindow_Metric_IsBase(bool value) const { qrasterwindow_metric_isbase = value; }
     void setQRasterWindow_Redirected_IsBase(bool value) const { qrasterwindow_redirected_isbase = value; }
-    void setQRasterWindow_ExposeEvent_IsBase(bool value) const { qrasterwindow_exposeevent_isbase = value; }
     void setQRasterWindow_PaintEvent_IsBase(bool value) const { qrasterwindow_paintevent_isbase = value; }
+    void setQRasterWindow_ExposeEvent_IsBase(bool value) const { qrasterwindow_exposeevent_isbase = value; }
     void setQRasterWindow_Event_IsBase(bool value) const { qrasterwindow_event_isbase = value; }
     void setQRasterWindow_SurfaceType_IsBase(bool value) const { qrasterwindow_surfacetype_isbase = value; }
     void setQRasterWindow_Format_IsBase(bool value) const { qrasterwindow_format_isbase = value; }
@@ -258,7 +250,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_FocusOutEvent_IsBase(bool value) const { qrasterwindow_focusoutevent_isbase = value; }
     void setQRasterWindow_ShowEvent_IsBase(bool value) const { qrasterwindow_showevent_isbase = value; }
     void setQRasterWindow_HideEvent_IsBase(bool value) const { qrasterwindow_hideevent_isbase = value; }
-    void setQRasterWindow_CloseEvent_IsBase(bool value) const { qrasterwindow_closeevent_isbase = value; }
     void setQRasterWindow_KeyPressEvent_IsBase(bool value) const { qrasterwindow_keypressevent_isbase = value; }
     void setQRasterWindow_KeyReleaseEvent_IsBase(bool value) const { qrasterwindow_keyreleaseevent_isbase = value; }
     void setQRasterWindow_MousePressEvent_IsBase(bool value) const { qrasterwindow_mousepressevent_isbase = value; }
@@ -278,7 +269,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     void setQRasterWindow_DevType_IsBase(bool value) const { qrasterwindow_devtype_isbase = value; }
     void setQRasterWindow_InitPainter_IsBase(bool value) const { qrasterwindow_initpainter_isbase = value; }
     void setQRasterWindow_SharedPainter_IsBase(bool value) const { qrasterwindow_sharedpainter_isbase = value; }
-    void setQRasterWindow_ResolveInterface_IsBase(bool value) const { qrasterwindow_resolveinterface_isbase = value; }
     void setQRasterWindow_Sender_IsBase(bool value) const { qrasterwindow_sender_isbase = value; }
     void setQRasterWindow_SenderSignalIndex_IsBase(bool value) const { qrasterwindow_sendersignalindex_isbase = value; }
     void setQRasterWindow_Receivers_IsBase(bool value) const { qrasterwindow_receivers_isbase = value; }
@@ -321,18 +311,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void exposeEvent(QExposeEvent* param1) override {
-        if (qrasterwindow_exposeevent_isbase) {
-            qrasterwindow_exposeevent_isbase = false;
-            QRasterWindow::exposeEvent(param1);
-        } else if (qrasterwindow_exposeevent_callback != nullptr) {
-            qrasterwindow_exposeevent_callback(this, param1);
-        } else {
-            QRasterWindow::exposeEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void paintEvent(QPaintEvent* event) override {
         if (qrasterwindow_paintevent_isbase) {
             qrasterwindow_paintevent_isbase = false;
@@ -341,6 +319,18 @@ class VirtualQRasterWindow : public QRasterWindow {
             qrasterwindow_paintevent_callback(this, event);
         } else {
             QRasterWindow::paintEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void exposeEvent(QExposeEvent* param1) override {
+        if (qrasterwindow_exposeevent_isbase) {
+            qrasterwindow_exposeevent_isbase = false;
+            QRasterWindow::exposeEvent(param1);
+        } else if (qrasterwindow_exposeevent_callback != nullptr) {
+            qrasterwindow_exposeevent_callback(this, param1);
+        } else {
+            QRasterWindow::exposeEvent(param1);
         }
     }
 
@@ -489,18 +479,6 @@ class VirtualQRasterWindow : public QRasterWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void closeEvent(QCloseEvent* param1) override {
-        if (qrasterwindow_closeevent_isbase) {
-            qrasterwindow_closeevent_isbase = false;
-            QRasterWindow::closeEvent(param1);
-        } else if (qrasterwindow_closeevent_callback != nullptr) {
-            qrasterwindow_closeevent_callback(this, param1);
-        } else {
-            QRasterWindow::closeEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void keyPressEvent(QKeyEvent* param1) override {
         if (qrasterwindow_keypressevent_isbase) {
             qrasterwindow_keypressevent_isbase = false;
@@ -609,7 +587,7 @@ class VirtualQRasterWindow : public QRasterWindow {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qrasterwindow_nativeevent_isbase) {
             qrasterwindow_nativeevent_isbase = false;
             return QRasterWindow::nativeEvent(eventType, message, result);
@@ -725,18 +703,6 @@ class VirtualQRasterWindow : public QRasterWindow {
             return qrasterwindow_sharedpainter_callback();
         } else {
             return QRasterWindow::sharedPainter();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void* resolveInterface(const char* name, int revision) const {
-        if (qrasterwindow_resolveinterface_isbase) {
-            qrasterwindow_resolveinterface_isbase = false;
-            return QRasterWindow::resolveInterface(name, revision);
-        } else if (qrasterwindow_resolveinterface_callback != nullptr) {
-            return qrasterwindow_resolveinterface_callback(this, name, revision);
-        } else {
-            return QRasterWindow::resolveInterface(name, revision);
         }
     }
 

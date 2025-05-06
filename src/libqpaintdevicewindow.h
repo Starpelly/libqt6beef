@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,10 +22,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAccessibleInterface QAccessibleInterface;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
-typedef struct QCloseEvent QCloseEvent;
 typedef struct QCursor QCursor;
 typedef struct QEvent QEvent;
 typedef struct QExposeEvent QExposeEvent;
@@ -38,12 +37,12 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintDeviceWindow QPaintDeviceWindow;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -65,11 +64,14 @@ QMetaObject* QPaintDeviceWindow_MetaObject(const QPaintDeviceWindow* self);
 void* QPaintDeviceWindow_Metacast(QPaintDeviceWindow* self, const char* param1);
 int QPaintDeviceWindow_Metacall(QPaintDeviceWindow* self, int param1, int param2, void** param3);
 libqt_string QPaintDeviceWindow_Tr(const char* s);
+libqt_string QPaintDeviceWindow_TrUtf8(const char* s);
 void QPaintDeviceWindow_Update(QPaintDeviceWindow* self, QRect* rect);
 void QPaintDeviceWindow_UpdateWithRegion(QPaintDeviceWindow* self, QRegion* region);
 void QPaintDeviceWindow_Update2(QPaintDeviceWindow* self);
 libqt_string QPaintDeviceWindow_Tr2(const char* s, const char* c);
 libqt_string QPaintDeviceWindow_Tr3(const char* s, const char* c, int n);
+libqt_string QPaintDeviceWindow_TrUtf82(const char* s, const char* c);
+libqt_string QPaintDeviceWindow_TrUtf83(const char* s, const char* c, int n);
 int QPaintDeviceWindow_SurfaceType(const QPaintDeviceWindow* self);
 QSurfaceFormat* QPaintDeviceWindow_Format(const QPaintDeviceWindow* self);
 QSize* QPaintDeviceWindow_Size(const QPaintDeviceWindow* self);

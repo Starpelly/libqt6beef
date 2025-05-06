@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QFileSelector QFileSelector;
@@ -28,6 +28,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
@@ -42,6 +43,7 @@ int QFileSelector_Metacall(QFileSelector* self, int param1, int param2, void** p
 void QFileSelector_OnMetacall(QFileSelector* self, intptr_t slot);
 int QFileSelector_QBaseMetacall(QFileSelector* self, int param1, int param2, void** param3);
 libqt_string QFileSelector_Tr(const char* s);
+libqt_string QFileSelector_TrUtf8(const char* s);
 libqt_string QFileSelector_Select(const QFileSelector* self, libqt_string filePath);
 QUrl* QFileSelector_SelectWithFilePath(const QFileSelector* self, QUrl* filePath);
 libqt_list /* of libqt_string */ QFileSelector_ExtraSelectors(const QFileSelector* self);
@@ -49,6 +51,8 @@ void QFileSelector_SetExtraSelectors(QFileSelector* self, libqt_list /* of libqt
 libqt_list /* of libqt_string */ QFileSelector_AllSelectors(const QFileSelector* self);
 libqt_string QFileSelector_Tr2(const char* s, const char* c);
 libqt_string QFileSelector_Tr3(const char* s, const char* c, int n);
+libqt_string QFileSelector_TrUtf82(const char* s, const char* c);
+libqt_string QFileSelector_TrUtf83(const char* s, const char* c, int n);
 bool QFileSelector_Event(QFileSelector* self, QEvent* event);
 void QFileSelector_OnEvent(QFileSelector* self, intptr_t slot);
 bool QFileSelector_QBaseEvent(QFileSelector* self, QEvent* event);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -34,14 +36,13 @@ class VirtualQMenuBar : public QMenuBar {
     using QMenuBar_TimerEvent_Callback = void (*)(QMenuBar*, QTimerEvent*);
     using QMenuBar_EventFilter_Callback = bool (*)(QMenuBar*, QObject*, QEvent*);
     using QMenuBar_Event_Callback = bool (*)(QMenuBar*, QEvent*);
-    using QMenuBar_InitStyleOption_Callback = void (*)(const QMenuBar*, QStyleOptionMenuItem*, const QAction*);
     using QMenuBar_DevType_Callback = int (*)();
     using QMenuBar_HasHeightForWidth_Callback = bool (*)();
     using QMenuBar_PaintEngine_Callback = QPaintEngine* (*)();
     using QMenuBar_MouseDoubleClickEvent_Callback = void (*)(QMenuBar*, QMouseEvent*);
     using QMenuBar_WheelEvent_Callback = void (*)(QMenuBar*, QWheelEvent*);
     using QMenuBar_KeyReleaseEvent_Callback = void (*)(QMenuBar*, QKeyEvent*);
-    using QMenuBar_EnterEvent_Callback = void (*)(QMenuBar*, QEnterEvent*);
+    using QMenuBar_EnterEvent_Callback = void (*)(QMenuBar*, QEvent*);
     using QMenuBar_MoveEvent_Callback = void (*)(QMenuBar*, QMoveEvent*);
     using QMenuBar_CloseEvent_Callback = void (*)(QMenuBar*, QCloseEvent*);
     using QMenuBar_ContextMenuEvent_Callback = void (*)(QMenuBar*, QContextMenuEvent*);
@@ -52,7 +53,7 @@ class VirtualQMenuBar : public QMenuBar {
     using QMenuBar_DropEvent_Callback = void (*)(QMenuBar*, QDropEvent*);
     using QMenuBar_ShowEvent_Callback = void (*)(QMenuBar*, QShowEvent*);
     using QMenuBar_HideEvent_Callback = void (*)(QMenuBar*, QHideEvent*);
-    using QMenuBar_NativeEvent_Callback = bool (*)(QMenuBar*, const QByteArray&, void*, qintptr*);
+    using QMenuBar_NativeEvent_Callback = bool (*)(QMenuBar*, const QByteArray&, void*, long*);
     using QMenuBar_Metric_Callback = int (*)(const QMenuBar*, QPaintDevice::PaintDeviceMetric);
     using QMenuBar_InitPainter_Callback = void (*)(const QMenuBar*, QPainter*);
     using QMenuBar_Redirected_Callback = QPaintDevice* (*)(const QMenuBar*, QPoint*);
@@ -64,6 +65,7 @@ class VirtualQMenuBar : public QMenuBar {
     using QMenuBar_CustomEvent_Callback = void (*)(QMenuBar*, QEvent*);
     using QMenuBar_ConnectNotify_Callback = void (*)(QMenuBar*, const QMetaMethod&);
     using QMenuBar_DisconnectNotify_Callback = void (*)(QMenuBar*, const QMetaMethod&);
+    using QMenuBar_InitStyleOption_Callback = void (*)(const QMenuBar*, QStyleOptionMenuItem*, const QAction*);
     using QMenuBar_UpdateMicroFocus_Callback = void (*)();
     using QMenuBar_Create_Callback = void (*)();
     using QMenuBar_Destroy_Callback = void (*)();
@@ -95,7 +97,6 @@ class VirtualQMenuBar : public QMenuBar {
     QMenuBar_TimerEvent_Callback qmenubar_timerevent_callback = nullptr;
     QMenuBar_EventFilter_Callback qmenubar_eventfilter_callback = nullptr;
     QMenuBar_Event_Callback qmenubar_event_callback = nullptr;
-    QMenuBar_InitStyleOption_Callback qmenubar_initstyleoption_callback = nullptr;
     QMenuBar_DevType_Callback qmenubar_devtype_callback = nullptr;
     QMenuBar_HasHeightForWidth_Callback qmenubar_hasheightforwidth_callback = nullptr;
     QMenuBar_PaintEngine_Callback qmenubar_paintengine_callback = nullptr;
@@ -125,6 +126,7 @@ class VirtualQMenuBar : public QMenuBar {
     QMenuBar_CustomEvent_Callback qmenubar_customevent_callback = nullptr;
     QMenuBar_ConnectNotify_Callback qmenubar_connectnotify_callback = nullptr;
     QMenuBar_DisconnectNotify_Callback qmenubar_disconnectnotify_callback = nullptr;
+    QMenuBar_InitStyleOption_Callback qmenubar_initstyleoption_callback = nullptr;
     QMenuBar_UpdateMicroFocus_Callback qmenubar_updatemicrofocus_callback = nullptr;
     QMenuBar_Create_Callback qmenubar_create_callback = nullptr;
     QMenuBar_Destroy_Callback qmenubar_destroy_callback = nullptr;
@@ -155,7 +157,6 @@ class VirtualQMenuBar : public QMenuBar {
     mutable bool qmenubar_timerevent_isbase = false;
     mutable bool qmenubar_eventfilter_isbase = false;
     mutable bool qmenubar_event_isbase = false;
-    mutable bool qmenubar_initstyleoption_isbase = false;
     mutable bool qmenubar_devtype_isbase = false;
     mutable bool qmenubar_hasheightforwidth_isbase = false;
     mutable bool qmenubar_paintengine_isbase = false;
@@ -185,6 +186,7 @@ class VirtualQMenuBar : public QMenuBar {
     mutable bool qmenubar_customevent_isbase = false;
     mutable bool qmenubar_connectnotify_isbase = false;
     mutable bool qmenubar_disconnectnotify_isbase = false;
+    mutable bool qmenubar_initstyleoption_isbase = false;
     mutable bool qmenubar_updatemicrofocus_isbase = false;
     mutable bool qmenubar_create_isbase = false;
     mutable bool qmenubar_destroy_isbase = false;
@@ -219,7 +221,6 @@ class VirtualQMenuBar : public QMenuBar {
         qmenubar_timerevent_callback = nullptr;
         qmenubar_eventfilter_callback = nullptr;
         qmenubar_event_callback = nullptr;
-        qmenubar_initstyleoption_callback = nullptr;
         qmenubar_devtype_callback = nullptr;
         qmenubar_hasheightforwidth_callback = nullptr;
         qmenubar_paintengine_callback = nullptr;
@@ -249,6 +250,7 @@ class VirtualQMenuBar : public QMenuBar {
         qmenubar_customevent_callback = nullptr;
         qmenubar_connectnotify_callback = nullptr;
         qmenubar_disconnectnotify_callback = nullptr;
+        qmenubar_initstyleoption_callback = nullptr;
         qmenubar_updatemicrofocus_callback = nullptr;
         qmenubar_create_callback = nullptr;
         qmenubar_destroy_callback = nullptr;
@@ -280,7 +282,6 @@ class VirtualQMenuBar : public QMenuBar {
     void setQMenuBar_TimerEvent_Callback(QMenuBar_TimerEvent_Callback cb) { qmenubar_timerevent_callback = cb; }
     void setQMenuBar_EventFilter_Callback(QMenuBar_EventFilter_Callback cb) { qmenubar_eventfilter_callback = cb; }
     void setQMenuBar_Event_Callback(QMenuBar_Event_Callback cb) { qmenubar_event_callback = cb; }
-    void setQMenuBar_InitStyleOption_Callback(QMenuBar_InitStyleOption_Callback cb) { qmenubar_initstyleoption_callback = cb; }
     void setQMenuBar_DevType_Callback(QMenuBar_DevType_Callback cb) { qmenubar_devtype_callback = cb; }
     void setQMenuBar_HasHeightForWidth_Callback(QMenuBar_HasHeightForWidth_Callback cb) { qmenubar_hasheightforwidth_callback = cb; }
     void setQMenuBar_PaintEngine_Callback(QMenuBar_PaintEngine_Callback cb) { qmenubar_paintengine_callback = cb; }
@@ -310,6 +311,7 @@ class VirtualQMenuBar : public QMenuBar {
     void setQMenuBar_CustomEvent_Callback(QMenuBar_CustomEvent_Callback cb) { qmenubar_customevent_callback = cb; }
     void setQMenuBar_ConnectNotify_Callback(QMenuBar_ConnectNotify_Callback cb) { qmenubar_connectnotify_callback = cb; }
     void setQMenuBar_DisconnectNotify_Callback(QMenuBar_DisconnectNotify_Callback cb) { qmenubar_disconnectnotify_callback = cb; }
+    void setQMenuBar_InitStyleOption_Callback(QMenuBar_InitStyleOption_Callback cb) { qmenubar_initstyleoption_callback = cb; }
     void setQMenuBar_UpdateMicroFocus_Callback(QMenuBar_UpdateMicroFocus_Callback cb) { qmenubar_updatemicrofocus_callback = cb; }
     void setQMenuBar_Create_Callback(QMenuBar_Create_Callback cb) { qmenubar_create_callback = cb; }
     void setQMenuBar_Destroy_Callback(QMenuBar_Destroy_Callback cb) { qmenubar_destroy_callback = cb; }
@@ -340,7 +342,6 @@ class VirtualQMenuBar : public QMenuBar {
     void setQMenuBar_TimerEvent_IsBase(bool value) const { qmenubar_timerevent_isbase = value; }
     void setQMenuBar_EventFilter_IsBase(bool value) const { qmenubar_eventfilter_isbase = value; }
     void setQMenuBar_Event_IsBase(bool value) const { qmenubar_event_isbase = value; }
-    void setQMenuBar_InitStyleOption_IsBase(bool value) const { qmenubar_initstyleoption_isbase = value; }
     void setQMenuBar_DevType_IsBase(bool value) const { qmenubar_devtype_isbase = value; }
     void setQMenuBar_HasHeightForWidth_IsBase(bool value) const { qmenubar_hasheightforwidth_isbase = value; }
     void setQMenuBar_PaintEngine_IsBase(bool value) const { qmenubar_paintengine_isbase = value; }
@@ -370,6 +371,7 @@ class VirtualQMenuBar : public QMenuBar {
     void setQMenuBar_CustomEvent_IsBase(bool value) const { qmenubar_customevent_isbase = value; }
     void setQMenuBar_ConnectNotify_IsBase(bool value) const { qmenubar_connectnotify_isbase = value; }
     void setQMenuBar_DisconnectNotify_IsBase(bool value) const { qmenubar_disconnectnotify_isbase = value; }
+    void setQMenuBar_InitStyleOption_IsBase(bool value) const { qmenubar_initstyleoption_isbase = value; }
     void setQMenuBar_UpdateMicroFocus_IsBase(bool value) const { qmenubar_updatemicrofocus_isbase = value; }
     void setQMenuBar_Create_IsBase(bool value) const { qmenubar_create_isbase = value; }
     void setQMenuBar_Destroy_IsBase(bool value) const { qmenubar_destroy_isbase = value; }
@@ -609,18 +611,6 @@ class VirtualQMenuBar : public QMenuBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionMenuItem* option, const QAction* action) const override {
-        if (qmenubar_initstyleoption_isbase) {
-            qmenubar_initstyleoption_isbase = false;
-            QMenuBar::initStyleOption(option, action);
-        } else if (qmenubar_initstyleoption_callback != nullptr) {
-            qmenubar_initstyleoption_callback(this, option, action);
-        } else {
-            QMenuBar::initStyleOption(option, action);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qmenubar_devtype_isbase) {
             qmenubar_devtype_isbase = false;
@@ -693,7 +683,7 @@ class VirtualQMenuBar : public QMenuBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qmenubar_enterevent_isbase) {
             qmenubar_enterevent_isbase = false;
             QMenuBar::enterEvent(event);
@@ -825,7 +815,7 @@ class VirtualQMenuBar : public QMenuBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qmenubar_nativeevent_isbase) {
             qmenubar_nativeevent_isbase = false;
             return QMenuBar::nativeEvent(eventType, message, result);
@@ -965,6 +955,18 @@ class VirtualQMenuBar : public QMenuBar {
             qmenubar_disconnectnotify_callback(this, signal);
         } else {
             QMenuBar::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionMenuItem* option, const QAction* action) const {
+        if (qmenubar_initstyleoption_isbase) {
+            qmenubar_initstyleoption_isbase = false;
+            QMenuBar::initStyleOption(option, action);
+        } else if (qmenubar_initstyleoption_callback != nullptr) {
+            qmenubar_initstyleoption_callback(this, option, action);
+        } else {
+            QMenuBar::initStyleOption(option, action);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QProgressBar QProgressBar;
 typedef struct QProgressDialog QProgressDialog;
 typedef struct QPushButton QPushButton;
@@ -97,6 +96,7 @@ int QProgressDialog_Metacall(QProgressDialog* self, int param1, int param2, void
 void QProgressDialog_OnMetacall(QProgressDialog* self, intptr_t slot);
 int QProgressDialog_QBaseMetacall(QProgressDialog* self, int param1, int param2, void** param3);
 libqt_string QProgressDialog_Tr(const char* s);
+libqt_string QProgressDialog_TrUtf8(const char* s);
 void QProgressDialog_SetLabel(QProgressDialog* self, QLabel* label);
 void QProgressDialog_SetCancelButton(QProgressDialog* self, QPushButton* button);
 void QProgressDialog_SetBar(QProgressDialog* self, QProgressBar* bar);
@@ -138,6 +138,8 @@ void QProgressDialog_OnShowEvent(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseShowEvent(QProgressDialog* self, QShowEvent* event);
 libqt_string QProgressDialog_Tr2(const char* s, const char* c);
 libqt_string QProgressDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QProgressDialog_TrUtf82(const char* s, const char* c);
+libqt_string QProgressDialog_TrUtf83(const char* s, const char* c, int n);
 void QProgressDialog_SetVisible(QProgressDialog* self, bool visible);
 void QProgressDialog_OnSetVisible(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseSetVisible(QProgressDialog* self, bool visible);
@@ -207,9 +209,9 @@ void QProgressDialog_QBaseFocusInEvent(QProgressDialog* self, QFocusEvent* event
 void QProgressDialog_FocusOutEvent(QProgressDialog* self, QFocusEvent* event);
 void QProgressDialog_OnFocusOutEvent(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseFocusOutEvent(QProgressDialog* self, QFocusEvent* event);
-void QProgressDialog_EnterEvent(QProgressDialog* self, QEnterEvent* event);
+void QProgressDialog_EnterEvent(QProgressDialog* self, QEvent* event);
 void QProgressDialog_OnEnterEvent(QProgressDialog* self, intptr_t slot);
-void QProgressDialog_QBaseEnterEvent(QProgressDialog* self, QEnterEvent* event);
+void QProgressDialog_QBaseEnterEvent(QProgressDialog* self, QEvent* event);
 void QProgressDialog_LeaveEvent(QProgressDialog* self, QEvent* event);
 void QProgressDialog_OnLeaveEvent(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseLeaveEvent(QProgressDialog* self, QEvent* event);
@@ -240,9 +242,9 @@ void QProgressDialog_QBaseDropEvent(QProgressDialog* self, QDropEvent* event);
 void QProgressDialog_HideEvent(QProgressDialog* self, QHideEvent* event);
 void QProgressDialog_OnHideEvent(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseHideEvent(QProgressDialog* self, QHideEvent* event);
-bool QProgressDialog_NativeEvent(QProgressDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QProgressDialog_NativeEvent(QProgressDialog* self, libqt_string eventType, void* message, long* result);
 void QProgressDialog_OnNativeEvent(QProgressDialog* self, intptr_t slot);
-bool QProgressDialog_QBaseNativeEvent(QProgressDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QProgressDialog_QBaseNativeEvent(QProgressDialog* self, libqt_string eventType, void* message, long* result);
 void QProgressDialog_InputMethodEvent(QProgressDialog* self, QInputMethodEvent* param1);
 void QProgressDialog_OnInputMethodEvent(QProgressDialog* self, intptr_t slot);
 void QProgressDialog_QBaseInputMethodEvent(QProgressDialog* self, QInputMethodEvent* param1);

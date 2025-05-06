@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -55,6 +54,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -62,7 +62,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -88,6 +87,7 @@ int QSizeGrip_Metacall(QSizeGrip* self, int param1, int param2, void** param3);
 void QSizeGrip_OnMetacall(QSizeGrip* self, intptr_t slot);
 int QSizeGrip_QBaseMetacall(QSizeGrip* self, int param1, int param2, void** param3);
 libqt_string QSizeGrip_Tr(const char* s);
+libqt_string QSizeGrip_TrUtf8(const char* s);
 QSize* QSizeGrip_SizeHint(const QSizeGrip* self);
 void QSizeGrip_OnSizeHint(const QSizeGrip* self, intptr_t slot);
 QSize* QSizeGrip_QBaseSizeHint(const QSizeGrip* self);
@@ -123,6 +123,8 @@ void QSizeGrip_OnEvent(QSizeGrip* self, intptr_t slot);
 bool QSizeGrip_QBaseEvent(QSizeGrip* self, QEvent* param1);
 libqt_string QSizeGrip_Tr2(const char* s, const char* c);
 libqt_string QSizeGrip_Tr3(const char* s, const char* c, int n);
+libqt_string QSizeGrip_TrUtf82(const char* s, const char* c);
+libqt_string QSizeGrip_TrUtf83(const char* s, const char* c, int n);
 int QSizeGrip_DevType(const QSizeGrip* self);
 void QSizeGrip_OnDevType(const QSizeGrip* self, intptr_t slot);
 int QSizeGrip_QBaseDevType(const QSizeGrip* self);
@@ -156,9 +158,9 @@ void QSizeGrip_QBaseFocusInEvent(QSizeGrip* self, QFocusEvent* event);
 void QSizeGrip_FocusOutEvent(QSizeGrip* self, QFocusEvent* event);
 void QSizeGrip_OnFocusOutEvent(QSizeGrip* self, intptr_t slot);
 void QSizeGrip_QBaseFocusOutEvent(QSizeGrip* self, QFocusEvent* event);
-void QSizeGrip_EnterEvent(QSizeGrip* self, QEnterEvent* event);
+void QSizeGrip_EnterEvent(QSizeGrip* self, QEvent* event);
 void QSizeGrip_OnEnterEvent(QSizeGrip* self, intptr_t slot);
-void QSizeGrip_QBaseEnterEvent(QSizeGrip* self, QEnterEvent* event);
+void QSizeGrip_QBaseEnterEvent(QSizeGrip* self, QEvent* event);
 void QSizeGrip_LeaveEvent(QSizeGrip* self, QEvent* event);
 void QSizeGrip_OnLeaveEvent(QSizeGrip* self, intptr_t slot);
 void QSizeGrip_QBaseLeaveEvent(QSizeGrip* self, QEvent* event);
@@ -189,9 +191,9 @@ void QSizeGrip_QBaseDragLeaveEvent(QSizeGrip* self, QDragLeaveEvent* event);
 void QSizeGrip_DropEvent(QSizeGrip* self, QDropEvent* event);
 void QSizeGrip_OnDropEvent(QSizeGrip* self, intptr_t slot);
 void QSizeGrip_QBaseDropEvent(QSizeGrip* self, QDropEvent* event);
-bool QSizeGrip_NativeEvent(QSizeGrip* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSizeGrip_NativeEvent(QSizeGrip* self, libqt_string eventType, void* message, long* result);
 void QSizeGrip_OnNativeEvent(QSizeGrip* self, intptr_t slot);
-bool QSizeGrip_QBaseNativeEvent(QSizeGrip* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSizeGrip_QBaseNativeEvent(QSizeGrip* self, libqt_string eventType, void* message, long* result);
 void QSizeGrip_ChangeEvent(QSizeGrip* self, QEvent* param1);
 void QSizeGrip_OnChangeEvent(QSizeGrip* self, intptr_t slot);
 void QSizeGrip_QBaseChangeEvent(QSizeGrip* self, QEvent* param1);

@@ -1,11 +1,11 @@
 #include <QByteArray>
 #include <QChar>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QLocale>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
+#include <QTextCodec>
 #include <QTextStream>
 #include <qtextstream.h>
 #include "libqtextstream.h"
@@ -26,15 +26,19 @@ QTextStream* QTextStream_new3(libqt_string array) {
 
 QTextStream* QTextStream_new4(libqt_string array, int openMode) {
     QByteArray array_QByteArray(array.data, array.len);
-    return new QTextStream(array_QByteArray, static_cast<QIODeviceBase::OpenMode>(openMode));
+    return new QTextStream(array_QByteArray, static_cast<QIODevice::OpenMode>(openMode));
 }
 
-void QTextStream_SetEncoding(QTextStream* self, int encoding) {
-    self->setEncoding(static_cast<QStringConverter::Encoding>(encoding));
+void QTextStream_SetCodec(QTextStream* self, QTextCodec* codec) {
+    self->setCodec(codec);
 }
 
-int QTextStream_Encoding(const QTextStream* self) {
-    return static_cast<int>(self->encoding());
+void QTextStream_SetCodecWithCodecName(QTextStream* self, const char* codecName) {
+    self->setCodec(codecName);
+}
+
+QTextCodec* QTextStream_Codec(const QTextStream* self) {
+    return self->codec();
 }
 
 void QTextStream_SetAutoDetectUnicode(QTextStream* self, bool enabled) {

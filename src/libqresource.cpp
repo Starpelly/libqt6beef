@@ -1,5 +1,6 @@
 #include <QByteArray>
 #include <QDateTime>
+#include <QList>
 #include <QLocale>
 #include <QResource>
 #include <QString>
@@ -92,6 +93,36 @@ libqt_string QResource_UncompressedData(const QResource* self) {
 
 QDateTime* QResource_LastModified(const QResource* self) {
     return new QDateTime(self->lastModified());
+}
+
+void QResource_AddSearchPath(libqt_string path) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    QResource::addSearchPath(path_QString);
+}
+
+libqt_list /* of libqt_string */ QResource_SearchPaths() {
+    QStringList _ret = QResource::searchPaths();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    libqt_string* _arr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        QString _lv_ret = _ret[i];
+        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+        QByteArray _lv_b = _lv_ret.toUtf8();
+        libqt_string _lv_str;
+        _lv_str.len = _lv_b.length();
+        _lv_str.data = static_cast<char*>(malloc((_lv_str.len + 1) * sizeof(char)));
+        memcpy(_lv_str.data, _lv_b.data(), _lv_str.len);
+        _lv_str.data[_lv_str.len] = '\0';
+        _arr[i] = _lv_str;
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+bool QResource_IsCompressed(const QResource* self) {
+    return self->isCompressed();
 }
 
 bool QResource_RegisterResource(libqt_string rccFilename) {

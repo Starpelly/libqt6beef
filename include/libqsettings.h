@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,15 +21,15 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QSettings QSettings;
+typedef struct QTextCodec QTextCodec;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -68,27 +70,27 @@ int QSettings_Metacall(QSettings* self, int param1, int param2, void** param3);
 void QSettings_OnMetacall(QSettings* self, intptr_t slot);
 int QSettings_QBaseMetacall(QSettings* self, int param1, int param2, void** param3);
 libqt_string QSettings_Tr(const char* s);
+libqt_string QSettings_TrUtf8(const char* s);
 void QSettings_Clear(QSettings* self);
 void QSettings_Sync(QSettings* self);
 int QSettings_Status(const QSettings* self);
 bool QSettings_IsAtomicSyncRequired(const QSettings* self);
 void QSettings_SetAtomicSyncRequired(QSettings* self, bool enable);
-void QSettings_BeginGroup(QSettings* self, char* prefix);
+void QSettings_BeginGroup(QSettings* self, libqt_string prefix);
 void QSettings_EndGroup(QSettings* self);
 libqt_string QSettings_Group(const QSettings* self);
-int QSettings_BeginReadArray(QSettings* self, char* prefix);
-void QSettings_BeginWriteArray(QSettings* self, char* prefix);
+int QSettings_BeginReadArray(QSettings* self, libqt_string prefix);
+void QSettings_BeginWriteArray(QSettings* self, libqt_string prefix);
 void QSettings_EndArray(QSettings* self);
 void QSettings_SetArrayIndex(QSettings* self, int i);
 libqt_list /* of libqt_string */ QSettings_AllKeys(const QSettings* self);
 libqt_list /* of libqt_string */ QSettings_ChildKeys(const QSettings* self);
 libqt_list /* of libqt_string */ QSettings_ChildGroups(const QSettings* self);
 bool QSettings_IsWritable(const QSettings* self);
-void QSettings_SetValue(QSettings* self, char* key, QVariant* value);
-QVariant* QSettings_Value(const QSettings* self, char* key, QVariant* defaultValue);
-QVariant* QSettings_ValueWithKey(const QSettings* self, char* key);
-void QSettings_Remove(QSettings* self, char* key);
-bool QSettings_Contains(const QSettings* self, char* key);
+void QSettings_SetValue(QSettings* self, libqt_string key, QVariant* value);
+QVariant* QSettings_Value(const QSettings* self, libqt_string key);
+void QSettings_Remove(QSettings* self, libqt_string key);
+bool QSettings_Contains(const QSettings* self, libqt_string key);
 void QSettings_SetFallbacksEnabled(QSettings* self, bool b);
 bool QSettings_FallbacksEnabled(const QSettings* self);
 libqt_string QSettings_FileName(const QSettings* self);
@@ -96,15 +98,23 @@ int QSettings_Format(const QSettings* self);
 int QSettings_Scope(const QSettings* self);
 libqt_string QSettings_OrganizationName(const QSettings* self);
 libqt_string QSettings_ApplicationName(const QSettings* self);
+void QSettings_SetIniCodec(QSettings* self, QTextCodec* codec);
+void QSettings_SetIniCodecWithCodecName(QSettings* self, const char* codecName);
+QTextCodec* QSettings_IniCodec(const QSettings* self);
 void QSettings_SetDefaultFormat(int format);
 int QSettings_DefaultFormat();
+void QSettings_SetSystemIniPath(libqt_string dir);
+void QSettings_SetUserIniPath(libqt_string dir);
 void QSettings_SetPath(int format, int scope, libqt_string path);
 bool QSettings_Event(QSettings* self, QEvent* event);
 void QSettings_OnEvent(QSettings* self, intptr_t slot);
 bool QSettings_QBaseEvent(QSettings* self, QEvent* event);
 libqt_string QSettings_Tr2(const char* s, const char* c);
 libqt_string QSettings_Tr3(const char* s, const char* c, int n);
-void QSettings_BeginWriteArray2(QSettings* self, char* prefix, int size);
+libqt_string QSettings_TrUtf82(const char* s, const char* c);
+libqt_string QSettings_TrUtf83(const char* s, const char* c, int n);
+void QSettings_BeginWriteArray2(QSettings* self, libqt_string prefix, int size);
+QVariant* QSettings_Value2(const QSettings* self, libqt_string key, QVariant* defaultValue);
 bool QSettings_EventFilter(QSettings* self, QObject* watched, QEvent* event);
 void QSettings_OnEventFilter(QSettings* self, intptr_t slot);
 bool QSettings_QBaseEventFilter(QSettings* self, QObject* watched, QEvent* event);

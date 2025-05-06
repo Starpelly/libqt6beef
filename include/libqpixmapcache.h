@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -30,8 +32,10 @@ void QPixmapCache_CopyAssign(QPixmapCache* self, QPixmapCache* other);
 void QPixmapCache_MoveAssign(QPixmapCache* self, QPixmapCache* other);
 int QPixmapCache_CacheLimit();
 void QPixmapCache_SetCacheLimit(int cacheLimit);
-bool QPixmapCache_Find(libqt_string key, QPixmap* pixmap);
-bool QPixmapCache_Find2(QPixmapCache__Key* key, QPixmap* pixmap);
+QPixmap* QPixmapCache_Find(libqt_string key);
+bool QPixmapCache_Find2(libqt_string key, QPixmap* pixmap);
+bool QPixmapCache_Find3(libqt_string key, QPixmap* pixmap);
+bool QPixmapCache_Find4(QPixmapCache__Key* key, QPixmap* pixmap);
 bool QPixmapCache_Insert(libqt_string key, QPixmap* pixmap);
 QPixmapCache__Key* QPixmapCache_InsertWithPixmap(QPixmap* pixmap);
 bool QPixmapCache_Replace(QPixmapCache__Key* key, QPixmap* pixmap);

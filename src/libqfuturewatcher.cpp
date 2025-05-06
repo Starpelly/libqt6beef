@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -9,6 +7,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -33,6 +32,18 @@ int QFutureWatcherBase_Metacall(QFutureWatcherBase* self, int param1, int param2
 
 libqt_string QFutureWatcherBase_Tr(const char* s) {
     QString _ret = QFutureWatcherBase::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFutureWatcherBase_TrUtf8(const char* s) {
+    QString _ret = QFutureWatcherBase::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -87,14 +98,6 @@ bool QFutureWatcherBase_IsPaused(const QFutureWatcherBase* self) {
     return self->isPaused();
 }
 
-bool QFutureWatcherBase_IsSuspending(const QFutureWatcherBase* self) {
-    return self->isSuspending();
-}
-
-bool QFutureWatcherBase_IsSuspended(const QFutureWatcherBase* self) {
-    return self->isSuspended();
-}
-
 void QFutureWatcherBase_WaitForFinished(QFutureWatcherBase* self) {
     self->waitForFinished();
 }
@@ -147,28 +150,6 @@ void QFutureWatcherBase_Paused(QFutureWatcherBase* self) {
 void QFutureWatcherBase_Connect_Paused(QFutureWatcherBase* self, intptr_t slot) {
     void (*slotFunc)(QFutureWatcherBase*) = reinterpret_cast<void (*)(QFutureWatcherBase*)>(slot);
     QFutureWatcherBase::connect(self, &QFutureWatcherBase::paused, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QFutureWatcherBase_Suspending(QFutureWatcherBase* self) {
-    self->suspending();
-}
-
-void QFutureWatcherBase_Connect_Suspending(QFutureWatcherBase* self, intptr_t slot) {
-    void (*slotFunc)(QFutureWatcherBase*) = reinterpret_cast<void (*)(QFutureWatcherBase*)>(slot);
-    QFutureWatcherBase::connect(self, &QFutureWatcherBase::suspending, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QFutureWatcherBase_Suspended(QFutureWatcherBase* self) {
-    self->suspended();
-}
-
-void QFutureWatcherBase_Connect_Suspended(QFutureWatcherBase* self, intptr_t slot) {
-    void (*slotFunc)(QFutureWatcherBase*) = reinterpret_cast<void (*)(QFutureWatcherBase*)>(slot);
-    QFutureWatcherBase::connect(self, &QFutureWatcherBase::suspended, [self, slotFunc]() {
         slotFunc(self);
     });
 }
@@ -259,28 +240,16 @@ void QFutureWatcherBase_Cancel(QFutureWatcherBase* self) {
     self->cancel();
 }
 
-void QFutureWatcherBase_SetSuspended(QFutureWatcherBase* self, bool suspendVal) {
-    self->setSuspended(suspendVal);
-}
-
-void QFutureWatcherBase_Suspend(QFutureWatcherBase* self) {
-    self->suspend();
-}
-
-void QFutureWatcherBase_Resume(QFutureWatcherBase* self) {
-    self->resume();
-}
-
-void QFutureWatcherBase_ToggleSuspended(QFutureWatcherBase* self) {
-    self->toggleSuspended();
-}
-
 void QFutureWatcherBase_SetPaused(QFutureWatcherBase* self, bool paused) {
     self->setPaused(paused);
 }
 
 void QFutureWatcherBase_Pause(QFutureWatcherBase* self) {
     self->pause();
+}
+
+void QFutureWatcherBase_Resume(QFutureWatcherBase* self) {
+    self->resume();
 }
 
 void QFutureWatcherBase_TogglePaused(QFutureWatcherBase* self) {
@@ -301,6 +270,30 @@ libqt_string QFutureWatcherBase_Tr2(const char* s, const char* c) {
 
 libqt_string QFutureWatcherBase_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFutureWatcherBase::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFutureWatcherBase_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFutureWatcherBase::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFutureWatcherBase_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFutureWatcherBase::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,10 +24,9 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractItemDelegate QAbstractItemDelegate;
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractItemView QAbstractItemView;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
+typedef struct QFontMetrics QFontMetrics;
 typedef struct QHelpEvent QHelpEvent;
 typedef struct QItemEditorFactory QItemEditorFactory;
 typedef struct QLocale QLocale;
@@ -34,6 +35,7 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QModelIndex QModelIndex;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QSize QSize;
 typedef struct QStyleOptionViewItem QStyleOptionViewItem;
@@ -52,6 +54,7 @@ int QStyledItemDelegate_Metacall(QStyledItemDelegate* self, int param1, int para
 void QStyledItemDelegate_OnMetacall(QStyledItemDelegate* self, intptr_t slot);
 int QStyledItemDelegate_QBaseMetacall(QStyledItemDelegate* self, int param1, int param2, void** param3);
 libqt_string QStyledItemDelegate_Tr(const char* s);
+libqt_string QStyledItemDelegate_TrUtf8(const char* s);
 void QStyledItemDelegate_Paint(const QStyledItemDelegate* self, QPainter* painter, QStyleOptionViewItem* option, QModelIndex* index);
 void QStyledItemDelegate_OnPaint(const QStyledItemDelegate* self, intptr_t slot);
 void QStyledItemDelegate_QBasePaint(const QStyledItemDelegate* self, QPainter* painter, QStyleOptionViewItem* option, QModelIndex* index);
@@ -86,6 +89,8 @@ void QStyledItemDelegate_OnEditorEvent(QStyledItemDelegate* self, intptr_t slot)
 bool QStyledItemDelegate_QBaseEditorEvent(QStyledItemDelegate* self, QEvent* event, QAbstractItemModel* model, QStyleOptionViewItem* option, QModelIndex* index);
 libqt_string QStyledItemDelegate_Tr2(const char* s, const char* c);
 libqt_string QStyledItemDelegate_Tr3(const char* s, const char* c, int n);
+libqt_string QStyledItemDelegate_TrUtf82(const char* s, const char* c);
+libqt_string QStyledItemDelegate_TrUtf83(const char* s, const char* c, int n);
 void QStyledItemDelegate_DestroyEditor(const QStyledItemDelegate* self, QWidget* editor, QModelIndex* index);
 void QStyledItemDelegate_OnDestroyEditor(const QStyledItemDelegate* self, intptr_t slot);
 void QStyledItemDelegate_QBaseDestroyEditor(const QStyledItemDelegate* self, QWidget* editor, QModelIndex* index);

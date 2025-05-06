@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCursor QCursor;
 typedef struct QEvent QEvent;
@@ -40,10 +40,12 @@ typedef struct QGraphicsTransform QGraphicsTransform;
 typedef struct QGraphicsWidget QGraphicsWidget;
 typedef struct QInputMethodEvent QInputMethodEvent;
 typedef struct QKeyEvent QKeyEvent;
+typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPointF QPointF;
@@ -69,6 +71,7 @@ int QGraphicsSvgItem_Metacall(QGraphicsSvgItem* self, int param1, int param2, vo
 void QGraphicsSvgItem_OnMetacall(QGraphicsSvgItem* self, intptr_t slot);
 int QGraphicsSvgItem_QBaseMetacall(QGraphicsSvgItem* self, int param1, int param2, void** param3);
 libqt_string QGraphicsSvgItem_Tr(const char* s);
+libqt_string QGraphicsSvgItem_TrUtf8(const char* s);
 void QGraphicsSvgItem_SetSharedRenderer(QGraphicsSvgItem* self, QSvgRenderer* renderer);
 QSvgRenderer* QGraphicsSvgItem_Renderer(const QGraphicsSvgItem* self);
 void QGraphicsSvgItem_SetElementId(QGraphicsSvgItem* self, libqt_string id);
@@ -88,6 +91,8 @@ void QGraphicsSvgItem_OnType(const QGraphicsSvgItem* self, intptr_t slot);
 int QGraphicsSvgItem_QBaseType(const QGraphicsSvgItem* self);
 libqt_string QGraphicsSvgItem_Tr2(const char* s, const char* c);
 libqt_string QGraphicsSvgItem_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsSvgItem_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsSvgItem_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsSvgItem_Event(QGraphicsSvgItem* self, QEvent* ev);
 void QGraphicsSvgItem_OnEvent(QGraphicsSvgItem* self, intptr_t slot);
 bool QGraphicsSvgItem_QBaseEvent(QGraphicsSvgItem* self, QEvent* ev);

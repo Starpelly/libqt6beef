@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -144,7 +146,8 @@ void QTextFormat_Delete(QTextFormat* self);
 QTextCharFormat* QTextCharFormat_new();
 QTextCharFormat* QTextCharFormat_new2(QTextCharFormat* param1);
 bool QTextCharFormat_IsValid(const QTextCharFormat* self);
-void QTextCharFormat_SetFont(QTextCharFormat* self, QFont* font);
+void QTextCharFormat_SetFont(QTextCharFormat* self, QFont* font, int behavior);
+void QTextCharFormat_SetFontWithFont(QTextCharFormat* self, QFont* font);
 QFont* QTextCharFormat_Font(const QTextCharFormat* self);
 void QTextCharFormat_SetFontFamily(QTextCharFormat* self, libqt_string family);
 libqt_string QTextCharFormat_FontFamily(const QTextCharFormat* self);
@@ -194,23 +197,18 @@ void QTextCharFormat_SetTextOutline(QTextCharFormat* self, QPen* pen);
 QPen* QTextCharFormat_TextOutline(const QTextCharFormat* self);
 void QTextCharFormat_SetToolTip(QTextCharFormat* self, libqt_string tip);
 libqt_string QTextCharFormat_ToolTip(const QTextCharFormat* self);
-void QTextCharFormat_SetSuperScriptBaseline(QTextCharFormat* self, double baseline);
-double QTextCharFormat_SuperScriptBaseline(const QTextCharFormat* self);
-void QTextCharFormat_SetSubScriptBaseline(QTextCharFormat* self, double baseline);
-double QTextCharFormat_SubScriptBaseline(const QTextCharFormat* self);
-void QTextCharFormat_SetBaselineOffset(QTextCharFormat* self, double baseline);
-double QTextCharFormat_BaselineOffset(const QTextCharFormat* self);
 void QTextCharFormat_SetAnchor(QTextCharFormat* self, bool anchor);
 bool QTextCharFormat_IsAnchor(const QTextCharFormat* self);
 void QTextCharFormat_SetAnchorHref(QTextCharFormat* self, libqt_string value);
 libqt_string QTextCharFormat_AnchorHref(const QTextCharFormat* self);
+void QTextCharFormat_SetAnchorName(QTextCharFormat* self, libqt_string name);
+libqt_string QTextCharFormat_AnchorName(const QTextCharFormat* self);
 void QTextCharFormat_SetAnchorNames(QTextCharFormat* self, libqt_list /* of libqt_string */ names);
 libqt_list /* of libqt_string */ QTextCharFormat_AnchorNames(const QTextCharFormat* self);
 void QTextCharFormat_SetTableCellRowSpan(QTextCharFormat* self, int tableCellRowSpan);
 int QTextCharFormat_TableCellRowSpan(const QTextCharFormat* self);
 void QTextCharFormat_SetTableCellColumnSpan(QTextCharFormat* self, int tableCellColumnSpan);
 int QTextCharFormat_TableCellColumnSpan(const QTextCharFormat* self);
-void QTextCharFormat_SetFont2(QTextCharFormat* self, QFont* font, int behavior);
 void QTextCharFormat_SetFontStyleHint2(QTextCharFormat* self, int hint, int strategy);
 void QTextCharFormat_Delete(QTextCharFormat* self);
 
@@ -268,9 +266,9 @@ void QTextImageFormat_SetWidth(QTextImageFormat* self, double width);
 double QTextImageFormat_Width(const QTextImageFormat* self);
 void QTextImageFormat_SetHeight(QTextImageFormat* self, double height);
 double QTextImageFormat_Height(const QTextImageFormat* self);
-void QTextImageFormat_SetQuality(QTextImageFormat* self, int quality);
-void QTextImageFormat_SetQuality2(QTextImageFormat* self);
+void QTextImageFormat_SetQuality(QTextImageFormat* self);
 int QTextImageFormat_Quality(const QTextImageFormat* self);
+void QTextImageFormat_SetQuality1(QTextImageFormat* self, int quality);
 void QTextImageFormat_Delete(QTextImageFormat* self);
 
 QTextFrameFormat* QTextFrameFormat_new();

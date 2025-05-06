@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -120,6 +117,23 @@ libqt_string QMenuBar_Tr(const char* s) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+libqt_string QMenuBar_TrUtf8(const char* s) {
+    QString _ret = QMenuBar::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+QAction* QMenuBar_AddAction(QMenuBar* self, libqt_string text) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    return self->addAction(text_QString);
 }
 
 QAction* QMenuBar_AddMenu(QMenuBar* self, QMenu* menu) {
@@ -230,6 +244,30 @@ libqt_string QMenuBar_Tr2(const char* s, const char* c) {
 
 libqt_string QMenuBar_Tr3(const char* s, const char* c, int n) {
     QString _ret = QMenuBar::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMenuBar_TrUtf82(const char* s, const char* c) {
+    QString _ret = QMenuBar::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMenuBar_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QMenuBar::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -717,32 +755,6 @@ void QMenuBar_OnEvent(QMenuBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QMenuBar_InitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action) {
-    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
-        vqmenubar->initStyleOption(option, action);
-    } else {
-        vqmenubar->initStyleOption(option, action);
-    }
-}
-
-// Base class handler implementation
-void QMenuBar_QBaseInitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action) {
-    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
-        vqmenubar->setQMenuBar_InitStyleOption_IsBase(true);
-        vqmenubar->initStyleOption(option, action);
-    } else {
-        vqmenubar->initStyleOption(option, action);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QMenuBar_OnInitStyleOption(const QMenuBar* self, intptr_t slot) {
-    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
-        vqmenubar->setQMenuBar_InitStyleOption_Callback(reinterpret_cast<VirtualQMenuBar::QMenuBar_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QMenuBar_DevType(const QMenuBar* self) {
     if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
         return vqmenubar->devType();
@@ -899,7 +911,7 @@ void QMenuBar_OnKeyReleaseEvent(QMenuBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QMenuBar_EnterEvent(QMenuBar* self, QEnterEvent* event) {
+void QMenuBar_EnterEvent(QMenuBar* self, QEvent* event) {
     if (auto* vqmenubar = dynamic_cast<VirtualQMenuBar*>(self)) {
         vqmenubar->enterEvent(event);
     } else {
@@ -908,7 +920,7 @@ void QMenuBar_EnterEvent(QMenuBar* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QMenuBar_QBaseEnterEvent(QMenuBar* self, QEnterEvent* event) {
+void QMenuBar_QBaseEnterEvent(QMenuBar* self, QEvent* event) {
     if (auto* vqmenubar = dynamic_cast<VirtualQMenuBar*>(self)) {
         vqmenubar->setQMenuBar_EnterEvent_IsBase(true);
         vqmenubar->enterEvent(event);
@@ -1185,23 +1197,23 @@ void QMenuBar_OnHideEvent(QMenuBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QMenuBar_NativeEvent(QMenuBar* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QMenuBar_NativeEvent(QMenuBar* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmenubar = dynamic_cast<VirtualQMenuBar*>(self)) {
-        return vqmenubar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmenubar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqmenubar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmenubar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QMenuBar_QBaseNativeEvent(QMenuBar* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QMenuBar_QBaseNativeEvent(QMenuBar* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmenubar = dynamic_cast<VirtualQMenuBar*>(self)) {
         vqmenubar->setQMenuBar_NativeEvent_IsBase(true);
-        return vqmenubar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmenubar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqmenubar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmenubar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1495,6 +1507,32 @@ void QMenuBar_QBaseDisconnectNotify(QMenuBar* self, QMetaMethod* signal) {
 void QMenuBar_OnDisconnectNotify(QMenuBar* self, intptr_t slot) {
     if (auto* vqmenubar = dynamic_cast<VirtualQMenuBar*>(self)) {
         vqmenubar->setQMenuBar_DisconnectNotify_Callback(reinterpret_cast<VirtualQMenuBar::QMenuBar_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QMenuBar_InitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action) {
+    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
+        vqmenubar->initStyleOption(option, action);
+    } else {
+        vqmenubar->initStyleOption(option, action);
+    }
+}
+
+// Base class handler implementation
+void QMenuBar_QBaseInitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action) {
+    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
+        vqmenubar->setQMenuBar_InitStyleOption_IsBase(true);
+        vqmenubar->initStyleOption(option, action);
+    } else {
+        vqmenubar->initStyleOption(option, action);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QMenuBar_OnInitStyleOption(const QMenuBar* self, intptr_t slot) {
+    if (auto* vqmenubar = const_cast<VirtualQMenuBar*>(dynamic_cast<const VirtualQMenuBar*>(self))) {
+        vqmenubar->setQMenuBar_InitStyleOption_Callback(reinterpret_cast<VirtualQMenuBar::QMenuBar_InitStyleOption_Callback>(slot));
     }
 }
 

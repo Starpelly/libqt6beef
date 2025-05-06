@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -51,20 +53,19 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     using QPlainTextEdit_EventFilter_Callback = bool (*)(QPlainTextEdit*, QObject*, QEvent*);
     using QPlainTextEdit_ViewportEvent_Callback = bool (*)(QPlainTextEdit*, QEvent*);
     using QPlainTextEdit_ViewportSizeHint_Callback = QSize (*)();
-    using QPlainTextEdit_InitStyleOption_Callback = void (*)(const QPlainTextEdit*, QStyleOptionFrame*);
     using QPlainTextEdit_DevType_Callback = int (*)();
     using QPlainTextEdit_SetVisible_Callback = void (*)(QPlainTextEdit*, bool);
     using QPlainTextEdit_HeightForWidth_Callback = int (*)(const QPlainTextEdit*, int);
     using QPlainTextEdit_HasHeightForWidth_Callback = bool (*)();
     using QPlainTextEdit_PaintEngine_Callback = QPaintEngine* (*)();
-    using QPlainTextEdit_EnterEvent_Callback = void (*)(QPlainTextEdit*, QEnterEvent*);
+    using QPlainTextEdit_EnterEvent_Callback = void (*)(QPlainTextEdit*, QEvent*);
     using QPlainTextEdit_LeaveEvent_Callback = void (*)(QPlainTextEdit*, QEvent*);
     using QPlainTextEdit_MoveEvent_Callback = void (*)(QPlainTextEdit*, QMoveEvent*);
     using QPlainTextEdit_CloseEvent_Callback = void (*)(QPlainTextEdit*, QCloseEvent*);
     using QPlainTextEdit_TabletEvent_Callback = void (*)(QPlainTextEdit*, QTabletEvent*);
     using QPlainTextEdit_ActionEvent_Callback = void (*)(QPlainTextEdit*, QActionEvent*);
     using QPlainTextEdit_HideEvent_Callback = void (*)(QPlainTextEdit*, QHideEvent*);
-    using QPlainTextEdit_NativeEvent_Callback = bool (*)(QPlainTextEdit*, const QByteArray&, void*, qintptr*);
+    using QPlainTextEdit_NativeEvent_Callback = bool (*)(QPlainTextEdit*, const QByteArray&, void*, long*);
     using QPlainTextEdit_Metric_Callback = int (*)(const QPlainTextEdit*, QPaintDevice::PaintDeviceMetric);
     using QPlainTextEdit_InitPainter_Callback = void (*)(const QPlainTextEdit*, QPainter*);
     using QPlainTextEdit_Redirected_Callback = QPaintDevice* (*)(const QPlainTextEdit*, QPoint*);
@@ -82,6 +83,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     using QPlainTextEdit_SetViewportMargins_Callback = void (*)(QPlainTextEdit*, int, int, int, int);
     using QPlainTextEdit_ViewportMargins_Callback = QMargins (*)();
     using QPlainTextEdit_DrawFrame_Callback = void (*)(QPlainTextEdit*, QPainter*);
+    using QPlainTextEdit_InitStyleOption_Callback = void (*)(const QPlainTextEdit*, QStyleOptionFrame*);
     using QPlainTextEdit_UpdateMicroFocus_Callback = void (*)();
     using QPlainTextEdit_Create_Callback = void (*)();
     using QPlainTextEdit_Destroy_Callback = void (*)();
@@ -130,7 +132,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     QPlainTextEdit_EventFilter_Callback qplaintextedit_eventfilter_callback = nullptr;
     QPlainTextEdit_ViewportEvent_Callback qplaintextedit_viewportevent_callback = nullptr;
     QPlainTextEdit_ViewportSizeHint_Callback qplaintextedit_viewportsizehint_callback = nullptr;
-    QPlainTextEdit_InitStyleOption_Callback qplaintextedit_initstyleoption_callback = nullptr;
     QPlainTextEdit_DevType_Callback qplaintextedit_devtype_callback = nullptr;
     QPlainTextEdit_SetVisible_Callback qplaintextedit_setvisible_callback = nullptr;
     QPlainTextEdit_HeightForWidth_Callback qplaintextedit_heightforwidth_callback = nullptr;
@@ -161,6 +162,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     QPlainTextEdit_SetViewportMargins_Callback qplaintextedit_setviewportmargins_callback = nullptr;
     QPlainTextEdit_ViewportMargins_Callback qplaintextedit_viewportmargins_callback = nullptr;
     QPlainTextEdit_DrawFrame_Callback qplaintextedit_drawframe_callback = nullptr;
+    QPlainTextEdit_InitStyleOption_Callback qplaintextedit_initstyleoption_callback = nullptr;
     QPlainTextEdit_UpdateMicroFocus_Callback qplaintextedit_updatemicrofocus_callback = nullptr;
     QPlainTextEdit_Create_Callback qplaintextedit_create_callback = nullptr;
     QPlainTextEdit_Destroy_Callback qplaintextedit_destroy_callback = nullptr;
@@ -208,7 +210,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     mutable bool qplaintextedit_eventfilter_isbase = false;
     mutable bool qplaintextedit_viewportevent_isbase = false;
     mutable bool qplaintextedit_viewportsizehint_isbase = false;
-    mutable bool qplaintextedit_initstyleoption_isbase = false;
     mutable bool qplaintextedit_devtype_isbase = false;
     mutable bool qplaintextedit_setvisible_isbase = false;
     mutable bool qplaintextedit_heightforwidth_isbase = false;
@@ -239,6 +240,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     mutable bool qplaintextedit_setviewportmargins_isbase = false;
     mutable bool qplaintextedit_viewportmargins_isbase = false;
     mutable bool qplaintextedit_drawframe_isbase = false;
+    mutable bool qplaintextedit_initstyleoption_isbase = false;
     mutable bool qplaintextedit_updatemicrofocus_isbase = false;
     mutable bool qplaintextedit_create_isbase = false;
     mutable bool qplaintextedit_destroy_isbase = false;
@@ -292,7 +294,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
         qplaintextedit_eventfilter_callback = nullptr;
         qplaintextedit_viewportevent_callback = nullptr;
         qplaintextedit_viewportsizehint_callback = nullptr;
-        qplaintextedit_initstyleoption_callback = nullptr;
         qplaintextedit_devtype_callback = nullptr;
         qplaintextedit_setvisible_callback = nullptr;
         qplaintextedit_heightforwidth_callback = nullptr;
@@ -323,6 +324,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
         qplaintextedit_setviewportmargins_callback = nullptr;
         qplaintextedit_viewportmargins_callback = nullptr;
         qplaintextedit_drawframe_callback = nullptr;
+        qplaintextedit_initstyleoption_callback = nullptr;
         qplaintextedit_updatemicrofocus_callback = nullptr;
         qplaintextedit_create_callback = nullptr;
         qplaintextedit_destroy_callback = nullptr;
@@ -371,7 +373,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     void setQPlainTextEdit_EventFilter_Callback(QPlainTextEdit_EventFilter_Callback cb) { qplaintextedit_eventfilter_callback = cb; }
     void setQPlainTextEdit_ViewportEvent_Callback(QPlainTextEdit_ViewportEvent_Callback cb) { qplaintextedit_viewportevent_callback = cb; }
     void setQPlainTextEdit_ViewportSizeHint_Callback(QPlainTextEdit_ViewportSizeHint_Callback cb) { qplaintextedit_viewportsizehint_callback = cb; }
-    void setQPlainTextEdit_InitStyleOption_Callback(QPlainTextEdit_InitStyleOption_Callback cb) { qplaintextedit_initstyleoption_callback = cb; }
     void setQPlainTextEdit_DevType_Callback(QPlainTextEdit_DevType_Callback cb) { qplaintextedit_devtype_callback = cb; }
     void setQPlainTextEdit_SetVisible_Callback(QPlainTextEdit_SetVisible_Callback cb) { qplaintextedit_setvisible_callback = cb; }
     void setQPlainTextEdit_HeightForWidth_Callback(QPlainTextEdit_HeightForWidth_Callback cb) { qplaintextedit_heightforwidth_callback = cb; }
@@ -402,6 +403,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     void setQPlainTextEdit_SetViewportMargins_Callback(QPlainTextEdit_SetViewportMargins_Callback cb) { qplaintextedit_setviewportmargins_callback = cb; }
     void setQPlainTextEdit_ViewportMargins_Callback(QPlainTextEdit_ViewportMargins_Callback cb) { qplaintextedit_viewportmargins_callback = cb; }
     void setQPlainTextEdit_DrawFrame_Callback(QPlainTextEdit_DrawFrame_Callback cb) { qplaintextedit_drawframe_callback = cb; }
+    void setQPlainTextEdit_InitStyleOption_Callback(QPlainTextEdit_InitStyleOption_Callback cb) { qplaintextedit_initstyleoption_callback = cb; }
     void setQPlainTextEdit_UpdateMicroFocus_Callback(QPlainTextEdit_UpdateMicroFocus_Callback cb) { qplaintextedit_updatemicrofocus_callback = cb; }
     void setQPlainTextEdit_Create_Callback(QPlainTextEdit_Create_Callback cb) { qplaintextedit_create_callback = cb; }
     void setQPlainTextEdit_Destroy_Callback(QPlainTextEdit_Destroy_Callback cb) { qplaintextedit_destroy_callback = cb; }
@@ -449,7 +451,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     void setQPlainTextEdit_EventFilter_IsBase(bool value) const { qplaintextedit_eventfilter_isbase = value; }
     void setQPlainTextEdit_ViewportEvent_IsBase(bool value) const { qplaintextedit_viewportevent_isbase = value; }
     void setQPlainTextEdit_ViewportSizeHint_IsBase(bool value) const { qplaintextedit_viewportsizehint_isbase = value; }
-    void setQPlainTextEdit_InitStyleOption_IsBase(bool value) const { qplaintextedit_initstyleoption_isbase = value; }
     void setQPlainTextEdit_DevType_IsBase(bool value) const { qplaintextedit_devtype_isbase = value; }
     void setQPlainTextEdit_SetVisible_IsBase(bool value) const { qplaintextedit_setvisible_isbase = value; }
     void setQPlainTextEdit_HeightForWidth_IsBase(bool value) const { qplaintextedit_heightforwidth_isbase = value; }
@@ -480,6 +481,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     void setQPlainTextEdit_SetViewportMargins_IsBase(bool value) const { qplaintextedit_setviewportmargins_isbase = value; }
     void setQPlainTextEdit_ViewportMargins_IsBase(bool value) const { qplaintextedit_viewportmargins_isbase = value; }
     void setQPlainTextEdit_DrawFrame_IsBase(bool value) const { qplaintextedit_drawframe_isbase = value; }
+    void setQPlainTextEdit_InitStyleOption_IsBase(bool value) const { qplaintextedit_initstyleoption_isbase = value; }
     void setQPlainTextEdit_UpdateMicroFocus_IsBase(bool value) const { qplaintextedit_updatemicrofocus_isbase = value; }
     void setQPlainTextEdit_Create_IsBase(bool value) const { qplaintextedit_create_isbase = value; }
     void setQPlainTextEdit_Destroy_IsBase(bool value) const { qplaintextedit_destroy_isbase = value; }
@@ -923,18 +925,6 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qplaintextedit_initstyleoption_isbase) {
-            qplaintextedit_initstyleoption_isbase = false;
-            QPlainTextEdit::initStyleOption(option);
-        } else if (qplaintextedit_initstyleoption_callback != nullptr) {
-            qplaintextedit_initstyleoption_callback(this, option);
-        } else {
-            QPlainTextEdit::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qplaintextedit_devtype_isbase) {
             qplaintextedit_devtype_isbase = false;
@@ -995,7 +985,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qplaintextedit_enterevent_isbase) {
             qplaintextedit_enterevent_isbase = false;
             QPlainTextEdit::enterEvent(event);
@@ -1079,7 +1069,7 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qplaintextedit_nativeevent_isbase) {
             qplaintextedit_nativeevent_isbase = false;
             return QPlainTextEdit::nativeEvent(eventType, message, result);
@@ -1291,6 +1281,18 @@ class VirtualQPlainTextEdit : public QPlainTextEdit {
             qplaintextedit_drawframe_callback(this, param1);
         } else {
             QPlainTextEdit::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qplaintextedit_initstyleoption_isbase) {
+            qplaintextedit_initstyleoption_isbase = false;
+            QPlainTextEdit::initStyleOption(option);
+        } else if (qplaintextedit_initstyleoption_callback != nullptr) {
+            qplaintextedit_initstyleoption_callback(this, option);
+        } else {
+            QPlainTextEdit::initStyleOption(option);
         }
     }
 

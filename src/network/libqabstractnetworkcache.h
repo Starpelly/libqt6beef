@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractNetworkCache QAbstractNetworkCache;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDateTime QDateTime;
 typedef struct QEvent QEvent;
@@ -31,6 +31,7 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkCacheMetaData QNetworkCacheMetaData;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
@@ -71,6 +72,7 @@ QMetaObject* QAbstractNetworkCache_MetaObject(const QAbstractNetworkCache* self)
 void* QAbstractNetworkCache_Metacast(QAbstractNetworkCache* self, const char* param1);
 int QAbstractNetworkCache_Metacall(QAbstractNetworkCache* self, int param1, int param2, void** param3);
 libqt_string QAbstractNetworkCache_Tr(const char* s);
+libqt_string QAbstractNetworkCache_TrUtf8(const char* s);
 QNetworkCacheMetaData* QAbstractNetworkCache_MetaData(QAbstractNetworkCache* self, QUrl* url);
 void QAbstractNetworkCache_UpdateMetaData(QAbstractNetworkCache* self, QNetworkCacheMetaData* metaData);
 QIODevice* QAbstractNetworkCache_Data(QAbstractNetworkCache* self, QUrl* url);
@@ -81,6 +83,8 @@ void QAbstractNetworkCache_Insert(QAbstractNetworkCache* self, QIODevice* device
 void QAbstractNetworkCache_Clear(QAbstractNetworkCache* self);
 libqt_string QAbstractNetworkCache_Tr2(const char* s, const char* c);
 libqt_string QAbstractNetworkCache_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractNetworkCache_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractNetworkCache_TrUtf83(const char* s, const char* c, int n);
 bool QAbstractNetworkCache_Event(QAbstractNetworkCache* self, QEvent* event);
 bool QAbstractNetworkCache_EventFilter(QAbstractNetworkCache* self, QObject* watched, QEvent* event);
 void QAbstractNetworkCache_Delete(QAbstractNetworkCache* self);

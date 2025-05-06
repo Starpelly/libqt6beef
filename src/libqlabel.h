@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -58,6 +57,7 @@ typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QMovie QMovie;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -66,7 +66,6 @@ typedef struct QPalette QPalette;
 typedef struct QPicture QPicture;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -97,11 +96,12 @@ int QLabel_Metacall(QLabel* self, int param1, int param2, void** param3);
 void QLabel_OnMetacall(QLabel* self, intptr_t slot);
 int QLabel_QBaseMetacall(QLabel* self, int param1, int param2, void** param3);
 libqt_string QLabel_Tr(const char* s);
+libqt_string QLabel_TrUtf8(const char* s);
 libqt_string QLabel_Text(const QLabel* self);
-QPixmap* QLabel_Pixmap(const QLabel* self, int param1);
-QPixmap* QLabel_Pixmap2(const QLabel* self);
-QPicture* QLabel_Picture(const QLabel* self, int param1);
-QPicture* QLabel_Picture2(const QLabel* self);
+QPixmap* QLabel_Pixmap(const QLabel* self);
+QPixmap* QLabel_PixmapWithQtReturnByValueConstant(const QLabel* self, int param1);
+QPicture* QLabel_Picture(const QLabel* self);
+QPicture* QLabel_PictureWithQtReturnByValueConstant(const QLabel* self, int param1);
 QMovie* QLabel_Movie(const QLabel* self);
 int QLabel_TextFormat(const QLabel* self);
 void QLabel_SetTextFormat(QLabel* self, int textFormat);
@@ -180,6 +180,8 @@ void QLabel_OnFocusNextPrevChild(QLabel* self, intptr_t slot);
 bool QLabel_QBaseFocusNextPrevChild(QLabel* self, bool next);
 libqt_string QLabel_Tr2(const char* s, const char* c);
 libqt_string QLabel_Tr3(const char* s, const char* c, int n);
+libqt_string QLabel_TrUtf82(const char* s, const char* c);
+libqt_string QLabel_TrUtf83(const char* s, const char* c, int n);
 int QLabel_DevType(const QLabel* self);
 void QLabel_OnDevType(const QLabel* self, intptr_t slot);
 int QLabel_QBaseDevType(const QLabel* self);
@@ -201,9 +203,9 @@ void QLabel_QBaseWheelEvent(QLabel* self, QWheelEvent* event);
 void QLabel_KeyReleaseEvent(QLabel* self, QKeyEvent* event);
 void QLabel_OnKeyReleaseEvent(QLabel* self, intptr_t slot);
 void QLabel_QBaseKeyReleaseEvent(QLabel* self, QKeyEvent* event);
-void QLabel_EnterEvent(QLabel* self, QEnterEvent* event);
+void QLabel_EnterEvent(QLabel* self, QEvent* event);
 void QLabel_OnEnterEvent(QLabel* self, intptr_t slot);
-void QLabel_QBaseEnterEvent(QLabel* self, QEnterEvent* event);
+void QLabel_QBaseEnterEvent(QLabel* self, QEvent* event);
 void QLabel_LeaveEvent(QLabel* self, QEvent* event);
 void QLabel_OnLeaveEvent(QLabel* self, intptr_t slot);
 void QLabel_QBaseLeaveEvent(QLabel* self, QEvent* event);
@@ -240,9 +242,9 @@ void QLabel_QBaseShowEvent(QLabel* self, QShowEvent* event);
 void QLabel_HideEvent(QLabel* self, QHideEvent* event);
 void QLabel_OnHideEvent(QLabel* self, intptr_t slot);
 void QLabel_QBaseHideEvent(QLabel* self, QHideEvent* event);
-bool QLabel_NativeEvent(QLabel* self, libqt_string eventType, void* message, intptr_t* result);
+bool QLabel_NativeEvent(QLabel* self, libqt_string eventType, void* message, long* result);
 void QLabel_OnNativeEvent(QLabel* self, intptr_t slot);
-bool QLabel_QBaseNativeEvent(QLabel* self, libqt_string eventType, void* message, intptr_t* result);
+bool QLabel_QBaseNativeEvent(QLabel* self, libqt_string eventType, void* message, long* result);
 void QLabel_InputMethodEvent(QLabel* self, QInputMethodEvent* param1);
 void QLabel_OnInputMethodEvent(QLabel* self, intptr_t slot);
 void QLabel_QBaseInputMethodEvent(QLabel* self, QInputMethodEvent* param1);
@@ -267,9 +269,6 @@ void QLabel_QBaseConnectNotify(QLabel* self, QMetaMethod* signal);
 void QLabel_DisconnectNotify(QLabel* self, QMetaMethod* signal);
 void QLabel_OnDisconnectNotify(QLabel* self, intptr_t slot);
 void QLabel_QBaseDisconnectNotify(QLabel* self, QMetaMethod* signal);
-void QLabel_InitStyleOption(const QLabel* self, QStyleOptionFrame* option);
-void QLabel_OnInitStyleOption(const QLabel* self, intptr_t slot);
-void QLabel_QBaseInitStyleOption(const QLabel* self, QStyleOptionFrame* option);
 int QLabel_Metric(const QLabel* self, int param1);
 void QLabel_OnMetric(const QLabel* self, intptr_t slot);
 int QLabel_QBaseMetric(const QLabel* self, int param1);
@@ -285,6 +284,9 @@ QPainter* QLabel_QBaseSharedPainter(const QLabel* self);
 void QLabel_DrawFrame(QLabel* self, QPainter* param1);
 void QLabel_OnDrawFrame(QLabel* self, intptr_t slot);
 void QLabel_QBaseDrawFrame(QLabel* self, QPainter* param1);
+void QLabel_InitStyleOption(const QLabel* self, QStyleOptionFrame* option);
+void QLabel_OnInitStyleOption(const QLabel* self, intptr_t slot);
+void QLabel_QBaseInitStyleOption(const QLabel* self, QStyleOptionFrame* option);
 void QLabel_UpdateMicroFocus(QLabel* self);
 void QLabel_OnUpdateMicroFocus(QLabel* self, intptr_t slot);
 void QLabel_QBaseUpdateMicroFocus(QLabel* self);

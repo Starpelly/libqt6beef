@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,6 +23,7 @@ typedef struct QFont QFont;
 typedef struct QImage QImage;
 typedef struct QLine QLine;
 typedef struct QLineF QLineF;
+typedef struct QMatrix QMatrix;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEngineState QPaintEngineState;
@@ -33,7 +36,6 @@ typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRectF QRectF;
 typedef struct QRegion QRegion;
-typedef struct QSize QSize;
 typedef struct QTextItem QTextItem;
 typedef struct QTransform QTransform;
 #endif
@@ -148,12 +150,6 @@ bool QPaintEngine_HasFeature(const QPaintEngine* self, int feature);
 QPainter* QPaintEngine_Painter(const QPaintEngine* self);
 void QPaintEngine_SyncState(QPaintEngine* self);
 bool QPaintEngine_IsExtended(const QPaintEngine* self);
-QPixmap* QPaintEngine_CreatePixmap(QPaintEngine* self, QSize* size);
-void QPaintEngine_OnCreatePixmap(QPaintEngine* self, intptr_t slot);
-QPixmap* QPaintEngine_QBaseCreatePixmap(QPaintEngine* self, QSize* size);
-QPixmap* QPaintEngine_CreatePixmapFromImage(QPaintEngine* self, QImage* image, int flags);
-void QPaintEngine_OnCreatePixmapFromImage(QPaintEngine* self, intptr_t slot);
-QPixmap* QPaintEngine_QBaseCreatePixmapFromImage(QPaintEngine* self, QImage* image, int flags);
 void QPaintEngine_Delete(QPaintEngine* self);
 
 QPaintEngineState* QPaintEngineState_new(QPaintEngineState* other);
@@ -167,6 +163,7 @@ QPointF* QPaintEngineState_BrushOrigin(const QPaintEngineState* self);
 QBrush* QPaintEngineState_BackgroundBrush(const QPaintEngineState* self);
 int QPaintEngineState_BackgroundMode(const QPaintEngineState* self);
 QFont* QPaintEngineState_Font(const QPaintEngineState* self);
+QMatrix* QPaintEngineState_Matrix(const QPaintEngineState* self);
 QTransform* QPaintEngineState_Transform(const QPaintEngineState* self);
 int QPaintEngineState_ClipOperation(const QPaintEngineState* self);
 QRegion* QPaintEngineState_ClipRegion(const QPaintEngineState* self);

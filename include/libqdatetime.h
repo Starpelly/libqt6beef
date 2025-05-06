@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,9 +26,11 @@ typedef struct QTimeZone QTimeZone;
 #endif
 
 #ifdef __cplusplus
-typedef QDateTime::YearRange YearRange; // C++ enum
+typedef QDate::MonthNameType MonthNameType; // C++ enum
+typedef QDateTime::YearRange YearRange;     // C++ enum
 #else
-typedef int YearRange; // C ABI enum
+typedef int MonthNameType; // C ABI enum
+typedef int YearRange;     // C ABI enum
 #endif
 
 QDate* QDate_new(QDate* other);
@@ -58,20 +62,34 @@ QDateTime* QDate_StartOfDay(const QDate* self);
 QDateTime* QDate_EndOfDay(const QDate* self);
 QDateTime* QDate_StartOfDayWithZone(const QDate* self, QTimeZone* zone);
 QDateTime* QDate_EndOfDayWithZone(const QDate* self, QTimeZone* zone);
+libqt_string QDate_ShortMonthName(int month);
+libqt_string QDate_ShortDayName(int weekday);
+libqt_string QDate_LongMonthName(int month);
+libqt_string QDate_LongDayName(int weekday);
 libqt_string QDate_ToString(const QDate* self);
+libqt_string QDate_ToString2(const QDate* self, int format, QCalendar* cal);
 libqt_string QDate_ToStringWithFormat(const QDate* self, libqt_string format);
+libqt_string QDate_ToString3(const QDate* self, libqt_string format, QCalendar* cal);
 bool QDate_SetDate(QDate* self, int year, int month, int day);
 bool QDate_SetDate2(QDate* self, int year, int month, int day, QCalendar* cal);
-void QDate_GetDate(const QDate* self, int* year, int* month, int* day);
+void QDate_GetDate(QDate* self, int* year, int* month, int* day);
+void QDate_GetDate2(const QDate* self, int* year, int* month, int* day);
 QDate* QDate_AddDays(const QDate* self, long long days);
 QDate* QDate_AddMonths(const QDate* self, int months);
 QDate* QDate_AddYears(const QDate* self, int years);
 QDate* QDate_AddMonths2(const QDate* self, int months, QCalendar* cal);
 QDate* QDate_AddYears2(const QDate* self, int years, QCalendar* cal);
-long long QDate_DaysTo(const QDate* self, QDate* d);
+long long QDate_DaysTo(const QDate* self, QDate* param1);
+bool QDate_OperatorEqual(const QDate* self, QDate* other);
+bool QDate_OperatorNotEqual(const QDate* self, QDate* other);
+bool QDate_OperatorLesser(const QDate* self, QDate* other);
+bool QDate_OperatorLesserOrEqual(const QDate* self, QDate* other);
+bool QDate_OperatorGreater(const QDate* self, QDate* other);
+bool QDate_OperatorGreaterOrEqual(const QDate* self, QDate* other);
 QDate* QDate_CurrentDate();
-QDate* QDate_FromStringWithStringVal(libqt_string stringVal);
-QDate* QDate_FromString4(libqt_string stringVal, libqt_string format);
+QDate* QDate_FromString(libqt_string s);
+QDate* QDate_FromString2(libqt_string s, libqt_string format);
+QDate* QDate_FromString3(libqt_string s, libqt_string format, QCalendar* cal);
 bool QDate_IsValid2(int y, int m, int d);
 bool QDate_IsLeapYear(int year);
 QDate* QDate_FromJulianDay(long long jd_);
@@ -81,10 +99,12 @@ QDateTime* QDate_StartOfDay1(const QDate* self, int spec);
 QDateTime* QDate_StartOfDay2(const QDate* self, int spec, int offsetSeconds);
 QDateTime* QDate_EndOfDay1(const QDate* self, int spec);
 QDateTime* QDate_EndOfDay2(const QDate* self, int spec, int offsetSeconds);
+libqt_string QDate_ShortMonthName2(int month, int typeVal);
+libqt_string QDate_ShortDayName2(int weekday, int typeVal);
+libqt_string QDate_LongMonthName2(int month, int typeVal);
+libqt_string QDate_LongDayName2(int weekday, int typeVal);
 libqt_string QDate_ToString1(const QDate* self, int format);
-libqt_string QDate_ToString22(const QDate* self, libqt_string format, QCalendar* cal);
-QDate* QDate_FromString23(libqt_string stringVal, int format);
-QDate* QDate_FromString34(libqt_string stringVal, libqt_string format, QCalendar* cal);
+QDate* QDate_FromString22(libqt_string s, int f);
 void QDate_Delete(QDate* self);
 
 QTime* QTime_new(QTime* other);
@@ -106,27 +126,36 @@ libqt_string QTime_ToString(const QTime* self);
 libqt_string QTime_ToStringWithFormat(const QTime* self, libqt_string format);
 bool QTime_SetHMS(QTime* self, int h, int m, int s);
 QTime* QTime_AddSecs(const QTime* self, int secs);
-int QTime_SecsTo(const QTime* self, QTime* t);
+int QTime_SecsTo(const QTime* self, QTime* param1);
 QTime* QTime_AddMSecs(const QTime* self, int ms);
-int QTime_MsecsTo(const QTime* self, QTime* t);
+int QTime_MsecsTo(const QTime* self, QTime* param1);
+bool QTime_OperatorEqual(const QTime* self, QTime* other);
+bool QTime_OperatorNotEqual(const QTime* self, QTime* other);
+bool QTime_OperatorLesser(const QTime* self, QTime* other);
+bool QTime_OperatorLesserOrEqual(const QTime* self, QTime* other);
+bool QTime_OperatorGreater(const QTime* self, QTime* other);
+bool QTime_OperatorGreaterOrEqual(const QTime* self, QTime* other);
 QTime* QTime_FromMSecsSinceStartOfDay(int msecs);
 int QTime_MsecsSinceStartOfDay(const QTime* self);
 QTime* QTime_CurrentTime();
-QTime* QTime_FromStringWithStringVal(libqt_string stringVal);
-QTime* QTime_FromString4(libqt_string stringVal, libqt_string format);
+QTime* QTime_FromString(libqt_string s);
+QTime* QTime_FromString2(libqt_string s, libqt_string format);
 bool QTime_IsValid2(int h, int m, int s);
+void QTime_Start(QTime* self);
+int QTime_Restart(QTime* self);
+int QTime_Elapsed(const QTime* self);
 libqt_string QTime_ToString1(const QTime* self, int f);
 bool QTime_SetHMS4(QTime* self, int h, int m, int s, int ms);
-QTime* QTime_FromString23(libqt_string stringVal, int format);
+QTime* QTime_FromString22(libqt_string s, int f);
 bool QTime_IsValid4(int h, int m, int s, int ms);
 void QTime_Delete(QTime* self);
 
-QDateTime* QDateTime_new();
-QDateTime* QDateTime_new2(QDate* date, QTime* time);
-QDateTime* QDateTime_new3(QDate* date, QTime* time, QTimeZone* timeZone);
-QDateTime* QDateTime_new4(QDateTime* other);
-QDateTime* QDateTime_new5(QDate* date, QTime* time, int spec);
-QDateTime* QDateTime_new6(QDate* date, QTime* time, int spec, int offsetSeconds);
+QDateTime* QDateTime_new(QDate* param1);
+QDateTime* QDateTime_new2(QDate* param1, QTime* param2);
+QDateTime* QDateTime_new3(QDate* date, QTime* time, int spec, int offsetSeconds);
+QDateTime* QDateTime_new4(QDate* date, QTime* time, QTimeZone* timeZone);
+QDateTime* QDateTime_new5(QDateTime* other);
+QDateTime* QDateTime_new6(QDate* param1, QTime* param2, int spec);
 void QDateTime_OperatorAssign(QDateTime* self, QDateTime* other);
 void QDateTime_Swap(QDateTime* self, QDateTime* other);
 bool QDateTime_IsNull(const QDateTime* self);
@@ -149,6 +178,7 @@ void QDateTime_SetMSecsSinceEpoch(QDateTime* self, long long msecs);
 void QDateTime_SetSecsSinceEpoch(QDateTime* self, long long secs);
 libqt_string QDateTime_ToString(const QDateTime* self);
 libqt_string QDateTime_ToStringWithFormat(const QDateTime* self, libqt_string format);
+libqt_string QDateTime_ToString2(const QDateTime* self, libqt_string format, QCalendar* cal);
 QDateTime* QDateTime_AddDays(const QDateTime* self, long long days);
 QDateTime* QDateTime_AddMonths(const QDateTime* self, int months);
 QDateTime* QDateTime_AddYears(const QDateTime* self, int years);
@@ -162,24 +192,37 @@ QDateTime* QDateTime_ToTimeZone(const QDateTime* self, QTimeZone* toZone);
 long long QDateTime_DaysTo(const QDateTime* self, QDateTime* param1);
 long long QDateTime_SecsTo(const QDateTime* self, QDateTime* param1);
 long long QDateTime_MsecsTo(const QDateTime* self, QDateTime* param1);
+bool QDateTime_OperatorEqual(const QDateTime* self, QDateTime* other);
+bool QDateTime_OperatorNotEqual(const QDateTime* self, QDateTime* other);
+bool QDateTime_OperatorLesser(const QDateTime* self, QDateTime* other);
+bool QDateTime_OperatorLesserOrEqual(const QDateTime* self, QDateTime* other);
+bool QDateTime_OperatorGreater(const QDateTime* self, QDateTime* other);
+bool QDateTime_OperatorGreaterOrEqual(const QDateTime* self, QDateTime* other);
+void QDateTime_SetUtcOffset(QDateTime* self, int seconds);
+int QDateTime_UtcOffset(const QDateTime* self);
 QDateTime* QDateTime_CurrentDateTime();
 QDateTime* QDateTime_CurrentDateTimeUtc();
-QDateTime* QDateTime_FromStringWithStringVal(libqt_string stringVal);
-QDateTime* QDateTime_FromString4(libqt_string stringVal, libqt_string format);
+QDateTime* QDateTime_FromString(libqt_string s);
+QDateTime* QDateTime_FromString2(libqt_string s, libqt_string format);
+QDateTime* QDateTime_FromString3(libqt_string s, libqt_string format, QCalendar* cal);
+unsigned int QDateTime_ToTimeT(const QDateTime* self);
+void QDateTime_SetTimeT(QDateTime* self, unsigned int secsSince1Jan1970UTC);
+QDateTime* QDateTime_FromTimeT(unsigned int secsSince1Jan1970UTC);
+QDateTime* QDateTime_FromTimeT2(unsigned int secsSince1Jan1970UTC, int spec);
+QDateTime* QDateTime_FromTimeT3(unsigned int secsSince1Jan1970UTC, QTimeZone* timeZone);
 QDateTime* QDateTime_FromMSecsSinceEpoch(long long msecs);
+QDateTime* QDateTime_FromMSecsSinceEpoch2(long long msecs, int spec);
 QDateTime* QDateTime_FromSecsSinceEpoch(long long secs);
-QDateTime* QDateTime_FromMSecsSinceEpoch2(long long msecs, QTimeZone* timeZone);
+QDateTime* QDateTime_FromMSecsSinceEpoch3(long long msecs, QTimeZone* timeZone);
 QDateTime* QDateTime_FromSecsSinceEpoch2(long long secs, QTimeZone* timeZone);
 long long QDateTime_CurrentMSecsSinceEpoch();
 long long QDateTime_CurrentSecsSinceEpoch();
 libqt_string QDateTime_ToString1(const QDateTime* self, int format);
-libqt_string QDateTime_ToString22(const QDateTime* self, libqt_string format, QCalendar* cal);
-QDateTime* QDateTime_FromString23(libqt_string stringVal, int format);
-QDateTime* QDateTime_FromString34(libqt_string stringVal, libqt_string format, QCalendar* cal);
-QDateTime* QDateTime_FromMSecsSinceEpoch22(long long msecs, int spec);
-QDateTime* QDateTime_FromMSecsSinceEpoch3(long long msecs, int spec, int offsetFromUtc);
-QDateTime* QDateTime_FromSecsSinceEpoch22(long long secs, int spec);
-QDateTime* QDateTime_FromSecsSinceEpoch3(long long secs, int spec, int offsetFromUtc);
+QDateTime* QDateTime_FromString22(libqt_string s, int f);
+QDateTime* QDateTime_FromTimeT32(unsigned int secsSince1Jan1970UTC, int spec, int offsetFromUtc);
+QDateTime* QDateTime_FromMSecsSinceEpoch32(long long msecs, int spec, int offsetFromUtc);
+QDateTime* QDateTime_FromSecsSinceEpoch22(long long secs, int spe);
+QDateTime* QDateTime_FromSecsSinceEpoch3(long long secs, int spe, int offsetFromUtc);
 void QDateTime_Delete(QDateTime* self);
 
 #ifdef __cplusplus

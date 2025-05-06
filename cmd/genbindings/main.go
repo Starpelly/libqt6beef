@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	ClangSubprocessCount = 4
+	ClangSubprocessCount = 2
 )
 
 func cacheFilePath(inputHeader string) string {
@@ -251,26 +251,30 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 			panic(err)
 		}
 
-		zigSrc, zigInc, err := emitZig(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
+		/*
+			zigSrc, zigInc, err := emitZig(parsed, filepath.Base(parsed.Filename), packageName)
+			if err != nil {
+				panic(err)
+			}
 
-		for k, v := range zigInc {
-			zigIncs[k] = v
-		}
+			for k, v := range zigInc {
+				zigIncs[k] = v
+			}
 
-		err = os.WriteFile(outputName+".zig", []byte(zigSrc), 0644)
-		if err != nil {
-			panic(err)
-		}
+			err = os.WriteFile(outputName+".zig", []byte(zigSrc), 0644)
+			if err != nil {
+				panic(err)
+			}
+		*/
 
-		zCmd := exec.Command("zig", "fmt", outputName+".zig")
-		zCmd.Stderr = os.Stderr
-		err = zCmd.Start()
-		if err != nil {
-			panic(err)
-		}
+		/*
+			zCmd := exec.Command("zig", "fmt", outputName+".zig")
+			zCmd.Stderr = os.Stderr
+			err = zCmd.Start()
+			if err != nil {
+				panic(err)
+			}
+		*/
 
 		bindingHxxSrc, err := emitVirtualBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
 		if err != nil {
@@ -322,24 +326,26 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 			panic(err)
 		}
 
-		zCmd.Wait()
+		// zCmd.Wait()
+		/*
 
-		formattedZig, err := os.ReadFile(outputName + ".zig")
-		if err != nil {
-			panic(err)
-		}
+			formattedZig, err := os.ReadFile(outputName + ".zig")
+			if err != nil {
+				panic(err)
+			}
 
-		zigIncludeFile := filepath.Join(includeDir, filepath.Base(outputName+".zig"))
+			zigIncludeFile := filepath.Join(includeDir, filepath.Base(outputName+".zig"))
 
-		err = os.MkdirAll(filepath.Dir(includeDir), 0755)
-		if err != nil {
-			panic(err)
-		}
+			err = os.MkdirAll(filepath.Dir(includeDir), 0755)
+			if err != nil {
+				panic(err)
+			}
 
-		err = os.WriteFile(zigIncludeFile, formattedZig, 0644)
-		if err != nil {
-			panic(err)
-		}
+			err = os.WriteFile(zigIncludeFile, formattedZig, 0644)
+			if err != nil {
+				panic(err)
+			}
+		*/
 
 		cmdCpp.Wait()
 		cmdHxx.Wait()

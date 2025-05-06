@@ -87,8 +87,8 @@ int QCollator_Compare(const QCollator* self, libqt_string s1, libqt_string s2) {
     return self->compare(s1_QString, s2_QString);
 }
 
-int QCollator_Compare2(const QCollator* self, QChar* s1, ptrdiff_t len1, QChar* s2, ptrdiff_t len2) {
-    return self->compare(s1, (qsizetype)(len1), s2, (qsizetype)(len2));
+int QCollator_Compare3(const QCollator* self, QChar* s1, int len1, QChar* s2, int len2) {
+    return self->compare(s1, static_cast<int>(len1), s2, static_cast<int>(len2));
 }
 
 bool QCollator_OperatorCall(const QCollator* self, libqt_string s1, libqt_string s2) {

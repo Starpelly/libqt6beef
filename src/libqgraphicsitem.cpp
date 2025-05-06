@@ -1,6 +1,4 @@
 #include <QAbstractGraphicsShapeItem>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QBrush>
 #include <QByteArray>
 #include <QChildEvent>
@@ -33,10 +31,12 @@
 #include <QKeyEvent>
 #include <QLineF>
 #include <QList>
+#include <QMatrix>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPen>
@@ -410,6 +410,22 @@ void QGraphicsItem_EnsureVisible2(QGraphicsItem* self, double x, double y, doubl
     self->ensureVisible(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h));
 }
 
+QMatrix* QGraphicsItem_Matrix(const QGraphicsItem* self) {
+    return new QMatrix(self->matrix());
+}
+
+QMatrix* QGraphicsItem_SceneMatrix(const QGraphicsItem* self) {
+    return new QMatrix(self->sceneMatrix());
+}
+
+void QGraphicsItem_SetMatrix(QGraphicsItem* self, QMatrix* matrix) {
+    self->setMatrix(*matrix);
+}
+
+void QGraphicsItem_ResetMatrix(QGraphicsItem* self) {
+    self->resetMatrix();
+}
+
 QTransform* QGraphicsItem_Transform(const QGraphicsItem* self) {
     return new QTransform(self->transform());
 }
@@ -744,6 +760,10 @@ void QGraphicsItem_EnsureVisible5(QGraphicsItem* self, double x, double y, doubl
 
 void QGraphicsItem_EnsureVisible6(QGraphicsItem* self, double x, double y, double w, double h, int xmargin, int ymargin) {
     self->ensureVisible(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal>(w), static_cast<qreal>(h), static_cast<int>(xmargin), static_cast<int>(ymargin));
+}
+
+void QGraphicsItem_SetMatrix2(QGraphicsItem* self, QMatrix* matrix, bool combine) {
+    self->setMatrix(*matrix, combine);
 }
 
 QTransform* QGraphicsItem_ItemTransform2(const QGraphicsItem* self, QGraphicsItem* other, bool* ok) {
@@ -1844,6 +1864,18 @@ libqt_string QGraphicsObject_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGraphicsObject_TrUtf8(const char* s) {
+    QString _ret = QGraphicsObject::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QGraphicsObject_GrabGesture(QGraphicsObject* self, int typeVal) {
     self->grabGesture(static_cast<Qt::GestureType>(typeVal));
 }
@@ -1998,6 +2030,30 @@ libqt_string QGraphicsObject_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsObject_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsObject::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsObject_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsObject::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsObject_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsObject::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -10705,6 +10761,18 @@ libqt_string QGraphicsTextItem_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGraphicsTextItem_TrUtf8(const char* s) {
+    QString _ret = QGraphicsTextItem::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QGraphicsTextItem_ToHtml(const QGraphicsTextItem* self) {
     QString _ret = self->toHtml();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -10863,6 +10931,30 @@ libqt_string QGraphicsTextItem_Tr2(const char* s, const char* c) {
 
 libqt_string QGraphicsTextItem_Tr3(const char* s, const char* c, int n) {
     QString _ret = QGraphicsTextItem::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsTextItem_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsTextItem::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsTextItem_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsTextItem::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

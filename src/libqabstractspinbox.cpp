@@ -1,9 +1,7 @@
 #include <QAbstractSpinBox>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -112,6 +109,18 @@ int QAbstractSpinBox_QBaseMetacall(QAbstractSpinBox* self, int param1, int param
 
 libqt_string QAbstractSpinBox_Tr(const char* s) {
     QString _ret = QAbstractSpinBox::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractSpinBox_TrUtf8(const char* s) {
+    QString _ret = QAbstractSpinBox::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -268,6 +277,30 @@ libqt_string QAbstractSpinBox_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractSpinBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractSpinBox::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractSpinBox_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAbstractSpinBox::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractSpinBox_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAbstractSpinBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -907,32 +940,6 @@ void QAbstractSpinBox_OnShowEvent(QAbstractSpinBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QAbstractSpinBox_InitStyleOption(const QAbstractSpinBox* self, QStyleOptionSpinBox* option) {
-    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
-        vqabstractspinbox->initStyleOption(option);
-    } else {
-        vqabstractspinbox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QAbstractSpinBox_QBaseInitStyleOption(const QAbstractSpinBox* self, QStyleOptionSpinBox* option) {
-    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
-        vqabstractspinbox->setQAbstractSpinBox_InitStyleOption_IsBase(true);
-        vqabstractspinbox->initStyleOption(option);
-    } else {
-        vqabstractspinbox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QAbstractSpinBox_OnInitStyleOption(const QAbstractSpinBox* self, intptr_t slot) {
-    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
-        vqabstractspinbox->setQAbstractSpinBox_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractSpinBox::QAbstractSpinBox_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QAbstractSpinBox_StepEnabled(const QAbstractSpinBox* self) {
     if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
         return static_cast<int>(vqabstractspinbox->stepEnabled());
@@ -1115,7 +1122,7 @@ void QAbstractSpinBox_OnMouseDoubleClickEvent(QAbstractSpinBox* self, intptr_t s
 }
 
 // Derived class handler implementation
-void QAbstractSpinBox_EnterEvent(QAbstractSpinBox* self, QEnterEvent* event) {
+void QAbstractSpinBox_EnterEvent(QAbstractSpinBox* self, QEvent* event) {
     if (auto* vqabstractspinbox = dynamic_cast<VirtualQAbstractSpinBox*>(self)) {
         vqabstractspinbox->enterEvent(event);
     } else {
@@ -1124,7 +1131,7 @@ void QAbstractSpinBox_EnterEvent(QAbstractSpinBox* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QAbstractSpinBox_QBaseEnterEvent(QAbstractSpinBox* self, QEnterEvent* event) {
+void QAbstractSpinBox_QBaseEnterEvent(QAbstractSpinBox* self, QEvent* event) {
     if (auto* vqabstractspinbox = dynamic_cast<VirtualQAbstractSpinBox*>(self)) {
         vqabstractspinbox->setQAbstractSpinBox_EnterEvent_IsBase(true);
         vqabstractspinbox->enterEvent(event);
@@ -1349,23 +1356,23 @@ void QAbstractSpinBox_OnDropEvent(QAbstractSpinBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QAbstractSpinBox_NativeEvent(QAbstractSpinBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QAbstractSpinBox_NativeEvent(QAbstractSpinBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractspinbox = dynamic_cast<VirtualQAbstractSpinBox*>(self)) {
-        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QAbstractSpinBox_QBaseNativeEvent(QAbstractSpinBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QAbstractSpinBox_QBaseNativeEvent(QAbstractSpinBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqabstractspinbox = dynamic_cast<VirtualQAbstractSpinBox*>(self)) {
         vqabstractspinbox->setQAbstractSpinBox_NativeEvent_IsBase(true);
-        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqabstractspinbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1659,6 +1666,32 @@ void QAbstractSpinBox_QBaseDisconnectNotify(QAbstractSpinBox* self, QMetaMethod*
 void QAbstractSpinBox_OnDisconnectNotify(QAbstractSpinBox* self, intptr_t slot) {
     if (auto* vqabstractspinbox = dynamic_cast<VirtualQAbstractSpinBox*>(self)) {
         vqabstractspinbox->setQAbstractSpinBox_DisconnectNotify_Callback(reinterpret_cast<VirtualQAbstractSpinBox::QAbstractSpinBox_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAbstractSpinBox_InitStyleOption(const QAbstractSpinBox* self, QStyleOptionSpinBox* option) {
+    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
+        vqabstractspinbox->initStyleOption(option);
+    } else {
+        vqabstractspinbox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QAbstractSpinBox_QBaseInitStyleOption(const QAbstractSpinBox* self, QStyleOptionSpinBox* option) {
+    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
+        vqabstractspinbox->setQAbstractSpinBox_InitStyleOption_IsBase(true);
+        vqabstractspinbox->initStyleOption(option);
+    } else {
+        vqabstractspinbox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAbstractSpinBox_OnInitStyleOption(const QAbstractSpinBox* self, intptr_t slot) {
+    if (auto* vqabstractspinbox = const_cast<VirtualQAbstractSpinBox*>(dynamic_cast<const VirtualQAbstractSpinBox*>(self))) {
+        vqabstractspinbox->setQAbstractSpinBox_InitStyleOption_Callback(reinterpret_cast<VirtualQAbstractSpinBox::QAbstractSpinBox_InitStyleOption_Callback>(slot));
     }
 }
 

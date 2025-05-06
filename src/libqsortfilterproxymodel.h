@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractProxyModel QAbstractProxyModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -32,9 +32,10 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
+typedef struct QRegExp QRegExp;
 typedef struct QRegularExpression QRegularExpression;
 typedef struct QSize QSize;
 typedef struct QSortFilterProxyModel QSortFilterProxyModel;
@@ -51,6 +52,7 @@ int QSortFilterProxyModel_Metacall(QSortFilterProxyModel* self, int param1, int 
 void QSortFilterProxyModel_OnMetacall(QSortFilterProxyModel* self, intptr_t slot);
 int QSortFilterProxyModel_QBaseMetacall(QSortFilterProxyModel* self, int param1, int param2, void** param3);
 libqt_string QSortFilterProxyModel_Tr(const char* s);
+libqt_string QSortFilterProxyModel_TrUtf8(const char* s);
 void QSortFilterProxyModel_SetSourceModel(QSortFilterProxyModel* self, QAbstractItemModel* sourceModel);
 void QSortFilterProxyModel_OnSetSourceModel(QSortFilterProxyModel* self, intptr_t slot);
 void QSortFilterProxyModel_QBaseSetSourceModel(QSortFilterProxyModel* self, QAbstractItemModel* sourceModel);
@@ -66,6 +68,7 @@ QItemSelection* QSortFilterProxyModel_QBaseMapSelectionToSource(const QSortFilte
 QItemSelection* QSortFilterProxyModel_MapSelectionFromSource(const QSortFilterProxyModel* self, QItemSelection* sourceSelection);
 void QSortFilterProxyModel_OnMapSelectionFromSource(const QSortFilterProxyModel* self, intptr_t slot);
 QItemSelection* QSortFilterProxyModel_QBaseMapSelectionFromSource(const QSortFilterProxyModel* self, QItemSelection* sourceSelection);
+QRegExp* QSortFilterProxyModel_FilterRegExp(const QSortFilterProxyModel* self);
 QRegularExpression* QSortFilterProxyModel_FilterRegularExpression(const QSortFilterProxyModel* self);
 int QSortFilterProxyModel_FilterKeyColumn(const QSortFilterProxyModel* self);
 void QSortFilterProxyModel_SetFilterKeyColumn(QSortFilterProxyModel* self, int column);
@@ -85,12 +88,13 @@ int QSortFilterProxyModel_FilterRole(const QSortFilterProxyModel* self);
 void QSortFilterProxyModel_SetFilterRole(QSortFilterProxyModel* self, int role);
 bool QSortFilterProxyModel_IsRecursiveFilteringEnabled(const QSortFilterProxyModel* self);
 void QSortFilterProxyModel_SetRecursiveFilteringEnabled(QSortFilterProxyModel* self, bool recursive);
-bool QSortFilterProxyModel_AutoAcceptChildRows(const QSortFilterProxyModel* self);
-void QSortFilterProxyModel_SetAutoAcceptChildRows(QSortFilterProxyModel* self, bool accept);
+void QSortFilterProxyModel_SetFilterRegExp(QSortFilterProxyModel* self, libqt_string pattern);
+void QSortFilterProxyModel_SetFilterRegExpWithRegExp(QSortFilterProxyModel* self, QRegExp* regExp);
 void QSortFilterProxyModel_SetFilterRegularExpression(QSortFilterProxyModel* self, libqt_string pattern);
 void QSortFilterProxyModel_SetFilterRegularExpressionWithRegularExpression(QSortFilterProxyModel* self, QRegularExpression* regularExpression);
 void QSortFilterProxyModel_SetFilterWildcard(QSortFilterProxyModel* self, libqt_string pattern);
 void QSortFilterProxyModel_SetFilterFixedString(QSortFilterProxyModel* self, libqt_string pattern);
+void QSortFilterProxyModel_Clear(QSortFilterProxyModel* self);
 void QSortFilterProxyModel_Invalidate(QSortFilterProxyModel* self);
 bool QSortFilterProxyModel_FilterAcceptsRow(const QSortFilterProxyModel* self, int source_row, QModelIndex* source_parent);
 void QSortFilterProxyModel_OnFilterAcceptsRow(const QSortFilterProxyModel* self, intptr_t slot);
@@ -190,10 +194,10 @@ void QSortFilterProxyModel_FilterRoleChanged(QSortFilterProxyModel* self, int fi
 void QSortFilterProxyModel_Connect_FilterRoleChanged(QSortFilterProxyModel* self, intptr_t slot);
 void QSortFilterProxyModel_RecursiveFilteringEnabledChanged(QSortFilterProxyModel* self, bool recursiveFilteringEnabled);
 void QSortFilterProxyModel_Connect_RecursiveFilteringEnabledChanged(QSortFilterProxyModel* self, intptr_t slot);
-void QSortFilterProxyModel_AutoAcceptChildRowsChanged(QSortFilterProxyModel* self, bool autoAcceptChildRows);
-void QSortFilterProxyModel_Connect_AutoAcceptChildRowsChanged(QSortFilterProxyModel* self, intptr_t slot);
 libqt_string QSortFilterProxyModel_Tr2(const char* s, const char* c);
 libqt_string QSortFilterProxyModel_Tr3(const char* s, const char* c, int n);
+libqt_string QSortFilterProxyModel_TrUtf82(const char* s, const char* c);
+libqt_string QSortFilterProxyModel_TrUtf83(const char* s, const char* c, int n);
 bool QSortFilterProxyModel_Submit(QSortFilterProxyModel* self);
 void QSortFilterProxyModel_OnSubmit(QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseSubmit(QSortFilterProxyModel* self);
@@ -206,30 +210,21 @@ libqt_map /* of int to QVariant* */ QSortFilterProxyModel_QBaseItemData(const QS
 bool QSortFilterProxyModel_SetItemData(QSortFilterProxyModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
 void QSortFilterProxyModel_OnSetItemData(QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseSetItemData(QSortFilterProxyModel* self, QModelIndex* index, libqt_map /* of int to QVariant* */ roles);
-bool QSortFilterProxyModel_ClearItemData(QSortFilterProxyModel* self, QModelIndex* index);
-void QSortFilterProxyModel_OnClearItemData(QSortFilterProxyModel* self, intptr_t slot);
-bool QSortFilterProxyModel_QBaseClearItemData(QSortFilterProxyModel* self, QModelIndex* index);
 bool QSortFilterProxyModel_CanDropMimeData(const QSortFilterProxyModel* self, QMimeData* data, int action, int row, int column, QModelIndex* parent);
 void QSortFilterProxyModel_OnCanDropMimeData(const QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseCanDropMimeData(const QSortFilterProxyModel* self, QMimeData* data, int action, int row, int column, QModelIndex* parent);
 int QSortFilterProxyModel_SupportedDragActions(const QSortFilterProxyModel* self);
 void QSortFilterProxyModel_OnSupportedDragActions(const QSortFilterProxyModel* self, intptr_t slot);
 int QSortFilterProxyModel_QBaseSupportedDragActions(const QSortFilterProxyModel* self);
-libqt_map /* of int to libqt_string */ QSortFilterProxyModel_RoleNames(const QSortFilterProxyModel* self);
-void QSortFilterProxyModel_OnRoleNames(const QSortFilterProxyModel* self, intptr_t slot);
-libqt_map /* of int to libqt_string */ QSortFilterProxyModel_QBaseRoleNames(const QSortFilterProxyModel* self);
 bool QSortFilterProxyModel_MoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild);
 void QSortFilterProxyModel_OnMoveRows(QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseMoveRows(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceRow, int count, QModelIndex* destinationParent, int destinationChild);
 bool QSortFilterProxyModel_MoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild);
 void QSortFilterProxyModel_OnMoveColumns(QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseMoveColumns(QSortFilterProxyModel* self, QModelIndex* sourceParent, int sourceColumn, int count, QModelIndex* destinationParent, int destinationChild);
-void QSortFilterProxyModel_MultiData(const QSortFilterProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QSortFilterProxyModel_OnMultiData(const QSortFilterProxyModel* self, intptr_t slot);
-void QSortFilterProxyModel_QBaseMultiData(const QSortFilterProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QSortFilterProxyModel_ResetInternalData(QSortFilterProxyModel* self);
-void QSortFilterProxyModel_OnResetInternalData(QSortFilterProxyModel* self, intptr_t slot);
-void QSortFilterProxyModel_QBaseResetInternalData(QSortFilterProxyModel* self);
+libqt_map /* of int to libqt_string */ QSortFilterProxyModel_RoleNames(const QSortFilterProxyModel* self);
+void QSortFilterProxyModel_OnRoleNames(const QSortFilterProxyModel* self, intptr_t slot);
+libqt_map /* of int to libqt_string */ QSortFilterProxyModel_QBaseRoleNames(const QSortFilterProxyModel* self);
 bool QSortFilterProxyModel_Event(QSortFilterProxyModel* self, QEvent* event);
 void QSortFilterProxyModel_OnEvent(QSortFilterProxyModel* self, intptr_t slot);
 bool QSortFilterProxyModel_QBaseEvent(QSortFilterProxyModel* self, QEvent* event);
@@ -251,18 +246,15 @@ void QSortFilterProxyModel_QBaseConnectNotify(QSortFilterProxyModel* self, QMeta
 void QSortFilterProxyModel_DisconnectNotify(QSortFilterProxyModel* self, QMetaMethod* signal);
 void QSortFilterProxyModel_OnDisconnectNotify(QSortFilterProxyModel* self, intptr_t slot);
 void QSortFilterProxyModel_QBaseDisconnectNotify(QSortFilterProxyModel* self, QMetaMethod* signal);
+void QSortFilterProxyModel_FilterChanged(QSortFilterProxyModel* self);
+void QSortFilterProxyModel_OnFilterChanged(QSortFilterProxyModel* self, intptr_t slot);
+void QSortFilterProxyModel_QBaseFilterChanged(QSortFilterProxyModel* self);
 void QSortFilterProxyModel_InvalidateFilter(QSortFilterProxyModel* self);
 void QSortFilterProxyModel_OnInvalidateFilter(QSortFilterProxyModel* self, intptr_t slot);
 void QSortFilterProxyModel_QBaseInvalidateFilter(QSortFilterProxyModel* self);
-void QSortFilterProxyModel_InvalidateRowsFilter(QSortFilterProxyModel* self);
-void QSortFilterProxyModel_OnInvalidateRowsFilter(QSortFilterProxyModel* self, intptr_t slot);
-void QSortFilterProxyModel_QBaseInvalidateRowsFilter(QSortFilterProxyModel* self);
-void QSortFilterProxyModel_InvalidateColumnsFilter(QSortFilterProxyModel* self);
-void QSortFilterProxyModel_OnInvalidateColumnsFilter(QSortFilterProxyModel* self, intptr_t slot);
-void QSortFilterProxyModel_QBaseInvalidateColumnsFilter(QSortFilterProxyModel* self);
-QModelIndex* QSortFilterProxyModel_CreateSourceIndex(const QSortFilterProxyModel* self, int row, int col, void* internalPtr);
-void QSortFilterProxyModel_OnCreateSourceIndex(const QSortFilterProxyModel* self, intptr_t slot);
-QModelIndex* QSortFilterProxyModel_QBaseCreateSourceIndex(const QSortFilterProxyModel* self, int row, int col, void* internalPtr);
+void QSortFilterProxyModel_ResetInternalData(QSortFilterProxyModel* self);
+void QSortFilterProxyModel_OnResetInternalData(QSortFilterProxyModel* self, intptr_t slot);
+void QSortFilterProxyModel_QBaseResetInternalData(QSortFilterProxyModel* self);
 QModelIndex* QSortFilterProxyModel_CreateIndex(const QSortFilterProxyModel* self, int row, int column);
 void QSortFilterProxyModel_OnCreateIndex(const QSortFilterProxyModel* self, intptr_t slot);
 QModelIndex* QSortFilterProxyModel_QBaseCreateIndex(const QSortFilterProxyModel* self, int row, int column);

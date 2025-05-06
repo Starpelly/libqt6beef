@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -17,33 +19,31 @@ class VirtualQTcpSocket : public QTcpSocket {
     // Virtual class public types (including callbacks)
     using QTcpSocket_Metacall_Callback = int (*)(QTcpSocket*, QMetaObject::Call, int, void**);
     using QTcpSocket_Resume_Callback = void (*)();
-    using QTcpSocket_Bind_Callback = bool (*)(QTcpSocket*, const QHostAddress&, quint16, QAbstractSocket::BindMode);
-    using QTcpSocket_ConnectToHost_Callback = void (*)(QTcpSocket*, const QString&, quint16, QIODeviceBase::OpenMode, QAbstractSocket::NetworkLayerProtocol);
+    using QTcpSocket_ConnectToHost_Callback = void (*)(QTcpSocket*, const QString&, quint16, QIODevice::OpenMode, QAbstractSocket::NetworkLayerProtocol);
     using QTcpSocket_DisconnectFromHost_Callback = void (*)();
     using QTcpSocket_BytesAvailable_Callback = qint64 (*)();
     using QTcpSocket_BytesToWrite_Callback = qint64 (*)();
+    using QTcpSocket_CanReadLine_Callback = bool (*)();
     using QTcpSocket_SetReadBufferSize_Callback = void (*)(QTcpSocket*, qint64);
     using QTcpSocket_SocketDescriptor_Callback = qintptr (*)();
-    using QTcpSocket_SetSocketDescriptor_Callback = bool (*)(QTcpSocket*, qintptr, QAbstractSocket::SocketState, QIODeviceBase::OpenMode);
+    using QTcpSocket_SetSocketDescriptor_Callback = bool (*)(QTcpSocket*, qintptr, QAbstractSocket::SocketState, QIODevice::OpenMode);
     using QTcpSocket_SetSocketOption_Callback = void (*)(QTcpSocket*, QAbstractSocket::SocketOption, const QVariant&);
     using QTcpSocket_SocketOption_Callback = QVariant (*)(QTcpSocket*, QAbstractSocket::SocketOption);
     using QTcpSocket_Close_Callback = void (*)();
     using QTcpSocket_IsSequential_Callback = bool (*)();
+    using QTcpSocket_AtEnd_Callback = bool (*)();
     using QTcpSocket_WaitForConnected_Callback = bool (*)(QTcpSocket*, int);
     using QTcpSocket_WaitForReadyRead_Callback = bool (*)(QTcpSocket*, int);
     using QTcpSocket_WaitForBytesWritten_Callback = bool (*)(QTcpSocket*, int);
     using QTcpSocket_WaitForDisconnected_Callback = bool (*)(QTcpSocket*, int);
     using QTcpSocket_ReadData_Callback = qint64 (*)(QTcpSocket*, char*, qint64);
     using QTcpSocket_ReadLineData_Callback = qint64 (*)(QTcpSocket*, char*, qint64);
-    using QTcpSocket_SkipData_Callback = qint64 (*)(QTcpSocket*, qint64);
     using QTcpSocket_WriteData_Callback = qint64 (*)(QTcpSocket*, const char*, qint64);
-    using QTcpSocket_Open_Callback = bool (*)(QTcpSocket*, QIODeviceBase::OpenMode);
+    using QTcpSocket_Open_Callback = bool (*)(QTcpSocket*, QIODevice::OpenMode);
     using QTcpSocket_Pos_Callback = qint64 (*)();
     using QTcpSocket_Size_Callback = qint64 (*)();
     using QTcpSocket_Seek_Callback = bool (*)(QTcpSocket*, qint64);
-    using QTcpSocket_AtEnd_Callback = bool (*)();
     using QTcpSocket_Reset_Callback = bool (*)();
-    using QTcpSocket_CanReadLine_Callback = bool (*)();
     using QTcpSocket_Event_Callback = bool (*)(QTcpSocket*, QEvent*);
     using QTcpSocket_EventFilter_Callback = bool (*)(QTcpSocket*, QObject*, QEvent*);
     using QTcpSocket_TimerEvent_Callback = void (*)(QTcpSocket*, QTimerEvent*);
@@ -58,7 +58,7 @@ class VirtualQTcpSocket : public QTcpSocket {
     using QTcpSocket_SetPeerPort_Callback = void (*)(QTcpSocket*, quint16);
     using QTcpSocket_SetPeerAddress_Callback = void (*)(QTcpSocket*, const QHostAddress&);
     using QTcpSocket_SetPeerName_Callback = void (*)(QTcpSocket*, const QString&);
-    using QTcpSocket_SetOpenMode_Callback = void (*)(QTcpSocket*, QIODeviceBase::OpenMode);
+    using QTcpSocket_SetOpenMode_Callback = void (*)(QTcpSocket*, QIODevice::OpenMode);
     using QTcpSocket_SetErrorString_Callback = void (*)(QTcpSocket*, const QString&);
     using QTcpSocket_Sender_Callback = QObject* (*)();
     using QTcpSocket_SenderSignalIndex_Callback = int (*)();
@@ -69,11 +69,11 @@ class VirtualQTcpSocket : public QTcpSocket {
     // Instance callback storage
     QTcpSocket_Metacall_Callback qtcpsocket_metacall_callback = nullptr;
     QTcpSocket_Resume_Callback qtcpsocket_resume_callback = nullptr;
-    QTcpSocket_Bind_Callback qtcpsocket_bind_callback = nullptr;
     QTcpSocket_ConnectToHost_Callback qtcpsocket_connecttohost_callback = nullptr;
     QTcpSocket_DisconnectFromHost_Callback qtcpsocket_disconnectfromhost_callback = nullptr;
     QTcpSocket_BytesAvailable_Callback qtcpsocket_bytesavailable_callback = nullptr;
     QTcpSocket_BytesToWrite_Callback qtcpsocket_bytestowrite_callback = nullptr;
+    QTcpSocket_CanReadLine_Callback qtcpsocket_canreadline_callback = nullptr;
     QTcpSocket_SetReadBufferSize_Callback qtcpsocket_setreadbuffersize_callback = nullptr;
     QTcpSocket_SocketDescriptor_Callback qtcpsocket_socketdescriptor_callback = nullptr;
     QTcpSocket_SetSocketDescriptor_Callback qtcpsocket_setsocketdescriptor_callback = nullptr;
@@ -81,21 +81,19 @@ class VirtualQTcpSocket : public QTcpSocket {
     QTcpSocket_SocketOption_Callback qtcpsocket_socketoption_callback = nullptr;
     QTcpSocket_Close_Callback qtcpsocket_close_callback = nullptr;
     QTcpSocket_IsSequential_Callback qtcpsocket_issequential_callback = nullptr;
+    QTcpSocket_AtEnd_Callback qtcpsocket_atend_callback = nullptr;
     QTcpSocket_WaitForConnected_Callback qtcpsocket_waitforconnected_callback = nullptr;
     QTcpSocket_WaitForReadyRead_Callback qtcpsocket_waitforreadyread_callback = nullptr;
     QTcpSocket_WaitForBytesWritten_Callback qtcpsocket_waitforbyteswritten_callback = nullptr;
     QTcpSocket_WaitForDisconnected_Callback qtcpsocket_waitfordisconnected_callback = nullptr;
     QTcpSocket_ReadData_Callback qtcpsocket_readdata_callback = nullptr;
     QTcpSocket_ReadLineData_Callback qtcpsocket_readlinedata_callback = nullptr;
-    QTcpSocket_SkipData_Callback qtcpsocket_skipdata_callback = nullptr;
     QTcpSocket_WriteData_Callback qtcpsocket_writedata_callback = nullptr;
     QTcpSocket_Open_Callback qtcpsocket_open_callback = nullptr;
     QTcpSocket_Pos_Callback qtcpsocket_pos_callback = nullptr;
     QTcpSocket_Size_Callback qtcpsocket_size_callback = nullptr;
     QTcpSocket_Seek_Callback qtcpsocket_seek_callback = nullptr;
-    QTcpSocket_AtEnd_Callback qtcpsocket_atend_callback = nullptr;
     QTcpSocket_Reset_Callback qtcpsocket_reset_callback = nullptr;
-    QTcpSocket_CanReadLine_Callback qtcpsocket_canreadline_callback = nullptr;
     QTcpSocket_Event_Callback qtcpsocket_event_callback = nullptr;
     QTcpSocket_EventFilter_Callback qtcpsocket_eventfilter_callback = nullptr;
     QTcpSocket_TimerEvent_Callback qtcpsocket_timerevent_callback = nullptr;
@@ -120,11 +118,11 @@ class VirtualQTcpSocket : public QTcpSocket {
     // Instance base flags
     mutable bool qtcpsocket_metacall_isbase = false;
     mutable bool qtcpsocket_resume_isbase = false;
-    mutable bool qtcpsocket_bind_isbase = false;
     mutable bool qtcpsocket_connecttohost_isbase = false;
     mutable bool qtcpsocket_disconnectfromhost_isbase = false;
     mutable bool qtcpsocket_bytesavailable_isbase = false;
     mutable bool qtcpsocket_bytestowrite_isbase = false;
+    mutable bool qtcpsocket_canreadline_isbase = false;
     mutable bool qtcpsocket_setreadbuffersize_isbase = false;
     mutable bool qtcpsocket_socketdescriptor_isbase = false;
     mutable bool qtcpsocket_setsocketdescriptor_isbase = false;
@@ -132,21 +130,19 @@ class VirtualQTcpSocket : public QTcpSocket {
     mutable bool qtcpsocket_socketoption_isbase = false;
     mutable bool qtcpsocket_close_isbase = false;
     mutable bool qtcpsocket_issequential_isbase = false;
+    mutable bool qtcpsocket_atend_isbase = false;
     mutable bool qtcpsocket_waitforconnected_isbase = false;
     mutable bool qtcpsocket_waitforreadyread_isbase = false;
     mutable bool qtcpsocket_waitforbyteswritten_isbase = false;
     mutable bool qtcpsocket_waitfordisconnected_isbase = false;
     mutable bool qtcpsocket_readdata_isbase = false;
     mutable bool qtcpsocket_readlinedata_isbase = false;
-    mutable bool qtcpsocket_skipdata_isbase = false;
     mutable bool qtcpsocket_writedata_isbase = false;
     mutable bool qtcpsocket_open_isbase = false;
     mutable bool qtcpsocket_pos_isbase = false;
     mutable bool qtcpsocket_size_isbase = false;
     mutable bool qtcpsocket_seek_isbase = false;
-    mutable bool qtcpsocket_atend_isbase = false;
     mutable bool qtcpsocket_reset_isbase = false;
-    mutable bool qtcpsocket_canreadline_isbase = false;
     mutable bool qtcpsocket_event_isbase = false;
     mutable bool qtcpsocket_eventfilter_isbase = false;
     mutable bool qtcpsocket_timerevent_isbase = false;
@@ -175,11 +171,11 @@ class VirtualQTcpSocket : public QTcpSocket {
     ~VirtualQTcpSocket() {
         qtcpsocket_metacall_callback = nullptr;
         qtcpsocket_resume_callback = nullptr;
-        qtcpsocket_bind_callback = nullptr;
         qtcpsocket_connecttohost_callback = nullptr;
         qtcpsocket_disconnectfromhost_callback = nullptr;
         qtcpsocket_bytesavailable_callback = nullptr;
         qtcpsocket_bytestowrite_callback = nullptr;
+        qtcpsocket_canreadline_callback = nullptr;
         qtcpsocket_setreadbuffersize_callback = nullptr;
         qtcpsocket_socketdescriptor_callback = nullptr;
         qtcpsocket_setsocketdescriptor_callback = nullptr;
@@ -187,21 +183,19 @@ class VirtualQTcpSocket : public QTcpSocket {
         qtcpsocket_socketoption_callback = nullptr;
         qtcpsocket_close_callback = nullptr;
         qtcpsocket_issequential_callback = nullptr;
+        qtcpsocket_atend_callback = nullptr;
         qtcpsocket_waitforconnected_callback = nullptr;
         qtcpsocket_waitforreadyread_callback = nullptr;
         qtcpsocket_waitforbyteswritten_callback = nullptr;
         qtcpsocket_waitfordisconnected_callback = nullptr;
         qtcpsocket_readdata_callback = nullptr;
         qtcpsocket_readlinedata_callback = nullptr;
-        qtcpsocket_skipdata_callback = nullptr;
         qtcpsocket_writedata_callback = nullptr;
         qtcpsocket_open_callback = nullptr;
         qtcpsocket_pos_callback = nullptr;
         qtcpsocket_size_callback = nullptr;
         qtcpsocket_seek_callback = nullptr;
-        qtcpsocket_atend_callback = nullptr;
         qtcpsocket_reset_callback = nullptr;
-        qtcpsocket_canreadline_callback = nullptr;
         qtcpsocket_event_callback = nullptr;
         qtcpsocket_eventfilter_callback = nullptr;
         qtcpsocket_timerevent_callback = nullptr;
@@ -227,11 +221,11 @@ class VirtualQTcpSocket : public QTcpSocket {
     // Callback setters
     void setQTcpSocket_Metacall_Callback(QTcpSocket_Metacall_Callback cb) { qtcpsocket_metacall_callback = cb; }
     void setQTcpSocket_Resume_Callback(QTcpSocket_Resume_Callback cb) { qtcpsocket_resume_callback = cb; }
-    void setQTcpSocket_Bind_Callback(QTcpSocket_Bind_Callback cb) { qtcpsocket_bind_callback = cb; }
     void setQTcpSocket_ConnectToHost_Callback(QTcpSocket_ConnectToHost_Callback cb) { qtcpsocket_connecttohost_callback = cb; }
     void setQTcpSocket_DisconnectFromHost_Callback(QTcpSocket_DisconnectFromHost_Callback cb) { qtcpsocket_disconnectfromhost_callback = cb; }
     void setQTcpSocket_BytesAvailable_Callback(QTcpSocket_BytesAvailable_Callback cb) { qtcpsocket_bytesavailable_callback = cb; }
     void setQTcpSocket_BytesToWrite_Callback(QTcpSocket_BytesToWrite_Callback cb) { qtcpsocket_bytestowrite_callback = cb; }
+    void setQTcpSocket_CanReadLine_Callback(QTcpSocket_CanReadLine_Callback cb) { qtcpsocket_canreadline_callback = cb; }
     void setQTcpSocket_SetReadBufferSize_Callback(QTcpSocket_SetReadBufferSize_Callback cb) { qtcpsocket_setreadbuffersize_callback = cb; }
     void setQTcpSocket_SocketDescriptor_Callback(QTcpSocket_SocketDescriptor_Callback cb) { qtcpsocket_socketdescriptor_callback = cb; }
     void setQTcpSocket_SetSocketDescriptor_Callback(QTcpSocket_SetSocketDescriptor_Callback cb) { qtcpsocket_setsocketdescriptor_callback = cb; }
@@ -239,21 +233,19 @@ class VirtualQTcpSocket : public QTcpSocket {
     void setQTcpSocket_SocketOption_Callback(QTcpSocket_SocketOption_Callback cb) { qtcpsocket_socketoption_callback = cb; }
     void setQTcpSocket_Close_Callback(QTcpSocket_Close_Callback cb) { qtcpsocket_close_callback = cb; }
     void setQTcpSocket_IsSequential_Callback(QTcpSocket_IsSequential_Callback cb) { qtcpsocket_issequential_callback = cb; }
+    void setQTcpSocket_AtEnd_Callback(QTcpSocket_AtEnd_Callback cb) { qtcpsocket_atend_callback = cb; }
     void setQTcpSocket_WaitForConnected_Callback(QTcpSocket_WaitForConnected_Callback cb) { qtcpsocket_waitforconnected_callback = cb; }
     void setQTcpSocket_WaitForReadyRead_Callback(QTcpSocket_WaitForReadyRead_Callback cb) { qtcpsocket_waitforreadyread_callback = cb; }
     void setQTcpSocket_WaitForBytesWritten_Callback(QTcpSocket_WaitForBytesWritten_Callback cb) { qtcpsocket_waitforbyteswritten_callback = cb; }
     void setQTcpSocket_WaitForDisconnected_Callback(QTcpSocket_WaitForDisconnected_Callback cb) { qtcpsocket_waitfordisconnected_callback = cb; }
     void setQTcpSocket_ReadData_Callback(QTcpSocket_ReadData_Callback cb) { qtcpsocket_readdata_callback = cb; }
     void setQTcpSocket_ReadLineData_Callback(QTcpSocket_ReadLineData_Callback cb) { qtcpsocket_readlinedata_callback = cb; }
-    void setQTcpSocket_SkipData_Callback(QTcpSocket_SkipData_Callback cb) { qtcpsocket_skipdata_callback = cb; }
     void setQTcpSocket_WriteData_Callback(QTcpSocket_WriteData_Callback cb) { qtcpsocket_writedata_callback = cb; }
     void setQTcpSocket_Open_Callback(QTcpSocket_Open_Callback cb) { qtcpsocket_open_callback = cb; }
     void setQTcpSocket_Pos_Callback(QTcpSocket_Pos_Callback cb) { qtcpsocket_pos_callback = cb; }
     void setQTcpSocket_Size_Callback(QTcpSocket_Size_Callback cb) { qtcpsocket_size_callback = cb; }
     void setQTcpSocket_Seek_Callback(QTcpSocket_Seek_Callback cb) { qtcpsocket_seek_callback = cb; }
-    void setQTcpSocket_AtEnd_Callback(QTcpSocket_AtEnd_Callback cb) { qtcpsocket_atend_callback = cb; }
     void setQTcpSocket_Reset_Callback(QTcpSocket_Reset_Callback cb) { qtcpsocket_reset_callback = cb; }
-    void setQTcpSocket_CanReadLine_Callback(QTcpSocket_CanReadLine_Callback cb) { qtcpsocket_canreadline_callback = cb; }
     void setQTcpSocket_Event_Callback(QTcpSocket_Event_Callback cb) { qtcpsocket_event_callback = cb; }
     void setQTcpSocket_EventFilter_Callback(QTcpSocket_EventFilter_Callback cb) { qtcpsocket_eventfilter_callback = cb; }
     void setQTcpSocket_TimerEvent_Callback(QTcpSocket_TimerEvent_Callback cb) { qtcpsocket_timerevent_callback = cb; }
@@ -278,11 +270,11 @@ class VirtualQTcpSocket : public QTcpSocket {
     // Base flag setters
     void setQTcpSocket_Metacall_IsBase(bool value) const { qtcpsocket_metacall_isbase = value; }
     void setQTcpSocket_Resume_IsBase(bool value) const { qtcpsocket_resume_isbase = value; }
-    void setQTcpSocket_Bind_IsBase(bool value) const { qtcpsocket_bind_isbase = value; }
     void setQTcpSocket_ConnectToHost_IsBase(bool value) const { qtcpsocket_connecttohost_isbase = value; }
     void setQTcpSocket_DisconnectFromHost_IsBase(bool value) const { qtcpsocket_disconnectfromhost_isbase = value; }
     void setQTcpSocket_BytesAvailable_IsBase(bool value) const { qtcpsocket_bytesavailable_isbase = value; }
     void setQTcpSocket_BytesToWrite_IsBase(bool value) const { qtcpsocket_bytestowrite_isbase = value; }
+    void setQTcpSocket_CanReadLine_IsBase(bool value) const { qtcpsocket_canreadline_isbase = value; }
     void setQTcpSocket_SetReadBufferSize_IsBase(bool value) const { qtcpsocket_setreadbuffersize_isbase = value; }
     void setQTcpSocket_SocketDescriptor_IsBase(bool value) const { qtcpsocket_socketdescriptor_isbase = value; }
     void setQTcpSocket_SetSocketDescriptor_IsBase(bool value) const { qtcpsocket_setsocketdescriptor_isbase = value; }
@@ -290,21 +282,19 @@ class VirtualQTcpSocket : public QTcpSocket {
     void setQTcpSocket_SocketOption_IsBase(bool value) const { qtcpsocket_socketoption_isbase = value; }
     void setQTcpSocket_Close_IsBase(bool value) const { qtcpsocket_close_isbase = value; }
     void setQTcpSocket_IsSequential_IsBase(bool value) const { qtcpsocket_issequential_isbase = value; }
+    void setQTcpSocket_AtEnd_IsBase(bool value) const { qtcpsocket_atend_isbase = value; }
     void setQTcpSocket_WaitForConnected_IsBase(bool value) const { qtcpsocket_waitforconnected_isbase = value; }
     void setQTcpSocket_WaitForReadyRead_IsBase(bool value) const { qtcpsocket_waitforreadyread_isbase = value; }
     void setQTcpSocket_WaitForBytesWritten_IsBase(bool value) const { qtcpsocket_waitforbyteswritten_isbase = value; }
     void setQTcpSocket_WaitForDisconnected_IsBase(bool value) const { qtcpsocket_waitfordisconnected_isbase = value; }
     void setQTcpSocket_ReadData_IsBase(bool value) const { qtcpsocket_readdata_isbase = value; }
     void setQTcpSocket_ReadLineData_IsBase(bool value) const { qtcpsocket_readlinedata_isbase = value; }
-    void setQTcpSocket_SkipData_IsBase(bool value) const { qtcpsocket_skipdata_isbase = value; }
     void setQTcpSocket_WriteData_IsBase(bool value) const { qtcpsocket_writedata_isbase = value; }
     void setQTcpSocket_Open_IsBase(bool value) const { qtcpsocket_open_isbase = value; }
     void setQTcpSocket_Pos_IsBase(bool value) const { qtcpsocket_pos_isbase = value; }
     void setQTcpSocket_Size_IsBase(bool value) const { qtcpsocket_size_isbase = value; }
     void setQTcpSocket_Seek_IsBase(bool value) const { qtcpsocket_seek_isbase = value; }
-    void setQTcpSocket_AtEnd_IsBase(bool value) const { qtcpsocket_atend_isbase = value; }
     void setQTcpSocket_Reset_IsBase(bool value) const { qtcpsocket_reset_isbase = value; }
-    void setQTcpSocket_CanReadLine_IsBase(bool value) const { qtcpsocket_canreadline_isbase = value; }
     void setQTcpSocket_Event_IsBase(bool value) const { qtcpsocket_event_isbase = value; }
     void setQTcpSocket_EventFilter_IsBase(bool value) const { qtcpsocket_eventfilter_isbase = value; }
     void setQTcpSocket_TimerEvent_IsBase(bool value) const { qtcpsocket_timerevent_isbase = value; }
@@ -351,19 +341,7 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool bind(const QHostAddress& address, quint16 port, QAbstractSocket::BindMode mode) override {
-        if (qtcpsocket_bind_isbase) {
-            qtcpsocket_bind_isbase = false;
-            return QTcpSocket::bind(address, port, mode);
-        } else if (qtcpsocket_bind_callback != nullptr) {
-            return qtcpsocket_bind_callback(this, address, port, mode);
-        } else {
-            return QTcpSocket::bind(address, port, mode);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void connectToHost(const QString& hostName, quint16 port, QIODeviceBase::OpenMode mode, QAbstractSocket::NetworkLayerProtocol protocol) override {
+    virtual void connectToHost(const QString& hostName, quint16 port, QIODevice::OpenMode mode, QAbstractSocket::NetworkLayerProtocol protocol) override {
         if (qtcpsocket_connecttohost_isbase) {
             qtcpsocket_connecttohost_isbase = false;
             QTcpSocket::connectToHost(hostName, port, mode, protocol);
@@ -411,6 +389,18 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual bool canReadLine() const override {
+        if (qtcpsocket_canreadline_isbase) {
+            qtcpsocket_canreadline_isbase = false;
+            return QTcpSocket::canReadLine();
+        } else if (qtcpsocket_canreadline_callback != nullptr) {
+            return qtcpsocket_canreadline_callback();
+        } else {
+            return QTcpSocket::canReadLine();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual void setReadBufferSize(qint64 size) override {
         if (qtcpsocket_setreadbuffersize_isbase) {
             qtcpsocket_setreadbuffersize_isbase = false;
@@ -435,7 +425,7 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODeviceBase::OpenMode openMode) override {
+    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODevice::OpenMode openMode) override {
         if (qtcpsocket_setsocketdescriptor_isbase) {
             qtcpsocket_setsocketdescriptor_isbase = false;
             return QTcpSocket::setSocketDescriptor(socketDescriptor, state, openMode);
@@ -491,6 +481,18 @@ class VirtualQTcpSocket : public QTcpSocket {
             return qtcpsocket_issequential_callback();
         } else {
             return QTcpSocket::isSequential();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool atEnd() const override {
+        if (qtcpsocket_atend_isbase) {
+            qtcpsocket_atend_isbase = false;
+            return QTcpSocket::atEnd();
+        } else if (qtcpsocket_atend_callback != nullptr) {
+            return qtcpsocket_atend_callback();
+        } else {
+            return QTcpSocket::atEnd();
         }
     }
 
@@ -567,18 +569,6 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual qint64 skipData(qint64 maxSize) override {
-        if (qtcpsocket_skipdata_isbase) {
-            qtcpsocket_skipdata_isbase = false;
-            return QTcpSocket::skipData(maxSize);
-        } else if (qtcpsocket_skipdata_callback != nullptr) {
-            return qtcpsocket_skipdata_callback(this, maxSize);
-        } else {
-            return QTcpSocket::skipData(maxSize);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual qint64 writeData(const char* data, qint64 lenVal) override {
         if (qtcpsocket_writedata_isbase) {
             qtcpsocket_writedata_isbase = false;
@@ -591,7 +581,7 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODeviceBase::OpenMode mode) override {
+    virtual bool open(QIODevice::OpenMode mode) override {
         if (qtcpsocket_open_isbase) {
             qtcpsocket_open_isbase = false;
             return QTcpSocket::open(mode);
@@ -639,18 +629,6 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool atEnd() const override {
-        if (qtcpsocket_atend_isbase) {
-            qtcpsocket_atend_isbase = false;
-            return QTcpSocket::atEnd();
-        } else if (qtcpsocket_atend_callback != nullptr) {
-            return qtcpsocket_atend_callback();
-        } else {
-            return QTcpSocket::atEnd();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool reset() override {
         if (qtcpsocket_reset_isbase) {
             qtcpsocket_reset_isbase = false;
@@ -659,18 +637,6 @@ class VirtualQTcpSocket : public QTcpSocket {
             return qtcpsocket_reset_callback();
         } else {
             return QTcpSocket::reset();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool canReadLine() const override {
-        if (qtcpsocket_canreadline_isbase) {
-            qtcpsocket_canreadline_isbase = false;
-            return QTcpSocket::canReadLine();
-        } else if (qtcpsocket_canreadline_callback != nullptr) {
-            return qtcpsocket_canreadline_callback();
-        } else {
-            return QTcpSocket::canReadLine();
         }
     }
 
@@ -843,7 +809,7 @@ class VirtualQTcpSocket : public QTcpSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODeviceBase::OpenMode openMode) {
+    void setOpenMode(QIODevice::OpenMode openMode) {
         if (qtcpsocket_setopenmode_isbase) {
             qtcpsocket_setopenmode_isbase = false;
             QTcpSocket::setOpenMode(openMode);

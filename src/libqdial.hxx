@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -26,7 +28,6 @@ class VirtualQDial : public QDial {
     using QDial_MouseReleaseEvent_Callback = void (*)(QDial*, QMouseEvent*);
     using QDial_MouseMoveEvent_Callback = void (*)(QDial*, QMouseEvent*);
     using QDial_SliderChange_Callback = void (*)(QDial*, int);
-    using QDial_InitStyleOption_Callback = void (*)(const QDial*, QStyleOptionSlider*);
     using QDial_KeyPressEvent_Callback = void (*)(QDial*, QKeyEvent*);
     using QDial_TimerEvent_Callback = void (*)(QDial*, QTimerEvent*);
     using QDial_WheelEvent_Callback = void (*)(QDial*, QWheelEvent*);
@@ -40,7 +41,7 @@ class VirtualQDial : public QDial {
     using QDial_KeyReleaseEvent_Callback = void (*)(QDial*, QKeyEvent*);
     using QDial_FocusInEvent_Callback = void (*)(QDial*, QFocusEvent*);
     using QDial_FocusOutEvent_Callback = void (*)(QDial*, QFocusEvent*);
-    using QDial_EnterEvent_Callback = void (*)(QDial*, QEnterEvent*);
+    using QDial_EnterEvent_Callback = void (*)(QDial*, QEvent*);
     using QDial_LeaveEvent_Callback = void (*)(QDial*, QEvent*);
     using QDial_MoveEvent_Callback = void (*)(QDial*, QMoveEvent*);
     using QDial_CloseEvent_Callback = void (*)(QDial*, QCloseEvent*);
@@ -53,7 +54,7 @@ class VirtualQDial : public QDial {
     using QDial_DropEvent_Callback = void (*)(QDial*, QDropEvent*);
     using QDial_ShowEvent_Callback = void (*)(QDial*, QShowEvent*);
     using QDial_HideEvent_Callback = void (*)(QDial*, QHideEvent*);
-    using QDial_NativeEvent_Callback = bool (*)(QDial*, const QByteArray&, void*, qintptr*);
+    using QDial_NativeEvent_Callback = bool (*)(QDial*, const QByteArray&, void*, long*);
     using QDial_Metric_Callback = int (*)(const QDial*, QPaintDevice::PaintDeviceMetric);
     using QDial_InitPainter_Callback = void (*)(const QDial*, QPainter*);
     using QDial_Redirected_Callback = QPaintDevice* (*)(const QDial*, QPoint*);
@@ -66,6 +67,7 @@ class VirtualQDial : public QDial {
     using QDial_CustomEvent_Callback = void (*)(QDial*, QEvent*);
     using QDial_ConnectNotify_Callback = void (*)(QDial*, const QMetaMethod&);
     using QDial_DisconnectNotify_Callback = void (*)(QDial*, const QMetaMethod&);
+    using QDial_InitStyleOption_Callback = void (*)(const QDial*, QStyleOptionSlider*);
     using QDial_SetRepeatAction_Callback = void (*)(QDial*, QAbstractSlider::SliderAction);
     using QDial_RepeatAction_Callback = QAbstractSlider::SliderAction (*)();
     using QDial_UpdateMicroFocus_Callback = void (*)();
@@ -90,7 +92,6 @@ class VirtualQDial : public QDial {
     QDial_MouseReleaseEvent_Callback qdial_mousereleaseevent_callback = nullptr;
     QDial_MouseMoveEvent_Callback qdial_mousemoveevent_callback = nullptr;
     QDial_SliderChange_Callback qdial_sliderchange_callback = nullptr;
-    QDial_InitStyleOption_Callback qdial_initstyleoption_callback = nullptr;
     QDial_KeyPressEvent_Callback qdial_keypressevent_callback = nullptr;
     QDial_TimerEvent_Callback qdial_timerevent_callback = nullptr;
     QDial_WheelEvent_Callback qdial_wheelevent_callback = nullptr;
@@ -130,6 +131,7 @@ class VirtualQDial : public QDial {
     QDial_CustomEvent_Callback qdial_customevent_callback = nullptr;
     QDial_ConnectNotify_Callback qdial_connectnotify_callback = nullptr;
     QDial_DisconnectNotify_Callback qdial_disconnectnotify_callback = nullptr;
+    QDial_InitStyleOption_Callback qdial_initstyleoption_callback = nullptr;
     QDial_SetRepeatAction_Callback qdial_setrepeataction_callback = nullptr;
     QDial_RepeatAction_Callback qdial_repeataction_callback = nullptr;
     QDial_UpdateMicroFocus_Callback qdial_updatemicrofocus_callback = nullptr;
@@ -153,7 +155,6 @@ class VirtualQDial : public QDial {
     mutable bool qdial_mousereleaseevent_isbase = false;
     mutable bool qdial_mousemoveevent_isbase = false;
     mutable bool qdial_sliderchange_isbase = false;
-    mutable bool qdial_initstyleoption_isbase = false;
     mutable bool qdial_keypressevent_isbase = false;
     mutable bool qdial_timerevent_isbase = false;
     mutable bool qdial_wheelevent_isbase = false;
@@ -193,6 +194,7 @@ class VirtualQDial : public QDial {
     mutable bool qdial_customevent_isbase = false;
     mutable bool qdial_connectnotify_isbase = false;
     mutable bool qdial_disconnectnotify_isbase = false;
+    mutable bool qdial_initstyleoption_isbase = false;
     mutable bool qdial_setrepeataction_isbase = false;
     mutable bool qdial_repeataction_isbase = false;
     mutable bool qdial_updatemicrofocus_isbase = false;
@@ -220,7 +222,6 @@ class VirtualQDial : public QDial {
         qdial_mousereleaseevent_callback = nullptr;
         qdial_mousemoveevent_callback = nullptr;
         qdial_sliderchange_callback = nullptr;
-        qdial_initstyleoption_callback = nullptr;
         qdial_keypressevent_callback = nullptr;
         qdial_timerevent_callback = nullptr;
         qdial_wheelevent_callback = nullptr;
@@ -260,6 +261,7 @@ class VirtualQDial : public QDial {
         qdial_customevent_callback = nullptr;
         qdial_connectnotify_callback = nullptr;
         qdial_disconnectnotify_callback = nullptr;
+        qdial_initstyleoption_callback = nullptr;
         qdial_setrepeataction_callback = nullptr;
         qdial_repeataction_callback = nullptr;
         qdial_updatemicrofocus_callback = nullptr;
@@ -284,7 +286,6 @@ class VirtualQDial : public QDial {
     void setQDial_MouseReleaseEvent_Callback(QDial_MouseReleaseEvent_Callback cb) { qdial_mousereleaseevent_callback = cb; }
     void setQDial_MouseMoveEvent_Callback(QDial_MouseMoveEvent_Callback cb) { qdial_mousemoveevent_callback = cb; }
     void setQDial_SliderChange_Callback(QDial_SliderChange_Callback cb) { qdial_sliderchange_callback = cb; }
-    void setQDial_InitStyleOption_Callback(QDial_InitStyleOption_Callback cb) { qdial_initstyleoption_callback = cb; }
     void setQDial_KeyPressEvent_Callback(QDial_KeyPressEvent_Callback cb) { qdial_keypressevent_callback = cb; }
     void setQDial_TimerEvent_Callback(QDial_TimerEvent_Callback cb) { qdial_timerevent_callback = cb; }
     void setQDial_WheelEvent_Callback(QDial_WheelEvent_Callback cb) { qdial_wheelevent_callback = cb; }
@@ -324,6 +325,7 @@ class VirtualQDial : public QDial {
     void setQDial_CustomEvent_Callback(QDial_CustomEvent_Callback cb) { qdial_customevent_callback = cb; }
     void setQDial_ConnectNotify_Callback(QDial_ConnectNotify_Callback cb) { qdial_connectnotify_callback = cb; }
     void setQDial_DisconnectNotify_Callback(QDial_DisconnectNotify_Callback cb) { qdial_disconnectnotify_callback = cb; }
+    void setQDial_InitStyleOption_Callback(QDial_InitStyleOption_Callback cb) { qdial_initstyleoption_callback = cb; }
     void setQDial_SetRepeatAction_Callback(QDial_SetRepeatAction_Callback cb) { qdial_setrepeataction_callback = cb; }
     void setQDial_RepeatAction_Callback(QDial_RepeatAction_Callback cb) { qdial_repeataction_callback = cb; }
     void setQDial_UpdateMicroFocus_Callback(QDial_UpdateMicroFocus_Callback cb) { qdial_updatemicrofocus_callback = cb; }
@@ -347,7 +349,6 @@ class VirtualQDial : public QDial {
     void setQDial_MouseReleaseEvent_IsBase(bool value) const { qdial_mousereleaseevent_isbase = value; }
     void setQDial_MouseMoveEvent_IsBase(bool value) const { qdial_mousemoveevent_isbase = value; }
     void setQDial_SliderChange_IsBase(bool value) const { qdial_sliderchange_isbase = value; }
-    void setQDial_InitStyleOption_IsBase(bool value) const { qdial_initstyleoption_isbase = value; }
     void setQDial_KeyPressEvent_IsBase(bool value) const { qdial_keypressevent_isbase = value; }
     void setQDial_TimerEvent_IsBase(bool value) const { qdial_timerevent_isbase = value; }
     void setQDial_WheelEvent_IsBase(bool value) const { qdial_wheelevent_isbase = value; }
@@ -387,6 +388,7 @@ class VirtualQDial : public QDial {
     void setQDial_CustomEvent_IsBase(bool value) const { qdial_customevent_isbase = value; }
     void setQDial_ConnectNotify_IsBase(bool value) const { qdial_connectnotify_isbase = value; }
     void setQDial_DisconnectNotify_IsBase(bool value) const { qdial_disconnectnotify_isbase = value; }
+    void setQDial_InitStyleOption_IsBase(bool value) const { qdial_initstyleoption_isbase = value; }
     void setQDial_SetRepeatAction_IsBase(bool value) const { qdial_setrepeataction_isbase = value; }
     void setQDial_RepeatAction_IsBase(bool value) const { qdial_repeataction_isbase = value; }
     void setQDial_UpdateMicroFocus_IsBase(bool value) const { qdial_updatemicrofocus_isbase = value; }
@@ -516,18 +518,6 @@ class VirtualQDial : public QDial {
             qdial_sliderchange_callback(this, change);
         } else {
             QDial::sliderChange(change);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSlider* option) const override {
-        if (qdial_initstyleoption_isbase) {
-            qdial_initstyleoption_isbase = false;
-            QDial::initStyleOption(option);
-        } else if (qdial_initstyleoption_callback != nullptr) {
-            qdial_initstyleoption_callback(this, option);
-        } else {
-            QDial::initStyleOption(option);
         }
     }
 
@@ -688,7 +678,7 @@ class VirtualQDial : public QDial {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qdial_enterevent_isbase) {
             qdial_enterevent_isbase = false;
             QDial::enterEvent(event);
@@ -844,7 +834,7 @@ class VirtualQDial : public QDial {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qdial_nativeevent_isbase) {
             qdial_nativeevent_isbase = false;
             return QDial::nativeEvent(eventType, message, result);
@@ -996,6 +986,18 @@ class VirtualQDial : public QDial {
             qdial_disconnectnotify_callback(this, signal);
         } else {
             QDial::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSlider* option) const {
+        if (qdial_initstyleoption_isbase) {
+            qdial_initstyleoption_isbase = false;
+            QDial::initStyleOption(option);
+        } else if (qdial_initstyleoption_callback != nullptr) {
+            qdial_initstyleoption_callback(this, option);
+        } else {
+            QDial::initStyleOption(option);
         }
     }
 

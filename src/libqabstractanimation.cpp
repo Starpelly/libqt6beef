@@ -1,8 +1,6 @@
 #include <QAbstractAnimation>
 #include <QAnimationDriver>
 #include <QAnimationGroup>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -11,6 +9,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -64,6 +63,18 @@ int QAbstractAnimation_QBaseMetacall(QAbstractAnimation* self, int param1, int p
 
 libqt_string QAbstractAnimation_Tr(const char* s) {
     QString _ret = QAbstractAnimation::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractAnimation_TrUtf8(const char* s) {
+    QString _ret = QAbstractAnimation::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -200,6 +211,30 @@ libqt_string QAbstractAnimation_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractAnimation_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractAnimation::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractAnimation_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAbstractAnimation::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractAnimation_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAbstractAnimation::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -661,6 +696,18 @@ libqt_string QAnimationDriver_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QAnimationDriver_TrUtf8(const char* s) {
+    QString _ret = QAnimationDriver::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QAnimationDriver_Install(QAnimationDriver* self) {
     self->install();
 }
@@ -671,6 +718,14 @@ void QAnimationDriver_Uninstall(QAnimationDriver* self) {
 
 bool QAnimationDriver_IsRunning(const QAnimationDriver* self) {
     return self->isRunning();
+}
+
+void QAnimationDriver_SetStartTime(QAnimationDriver* self, long long startTime) {
+    self->setStartTime(static_cast<qint64>(startTime));
+}
+
+long long QAnimationDriver_StartTime(const QAnimationDriver* self) {
+    return static_cast<long long>(self->startTime());
 }
 
 void QAnimationDriver_Started(QAnimationDriver* self) {
@@ -709,6 +764,30 @@ libqt_string QAnimationDriver_Tr2(const char* s, const char* c) {
 
 libqt_string QAnimationDriver_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAnimationDriver::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAnimationDriver_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAnimationDriver::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAnimationDriver_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAnimationDriver::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1028,6 +1107,32 @@ void QAnimationDriver_QBaseAdvanceAnimation(QAnimationDriver* self) {
 void QAnimationDriver_OnAdvanceAnimation(QAnimationDriver* self, intptr_t slot) {
     if (auto* vqanimationdriver = dynamic_cast<VirtualQAnimationDriver*>(self)) {
         vqanimationdriver->setQAnimationDriver_AdvanceAnimation_Callback(reinterpret_cast<VirtualQAnimationDriver::QAnimationDriver_AdvanceAnimation_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QAnimationDriver_AdvanceAnimation1(QAnimationDriver* self, long long timeStep) {
+    if (auto* vqanimationdriver = dynamic_cast<VirtualQAnimationDriver*>(self)) {
+        vqanimationdriver->advanceAnimation(static_cast<qint64>(timeStep));
+    } else {
+        vqanimationdriver->advanceAnimation(static_cast<qint64>(timeStep));
+    }
+}
+
+// Base class handler implementation
+void QAnimationDriver_QBaseAdvanceAnimation1(QAnimationDriver* self, long long timeStep) {
+    if (auto* vqanimationdriver = dynamic_cast<VirtualQAnimationDriver*>(self)) {
+        vqanimationdriver->setQAnimationDriver_AdvanceAnimation1_IsBase(true);
+        vqanimationdriver->advanceAnimation(static_cast<qint64>(timeStep));
+    } else {
+        vqanimationdriver->advanceAnimation(static_cast<qint64>(timeStep));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QAnimationDriver_OnAdvanceAnimation1(QAnimationDriver* self, intptr_t slot) {
+    if (auto* vqanimationdriver = dynamic_cast<VirtualQAnimationDriver*>(self)) {
+        vqanimationdriver->setQAnimationDriver_AdvanceAnimation1_Callback(reinterpret_cast<VirtualQAnimationDriver::QAnimationDriver_AdvanceAnimation1_Callback>(slot));
     }
 }
 

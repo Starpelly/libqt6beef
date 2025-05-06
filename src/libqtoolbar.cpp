@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,6 +33,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,7 +41,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -131,6 +128,18 @@ libqt_string QToolBar_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QToolBar_TrUtf8(const char* s) {
+    QString _ret = QToolBar::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QToolBar_SetMovable(QToolBar* self, bool movable) {
     self->setMovable(movable);
 }
@@ -161,6 +170,16 @@ int QToolBar_Orientation(const QToolBar* self) {
 
 void QToolBar_Clear(QToolBar* self) {
     self->clear();
+}
+
+QAction* QToolBar_AddAction(QToolBar* self, libqt_string text) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    return self->addAction(text_QString);
+}
+
+QAction* QToolBar_AddAction2(QToolBar* self, QIcon* icon, libqt_string text) {
+    QString text_QString = QString::fromUtf8(text.data, text.len);
+    return self->addAction(*icon, text_QString);
 }
 
 QAction* QToolBar_AddSeparator(QToolBar* self) {
@@ -349,6 +368,30 @@ libqt_string QToolBar_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QToolBar_TrUtf82(const char* s, const char* c) {
+    QString _ret = QToolBar::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolBar_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QToolBar::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 // Derived class handler implementation
 void QToolBar_ActionEvent(QToolBar* self, QActionEvent* event) {
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
@@ -450,32 +493,6 @@ bool QToolBar_QBaseEvent(QToolBar* self, QEvent* event) {
 void QToolBar_OnEvent(QToolBar* self, intptr_t slot) {
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
         vqtoolbar->setQToolBar_Event_Callback(reinterpret_cast<VirtualQToolBar::QToolBar_Event_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QToolBar_InitStyleOption(const QToolBar* self, QStyleOptionToolBar* option) {
-    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
-        vqtoolbar->initStyleOption(option);
-    } else {
-        vqtoolbar->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QToolBar_QBaseInitStyleOption(const QToolBar* self, QStyleOptionToolBar* option) {
-    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
-        vqtoolbar->setQToolBar_InitStyleOption_IsBase(true);
-        vqtoolbar->initStyleOption(option);
-    } else {
-        vqtoolbar->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QToolBar_OnInitStyleOption(const QToolBar* self, intptr_t slot) {
-    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
-        vqtoolbar->setQToolBar_InitStyleOption_Callback(reinterpret_cast<VirtualQToolBar::QToolBar_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -896,7 +913,7 @@ void QToolBar_OnFocusOutEvent(QToolBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QToolBar_EnterEvent(QToolBar* self, QEnterEvent* event) {
+void QToolBar_EnterEvent(QToolBar* self, QEvent* event) {
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
         vqtoolbar->enterEvent(event);
     } else {
@@ -905,7 +922,7 @@ void QToolBar_EnterEvent(QToolBar* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QToolBar_QBaseEnterEvent(QToolBar* self, QEnterEvent* event) {
+void QToolBar_QBaseEnterEvent(QToolBar* self, QEvent* event) {
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
         vqtoolbar->setQToolBar_EnterEvent_IsBase(true);
         vqtoolbar->enterEvent(event);
@@ -1234,23 +1251,23 @@ void QToolBar_OnHideEvent(QToolBar* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QToolBar_NativeEvent(QToolBar* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolBar_NativeEvent(QToolBar* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
-        return vqtoolbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QToolBar_QBaseNativeEvent(QToolBar* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolBar_QBaseNativeEvent(QToolBar* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
         vqtoolbar->setQToolBar_NativeEvent_IsBase(true);
-        return vqtoolbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbar->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbar->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1596,6 +1613,32 @@ void QToolBar_QBaseDisconnectNotify(QToolBar* self, QMetaMethod* signal) {
 void QToolBar_OnDisconnectNotify(QToolBar* self, intptr_t slot) {
     if (auto* vqtoolbar = dynamic_cast<VirtualQToolBar*>(self)) {
         vqtoolbar->setQToolBar_DisconnectNotify_Callback(reinterpret_cast<VirtualQToolBar::QToolBar_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QToolBar_InitStyleOption(const QToolBar* self, QStyleOptionToolBar* option) {
+    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
+        vqtoolbar->initStyleOption(option);
+    } else {
+        vqtoolbar->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QToolBar_QBaseInitStyleOption(const QToolBar* self, QStyleOptionToolBar* option) {
+    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
+        vqtoolbar->setQToolBar_InitStyleOption_IsBase(true);
+        vqtoolbar->initStyleOption(option);
+    } else {
+        vqtoolbar->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QToolBar_OnInitStyleOption(const QToolBar* self, intptr_t slot) {
+    if (auto* vqtoolbar = const_cast<VirtualQToolBar*>(dynamic_cast<const VirtualQToolBar*>(self))) {
+        vqtoolbar->setQToolBar_InitStyleOption_Callback(reinterpret_cast<VirtualQToolBar::QToolBar_InitStyleOption_Callback>(slot));
     }
 }
 

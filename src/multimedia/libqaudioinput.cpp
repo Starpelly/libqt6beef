@@ -1,15 +1,16 @@
-#include <QAnyStringView>
-#include <QAudioDevice>
+#include <QAudioDeviceInfo>
+#include <QAudioFormat>
 #include <QAudioInput>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
+#include <QIODevice>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -24,16 +25,24 @@ QAudioInput* QAudioInput_new() {
     return new VirtualQAudioInput();
 }
 
-QAudioInput* QAudioInput_new2(QAudioDevice* deviceInfo) {
-    return new VirtualQAudioInput(*deviceInfo);
+QAudioInput* QAudioInput_new2(QAudioDeviceInfo* audioDeviceInfo) {
+    return new VirtualQAudioInput(*audioDeviceInfo);
 }
 
-QAudioInput* QAudioInput_new3(QObject* parent) {
-    return new VirtualQAudioInput(parent);
+QAudioInput* QAudioInput_new3(QAudioFormat* format) {
+    return new VirtualQAudioInput(*format);
 }
 
-QAudioInput* QAudioInput_new4(QAudioDevice* deviceInfo, QObject* parent) {
-    return new VirtualQAudioInput(*deviceInfo, parent);
+QAudioInput* QAudioInput_new4(QAudioFormat* format, QObject* parent) {
+    return new VirtualQAudioInput(*format, parent);
+}
+
+QAudioInput* QAudioInput_new5(QAudioDeviceInfo* audioDeviceInfo, QAudioFormat* format) {
+    return new VirtualQAudioInput(*audioDeviceInfo, *format);
+}
+
+QAudioInput* QAudioInput_new6(QAudioDeviceInfo* audioDeviceInfo, QAudioFormat* format, QObject* parent) {
+    return new VirtualQAudioInput(*audioDeviceInfo, *format, parent);
 }
 
 QMetaObject* QAudioInput_MetaObject(const QAudioInput* self) {
@@ -81,62 +90,114 @@ libqt_string QAudioInput_Tr(const char* s) {
     return _str;
 }
 
-QAudioDevice* QAudioInput_Device(const QAudioInput* self) {
-    return new QAudioDevice(self->device());
+libqt_string QAudioInput_TrUtf8(const char* s) {
+    QString _ret = QAudioInput::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
-float QAudioInput_Volume(const QAudioInput* self) {
-    return self->volume();
+QAudioFormat* QAudioInput_Format(const QAudioInput* self) {
+    return new QAudioFormat(self->format());
 }
 
-bool QAudioInput_IsMuted(const QAudioInput* self) {
-    return self->isMuted();
+void QAudioInput_Start(QAudioInput* self, QIODevice* device) {
+    self->start(device);
 }
 
-void QAudioInput_SetDevice(QAudioInput* self, QAudioDevice* device) {
-    self->setDevice(*device);
+QIODevice* QAudioInput_Start2(QAudioInput* self) {
+    return self->start();
 }
 
-void QAudioInput_SetVolume(QAudioInput* self, float volume) {
-    self->setVolume(static_cast<float>(volume));
+void QAudioInput_Stop(QAudioInput* self) {
+    self->stop();
 }
 
-void QAudioInput_SetMuted(QAudioInput* self, bool muted) {
-    self->setMuted(muted);
+void QAudioInput_Reset(QAudioInput* self) {
+    self->reset();
 }
 
-void QAudioInput_DeviceChanged(QAudioInput* self) {
-    self->deviceChanged();
+void QAudioInput_Suspend(QAudioInput* self) {
+    self->suspend();
 }
 
-void QAudioInput_Connect_DeviceChanged(QAudioInput* self, intptr_t slot) {
+void QAudioInput_Resume(QAudioInput* self) {
+    self->resume();
+}
+
+void QAudioInput_SetBufferSize(QAudioInput* self, int bytes) {
+    self->setBufferSize(static_cast<int>(bytes));
+}
+
+int QAudioInput_BufferSize(const QAudioInput* self) {
+    return self->bufferSize();
+}
+
+int QAudioInput_BytesReady(const QAudioInput* self) {
+    return self->bytesReady();
+}
+
+int QAudioInput_PeriodSize(const QAudioInput* self) {
+    return self->periodSize();
+}
+
+void QAudioInput_SetNotifyInterval(QAudioInput* self, int milliSeconds) {
+    self->setNotifyInterval(static_cast<int>(milliSeconds));
+}
+
+int QAudioInput_NotifyInterval(const QAudioInput* self) {
+    return self->notifyInterval();
+}
+
+void QAudioInput_SetVolume(QAudioInput* self, double volume) {
+    self->setVolume(static_cast<qreal>(volume));
+}
+
+double QAudioInput_Volume(const QAudioInput* self) {
+    return static_cast<double>(self->volume());
+}
+
+long long QAudioInput_ProcessedUSecs(const QAudioInput* self) {
+    return static_cast<long long>(self->processedUSecs());
+}
+
+long long QAudioInput_ElapsedUSecs(const QAudioInput* self) {
+    return static_cast<long long>(self->elapsedUSecs());
+}
+
+int QAudioInput_Error(const QAudioInput* self) {
+    return static_cast<int>(self->error());
+}
+
+int QAudioInput_State(const QAudioInput* self) {
+    return static_cast<int>(self->state());
+}
+
+void QAudioInput_StateChanged(QAudioInput* self, int state) {
+    self->stateChanged(static_cast<QAudio::State>(state));
+}
+
+void QAudioInput_Connect_StateChanged(QAudioInput* self, intptr_t slot) {
+    void (*slotFunc)(QAudioInput*, int) = reinterpret_cast<void (*)(QAudioInput*, int)>(slot);
+    QAudioInput::connect(self, &QAudioInput::stateChanged, [self, slotFunc](QAudio::State state) {
+        int sigval1 = static_cast<int>(state);
+        slotFunc(self, sigval1);
+    });
+}
+
+void QAudioInput_Notify(QAudioInput* self) {
+    self->notify();
+}
+
+void QAudioInput_Connect_Notify(QAudioInput* self, intptr_t slot) {
     void (*slotFunc)(QAudioInput*) = reinterpret_cast<void (*)(QAudioInput*)>(slot);
-    QAudioInput::connect(self, &QAudioInput::deviceChanged, [self, slotFunc]() {
+    QAudioInput::connect(self, &QAudioInput::notify, [self, slotFunc]() {
         slotFunc(self);
-    });
-}
-
-void QAudioInput_VolumeChanged(QAudioInput* self, float volume) {
-    self->volumeChanged(static_cast<float>(volume));
-}
-
-void QAudioInput_Connect_VolumeChanged(QAudioInput* self, intptr_t slot) {
-    void (*slotFunc)(QAudioInput*, float) = reinterpret_cast<void (*)(QAudioInput*, float)>(slot);
-    QAudioInput::connect(self, &QAudioInput::volumeChanged, [self, slotFunc](float volume) {
-        float sigval1 = volume;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QAudioInput_MutedChanged(QAudioInput* self, bool muted) {
-    self->mutedChanged(muted);
-}
-
-void QAudioInput_Connect_MutedChanged(QAudioInput* self, intptr_t slot) {
-    void (*slotFunc)(QAudioInput*, bool) = reinterpret_cast<void (*)(QAudioInput*, bool)>(slot);
-    QAudioInput::connect(self, &QAudioInput::mutedChanged, [self, slotFunc](bool muted) {
-        bool sigval1 = muted;
-        slotFunc(self, sigval1);
     });
 }
 
@@ -154,6 +215,30 @@ libqt_string QAudioInput_Tr2(const char* s, const char* c) {
 
 libqt_string QAudioInput_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAudioInput::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAudioInput_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAudioInput::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAudioInput_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAudioInput::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

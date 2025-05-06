@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemDelegate QAbstractItemDelegate;
 typedef struct QAbstractItemModel QAbstractItemModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataWidgetMapper QDataWidgetMapper;
 typedef struct QEvent QEvent;
@@ -31,6 +31,7 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QModelIndex QModelIndex;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -51,6 +52,7 @@ int QDataWidgetMapper_Metacall(QDataWidgetMapper* self, int param1, int param2, 
 void QDataWidgetMapper_OnMetacall(QDataWidgetMapper* self, intptr_t slot);
 int QDataWidgetMapper_QBaseMetacall(QDataWidgetMapper* self, int param1, int param2, void** param3);
 libqt_string QDataWidgetMapper_Tr(const char* s);
+libqt_string QDataWidgetMapper_TrUtf8(const char* s);
 void QDataWidgetMapper_SetModel(QDataWidgetMapper* self, QAbstractItemModel* model);
 QAbstractItemModel* QDataWidgetMapper_Model(const QDataWidgetMapper* self);
 void QDataWidgetMapper_SetItemDelegate(QDataWidgetMapper* self, QAbstractItemDelegate* delegate);
@@ -83,6 +85,8 @@ void QDataWidgetMapper_CurrentIndexChanged(QDataWidgetMapper* self, int index);
 void QDataWidgetMapper_Connect_CurrentIndexChanged(QDataWidgetMapper* self, intptr_t slot);
 libqt_string QDataWidgetMapper_Tr2(const char* s, const char* c);
 libqt_string QDataWidgetMapper_Tr3(const char* s, const char* c, int n);
+libqt_string QDataWidgetMapper_TrUtf82(const char* s, const char* c);
+libqt_string QDataWidgetMapper_TrUtf83(const char* s, const char* c, int n);
 bool QDataWidgetMapper_Event(QDataWidgetMapper* self, QEvent* event);
 void QDataWidgetMapper_OnEvent(QDataWidgetMapper* self, intptr_t slot);
 bool QDataWidgetMapper_QBaseEvent(QDataWidgetMapper* self, QEvent* event);

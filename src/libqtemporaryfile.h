@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,19 +21,17 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDateTime QDateTime;
 typedef struct QEvent QEvent;
 typedef struct QFile QFile;
 typedef struct QFileDevice QFileDevice;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QTemporaryFile QTemporaryFile;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -48,6 +48,7 @@ int QTemporaryFile_Metacall(QTemporaryFile* self, int param1, int param2, void**
 void QTemporaryFile_OnMetacall(QTemporaryFile* self, intptr_t slot);
 int QTemporaryFile_QBaseMetacall(QTemporaryFile* self, int param1, int param2, void** param3);
 libqt_string QTemporaryFile_Tr(const char* s);
+libqt_string QTemporaryFile_TrUtf8(const char* s);
 bool QTemporaryFile_AutoRemove(const QTemporaryFile* self);
 void QTemporaryFile_SetAutoRemove(QTemporaryFile* self, bool b);
 bool QTemporaryFile_Open(QTemporaryFile* self);
@@ -57,6 +58,8 @@ libqt_string QTemporaryFile_QBaseFileName(const QTemporaryFile* self);
 libqt_string QTemporaryFile_FileTemplate(const QTemporaryFile* self);
 void QTemporaryFile_SetFileTemplate(QTemporaryFile* self, libqt_string name);
 bool QTemporaryFile_Rename(QTemporaryFile* self, libqt_string newName);
+QTemporaryFile* QTemporaryFile_CreateLocalFile(libqt_string fileName);
+QTemporaryFile* QTemporaryFile_CreateLocalFileWithFile(QFile* file);
 QTemporaryFile* QTemporaryFile_CreateNativeFile(libqt_string fileName);
 QTemporaryFile* QTemporaryFile_CreateNativeFileWithFile(QFile* file);
 bool QTemporaryFile_OpenWithFlags(QTemporaryFile* self, int flags);
@@ -64,6 +67,8 @@ void QTemporaryFile_OnOpenWithFlags(QTemporaryFile* self, intptr_t slot);
 bool QTemporaryFile_QBaseOpenWithFlags(QTemporaryFile* self, int flags);
 libqt_string QTemporaryFile_Tr2(const char* s, const char* c);
 libqt_string QTemporaryFile_Tr3(const char* s, const char* c, int n);
+libqt_string QTemporaryFile_TrUtf82(const char* s, const char* c);
+libqt_string QTemporaryFile_TrUtf83(const char* s, const char* c, int n);
 long long QTemporaryFile_Size(const QTemporaryFile* self);
 void QTemporaryFile_OnSize(const QTemporaryFile* self, intptr_t slot);
 long long QTemporaryFile_QBaseSize(const QTemporaryFile* self);
@@ -118,9 +123,6 @@ bool QTemporaryFile_QBaseWaitForReadyRead(QTemporaryFile* self, int msecs);
 bool QTemporaryFile_WaitForBytesWritten(QTemporaryFile* self, int msecs);
 void QTemporaryFile_OnWaitForBytesWritten(QTemporaryFile* self, intptr_t slot);
 bool QTemporaryFile_QBaseWaitForBytesWritten(QTemporaryFile* self, int msecs);
-long long QTemporaryFile_SkipData(QTemporaryFile* self, long long maxSize);
-void QTemporaryFile_OnSkipData(QTemporaryFile* self, intptr_t slot);
-long long QTemporaryFile_QBaseSkipData(QTemporaryFile* self, long long maxSize);
 bool QTemporaryFile_Event(QTemporaryFile* self, QEvent* event);
 void QTemporaryFile_OnEvent(QTemporaryFile* self, intptr_t slot);
 bool QTemporaryFile_QBaseEvent(QTemporaryFile* self, QEvent* event);

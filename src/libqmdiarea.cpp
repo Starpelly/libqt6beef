@@ -1,9 +1,7 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QBrush>
 #include <QByteArray>
@@ -15,7 +13,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -41,6 +38,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -48,7 +46,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -116,6 +113,18 @@ int QMdiArea_QBaseMetacall(QMdiArea* self, int param1, int param2, void** param3
 
 libqt_string QMdiArea_Tr(const char* s) {
     QString _ret = QMdiArea::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMdiArea_TrUtf8(const char* s) {
+    QString _ret = QMdiArea::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -281,6 +290,30 @@ libqt_string QMdiArea_Tr2(const char* s, const char* c) {
 
 libqt_string QMdiArea_Tr3(const char* s, const char* c, int n) {
     QString _ret = QMdiArea::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMdiArea_TrUtf82(const char* s, const char* c) {
+    QString _ret = QMdiArea::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMdiArea_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QMdiArea::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -961,32 +994,6 @@ void QMdiArea_OnChangeEvent(QMdiArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QMdiArea_InitStyleOption(const QMdiArea* self, QStyleOptionFrame* option) {
-    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
-        vqmdiarea->initStyleOption(option);
-    } else {
-        vqmdiarea->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QMdiArea_QBaseInitStyleOption(const QMdiArea* self, QStyleOptionFrame* option) {
-    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
-        vqmdiarea->setQMdiArea_InitStyleOption_IsBase(true);
-        vqmdiarea->initStyleOption(option);
-    } else {
-        vqmdiarea->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QMdiArea_OnInitStyleOption(const QMdiArea* self, intptr_t slot) {
-    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
-        vqmdiarea->setQMdiArea_InitStyleOption_Callback(reinterpret_cast<VirtualQMdiArea::QMdiArea_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QMdiArea_DevType(const QMdiArea* self) {
     if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
         return vqmdiarea->devType();
@@ -1195,7 +1202,7 @@ void QMdiArea_OnFocusOutEvent(QMdiArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QMdiArea_EnterEvent(QMdiArea* self, QEnterEvent* event) {
+void QMdiArea_EnterEvent(QMdiArea* self, QEvent* event) {
     if (auto* vqmdiarea = dynamic_cast<VirtualQMdiArea*>(self)) {
         vqmdiarea->enterEvent(event);
     } else {
@@ -1204,7 +1211,7 @@ void QMdiArea_EnterEvent(QMdiArea* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QMdiArea_QBaseEnterEvent(QMdiArea* self, QEnterEvent* event) {
+void QMdiArea_QBaseEnterEvent(QMdiArea* self, QEvent* event) {
     if (auto* vqmdiarea = dynamic_cast<VirtualQMdiArea*>(self)) {
         vqmdiarea->setQMdiArea_EnterEvent_IsBase(true);
         vqmdiarea->enterEvent(event);
@@ -1377,23 +1384,23 @@ void QMdiArea_OnHideEvent(QMdiArea* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QMdiArea_NativeEvent(QMdiArea* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QMdiArea_NativeEvent(QMdiArea* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmdiarea = dynamic_cast<VirtualQMdiArea*>(self)) {
-        return vqmdiarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmdiarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqmdiarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmdiarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QMdiArea_QBaseNativeEvent(QMdiArea* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QMdiArea_QBaseNativeEvent(QMdiArea* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqmdiarea = dynamic_cast<VirtualQMdiArea*>(self)) {
         vqmdiarea->setQMdiArea_NativeEvent_IsBase(true);
-        return vqmdiarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmdiarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqmdiarea->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqmdiarea->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1737,6 +1744,32 @@ void QMdiArea_QBaseDrawFrame(QMdiArea* self, QPainter* param1) {
 void QMdiArea_OnDrawFrame(QMdiArea* self, intptr_t slot) {
     if (auto* vqmdiarea = dynamic_cast<VirtualQMdiArea*>(self)) {
         vqmdiarea->setQMdiArea_DrawFrame_Callback(reinterpret_cast<VirtualQMdiArea::QMdiArea_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QMdiArea_InitStyleOption(const QMdiArea* self, QStyleOptionFrame* option) {
+    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
+        vqmdiarea->initStyleOption(option);
+    } else {
+        vqmdiarea->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QMdiArea_QBaseInitStyleOption(const QMdiArea* self, QStyleOptionFrame* option) {
+    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
+        vqmdiarea->setQMdiArea_InitStyleOption_IsBase(true);
+        vqmdiarea->initStyleOption(option);
+    } else {
+        vqmdiarea->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QMdiArea_OnInitStyleOption(const QMdiArea* self, intptr_t slot) {
+    if (auto* vqmdiarea = const_cast<VirtualQMdiArea*>(dynamic_cast<const VirtualQMdiArea*>(self))) {
+        vqmdiarea->setQMdiArea_InitStyleOption_Callback(reinterpret_cast<VirtualQMdiArea::QMdiArea_InitStyleOption_Callback>(slot));
     }
 }
 

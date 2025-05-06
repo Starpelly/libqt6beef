@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -30,9 +32,7 @@ typedef struct QAbstractTextDocumentLayout QAbstractTextDocumentLayout;
 typedef struct QAbstractTextDocumentLayout__PaintContext QAbstractTextDocumentLayout__PaintContext;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -42,7 +42,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -67,6 +66,7 @@ typedef struct QMimeData QMimeData;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPagedPaintDevice QPagedPaintDevice;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
@@ -80,6 +80,7 @@ typedef struct QPoint QPoint;
 typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRectF QRectF;
+typedef struct QRegExp QRegExp;
 typedef struct QRegion QRegion;
 typedef struct QRegularExpression QRegularExpression;
 typedef struct QResizeEvent QResizeEvent;
@@ -126,6 +127,7 @@ int QPlainTextEdit_Metacall(QPlainTextEdit* self, int param1, int param2, void**
 void QPlainTextEdit_OnMetacall(QPlainTextEdit* self, intptr_t slot);
 int QPlainTextEdit_QBaseMetacall(QPlainTextEdit* self, int param1, int param2, void** param3);
 libqt_string QPlainTextEdit_Tr(const char* s);
+libqt_string QPlainTextEdit_TrUtf8(const char* s);
 void QPlainTextEdit_SetDocument(QPlainTextEdit* self, QTextDocument* document);
 QTextDocument* QPlainTextEdit_Document(const QPlainTextEdit* self);
 void QPlainTextEdit_SetPlaceholderText(QPlainTextEdit* self, libqt_string placeholderText);
@@ -156,7 +158,8 @@ bool QPlainTextEdit_BackgroundVisible(const QPlainTextEdit* self);
 void QPlainTextEdit_SetCenterOnScroll(QPlainTextEdit* self, bool enabled);
 bool QPlainTextEdit_CenterOnScroll(const QPlainTextEdit* self);
 bool QPlainTextEdit_Find(QPlainTextEdit* self, libqt_string exp);
-bool QPlainTextEdit_FindWithExp(QPlainTextEdit* self, QRegularExpression* exp);
+bool QPlainTextEdit_FindWithExp(QPlainTextEdit* self, QRegExp* exp);
+bool QPlainTextEdit_Find2(QPlainTextEdit* self, QRegularExpression* exp);
 libqt_string QPlainTextEdit_ToPlainText(const QPlainTextEdit* self);
 void QPlainTextEdit_EnsureCursorVisible(QPlainTextEdit* self);
 QVariant* QPlainTextEdit_LoadResource(QPlainTextEdit* self, int typeVal, QUrl* name);
@@ -170,6 +173,8 @@ QRect* QPlainTextEdit_CursorRect2(const QPlainTextEdit* self);
 libqt_string QPlainTextEdit_AnchorAt(const QPlainTextEdit* self, QPoint* pos);
 bool QPlainTextEdit_OverwriteMode(const QPlainTextEdit* self);
 void QPlainTextEdit_SetOverwriteMode(QPlainTextEdit* self, bool overwrite);
+int QPlainTextEdit_TabStopWidth(const QPlainTextEdit* self);
+void QPlainTextEdit_SetTabStopWidth(QPlainTextEdit* self, int width);
 double QPlainTextEdit_TabStopDistance(const QPlainTextEdit* self);
 void QPlainTextEdit_SetTabStopDistance(QPlainTextEdit* self, double distance);
 int QPlainTextEdit_CursorWidth(const QPlainTextEdit* self);
@@ -299,8 +304,11 @@ void QPlainTextEdit_OnDoSetTextCursor(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseDoSetTextCursor(QPlainTextEdit* self, QTextCursor* cursor);
 libqt_string QPlainTextEdit_Tr2(const char* s, const char* c);
 libqt_string QPlainTextEdit_Tr3(const char* s, const char* c, int n);
-bool QPlainTextEdit_Find2(QPlainTextEdit* self, libqt_string exp, int options);
-bool QPlainTextEdit_Find22(QPlainTextEdit* self, QRegularExpression* exp, int options);
+libqt_string QPlainTextEdit_TrUtf82(const char* s, const char* c);
+libqt_string QPlainTextEdit_TrUtf83(const char* s, const char* c, int n);
+bool QPlainTextEdit_Find22(QPlainTextEdit* self, libqt_string exp, int options);
+bool QPlainTextEdit_Find23(QPlainTextEdit* self, QRegExp* exp, int options);
+bool QPlainTextEdit_Find24(QPlainTextEdit* self, QRegularExpression* exp, int options);
 void QPlainTextEdit_MoveCursor2(QPlainTextEdit* self, int operation, int mode);
 void QPlainTextEdit_ZoomIn1(QPlainTextEdit* self, int range);
 void QPlainTextEdit_ZoomOut1(QPlainTextEdit* self, int range);
@@ -334,9 +342,9 @@ bool QPlainTextEdit_QBaseHasHeightForWidth(const QPlainTextEdit* self);
 QPaintEngine* QPlainTextEdit_PaintEngine(const QPlainTextEdit* self);
 void QPlainTextEdit_OnPaintEngine(const QPlainTextEdit* self, intptr_t slot);
 QPaintEngine* QPlainTextEdit_QBasePaintEngine(const QPlainTextEdit* self);
-void QPlainTextEdit_EnterEvent(QPlainTextEdit* self, QEnterEvent* event);
+void QPlainTextEdit_EnterEvent(QPlainTextEdit* self, QEvent* event);
 void QPlainTextEdit_OnEnterEvent(QPlainTextEdit* self, intptr_t slot);
-void QPlainTextEdit_QBaseEnterEvent(QPlainTextEdit* self, QEnterEvent* event);
+void QPlainTextEdit_QBaseEnterEvent(QPlainTextEdit* self, QEvent* event);
 void QPlainTextEdit_LeaveEvent(QPlainTextEdit* self, QEvent* event);
 void QPlainTextEdit_OnLeaveEvent(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseLeaveEvent(QPlainTextEdit* self, QEvent* event);
@@ -355,9 +363,9 @@ void QPlainTextEdit_QBaseActionEvent(QPlainTextEdit* self, QActionEvent* event);
 void QPlainTextEdit_HideEvent(QPlainTextEdit* self, QHideEvent* event);
 void QPlainTextEdit_OnHideEvent(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseHideEvent(QPlainTextEdit* self, QHideEvent* event);
-bool QPlainTextEdit_NativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPlainTextEdit_NativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, long* result);
 void QPlainTextEdit_OnNativeEvent(QPlainTextEdit* self, intptr_t slot);
-bool QPlainTextEdit_QBaseNativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPlainTextEdit_QBaseNativeEvent(QPlainTextEdit* self, libqt_string eventType, void* message, long* result);
 void QPlainTextEdit_ChildEvent(QPlainTextEdit* self, QChildEvent* event);
 void QPlainTextEdit_OnChildEvent(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseChildEvent(QPlainTextEdit* self, QChildEvent* event);
@@ -373,9 +381,6 @@ void QPlainTextEdit_QBaseDisconnectNotify(QPlainTextEdit* self, QMetaMethod* sig
 QSize* QPlainTextEdit_ViewportSizeHint(const QPlainTextEdit* self);
 void QPlainTextEdit_OnViewportSizeHint(const QPlainTextEdit* self, intptr_t slot);
 QSize* QPlainTextEdit_QBaseViewportSizeHint(const QPlainTextEdit* self);
-void QPlainTextEdit_InitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option);
-void QPlainTextEdit_OnInitStyleOption(const QPlainTextEdit* self, intptr_t slot);
-void QPlainTextEdit_QBaseInitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option);
 int QPlainTextEdit_Metric(const QPlainTextEdit* self, int param1);
 void QPlainTextEdit_OnMetric(const QPlainTextEdit* self, intptr_t slot);
 int QPlainTextEdit_QBaseMetric(const QPlainTextEdit* self, int param1);
@@ -415,6 +420,9 @@ QMargins* QPlainTextEdit_QBaseViewportMargins(const QPlainTextEdit* self);
 void QPlainTextEdit_DrawFrame(QPlainTextEdit* self, QPainter* param1);
 void QPlainTextEdit_OnDrawFrame(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseDrawFrame(QPlainTextEdit* self, QPainter* param1);
+void QPlainTextEdit_InitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option);
+void QPlainTextEdit_OnInitStyleOption(const QPlainTextEdit* self, intptr_t slot);
+void QPlainTextEdit_QBaseInitStyleOption(const QPlainTextEdit* self, QStyleOptionFrame* option);
 void QPlainTextEdit_UpdateMicroFocus(QPlainTextEdit* self);
 void QPlainTextEdit_OnUpdateMicroFocus(QPlainTextEdit* self, intptr_t slot);
 void QPlainTextEdit_QBaseUpdateMicroFocus(QPlainTextEdit* self);
@@ -451,6 +459,7 @@ int QPlainTextDocumentLayout_Metacall(QPlainTextDocumentLayout* self, int param1
 void QPlainTextDocumentLayout_OnMetacall(QPlainTextDocumentLayout* self, intptr_t slot);
 int QPlainTextDocumentLayout_QBaseMetacall(QPlainTextDocumentLayout* self, int param1, int param2, void** param3);
 libqt_string QPlainTextDocumentLayout_Tr(const char* s);
+libqt_string QPlainTextDocumentLayout_TrUtf8(const char* s);
 void QPlainTextDocumentLayout_Draw(QPlainTextDocumentLayout* self, QPainter* param1, QAbstractTextDocumentLayout__PaintContext* param2);
 void QPlainTextDocumentLayout_OnDraw(QPlainTextDocumentLayout* self, intptr_t slot);
 void QPlainTextDocumentLayout_QBaseDraw(QPlainTextDocumentLayout* self, QPainter* param1, QAbstractTextDocumentLayout__PaintContext* param2);
@@ -478,6 +487,8 @@ void QPlainTextDocumentLayout_OnDocumentChanged(QPlainTextDocumentLayout* self, 
 void QPlainTextDocumentLayout_QBaseDocumentChanged(QPlainTextDocumentLayout* self, int from, int param2, int charsAdded);
 libqt_string QPlainTextDocumentLayout_Tr2(const char* s, const char* c);
 libqt_string QPlainTextDocumentLayout_Tr3(const char* s, const char* c, int n);
+libqt_string QPlainTextDocumentLayout_TrUtf82(const char* s, const char* c);
+libqt_string QPlainTextDocumentLayout_TrUtf83(const char* s, const char* c, int n);
 void QPlainTextDocumentLayout_ResizeInlineObject(QPlainTextDocumentLayout* self, QTextInlineObject* item, int posInDocument, QTextFormat* format);
 void QPlainTextDocumentLayout_OnResizeInlineObject(QPlainTextDocumentLayout* self, intptr_t slot);
 void QPlainTextDocumentLayout_QBaseResizeInlineObject(QPlainTextDocumentLayout* self, QTextInlineObject* item, int posInDocument, QTextFormat* format);

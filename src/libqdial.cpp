@@ -1,9 +1,7 @@
 #include <QAbstractSlider>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,7 +13,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -122,6 +119,18 @@ libqt_string QDial_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QDial_TrUtf8(const char* s) {
+    QString _ret = QDial::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QDial_Wrapping(const QDial* self) {
     return self->wrapping();
 }
@@ -164,6 +173,30 @@ libqt_string QDial_Tr2(const char* s, const char* c) {
 
 libqt_string QDial_Tr3(const char* s, const char* c, int n) {
     QString _ret = QDial::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDial_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDial::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDial_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDial::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -405,32 +438,6 @@ void QDial_QBaseSliderChange(QDial* self, int change) {
 void QDial_OnSliderChange(QDial* self, intptr_t slot) {
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
         vqdial->setQDial_SliderChange_Callback(reinterpret_cast<VirtualQDial::QDial_SliderChange_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QDial_InitStyleOption(const QDial* self, QStyleOptionSlider* option) {
-    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
-        vqdial->initStyleOption(option);
-    } else {
-        vqdial->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QDial_QBaseInitStyleOption(const QDial* self, QStyleOptionSlider* option) {
-    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
-        vqdial->setQDial_InitStyleOption_IsBase(true);
-        vqdial->initStyleOption(option);
-    } else {
-        vqdial->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QDial_OnInitStyleOption(const QDial* self, intptr_t slot) {
-    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
-        vqdial->setQDial_InitStyleOption_Callback(reinterpret_cast<VirtualQDial::QDial_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -773,7 +780,7 @@ void QDial_OnFocusOutEvent(QDial* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QDial_EnterEvent(QDial* self, QEnterEvent* event) {
+void QDial_EnterEvent(QDial* self, QEvent* event) {
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
         vqdial->enterEvent(event);
     } else {
@@ -782,7 +789,7 @@ void QDial_EnterEvent(QDial* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QDial_QBaseEnterEvent(QDial* self, QEnterEvent* event) {
+void QDial_QBaseEnterEvent(QDial* self, QEvent* event) {
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
         vqdial->setQDial_EnterEvent_IsBase(true);
         vqdial->enterEvent(event);
@@ -1111,23 +1118,23 @@ void QDial_OnHideEvent(QDial* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QDial_NativeEvent(QDial* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDial_NativeEvent(QDial* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
-        return vqdial->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdial->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdial->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdial->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QDial_QBaseNativeEvent(QDial* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QDial_QBaseNativeEvent(QDial* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
         vqdial->setQDial_NativeEvent_IsBase(true);
-        return vqdial->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdial->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqdial->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqdial->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1447,6 +1454,32 @@ void QDial_QBaseDisconnectNotify(QDial* self, QMetaMethod* signal) {
 void QDial_OnDisconnectNotify(QDial* self, intptr_t slot) {
     if (auto* vqdial = dynamic_cast<VirtualQDial*>(self)) {
         vqdial->setQDial_DisconnectNotify_Callback(reinterpret_cast<VirtualQDial::QDial_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QDial_InitStyleOption(const QDial* self, QStyleOptionSlider* option) {
+    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
+        vqdial->initStyleOption(option);
+    } else {
+        vqdial->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QDial_QBaseInitStyleOption(const QDial* self, QStyleOptionSlider* option) {
+    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
+        vqdial->setQDial_InitStyleOption_IsBase(true);
+        vqdial->initStyleOption(option);
+    } else {
+        vqdial->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QDial_OnInitStyleOption(const QDial* self, intptr_t slot) {
+    if (auto* vqdial = const_cast<VirtualQDial*>(dynamic_cast<const VirtualQDial*>(self))) {
+        vqdial->setQDial_InitStyleOption_Callback(reinterpret_cast<VirtualQDial::QDial_InitStyleOption_Callback>(slot));
     }
 }
 

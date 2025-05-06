@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractEventDispatcher QAbstractEventDispatcher;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDeadlineTimer QDeadlineTimer;
 typedef struct QEvent QEvent;
@@ -29,6 +29,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -48,6 +49,7 @@ int QThread_Metacall(QThread* self, int param1, int param2, void** param3);
 void QThread_OnMetacall(QThread* self, intptr_t slot);
 int QThread_QBaseMetacall(QThread* self, int param1, int param2, void** param3);
 libqt_string QThread_Tr(const char* s);
+libqt_string QThread_TrUtf8(const char* s);
 void* QThread_CurrentThreadId();
 QThread* QThread_CurrentThread();
 int QThread_IdealThreadCount();
@@ -60,6 +62,7 @@ void QThread_RequestInterruption(QThread* self);
 bool QThread_IsInterruptionRequested(const QThread* self);
 void QThread_SetStackSize(QThread* self, unsigned int stackSize);
 unsigned int QThread_StackSize(const QThread* self);
+void QThread_Exit(QThread* self);
 QAbstractEventDispatcher* QThread_EventDispatcher(const QThread* self);
 void QThread_SetEventDispatcher(QThread* self, QAbstractEventDispatcher* eventDispatcher);
 bool QThread_Event(QThread* self, QEvent* event);
@@ -68,7 +71,6 @@ bool QThread_QBaseEvent(QThread* self, QEvent* event);
 int QThread_LoopLevel(const QThread* self);
 void QThread_Start(QThread* self);
 void QThread_Terminate(QThread* self);
-void QThread_Exit(QThread* self);
 void QThread_Quit(QThread* self);
 bool QThread_Wait(QThread* self);
 bool QThread_WaitWithTime(QThread* self, unsigned long time);
@@ -80,8 +82,10 @@ void QThread_OnRun(QThread* self, intptr_t slot);
 void QThread_QBaseRun(QThread* self);
 libqt_string QThread_Tr2(const char* s, const char* c);
 libqt_string QThread_Tr3(const char* s, const char* c, int n);
-void QThread_Start1(QThread* self, int param1);
+libqt_string QThread_TrUtf82(const char* s, const char* c);
+libqt_string QThread_TrUtf83(const char* s, const char* c, int n);
 void QThread_Exit1(QThread* self, int retcode);
+void QThread_Start1(QThread* self, int param1);
 bool QThread_Wait1(QThread* self, QDeadlineTimer* deadline);
 bool QThread_EventFilter(QThread* self, QObject* watched, QEvent* event);
 void QThread_OnEventFilter(QThread* self, intptr_t slot);

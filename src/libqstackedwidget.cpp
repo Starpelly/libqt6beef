@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -112,6 +109,18 @@ int QStackedWidget_QBaseMetacall(QStackedWidget* self, int param1, int param2, v
 
 libqt_string QStackedWidget_Tr(const char* s) {
     QString _ret = QStackedWidget::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStackedWidget_TrUtf8(const char* s) {
+    QString _ret = QStackedWidget::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -200,6 +209,30 @@ libqt_string QStackedWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QStackedWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QStackedWidget::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStackedWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QStackedWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QStackedWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QStackedWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -311,32 +344,6 @@ void QStackedWidget_QBaseChangeEvent(QStackedWidget* self, QEvent* param1) {
 void QStackedWidget_OnChangeEvent(QStackedWidget* self, intptr_t slot) {
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
         vqstackedwidget->setQStackedWidget_ChangeEvent_Callback(reinterpret_cast<VirtualQStackedWidget::QStackedWidget_ChangeEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QStackedWidget_InitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option) {
-    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
-        vqstackedwidget->initStyleOption(option);
-    } else {
-        vqstackedwidget->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QStackedWidget_QBaseInitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option) {
-    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
-        vqstackedwidget->setQStackedWidget_InitStyleOption_IsBase(true);
-        vqstackedwidget->initStyleOption(option);
-    } else {
-        vqstackedwidget->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QStackedWidget_OnInitStyleOption(const QStackedWidget* self, intptr_t slot) {
-    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
-        vqstackedwidget->setQStackedWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQStackedWidget::QStackedWidget_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -731,7 +738,7 @@ void QStackedWidget_OnFocusOutEvent(QStackedWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QStackedWidget_EnterEvent(QStackedWidget* self, QEnterEvent* event) {
+void QStackedWidget_EnterEvent(QStackedWidget* self, QEvent* event) {
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
         vqstackedwidget->enterEvent(event);
     } else {
@@ -740,7 +747,7 @@ void QStackedWidget_EnterEvent(QStackedWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QStackedWidget_QBaseEnterEvent(QStackedWidget* self, QEnterEvent* event) {
+void QStackedWidget_QBaseEnterEvent(QStackedWidget* self, QEvent* event) {
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
         vqstackedwidget->setQStackedWidget_EnterEvent_IsBase(true);
         vqstackedwidget->enterEvent(event);
@@ -1095,23 +1102,23 @@ void QStackedWidget_OnHideEvent(QStackedWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QStackedWidget_NativeEvent(QStackedWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QStackedWidget_NativeEvent(QStackedWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
-        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QStackedWidget_QBaseNativeEvent(QStackedWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QStackedWidget_QBaseNativeEvent(QStackedWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
         vqstackedwidget->setQStackedWidget_NativeEvent_IsBase(true);
-        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqstackedwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1483,6 +1490,32 @@ void QStackedWidget_QBaseDrawFrame(QStackedWidget* self, QPainter* param1) {
 void QStackedWidget_OnDrawFrame(QStackedWidget* self, intptr_t slot) {
     if (auto* vqstackedwidget = dynamic_cast<VirtualQStackedWidget*>(self)) {
         vqstackedwidget->setQStackedWidget_DrawFrame_Callback(reinterpret_cast<VirtualQStackedWidget::QStackedWidget_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QStackedWidget_InitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option) {
+    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
+        vqstackedwidget->initStyleOption(option);
+    } else {
+        vqstackedwidget->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QStackedWidget_QBaseInitStyleOption(const QStackedWidget* self, QStyleOptionFrame* option) {
+    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
+        vqstackedwidget->setQStackedWidget_InitStyleOption_IsBase(true);
+        vqstackedwidget->initStyleOption(option);
+    } else {
+        vqstackedwidget->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QStackedWidget_OnInitStyleOption(const QStackedWidget* self, intptr_t slot) {
+    if (auto* vqstackedwidget = const_cast<VirtualQStackedWidget*>(dynamic_cast<const VirtualQStackedWidget*>(self))) {
+        vqstackedwidget->setQStackedWidget_InitStyleOption_Callback(reinterpret_cast<VirtualQStackedWidget::QStackedWidget_InitStyleOption_Callback>(slot));
     }
 }
 

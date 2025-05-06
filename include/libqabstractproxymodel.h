@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractProxyModel QAbstractProxyModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -32,8 +32,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QThread QThread;
@@ -49,6 +49,7 @@ int QAbstractProxyModel_Metacall(QAbstractProxyModel* self, int param1, int para
 void QAbstractProxyModel_OnMetacall(QAbstractProxyModel* self, intptr_t slot);
 int QAbstractProxyModel_QBaseMetacall(QAbstractProxyModel* self, int param1, int param2, void** param3);
 libqt_string QAbstractProxyModel_Tr(const char* s);
+libqt_string QAbstractProxyModel_TrUtf8(const char* s);
 void QAbstractProxyModel_SetSourceModel(QAbstractProxyModel* self, QAbstractItemModel* sourceModel);
 void QAbstractProxyModel_OnSetSourceModel(QAbstractProxyModel* self, intptr_t slot);
 void QAbstractProxyModel_QBaseSetSourceModel(QAbstractProxyModel* self, QAbstractItemModel* sourceModel);
@@ -92,9 +93,6 @@ bool QAbstractProxyModel_QBaseSetItemData(QAbstractProxyModel* self, QModelIndex
 bool QAbstractProxyModel_SetHeaderData(QAbstractProxyModel* self, int section, int orientation, QVariant* value, int role);
 void QAbstractProxyModel_OnSetHeaderData(QAbstractProxyModel* self, intptr_t slot);
 bool QAbstractProxyModel_QBaseSetHeaderData(QAbstractProxyModel* self, int section, int orientation, QVariant* value, int role);
-bool QAbstractProxyModel_ClearItemData(QAbstractProxyModel* self, QModelIndex* index);
-void QAbstractProxyModel_OnClearItemData(QAbstractProxyModel* self, intptr_t slot);
-bool QAbstractProxyModel_QBaseClearItemData(QAbstractProxyModel* self, QModelIndex* index);
 QModelIndex* QAbstractProxyModel_Buddy(const QAbstractProxyModel* self, QModelIndex* index);
 void QAbstractProxyModel_OnBuddy(const QAbstractProxyModel* self, intptr_t slot);
 QModelIndex* QAbstractProxyModel_QBaseBuddy(const QAbstractProxyModel* self, QModelIndex* index);
@@ -134,11 +132,10 @@ int QAbstractProxyModel_QBaseSupportedDragActions(const QAbstractProxyModel* sel
 int QAbstractProxyModel_SupportedDropActions(const QAbstractProxyModel* self);
 void QAbstractProxyModel_OnSupportedDropActions(const QAbstractProxyModel* self, intptr_t slot);
 int QAbstractProxyModel_QBaseSupportedDropActions(const QAbstractProxyModel* self);
-libqt_map /* of int to libqt_string */ QAbstractProxyModel_RoleNames(const QAbstractProxyModel* self);
-void QAbstractProxyModel_OnRoleNames(const QAbstractProxyModel* self, intptr_t slot);
-libqt_map /* of int to libqt_string */ QAbstractProxyModel_QBaseRoleNames(const QAbstractProxyModel* self);
 libqt_string QAbstractProxyModel_Tr2(const char* s, const char* c);
 libqt_string QAbstractProxyModel_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractProxyModel_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractProxyModel_TrUtf83(const char* s, const char* c, int n);
 QModelIndex* QAbstractProxyModel_Index(const QAbstractProxyModel* self, int row, int column, QModelIndex* parent);
 void QAbstractProxyModel_OnIndex(const QAbstractProxyModel* self, intptr_t slot);
 QModelIndex* QAbstractProxyModel_QBaseIndex(const QAbstractProxyModel* self, int row, int column, QModelIndex* parent);
@@ -172,12 +169,9 @@ bool QAbstractProxyModel_QBaseMoveColumns(QAbstractProxyModel* self, QModelIndex
 libqt_list /* of QModelIndex* */ QAbstractProxyModel_Match(const QAbstractProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags);
 void QAbstractProxyModel_OnMatch(const QAbstractProxyModel* self, intptr_t slot);
 libqt_list /* of QModelIndex* */ QAbstractProxyModel_QBaseMatch(const QAbstractProxyModel* self, QModelIndex* start, int role, QVariant* value, int hits, int flags);
-void QAbstractProxyModel_MultiData(const QAbstractProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QAbstractProxyModel_OnMultiData(const QAbstractProxyModel* self, intptr_t slot);
-void QAbstractProxyModel_QBaseMultiData(const QAbstractProxyModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QAbstractProxyModel_ResetInternalData(QAbstractProxyModel* self);
-void QAbstractProxyModel_OnResetInternalData(QAbstractProxyModel* self, intptr_t slot);
-void QAbstractProxyModel_QBaseResetInternalData(QAbstractProxyModel* self);
+libqt_map /* of int to libqt_string */ QAbstractProxyModel_RoleNames(const QAbstractProxyModel* self);
+void QAbstractProxyModel_OnRoleNames(const QAbstractProxyModel* self, intptr_t slot);
+libqt_map /* of int to libqt_string */ QAbstractProxyModel_QBaseRoleNames(const QAbstractProxyModel* self);
 bool QAbstractProxyModel_Event(QAbstractProxyModel* self, QEvent* event);
 void QAbstractProxyModel_OnEvent(QAbstractProxyModel* self, intptr_t slot);
 bool QAbstractProxyModel_QBaseEvent(QAbstractProxyModel* self, QEvent* event);
@@ -199,9 +193,9 @@ void QAbstractProxyModel_QBaseConnectNotify(QAbstractProxyModel* self, QMetaMeth
 void QAbstractProxyModel_DisconnectNotify(QAbstractProxyModel* self, QMetaMethod* signal);
 void QAbstractProxyModel_OnDisconnectNotify(QAbstractProxyModel* self, intptr_t slot);
 void QAbstractProxyModel_QBaseDisconnectNotify(QAbstractProxyModel* self, QMetaMethod* signal);
-QModelIndex* QAbstractProxyModel_CreateSourceIndex(const QAbstractProxyModel* self, int row, int col, void* internalPtr);
-void QAbstractProxyModel_OnCreateSourceIndex(const QAbstractProxyModel* self, intptr_t slot);
-QModelIndex* QAbstractProxyModel_QBaseCreateSourceIndex(const QAbstractProxyModel* self, int row, int col, void* internalPtr);
+void QAbstractProxyModel_ResetInternalData(QAbstractProxyModel* self);
+void QAbstractProxyModel_OnResetInternalData(QAbstractProxyModel* self, intptr_t slot);
+void QAbstractProxyModel_QBaseResetInternalData(QAbstractProxyModel* self);
 QModelIndex* QAbstractProxyModel_CreateIndex(const QAbstractProxyModel* self, int row, int column);
 void QAbstractProxyModel_OnCreateIndex(const QAbstractProxyModel* self, intptr_t slot);
 QModelIndex* QAbstractProxyModel_QBaseCreateIndex(const QAbstractProxyModel* self, int row, int column);

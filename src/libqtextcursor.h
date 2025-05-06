@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -104,7 +106,6 @@ QTextFrame* QTextCursor_InsertFrame(QTextCursor* self, QTextFrameFormat* format)
 QTextFrame* QTextCursor_CurrentFrame(const QTextCursor* self);
 void QTextCursor_InsertFragment(QTextCursor* self, QTextDocumentFragment* fragment);
 void QTextCursor_InsertHtml(QTextCursor* self, libqt_string html);
-void QTextCursor_InsertMarkdown(QTextCursor* self, libqt_string markdown);
 void QTextCursor_InsertImage(QTextCursor* self, QTextImageFormat* format, int alignment);
 void QTextCursor_InsertImageWithFormat(QTextCursor* self, QTextImageFormat* format);
 void QTextCursor_InsertImageWithName(QTextCursor* self, libqt_string name);
@@ -125,7 +126,6 @@ QTextDocument* QTextCursor_Document(const QTextCursor* self);
 void QTextCursor_SetPosition2(QTextCursor* self, int pos, int mode);
 bool QTextCursor_MovePosition2(QTextCursor* self, int op, int param2);
 bool QTextCursor_MovePosition3(QTextCursor* self, int op, int param2, int n);
-void QTextCursor_InsertMarkdown2(QTextCursor* self, libqt_string markdown, int features);
 void QTextCursor_InsertImage2(QTextCursor* self, QImage* image, libqt_string name);
 void QTextCursor_Delete(QTextCursor* self);
 

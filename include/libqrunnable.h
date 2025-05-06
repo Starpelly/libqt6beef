@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,8 @@ void QRunnable_Run(QRunnable* self);
 void QRunnable_OnRun(QRunnable* self, intptr_t slot);
 void QRunnable_QBaseRun(QRunnable* self);
 bool QRunnable_AutoDelete(const QRunnable* self);
-void QRunnable_SetAutoDelete(QRunnable* self, bool autoDelete);
+void QRunnable_SetAutoDelete(QRunnable* self, bool _autoDelete);
+void QRunnable_OperatorAssign(QRunnable* self, QRunnable* param1);
 void QRunnable_Delete(QRunnable* self);
 
 #ifdef __cplusplus

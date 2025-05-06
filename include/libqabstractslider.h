@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractSlider QAbstractSlider;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -96,6 +95,7 @@ int QAbstractSlider_Metacall(QAbstractSlider* self, int param1, int param2, void
 void QAbstractSlider_OnMetacall(QAbstractSlider* self, intptr_t slot);
 int QAbstractSlider_QBaseMetacall(QAbstractSlider* self, int param1, int param2, void** param3);
 libqt_string QAbstractSlider_Tr(const char* s);
+libqt_string QAbstractSlider_TrUtf8(const char* s);
 int QAbstractSlider_Orientation(const QAbstractSlider* self);
 void QAbstractSlider_SetMinimum(QAbstractSlider* self, int minimum);
 int QAbstractSlider_Minimum(const QAbstractSlider* self);
@@ -152,6 +152,8 @@ void QAbstractSlider_OnChangeEvent(QAbstractSlider* self, intptr_t slot);
 void QAbstractSlider_QBaseChangeEvent(QAbstractSlider* self, QEvent* e);
 libqt_string QAbstractSlider_Tr2(const char* s, const char* c);
 libqt_string QAbstractSlider_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractSlider_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractSlider_TrUtf83(const char* s, const char* c, int n);
 int QAbstractSlider_DevType(const QAbstractSlider* self);
 void QAbstractSlider_OnDevType(const QAbstractSlider* self, intptr_t slot);
 int QAbstractSlider_QBaseDevType(const QAbstractSlider* self);
@@ -194,9 +196,9 @@ void QAbstractSlider_QBaseFocusInEvent(QAbstractSlider* self, QFocusEvent* event
 void QAbstractSlider_FocusOutEvent(QAbstractSlider* self, QFocusEvent* event);
 void QAbstractSlider_OnFocusOutEvent(QAbstractSlider* self, intptr_t slot);
 void QAbstractSlider_QBaseFocusOutEvent(QAbstractSlider* self, QFocusEvent* event);
-void QAbstractSlider_EnterEvent(QAbstractSlider* self, QEnterEvent* event);
+void QAbstractSlider_EnterEvent(QAbstractSlider* self, QEvent* event);
 void QAbstractSlider_OnEnterEvent(QAbstractSlider* self, intptr_t slot);
-void QAbstractSlider_QBaseEnterEvent(QAbstractSlider* self, QEnterEvent* event);
+void QAbstractSlider_QBaseEnterEvent(QAbstractSlider* self, QEvent* event);
 void QAbstractSlider_LeaveEvent(QAbstractSlider* self, QEvent* event);
 void QAbstractSlider_OnLeaveEvent(QAbstractSlider* self, intptr_t slot);
 void QAbstractSlider_QBaseLeaveEvent(QAbstractSlider* self, QEvent* event);
@@ -239,9 +241,9 @@ void QAbstractSlider_QBaseShowEvent(QAbstractSlider* self, QShowEvent* event);
 void QAbstractSlider_HideEvent(QAbstractSlider* self, QHideEvent* event);
 void QAbstractSlider_OnHideEvent(QAbstractSlider* self, intptr_t slot);
 void QAbstractSlider_QBaseHideEvent(QAbstractSlider* self, QHideEvent* event);
-bool QAbstractSlider_NativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractSlider_NativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, long* result);
 void QAbstractSlider_OnNativeEvent(QAbstractSlider* self, intptr_t slot);
-bool QAbstractSlider_QBaseNativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractSlider_QBaseNativeEvent(QAbstractSlider* self, libqt_string eventType, void* message, long* result);
 void QAbstractSlider_InputMethodEvent(QAbstractSlider* self, QInputMethodEvent* param1);
 void QAbstractSlider_OnInputMethodEvent(QAbstractSlider* self, intptr_t slot);
 void QAbstractSlider_QBaseInputMethodEvent(QAbstractSlider* self, QInputMethodEvent* param1);

@@ -32,10 +32,6 @@ int QSemaphore_Available(const QSemaphore* self) {
     return self->available();
 }
 
-bool QSemaphore_TryAcquire3(QSemaphore* self) {
-    return self->try_acquire();
-}
-
 void QSemaphore_Acquire1(QSemaphore* self, int n) {
     self->acquire(static_cast<int>(n));
 }

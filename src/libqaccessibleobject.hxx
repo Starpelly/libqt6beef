@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -29,7 +31,7 @@ class VirtualQAccessibleApplication : public QAccessibleApplication {
     using QAccessibleApplication_Rect_Callback = QRect (*)();
     using QAccessibleApplication_SetText_Callback = void (*)(QAccessibleApplication*, QAccessible::Text, const QString&);
     using QAccessibleApplication_ChildAt_Callback = QAccessibleInterface* (*)(const QAccessibleApplication*, int, int);
-    using QAccessibleApplication_Relations_Callback = QList<QPair<QAccessibleInterface*, QAccessible::Relation>> (*)(const QAccessibleApplication*, QAccessible::Relation);
+    using QAccessibleApplication_Relations_Callback = QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> (*)(const QAccessibleApplication*, QAccessible::Relation);
     using QAccessibleApplication_ForegroundColor_Callback = QColor (*)();
     using QAccessibleApplication_BackgroundColor_Callback = QColor (*)();
     using QAccessibleApplication_VirtualHook_Callback = void (*)(QAccessibleApplication*, int, void*);
@@ -314,7 +316,7 @@ class VirtualQAccessibleApplication : public QAccessibleApplication {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QList<QPair<QAccessibleInterface*, QAccessible::Relation>> relations(QAccessible::Relation match) const override {
+    virtual QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> relations(QAccessible::Relation match) const override {
         if (qaccessibleapplication_relations_isbase) {
             qaccessibleapplication_relations_isbase = false;
             return QAccessibleApplication::relations(match);

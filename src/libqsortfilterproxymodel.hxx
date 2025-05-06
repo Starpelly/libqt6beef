@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -53,14 +55,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     using QSortFilterProxyModel_Revert_Callback = void (*)();
     using QSortFilterProxyModel_ItemData_Callback = QMap<int, QVariant> (*)(const QSortFilterProxyModel*, const QModelIndex&);
     using QSortFilterProxyModel_SetItemData_Callback = bool (*)(QSortFilterProxyModel*, const QModelIndex&, const QMap<int, QVariant>&);
-    using QSortFilterProxyModel_ClearItemData_Callback = bool (*)(QSortFilterProxyModel*, const QModelIndex&);
     using QSortFilterProxyModel_CanDropMimeData_Callback = bool (*)(const QSortFilterProxyModel*, const QMimeData*, Qt::DropAction, int, int, const QModelIndex&);
     using QSortFilterProxyModel_SupportedDragActions_Callback = Qt::DropActions (*)();
-    using QSortFilterProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QSortFilterProxyModel_MoveRows_Callback = bool (*)(QSortFilterProxyModel*, const QModelIndex&, int, int, const QModelIndex&, int);
     using QSortFilterProxyModel_MoveColumns_Callback = bool (*)(QSortFilterProxyModel*, const QModelIndex&, int, int, const QModelIndex&, int);
-    using QSortFilterProxyModel_MultiData_Callback = void (*)(const QSortFilterProxyModel*, const QModelIndex&, QModelRoleDataSpan);
-    using QSortFilterProxyModel_ResetInternalData_Callback = void (*)();
+    using QSortFilterProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QSortFilterProxyModel_Event_Callback = bool (*)(QSortFilterProxyModel*, QEvent*);
     using QSortFilterProxyModel_EventFilter_Callback = bool (*)(QSortFilterProxyModel*, QObject*, QEvent*);
     using QSortFilterProxyModel_TimerEvent_Callback = void (*)(QSortFilterProxyModel*, QTimerEvent*);
@@ -68,10 +67,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     using QSortFilterProxyModel_CustomEvent_Callback = void (*)(QSortFilterProxyModel*, QEvent*);
     using QSortFilterProxyModel_ConnectNotify_Callback = void (*)(QSortFilterProxyModel*, const QMetaMethod&);
     using QSortFilterProxyModel_DisconnectNotify_Callback = void (*)(QSortFilterProxyModel*, const QMetaMethod&);
+    using QSortFilterProxyModel_FilterChanged_Callback = void (*)();
     using QSortFilterProxyModel_InvalidateFilter_Callback = void (*)();
-    using QSortFilterProxyModel_InvalidateRowsFilter_Callback = void (*)();
-    using QSortFilterProxyModel_InvalidateColumnsFilter_Callback = void (*)();
-    using QSortFilterProxyModel_CreateSourceIndex_Callback = QModelIndex (*)(const QSortFilterProxyModel*, int, int, void*);
+    using QSortFilterProxyModel_ResetInternalData_Callback = void (*)();
     using QSortFilterProxyModel_CreateIndex_Callback = QModelIndex (*)(const QSortFilterProxyModel*, int, int);
     using QSortFilterProxyModel_EncodeData_Callback = void (*)(const QSortFilterProxyModel*, const QModelIndexList&, QDataStream&);
     using QSortFilterProxyModel_DecodeData_Callback = bool (*)(QSortFilterProxyModel*, int, int, const QModelIndex&, QDataStream&);
@@ -137,14 +135,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     QSortFilterProxyModel_Revert_Callback qsortfilterproxymodel_revert_callback = nullptr;
     QSortFilterProxyModel_ItemData_Callback qsortfilterproxymodel_itemdata_callback = nullptr;
     QSortFilterProxyModel_SetItemData_Callback qsortfilterproxymodel_setitemdata_callback = nullptr;
-    QSortFilterProxyModel_ClearItemData_Callback qsortfilterproxymodel_clearitemdata_callback = nullptr;
     QSortFilterProxyModel_CanDropMimeData_Callback qsortfilterproxymodel_candropmimedata_callback = nullptr;
     QSortFilterProxyModel_SupportedDragActions_Callback qsortfilterproxymodel_supporteddragactions_callback = nullptr;
-    QSortFilterProxyModel_RoleNames_Callback qsortfilterproxymodel_rolenames_callback = nullptr;
     QSortFilterProxyModel_MoveRows_Callback qsortfilterproxymodel_moverows_callback = nullptr;
     QSortFilterProxyModel_MoveColumns_Callback qsortfilterproxymodel_movecolumns_callback = nullptr;
-    QSortFilterProxyModel_MultiData_Callback qsortfilterproxymodel_multidata_callback = nullptr;
-    QSortFilterProxyModel_ResetInternalData_Callback qsortfilterproxymodel_resetinternaldata_callback = nullptr;
+    QSortFilterProxyModel_RoleNames_Callback qsortfilterproxymodel_rolenames_callback = nullptr;
     QSortFilterProxyModel_Event_Callback qsortfilterproxymodel_event_callback = nullptr;
     QSortFilterProxyModel_EventFilter_Callback qsortfilterproxymodel_eventfilter_callback = nullptr;
     QSortFilterProxyModel_TimerEvent_Callback qsortfilterproxymodel_timerevent_callback = nullptr;
@@ -152,10 +147,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     QSortFilterProxyModel_CustomEvent_Callback qsortfilterproxymodel_customevent_callback = nullptr;
     QSortFilterProxyModel_ConnectNotify_Callback qsortfilterproxymodel_connectnotify_callback = nullptr;
     QSortFilterProxyModel_DisconnectNotify_Callback qsortfilterproxymodel_disconnectnotify_callback = nullptr;
+    QSortFilterProxyModel_FilterChanged_Callback qsortfilterproxymodel_filterchanged_callback = nullptr;
     QSortFilterProxyModel_InvalidateFilter_Callback qsortfilterproxymodel_invalidatefilter_callback = nullptr;
-    QSortFilterProxyModel_InvalidateRowsFilter_Callback qsortfilterproxymodel_invalidaterowsfilter_callback = nullptr;
-    QSortFilterProxyModel_InvalidateColumnsFilter_Callback qsortfilterproxymodel_invalidatecolumnsfilter_callback = nullptr;
-    QSortFilterProxyModel_CreateSourceIndex_Callback qsortfilterproxymodel_createsourceindex_callback = nullptr;
+    QSortFilterProxyModel_ResetInternalData_Callback qsortfilterproxymodel_resetinternaldata_callback = nullptr;
     QSortFilterProxyModel_CreateIndex_Callback qsortfilterproxymodel_createindex_callback = nullptr;
     QSortFilterProxyModel_EncodeData_Callback qsortfilterproxymodel_encodedata_callback = nullptr;
     QSortFilterProxyModel_DecodeData_Callback qsortfilterproxymodel_decodedata_callback = nullptr;
@@ -220,14 +214,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     mutable bool qsortfilterproxymodel_revert_isbase = false;
     mutable bool qsortfilterproxymodel_itemdata_isbase = false;
     mutable bool qsortfilterproxymodel_setitemdata_isbase = false;
-    mutable bool qsortfilterproxymodel_clearitemdata_isbase = false;
     mutable bool qsortfilterproxymodel_candropmimedata_isbase = false;
     mutable bool qsortfilterproxymodel_supporteddragactions_isbase = false;
-    mutable bool qsortfilterproxymodel_rolenames_isbase = false;
     mutable bool qsortfilterproxymodel_moverows_isbase = false;
     mutable bool qsortfilterproxymodel_movecolumns_isbase = false;
-    mutable bool qsortfilterproxymodel_multidata_isbase = false;
-    mutable bool qsortfilterproxymodel_resetinternaldata_isbase = false;
+    mutable bool qsortfilterproxymodel_rolenames_isbase = false;
     mutable bool qsortfilterproxymodel_event_isbase = false;
     mutable bool qsortfilterproxymodel_eventfilter_isbase = false;
     mutable bool qsortfilterproxymodel_timerevent_isbase = false;
@@ -235,10 +226,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     mutable bool qsortfilterproxymodel_customevent_isbase = false;
     mutable bool qsortfilterproxymodel_connectnotify_isbase = false;
     mutable bool qsortfilterproxymodel_disconnectnotify_isbase = false;
+    mutable bool qsortfilterproxymodel_filterchanged_isbase = false;
     mutable bool qsortfilterproxymodel_invalidatefilter_isbase = false;
-    mutable bool qsortfilterproxymodel_invalidaterowsfilter_isbase = false;
-    mutable bool qsortfilterproxymodel_invalidatecolumnsfilter_isbase = false;
-    mutable bool qsortfilterproxymodel_createsourceindex_isbase = false;
+    mutable bool qsortfilterproxymodel_resetinternaldata_isbase = false;
     mutable bool qsortfilterproxymodel_createindex_isbase = false;
     mutable bool qsortfilterproxymodel_encodedata_isbase = false;
     mutable bool qsortfilterproxymodel_decodedata_isbase = false;
@@ -307,14 +297,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
         qsortfilterproxymodel_revert_callback = nullptr;
         qsortfilterproxymodel_itemdata_callback = nullptr;
         qsortfilterproxymodel_setitemdata_callback = nullptr;
-        qsortfilterproxymodel_clearitemdata_callback = nullptr;
         qsortfilterproxymodel_candropmimedata_callback = nullptr;
         qsortfilterproxymodel_supporteddragactions_callback = nullptr;
-        qsortfilterproxymodel_rolenames_callback = nullptr;
         qsortfilterproxymodel_moverows_callback = nullptr;
         qsortfilterproxymodel_movecolumns_callback = nullptr;
-        qsortfilterproxymodel_multidata_callback = nullptr;
-        qsortfilterproxymodel_resetinternaldata_callback = nullptr;
+        qsortfilterproxymodel_rolenames_callback = nullptr;
         qsortfilterproxymodel_event_callback = nullptr;
         qsortfilterproxymodel_eventfilter_callback = nullptr;
         qsortfilterproxymodel_timerevent_callback = nullptr;
@@ -322,10 +309,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
         qsortfilterproxymodel_customevent_callback = nullptr;
         qsortfilterproxymodel_connectnotify_callback = nullptr;
         qsortfilterproxymodel_disconnectnotify_callback = nullptr;
+        qsortfilterproxymodel_filterchanged_callback = nullptr;
         qsortfilterproxymodel_invalidatefilter_callback = nullptr;
-        qsortfilterproxymodel_invalidaterowsfilter_callback = nullptr;
-        qsortfilterproxymodel_invalidatecolumnsfilter_callback = nullptr;
-        qsortfilterproxymodel_createsourceindex_callback = nullptr;
+        qsortfilterproxymodel_resetinternaldata_callback = nullptr;
         qsortfilterproxymodel_createindex_callback = nullptr;
         qsortfilterproxymodel_encodedata_callback = nullptr;
         qsortfilterproxymodel_decodedata_callback = nullptr;
@@ -391,14 +377,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     void setQSortFilterProxyModel_Revert_Callback(QSortFilterProxyModel_Revert_Callback cb) { qsortfilterproxymodel_revert_callback = cb; }
     void setQSortFilterProxyModel_ItemData_Callback(QSortFilterProxyModel_ItemData_Callback cb) { qsortfilterproxymodel_itemdata_callback = cb; }
     void setQSortFilterProxyModel_SetItemData_Callback(QSortFilterProxyModel_SetItemData_Callback cb) { qsortfilterproxymodel_setitemdata_callback = cb; }
-    void setQSortFilterProxyModel_ClearItemData_Callback(QSortFilterProxyModel_ClearItemData_Callback cb) { qsortfilterproxymodel_clearitemdata_callback = cb; }
     void setQSortFilterProxyModel_CanDropMimeData_Callback(QSortFilterProxyModel_CanDropMimeData_Callback cb) { qsortfilterproxymodel_candropmimedata_callback = cb; }
     void setQSortFilterProxyModel_SupportedDragActions_Callback(QSortFilterProxyModel_SupportedDragActions_Callback cb) { qsortfilterproxymodel_supporteddragactions_callback = cb; }
-    void setQSortFilterProxyModel_RoleNames_Callback(QSortFilterProxyModel_RoleNames_Callback cb) { qsortfilterproxymodel_rolenames_callback = cb; }
     void setQSortFilterProxyModel_MoveRows_Callback(QSortFilterProxyModel_MoveRows_Callback cb) { qsortfilterproxymodel_moverows_callback = cb; }
     void setQSortFilterProxyModel_MoveColumns_Callback(QSortFilterProxyModel_MoveColumns_Callback cb) { qsortfilterproxymodel_movecolumns_callback = cb; }
-    void setQSortFilterProxyModel_MultiData_Callback(QSortFilterProxyModel_MultiData_Callback cb) { qsortfilterproxymodel_multidata_callback = cb; }
-    void setQSortFilterProxyModel_ResetInternalData_Callback(QSortFilterProxyModel_ResetInternalData_Callback cb) { qsortfilterproxymodel_resetinternaldata_callback = cb; }
+    void setQSortFilterProxyModel_RoleNames_Callback(QSortFilterProxyModel_RoleNames_Callback cb) { qsortfilterproxymodel_rolenames_callback = cb; }
     void setQSortFilterProxyModel_Event_Callback(QSortFilterProxyModel_Event_Callback cb) { qsortfilterproxymodel_event_callback = cb; }
     void setQSortFilterProxyModel_EventFilter_Callback(QSortFilterProxyModel_EventFilter_Callback cb) { qsortfilterproxymodel_eventfilter_callback = cb; }
     void setQSortFilterProxyModel_TimerEvent_Callback(QSortFilterProxyModel_TimerEvent_Callback cb) { qsortfilterproxymodel_timerevent_callback = cb; }
@@ -406,10 +389,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     void setQSortFilterProxyModel_CustomEvent_Callback(QSortFilterProxyModel_CustomEvent_Callback cb) { qsortfilterproxymodel_customevent_callback = cb; }
     void setQSortFilterProxyModel_ConnectNotify_Callback(QSortFilterProxyModel_ConnectNotify_Callback cb) { qsortfilterproxymodel_connectnotify_callback = cb; }
     void setQSortFilterProxyModel_DisconnectNotify_Callback(QSortFilterProxyModel_DisconnectNotify_Callback cb) { qsortfilterproxymodel_disconnectnotify_callback = cb; }
+    void setQSortFilterProxyModel_FilterChanged_Callback(QSortFilterProxyModel_FilterChanged_Callback cb) { qsortfilterproxymodel_filterchanged_callback = cb; }
     void setQSortFilterProxyModel_InvalidateFilter_Callback(QSortFilterProxyModel_InvalidateFilter_Callback cb) { qsortfilterproxymodel_invalidatefilter_callback = cb; }
-    void setQSortFilterProxyModel_InvalidateRowsFilter_Callback(QSortFilterProxyModel_InvalidateRowsFilter_Callback cb) { qsortfilterproxymodel_invalidaterowsfilter_callback = cb; }
-    void setQSortFilterProxyModel_InvalidateColumnsFilter_Callback(QSortFilterProxyModel_InvalidateColumnsFilter_Callback cb) { qsortfilterproxymodel_invalidatecolumnsfilter_callback = cb; }
-    void setQSortFilterProxyModel_CreateSourceIndex_Callback(QSortFilterProxyModel_CreateSourceIndex_Callback cb) { qsortfilterproxymodel_createsourceindex_callback = cb; }
+    void setQSortFilterProxyModel_ResetInternalData_Callback(QSortFilterProxyModel_ResetInternalData_Callback cb) { qsortfilterproxymodel_resetinternaldata_callback = cb; }
     void setQSortFilterProxyModel_CreateIndex_Callback(QSortFilterProxyModel_CreateIndex_Callback cb) { qsortfilterproxymodel_createindex_callback = cb; }
     void setQSortFilterProxyModel_EncodeData_Callback(QSortFilterProxyModel_EncodeData_Callback cb) { qsortfilterproxymodel_encodedata_callback = cb; }
     void setQSortFilterProxyModel_DecodeData_Callback(QSortFilterProxyModel_DecodeData_Callback cb) { qsortfilterproxymodel_decodedata_callback = cb; }
@@ -474,14 +456,11 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     void setQSortFilterProxyModel_Revert_IsBase(bool value) const { qsortfilterproxymodel_revert_isbase = value; }
     void setQSortFilterProxyModel_ItemData_IsBase(bool value) const { qsortfilterproxymodel_itemdata_isbase = value; }
     void setQSortFilterProxyModel_SetItemData_IsBase(bool value) const { qsortfilterproxymodel_setitemdata_isbase = value; }
-    void setQSortFilterProxyModel_ClearItemData_IsBase(bool value) const { qsortfilterproxymodel_clearitemdata_isbase = value; }
     void setQSortFilterProxyModel_CanDropMimeData_IsBase(bool value) const { qsortfilterproxymodel_candropmimedata_isbase = value; }
     void setQSortFilterProxyModel_SupportedDragActions_IsBase(bool value) const { qsortfilterproxymodel_supporteddragactions_isbase = value; }
-    void setQSortFilterProxyModel_RoleNames_IsBase(bool value) const { qsortfilterproxymodel_rolenames_isbase = value; }
     void setQSortFilterProxyModel_MoveRows_IsBase(bool value) const { qsortfilterproxymodel_moverows_isbase = value; }
     void setQSortFilterProxyModel_MoveColumns_IsBase(bool value) const { qsortfilterproxymodel_movecolumns_isbase = value; }
-    void setQSortFilterProxyModel_MultiData_IsBase(bool value) const { qsortfilterproxymodel_multidata_isbase = value; }
-    void setQSortFilterProxyModel_ResetInternalData_IsBase(bool value) const { qsortfilterproxymodel_resetinternaldata_isbase = value; }
+    void setQSortFilterProxyModel_RoleNames_IsBase(bool value) const { qsortfilterproxymodel_rolenames_isbase = value; }
     void setQSortFilterProxyModel_Event_IsBase(bool value) const { qsortfilterproxymodel_event_isbase = value; }
     void setQSortFilterProxyModel_EventFilter_IsBase(bool value) const { qsortfilterproxymodel_eventfilter_isbase = value; }
     void setQSortFilterProxyModel_TimerEvent_IsBase(bool value) const { qsortfilterproxymodel_timerevent_isbase = value; }
@@ -489,10 +468,9 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     void setQSortFilterProxyModel_CustomEvent_IsBase(bool value) const { qsortfilterproxymodel_customevent_isbase = value; }
     void setQSortFilterProxyModel_ConnectNotify_IsBase(bool value) const { qsortfilterproxymodel_connectnotify_isbase = value; }
     void setQSortFilterProxyModel_DisconnectNotify_IsBase(bool value) const { qsortfilterproxymodel_disconnectnotify_isbase = value; }
+    void setQSortFilterProxyModel_FilterChanged_IsBase(bool value) const { qsortfilterproxymodel_filterchanged_isbase = value; }
     void setQSortFilterProxyModel_InvalidateFilter_IsBase(bool value) const { qsortfilterproxymodel_invalidatefilter_isbase = value; }
-    void setQSortFilterProxyModel_InvalidateRowsFilter_IsBase(bool value) const { qsortfilterproxymodel_invalidaterowsfilter_isbase = value; }
-    void setQSortFilterProxyModel_InvalidateColumnsFilter_IsBase(bool value) const { qsortfilterproxymodel_invalidatecolumnsfilter_isbase = value; }
-    void setQSortFilterProxyModel_CreateSourceIndex_IsBase(bool value) const { qsortfilterproxymodel_createsourceindex_isbase = value; }
+    void setQSortFilterProxyModel_ResetInternalData_IsBase(bool value) const { qsortfilterproxymodel_resetinternaldata_isbase = value; }
     void setQSortFilterProxyModel_CreateIndex_IsBase(bool value) const { qsortfilterproxymodel_createindex_isbase = value; }
     void setQSortFilterProxyModel_EncodeData_IsBase(bool value) const { qsortfilterproxymodel_encodedata_isbase = value; }
     void setQSortFilterProxyModel_DecodeData_IsBase(bool value) const { qsortfilterproxymodel_decodedata_isbase = value; }
@@ -975,18 +953,6 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool clearItemData(const QModelIndex& index) override {
-        if (qsortfilterproxymodel_clearitemdata_isbase) {
-            qsortfilterproxymodel_clearitemdata_isbase = false;
-            return QSortFilterProxyModel::clearItemData(index);
-        } else if (qsortfilterproxymodel_clearitemdata_callback != nullptr) {
-            return qsortfilterproxymodel_clearitemdata_callback(this, index);
-        } else {
-            return QSortFilterProxyModel::clearItemData(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool canDropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent) const override {
         if (qsortfilterproxymodel_candropmimedata_isbase) {
             qsortfilterproxymodel_candropmimedata_isbase = false;
@@ -1007,18 +973,6 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
             return qsortfilterproxymodel_supporteddragactions_callback();
         } else {
             return QSortFilterProxyModel::supportedDragActions();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QHash<int, QByteArray> roleNames() const override {
-        if (qsortfilterproxymodel_rolenames_isbase) {
-            qsortfilterproxymodel_rolenames_isbase = false;
-            return QSortFilterProxyModel::roleNames();
-        } else if (qsortfilterproxymodel_rolenames_callback != nullptr) {
-            return qsortfilterproxymodel_rolenames_callback();
-        } else {
-            return QSortFilterProxyModel::roleNames();
         }
     }
 
@@ -1047,26 +1001,14 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
-        if (qsortfilterproxymodel_multidata_isbase) {
-            qsortfilterproxymodel_multidata_isbase = false;
-            QSortFilterProxyModel::multiData(index, roleDataSpan);
-        } else if (qsortfilterproxymodel_multidata_callback != nullptr) {
-            qsortfilterproxymodel_multidata_callback(this, index, roleDataSpan);
+    virtual QHash<int, QByteArray> roleNames() const override {
+        if (qsortfilterproxymodel_rolenames_isbase) {
+            qsortfilterproxymodel_rolenames_isbase = false;
+            return QSortFilterProxyModel::roleNames();
+        } else if (qsortfilterproxymodel_rolenames_callback != nullptr) {
+            return qsortfilterproxymodel_rolenames_callback();
         } else {
-            QSortFilterProxyModel::multiData(index, roleDataSpan);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void resetInternalData() override {
-        if (qsortfilterproxymodel_resetinternaldata_isbase) {
-            qsortfilterproxymodel_resetinternaldata_isbase = false;
-            QSortFilterProxyModel::resetInternalData();
-        } else if (qsortfilterproxymodel_resetinternaldata_callback != nullptr) {
-            qsortfilterproxymodel_resetinternaldata_callback();
-        } else {
-            QSortFilterProxyModel::resetInternalData();
+            return QSortFilterProxyModel::roleNames();
         }
     }
 
@@ -1155,6 +1097,18 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
+    void filterChanged() {
+        if (qsortfilterproxymodel_filterchanged_isbase) {
+            qsortfilterproxymodel_filterchanged_isbase = false;
+            QSortFilterProxyModel::filterChanged();
+        } else if (qsortfilterproxymodel_filterchanged_callback != nullptr) {
+            qsortfilterproxymodel_filterchanged_callback();
+        } else {
+            QSortFilterProxyModel::filterChanged();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     void invalidateFilter() {
         if (qsortfilterproxymodel_invalidatefilter_isbase) {
             qsortfilterproxymodel_invalidatefilter_isbase = false;
@@ -1167,38 +1121,14 @@ class VirtualQSortFilterProxyModel : public QSortFilterProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    void invalidateRowsFilter() {
-        if (qsortfilterproxymodel_invalidaterowsfilter_isbase) {
-            qsortfilterproxymodel_invalidaterowsfilter_isbase = false;
-            QSortFilterProxyModel::invalidateRowsFilter();
-        } else if (qsortfilterproxymodel_invalidaterowsfilter_callback != nullptr) {
-            qsortfilterproxymodel_invalidaterowsfilter_callback();
+    void resetInternalData() {
+        if (qsortfilterproxymodel_resetinternaldata_isbase) {
+            qsortfilterproxymodel_resetinternaldata_isbase = false;
+            QSortFilterProxyModel::resetInternalData();
+        } else if (qsortfilterproxymodel_resetinternaldata_callback != nullptr) {
+            qsortfilterproxymodel_resetinternaldata_callback();
         } else {
-            QSortFilterProxyModel::invalidateRowsFilter();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void invalidateColumnsFilter() {
-        if (qsortfilterproxymodel_invalidatecolumnsfilter_isbase) {
-            qsortfilterproxymodel_invalidatecolumnsfilter_isbase = false;
-            QSortFilterProxyModel::invalidateColumnsFilter();
-        } else if (qsortfilterproxymodel_invalidatecolumnsfilter_callback != nullptr) {
-            qsortfilterproxymodel_invalidatecolumnsfilter_callback();
-        } else {
-            QSortFilterProxyModel::invalidateColumnsFilter();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    QModelIndex createSourceIndex(int row, int col, void* internalPtr) const {
-        if (qsortfilterproxymodel_createsourceindex_isbase) {
-            qsortfilterproxymodel_createsourceindex_isbase = false;
-            return QSortFilterProxyModel::createSourceIndex(row, col, internalPtr);
-        } else if (qsortfilterproxymodel_createsourceindex_callback != nullptr) {
-            return qsortfilterproxymodel_createsourceindex_callback(this, row, col, internalPtr);
-        } else {
-            return QSortFilterProxyModel::createSourceIndex(row, col, internalPtr);
+            QSortFilterProxyModel::resetInternalData();
         }
     }
 

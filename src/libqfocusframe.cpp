@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFocusFrame>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -121,6 +118,18 @@ libqt_string QFocusFrame_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QFocusFrame_TrUtf8(const char* s) {
+    QString _ret = QFocusFrame::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QFocusFrame_SetWidget(QFocusFrame* self, QWidget* widget) {
     self->setWidget(widget);
 }
@@ -143,6 +152,30 @@ libqt_string QFocusFrame_Tr2(const char* s, const char* c) {
 
 libqt_string QFocusFrame_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFocusFrame::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFocusFrame_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFocusFrame::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFocusFrame_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFocusFrame::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -228,32 +261,6 @@ void QFocusFrame_QBasePaintEvent(QFocusFrame* self, QPaintEvent* param1) {
 void QFocusFrame_OnPaintEvent(QFocusFrame* self, intptr_t slot) {
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
         vqfocusframe->setQFocusFrame_PaintEvent_Callback(reinterpret_cast<VirtualQFocusFrame::QFocusFrame_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QFocusFrame_InitStyleOption(const QFocusFrame* self, QStyleOption* option) {
-    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
-        vqfocusframe->initStyleOption(option);
-    } else {
-        vqfocusframe->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QFocusFrame_QBaseInitStyleOption(const QFocusFrame* self, QStyleOption* option) {
-    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
-        vqfocusframe->setQFocusFrame_InitStyleOption_IsBase(true);
-        vqfocusframe->initStyleOption(option);
-    } else {
-        vqfocusframe->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFocusFrame_OnInitStyleOption(const QFocusFrame* self, intptr_t slot) {
-    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
-        vqfocusframe->setQFocusFrame_InitStyleOption_Callback(reinterpret_cast<VirtualQFocusFrame::QFocusFrame_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -674,7 +681,7 @@ void QFocusFrame_OnFocusOutEvent(QFocusFrame* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFocusFrame_EnterEvent(QFocusFrame* self, QEnterEvent* event) {
+void QFocusFrame_EnterEvent(QFocusFrame* self, QEvent* event) {
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
         vqfocusframe->enterEvent(event);
     } else {
@@ -683,7 +690,7 @@ void QFocusFrame_EnterEvent(QFocusFrame* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QFocusFrame_QBaseEnterEvent(QFocusFrame* self, QEnterEvent* event) {
+void QFocusFrame_QBaseEnterEvent(QFocusFrame* self, QEvent* event) {
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
         vqfocusframe->setQFocusFrame_EnterEvent_IsBase(true);
         vqfocusframe->enterEvent(event);
@@ -1038,23 +1045,23 @@ void QFocusFrame_OnHideEvent(QFocusFrame* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QFocusFrame_NativeEvent(QFocusFrame* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFocusFrame_NativeEvent(QFocusFrame* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
-        return vqfocusframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfocusframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfocusframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfocusframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QFocusFrame_QBaseNativeEvent(QFocusFrame* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFocusFrame_QBaseNativeEvent(QFocusFrame* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
         vqfocusframe->setQFocusFrame_NativeEvent_IsBase(true);
-        return vqfocusframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfocusframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfocusframe->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfocusframe->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1400,6 +1407,32 @@ void QFocusFrame_QBaseDisconnectNotify(QFocusFrame* self, QMetaMethod* signal) {
 void QFocusFrame_OnDisconnectNotify(QFocusFrame* self, intptr_t slot) {
     if (auto* vqfocusframe = dynamic_cast<VirtualQFocusFrame*>(self)) {
         vqfocusframe->setQFocusFrame_DisconnectNotify_Callback(reinterpret_cast<VirtualQFocusFrame::QFocusFrame_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QFocusFrame_InitStyleOption(const QFocusFrame* self, QStyleOption* option) {
+    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
+        vqfocusframe->initStyleOption(option);
+    } else {
+        vqfocusframe->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QFocusFrame_QBaseInitStyleOption(const QFocusFrame* self, QStyleOption* option) {
+    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
+        vqfocusframe->setQFocusFrame_InitStyleOption_IsBase(true);
+        vqfocusframe->initStyleOption(option);
+    } else {
+        vqfocusframe->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QFocusFrame_OnInitStyleOption(const QFocusFrame* self, intptr_t slot) {
+    if (auto* vqfocusframe = const_cast<VirtualQFocusFrame*>(dynamic_cast<const VirtualQFocusFrame*>(self))) {
+        vqfocusframe->setQFocusFrame_InitStyleOption_Callback(reinterpret_cast<VirtualQFocusFrame::QFocusFrame_InitStyleOption_Callback>(slot));
     }
 }
 

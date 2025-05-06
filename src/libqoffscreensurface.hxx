@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -26,7 +28,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
     using QOffscreenSurface_CustomEvent_Callback = void (*)(QOffscreenSurface*, QEvent*);
     using QOffscreenSurface_ConnectNotify_Callback = void (*)(QOffscreenSurface*, const QMetaMethod&);
     using QOffscreenSurface_DisconnectNotify_Callback = void (*)(QOffscreenSurface*, const QMetaMethod&);
-    using QOffscreenSurface_ResolveInterface_Callback = void* (*)(const QOffscreenSurface*, const char*, int);
     using QOffscreenSurface_Sender_Callback = QObject* (*)();
     using QOffscreenSurface_SenderSignalIndex_Callback = int (*)();
     using QOffscreenSurface_Receivers_Callback = int (*)(const QOffscreenSurface*, const char*);
@@ -45,7 +46,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
     QOffscreenSurface_CustomEvent_Callback qoffscreensurface_customevent_callback = nullptr;
     QOffscreenSurface_ConnectNotify_Callback qoffscreensurface_connectnotify_callback = nullptr;
     QOffscreenSurface_DisconnectNotify_Callback qoffscreensurface_disconnectnotify_callback = nullptr;
-    QOffscreenSurface_ResolveInterface_Callback qoffscreensurface_resolveinterface_callback = nullptr;
     QOffscreenSurface_Sender_Callback qoffscreensurface_sender_callback = nullptr;
     QOffscreenSurface_SenderSignalIndex_Callback qoffscreensurface_sendersignalindex_callback = nullptr;
     QOffscreenSurface_Receivers_Callback qoffscreensurface_receivers_callback = nullptr;
@@ -63,16 +63,15 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
     mutable bool qoffscreensurface_customevent_isbase = false;
     mutable bool qoffscreensurface_connectnotify_isbase = false;
     mutable bool qoffscreensurface_disconnectnotify_isbase = false;
-    mutable bool qoffscreensurface_resolveinterface_isbase = false;
     mutable bool qoffscreensurface_sender_isbase = false;
     mutable bool qoffscreensurface_sendersignalindex_isbase = false;
     mutable bool qoffscreensurface_receivers_isbase = false;
     mutable bool qoffscreensurface_issignalconnected_isbase = false;
 
   public:
+    VirtualQOffscreenSurface(QScreen* screen, QObject* parent) : QOffscreenSurface(screen, parent){};
     VirtualQOffscreenSurface() : QOffscreenSurface(){};
     VirtualQOffscreenSurface(QScreen* screen) : QOffscreenSurface(screen){};
-    VirtualQOffscreenSurface(QScreen* screen, QObject* parent) : QOffscreenSurface(screen, parent){};
 
     ~VirtualQOffscreenSurface() {
         qoffscreensurface_metacall_callback = nullptr;
@@ -86,7 +85,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
         qoffscreensurface_customevent_callback = nullptr;
         qoffscreensurface_connectnotify_callback = nullptr;
         qoffscreensurface_disconnectnotify_callback = nullptr;
-        qoffscreensurface_resolveinterface_callback = nullptr;
         qoffscreensurface_sender_callback = nullptr;
         qoffscreensurface_sendersignalindex_callback = nullptr;
         qoffscreensurface_receivers_callback = nullptr;
@@ -105,7 +103,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
     void setQOffscreenSurface_CustomEvent_Callback(QOffscreenSurface_CustomEvent_Callback cb) { qoffscreensurface_customevent_callback = cb; }
     void setQOffscreenSurface_ConnectNotify_Callback(QOffscreenSurface_ConnectNotify_Callback cb) { qoffscreensurface_connectnotify_callback = cb; }
     void setQOffscreenSurface_DisconnectNotify_Callback(QOffscreenSurface_DisconnectNotify_Callback cb) { qoffscreensurface_disconnectnotify_callback = cb; }
-    void setQOffscreenSurface_ResolveInterface_Callback(QOffscreenSurface_ResolveInterface_Callback cb) { qoffscreensurface_resolveinterface_callback = cb; }
     void setQOffscreenSurface_Sender_Callback(QOffscreenSurface_Sender_Callback cb) { qoffscreensurface_sender_callback = cb; }
     void setQOffscreenSurface_SenderSignalIndex_Callback(QOffscreenSurface_SenderSignalIndex_Callback cb) { qoffscreensurface_sendersignalindex_callback = cb; }
     void setQOffscreenSurface_Receivers_Callback(QOffscreenSurface_Receivers_Callback cb) { qoffscreensurface_receivers_callback = cb; }
@@ -123,7 +120,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
     void setQOffscreenSurface_CustomEvent_IsBase(bool value) const { qoffscreensurface_customevent_isbase = value; }
     void setQOffscreenSurface_ConnectNotify_IsBase(bool value) const { qoffscreensurface_connectnotify_isbase = value; }
     void setQOffscreenSurface_DisconnectNotify_IsBase(bool value) const { qoffscreensurface_disconnectnotify_isbase = value; }
-    void setQOffscreenSurface_ResolveInterface_IsBase(bool value) const { qoffscreensurface_resolveinterface_isbase = value; }
     void setQOffscreenSurface_Sender_IsBase(bool value) const { qoffscreensurface_sender_isbase = value; }
     void setQOffscreenSurface_SenderSignalIndex_IsBase(bool value) const { qoffscreensurface_sendersignalindex_isbase = value; }
     void setQOffscreenSurface_Receivers_IsBase(bool value) const { qoffscreensurface_receivers_isbase = value; }
@@ -258,18 +254,6 @@ class VirtualQOffscreenSurface : public QOffscreenSurface {
             qoffscreensurface_disconnectnotify_callback(this, signal);
         } else {
             QOffscreenSurface::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void* resolveInterface(const char* name, int revision) const {
-        if (qoffscreensurface_resolveinterface_isbase) {
-            qoffscreensurface_resolveinterface_isbase = false;
-            return QOffscreenSurface::resolveInterface(name, revision);
-        } else if (qoffscreensurface_resolveinterface_callback != nullptr) {
-            return qoffscreensurface_resolveinterface_callback(this, name, revision);
-        } else {
-            return QOffscreenSurface::resolveInterface(name, revision);
         }
     }
 

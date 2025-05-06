@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -38,7 +40,7 @@ bool QFontInfo_Overline(const QFontInfo* self);
 bool QFontInfo_StrikeOut(const QFontInfo* self);
 bool QFontInfo_FixedPitch(const QFontInfo* self);
 int QFontInfo_StyleHint(const QFontInfo* self);
-int QFontInfo_LegacyWeight(const QFontInfo* self);
+bool QFontInfo_RawMode(const QFontInfo* self);
 bool QFontInfo_ExactMatch(const QFontInfo* self);
 void QFontInfo_Delete(QFontInfo* self);
 

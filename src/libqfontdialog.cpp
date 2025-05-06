@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -119,6 +116,18 @@ int QFontDialog_QBaseMetacall(QFontDialog* self, int param1, int param2, void** 
 
 libqt_string QFontDialog_Tr(const char* s) {
     QString _ret = QFontDialog::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFontDialog_TrUtf8(const char* s) {
+    QString _ret = QFontDialog::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -207,6 +216,30 @@ libqt_string QFontDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QFontDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QFontDialog::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFontDialog_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFontDialog::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QFontDialog_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFontDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -968,7 +1001,7 @@ void QFontDialog_OnFocusOutEvent(QFontDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QFontDialog_EnterEvent(QFontDialog* self, QEnterEvent* event) {
+void QFontDialog_EnterEvent(QFontDialog* self, QEvent* event) {
     if (auto* vqfontdialog = dynamic_cast<VirtualQFontDialog*>(self)) {
         vqfontdialog->enterEvent(event);
     } else {
@@ -977,7 +1010,7 @@ void QFontDialog_EnterEvent(QFontDialog* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QFontDialog_QBaseEnterEvent(QFontDialog* self, QEnterEvent* event) {
+void QFontDialog_QBaseEnterEvent(QFontDialog* self, QEvent* event) {
     if (auto* vqfontdialog = dynamic_cast<VirtualQFontDialog*>(self)) {
         vqfontdialog->setQFontDialog_EnterEvent_IsBase(true);
         vqfontdialog->enterEvent(event);
@@ -1254,23 +1287,23 @@ void QFontDialog_OnHideEvent(QFontDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QFontDialog_NativeEvent(QFontDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFontDialog_NativeEvent(QFontDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfontdialog = dynamic_cast<VirtualQFontDialog*>(self)) {
-        return vqfontdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfontdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QFontDialog_QBaseNativeEvent(QFontDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QFontDialog_QBaseNativeEvent(QFontDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqfontdialog = dynamic_cast<VirtualQFontDialog*>(self)) {
         vqfontdialog->setQFontDialog_NativeEvent_IsBase(true);
-        return vqfontdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqfontdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqfontdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

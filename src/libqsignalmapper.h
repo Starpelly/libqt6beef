@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,18 +21,18 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QSignalMapper QSignalMapper;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
+typedef struct QWidget QWidget;
 #endif
 
 QSignalMapper* QSignalMapper_new();
@@ -41,23 +43,38 @@ int QSignalMapper_Metacall(QSignalMapper* self, int param1, int param2, void** p
 void QSignalMapper_OnMetacall(QSignalMapper* self, intptr_t slot);
 int QSignalMapper_QBaseMetacall(QSignalMapper* self, int param1, int param2, void** param3);
 libqt_string QSignalMapper_Tr(const char* s);
+libqt_string QSignalMapper_TrUtf8(const char* s);
 void QSignalMapper_SetMapping(QSignalMapper* self, QObject* sender, int id);
 void QSignalMapper_SetMapping2(QSignalMapper* self, QObject* sender, libqt_string text);
-void QSignalMapper_SetMapping3(QSignalMapper* self, QObject* sender, QObject* object);
+void QSignalMapper_SetMapping3(QSignalMapper* self, QObject* sender, QWidget* widget);
+void QSignalMapper_SetMapping4(QSignalMapper* self, QObject* sender, QObject* object);
 void QSignalMapper_RemoveMappings(QSignalMapper* self, QObject* sender);
 QObject* QSignalMapper_Mapping(const QSignalMapper* self, int id);
 QObject* QSignalMapper_MappingWithText(const QSignalMapper* self, libqt_string text);
+QObject* QSignalMapper_MappingWithWidget(const QSignalMapper* self, QWidget* widget);
 QObject* QSignalMapper_MappingWithObject(const QSignalMapper* self, QObject* object);
+void QSignalMapper_Mapped(QSignalMapper* self, int param1);
+void QSignalMapper_Connect_Mapped(QSignalMapper* self, intptr_t slot);
+void QSignalMapper_MappedWithQString(QSignalMapper* self, libqt_string param1);
+void QSignalMapper_Connect_MappedWithQString(QSignalMapper* self, intptr_t slot);
+void QSignalMapper_MappedWithQWidget(QSignalMapper* self, QWidget* param1);
+void QSignalMapper_Connect_MappedWithQWidget(QSignalMapper* self, intptr_t slot);
+void QSignalMapper_MappedWithQObject(QSignalMapper* self, QObject* param1);
+void QSignalMapper_Connect_MappedWithQObject(QSignalMapper* self, intptr_t slot);
 void QSignalMapper_MappedInt(QSignalMapper* self, int param1);
 void QSignalMapper_Connect_MappedInt(QSignalMapper* self, intptr_t slot);
 void QSignalMapper_MappedString(QSignalMapper* self, libqt_string param1);
 void QSignalMapper_Connect_MappedString(QSignalMapper* self, intptr_t slot);
+void QSignalMapper_MappedWidget(QSignalMapper* self, QWidget* param1);
+void QSignalMapper_Connect_MappedWidget(QSignalMapper* self, intptr_t slot);
 void QSignalMapper_MappedObject(QSignalMapper* self, QObject* param1);
 void QSignalMapper_Connect_MappedObject(QSignalMapper* self, intptr_t slot);
 void QSignalMapper_Map(QSignalMapper* self);
 void QSignalMapper_MapWithSender(QSignalMapper* self, QObject* sender);
 libqt_string QSignalMapper_Tr2(const char* s, const char* c);
 libqt_string QSignalMapper_Tr3(const char* s, const char* c, int n);
+libqt_string QSignalMapper_TrUtf82(const char* s, const char* c);
+libqt_string QSignalMapper_TrUtf83(const char* s, const char* c, int n);
 bool QSignalMapper_Event(QSignalMapper* self, QEvent* event);
 void QSignalMapper_OnEvent(QSignalMapper* self, intptr_t slot);
 bool QSignalMapper_QBaseEvent(QSignalMapper* self, QEvent* event);

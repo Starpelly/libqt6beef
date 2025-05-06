@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -68,28 +65,40 @@
 #include "libqsplashscreen.h"
 #include "libqsplashscreen.hxx"
 
-QSplashScreen* QSplashScreen_new() {
+QSplashScreen* QSplashScreen_new(QWidget* parent) {
+    return new VirtualQSplashScreen(parent);
+}
+
+QSplashScreen* QSplashScreen_new2() {
     return new VirtualQSplashScreen();
 }
 
-QSplashScreen* QSplashScreen_new2(QScreen* screen) {
+QSplashScreen* QSplashScreen_new3(QScreen* screen) {
     return new VirtualQSplashScreen(screen);
 }
 
-QSplashScreen* QSplashScreen_new3(QPixmap* pixmap) {
+QSplashScreen* QSplashScreen_new4(QPixmap* pixmap) {
     return new VirtualQSplashScreen(*pixmap);
 }
 
-QSplashScreen* QSplashScreen_new4(QPixmap* pixmap, int f) {
+QSplashScreen* QSplashScreen_new5(QPixmap* pixmap, int f) {
     return new VirtualQSplashScreen(*pixmap, static_cast<Qt::WindowFlags>(f));
 }
 
-QSplashScreen* QSplashScreen_new5(QScreen* screen, QPixmap* pixmap) {
+QSplashScreen* QSplashScreen_new6(QScreen* screen, QPixmap* pixmap) {
     return new VirtualQSplashScreen(screen, *pixmap);
 }
 
-QSplashScreen* QSplashScreen_new6(QScreen* screen, QPixmap* pixmap, int f) {
+QSplashScreen* QSplashScreen_new7(QScreen* screen, QPixmap* pixmap, int f) {
     return new VirtualQSplashScreen(screen, *pixmap, static_cast<Qt::WindowFlags>(f));
+}
+
+QSplashScreen* QSplashScreen_new8(QWidget* parent, QPixmap* pixmap) {
+    return new VirtualQSplashScreen(parent, *pixmap);
+}
+
+QSplashScreen* QSplashScreen_new9(QWidget* parent, QPixmap* pixmap, int f) {
+    return new VirtualQSplashScreen(parent, *pixmap, static_cast<Qt::WindowFlags>(f));
 }
 
 QMetaObject* QSplashScreen_MetaObject(const QSplashScreen* self) {
@@ -127,6 +136,18 @@ int QSplashScreen_QBaseMetacall(QSplashScreen* self, int param1, int param2, voi
 
 libqt_string QSplashScreen_Tr(const char* s) {
     QString _ret = QSplashScreen::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSplashScreen_TrUtf8(const char* s) {
+    QString _ret = QSplashScreen::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -209,6 +230,30 @@ libqt_string QSplashScreen_Tr2(const char* s, const char* c) {
 
 libqt_string QSplashScreen_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSplashScreen::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSplashScreen_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSplashScreen::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSplashScreen_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSplashScreen::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -698,7 +743,7 @@ void QSplashScreen_OnFocusOutEvent(QSplashScreen* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QSplashScreen_EnterEvent(QSplashScreen* self, QEnterEvent* event) {
+void QSplashScreen_EnterEvent(QSplashScreen* self, QEvent* event) {
     if (auto* vqsplashscreen = dynamic_cast<VirtualQSplashScreen*>(self)) {
         vqsplashscreen->enterEvent(event);
     } else {
@@ -707,7 +752,7 @@ void QSplashScreen_EnterEvent(QSplashScreen* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QSplashScreen_QBaseEnterEvent(QSplashScreen* self, QEnterEvent* event) {
+void QSplashScreen_QBaseEnterEvent(QSplashScreen* self, QEvent* event) {
     if (auto* vqsplashscreen = dynamic_cast<VirtualQSplashScreen*>(self)) {
         vqsplashscreen->setQSplashScreen_EnterEvent_IsBase(true);
         vqsplashscreen->enterEvent(event);
@@ -1088,23 +1133,23 @@ void QSplashScreen_OnHideEvent(QSplashScreen* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QSplashScreen_NativeEvent(QSplashScreen* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSplashScreen_NativeEvent(QSplashScreen* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplashscreen = dynamic_cast<VirtualQSplashScreen*>(self)) {
-        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QSplashScreen_QBaseNativeEvent(QSplashScreen* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QSplashScreen_QBaseNativeEvent(QSplashScreen* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqsplashscreen = dynamic_cast<VirtualQSplashScreen*>(self)) {
         vqsplashscreen->setQSplashScreen_NativeEvent_IsBase(true);
-        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqsplashscreen->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

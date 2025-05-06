@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEasingCurve QEasingCurve;
 typedef struct QEvent QEvent;
@@ -28,6 +28,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimeLine QTimeLine;
 typedef struct QTimerEvent QTimerEvent;
@@ -35,11 +36,13 @@ typedef struct QVariant QVariant;
 #endif
 
 #ifdef __cplusplus
-typedef QTimeLine::Direction Direction; // C++ enum
-typedef QTimeLine::State State;         // C++ enum
+typedef QTimeLine::CurveShape CurveShape; // C++ enum
+typedef QTimeLine::Direction Direction;   // C++ enum
+typedef QTimeLine::State State;           // C++ enum
 #else
-typedef int Direction; // C ABI enum
-typedef int State;     // C ABI enum
+typedef int CurveShape; // C ABI enum
+typedef int Direction;  // C ABI enum
+typedef int State;      // C ABI enum
 #endif
 
 QTimeLine* QTimeLine_new();
@@ -51,6 +54,7 @@ int QTimeLine_Metacall(QTimeLine* self, int param1, int param2, void** param3);
 void QTimeLine_OnMetacall(QTimeLine* self, intptr_t slot);
 int QTimeLine_QBaseMetacall(QTimeLine* self, int param1, int param2, void** param3);
 libqt_string QTimeLine_Tr(const char* s);
+libqt_string QTimeLine_TrUtf8(const char* s);
 int QTimeLine_State(const QTimeLine* self);
 int QTimeLine_LoopCount(const QTimeLine* self);
 void QTimeLine_SetLoopCount(QTimeLine* self, int count);
@@ -65,6 +69,8 @@ void QTimeLine_SetEndFrame(QTimeLine* self, int frame);
 void QTimeLine_SetFrameRange(QTimeLine* self, int startFrame, int endFrame);
 int QTimeLine_UpdateInterval(const QTimeLine* self);
 void QTimeLine_SetUpdateInterval(QTimeLine* self, int interval);
+int QTimeLine_CurveShape(const QTimeLine* self);
+void QTimeLine_SetCurveShape(QTimeLine* self, int shape);
 QEasingCurve* QTimeLine_EasingCurve(const QTimeLine* self);
 void QTimeLine_SetEasingCurve(QTimeLine* self, QEasingCurve* curve);
 int QTimeLine_CurrentTime(const QTimeLine* self);
@@ -85,6 +91,8 @@ void QTimeLine_OnTimerEvent(QTimeLine* self, intptr_t slot);
 void QTimeLine_QBaseTimerEvent(QTimeLine* self, QTimerEvent* event);
 libqt_string QTimeLine_Tr2(const char* s, const char* c);
 libqt_string QTimeLine_Tr3(const char* s, const char* c, int n);
+libqt_string QTimeLine_TrUtf82(const char* s, const char* c);
+libqt_string QTimeLine_TrUtf83(const char* s, const char* c, int n);
 bool QTimeLine_Event(QTimeLine* self, QEvent* event);
 void QTimeLine_OnEvent(QTimeLine* self, intptr_t slot);
 bool QTimeLine_QBaseEvent(QTimeLine* self, QEvent* event);

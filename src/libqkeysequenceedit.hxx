@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,7 +22,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     using QKeySequenceEdit_KeyPressEvent_Callback = void (*)(QKeySequenceEdit*, QKeyEvent*);
     using QKeySequenceEdit_KeyReleaseEvent_Callback = void (*)(QKeySequenceEdit*, QKeyEvent*);
     using QKeySequenceEdit_TimerEvent_Callback = void (*)(QKeySequenceEdit*, QTimerEvent*);
-    using QKeySequenceEdit_FocusOutEvent_Callback = void (*)(QKeySequenceEdit*, QFocusEvent*);
     using QKeySequenceEdit_DevType_Callback = int (*)();
     using QKeySequenceEdit_SetVisible_Callback = void (*)(QKeySequenceEdit*, bool);
     using QKeySequenceEdit_SizeHint_Callback = QSize (*)();
@@ -34,7 +35,8 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     using QKeySequenceEdit_MouseMoveEvent_Callback = void (*)(QKeySequenceEdit*, QMouseEvent*);
     using QKeySequenceEdit_WheelEvent_Callback = void (*)(QKeySequenceEdit*, QWheelEvent*);
     using QKeySequenceEdit_FocusInEvent_Callback = void (*)(QKeySequenceEdit*, QFocusEvent*);
-    using QKeySequenceEdit_EnterEvent_Callback = void (*)(QKeySequenceEdit*, QEnterEvent*);
+    using QKeySequenceEdit_FocusOutEvent_Callback = void (*)(QKeySequenceEdit*, QFocusEvent*);
+    using QKeySequenceEdit_EnterEvent_Callback = void (*)(QKeySequenceEdit*, QEvent*);
     using QKeySequenceEdit_LeaveEvent_Callback = void (*)(QKeySequenceEdit*, QEvent*);
     using QKeySequenceEdit_PaintEvent_Callback = void (*)(QKeySequenceEdit*, QPaintEvent*);
     using QKeySequenceEdit_MoveEvent_Callback = void (*)(QKeySequenceEdit*, QMoveEvent*);
@@ -49,7 +51,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     using QKeySequenceEdit_DropEvent_Callback = void (*)(QKeySequenceEdit*, QDropEvent*);
     using QKeySequenceEdit_ShowEvent_Callback = void (*)(QKeySequenceEdit*, QShowEvent*);
     using QKeySequenceEdit_HideEvent_Callback = void (*)(QKeySequenceEdit*, QHideEvent*);
-    using QKeySequenceEdit_NativeEvent_Callback = bool (*)(QKeySequenceEdit*, const QByteArray&, void*, qintptr*);
+    using QKeySequenceEdit_NativeEvent_Callback = bool (*)(QKeySequenceEdit*, const QByteArray&, void*, long*);
     using QKeySequenceEdit_ChangeEvent_Callback = void (*)(QKeySequenceEdit*, QEvent*);
     using QKeySequenceEdit_Metric_Callback = int (*)(const QKeySequenceEdit*, QPaintDevice::PaintDeviceMetric);
     using QKeySequenceEdit_InitPainter_Callback = void (*)(const QKeySequenceEdit*, QPainter*);
@@ -80,7 +82,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     QKeySequenceEdit_KeyPressEvent_Callback qkeysequenceedit_keypressevent_callback = nullptr;
     QKeySequenceEdit_KeyReleaseEvent_Callback qkeysequenceedit_keyreleaseevent_callback = nullptr;
     QKeySequenceEdit_TimerEvent_Callback qkeysequenceedit_timerevent_callback = nullptr;
-    QKeySequenceEdit_FocusOutEvent_Callback qkeysequenceedit_focusoutevent_callback = nullptr;
     QKeySequenceEdit_DevType_Callback qkeysequenceedit_devtype_callback = nullptr;
     QKeySequenceEdit_SetVisible_Callback qkeysequenceedit_setvisible_callback = nullptr;
     QKeySequenceEdit_SizeHint_Callback qkeysequenceedit_sizehint_callback = nullptr;
@@ -94,6 +95,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     QKeySequenceEdit_MouseMoveEvent_Callback qkeysequenceedit_mousemoveevent_callback = nullptr;
     QKeySequenceEdit_WheelEvent_Callback qkeysequenceedit_wheelevent_callback = nullptr;
     QKeySequenceEdit_FocusInEvent_Callback qkeysequenceedit_focusinevent_callback = nullptr;
+    QKeySequenceEdit_FocusOutEvent_Callback qkeysequenceedit_focusoutevent_callback = nullptr;
     QKeySequenceEdit_EnterEvent_Callback qkeysequenceedit_enterevent_callback = nullptr;
     QKeySequenceEdit_LeaveEvent_Callback qkeysequenceedit_leaveevent_callback = nullptr;
     QKeySequenceEdit_PaintEvent_Callback qkeysequenceedit_paintevent_callback = nullptr;
@@ -139,7 +141,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     mutable bool qkeysequenceedit_keypressevent_isbase = false;
     mutable bool qkeysequenceedit_keyreleaseevent_isbase = false;
     mutable bool qkeysequenceedit_timerevent_isbase = false;
-    mutable bool qkeysequenceedit_focusoutevent_isbase = false;
     mutable bool qkeysequenceedit_devtype_isbase = false;
     mutable bool qkeysequenceedit_setvisible_isbase = false;
     mutable bool qkeysequenceedit_sizehint_isbase = false;
@@ -153,6 +154,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     mutable bool qkeysequenceedit_mousemoveevent_isbase = false;
     mutable bool qkeysequenceedit_wheelevent_isbase = false;
     mutable bool qkeysequenceedit_focusinevent_isbase = false;
+    mutable bool qkeysequenceedit_focusoutevent_isbase = false;
     mutable bool qkeysequenceedit_enterevent_isbase = false;
     mutable bool qkeysequenceedit_leaveevent_isbase = false;
     mutable bool qkeysequenceedit_paintevent_isbase = false;
@@ -204,7 +206,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
         qkeysequenceedit_keypressevent_callback = nullptr;
         qkeysequenceedit_keyreleaseevent_callback = nullptr;
         qkeysequenceedit_timerevent_callback = nullptr;
-        qkeysequenceedit_focusoutevent_callback = nullptr;
         qkeysequenceedit_devtype_callback = nullptr;
         qkeysequenceedit_setvisible_callback = nullptr;
         qkeysequenceedit_sizehint_callback = nullptr;
@@ -218,6 +219,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
         qkeysequenceedit_mousemoveevent_callback = nullptr;
         qkeysequenceedit_wheelevent_callback = nullptr;
         qkeysequenceedit_focusinevent_callback = nullptr;
+        qkeysequenceedit_focusoutevent_callback = nullptr;
         qkeysequenceedit_enterevent_callback = nullptr;
         qkeysequenceedit_leaveevent_callback = nullptr;
         qkeysequenceedit_paintevent_callback = nullptr;
@@ -264,7 +266,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     void setQKeySequenceEdit_KeyPressEvent_Callback(QKeySequenceEdit_KeyPressEvent_Callback cb) { qkeysequenceedit_keypressevent_callback = cb; }
     void setQKeySequenceEdit_KeyReleaseEvent_Callback(QKeySequenceEdit_KeyReleaseEvent_Callback cb) { qkeysequenceedit_keyreleaseevent_callback = cb; }
     void setQKeySequenceEdit_TimerEvent_Callback(QKeySequenceEdit_TimerEvent_Callback cb) { qkeysequenceedit_timerevent_callback = cb; }
-    void setQKeySequenceEdit_FocusOutEvent_Callback(QKeySequenceEdit_FocusOutEvent_Callback cb) { qkeysequenceedit_focusoutevent_callback = cb; }
     void setQKeySequenceEdit_DevType_Callback(QKeySequenceEdit_DevType_Callback cb) { qkeysequenceedit_devtype_callback = cb; }
     void setQKeySequenceEdit_SetVisible_Callback(QKeySequenceEdit_SetVisible_Callback cb) { qkeysequenceedit_setvisible_callback = cb; }
     void setQKeySequenceEdit_SizeHint_Callback(QKeySequenceEdit_SizeHint_Callback cb) { qkeysequenceedit_sizehint_callback = cb; }
@@ -278,6 +279,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     void setQKeySequenceEdit_MouseMoveEvent_Callback(QKeySequenceEdit_MouseMoveEvent_Callback cb) { qkeysequenceedit_mousemoveevent_callback = cb; }
     void setQKeySequenceEdit_WheelEvent_Callback(QKeySequenceEdit_WheelEvent_Callback cb) { qkeysequenceedit_wheelevent_callback = cb; }
     void setQKeySequenceEdit_FocusInEvent_Callback(QKeySequenceEdit_FocusInEvent_Callback cb) { qkeysequenceedit_focusinevent_callback = cb; }
+    void setQKeySequenceEdit_FocusOutEvent_Callback(QKeySequenceEdit_FocusOutEvent_Callback cb) { qkeysequenceedit_focusoutevent_callback = cb; }
     void setQKeySequenceEdit_EnterEvent_Callback(QKeySequenceEdit_EnterEvent_Callback cb) { qkeysequenceedit_enterevent_callback = cb; }
     void setQKeySequenceEdit_LeaveEvent_Callback(QKeySequenceEdit_LeaveEvent_Callback cb) { qkeysequenceedit_leaveevent_callback = cb; }
     void setQKeySequenceEdit_PaintEvent_Callback(QKeySequenceEdit_PaintEvent_Callback cb) { qkeysequenceedit_paintevent_callback = cb; }
@@ -323,7 +325,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     void setQKeySequenceEdit_KeyPressEvent_IsBase(bool value) const { qkeysequenceedit_keypressevent_isbase = value; }
     void setQKeySequenceEdit_KeyReleaseEvent_IsBase(bool value) const { qkeysequenceedit_keyreleaseevent_isbase = value; }
     void setQKeySequenceEdit_TimerEvent_IsBase(bool value) const { qkeysequenceedit_timerevent_isbase = value; }
-    void setQKeySequenceEdit_FocusOutEvent_IsBase(bool value) const { qkeysequenceedit_focusoutevent_isbase = value; }
     void setQKeySequenceEdit_DevType_IsBase(bool value) const { qkeysequenceedit_devtype_isbase = value; }
     void setQKeySequenceEdit_SetVisible_IsBase(bool value) const { qkeysequenceedit_setvisible_isbase = value; }
     void setQKeySequenceEdit_SizeHint_IsBase(bool value) const { qkeysequenceedit_sizehint_isbase = value; }
@@ -337,6 +338,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     void setQKeySequenceEdit_MouseMoveEvent_IsBase(bool value) const { qkeysequenceedit_mousemoveevent_isbase = value; }
     void setQKeySequenceEdit_WheelEvent_IsBase(bool value) const { qkeysequenceedit_wheelevent_isbase = value; }
     void setQKeySequenceEdit_FocusInEvent_IsBase(bool value) const { qkeysequenceedit_focusinevent_isbase = value; }
+    void setQKeySequenceEdit_FocusOutEvent_IsBase(bool value) const { qkeysequenceedit_focusoutevent_isbase = value; }
     void setQKeySequenceEdit_EnterEvent_IsBase(bool value) const { qkeysequenceedit_enterevent_isbase = value; }
     void setQKeySequenceEdit_LeaveEvent_IsBase(bool value) const { qkeysequenceedit_leaveevent_isbase = value; }
     void setQKeySequenceEdit_PaintEvent_IsBase(bool value) const { qkeysequenceedit_paintevent_isbase = value; }
@@ -433,18 +435,6 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
             qkeysequenceedit_timerevent_callback(this, param1);
         } else {
             QKeySequenceEdit::timerEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void focusOutEvent(QFocusEvent* param1) override {
-        if (qkeysequenceedit_focusoutevent_isbase) {
-            qkeysequenceedit_focusoutevent_isbase = false;
-            QKeySequenceEdit::focusOutEvent(param1);
-        } else if (qkeysequenceedit_focusoutevent_callback != nullptr) {
-            qkeysequenceedit_focusoutevent_callback(this, param1);
-        } else {
-            QKeySequenceEdit::focusOutEvent(param1);
         }
     }
 
@@ -605,7 +595,19 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void focusOutEvent(QFocusEvent* event) override {
+        if (qkeysequenceedit_focusoutevent_isbase) {
+            qkeysequenceedit_focusoutevent_isbase = false;
+            QKeySequenceEdit::focusOutEvent(event);
+        } else if (qkeysequenceedit_focusoutevent_callback != nullptr) {
+            qkeysequenceedit_focusoutevent_callback(this, event);
+        } else {
+            QKeySequenceEdit::focusOutEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void enterEvent(QEvent* event) override {
         if (qkeysequenceedit_enterevent_isbase) {
             qkeysequenceedit_enterevent_isbase = false;
             QKeySequenceEdit::enterEvent(event);
@@ -785,7 +787,7 @@ class VirtualQKeySequenceEdit : public QKeySequenceEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qkeysequenceedit_nativeevent_isbase) {
             qkeysequenceedit_nativeevent_isbase = false;
             return QKeySequenceEdit::nativeEvent(eventType, message, result);

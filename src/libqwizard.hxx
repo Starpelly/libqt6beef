@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -48,7 +50,7 @@ class VirtualQWizard : public QWizard {
     using QWizard_KeyReleaseEvent_Callback = void (*)(QWizard*, QKeyEvent*);
     using QWizard_FocusInEvent_Callback = void (*)(QWizard*, QFocusEvent*);
     using QWizard_FocusOutEvent_Callback = void (*)(QWizard*, QFocusEvent*);
-    using QWizard_EnterEvent_Callback = void (*)(QWizard*, QEnterEvent*);
+    using QWizard_EnterEvent_Callback = void (*)(QWizard*, QEvent*);
     using QWizard_LeaveEvent_Callback = void (*)(QWizard*, QEvent*);
     using QWizard_MoveEvent_Callback = void (*)(QWizard*, QMoveEvent*);
     using QWizard_TabletEvent_Callback = void (*)(QWizard*, QTabletEvent*);
@@ -58,7 +60,7 @@ class VirtualQWizard : public QWizard {
     using QWizard_DragLeaveEvent_Callback = void (*)(QWizard*, QDragLeaveEvent*);
     using QWizard_DropEvent_Callback = void (*)(QWizard*, QDropEvent*);
     using QWizard_HideEvent_Callback = void (*)(QWizard*, QHideEvent*);
-    using QWizard_NativeEvent_Callback = bool (*)(QWizard*, const QByteArray&, void*, qintptr*);
+    using QWizard_NativeEvent_Callback = bool (*)(QWizard*, const QByteArray&, void*, long*);
     using QWizard_ChangeEvent_Callback = void (*)(QWizard*, QEvent*);
     using QWizard_Metric_Callback = int (*)(const QWizard*, QPaintDevice::PaintDeviceMetric);
     using QWizard_InitPainter_Callback = void (*)(const QWizard*, QPainter*);
@@ -832,7 +834,7 @@ class VirtualQWizard : public QWizard {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qwizard_enterevent_isbase) {
             qwizard_enterevent_isbase = false;
             QWizard::enterEvent(event);
@@ -952,7 +954,7 @@ class VirtualQWizard : public QWizard {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qwizard_nativeevent_isbase) {
             qwizard_nativeevent_isbase = false;
             return QWizard::nativeEvent(eventType, message, result);
@@ -1268,7 +1270,7 @@ class VirtualQWizardPage : public QWizardPage {
     using QWizardPage_KeyReleaseEvent_Callback = void (*)(QWizardPage*, QKeyEvent*);
     using QWizardPage_FocusInEvent_Callback = void (*)(QWizardPage*, QFocusEvent*);
     using QWizardPage_FocusOutEvent_Callback = void (*)(QWizardPage*, QFocusEvent*);
-    using QWizardPage_EnterEvent_Callback = void (*)(QWizardPage*, QEnterEvent*);
+    using QWizardPage_EnterEvent_Callback = void (*)(QWizardPage*, QEvent*);
     using QWizardPage_LeaveEvent_Callback = void (*)(QWizardPage*, QEvent*);
     using QWizardPage_PaintEvent_Callback = void (*)(QWizardPage*, QPaintEvent*);
     using QWizardPage_MoveEvent_Callback = void (*)(QWizardPage*, QMoveEvent*);
@@ -1283,7 +1285,7 @@ class VirtualQWizardPage : public QWizardPage {
     using QWizardPage_DropEvent_Callback = void (*)(QWizardPage*, QDropEvent*);
     using QWizardPage_ShowEvent_Callback = void (*)(QWizardPage*, QShowEvent*);
     using QWizardPage_HideEvent_Callback = void (*)(QWizardPage*, QHideEvent*);
-    using QWizardPage_NativeEvent_Callback = bool (*)(QWizardPage*, const QByteArray&, void*, qintptr*);
+    using QWizardPage_NativeEvent_Callback = bool (*)(QWizardPage*, const QByteArray&, void*, long*);
     using QWizardPage_ChangeEvent_Callback = void (*)(QWizardPage*, QEvent*);
     using QWizardPage_Metric_Callback = int (*)(const QWizardPage*, QPaintDevice::PaintDeviceMetric);
     using QWizardPage_InitPainter_Callback = void (*)(const QWizardPage*, QPainter*);
@@ -1947,7 +1949,7 @@ class VirtualQWizardPage : public QWizardPage {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qwizardpage_enterevent_isbase) {
             qwizardpage_enterevent_isbase = false;
             QWizardPage::enterEvent(event);
@@ -2127,7 +2129,7 @@ class VirtualQWizardPage : public QWizardPage {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qwizardpage_nativeevent_isbase) {
             qwizardpage_nativeevent_isbase = false;
             return QWizardPage::nativeEvent(eventType, message, result);

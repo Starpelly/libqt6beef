@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractListModel QAbstractListModel;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDataStream QDataStream;
 typedef struct QEvent QEvent;
@@ -31,8 +31,8 @@ typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMimeData QMimeData;
 typedef struct QModelIndex QModelIndex;
-typedef struct QModelRoleDataSpan QModelRoleDataSpan;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPersistentModelIndex QPersistentModelIndex;
 typedef struct QSize QSize;
 typedef struct QStringListModel QStringListModel;
@@ -51,6 +51,7 @@ int QStringListModel_Metacall(QStringListModel* self, int param1, int param2, vo
 void QStringListModel_OnMetacall(QStringListModel* self, intptr_t slot);
 int QStringListModel_QBaseMetacall(QStringListModel* self, int param1, int param2, void** param3);
 libqt_string QStringListModel_Tr(const char* s);
+libqt_string QStringListModel_TrUtf8(const char* s);
 int QStringListModel_RowCount(const QStringListModel* self, QModelIndex* parent);
 void QStringListModel_OnRowCount(const QStringListModel* self, intptr_t slot);
 int QStringListModel_QBaseRowCount(const QStringListModel* self, QModelIndex* parent);
@@ -63,9 +64,6 @@ QVariant* QStringListModel_QBaseData(const QStringListModel* self, QModelIndex* 
 bool QStringListModel_SetData(QStringListModel* self, QModelIndex* index, QVariant* value, int role);
 void QStringListModel_OnSetData(QStringListModel* self, intptr_t slot);
 bool QStringListModel_QBaseSetData(QStringListModel* self, QModelIndex* index, QVariant* value, int role);
-bool QStringListModel_ClearItemData(QStringListModel* self, QModelIndex* index);
-void QStringListModel_OnClearItemData(QStringListModel* self, intptr_t slot);
-bool QStringListModel_QBaseClearItemData(QStringListModel* self, QModelIndex* index);
 int QStringListModel_Flags(const QStringListModel* self, QModelIndex* index);
 void QStringListModel_OnFlags(const QStringListModel* self, intptr_t slot);
 int QStringListModel_QBaseFlags(const QStringListModel* self, QModelIndex* index);
@@ -94,6 +92,8 @@ void QStringListModel_OnSupportedDropActions(const QStringListModel* self, intpt
 int QStringListModel_QBaseSupportedDropActions(const QStringListModel* self);
 libqt_string QStringListModel_Tr2(const char* s, const char* c);
 libqt_string QStringListModel_Tr3(const char* s, const char* c, int n);
+libqt_string QStringListModel_TrUtf82(const char* s, const char* c);
+libqt_string QStringListModel_TrUtf83(const char* s, const char* c, int n);
 QModelIndex* QStringListModel_Index(const QStringListModel* self, int row, int column, QModelIndex* parent);
 void QStringListModel_OnIndex(const QStringListModel* self, intptr_t slot);
 QModelIndex* QStringListModel_QBaseIndex(const QStringListModel* self, int row, int column, QModelIndex* parent);
@@ -145,18 +145,12 @@ QSize* QStringListModel_QBaseSpan(const QStringListModel* self, QModelIndex* ind
 libqt_map /* of int to libqt_string */ QStringListModel_RoleNames(const QStringListModel* self);
 void QStringListModel_OnRoleNames(const QStringListModel* self, intptr_t slot);
 libqt_map /* of int to libqt_string */ QStringListModel_QBaseRoleNames(const QStringListModel* self);
-void QStringListModel_MultiData(const QStringListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
-void QStringListModel_OnMultiData(const QStringListModel* self, intptr_t slot);
-void QStringListModel_QBaseMultiData(const QStringListModel* self, QModelIndex* index, QModelRoleDataSpan* roleDataSpan);
 bool QStringListModel_Submit(QStringListModel* self);
 void QStringListModel_OnSubmit(QStringListModel* self, intptr_t slot);
 bool QStringListModel_QBaseSubmit(QStringListModel* self);
 void QStringListModel_Revert(QStringListModel* self);
 void QStringListModel_OnRevert(QStringListModel* self, intptr_t slot);
 void QStringListModel_QBaseRevert(QStringListModel* self);
-void QStringListModel_ResetInternalData(QStringListModel* self);
-void QStringListModel_OnResetInternalData(QStringListModel* self, intptr_t slot);
-void QStringListModel_QBaseResetInternalData(QStringListModel* self);
 bool QStringListModel_Event(QStringListModel* self, QEvent* event);
 void QStringListModel_OnEvent(QStringListModel* self, intptr_t slot);
 bool QStringListModel_QBaseEvent(QStringListModel* self, QEvent* event);
@@ -178,6 +172,9 @@ void QStringListModel_QBaseConnectNotify(QStringListModel* self, QMetaMethod* si
 void QStringListModel_DisconnectNotify(QStringListModel* self, QMetaMethod* signal);
 void QStringListModel_OnDisconnectNotify(QStringListModel* self, intptr_t slot);
 void QStringListModel_QBaseDisconnectNotify(QStringListModel* self, QMetaMethod* signal);
+void QStringListModel_ResetInternalData(QStringListModel* self);
+void QStringListModel_OnResetInternalData(QStringListModel* self, intptr_t slot);
+void QStringListModel_QBaseResetInternalData(QStringListModel* self);
 QModelIndex* QStringListModel_CreateIndex(const QStringListModel* self, int row, int column);
 void QStringListModel_OnCreateIndex(const QStringListModel* self, intptr_t slot);
 QModelIndex* QStringListModel_QBaseCreateIndex(const QStringListModel* self, int row, int column);

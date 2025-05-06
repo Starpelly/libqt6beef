@@ -1,3 +1,4 @@
+#include <QMatrix>
 #include <QMatrix4x4>
 #include <QPoint>
 #include <QPointF>
@@ -44,7 +45,11 @@ QMatrix4x4* QMatrix4x4_new8(QTransform* transform) {
     return new QMatrix4x4(*transform);
 }
 
-QMatrix4x4* QMatrix4x4_new9(QMatrix4x4* param1) {
+QMatrix4x4* QMatrix4x4_new9(QMatrix* matrix) {
+    return new QMatrix4x4(*matrix);
+}
+
+QMatrix4x4* QMatrix4x4_new10(QMatrix4x4* param1) {
     return new QMatrix4x4(*param1);
 }
 
@@ -218,6 +223,10 @@ void QMatrix4x4_CopyDataTo(const QMatrix4x4* self, float* values) {
     self->copyDataTo(static_cast<float*>(values));
 }
 
+QMatrix* QMatrix4x4_ToAffine(const QMatrix4x4* self) {
+    return new QMatrix(self->toAffine());
+}
+
 QTransform* QMatrix4x4_ToTransform(const QMatrix4x4* self) {
     return new QTransform(self->toTransform());
 }
@@ -272,14 +281,6 @@ void QMatrix4x4_Optimize(QMatrix4x4* self) {
 
 QVariant* QMatrix4x4_ToQVariant(const QMatrix4x4* self) {
     return new QVariant(self->operator QVariant());
-}
-
-void QMatrix4x4_ProjectedRotate(QMatrix4x4* self, float angle, float x, float y, float z) {
-    self->projectedRotate(static_cast<float>(angle), static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
-}
-
-int QMatrix4x4_Flags(const QMatrix4x4* self) {
-    return static_cast<int>(self->flags());
 }
 
 QMatrix4x4* QMatrix4x4_Inverted1(const QMatrix4x4* self, bool* invertible) {

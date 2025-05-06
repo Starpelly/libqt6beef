@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -14,7 +12,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -38,6 +35,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -45,7 +43,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QProgressBar>
 #include <QProgressDialog>
 #include <QPushButton>
@@ -136,6 +133,18 @@ int QProgressDialog_QBaseMetacall(QProgressDialog* self, int param1, int param2,
 
 libqt_string QProgressDialog_Tr(const char* s) {
     QString _ret = QProgressDialog::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QProgressDialog_TrUtf8(const char* s) {
+    QString _ret = QProgressDialog::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -269,6 +278,30 @@ libqt_string QProgressDialog_Tr2(const char* s, const char* c) {
 
 libqt_string QProgressDialog_Tr3(const char* s, const char* c, int n) {
     QString _ret = QProgressDialog::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QProgressDialog_TrUtf82(const char* s, const char* c) {
+    QString _ret = QProgressDialog::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QProgressDialog_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QProgressDialog::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1008,7 +1041,7 @@ void QProgressDialog_OnFocusOutEvent(QProgressDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QProgressDialog_EnterEvent(QProgressDialog* self, QEnterEvent* event) {
+void QProgressDialog_EnterEvent(QProgressDialog* self, QEvent* event) {
     if (auto* vqprogressdialog = dynamic_cast<VirtualQProgressDialog*>(self)) {
         vqprogressdialog->enterEvent(event);
     } else {
@@ -1017,7 +1050,7 @@ void QProgressDialog_EnterEvent(QProgressDialog* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QProgressDialog_QBaseEnterEvent(QProgressDialog* self, QEnterEvent* event) {
+void QProgressDialog_QBaseEnterEvent(QProgressDialog* self, QEvent* event) {
     if (auto* vqprogressdialog = dynamic_cast<VirtualQProgressDialog*>(self)) {
         vqprogressdialog->setQProgressDialog_EnterEvent_IsBase(true);
         vqprogressdialog->enterEvent(event);
@@ -1294,23 +1327,23 @@ void QProgressDialog_OnHideEvent(QProgressDialog* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QProgressDialog_NativeEvent(QProgressDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QProgressDialog_NativeEvent(QProgressDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqprogressdialog = dynamic_cast<VirtualQProgressDialog*>(self)) {
-        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QProgressDialog_QBaseNativeEvent(QProgressDialog* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QProgressDialog_QBaseNativeEvent(QProgressDialog* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqprogressdialog = dynamic_cast<VirtualQProgressDialog*>(self)) {
         vqprogressdialog->setQProgressDialog_NativeEvent_IsBase(true);
-        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqprogressdialog->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 

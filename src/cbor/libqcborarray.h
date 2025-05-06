@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -26,7 +28,6 @@ typedef struct QCborArray QCborArray;
 typedef struct QCborArray__ConstIterator QCborArray__ConstIterator;
 typedef struct QCborArray__Iterator QCborArray__Iterator;
 typedef struct QCborValue QCborValue;
-typedef struct QCborValueConstRef QCborValueConstRef;
 typedef struct QCborValueRef QCborValueRef;
 typedef struct QJsonArray QJsonArray;
 #endif
@@ -124,9 +125,8 @@ QCborArray__Iterator* QCborArray__Iterator_new2();
 QCborArray__Iterator* QCborArray__Iterator_new3(QCborArray__Iterator* param1);
 void QCborArray__Iterator_OperatorAssign(QCborArray__Iterator* self, QCborArray__Iterator* other);
 QCborValueRef* QCborArray__Iterator_OperatorMultiply(const QCborArray__Iterator* self);
-QCborValueRef* QCborArray__Iterator_OperatorMinusGreater(QCborArray__Iterator* self);
-QCborValueConstRef* QCborArray__Iterator_OperatorMinusGreater2(const QCborArray__Iterator* self);
-QCborValueRef* QCborArray__Iterator_OperatorSubscript(const QCborArray__Iterator* self, ptrdiff_t j);
+QCborValueRef* QCborArray__Iterator_OperatorMinusGreater(const QCborArray__Iterator* self);
+QCborValueRef* QCborArray__Iterator_OperatorSubscript(QCborArray__Iterator* self, ptrdiff_t j);
 bool QCborArray__Iterator_OperatorEqual(const QCborArray__Iterator* self, QCborArray__Iterator* o);
 bool QCborArray__Iterator_OperatorNotEqual(const QCborArray__Iterator* self, QCborArray__Iterator* o);
 bool QCborArray__Iterator_OperatorLesser(const QCborArray__Iterator* self, QCborArray__Iterator* other);
@@ -154,9 +154,9 @@ QCborArray__ConstIterator* QCborArray__ConstIterator_new(QCborArray__ConstIterat
 QCborArray__ConstIterator* QCborArray__ConstIterator_new2();
 QCborArray__ConstIterator* QCborArray__ConstIterator_new3(QCborArray__ConstIterator* param1);
 void QCborArray__ConstIterator_OperatorAssign(QCborArray__ConstIterator* self, QCborArray__ConstIterator* other);
-QCborValueConstRef* QCborArray__ConstIterator_OperatorMultiply(const QCborArray__ConstIterator* self);
-QCborValueConstRef* QCborArray__ConstIterator_OperatorMinusGreater(const QCborArray__ConstIterator* self);
-QCborValueConstRef* QCborArray__ConstIterator_OperatorSubscript(const QCborArray__ConstIterator* self, ptrdiff_t j);
+QCborValueRef* QCborArray__ConstIterator_OperatorMultiply(const QCborArray__ConstIterator* self);
+QCborValueRef* QCborArray__ConstIterator_OperatorMinusGreater(const QCborArray__ConstIterator* self);
+QCborValueRef* QCborArray__ConstIterator_OperatorSubscript(QCborArray__ConstIterator* self, ptrdiff_t j);
 bool QCborArray__ConstIterator_OperatorEqual(const QCborArray__ConstIterator* self, QCborArray__Iterator* o);
 bool QCborArray__ConstIterator_OperatorNotEqual(const QCborArray__ConstIterator* self, QCborArray__Iterator* o);
 bool QCborArray__ConstIterator_OperatorLesser(const QCborArray__ConstIterator* self, QCborArray__Iterator* other);

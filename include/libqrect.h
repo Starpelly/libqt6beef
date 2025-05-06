@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -103,8 +105,6 @@ QRect* QRect_MarginsAdded(const QRect* self, QMargins* margins);
 QRect* QRect_MarginsRemoved(const QRect* self, QMargins* margins);
 QRect* QRect_OperatorPlusAssign(QRect* self, QMargins* margins);
 QRect* QRect_OperatorMinusAssign(QRect* self, QMargins* margins);
-QRect* QRect_Span(QPoint* p1, QPoint* p2);
-QRectF* QRect_ToRectF(const QRect* self);
 bool QRect_Contains22(const QRect* self, QRect* r, bool proper);
 bool QRect_Contains23(const QRect* self, QPoint* p, bool proper);
 void QRect_Delete(QRect* self);

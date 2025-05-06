@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -42,6 +44,8 @@ bool QElapsedTimer_HasExpired(const QElapsedTimer* self, long long timeout);
 long long QElapsedTimer_MsecsSinceReference(const QElapsedTimer* self);
 long long QElapsedTimer_MsecsTo(const QElapsedTimer* self, QElapsedTimer* other);
 long long QElapsedTimer_SecsTo(const QElapsedTimer* self, QElapsedTimer* other);
+bool QElapsedTimer_OperatorEqual(const QElapsedTimer* self, QElapsedTimer* other);
+bool QElapsedTimer_OperatorNotEqual(const QElapsedTimer* self, QElapsedTimer* other);
 void QElapsedTimer_Delete(QElapsedTimer* self);
 
 #ifdef __cplusplus

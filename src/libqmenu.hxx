@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,7 +25,7 @@ class VirtualQMenu : public QMenu {
     using QMenu_MousePressEvent_Callback = void (*)(QMenu*, QMouseEvent*);
     using QMenu_MouseMoveEvent_Callback = void (*)(QMenu*, QMouseEvent*);
     using QMenu_WheelEvent_Callback = void (*)(QMenu*, QWheelEvent*);
-    using QMenu_EnterEvent_Callback = void (*)(QMenu*, QEnterEvent*);
+    using QMenu_EnterEvent_Callback = void (*)(QMenu*, QEvent*);
     using QMenu_LeaveEvent_Callback = void (*)(QMenu*, QEvent*);
     using QMenu_HideEvent_Callback = void (*)(QMenu*, QHideEvent*);
     using QMenu_PaintEvent_Callback = void (*)(QMenu*, QPaintEvent*);
@@ -31,7 +33,6 @@ class VirtualQMenu : public QMenu {
     using QMenu_TimerEvent_Callback = void (*)(QMenu*, QTimerEvent*);
     using QMenu_Event_Callback = bool (*)(QMenu*, QEvent*);
     using QMenu_FocusNextPrevChild_Callback = bool (*)(QMenu*, bool);
-    using QMenu_InitStyleOption_Callback = void (*)(const QMenu*, QStyleOptionMenuItem*, const QAction*);
     using QMenu_DevType_Callback = int (*)();
     using QMenu_SetVisible_Callback = void (*)(QMenu*, bool);
     using QMenu_MinimumSizeHint_Callback = QSize (*)();
@@ -52,7 +53,7 @@ class VirtualQMenu : public QMenu {
     using QMenu_DragLeaveEvent_Callback = void (*)(QMenu*, QDragLeaveEvent*);
     using QMenu_DropEvent_Callback = void (*)(QMenu*, QDropEvent*);
     using QMenu_ShowEvent_Callback = void (*)(QMenu*, QShowEvent*);
-    using QMenu_NativeEvent_Callback = bool (*)(QMenu*, const QByteArray&, void*, qintptr*);
+    using QMenu_NativeEvent_Callback = bool (*)(QMenu*, const QByteArray&, void*, long*);
     using QMenu_Metric_Callback = int (*)(const QMenu*, QPaintDevice::PaintDeviceMetric);
     using QMenu_InitPainter_Callback = void (*)(const QMenu*, QPainter*);
     using QMenu_Redirected_Callback = QPaintDevice* (*)(const QMenu*, QPoint*);
@@ -65,6 +66,7 @@ class VirtualQMenu : public QMenu {
     using QMenu_ConnectNotify_Callback = void (*)(QMenu*, const QMetaMethod&);
     using QMenu_DisconnectNotify_Callback = void (*)(QMenu*, const QMetaMethod&);
     using QMenu_ColumnCount_Callback = int (*)();
+    using QMenu_InitStyleOption_Callback = void (*)(const QMenu*, QStyleOptionMenuItem*, const QAction*);
     using QMenu_UpdateMicroFocus_Callback = void (*)();
     using QMenu_Create_Callback = void (*)();
     using QMenu_Destroy_Callback = void (*)();
@@ -93,7 +95,6 @@ class VirtualQMenu : public QMenu {
     QMenu_TimerEvent_Callback qmenu_timerevent_callback = nullptr;
     QMenu_Event_Callback qmenu_event_callback = nullptr;
     QMenu_FocusNextPrevChild_Callback qmenu_focusnextprevchild_callback = nullptr;
-    QMenu_InitStyleOption_Callback qmenu_initstyleoption_callback = nullptr;
     QMenu_DevType_Callback qmenu_devtype_callback = nullptr;
     QMenu_SetVisible_Callback qmenu_setvisible_callback = nullptr;
     QMenu_MinimumSizeHint_Callback qmenu_minimumsizehint_callback = nullptr;
@@ -127,6 +128,7 @@ class VirtualQMenu : public QMenu {
     QMenu_ConnectNotify_Callback qmenu_connectnotify_callback = nullptr;
     QMenu_DisconnectNotify_Callback qmenu_disconnectnotify_callback = nullptr;
     QMenu_ColumnCount_Callback qmenu_columncount_callback = nullptr;
+    QMenu_InitStyleOption_Callback qmenu_initstyleoption_callback = nullptr;
     QMenu_UpdateMicroFocus_Callback qmenu_updatemicrofocus_callback = nullptr;
     QMenu_Create_Callback qmenu_create_callback = nullptr;
     QMenu_Destroy_Callback qmenu_destroy_callback = nullptr;
@@ -154,7 +156,6 @@ class VirtualQMenu : public QMenu {
     mutable bool qmenu_timerevent_isbase = false;
     mutable bool qmenu_event_isbase = false;
     mutable bool qmenu_focusnextprevchild_isbase = false;
-    mutable bool qmenu_initstyleoption_isbase = false;
     mutable bool qmenu_devtype_isbase = false;
     mutable bool qmenu_setvisible_isbase = false;
     mutable bool qmenu_minimumsizehint_isbase = false;
@@ -188,6 +189,7 @@ class VirtualQMenu : public QMenu {
     mutable bool qmenu_connectnotify_isbase = false;
     mutable bool qmenu_disconnectnotify_isbase = false;
     mutable bool qmenu_columncount_isbase = false;
+    mutable bool qmenu_initstyleoption_isbase = false;
     mutable bool qmenu_updatemicrofocus_isbase = false;
     mutable bool qmenu_create_isbase = false;
     mutable bool qmenu_destroy_isbase = false;
@@ -221,7 +223,6 @@ class VirtualQMenu : public QMenu {
         qmenu_timerevent_callback = nullptr;
         qmenu_event_callback = nullptr;
         qmenu_focusnextprevchild_callback = nullptr;
-        qmenu_initstyleoption_callback = nullptr;
         qmenu_devtype_callback = nullptr;
         qmenu_setvisible_callback = nullptr;
         qmenu_minimumsizehint_callback = nullptr;
@@ -255,6 +256,7 @@ class VirtualQMenu : public QMenu {
         qmenu_connectnotify_callback = nullptr;
         qmenu_disconnectnotify_callback = nullptr;
         qmenu_columncount_callback = nullptr;
+        qmenu_initstyleoption_callback = nullptr;
         qmenu_updatemicrofocus_callback = nullptr;
         qmenu_create_callback = nullptr;
         qmenu_destroy_callback = nullptr;
@@ -283,7 +285,6 @@ class VirtualQMenu : public QMenu {
     void setQMenu_TimerEvent_Callback(QMenu_TimerEvent_Callback cb) { qmenu_timerevent_callback = cb; }
     void setQMenu_Event_Callback(QMenu_Event_Callback cb) { qmenu_event_callback = cb; }
     void setQMenu_FocusNextPrevChild_Callback(QMenu_FocusNextPrevChild_Callback cb) { qmenu_focusnextprevchild_callback = cb; }
-    void setQMenu_InitStyleOption_Callback(QMenu_InitStyleOption_Callback cb) { qmenu_initstyleoption_callback = cb; }
     void setQMenu_DevType_Callback(QMenu_DevType_Callback cb) { qmenu_devtype_callback = cb; }
     void setQMenu_SetVisible_Callback(QMenu_SetVisible_Callback cb) { qmenu_setvisible_callback = cb; }
     void setQMenu_MinimumSizeHint_Callback(QMenu_MinimumSizeHint_Callback cb) { qmenu_minimumsizehint_callback = cb; }
@@ -317,6 +318,7 @@ class VirtualQMenu : public QMenu {
     void setQMenu_ConnectNotify_Callback(QMenu_ConnectNotify_Callback cb) { qmenu_connectnotify_callback = cb; }
     void setQMenu_DisconnectNotify_Callback(QMenu_DisconnectNotify_Callback cb) { qmenu_disconnectnotify_callback = cb; }
     void setQMenu_ColumnCount_Callback(QMenu_ColumnCount_Callback cb) { qmenu_columncount_callback = cb; }
+    void setQMenu_InitStyleOption_Callback(QMenu_InitStyleOption_Callback cb) { qmenu_initstyleoption_callback = cb; }
     void setQMenu_UpdateMicroFocus_Callback(QMenu_UpdateMicroFocus_Callback cb) { qmenu_updatemicrofocus_callback = cb; }
     void setQMenu_Create_Callback(QMenu_Create_Callback cb) { qmenu_create_callback = cb; }
     void setQMenu_Destroy_Callback(QMenu_Destroy_Callback cb) { qmenu_destroy_callback = cb; }
@@ -344,7 +346,6 @@ class VirtualQMenu : public QMenu {
     void setQMenu_TimerEvent_IsBase(bool value) const { qmenu_timerevent_isbase = value; }
     void setQMenu_Event_IsBase(bool value) const { qmenu_event_isbase = value; }
     void setQMenu_FocusNextPrevChild_IsBase(bool value) const { qmenu_focusnextprevchild_isbase = value; }
-    void setQMenu_InitStyleOption_IsBase(bool value) const { qmenu_initstyleoption_isbase = value; }
     void setQMenu_DevType_IsBase(bool value) const { qmenu_devtype_isbase = value; }
     void setQMenu_SetVisible_IsBase(bool value) const { qmenu_setvisible_isbase = value; }
     void setQMenu_MinimumSizeHint_IsBase(bool value) const { qmenu_minimumsizehint_isbase = value; }
@@ -378,6 +379,7 @@ class VirtualQMenu : public QMenu {
     void setQMenu_ConnectNotify_IsBase(bool value) const { qmenu_connectnotify_isbase = value; }
     void setQMenu_DisconnectNotify_IsBase(bool value) const { qmenu_disconnectnotify_isbase = value; }
     void setQMenu_ColumnCount_IsBase(bool value) const { qmenu_columncount_isbase = value; }
+    void setQMenu_InitStyleOption_IsBase(bool value) const { qmenu_initstyleoption_isbase = value; }
     void setQMenu_UpdateMicroFocus_IsBase(bool value) const { qmenu_updatemicrofocus_isbase = value; }
     void setQMenu_Create_IsBase(bool value) const { qmenu_create_isbase = value; }
     void setQMenu_Destroy_IsBase(bool value) const { qmenu_destroy_isbase = value; }
@@ -485,7 +487,7 @@ class VirtualQMenu : public QMenu {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* param1) override {
+    virtual void enterEvent(QEvent* param1) override {
         if (qmenu_enterevent_isbase) {
             qmenu_enterevent_isbase = false;
             QMenu::enterEvent(param1);
@@ -577,18 +579,6 @@ class VirtualQMenu : public QMenu {
             return qmenu_focusnextprevchild_callback(this, next);
         } else {
             return QMenu::focusNextPrevChild(next);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionMenuItem* option, const QAction* action) const override {
-        if (qmenu_initstyleoption_isbase) {
-            qmenu_initstyleoption_isbase = false;
-            QMenu::initStyleOption(option, action);
-        } else if (qmenu_initstyleoption_callback != nullptr) {
-            qmenu_initstyleoption_callback(this, option, action);
-        } else {
-            QMenu::initStyleOption(option, action);
         }
     }
 
@@ -833,7 +823,7 @@ class VirtualQMenu : public QMenu {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qmenu_nativeevent_isbase) {
             qmenu_nativeevent_isbase = false;
             return QMenu::nativeEvent(eventType, message, result);
@@ -985,6 +975,18 @@ class VirtualQMenu : public QMenu {
             return qmenu_columncount_callback();
         } else {
             return QMenu::columnCount();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionMenuItem* option, const QAction* action) const {
+        if (qmenu_initstyleoption_isbase) {
+            qmenu_initstyleoption_isbase = false;
+            QMenu::initStyleOption(option, action);
+        } else if (qmenu_initstyleoption_callback != nullptr) {
+            qmenu_initstyleoption_callback(this, option, action);
+        } else {
+            QMenu::initStyleOption(option, action);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -28,6 +30,7 @@ typedef struct QGlyphRun QGlyphRun;
 typedef struct QImage QImage;
 typedef struct QLine QLine;
 typedef struct QLineF QLineF;
+typedef struct QMatrix QMatrix;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPainter QPainter;
@@ -69,6 +72,7 @@ QPaintDevice* QPainter_Device(const QPainter* self);
 bool QPainter_Begin(QPainter* self, QPaintDevice* param1);
 bool QPainter_End(QPainter* self);
 bool QPainter_IsActive(const QPainter* self);
+void QPainter_InitFrom(QPainter* self, QPaintDevice* device);
 void QPainter_SetCompositionMode(QPainter* self, int mode);
 int QPainter_CompositionMode(const QPainter* self);
 QFont* QPainter_Font(const QPainter* self);
@@ -104,10 +108,19 @@ bool QPainter_HasClipping(const QPainter* self);
 QRectF* QPainter_ClipBoundingRect(const QPainter* self);
 void QPainter_Save(QPainter* self);
 void QPainter_Restore(QPainter* self);
+void QPainter_SetMatrix(QPainter* self, QMatrix* matrix);
+QMatrix* QPainter_Matrix(const QPainter* self);
+QMatrix* QPainter_DeviceMatrix(const QPainter* self);
+void QPainter_ResetMatrix(QPainter* self);
 void QPainter_SetTransform(QPainter* self, QTransform* transform);
 QTransform* QPainter_Transform(const QPainter* self);
 QTransform* QPainter_DeviceTransform(const QPainter* self);
 void QPainter_ResetTransform(QPainter* self);
+void QPainter_SetWorldMatrix(QPainter* self, QMatrix* matrix);
+QMatrix* QPainter_WorldMatrix(const QPainter* self);
+QMatrix* QPainter_CombinedMatrix(const QPainter* self);
+void QPainter_SetMatrixEnabled(QPainter* self, bool enabled);
+bool QPainter_MatrixEnabled(const QPainter* self);
 void QPainter_SetWorldTransform(QPainter* self, QTransform* matrix);
 QTransform* QPainter_WorldTransform(const QPainter* self);
 QTransform* QPainter_CombinedTransform(const QPainter* self);
@@ -178,6 +191,9 @@ void QPainter_DrawChord3(QPainter* self, QRect* param1, int a, int alen);
 void QPainter_DrawRoundedRect(QPainter* self, QRectF* rect, double xRadius, double yRadius);
 void QPainter_DrawRoundedRect2(QPainter* self, int x, int y, int w, int h, double xRadius, double yRadius);
 void QPainter_DrawRoundedRect3(QPainter* self, QRect* rect, double xRadius, double yRadius);
+void QPainter_DrawRoundRect(QPainter* self, QRectF* r);
+void QPainter_DrawRoundRect2(QPainter* self, int x, int y, int w, int h);
+void QPainter_DrawRoundRectWithQRect(QPainter* self, QRect* r);
 void QPainter_DrawTiledPixmap(QPainter* self, QRectF* rect, QPixmap* pm);
 void QPainter_DrawTiledPixmap2(QPainter* self, int x, int y, int w, int h, QPixmap* param5);
 void QPainter_DrawTiledPixmap3(QPainter* self, QRect* param1, QPixmap* param2);
@@ -249,6 +265,9 @@ void QPainter_SetRenderHints(QPainter* self, int hints);
 int QPainter_RenderHints(const QPainter* self);
 bool QPainter_TestRenderHint(const QPainter* self, int hint);
 QPaintEngine* QPainter_PaintEngine(const QPainter* self);
+void QPainter_SetRedirected(QPaintDevice* device, QPaintDevice* replacement);
+QPaintDevice* QPainter_Redirected(QPaintDevice* device);
+void QPainter_RestoreRedirected(QPaintDevice* device);
 void QPainter_BeginNativePainting(QPainter* self);
 void QPainter_EndNativePainting(QPainter* self);
 void QPainter_SetClipRect22(QPainter* self, QRectF* param1, int op);
@@ -256,13 +275,21 @@ void QPainter_SetClipRect23(QPainter* self, QRect* param1, int op);
 void QPainter_SetClipRect5(QPainter* self, int x, int y, int w, int h, int op);
 void QPainter_SetClipRegion2(QPainter* self, QRegion* param1, int op);
 void QPainter_SetClipPath2(QPainter* self, QPainterPath* path, int op);
+void QPainter_SetMatrix2(QPainter* self, QMatrix* matrix, bool combine);
 void QPainter_SetTransform2(QPainter* self, QTransform* transform, bool combine);
+void QPainter_SetWorldMatrix2(QPainter* self, QMatrix* matrix, bool combine);
 void QPainter_SetWorldTransform2(QPainter* self, QTransform* matrix, bool combine);
 void QPainter_DrawPolygon32(QPainter* self, QPointF* points, int pointCount, int fillRule);
 void QPainter_DrawPolygon33(QPainter* self, QPoint* points, int pointCount, int fillRule);
 void QPainter_DrawRoundedRect4(QPainter* self, QRectF* rect, double xRadius, double yRadius, int mode);
 void QPainter_DrawRoundedRect7(QPainter* self, int x, int y, int w, int h, double xRadius, double yRadius, int mode);
 void QPainter_DrawRoundedRect42(QPainter* self, QRect* rect, double xRadius, double yRadius, int mode);
+void QPainter_DrawRoundRect22(QPainter* self, QRectF* r, int xround);
+void QPainter_DrawRoundRect3(QPainter* self, QRectF* r, int xround, int yround);
+void QPainter_DrawRoundRect5(QPainter* self, int x, int y, int w, int h, int param5);
+void QPainter_DrawRoundRect6(QPainter* self, int x, int y, int w, int h, int param5, int param6);
+void QPainter_DrawRoundRect23(QPainter* self, QRect* r, int xround);
+void QPainter_DrawRoundRect32(QPainter* self, QRect* r, int xround, int yround);
 void QPainter_DrawTiledPixmap32(QPainter* self, QRectF* rect, QPixmap* pm, QPointF* offset);
 void QPainter_DrawTiledPixmap6(QPainter* self, int x, int y, int w, int h, QPixmap* param5, int sx);
 void QPainter_DrawTiledPixmap7(QPainter* self, int x, int y, int w, int h, QPixmap* param5, int sx, int sy);
@@ -284,6 +311,8 @@ void QPainter_DrawText32(QPainter* self, QRectF* r, libqt_string text, QTextOpti
 QRectF* QPainter_BoundingRect32(QPainter* self, QRectF* rect, libqt_string text, QTextOption* o);
 void QPainter_SetRenderHint2(QPainter* self, int hint, bool on);
 void QPainter_SetRenderHints2(QPainter* self, int hints, bool on);
+void QPainter_SetRedirected3(QPaintDevice* device, QPaintDevice* replacement, QPoint* offset);
+QPaintDevice* QPainter_Redirected2(QPaintDevice* device, QPoint* offset);
 void QPainter_Delete(QPainter* self);
 
 QPainter__PixmapFragment* QPainter__PixmapFragment_Create(QPointF* pos, QRectF* sourceRect);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -28,14 +30,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractTextDocumentLayout QAbstractTextDocumentLayout;
 typedef struct QAbstractTextDocumentLayout__PaintContext QAbstractTextDocumentLayout__PaintContext;
 typedef struct QAbstractTextDocumentLayout__Selection QAbstractTextDocumentLayout__Selection;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPainter QPainter;
 typedef struct QPointF QPointF;
@@ -60,6 +61,7 @@ int QAbstractTextDocumentLayout_Metacall(QAbstractTextDocumentLayout* self, int 
 void QAbstractTextDocumentLayout_OnMetacall(QAbstractTextDocumentLayout* self, intptr_t slot);
 int QAbstractTextDocumentLayout_QBaseMetacall(QAbstractTextDocumentLayout* self, int param1, int param2, void** param3);
 libqt_string QAbstractTextDocumentLayout_Tr(const char* s);
+libqt_string QAbstractTextDocumentLayout_TrUtf8(const char* s);
 void QAbstractTextDocumentLayout_Draw(QAbstractTextDocumentLayout* self, QPainter* painter, QAbstractTextDocumentLayout__PaintContext* context);
 void QAbstractTextDocumentLayout_OnDraw(QAbstractTextDocumentLayout* self, intptr_t slot);
 void QAbstractTextDocumentLayout_QBaseDraw(QAbstractTextDocumentLayout* self, QPainter* painter, QAbstractTextDocumentLayout__PaintContext* context);
@@ -110,6 +112,8 @@ void QAbstractTextDocumentLayout_OnDrawInlineObject(QAbstractTextDocumentLayout*
 void QAbstractTextDocumentLayout_QBaseDrawInlineObject(QAbstractTextDocumentLayout* self, QPainter* painter, QRectF* rect, QTextInlineObject* object, int posInDocument, QTextFormat* format);
 libqt_string QAbstractTextDocumentLayout_Tr2(const char* s, const char* c);
 libqt_string QAbstractTextDocumentLayout_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractTextDocumentLayout_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractTextDocumentLayout_TrUtf83(const char* s, const char* c, int n);
 void QAbstractTextDocumentLayout_UnregisterHandler2(QAbstractTextDocumentLayout* self, int objectType, QObject* component);
 void QAbstractTextDocumentLayout_Update1(QAbstractTextDocumentLayout* self, QRectF* param1);
 void QAbstractTextDocumentLayout_Connect_Update1(QAbstractTextDocumentLayout* self, intptr_t slot);

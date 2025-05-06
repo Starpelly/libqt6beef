@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -31,21 +33,20 @@ class VirtualQTabBar : public QTabBar {
     using QTabBar_MousePressEvent_Callback = void (*)(QTabBar*, QMouseEvent*);
     using QTabBar_MouseMoveEvent_Callback = void (*)(QTabBar*, QMouseEvent*);
     using QTabBar_MouseReleaseEvent_Callback = void (*)(QTabBar*, QMouseEvent*);
-    using QTabBar_MouseDoubleClickEvent_Callback = void (*)(QTabBar*, QMouseEvent*);
     using QTabBar_WheelEvent_Callback = void (*)(QTabBar*, QWheelEvent*);
     using QTabBar_KeyPressEvent_Callback = void (*)(QTabBar*, QKeyEvent*);
     using QTabBar_ChangeEvent_Callback = void (*)(QTabBar*, QEvent*);
     using QTabBar_TimerEvent_Callback = void (*)(QTabBar*, QTimerEvent*);
-    using QTabBar_InitStyleOption_Callback = void (*)(const QTabBar*, QStyleOptionTab*, int);
     using QTabBar_DevType_Callback = int (*)();
     using QTabBar_SetVisible_Callback = void (*)(QTabBar*, bool);
     using QTabBar_HeightForWidth_Callback = int (*)(const QTabBar*, int);
     using QTabBar_HasHeightForWidth_Callback = bool (*)();
     using QTabBar_PaintEngine_Callback = QPaintEngine* (*)();
+    using QTabBar_MouseDoubleClickEvent_Callback = void (*)(QTabBar*, QMouseEvent*);
     using QTabBar_KeyReleaseEvent_Callback = void (*)(QTabBar*, QKeyEvent*);
     using QTabBar_FocusInEvent_Callback = void (*)(QTabBar*, QFocusEvent*);
     using QTabBar_FocusOutEvent_Callback = void (*)(QTabBar*, QFocusEvent*);
-    using QTabBar_EnterEvent_Callback = void (*)(QTabBar*, QEnterEvent*);
+    using QTabBar_EnterEvent_Callback = void (*)(QTabBar*, QEvent*);
     using QTabBar_LeaveEvent_Callback = void (*)(QTabBar*, QEvent*);
     using QTabBar_MoveEvent_Callback = void (*)(QTabBar*, QMoveEvent*);
     using QTabBar_CloseEvent_Callback = void (*)(QTabBar*, QCloseEvent*);
@@ -56,7 +57,7 @@ class VirtualQTabBar : public QTabBar {
     using QTabBar_DragMoveEvent_Callback = void (*)(QTabBar*, QDragMoveEvent*);
     using QTabBar_DragLeaveEvent_Callback = void (*)(QTabBar*, QDragLeaveEvent*);
     using QTabBar_DropEvent_Callback = void (*)(QTabBar*, QDropEvent*);
-    using QTabBar_NativeEvent_Callback = bool (*)(QTabBar*, const QByteArray&, void*, qintptr*);
+    using QTabBar_NativeEvent_Callback = bool (*)(QTabBar*, const QByteArray&, void*, long*);
     using QTabBar_Metric_Callback = int (*)(const QTabBar*, QPaintDevice::PaintDeviceMetric);
     using QTabBar_InitPainter_Callback = void (*)(const QTabBar*, QPainter*);
     using QTabBar_Redirected_Callback = QPaintDevice* (*)(const QTabBar*, QPoint*);
@@ -69,6 +70,7 @@ class VirtualQTabBar : public QTabBar {
     using QTabBar_CustomEvent_Callback = void (*)(QTabBar*, QEvent*);
     using QTabBar_ConnectNotify_Callback = void (*)(QTabBar*, const QMetaMethod&);
     using QTabBar_DisconnectNotify_Callback = void (*)(QTabBar*, const QMetaMethod&);
+    using QTabBar_InitStyleOption_Callback = void (*)(const QTabBar*, QStyleOptionTab*, int);
     using QTabBar_UpdateMicroFocus_Callback = void (*)();
     using QTabBar_Create_Callback = void (*)();
     using QTabBar_Destroy_Callback = void (*)();
@@ -97,17 +99,16 @@ class VirtualQTabBar : public QTabBar {
     QTabBar_MousePressEvent_Callback qtabbar_mousepressevent_callback = nullptr;
     QTabBar_MouseMoveEvent_Callback qtabbar_mousemoveevent_callback = nullptr;
     QTabBar_MouseReleaseEvent_Callback qtabbar_mousereleaseevent_callback = nullptr;
-    QTabBar_MouseDoubleClickEvent_Callback qtabbar_mousedoubleclickevent_callback = nullptr;
     QTabBar_WheelEvent_Callback qtabbar_wheelevent_callback = nullptr;
     QTabBar_KeyPressEvent_Callback qtabbar_keypressevent_callback = nullptr;
     QTabBar_ChangeEvent_Callback qtabbar_changeevent_callback = nullptr;
     QTabBar_TimerEvent_Callback qtabbar_timerevent_callback = nullptr;
-    QTabBar_InitStyleOption_Callback qtabbar_initstyleoption_callback = nullptr;
     QTabBar_DevType_Callback qtabbar_devtype_callback = nullptr;
     QTabBar_SetVisible_Callback qtabbar_setvisible_callback = nullptr;
     QTabBar_HeightForWidth_Callback qtabbar_heightforwidth_callback = nullptr;
     QTabBar_HasHeightForWidth_Callback qtabbar_hasheightforwidth_callback = nullptr;
     QTabBar_PaintEngine_Callback qtabbar_paintengine_callback = nullptr;
+    QTabBar_MouseDoubleClickEvent_Callback qtabbar_mousedoubleclickevent_callback = nullptr;
     QTabBar_KeyReleaseEvent_Callback qtabbar_keyreleaseevent_callback = nullptr;
     QTabBar_FocusInEvent_Callback qtabbar_focusinevent_callback = nullptr;
     QTabBar_FocusOutEvent_Callback qtabbar_focusoutevent_callback = nullptr;
@@ -135,6 +136,7 @@ class VirtualQTabBar : public QTabBar {
     QTabBar_CustomEvent_Callback qtabbar_customevent_callback = nullptr;
     QTabBar_ConnectNotify_Callback qtabbar_connectnotify_callback = nullptr;
     QTabBar_DisconnectNotify_Callback qtabbar_disconnectnotify_callback = nullptr;
+    QTabBar_InitStyleOption_Callback qtabbar_initstyleoption_callback = nullptr;
     QTabBar_UpdateMicroFocus_Callback qtabbar_updatemicrofocus_callback = nullptr;
     QTabBar_Create_Callback qtabbar_create_callback = nullptr;
     QTabBar_Destroy_Callback qtabbar_destroy_callback = nullptr;
@@ -162,17 +164,16 @@ class VirtualQTabBar : public QTabBar {
     mutable bool qtabbar_mousepressevent_isbase = false;
     mutable bool qtabbar_mousemoveevent_isbase = false;
     mutable bool qtabbar_mousereleaseevent_isbase = false;
-    mutable bool qtabbar_mousedoubleclickevent_isbase = false;
     mutable bool qtabbar_wheelevent_isbase = false;
     mutable bool qtabbar_keypressevent_isbase = false;
     mutable bool qtabbar_changeevent_isbase = false;
     mutable bool qtabbar_timerevent_isbase = false;
-    mutable bool qtabbar_initstyleoption_isbase = false;
     mutable bool qtabbar_devtype_isbase = false;
     mutable bool qtabbar_setvisible_isbase = false;
     mutable bool qtabbar_heightforwidth_isbase = false;
     mutable bool qtabbar_hasheightforwidth_isbase = false;
     mutable bool qtabbar_paintengine_isbase = false;
+    mutable bool qtabbar_mousedoubleclickevent_isbase = false;
     mutable bool qtabbar_keyreleaseevent_isbase = false;
     mutable bool qtabbar_focusinevent_isbase = false;
     mutable bool qtabbar_focusoutevent_isbase = false;
@@ -200,6 +201,7 @@ class VirtualQTabBar : public QTabBar {
     mutable bool qtabbar_customevent_isbase = false;
     mutable bool qtabbar_connectnotify_isbase = false;
     mutable bool qtabbar_disconnectnotify_isbase = false;
+    mutable bool qtabbar_initstyleoption_isbase = false;
     mutable bool qtabbar_updatemicrofocus_isbase = false;
     mutable bool qtabbar_create_isbase = false;
     mutable bool qtabbar_destroy_isbase = false;
@@ -231,17 +233,16 @@ class VirtualQTabBar : public QTabBar {
         qtabbar_mousepressevent_callback = nullptr;
         qtabbar_mousemoveevent_callback = nullptr;
         qtabbar_mousereleaseevent_callback = nullptr;
-        qtabbar_mousedoubleclickevent_callback = nullptr;
         qtabbar_wheelevent_callback = nullptr;
         qtabbar_keypressevent_callback = nullptr;
         qtabbar_changeevent_callback = nullptr;
         qtabbar_timerevent_callback = nullptr;
-        qtabbar_initstyleoption_callback = nullptr;
         qtabbar_devtype_callback = nullptr;
         qtabbar_setvisible_callback = nullptr;
         qtabbar_heightforwidth_callback = nullptr;
         qtabbar_hasheightforwidth_callback = nullptr;
         qtabbar_paintengine_callback = nullptr;
+        qtabbar_mousedoubleclickevent_callback = nullptr;
         qtabbar_keyreleaseevent_callback = nullptr;
         qtabbar_focusinevent_callback = nullptr;
         qtabbar_focusoutevent_callback = nullptr;
@@ -269,6 +270,7 @@ class VirtualQTabBar : public QTabBar {
         qtabbar_customevent_callback = nullptr;
         qtabbar_connectnotify_callback = nullptr;
         qtabbar_disconnectnotify_callback = nullptr;
+        qtabbar_initstyleoption_callback = nullptr;
         qtabbar_updatemicrofocus_callback = nullptr;
         qtabbar_create_callback = nullptr;
         qtabbar_destroy_callback = nullptr;
@@ -297,17 +299,16 @@ class VirtualQTabBar : public QTabBar {
     void setQTabBar_MousePressEvent_Callback(QTabBar_MousePressEvent_Callback cb) { qtabbar_mousepressevent_callback = cb; }
     void setQTabBar_MouseMoveEvent_Callback(QTabBar_MouseMoveEvent_Callback cb) { qtabbar_mousemoveevent_callback = cb; }
     void setQTabBar_MouseReleaseEvent_Callback(QTabBar_MouseReleaseEvent_Callback cb) { qtabbar_mousereleaseevent_callback = cb; }
-    void setQTabBar_MouseDoubleClickEvent_Callback(QTabBar_MouseDoubleClickEvent_Callback cb) { qtabbar_mousedoubleclickevent_callback = cb; }
     void setQTabBar_WheelEvent_Callback(QTabBar_WheelEvent_Callback cb) { qtabbar_wheelevent_callback = cb; }
     void setQTabBar_KeyPressEvent_Callback(QTabBar_KeyPressEvent_Callback cb) { qtabbar_keypressevent_callback = cb; }
     void setQTabBar_ChangeEvent_Callback(QTabBar_ChangeEvent_Callback cb) { qtabbar_changeevent_callback = cb; }
     void setQTabBar_TimerEvent_Callback(QTabBar_TimerEvent_Callback cb) { qtabbar_timerevent_callback = cb; }
-    void setQTabBar_InitStyleOption_Callback(QTabBar_InitStyleOption_Callback cb) { qtabbar_initstyleoption_callback = cb; }
     void setQTabBar_DevType_Callback(QTabBar_DevType_Callback cb) { qtabbar_devtype_callback = cb; }
     void setQTabBar_SetVisible_Callback(QTabBar_SetVisible_Callback cb) { qtabbar_setvisible_callback = cb; }
     void setQTabBar_HeightForWidth_Callback(QTabBar_HeightForWidth_Callback cb) { qtabbar_heightforwidth_callback = cb; }
     void setQTabBar_HasHeightForWidth_Callback(QTabBar_HasHeightForWidth_Callback cb) { qtabbar_hasheightforwidth_callback = cb; }
     void setQTabBar_PaintEngine_Callback(QTabBar_PaintEngine_Callback cb) { qtabbar_paintengine_callback = cb; }
+    void setQTabBar_MouseDoubleClickEvent_Callback(QTabBar_MouseDoubleClickEvent_Callback cb) { qtabbar_mousedoubleclickevent_callback = cb; }
     void setQTabBar_KeyReleaseEvent_Callback(QTabBar_KeyReleaseEvent_Callback cb) { qtabbar_keyreleaseevent_callback = cb; }
     void setQTabBar_FocusInEvent_Callback(QTabBar_FocusInEvent_Callback cb) { qtabbar_focusinevent_callback = cb; }
     void setQTabBar_FocusOutEvent_Callback(QTabBar_FocusOutEvent_Callback cb) { qtabbar_focusoutevent_callback = cb; }
@@ -335,6 +336,7 @@ class VirtualQTabBar : public QTabBar {
     void setQTabBar_CustomEvent_Callback(QTabBar_CustomEvent_Callback cb) { qtabbar_customevent_callback = cb; }
     void setQTabBar_ConnectNotify_Callback(QTabBar_ConnectNotify_Callback cb) { qtabbar_connectnotify_callback = cb; }
     void setQTabBar_DisconnectNotify_Callback(QTabBar_DisconnectNotify_Callback cb) { qtabbar_disconnectnotify_callback = cb; }
+    void setQTabBar_InitStyleOption_Callback(QTabBar_InitStyleOption_Callback cb) { qtabbar_initstyleoption_callback = cb; }
     void setQTabBar_UpdateMicroFocus_Callback(QTabBar_UpdateMicroFocus_Callback cb) { qtabbar_updatemicrofocus_callback = cb; }
     void setQTabBar_Create_Callback(QTabBar_Create_Callback cb) { qtabbar_create_callback = cb; }
     void setQTabBar_Destroy_Callback(QTabBar_Destroy_Callback cb) { qtabbar_destroy_callback = cb; }
@@ -362,17 +364,16 @@ class VirtualQTabBar : public QTabBar {
     void setQTabBar_MousePressEvent_IsBase(bool value) const { qtabbar_mousepressevent_isbase = value; }
     void setQTabBar_MouseMoveEvent_IsBase(bool value) const { qtabbar_mousemoveevent_isbase = value; }
     void setQTabBar_MouseReleaseEvent_IsBase(bool value) const { qtabbar_mousereleaseevent_isbase = value; }
-    void setQTabBar_MouseDoubleClickEvent_IsBase(bool value) const { qtabbar_mousedoubleclickevent_isbase = value; }
     void setQTabBar_WheelEvent_IsBase(bool value) const { qtabbar_wheelevent_isbase = value; }
     void setQTabBar_KeyPressEvent_IsBase(bool value) const { qtabbar_keypressevent_isbase = value; }
     void setQTabBar_ChangeEvent_IsBase(bool value) const { qtabbar_changeevent_isbase = value; }
     void setQTabBar_TimerEvent_IsBase(bool value) const { qtabbar_timerevent_isbase = value; }
-    void setQTabBar_InitStyleOption_IsBase(bool value) const { qtabbar_initstyleoption_isbase = value; }
     void setQTabBar_DevType_IsBase(bool value) const { qtabbar_devtype_isbase = value; }
     void setQTabBar_SetVisible_IsBase(bool value) const { qtabbar_setvisible_isbase = value; }
     void setQTabBar_HeightForWidth_IsBase(bool value) const { qtabbar_heightforwidth_isbase = value; }
     void setQTabBar_HasHeightForWidth_IsBase(bool value) const { qtabbar_hasheightforwidth_isbase = value; }
     void setQTabBar_PaintEngine_IsBase(bool value) const { qtabbar_paintengine_isbase = value; }
+    void setQTabBar_MouseDoubleClickEvent_IsBase(bool value) const { qtabbar_mousedoubleclickevent_isbase = value; }
     void setQTabBar_KeyReleaseEvent_IsBase(bool value) const { qtabbar_keyreleaseevent_isbase = value; }
     void setQTabBar_FocusInEvent_IsBase(bool value) const { qtabbar_focusinevent_isbase = value; }
     void setQTabBar_FocusOutEvent_IsBase(bool value) const { qtabbar_focusoutevent_isbase = value; }
@@ -400,6 +401,7 @@ class VirtualQTabBar : public QTabBar {
     void setQTabBar_CustomEvent_IsBase(bool value) const { qtabbar_customevent_isbase = value; }
     void setQTabBar_ConnectNotify_IsBase(bool value) const { qtabbar_connectnotify_isbase = value; }
     void setQTabBar_DisconnectNotify_IsBase(bool value) const { qtabbar_disconnectnotify_isbase = value; }
+    void setQTabBar_InitStyleOption_IsBase(bool value) const { qtabbar_initstyleoption_isbase = value; }
     void setQTabBar_UpdateMicroFocus_IsBase(bool value) const { qtabbar_updatemicrofocus_isbase = value; }
     void setQTabBar_Create_IsBase(bool value) const { qtabbar_create_isbase = value; }
     void setQTabBar_Destroy_IsBase(bool value) const { qtabbar_destroy_isbase = value; }
@@ -603,18 +605,6 @@ class VirtualQTabBar : public QTabBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void mouseDoubleClickEvent(QMouseEvent* param1) override {
-        if (qtabbar_mousedoubleclickevent_isbase) {
-            qtabbar_mousedoubleclickevent_isbase = false;
-            QTabBar::mouseDoubleClickEvent(param1);
-        } else if (qtabbar_mousedoubleclickevent_callback != nullptr) {
-            qtabbar_mousedoubleclickevent_callback(this, param1);
-        } else {
-            QTabBar::mouseDoubleClickEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void wheelEvent(QWheelEvent* event) override {
         if (qtabbar_wheelevent_isbase) {
             qtabbar_wheelevent_isbase = false;
@@ -659,18 +649,6 @@ class VirtualQTabBar : public QTabBar {
             qtabbar_timerevent_callback(this, event);
         } else {
             QTabBar::timerEvent(event);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionTab* option, int tabIndex) const override {
-        if (qtabbar_initstyleoption_isbase) {
-            qtabbar_initstyleoption_isbase = false;
-            QTabBar::initStyleOption(option, tabIndex);
-        } else if (qtabbar_initstyleoption_callback != nullptr) {
-            qtabbar_initstyleoption_callback(this, option, tabIndex);
-        } else {
-            QTabBar::initStyleOption(option, tabIndex);
         }
     }
 
@@ -735,6 +713,18 @@ class VirtualQTabBar : public QTabBar {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual void mouseDoubleClickEvent(QMouseEvent* event) override {
+        if (qtabbar_mousedoubleclickevent_isbase) {
+            qtabbar_mousedoubleclickevent_isbase = false;
+            QTabBar::mouseDoubleClickEvent(event);
+        } else if (qtabbar_mousedoubleclickevent_callback != nullptr) {
+            qtabbar_mousedoubleclickevent_callback(this, event);
+        } else {
+            QTabBar::mouseDoubleClickEvent(event);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual void keyReleaseEvent(QKeyEvent* event) override {
         if (qtabbar_keyreleaseevent_isbase) {
             qtabbar_keyreleaseevent_isbase = false;
@@ -771,7 +761,7 @@ class VirtualQTabBar : public QTabBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtabbar_enterevent_isbase) {
             qtabbar_enterevent_isbase = false;
             QTabBar::enterEvent(event);
@@ -903,7 +893,7 @@ class VirtualQTabBar : public QTabBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtabbar_nativeevent_isbase) {
             qtabbar_nativeevent_isbase = false;
             return QTabBar::nativeEvent(eventType, message, result);
@@ -1055,6 +1045,18 @@ class VirtualQTabBar : public QTabBar {
             qtabbar_disconnectnotify_callback(this, signal);
         } else {
             QTabBar::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionTab* option, int tabIndex) const {
+        if (qtabbar_initstyleoption_isbase) {
+            qtabbar_initstyleoption_isbase = false;
+            QTabBar::initStyleOption(option, tabIndex);
+        } else if (qtabbar_initstyleoption_callback != nullptr) {
+            qtabbar_initstyleoption_callback(this, option, tabIndex);
+        } else {
+            QTabBar::initStyleOption(option, tabIndex);
         }
     }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDnsDomainNameRecord QDnsDomainNameRecord;
 typedef struct QDnsHostAddressRecord QDnsHostAddressRecord;
@@ -34,6 +34,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -108,6 +109,7 @@ int QDnsLookup_Metacall(QDnsLookup* self, int param1, int param2, void** param3)
 void QDnsLookup_OnMetacall(QDnsLookup* self, intptr_t slot);
 int QDnsLookup_QBaseMetacall(QDnsLookup* self, int param1, int param2, void** param3);
 libqt_string QDnsLookup_Tr(const char* s);
+libqt_string QDnsLookup_TrUtf8(const char* s);
 int QDnsLookup_Error(const QDnsLookup* self);
 libqt_string QDnsLookup_ErrorString(const QDnsLookup* self);
 bool QDnsLookup_IsFinished(const QDnsLookup* self);
@@ -136,6 +138,8 @@ void QDnsLookup_NameserverChanged(QDnsLookup* self, QHostAddress* nameserver);
 void QDnsLookup_Connect_NameserverChanged(QDnsLookup* self, intptr_t slot);
 libqt_string QDnsLookup_Tr2(const char* s, const char* c);
 libqt_string QDnsLookup_Tr3(const char* s, const char* c, int n);
+libqt_string QDnsLookup_TrUtf82(const char* s, const char* c);
+libqt_string QDnsLookup_TrUtf83(const char* s, const char* c, int n);
 bool QDnsLookup_Event(QDnsLookup* self, QEvent* event);
 void QDnsLookup_OnEvent(QDnsLookup* self, intptr_t slot);
 bool QDnsLookup_QBaseEvent(QDnsLookup* self, QEvent* event);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QPrintPreviewDialog QPrintPreviewDialog;
 typedef struct QPrinter QPrinter;
 typedef struct QRect QRect;
@@ -95,6 +94,7 @@ int QPrintPreviewDialog_Metacall(QPrintPreviewDialog* self, int param1, int para
 void QPrintPreviewDialog_OnMetacall(QPrintPreviewDialog* self, intptr_t slot);
 int QPrintPreviewDialog_QBaseMetacall(QPrintPreviewDialog* self, int param1, int param2, void** param3);
 libqt_string QPrintPreviewDialog_Tr(const char* s);
+libqt_string QPrintPreviewDialog_TrUtf8(const char* s);
 QPrinter* QPrintPreviewDialog_Printer(QPrintPreviewDialog* self);
 void QPrintPreviewDialog_SetVisible(QPrintPreviewDialog* self, bool visible);
 void QPrintPreviewDialog_OnSetVisible(QPrintPreviewDialog* self, intptr_t slot);
@@ -106,6 +106,8 @@ void QPrintPreviewDialog_PaintRequested(QPrintPreviewDialog* self, QPrinter* pri
 void QPrintPreviewDialog_Connect_PaintRequested(QPrintPreviewDialog* self, intptr_t slot);
 libqt_string QPrintPreviewDialog_Tr2(const char* s, const char* c);
 libqt_string QPrintPreviewDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QPrintPreviewDialog_TrUtf82(const char* s, const char* c);
+libqt_string QPrintPreviewDialog_TrUtf83(const char* s, const char* c, int n);
 QSize* QPrintPreviewDialog_SizeHint(const QPrintPreviewDialog* self);
 void QPrintPreviewDialog_OnSizeHint(const QPrintPreviewDialog* self, intptr_t slot);
 QSize* QPrintPreviewDialog_QBaseSizeHint(const QPrintPreviewDialog* self);
@@ -181,9 +183,9 @@ void QPrintPreviewDialog_QBaseFocusInEvent(QPrintPreviewDialog* self, QFocusEven
 void QPrintPreviewDialog_FocusOutEvent(QPrintPreviewDialog* self, QFocusEvent* event);
 void QPrintPreviewDialog_OnFocusOutEvent(QPrintPreviewDialog* self, intptr_t slot);
 void QPrintPreviewDialog_QBaseFocusOutEvent(QPrintPreviewDialog* self, QFocusEvent* event);
-void QPrintPreviewDialog_EnterEvent(QPrintPreviewDialog* self, QEnterEvent* event);
+void QPrintPreviewDialog_EnterEvent(QPrintPreviewDialog* self, QEvent* event);
 void QPrintPreviewDialog_OnEnterEvent(QPrintPreviewDialog* self, intptr_t slot);
-void QPrintPreviewDialog_QBaseEnterEvent(QPrintPreviewDialog* self, QEnterEvent* event);
+void QPrintPreviewDialog_QBaseEnterEvent(QPrintPreviewDialog* self, QEvent* event);
 void QPrintPreviewDialog_LeaveEvent(QPrintPreviewDialog* self, QEvent* event);
 void QPrintPreviewDialog_OnLeaveEvent(QPrintPreviewDialog* self, intptr_t slot);
 void QPrintPreviewDialog_QBaseLeaveEvent(QPrintPreviewDialog* self, QEvent* event);
@@ -214,9 +216,9 @@ void QPrintPreviewDialog_QBaseDropEvent(QPrintPreviewDialog* self, QDropEvent* e
 void QPrintPreviewDialog_HideEvent(QPrintPreviewDialog* self, QHideEvent* event);
 void QPrintPreviewDialog_OnHideEvent(QPrintPreviewDialog* self, intptr_t slot);
 void QPrintPreviewDialog_QBaseHideEvent(QPrintPreviewDialog* self, QHideEvent* event);
-bool QPrintPreviewDialog_NativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPrintPreviewDialog_NativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, long* result);
 void QPrintPreviewDialog_OnNativeEvent(QPrintPreviewDialog* self, intptr_t slot);
-bool QPrintPreviewDialog_QBaseNativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPrintPreviewDialog_QBaseNativeEvent(QPrintPreviewDialog* self, libqt_string eventType, void* message, long* result);
 void QPrintPreviewDialog_ChangeEvent(QPrintPreviewDialog* self, QEvent* param1);
 void QPrintPreviewDialog_OnChangeEvent(QPrintPreviewDialog* self, intptr_t slot);
 void QPrintPreviewDialog_QBaseChangeEvent(QPrintPreviewDialog* self, QEvent* param1);

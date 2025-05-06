@@ -4,9 +4,7 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -17,7 +15,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -45,6 +42,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -52,7 +50,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -121,6 +118,18 @@ int QListView_QBaseMetacall(QListView* self, int param1, int param2, void** para
 
 libqt_string QListView_Tr(const char* s) {
     QString _ret = QListView::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QListView_TrUtf8(const char* s) {
+    QString _ret = QListView::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -296,6 +305,30 @@ libqt_string QListView_Tr2(const char* s, const char* c) {
 
 libqt_string QListView_Tr3(const char* s, const char* c, int n) {
     QString _ret = QListView::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QListView_TrUtf82(const char* s, const char* c) {
+    QString _ret = QListView::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QListView_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QListView::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -516,7 +549,7 @@ void QListView_OnScrollContentsBy(QListView* self, intptr_t slot) {
 
 // Derived class handler implementation
 void QListView_DataChanged(QListView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QList<int> roles_QList;
+    QVector<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -531,7 +564,7 @@ void QListView_DataChanged(QListView* self, QModelIndex* topLeft, QModelIndex* b
 
 // Base class handler implementation
 void QListView_QBaseDataChanged(QListView* self, QModelIndex* topLeft, QModelIndex* bottomRight, libqt_list /* of int */ roles) {
-    QList<int> roles_QList;
+    QVector<int> roles_QList;
     roles_QList.reserve(roles.len);
     int* roles_arr = static_cast<int*>(roles.data);
     for (size_t i = 0; i < roles.len; ++i) {
@@ -839,28 +872,26 @@ void QListView_OnStartDrag(QListView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QListView_InitViewItemOption(const QListView* self, QStyleOptionViewItem* option) {
+QStyleOptionViewItem* QListView_ViewOptions(const QListView* self) {
     if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->initViewItemOption(option);
-    } else {
-        vqlistview->initViewItemOption(option);
+        return new QStyleOptionViewItem(vqlistview->viewOptions());
     }
+    return {};
 }
 
 // Base class handler implementation
-void QListView_QBaseInitViewItemOption(const QListView* self, QStyleOptionViewItem* option) {
+QStyleOptionViewItem* QListView_QBaseViewOptions(const QListView* self) {
     if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_InitViewItemOption_IsBase(true);
-        vqlistview->initViewItemOption(option);
-    } else {
-        vqlistview->initViewItemOption(option);
+        vqlistview->setQListView_ViewOptions_IsBase(true);
+        return new QStyleOptionViewItem(vqlistview->viewOptions());
     }
+    return {};
 }
 
 // Auxiliary method to allow providing re-implementation
-void QListView_OnInitViewItemOption(const QListView* self, intptr_t slot) {
+void QListView_OnViewOptions(const QListView* self, intptr_t slot) {
     if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_InitViewItemOption_Callback(reinterpret_cast<VirtualQListView::QListView_InitViewItemOption_Callback>(slot));
+        vqlistview->setQListView_ViewOptions_Callback(reinterpret_cast<VirtualQListView::QListView_ViewOptions_Callback>(slot));
     }
 }
 
@@ -1335,32 +1366,6 @@ int QListView_QBaseSizeHintForColumn(const QListView* self, int column) {
 void QListView_OnSizeHintForColumn(const QListView* self, intptr_t slot) {
     if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
         vqlistview->setQListView_SizeHintForColumn_Callback(reinterpret_cast<VirtualQListView::QListView_SizeHintForColumn_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QAbstractItemDelegate* QListView_ItemDelegateForIndex(const QListView* self, QModelIndex* index) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        return vqlistview->itemDelegateForIndex(*index);
-    } else {
-        return vqlistview->itemDelegateForIndex(*index);
-    }
-}
-
-// Base class handler implementation
-QAbstractItemDelegate* QListView_QBaseItemDelegateForIndex(const QListView* self, QModelIndex* index) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_ItemDelegateForIndex_IsBase(true);
-        return vqlistview->itemDelegateForIndex(*index);
-    } else {
-        return vqlistview->itemDelegateForIndex(*index);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListView_OnItemDelegateForIndex(const QListView* self, intptr_t slot) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_ItemDelegateForIndex_Callback(reinterpret_cast<VirtualQListView::QListView_ItemDelegateForIndex_Callback>(slot));
     }
 }
 
@@ -2093,32 +2098,6 @@ void QListView_OnChangeEvent(QListView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QListView_InitStyleOption(const QListView* self, QStyleOptionFrame* option) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->initStyleOption(option);
-    } else {
-        vqlistview->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QListView_QBaseInitStyleOption(const QListView* self, QStyleOptionFrame* option) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_InitStyleOption_IsBase(true);
-        vqlistview->initStyleOption(option);
-    } else {
-        vqlistview->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QListView_OnInitStyleOption(const QListView* self, intptr_t slot) {
-    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
-        vqlistview->setQListView_InitStyleOption_Callback(reinterpret_cast<VirtualQListView::QListView_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QListView_DevType(const QListView* self) {
     if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
         return vqlistview->devType();
@@ -2275,7 +2254,7 @@ void QListView_OnKeyReleaseEvent(QListView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QListView_EnterEvent(QListView* self, QEnterEvent* event) {
+void QListView_EnterEvent(QListView* self, QEvent* event) {
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
         vqlistview->enterEvent(event);
     } else {
@@ -2284,7 +2263,7 @@ void QListView_EnterEvent(QListView* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QListView_QBaseEnterEvent(QListView* self, QEnterEvent* event) {
+void QListView_QBaseEnterEvent(QListView* self, QEvent* event) {
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
         vqlistview->setQListView_EnterEvent_IsBase(true);
         vqlistview->enterEvent(event);
@@ -2483,23 +2462,23 @@ void QListView_OnHideEvent(QListView* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QListView_NativeEvent(QListView* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QListView_NativeEvent(QListView* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
-        return vqlistview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlistview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlistview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlistview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QListView_QBaseNativeEvent(QListView* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QListView_QBaseNativeEvent(QListView* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
         vqlistview->setQListView_NativeEvent_IsBase(true);
-        return vqlistview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlistview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqlistview->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqlistview->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -2815,6 +2794,110 @@ void QListView_QBaseSetPositionForIndex(QListView* self, QPoint* position, QMode
 void QListView_OnSetPositionForIndex(QListView* self, intptr_t slot) {
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
         vqlistview->setQListView_SetPositionForIndex_Callback(reinterpret_cast<VirtualQListView::QListView_SetPositionForIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QListView_SetHorizontalStepsPerItem(QListView* self, int steps) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setHorizontalStepsPerItem(static_cast<int>(steps));
+    } else {
+        vqlistview->setHorizontalStepsPerItem(static_cast<int>(steps));
+    }
+}
+
+// Base class handler implementation
+void QListView_QBaseSetHorizontalStepsPerItem(QListView* self, int steps) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setQListView_SetHorizontalStepsPerItem_IsBase(true);
+        vqlistview->setHorizontalStepsPerItem(static_cast<int>(steps));
+    } else {
+        vqlistview->setHorizontalStepsPerItem(static_cast<int>(steps));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListView_OnSetHorizontalStepsPerItem(QListView* self, intptr_t slot) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setQListView_SetHorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQListView::QListView_SetHorizontalStepsPerItem_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QListView_HorizontalStepsPerItem(const QListView* self) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        return vqlistview->horizontalStepsPerItem();
+    } else {
+        return vqlistview->horizontalStepsPerItem();
+    }
+}
+
+// Base class handler implementation
+int QListView_QBaseHorizontalStepsPerItem(const QListView* self) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_HorizontalStepsPerItem_IsBase(true);
+        return vqlistview->horizontalStepsPerItem();
+    } else {
+        return vqlistview->horizontalStepsPerItem();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListView_OnHorizontalStepsPerItem(const QListView* self, intptr_t slot) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_HorizontalStepsPerItem_Callback(reinterpret_cast<VirtualQListView::QListView_HorizontalStepsPerItem_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QListView_SetVerticalStepsPerItem(QListView* self, int steps) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setVerticalStepsPerItem(static_cast<int>(steps));
+    } else {
+        vqlistview->setVerticalStepsPerItem(static_cast<int>(steps));
+    }
+}
+
+// Base class handler implementation
+void QListView_QBaseSetVerticalStepsPerItem(QListView* self, int steps) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setQListView_SetVerticalStepsPerItem_IsBase(true);
+        vqlistview->setVerticalStepsPerItem(static_cast<int>(steps));
+    } else {
+        vqlistview->setVerticalStepsPerItem(static_cast<int>(steps));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListView_OnSetVerticalStepsPerItem(QListView* self, intptr_t slot) {
+    if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
+        vqlistview->setQListView_SetVerticalStepsPerItem_Callback(reinterpret_cast<VirtualQListView::QListView_SetVerticalStepsPerItem_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QListView_VerticalStepsPerItem(const QListView* self) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        return vqlistview->verticalStepsPerItem();
+    } else {
+        return vqlistview->verticalStepsPerItem();
+    }
+}
+
+// Base class handler implementation
+int QListView_QBaseVerticalStepsPerItem(const QListView* self) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_VerticalStepsPerItem_IsBase(true);
+        return vqlistview->verticalStepsPerItem();
+    } else {
+        return vqlistview->verticalStepsPerItem();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListView_OnVerticalStepsPerItem(const QListView* self, intptr_t slot) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_VerticalStepsPerItem_Callback(reinterpret_cast<VirtualQListView::QListView_VerticalStepsPerItem_Callback>(slot));
     }
 }
 
@@ -3175,6 +3258,32 @@ void QListView_QBaseDrawFrame(QListView* self, QPainter* param1) {
 void QListView_OnDrawFrame(QListView* self, intptr_t slot) {
     if (auto* vqlistview = dynamic_cast<VirtualQListView*>(self)) {
         vqlistview->setQListView_DrawFrame_Callback(reinterpret_cast<VirtualQListView::QListView_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QListView_InitStyleOption(const QListView* self, QStyleOptionFrame* option) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->initStyleOption(option);
+    } else {
+        vqlistview->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QListView_QBaseInitStyleOption(const QListView* self, QStyleOptionFrame* option) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_InitStyleOption_IsBase(true);
+        vqlistview->initStyleOption(option);
+    } else {
+        vqlistview->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QListView_OnInitStyleOption(const QListView* self, intptr_t slot) {
+    if (auto* vqlistview = const_cast<VirtualQListView*>(dynamic_cast<const VirtualQListView*>(self))) {
+        vqlistview->setQListView_InitStyleOption_Callback(reinterpret_cast<VirtualQListView::QListView_InitStyleOption_Callback>(slot));
     }
 }
 

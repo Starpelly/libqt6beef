@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,6 +19,7 @@ extern "C" {
 #ifdef __cplusplus
 #else
 typedef struct QIODevice QIODevice;
+typedef struct QTextCodec QTextCodec;
 typedef struct QTextDocument QTextDocument;
 typedef struct QTextDocumentFragment QTextDocumentFragment;
 typedef struct QTextDocumentWriter QTextDocumentWriter;
@@ -34,6 +37,8 @@ void QTextDocumentWriter_SetFileName(QTextDocumentWriter* self, libqt_string fil
 libqt_string QTextDocumentWriter_FileName(const QTextDocumentWriter* self);
 bool QTextDocumentWriter_Write(QTextDocumentWriter* self, QTextDocument* document);
 bool QTextDocumentWriter_WriteWithFragment(QTextDocumentWriter* self, QTextDocumentFragment* fragment);
+void QTextDocumentWriter_SetCodec(QTextDocumentWriter* self, QTextCodec* codec);
+QTextCodec* QTextDocumentWriter_Codec(const QTextDocumentWriter* self);
 libqt_list /* of libqt_string */ QTextDocumentWriter_SupportedDocumentFormats();
 void QTextDocumentWriter_Delete(QTextDocumentWriter* self);
 

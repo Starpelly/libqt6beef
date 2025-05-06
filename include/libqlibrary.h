@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QLibrary QLibrary;
@@ -28,6 +28,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -55,6 +56,7 @@ int QLibrary_Metacall(QLibrary* self, int param1, int param2, void** param3);
 void QLibrary_OnMetacall(QLibrary* self, intptr_t slot);
 int QLibrary_QBaseMetacall(QLibrary* self, int param1, int param2, void** param3);
 libqt_string QLibrary_Tr(const char* s);
+libqt_string QLibrary_TrUtf8(const char* s);
 bool QLibrary_Load(QLibrary* self);
 bool QLibrary_Unload(QLibrary* self);
 bool QLibrary_IsLoaded(const QLibrary* self);
@@ -68,6 +70,8 @@ void QLibrary_SetLoadHints(QLibrary* self, int hints);
 int QLibrary_LoadHints(const QLibrary* self);
 libqt_string QLibrary_Tr2(const char* s, const char* c);
 libqt_string QLibrary_Tr3(const char* s, const char* c, int n);
+libqt_string QLibrary_TrUtf82(const char* s, const char* c);
+libqt_string QLibrary_TrUtf83(const char* s, const char* c, int n);
 bool QLibrary_Event(QLibrary* self, QEvent* event);
 void QLibrary_OnEvent(QLibrary* self, intptr_t slot);
 bool QLibrary_QBaseEvent(QLibrary* self, QEvent* event);

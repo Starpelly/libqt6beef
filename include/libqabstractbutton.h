@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QChildEvent QChildEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -90,6 +89,7 @@ int QAbstractButton_Metacall(QAbstractButton* self, int param1, int param2, void
 void QAbstractButton_OnMetacall(QAbstractButton* self, intptr_t slot);
 int QAbstractButton_QBaseMetacall(QAbstractButton* self, int param1, int param2, void** param3);
 libqt_string QAbstractButton_Tr(const char* s);
+libqt_string QAbstractButton_TrUtf8(const char* s);
 void QAbstractButton_SetText(QAbstractButton* self, libqt_string text);
 libqt_string QAbstractButton_Text(const QAbstractButton* self);
 void QAbstractButton_SetIcon(QAbstractButton* self, QIcon* icon);
@@ -168,6 +168,9 @@ void QAbstractButton_OnTimerEvent(QAbstractButton* self, intptr_t slot);
 void QAbstractButton_QBaseTimerEvent(QAbstractButton* self, QTimerEvent* e);
 libqt_string QAbstractButton_Tr2(const char* s, const char* c);
 libqt_string QAbstractButton_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractButton_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractButton_TrUtf83(const char* s, const char* c, int n);
+void QAbstractButton_AnimateClick1(QAbstractButton* self, int msec);
 void QAbstractButton_Clicked1(QAbstractButton* self, bool checked);
 void QAbstractButton_Connect_Clicked1(QAbstractButton* self, intptr_t slot);
 int QAbstractButton_DevType(const QAbstractButton* self);
@@ -197,9 +200,9 @@ void QAbstractButton_QBaseMouseDoubleClickEvent(QAbstractButton* self, QMouseEve
 void QAbstractButton_WheelEvent(QAbstractButton* self, QWheelEvent* event);
 void QAbstractButton_OnWheelEvent(QAbstractButton* self, intptr_t slot);
 void QAbstractButton_QBaseWheelEvent(QAbstractButton* self, QWheelEvent* event);
-void QAbstractButton_EnterEvent(QAbstractButton* self, QEnterEvent* event);
+void QAbstractButton_EnterEvent(QAbstractButton* self, QEvent* event);
 void QAbstractButton_OnEnterEvent(QAbstractButton* self, intptr_t slot);
-void QAbstractButton_QBaseEnterEvent(QAbstractButton* self, QEnterEvent* event);
+void QAbstractButton_QBaseEnterEvent(QAbstractButton* self, QEvent* event);
 void QAbstractButton_LeaveEvent(QAbstractButton* self, QEvent* event);
 void QAbstractButton_OnLeaveEvent(QAbstractButton* self, intptr_t slot);
 void QAbstractButton_QBaseLeaveEvent(QAbstractButton* self, QEvent* event);
@@ -239,9 +242,9 @@ void QAbstractButton_QBaseShowEvent(QAbstractButton* self, QShowEvent* event);
 void QAbstractButton_HideEvent(QAbstractButton* self, QHideEvent* event);
 void QAbstractButton_OnHideEvent(QAbstractButton* self, intptr_t slot);
 void QAbstractButton_QBaseHideEvent(QAbstractButton* self, QHideEvent* event);
-bool QAbstractButton_NativeEvent(QAbstractButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractButton_NativeEvent(QAbstractButton* self, libqt_string eventType, void* message, long* result);
 void QAbstractButton_OnNativeEvent(QAbstractButton* self, intptr_t slot);
-bool QAbstractButton_QBaseNativeEvent(QAbstractButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractButton_QBaseNativeEvent(QAbstractButton* self, libqt_string eventType, void* message, long* result);
 void QAbstractButton_InputMethodEvent(QAbstractButton* self, QInputMethodEvent* param1);
 void QAbstractButton_OnInputMethodEvent(QAbstractButton* self, intptr_t slot);
 void QAbstractButton_QBaseInputMethodEvent(QAbstractButton* self, QInputMethodEvent* param1);

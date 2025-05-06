@@ -3,6 +3,7 @@
 #include <QImage>
 #include <QLine>
 #include <QLineF>
+#include <QMatrix>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEngineState>
@@ -15,7 +16,6 @@
 #include <QRect>
 #include <QRectF>
 #include <QRegion>
-#include <QSize>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -669,58 +669,6 @@ void QPaintEngine_OnType(const QPaintEngine* self, intptr_t slot) {
     }
 }
 
-// Derived class handler implementation
-QPixmap* QPaintEngine_CreatePixmap(QPaintEngine* self, QSize* size) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        return new QPixmap(vqpaintengine->createPixmap(*size));
-    } else {
-        return new QPixmap(self->createPixmap(*size));
-    }
-}
-
-// Base class handler implementation
-QPixmap* QPaintEngine_QBaseCreatePixmap(QPaintEngine* self, QSize* size) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        vqpaintengine->setQPaintEngine_CreatePixmap_IsBase(true);
-        return new QPixmap(vqpaintengine->createPixmap(*size));
-    } else {
-        return new QPixmap(self->createPixmap(*size));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPaintEngine_OnCreatePixmap(QPaintEngine* self, intptr_t slot) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        vqpaintengine->setQPaintEngine_CreatePixmap_Callback(reinterpret_cast<VirtualQPaintEngine::QPaintEngine_CreatePixmap_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-QPixmap* QPaintEngine_CreatePixmapFromImage(QPaintEngine* self, QImage* image, int flags) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        return new QPixmap(vqpaintengine->createPixmapFromImage(*image, static_cast<Qt::ImageConversionFlags>(flags)));
-    } else {
-        return new QPixmap(self->createPixmapFromImage(*image, static_cast<Qt::ImageConversionFlags>(flags)));
-    }
-}
-
-// Base class handler implementation
-QPixmap* QPaintEngine_QBaseCreatePixmapFromImage(QPaintEngine* self, QImage* image, int flags) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        vqpaintengine->setQPaintEngine_CreatePixmapFromImage_IsBase(true);
-        return new QPixmap(vqpaintengine->createPixmapFromImage(*image, static_cast<Qt::ImageConversionFlags>(flags)));
-    } else {
-        return new QPixmap(self->createPixmapFromImage(*image, static_cast<Qt::ImageConversionFlags>(flags)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QPaintEngine_OnCreatePixmapFromImage(QPaintEngine* self, intptr_t slot) {
-    if (auto* vqpaintengine = dynamic_cast<VirtualQPaintEngine*>(self)) {
-        vqpaintengine->setQPaintEngine_CreatePixmapFromImage_Callback(reinterpret_cast<VirtualQPaintEngine::QPaintEngine_CreatePixmapFromImage_Callback>(slot));
-    }
-}
-
 void QPaintEngine_Delete(QPaintEngine* self) {
     delete self;
 }
@@ -767,6 +715,10 @@ int QPaintEngineState_BackgroundMode(const QPaintEngineState* self) {
 
 QFont* QPaintEngineState_Font(const QPaintEngineState* self) {
     return new QFont(self->font());
+}
+
+QMatrix* QPaintEngineState_Matrix(const QPaintEngineState* self) {
+    return new QMatrix(self->matrix());
 }
 
 QTransform* QPaintEngineState_Transform(const QPaintEngineState* self) {

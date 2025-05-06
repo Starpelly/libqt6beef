@@ -1,5 +1,6 @@
 #include <QLine>
 #include <QLineF>
+#include <QMatrix>
 #include <QPainterPath>
 #include <QPoint>
 #include <QPointF>
@@ -12,40 +13,32 @@
 #include "libqtransform.h"
 #include "libqtransform.hxx"
 
-QTransform* QTransform_new(QTransform* other) {
-    return new QTransform(*other);
-}
-
-QTransform* QTransform_new2(QTransform* other) {
-    return new QTransform(std::move(*other));
-}
-
-QTransform* QTransform_new3(int param1) {
+QTransform* QTransform_new(int param1) {
     return new QTransform(static_cast<Qt::Initialization>(param1));
 }
 
-QTransform* QTransform_new4() {
+QTransform* QTransform_new2() {
     return new QTransform();
 }
 
-QTransform* QTransform_new5(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32, double h33) {
-    return new QTransform(static_cast<qreal>(h11), static_cast<qreal>(h12), static_cast<qreal>(h13), static_cast<qreal>(h21), static_cast<qreal>(h22), static_cast<qreal>(h23), static_cast<qreal>(h31), static_cast<qreal>(h32), static_cast<qreal>(h33));
+QTransform* QTransform_new3(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32) {
+    return new QTransform(static_cast<qreal>(h11), static_cast<qreal>(h12), static_cast<qreal>(h13), static_cast<qreal>(h21), static_cast<qreal>(h22), static_cast<qreal>(h23), static_cast<qreal>(h31), static_cast<qreal>(h32));
 }
 
-QTransform* QTransform_new6(double h11, double h12, double h21, double h22, double dx, double dy) {
+QTransform* QTransform_new4(double h11, double h12, double h21, double h22, double dx, double dy) {
     return new QTransform(static_cast<qreal>(h11), static_cast<qreal>(h12), static_cast<qreal>(h21), static_cast<qreal>(h22), static_cast<qreal>(dx), static_cast<qreal>(dy));
 }
 
-QTransform* QTransform_new7(QTransform* other) {
+QTransform* QTransform_new5(QMatrix* mtx) {
+    return new QTransform(*mtx);
+}
+
+QTransform* QTransform_new6(QTransform* other) {
     return new QTransform(*other);
 }
 
-void QTransform_CopyAssign(QTransform* self, QTransform* other) {
-    *self = *other;
-}
-
-void QTransform_MoveAssign(QTransform* self, QTransform* other) {
-    *self = std::move(*other);
+QTransform* QTransform_new7(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32, double h33) {
+    return new QTransform(static_cast<qreal>(h11), static_cast<qreal>(h12), static_cast<qreal>(h13), static_cast<qreal>(h21), static_cast<qreal>(h22), static_cast<qreal>(h23), static_cast<qreal>(h31), static_cast<qreal>(h32), static_cast<qreal>(h33));
 }
 
 void QTransform_OperatorAssign(QTransform* self, QTransform* param1) {
@@ -82,6 +75,10 @@ int QTransform_Type(const QTransform* self) {
 
 double QTransform_Determinant(const QTransform* self) {
     return static_cast<double>(self->determinant());
+}
+
+double QTransform_Det(const QTransform* self) {
+    return static_cast<double>(self->det());
 }
 
 double QTransform_M11(const QTransform* self) {
@@ -238,6 +235,12 @@ void QTransform_Map2(const QTransform* self, int x, int y, int* tx, int* ty) {
 
 void QTransform_Map3(const QTransform* self, double x, double y, double* tx, double* ty) {
     self->map(static_cast<qreal>(x), static_cast<qreal>(y), static_cast<qreal*>(tx), static_cast<qreal*>(ty));
+}
+
+QMatrix* QTransform_ToAffine(const QTransform* self) {
+    const QMatrix& _ret = self->toAffine();
+    // Cast returned reference into pointer
+    return const_cast<QMatrix*>(&_ret);
 }
 
 QTransform* QTransform_OperatorMultiplyAssignWithDiv(QTransform* self, double div) {

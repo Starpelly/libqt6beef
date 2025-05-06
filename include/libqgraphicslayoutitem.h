@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -62,9 +64,6 @@ QSizeF* QGraphicsLayoutItem_EffectiveSizeHint(const QGraphicsLayoutItem* self, i
 void QGraphicsLayoutItem_UpdateGeometry(QGraphicsLayoutItem* self);
 void QGraphicsLayoutItem_OnUpdateGeometry(QGraphicsLayoutItem* self, intptr_t slot);
 void QGraphicsLayoutItem_QBaseUpdateGeometry(QGraphicsLayoutItem* self);
-bool QGraphicsLayoutItem_IsEmpty(const QGraphicsLayoutItem* self);
-void QGraphicsLayoutItem_OnIsEmpty(const QGraphicsLayoutItem* self, intptr_t slot);
-bool QGraphicsLayoutItem_QBaseIsEmpty(const QGraphicsLayoutItem* self);
 QGraphicsLayoutItem* QGraphicsLayoutItem_ParentLayoutItem(const QGraphicsLayoutItem* self);
 void QGraphicsLayoutItem_SetParentLayoutItem(QGraphicsLayoutItem* self, QGraphicsLayoutItem* parent);
 bool QGraphicsLayoutItem_IsLayout(const QGraphicsLayoutItem* self);

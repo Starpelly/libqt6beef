@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -63,9 +65,9 @@ int QLayoutItem_QBaseMinimumHeightForWidth(const QLayoutItem* self, int param1);
 void QLayoutItem_Invalidate(QLayoutItem* self);
 void QLayoutItem_OnInvalidate(QLayoutItem* self, intptr_t slot);
 void QLayoutItem_QBaseInvalidate(QLayoutItem* self);
-QWidget* QLayoutItem_Widget(const QLayoutItem* self);
-void QLayoutItem_OnWidget(const QLayoutItem* self, intptr_t slot);
-QWidget* QLayoutItem_QBaseWidget(const QLayoutItem* self);
+QWidget* QLayoutItem_Widget(QLayoutItem* self);
+void QLayoutItem_OnWidget(QLayoutItem* self, intptr_t slot);
+QWidget* QLayoutItem_QBaseWidget(QLayoutItem* self);
 QLayout* QLayoutItem_Layout(QLayoutItem* self);
 void QLayoutItem_OnLayout(QLayoutItem* self, intptr_t slot);
 QLayout* QLayoutItem_QBaseLayout(QLayoutItem* self);
@@ -126,9 +128,9 @@ int QSpacerItem_QBaseMinimumHeightForWidth(const QSpacerItem* self, int param1);
 void QSpacerItem_Invalidate(QSpacerItem* self);
 void QSpacerItem_OnInvalidate(QSpacerItem* self, intptr_t slot);
 void QSpacerItem_QBaseInvalidate(QSpacerItem* self);
-QWidget* QSpacerItem_Widget(const QSpacerItem* self);
-void QSpacerItem_OnWidget(const QSpacerItem* self, intptr_t slot);
-QWidget* QSpacerItem_QBaseWidget(const QSpacerItem* self);
+QWidget* QSpacerItem_Widget(QSpacerItem* self);
+void QSpacerItem_OnWidget(QSpacerItem* self, intptr_t slot);
+QWidget* QSpacerItem_QBaseWidget(QSpacerItem* self);
 QLayout* QSpacerItem_Layout(QSpacerItem* self);
 void QSpacerItem_OnLayout(QSpacerItem* self, intptr_t slot);
 QLayout* QSpacerItem_QBaseLayout(QSpacerItem* self);
@@ -159,21 +161,21 @@ void QWidgetItem_QBaseSetGeometry(QWidgetItem* self, QRect* geometry);
 QRect* QWidgetItem_Geometry(const QWidgetItem* self);
 void QWidgetItem_OnGeometry(const QWidgetItem* self, intptr_t slot);
 QRect* QWidgetItem_QBaseGeometry(const QWidgetItem* self);
-QWidget* QWidgetItem_Widget(const QWidgetItem* self);
-void QWidgetItem_OnWidget(const QWidgetItem* self, intptr_t slot);
-QWidget* QWidgetItem_QBaseWidget(const QWidgetItem* self);
+QWidget* QWidgetItem_Widget(QWidgetItem* self);
+void QWidgetItem_OnWidget(QWidgetItem* self, intptr_t slot);
+QWidget* QWidgetItem_QBaseWidget(QWidgetItem* self);
 bool QWidgetItem_HasHeightForWidth(const QWidgetItem* self);
 void QWidgetItem_OnHasHeightForWidth(const QWidgetItem* self, intptr_t slot);
 bool QWidgetItem_QBaseHasHeightForWidth(const QWidgetItem* self);
 int QWidgetItem_HeightForWidth(const QWidgetItem* self, int param1);
 void QWidgetItem_OnHeightForWidth(const QWidgetItem* self, intptr_t slot);
 int QWidgetItem_QBaseHeightForWidth(const QWidgetItem* self, int param1);
-int QWidgetItem_MinimumHeightForWidth(const QWidgetItem* self, int param1);
-void QWidgetItem_OnMinimumHeightForWidth(const QWidgetItem* self, intptr_t slot);
-int QWidgetItem_QBaseMinimumHeightForWidth(const QWidgetItem* self, int param1);
 int QWidgetItem_ControlTypes(const QWidgetItem* self);
 void QWidgetItem_OnControlTypes(const QWidgetItem* self, intptr_t slot);
 int QWidgetItem_QBaseControlTypes(const QWidgetItem* self);
+int QWidgetItem_MinimumHeightForWidth(const QWidgetItem* self, int param1);
+void QWidgetItem_OnMinimumHeightForWidth(const QWidgetItem* self, intptr_t slot);
+int QWidgetItem_QBaseMinimumHeightForWidth(const QWidgetItem* self, int param1);
 void QWidgetItem_Invalidate(QWidgetItem* self);
 void QWidgetItem_OnInvalidate(QWidgetItem* self, intptr_t slot);
 void QWidgetItem_QBaseInvalidate(QWidgetItem* self);
@@ -210,18 +212,18 @@ void QWidgetItemV2_QBaseSetGeometry(QWidgetItemV2* self, QRect* geometry);
 QRect* QWidgetItemV2_Geometry(const QWidgetItemV2* self);
 void QWidgetItemV2_OnGeometry(const QWidgetItemV2* self, intptr_t slot);
 QRect* QWidgetItemV2_QBaseGeometry(const QWidgetItemV2* self);
-QWidget* QWidgetItemV2_Widget(const QWidgetItemV2* self);
-void QWidgetItemV2_OnWidget(const QWidgetItemV2* self, intptr_t slot);
-QWidget* QWidgetItemV2_QBaseWidget(const QWidgetItemV2* self);
+QWidget* QWidgetItemV2_Widget(QWidgetItemV2* self);
+void QWidgetItemV2_OnWidget(QWidgetItemV2* self, intptr_t slot);
+QWidget* QWidgetItemV2_QBaseWidget(QWidgetItemV2* self);
 bool QWidgetItemV2_HasHeightForWidth(const QWidgetItemV2* self);
 void QWidgetItemV2_OnHasHeightForWidth(const QWidgetItemV2* self, intptr_t slot);
 bool QWidgetItemV2_QBaseHasHeightForWidth(const QWidgetItemV2* self);
-int QWidgetItemV2_MinimumHeightForWidth(const QWidgetItemV2* self, int param1);
-void QWidgetItemV2_OnMinimumHeightForWidth(const QWidgetItemV2* self, intptr_t slot);
-int QWidgetItemV2_QBaseMinimumHeightForWidth(const QWidgetItemV2* self, int param1);
 int QWidgetItemV2_ControlTypes(const QWidgetItemV2* self);
 void QWidgetItemV2_OnControlTypes(const QWidgetItemV2* self, intptr_t slot);
 int QWidgetItemV2_QBaseControlTypes(const QWidgetItemV2* self);
+int QWidgetItemV2_MinimumHeightForWidth(const QWidgetItemV2* self, int param1);
+void QWidgetItemV2_OnMinimumHeightForWidth(const QWidgetItemV2* self, intptr_t slot);
+int QWidgetItemV2_QBaseMinimumHeightForWidth(const QWidgetItemV2* self, int param1);
 void QWidgetItemV2_Invalidate(QWidgetItemV2* self);
 void QWidgetItemV2_OnInvalidate(QWidgetItemV2* self, intptr_t slot);
 void QWidgetItemV2_QBaseInvalidate(QWidgetItemV2* self);

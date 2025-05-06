@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -18,6 +20,7 @@ extern "C" {
 #else
 typedef struct QLine QLine;
 typedef struct QLineF QLineF;
+typedef struct QMatrix QMatrix;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPoint QPoint;
 typedef struct QPointF QPointF;
@@ -34,15 +37,13 @@ typedef QTransform::TransformationType TransformationType; // C++ enum
 typedef int TransformationType; // C ABI enum
 #endif
 
-QTransform* QTransform_new(QTransform* other);
-QTransform* QTransform_new2(QTransform* other);
-QTransform* QTransform_new3(int param1);
-QTransform* QTransform_new4();
-QTransform* QTransform_new5(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32, double h33);
-QTransform* QTransform_new6(double h11, double h12, double h21, double h22, double dx, double dy);
-QTransform* QTransform_new7(QTransform* other);
-void QTransform_CopyAssign(QTransform* self, QTransform* other);
-void QTransform_MoveAssign(QTransform* self, QTransform* other);
+QTransform* QTransform_new(int param1);
+QTransform* QTransform_new2();
+QTransform* QTransform_new3(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32);
+QTransform* QTransform_new4(double h11, double h12, double h21, double h22, double dx, double dy);
+QTransform* QTransform_new5(QMatrix* mtx);
+QTransform* QTransform_new6(QTransform* other);
+QTransform* QTransform_new7(double h11, double h12, double h13, double h21, double h22, double h23, double h31, double h32, double h33);
 void QTransform_OperatorAssign(QTransform* self, QTransform* param1);
 bool QTransform_IsAffine(const QTransform* self);
 bool QTransform_IsIdentity(const QTransform* self);
@@ -52,6 +53,7 @@ bool QTransform_IsRotating(const QTransform* self);
 bool QTransform_IsTranslating(const QTransform* self);
 int QTransform_Type(const QTransform* self);
 double QTransform_Determinant(const QTransform* self);
+double QTransform_Det(const QTransform* self);
 double QTransform_M11(const QTransform* self);
 double QTransform_M12(const QTransform* self);
 double QTransform_M13(const QTransform* self);
@@ -88,6 +90,7 @@ QRect* QTransform_MapRect(const QTransform* self, QRect* param1);
 QRectF* QTransform_MapRectWithQRectF(const QTransform* self, QRectF* param1);
 void QTransform_Map2(const QTransform* self, int x, int y, int* tx, int* ty);
 void QTransform_Map3(const QTransform* self, double x, double y, double* tx, double* ty);
+QMatrix* QTransform_ToAffine(const QTransform* self);
 QTransform* QTransform_OperatorMultiplyAssignWithDiv(QTransform* self, double div);
 QTransform* QTransform_OperatorDivideAssign(QTransform* self, double div);
 QTransform* QTransform_OperatorPlusAssign(QTransform* self, double div);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -96,10 +95,15 @@ int QDialog_Metacall(QDialog* self, int param1, int param2, void** param3);
 void QDialog_OnMetacall(QDialog* self, intptr_t slot);
 int QDialog_QBaseMetacall(QDialog* self, int param1, int param2, void** param3);
 libqt_string QDialog_Tr(const char* s);
+libqt_string QDialog_TrUtf8(const char* s);
 int QDialog_Result(const QDialog* self);
 void QDialog_SetVisible(QDialog* self, bool visible);
 void QDialog_OnSetVisible(QDialog* self, intptr_t slot);
 void QDialog_QBaseSetVisible(QDialog* self, bool visible);
+void QDialog_SetOrientation(QDialog* self, int orientation);
+int QDialog_Orientation(const QDialog* self);
+void QDialog_SetExtension(QDialog* self, QWidget* extension);
+QWidget* QDialog_Extension(const QDialog* self);
 QSize* QDialog_SizeHint(const QDialog* self);
 void QDialog_OnSizeHint(const QDialog* self, intptr_t slot);
 QSize* QDialog_QBaseSizeHint(const QDialog* self);
@@ -131,6 +135,7 @@ void QDialog_QBaseAccept(QDialog* self);
 void QDialog_Reject(QDialog* self);
 void QDialog_OnReject(QDialog* self, intptr_t slot);
 void QDialog_QBaseReject(QDialog* self);
+void QDialog_ShowExtension(QDialog* self, bool param1);
 void QDialog_KeyPressEvent(QDialog* self, QKeyEvent* param1);
 void QDialog_OnKeyPressEvent(QDialog* self, intptr_t slot);
 void QDialog_QBaseKeyPressEvent(QDialog* self, QKeyEvent* param1);
@@ -151,6 +156,8 @@ void QDialog_OnEventFilter(QDialog* self, intptr_t slot);
 bool QDialog_QBaseEventFilter(QDialog* self, QObject* param1, QEvent* param2);
 libqt_string QDialog_Tr2(const char* s, const char* c);
 libqt_string QDialog_Tr3(const char* s, const char* c, int n);
+libqt_string QDialog_TrUtf82(const char* s, const char* c);
+libqt_string QDialog_TrUtf83(const char* s, const char* c, int n);
 int QDialog_DevType(const QDialog* self);
 void QDialog_OnDevType(const QDialog* self, intptr_t slot);
 int QDialog_QBaseDevType(const QDialog* self);
@@ -190,9 +197,9 @@ void QDialog_QBaseFocusInEvent(QDialog* self, QFocusEvent* event);
 void QDialog_FocusOutEvent(QDialog* self, QFocusEvent* event);
 void QDialog_OnFocusOutEvent(QDialog* self, intptr_t slot);
 void QDialog_QBaseFocusOutEvent(QDialog* self, QFocusEvent* event);
-void QDialog_EnterEvent(QDialog* self, QEnterEvent* event);
+void QDialog_EnterEvent(QDialog* self, QEvent* event);
 void QDialog_OnEnterEvent(QDialog* self, intptr_t slot);
-void QDialog_QBaseEnterEvent(QDialog* self, QEnterEvent* event);
+void QDialog_QBaseEnterEvent(QDialog* self, QEvent* event);
 void QDialog_LeaveEvent(QDialog* self, QEvent* event);
 void QDialog_OnLeaveEvent(QDialog* self, intptr_t slot);
 void QDialog_QBaseLeaveEvent(QDialog* self, QEvent* event);
@@ -223,9 +230,9 @@ void QDialog_QBaseDropEvent(QDialog* self, QDropEvent* event);
 void QDialog_HideEvent(QDialog* self, QHideEvent* event);
 void QDialog_OnHideEvent(QDialog* self, intptr_t slot);
 void QDialog_QBaseHideEvent(QDialog* self, QHideEvent* event);
-bool QDialog_NativeEvent(QDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDialog_NativeEvent(QDialog* self, libqt_string eventType, void* message, long* result);
 void QDialog_OnNativeEvent(QDialog* self, intptr_t slot);
-bool QDialog_QBaseNativeEvent(QDialog* self, libqt_string eventType, void* message, intptr_t* result);
+bool QDialog_QBaseNativeEvent(QDialog* self, libqt_string eventType, void* message, long* result);
 void QDialog_ChangeEvent(QDialog* self, QEvent* param1);
 void QDialog_OnChangeEvent(QDialog* self, intptr_t slot);
 void QDialog_QBaseChangeEvent(QDialog* self, QEvent* param1);

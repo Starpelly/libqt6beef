@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,8 +18,6 @@ class VirtualQLayout : public QLayout {
   public:
     // Virtual class public types (including callbacks)
     using QLayout_Metacall_Callback = int (*)(QLayout*, QMetaObject::Call, int, void**);
-    using QLayout_Spacing_Callback = int (*)();
-    using QLayout_SetSpacing_Callback = void (*)(QLayout*, int);
     using QLayout_Invalidate_Callback = void (*)();
     using QLayout_Geometry_Callback = QRect (*)();
     using QLayout_AddItem_Callback = void (*)(QLayout*, QLayoutItem*);
@@ -27,12 +27,10 @@ class VirtualQLayout : public QLayout {
     using QLayout_SetGeometry_Callback = void (*)(QLayout*, const QRect&);
     using QLayout_ItemAt_Callback = QLayoutItem* (*)(const QLayout*, int);
     using QLayout_TakeAt_Callback = QLayoutItem* (*)(QLayout*, int);
-    using QLayout_IndexOf_Callback = int (*)(const QLayout*, const QWidget*);
-    using QLayout_IndexOfWithQLayoutItem_Callback = int (*)(const QLayout*, const QLayoutItem*);
+    using QLayout_IndexOf_Callback = int (*)(const QLayout*, QWidget*);
     using QLayout_Count_Callback = int (*)();
     using QLayout_IsEmpty_Callback = bool (*)();
     using QLayout_ControlTypes_Callback = QSizePolicy::ControlTypes (*)();
-    using QLayout_ReplaceWidget_Callback = QLayoutItem* (*)(QLayout*, QWidget*, QWidget*, Qt::FindChildOptions);
     using QLayout_Layout_Callback = QLayout* (*)();
     using QLayout_ChildEvent_Callback = void (*)(QLayout*, QChildEvent*);
     using QLayout_Event_Callback = bool (*)(QLayout*, QEvent*);
@@ -60,8 +58,6 @@ class VirtualQLayout : public QLayout {
   protected:
     // Instance callback storage
     QLayout_Metacall_Callback qlayout_metacall_callback = nullptr;
-    QLayout_Spacing_Callback qlayout_spacing_callback = nullptr;
-    QLayout_SetSpacing_Callback qlayout_setspacing_callback = nullptr;
     QLayout_Invalidate_Callback qlayout_invalidate_callback = nullptr;
     QLayout_Geometry_Callback qlayout_geometry_callback = nullptr;
     QLayout_AddItem_Callback qlayout_additem_callback = nullptr;
@@ -72,11 +68,9 @@ class VirtualQLayout : public QLayout {
     QLayout_ItemAt_Callback qlayout_itemat_callback = nullptr;
     QLayout_TakeAt_Callback qlayout_takeat_callback = nullptr;
     QLayout_IndexOf_Callback qlayout_indexof_callback = nullptr;
-    QLayout_IndexOfWithQLayoutItem_Callback qlayout_indexofwithqlayoutitem_callback = nullptr;
     QLayout_Count_Callback qlayout_count_callback = nullptr;
     QLayout_IsEmpty_Callback qlayout_isempty_callback = nullptr;
     QLayout_ControlTypes_Callback qlayout_controltypes_callback = nullptr;
-    QLayout_ReplaceWidget_Callback qlayout_replacewidget_callback = nullptr;
     QLayout_Layout_Callback qlayout_layout_callback = nullptr;
     QLayout_ChildEvent_Callback qlayout_childevent_callback = nullptr;
     QLayout_Event_Callback qlayout_event_callback = nullptr;
@@ -103,8 +97,6 @@ class VirtualQLayout : public QLayout {
 
     // Instance base flags
     mutable bool qlayout_metacall_isbase = false;
-    mutable bool qlayout_spacing_isbase = false;
-    mutable bool qlayout_setspacing_isbase = false;
     mutable bool qlayout_invalidate_isbase = false;
     mutable bool qlayout_geometry_isbase = false;
     mutable bool qlayout_additem_isbase = false;
@@ -115,11 +107,9 @@ class VirtualQLayout : public QLayout {
     mutable bool qlayout_itemat_isbase = false;
     mutable bool qlayout_takeat_isbase = false;
     mutable bool qlayout_indexof_isbase = false;
-    mutable bool qlayout_indexofwithqlayoutitem_isbase = false;
     mutable bool qlayout_count_isbase = false;
     mutable bool qlayout_isempty_isbase = false;
     mutable bool qlayout_controltypes_isbase = false;
-    mutable bool qlayout_replacewidget_isbase = false;
     mutable bool qlayout_layout_isbase = false;
     mutable bool qlayout_childevent_isbase = false;
     mutable bool qlayout_event_isbase = false;
@@ -150,8 +140,6 @@ class VirtualQLayout : public QLayout {
 
     ~VirtualQLayout() {
         qlayout_metacall_callback = nullptr;
-        qlayout_spacing_callback = nullptr;
-        qlayout_setspacing_callback = nullptr;
         qlayout_invalidate_callback = nullptr;
         qlayout_geometry_callback = nullptr;
         qlayout_additem_callback = nullptr;
@@ -162,11 +150,9 @@ class VirtualQLayout : public QLayout {
         qlayout_itemat_callback = nullptr;
         qlayout_takeat_callback = nullptr;
         qlayout_indexof_callback = nullptr;
-        qlayout_indexofwithqlayoutitem_callback = nullptr;
         qlayout_count_callback = nullptr;
         qlayout_isempty_callback = nullptr;
         qlayout_controltypes_callback = nullptr;
-        qlayout_replacewidget_callback = nullptr;
         qlayout_layout_callback = nullptr;
         qlayout_childevent_callback = nullptr;
         qlayout_event_callback = nullptr;
@@ -194,8 +180,6 @@ class VirtualQLayout : public QLayout {
 
     // Callback setters
     void setQLayout_Metacall_Callback(QLayout_Metacall_Callback cb) { qlayout_metacall_callback = cb; }
-    void setQLayout_Spacing_Callback(QLayout_Spacing_Callback cb) { qlayout_spacing_callback = cb; }
-    void setQLayout_SetSpacing_Callback(QLayout_SetSpacing_Callback cb) { qlayout_setspacing_callback = cb; }
     void setQLayout_Invalidate_Callback(QLayout_Invalidate_Callback cb) { qlayout_invalidate_callback = cb; }
     void setQLayout_Geometry_Callback(QLayout_Geometry_Callback cb) { qlayout_geometry_callback = cb; }
     void setQLayout_AddItem_Callback(QLayout_AddItem_Callback cb) { qlayout_additem_callback = cb; }
@@ -206,11 +190,9 @@ class VirtualQLayout : public QLayout {
     void setQLayout_ItemAt_Callback(QLayout_ItemAt_Callback cb) { qlayout_itemat_callback = cb; }
     void setQLayout_TakeAt_Callback(QLayout_TakeAt_Callback cb) { qlayout_takeat_callback = cb; }
     void setQLayout_IndexOf_Callback(QLayout_IndexOf_Callback cb) { qlayout_indexof_callback = cb; }
-    void setQLayout_IndexOfWithQLayoutItem_Callback(QLayout_IndexOfWithQLayoutItem_Callback cb) { qlayout_indexofwithqlayoutitem_callback = cb; }
     void setQLayout_Count_Callback(QLayout_Count_Callback cb) { qlayout_count_callback = cb; }
     void setQLayout_IsEmpty_Callback(QLayout_IsEmpty_Callback cb) { qlayout_isempty_callback = cb; }
     void setQLayout_ControlTypes_Callback(QLayout_ControlTypes_Callback cb) { qlayout_controltypes_callback = cb; }
-    void setQLayout_ReplaceWidget_Callback(QLayout_ReplaceWidget_Callback cb) { qlayout_replacewidget_callback = cb; }
     void setQLayout_Layout_Callback(QLayout_Layout_Callback cb) { qlayout_layout_callback = cb; }
     void setQLayout_ChildEvent_Callback(QLayout_ChildEvent_Callback cb) { qlayout_childevent_callback = cb; }
     void setQLayout_Event_Callback(QLayout_Event_Callback cb) { qlayout_event_callback = cb; }
@@ -237,8 +219,6 @@ class VirtualQLayout : public QLayout {
 
     // Base flag setters
     void setQLayout_Metacall_IsBase(bool value) const { qlayout_metacall_isbase = value; }
-    void setQLayout_Spacing_IsBase(bool value) const { qlayout_spacing_isbase = value; }
-    void setQLayout_SetSpacing_IsBase(bool value) const { qlayout_setspacing_isbase = value; }
     void setQLayout_Invalidate_IsBase(bool value) const { qlayout_invalidate_isbase = value; }
     void setQLayout_Geometry_IsBase(bool value) const { qlayout_geometry_isbase = value; }
     void setQLayout_AddItem_IsBase(bool value) const { qlayout_additem_isbase = value; }
@@ -249,11 +229,9 @@ class VirtualQLayout : public QLayout {
     void setQLayout_ItemAt_IsBase(bool value) const { qlayout_itemat_isbase = value; }
     void setQLayout_TakeAt_IsBase(bool value) const { qlayout_takeat_isbase = value; }
     void setQLayout_IndexOf_IsBase(bool value) const { qlayout_indexof_isbase = value; }
-    void setQLayout_IndexOfWithQLayoutItem_IsBase(bool value) const { qlayout_indexofwithqlayoutitem_isbase = value; }
     void setQLayout_Count_IsBase(bool value) const { qlayout_count_isbase = value; }
     void setQLayout_IsEmpty_IsBase(bool value) const { qlayout_isempty_isbase = value; }
     void setQLayout_ControlTypes_IsBase(bool value) const { qlayout_controltypes_isbase = value; }
-    void setQLayout_ReplaceWidget_IsBase(bool value) const { qlayout_replacewidget_isbase = value; }
     void setQLayout_Layout_IsBase(bool value) const { qlayout_layout_isbase = value; }
     void setQLayout_ChildEvent_IsBase(bool value) const { qlayout_childevent_isbase = value; }
     void setQLayout_Event_IsBase(bool value) const { qlayout_event_isbase = value; }
@@ -287,30 +265,6 @@ class VirtualQLayout : public QLayout {
             return qlayout_metacall_callback(this, param1, param2, param3);
         } else {
             return QLayout::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual int spacing() const override {
-        if (qlayout_spacing_isbase) {
-            qlayout_spacing_isbase = false;
-            return QLayout::spacing();
-        } else if (qlayout_spacing_callback != nullptr) {
-            return qlayout_spacing_callback();
-        } else {
-            return QLayout::spacing();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setSpacing(int spacing) override {
-        if (qlayout_setspacing_isbase) {
-            qlayout_setspacing_isbase = false;
-            QLayout::setSpacing(spacing);
-        } else if (qlayout_setspacing_callback != nullptr) {
-            qlayout_setspacing_callback(this, spacing);
-        } else {
-            QLayout::setSpacing(spacing);
         }
     }
 
@@ -402,24 +356,12 @@ class VirtualQLayout : public QLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int indexOf(const QWidget* param1) const override {
+    virtual int indexOf(QWidget* param1) const override {
         if (qlayout_indexof_isbase) {
             qlayout_indexof_isbase = false;
             return QLayout::indexOf(param1);
         } else if (qlayout_indexof_callback != nullptr) {
             return qlayout_indexof_callback(this, param1);
-        } else {
-            return QLayout::indexOf(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual int indexOf(const QLayoutItem* param1) const override {
-        if (qlayout_indexofwithqlayoutitem_isbase) {
-            qlayout_indexofwithqlayoutitem_isbase = false;
-            return QLayout::indexOf(param1);
-        } else if (qlayout_indexofwithqlayoutitem_callback != nullptr) {
-            return qlayout_indexofwithqlayoutitem_callback(this, param1);
         } else {
             return QLayout::indexOf(param1);
         }
@@ -451,18 +393,6 @@ class VirtualQLayout : public QLayout {
             return qlayout_controltypes_callback();
         } else {
             return QLayout::controlTypes();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QLayoutItem* replaceWidget(QWidget* from, QWidget* to, Qt::FindChildOptions options) override {
-        if (qlayout_replacewidget_isbase) {
-            qlayout_replacewidget_isbase = false;
-            return QLayout::replaceWidget(from, to, options);
-        } else if (qlayout_replacewidget_callback != nullptr) {
-            return qlayout_replacewidget_callback(this, from, to, options);
-        } else {
-            return QLayout::replaceWidget(from, to, options);
         }
     }
 
@@ -604,7 +534,7 @@ class VirtualQLayout : public QLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qlayout_widget_isbase) {
             qlayout_widget_isbase = false;
             return QLayout::widget();

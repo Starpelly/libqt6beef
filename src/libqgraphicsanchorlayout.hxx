@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
     using QGraphicsAnchorLayout_GetContentsMargins_Callback = void (*)(const QGraphicsAnchorLayout*, qreal*, qreal*, qreal*, qreal*);
     using QGraphicsAnchorLayout_UpdateGeometry_Callback = void (*)();
     using QGraphicsAnchorLayout_WidgetEvent_Callback = void (*)(QGraphicsAnchorLayout*, QEvent*);
-    using QGraphicsAnchorLayout_IsEmpty_Callback = bool (*)();
     using QGraphicsAnchorLayout_AddChildLayoutItem_Callback = void (*)(QGraphicsAnchorLayout*, QGraphicsLayoutItem*);
     using QGraphicsAnchorLayout_SetGraphicsItem_Callback = void (*)(QGraphicsAnchorLayout*, QGraphicsItem*);
     using QGraphicsAnchorLayout_SetOwnedByLayout_Callback = void (*)(QGraphicsAnchorLayout*, bool);
@@ -40,7 +41,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
     QGraphicsAnchorLayout_GetContentsMargins_Callback qgraphicsanchorlayout_getcontentsmargins_callback = nullptr;
     QGraphicsAnchorLayout_UpdateGeometry_Callback qgraphicsanchorlayout_updategeometry_callback = nullptr;
     QGraphicsAnchorLayout_WidgetEvent_Callback qgraphicsanchorlayout_widgetevent_callback = nullptr;
-    QGraphicsAnchorLayout_IsEmpty_Callback qgraphicsanchorlayout_isempty_callback = nullptr;
     QGraphicsAnchorLayout_AddChildLayoutItem_Callback qgraphicsanchorlayout_addchildlayoutitem_callback = nullptr;
     QGraphicsAnchorLayout_SetGraphicsItem_Callback qgraphicsanchorlayout_setgraphicsitem_callback = nullptr;
     QGraphicsAnchorLayout_SetOwnedByLayout_Callback qgraphicsanchorlayout_setownedbylayout_callback = nullptr;
@@ -55,7 +55,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
     mutable bool qgraphicsanchorlayout_getcontentsmargins_isbase = false;
     mutable bool qgraphicsanchorlayout_updategeometry_isbase = false;
     mutable bool qgraphicsanchorlayout_widgetevent_isbase = false;
-    mutable bool qgraphicsanchorlayout_isempty_isbase = false;
     mutable bool qgraphicsanchorlayout_addchildlayoutitem_isbase = false;
     mutable bool qgraphicsanchorlayout_setgraphicsitem_isbase = false;
     mutable bool qgraphicsanchorlayout_setownedbylayout_isbase = false;
@@ -74,7 +73,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
         qgraphicsanchorlayout_getcontentsmargins_callback = nullptr;
         qgraphicsanchorlayout_updategeometry_callback = nullptr;
         qgraphicsanchorlayout_widgetevent_callback = nullptr;
-        qgraphicsanchorlayout_isempty_callback = nullptr;
         qgraphicsanchorlayout_addchildlayoutitem_callback = nullptr;
         qgraphicsanchorlayout_setgraphicsitem_callback = nullptr;
         qgraphicsanchorlayout_setownedbylayout_callback = nullptr;
@@ -90,7 +88,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
     void setQGraphicsAnchorLayout_GetContentsMargins_Callback(QGraphicsAnchorLayout_GetContentsMargins_Callback cb) { qgraphicsanchorlayout_getcontentsmargins_callback = cb; }
     void setQGraphicsAnchorLayout_UpdateGeometry_Callback(QGraphicsAnchorLayout_UpdateGeometry_Callback cb) { qgraphicsanchorlayout_updategeometry_callback = cb; }
     void setQGraphicsAnchorLayout_WidgetEvent_Callback(QGraphicsAnchorLayout_WidgetEvent_Callback cb) { qgraphicsanchorlayout_widgetevent_callback = cb; }
-    void setQGraphicsAnchorLayout_IsEmpty_Callback(QGraphicsAnchorLayout_IsEmpty_Callback cb) { qgraphicsanchorlayout_isempty_callback = cb; }
     void setQGraphicsAnchorLayout_AddChildLayoutItem_Callback(QGraphicsAnchorLayout_AddChildLayoutItem_Callback cb) { qgraphicsanchorlayout_addchildlayoutitem_callback = cb; }
     void setQGraphicsAnchorLayout_SetGraphicsItem_Callback(QGraphicsAnchorLayout_SetGraphicsItem_Callback cb) { qgraphicsanchorlayout_setgraphicsitem_callback = cb; }
     void setQGraphicsAnchorLayout_SetOwnedByLayout_Callback(QGraphicsAnchorLayout_SetOwnedByLayout_Callback cb) { qgraphicsanchorlayout_setownedbylayout_callback = cb; }
@@ -105,7 +102,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
     void setQGraphicsAnchorLayout_GetContentsMargins_IsBase(bool value) const { qgraphicsanchorlayout_getcontentsmargins_isbase = value; }
     void setQGraphicsAnchorLayout_UpdateGeometry_IsBase(bool value) const { qgraphicsanchorlayout_updategeometry_isbase = value; }
     void setQGraphicsAnchorLayout_WidgetEvent_IsBase(bool value) const { qgraphicsanchorlayout_widgetevent_isbase = value; }
-    void setQGraphicsAnchorLayout_IsEmpty_IsBase(bool value) const { qgraphicsanchorlayout_isempty_isbase = value; }
     void setQGraphicsAnchorLayout_AddChildLayoutItem_IsBase(bool value) const { qgraphicsanchorlayout_addchildlayoutitem_isbase = value; }
     void setQGraphicsAnchorLayout_SetGraphicsItem_IsBase(bool value) const { qgraphicsanchorlayout_setgraphicsitem_isbase = value; }
     void setQGraphicsAnchorLayout_SetOwnedByLayout_IsBase(bool value) const { qgraphicsanchorlayout_setownedbylayout_isbase = value; }
@@ -215,18 +211,6 @@ class VirtualQGraphicsAnchorLayout : public QGraphicsAnchorLayout {
             qgraphicsanchorlayout_widgetevent_callback(this, e);
         } else {
             QGraphicsAnchorLayout::widgetEvent(e);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool isEmpty() const override {
-        if (qgraphicsanchorlayout_isempty_isbase) {
-            qgraphicsanchorlayout_isempty_isbase = false;
-            return QGraphicsAnchorLayout::isEmpty();
-        } else if (qgraphicsanchorlayout_isempty_callback != nullptr) {
-            return qgraphicsanchorlayout_isempty_callback();
-        } else {
-            return QGraphicsAnchorLayout::isEmpty();
         }
     }
 

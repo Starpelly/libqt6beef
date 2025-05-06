@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -59,6 +58,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -66,7 +66,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -103,6 +102,7 @@ int QMainWindow_Metacall(QMainWindow* self, int param1, int param2, void** param
 void QMainWindow_OnMetacall(QMainWindow* self, intptr_t slot);
 int QMainWindow_QBaseMetacall(QMainWindow* self, int param1, int param2, void** param3);
 libqt_string QMainWindow_Tr(const char* s);
+libqt_string QMainWindow_TrUtf8(const char* s);
 QSize* QMainWindow_IconSize(const QMainWindow* self);
 void QMainWindow_SetIconSize(QMainWindow* self, QSize* iconSize);
 int QMainWindow_ToolButtonStyle(const QMainWindow* self);
@@ -171,6 +171,8 @@ void QMainWindow_OnEvent(QMainWindow* self, intptr_t slot);
 bool QMainWindow_QBaseEvent(QMainWindow* self, QEvent* event);
 libqt_string QMainWindow_Tr2(const char* s, const char* c);
 libqt_string QMainWindow_Tr3(const char* s, const char* c, int n);
+libqt_string QMainWindow_TrUtf82(const char* s, const char* c);
+libqt_string QMainWindow_TrUtf83(const char* s, const char* c, int n);
 void QMainWindow_AddToolBarBreak1(QMainWindow* self, int area);
 libqt_string QMainWindow_SaveState1(const QMainWindow* self, int version);
 bool QMainWindow_RestoreState2(QMainWindow* self, libqt_string state, int version);
@@ -222,9 +224,9 @@ void QMainWindow_QBaseFocusInEvent(QMainWindow* self, QFocusEvent* event);
 void QMainWindow_FocusOutEvent(QMainWindow* self, QFocusEvent* event);
 void QMainWindow_OnFocusOutEvent(QMainWindow* self, intptr_t slot);
 void QMainWindow_QBaseFocusOutEvent(QMainWindow* self, QFocusEvent* event);
-void QMainWindow_EnterEvent(QMainWindow* self, QEnterEvent* event);
+void QMainWindow_EnterEvent(QMainWindow* self, QEvent* event);
 void QMainWindow_OnEnterEvent(QMainWindow* self, intptr_t slot);
-void QMainWindow_QBaseEnterEvent(QMainWindow* self, QEnterEvent* event);
+void QMainWindow_QBaseEnterEvent(QMainWindow* self, QEvent* event);
 void QMainWindow_LeaveEvent(QMainWindow* self, QEvent* event);
 void QMainWindow_OnLeaveEvent(QMainWindow* self, intptr_t slot);
 void QMainWindow_QBaseLeaveEvent(QMainWindow* self, QEvent* event);
@@ -264,9 +266,9 @@ void QMainWindow_QBaseShowEvent(QMainWindow* self, QShowEvent* event);
 void QMainWindow_HideEvent(QMainWindow* self, QHideEvent* event);
 void QMainWindow_OnHideEvent(QMainWindow* self, intptr_t slot);
 void QMainWindow_QBaseHideEvent(QMainWindow* self, QHideEvent* event);
-bool QMainWindow_NativeEvent(QMainWindow* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMainWindow_NativeEvent(QMainWindow* self, libqt_string eventType, void* message, long* result);
 void QMainWindow_OnNativeEvent(QMainWindow* self, intptr_t slot);
-bool QMainWindow_QBaseNativeEvent(QMainWindow* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMainWindow_QBaseNativeEvent(QMainWindow* self, libqt_string eventType, void* message, long* result);
 void QMainWindow_ChangeEvent(QMainWindow* self, QEvent* param1);
 void QMainWindow_OnChangeEvent(QMainWindow* self, intptr_t slot);
 void QMainWindow_QBaseChangeEvent(QMainWindow* self, QEvent* param1);

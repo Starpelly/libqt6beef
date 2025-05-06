@@ -1,6 +1,4 @@
-#include <QAnyStringView>
 #include <QCalendar>
-#define WORKAROUND_INNER_CLASS_DEFINITION_QCalendar__SystemId
 #define WORKAROUND_INNER_CLASS_DEFINITION_QCalendar__YearMonthDay
 #include <QDate>
 #include <QList>
@@ -26,14 +24,6 @@ QCalendar* QCalendar_new3() {
 
 QCalendar* QCalendar_new4(int system) {
     return new QCalendar(static_cast<QCalendar::System>(system));
-}
-
-QCalendar* QCalendar_new5(char* name) {
-    return new QCalendar(QAnyStringView(name));
-}
-
-QCalendar* QCalendar_new6(QCalendar__SystemId* id) {
-    return new QCalendar(*id);
 }
 
 void QCalendar_CopyAssign(QCalendar* self, QCalendar* other) {
@@ -318,37 +308,5 @@ bool QCalendar__YearMonthDay_IsValid(const QCalendar__YearMonthDay* self) {
 }
 
 void QCalendar__YearMonthDay_Delete(QCalendar__YearMonthDay* self) {
-    delete self;
-}
-
-QCalendar__SystemId* QCalendar__SystemId_new(QCalendar__SystemId* other) {
-    return new QCalendar::SystemId(*other);
-}
-
-QCalendar__SystemId* QCalendar__SystemId_new2(QCalendar__SystemId* other) {
-    return new QCalendar::SystemId(std::move(*other));
-}
-
-QCalendar__SystemId* QCalendar__SystemId_new3() {
-    return new QCalendar::SystemId();
-}
-
-void QCalendar__SystemId_CopyAssign(QCalendar__SystemId* self, QCalendar__SystemId* other) {
-    *self = *other;
-}
-
-void QCalendar__SystemId_MoveAssign(QCalendar__SystemId* self, QCalendar__SystemId* other) {
-    *self = std::move(*other);
-}
-
-size_t QCalendar__SystemId_Index(const QCalendar__SystemId* self) {
-    return self->index();
-}
-
-bool QCalendar__SystemId_IsValid(const QCalendar__SystemId* self) {
-    return self->isValid();
-}
-
-void QCalendar__SystemId_Delete(QCalendar__SystemId* self) {
     delete self;
 }

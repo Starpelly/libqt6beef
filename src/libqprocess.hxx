@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,23 +18,23 @@ class VirtualQProcess : public QProcess {
   public:
     // Virtual class public types (including callbacks)
     using QProcess_Metacall_Callback = int (*)(QProcess*, QMetaObject::Call, int, void**);
-    using QProcess_Open_Callback = bool (*)(QProcess*, QIODeviceBase::OpenMode);
+    using QProcess_Open_Callback = bool (*)(QProcess*, QIODevice::OpenMode);
     using QProcess_WaitForReadyRead_Callback = bool (*)(QProcess*, int);
     using QProcess_WaitForBytesWritten_Callback = bool (*)(QProcess*, int);
+    using QProcess_BytesAvailable_Callback = qint64 (*)();
     using QProcess_BytesToWrite_Callback = qint64 (*)();
     using QProcess_IsSequential_Callback = bool (*)();
+    using QProcess_CanReadLine_Callback = bool (*)();
     using QProcess_Close_Callback = void (*)();
+    using QProcess_AtEnd_Callback = bool (*)();
+    using QProcess_SetupChildProcess_Callback = void (*)();
     using QProcess_ReadData_Callback = qint64 (*)(QProcess*, char*, qint64);
     using QProcess_WriteData_Callback = qint64 (*)(QProcess*, const char*, qint64);
     using QProcess_Pos_Callback = qint64 (*)();
     using QProcess_Size_Callback = qint64 (*)();
     using QProcess_Seek_Callback = bool (*)(QProcess*, qint64);
-    using QProcess_AtEnd_Callback = bool (*)();
     using QProcess_Reset_Callback = bool (*)();
-    using QProcess_BytesAvailable_Callback = qint64 (*)();
-    using QProcess_CanReadLine_Callback = bool (*)();
     using QProcess_ReadLineData_Callback = qint64 (*)(QProcess*, char*, qint64);
-    using QProcess_SkipData_Callback = qint64 (*)(QProcess*, qint64);
     using QProcess_Event_Callback = bool (*)(QProcess*, QEvent*);
     using QProcess_EventFilter_Callback = bool (*)(QProcess*, QObject*, QEvent*);
     using QProcess_TimerEvent_Callback = void (*)(QProcess*, QTimerEvent*);
@@ -41,7 +43,7 @@ class VirtualQProcess : public QProcess {
     using QProcess_ConnectNotify_Callback = void (*)(QProcess*, const QMetaMethod&);
     using QProcess_DisconnectNotify_Callback = void (*)(QProcess*, const QMetaMethod&);
     using QProcess_SetProcessState_Callback = void (*)(QProcess*, QProcess::ProcessState);
-    using QProcess_SetOpenMode_Callback = void (*)(QProcess*, QIODeviceBase::OpenMode);
+    using QProcess_SetOpenMode_Callback = void (*)(QProcess*, QIODevice::OpenMode);
     using QProcess_SetErrorString_Callback = void (*)(QProcess*, const QString&);
     using QProcess_Sender_Callback = QObject* (*)();
     using QProcess_SenderSignalIndex_Callback = int (*)();
@@ -54,20 +56,20 @@ class VirtualQProcess : public QProcess {
     QProcess_Open_Callback qprocess_open_callback = nullptr;
     QProcess_WaitForReadyRead_Callback qprocess_waitforreadyread_callback = nullptr;
     QProcess_WaitForBytesWritten_Callback qprocess_waitforbyteswritten_callback = nullptr;
+    QProcess_BytesAvailable_Callback qprocess_bytesavailable_callback = nullptr;
     QProcess_BytesToWrite_Callback qprocess_bytestowrite_callback = nullptr;
     QProcess_IsSequential_Callback qprocess_issequential_callback = nullptr;
+    QProcess_CanReadLine_Callback qprocess_canreadline_callback = nullptr;
     QProcess_Close_Callback qprocess_close_callback = nullptr;
+    QProcess_AtEnd_Callback qprocess_atend_callback = nullptr;
+    QProcess_SetupChildProcess_Callback qprocess_setupchildprocess_callback = nullptr;
     QProcess_ReadData_Callback qprocess_readdata_callback = nullptr;
     QProcess_WriteData_Callback qprocess_writedata_callback = nullptr;
     QProcess_Pos_Callback qprocess_pos_callback = nullptr;
     QProcess_Size_Callback qprocess_size_callback = nullptr;
     QProcess_Seek_Callback qprocess_seek_callback = nullptr;
-    QProcess_AtEnd_Callback qprocess_atend_callback = nullptr;
     QProcess_Reset_Callback qprocess_reset_callback = nullptr;
-    QProcess_BytesAvailable_Callback qprocess_bytesavailable_callback = nullptr;
-    QProcess_CanReadLine_Callback qprocess_canreadline_callback = nullptr;
     QProcess_ReadLineData_Callback qprocess_readlinedata_callback = nullptr;
-    QProcess_SkipData_Callback qprocess_skipdata_callback = nullptr;
     QProcess_Event_Callback qprocess_event_callback = nullptr;
     QProcess_EventFilter_Callback qprocess_eventfilter_callback = nullptr;
     QProcess_TimerEvent_Callback qprocess_timerevent_callback = nullptr;
@@ -88,20 +90,20 @@ class VirtualQProcess : public QProcess {
     mutable bool qprocess_open_isbase = false;
     mutable bool qprocess_waitforreadyread_isbase = false;
     mutable bool qprocess_waitforbyteswritten_isbase = false;
+    mutable bool qprocess_bytesavailable_isbase = false;
     mutable bool qprocess_bytestowrite_isbase = false;
     mutable bool qprocess_issequential_isbase = false;
+    mutable bool qprocess_canreadline_isbase = false;
     mutable bool qprocess_close_isbase = false;
+    mutable bool qprocess_atend_isbase = false;
+    mutable bool qprocess_setupchildprocess_isbase = false;
     mutable bool qprocess_readdata_isbase = false;
     mutable bool qprocess_writedata_isbase = false;
     mutable bool qprocess_pos_isbase = false;
     mutable bool qprocess_size_isbase = false;
     mutable bool qprocess_seek_isbase = false;
-    mutable bool qprocess_atend_isbase = false;
     mutable bool qprocess_reset_isbase = false;
-    mutable bool qprocess_bytesavailable_isbase = false;
-    mutable bool qprocess_canreadline_isbase = false;
     mutable bool qprocess_readlinedata_isbase = false;
-    mutable bool qprocess_skipdata_isbase = false;
     mutable bool qprocess_event_isbase = false;
     mutable bool qprocess_eventfilter_isbase = false;
     mutable bool qprocess_timerevent_isbase = false;
@@ -126,20 +128,20 @@ class VirtualQProcess : public QProcess {
         qprocess_open_callback = nullptr;
         qprocess_waitforreadyread_callback = nullptr;
         qprocess_waitforbyteswritten_callback = nullptr;
+        qprocess_bytesavailable_callback = nullptr;
         qprocess_bytestowrite_callback = nullptr;
         qprocess_issequential_callback = nullptr;
+        qprocess_canreadline_callback = nullptr;
         qprocess_close_callback = nullptr;
+        qprocess_atend_callback = nullptr;
+        qprocess_setupchildprocess_callback = nullptr;
         qprocess_readdata_callback = nullptr;
         qprocess_writedata_callback = nullptr;
         qprocess_pos_callback = nullptr;
         qprocess_size_callback = nullptr;
         qprocess_seek_callback = nullptr;
-        qprocess_atend_callback = nullptr;
         qprocess_reset_callback = nullptr;
-        qprocess_bytesavailable_callback = nullptr;
-        qprocess_canreadline_callback = nullptr;
         qprocess_readlinedata_callback = nullptr;
-        qprocess_skipdata_callback = nullptr;
         qprocess_event_callback = nullptr;
         qprocess_eventfilter_callback = nullptr;
         qprocess_timerevent_callback = nullptr;
@@ -161,20 +163,20 @@ class VirtualQProcess : public QProcess {
     void setQProcess_Open_Callback(QProcess_Open_Callback cb) { qprocess_open_callback = cb; }
     void setQProcess_WaitForReadyRead_Callback(QProcess_WaitForReadyRead_Callback cb) { qprocess_waitforreadyread_callback = cb; }
     void setQProcess_WaitForBytesWritten_Callback(QProcess_WaitForBytesWritten_Callback cb) { qprocess_waitforbyteswritten_callback = cb; }
+    void setQProcess_BytesAvailable_Callback(QProcess_BytesAvailable_Callback cb) { qprocess_bytesavailable_callback = cb; }
     void setQProcess_BytesToWrite_Callback(QProcess_BytesToWrite_Callback cb) { qprocess_bytestowrite_callback = cb; }
     void setQProcess_IsSequential_Callback(QProcess_IsSequential_Callback cb) { qprocess_issequential_callback = cb; }
+    void setQProcess_CanReadLine_Callback(QProcess_CanReadLine_Callback cb) { qprocess_canreadline_callback = cb; }
     void setQProcess_Close_Callback(QProcess_Close_Callback cb) { qprocess_close_callback = cb; }
+    void setQProcess_AtEnd_Callback(QProcess_AtEnd_Callback cb) { qprocess_atend_callback = cb; }
+    void setQProcess_SetupChildProcess_Callback(QProcess_SetupChildProcess_Callback cb) { qprocess_setupchildprocess_callback = cb; }
     void setQProcess_ReadData_Callback(QProcess_ReadData_Callback cb) { qprocess_readdata_callback = cb; }
     void setQProcess_WriteData_Callback(QProcess_WriteData_Callback cb) { qprocess_writedata_callback = cb; }
     void setQProcess_Pos_Callback(QProcess_Pos_Callback cb) { qprocess_pos_callback = cb; }
     void setQProcess_Size_Callback(QProcess_Size_Callback cb) { qprocess_size_callback = cb; }
     void setQProcess_Seek_Callback(QProcess_Seek_Callback cb) { qprocess_seek_callback = cb; }
-    void setQProcess_AtEnd_Callback(QProcess_AtEnd_Callback cb) { qprocess_atend_callback = cb; }
     void setQProcess_Reset_Callback(QProcess_Reset_Callback cb) { qprocess_reset_callback = cb; }
-    void setQProcess_BytesAvailable_Callback(QProcess_BytesAvailable_Callback cb) { qprocess_bytesavailable_callback = cb; }
-    void setQProcess_CanReadLine_Callback(QProcess_CanReadLine_Callback cb) { qprocess_canreadline_callback = cb; }
     void setQProcess_ReadLineData_Callback(QProcess_ReadLineData_Callback cb) { qprocess_readlinedata_callback = cb; }
-    void setQProcess_SkipData_Callback(QProcess_SkipData_Callback cb) { qprocess_skipdata_callback = cb; }
     void setQProcess_Event_Callback(QProcess_Event_Callback cb) { qprocess_event_callback = cb; }
     void setQProcess_EventFilter_Callback(QProcess_EventFilter_Callback cb) { qprocess_eventfilter_callback = cb; }
     void setQProcess_TimerEvent_Callback(QProcess_TimerEvent_Callback cb) { qprocess_timerevent_callback = cb; }
@@ -195,20 +197,20 @@ class VirtualQProcess : public QProcess {
     void setQProcess_Open_IsBase(bool value) const { qprocess_open_isbase = value; }
     void setQProcess_WaitForReadyRead_IsBase(bool value) const { qprocess_waitforreadyread_isbase = value; }
     void setQProcess_WaitForBytesWritten_IsBase(bool value) const { qprocess_waitforbyteswritten_isbase = value; }
+    void setQProcess_BytesAvailable_IsBase(bool value) const { qprocess_bytesavailable_isbase = value; }
     void setQProcess_BytesToWrite_IsBase(bool value) const { qprocess_bytestowrite_isbase = value; }
     void setQProcess_IsSequential_IsBase(bool value) const { qprocess_issequential_isbase = value; }
+    void setQProcess_CanReadLine_IsBase(bool value) const { qprocess_canreadline_isbase = value; }
     void setQProcess_Close_IsBase(bool value) const { qprocess_close_isbase = value; }
+    void setQProcess_AtEnd_IsBase(bool value) const { qprocess_atend_isbase = value; }
+    void setQProcess_SetupChildProcess_IsBase(bool value) const { qprocess_setupchildprocess_isbase = value; }
     void setQProcess_ReadData_IsBase(bool value) const { qprocess_readdata_isbase = value; }
     void setQProcess_WriteData_IsBase(bool value) const { qprocess_writedata_isbase = value; }
     void setQProcess_Pos_IsBase(bool value) const { qprocess_pos_isbase = value; }
     void setQProcess_Size_IsBase(bool value) const { qprocess_size_isbase = value; }
     void setQProcess_Seek_IsBase(bool value) const { qprocess_seek_isbase = value; }
-    void setQProcess_AtEnd_IsBase(bool value) const { qprocess_atend_isbase = value; }
     void setQProcess_Reset_IsBase(bool value) const { qprocess_reset_isbase = value; }
-    void setQProcess_BytesAvailable_IsBase(bool value) const { qprocess_bytesavailable_isbase = value; }
-    void setQProcess_CanReadLine_IsBase(bool value) const { qprocess_canreadline_isbase = value; }
     void setQProcess_ReadLineData_IsBase(bool value) const { qprocess_readlinedata_isbase = value; }
-    void setQProcess_SkipData_IsBase(bool value) const { qprocess_skipdata_isbase = value; }
     void setQProcess_Event_IsBase(bool value) const { qprocess_event_isbase = value; }
     void setQProcess_EventFilter_IsBase(bool value) const { qprocess_eventfilter_isbase = value; }
     void setQProcess_TimerEvent_IsBase(bool value) const { qprocess_timerevent_isbase = value; }
@@ -237,7 +239,7 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODeviceBase::OpenMode mode) override {
+    virtual bool open(QIODevice::OpenMode mode) override {
         if (qprocess_open_isbase) {
             qprocess_open_isbase = false;
             return QProcess::open(mode);
@@ -273,6 +275,18 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual qint64 bytesAvailable() const override {
+        if (qprocess_bytesavailable_isbase) {
+            qprocess_bytesavailable_isbase = false;
+            return QProcess::bytesAvailable();
+        } else if (qprocess_bytesavailable_callback != nullptr) {
+            return qprocess_bytesavailable_callback();
+        } else {
+            return QProcess::bytesAvailable();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual qint64 bytesToWrite() const override {
         if (qprocess_bytestowrite_isbase) {
             qprocess_bytestowrite_isbase = false;
@@ -297,6 +311,18 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
+    virtual bool canReadLine() const override {
+        if (qprocess_canreadline_isbase) {
+            qprocess_canreadline_isbase = false;
+            return QProcess::canReadLine();
+        } else if (qprocess_canreadline_callback != nullptr) {
+            return qprocess_canreadline_callback();
+        } else {
+            return QProcess::canReadLine();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
     virtual void close() override {
         if (qprocess_close_isbase) {
             qprocess_close_isbase = false;
@@ -305,6 +331,30 @@ class VirtualQProcess : public QProcess {
             qprocess_close_callback();
         } else {
             QProcess::close();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual bool atEnd() const override {
+        if (qprocess_atend_isbase) {
+            qprocess_atend_isbase = false;
+            return QProcess::atEnd();
+        } else if (qprocess_atend_callback != nullptr) {
+            return qprocess_atend_callback();
+        } else {
+            return QProcess::atEnd();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    virtual void setupChildProcess() override {
+        if (qprocess_setupchildprocess_isbase) {
+            qprocess_setupchildprocess_isbase = false;
+            QProcess::setupChildProcess();
+        } else if (qprocess_setupchildprocess_callback != nullptr) {
+            qprocess_setupchildprocess_callback();
+        } else {
+            QProcess::setupChildProcess();
         }
     }
 
@@ -369,18 +419,6 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool atEnd() const override {
-        if (qprocess_atend_isbase) {
-            qprocess_atend_isbase = false;
-            return QProcess::atEnd();
-        } else if (qprocess_atend_callback != nullptr) {
-            return qprocess_atend_callback();
-        } else {
-            return QProcess::atEnd();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool reset() override {
         if (qprocess_reset_isbase) {
             qprocess_reset_isbase = false;
@@ -393,30 +431,6 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual qint64 bytesAvailable() const override {
-        if (qprocess_bytesavailable_isbase) {
-            qprocess_bytesavailable_isbase = false;
-            return QProcess::bytesAvailable();
-        } else if (qprocess_bytesavailable_callback != nullptr) {
-            return qprocess_bytesavailable_callback();
-        } else {
-            return QProcess::bytesAvailable();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool canReadLine() const override {
-        if (qprocess_canreadline_isbase) {
-            qprocess_canreadline_isbase = false;
-            return QProcess::canReadLine();
-        } else if (qprocess_canreadline_callback != nullptr) {
-            return qprocess_canreadline_callback();
-        } else {
-            return QProcess::canReadLine();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual qint64 readLineData(char* data, qint64 maxlen) override {
         if (qprocess_readlinedata_isbase) {
             qprocess_readlinedata_isbase = false;
@@ -425,18 +439,6 @@ class VirtualQProcess : public QProcess {
             return qprocess_readlinedata_callback(this, data, maxlen);
         } else {
             return QProcess::readLineData(data, maxlen);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual qint64 skipData(qint64 maxSize) override {
-        if (qprocess_skipdata_isbase) {
-            qprocess_skipdata_isbase = false;
-            return QProcess::skipData(maxSize);
-        } else if (qprocess_skipdata_callback != nullptr) {
-            return qprocess_skipdata_callback(this, maxSize);
-        } else {
-            return QProcess::skipData(maxSize);
         }
     }
 
@@ -537,7 +539,7 @@ class VirtualQProcess : public QProcess {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODeviceBase::OpenMode openMode) {
+    void setOpenMode(QIODevice::OpenMode openMode) {
         if (qprocess_setopenmode_isbase) {
             qprocess_setopenmode_isbase = false;
             QProcess::setOpenMode(openMode);

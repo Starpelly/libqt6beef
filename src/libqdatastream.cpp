@@ -1,7 +1,6 @@
 #include <QByteArray>
 #include <QDataStream>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <qdatastream.h>
 #include "libqdatastream.h"
 #include "libqdatastream.hxx"
@@ -25,6 +24,10 @@ QIODevice* QDataStream_Device(const QDataStream* self) {
 
 void QDataStream_SetDevice(QDataStream* self, QIODevice* device) {
     self->setDevice(device);
+}
+
+void QDataStream_UnsetDevice(QDataStream* self) {
+    self->unsetDevice();
 }
 
 bool QDataStream_AtEnd(const QDataStream* self) {
@@ -67,11 +70,7 @@ void QDataStream_SetVersion(QDataStream* self, int version) {
     self->setVersion(static_cast<int>(version));
 }
 
-void QDataStream_OperatorShiftRight(QDataStream* self, char* i) {
-    self->operator>>(static_cast<char&>(*i));
-}
-
-void QDataStream_OperatorShiftRightWithQint8(QDataStream* self, signed char* i) {
+void QDataStream_OperatorShiftRight(QDataStream* self, signed char* i) {
     self->operator>>(static_cast<qint8&>(*i));
 }
 
@@ -119,11 +118,7 @@ void QDataStream_OperatorShiftRightWithStr(QDataStream* self, char* str) {
     self->operator>>(str);
 }
 
-void QDataStream_OperatorShiftLeft(QDataStream* self, char i) {
-    self->operator<<(static_cast<char>(i));
-}
-
-void QDataStream_OperatorShiftLeftWithQint8(QDataStream* self, signed char i) {
+void QDataStream_OperatorShiftLeft(QDataStream* self, signed char i) {
     self->operator<<(static_cast<qint8>(i));
 }
 
@@ -207,10 +202,6 @@ void QDataStream_RollbackTransaction(QDataStream* self) {
 
 void QDataStream_AbortTransaction(QDataStream* self) {
     self->abortTransaction();
-}
-
-bool QDataStream_IsDeviceTransactionStarted(const QDataStream* self) {
-    return self->isDeviceTransactionStarted();
 }
 
 void QDataStream_Delete(QDataStream* self) {

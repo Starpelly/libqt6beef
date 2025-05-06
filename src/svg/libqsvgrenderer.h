@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -19,14 +21,14 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
+typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QRect QRect;
 typedef struct QRectF QRectF;
@@ -53,6 +55,7 @@ int QSvgRenderer_Metacall(QSvgRenderer* self, int param1, int param2, void** par
 void QSvgRenderer_OnMetacall(QSvgRenderer* self, intptr_t slot);
 int QSvgRenderer_QBaseMetacall(QSvgRenderer* self, int param1, int param2, void** param3);
 libqt_string QSvgRenderer_Tr(const char* s);
+libqt_string QSvgRenderer_TrUtf8(const char* s);
 bool QSvgRenderer_IsValid(const QSvgRenderer* self);
 QSize* QSvgRenderer_DefaultSize(const QSvgRenderer* self);
 QRect* QSvgRenderer_ViewBox(const QSvgRenderer* self);
@@ -69,6 +72,7 @@ void QSvgRenderer_SetCurrentFrame(QSvgRenderer* self, int currentFrame);
 int QSvgRenderer_AnimationDuration(const QSvgRenderer* self);
 QRectF* QSvgRenderer_BoundsOnElement(const QSvgRenderer* self, libqt_string id);
 bool QSvgRenderer_ElementExists(const QSvgRenderer* self, libqt_string id);
+QMatrix* QSvgRenderer_MatrixForElement(const QSvgRenderer* self, libqt_string id);
 QTransform* QSvgRenderer_TransformForElement(const QSvgRenderer* self, libqt_string id);
 bool QSvgRenderer_Load(QSvgRenderer* self, libqt_string filename);
 bool QSvgRenderer_LoadWithContents(QSvgRenderer* self, libqt_string contents);
@@ -80,6 +84,8 @@ void QSvgRenderer_RepaintNeeded(QSvgRenderer* self);
 void QSvgRenderer_Connect_RepaintNeeded(QSvgRenderer* self, intptr_t slot);
 libqt_string QSvgRenderer_Tr2(const char* s, const char* c);
 libqt_string QSvgRenderer_Tr3(const char* s, const char* c, int n);
+libqt_string QSvgRenderer_TrUtf82(const char* s, const char* c);
+libqt_string QSvgRenderer_TrUtf83(const char* s, const char* c, int n);
 void QSvgRenderer_Render32(QSvgRenderer* self, QPainter* p, libqt_string elementId, QRectF* bounds);
 bool QSvgRenderer_Event(QSvgRenderer* self, QEvent* event);
 void QSvgRenderer_OnEvent(QSvgRenderer* self, intptr_t slot);

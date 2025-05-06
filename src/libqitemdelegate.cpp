@@ -1,12 +1,11 @@
 #include <QAbstractItemDelegate>
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QFont>
+#include <QFontMetrics>
 #include <QHelpEvent>
 #include <QItemDelegate>
 #include <QItemEditorFactory>
@@ -16,7 +15,9 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QModelIndex>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPainter>
+#include <QPalette>
 #include <QPixmap>
 #include <QRect>
 #include <QSize>
@@ -85,6 +86,18 @@ libqt_string QItemDelegate_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QItemDelegate_TrUtf8(const char* s) {
+    QString _ret = QItemDelegate::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 bool QItemDelegate_HasClipping(const QItemDelegate* self) {
     return self->hasClipping();
 }
@@ -115,6 +128,30 @@ libqt_string QItemDelegate_Tr2(const char* s, const char* c) {
 
 libqt_string QItemDelegate_Tr3(const char* s, const char* c, int n) {
     QString _ret = QItemDelegate::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QItemDelegate_TrUtf82(const char* s, const char* c) {
+    QString _ret = QItemDelegate::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QItemDelegate_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QItemDelegate::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -494,7 +531,7 @@ void QItemDelegate_OnHelpEvent(QItemDelegate* self, intptr_t slot) {
 // Derived class handler implementation
 libqt_list /* of int */ QItemDelegate_PaintingRoles(const QItemDelegate* self) {
     if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
-        QList<int> _ret = vqitemdelegate->paintingRoles();
+        QVector<int> _ret = vqitemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -505,7 +542,7 @@ libqt_list /* of int */ QItemDelegate_PaintingRoles(const QItemDelegate* self) {
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QList<int> _ret = vqitemdelegate->paintingRoles();
+        QVector<int> _ret = vqitemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -522,7 +559,7 @@ libqt_list /* of int */ QItemDelegate_PaintingRoles(const QItemDelegate* self) {
 libqt_list /* of int */ QItemDelegate_QBasePaintingRoles(const QItemDelegate* self) {
     if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
         vqitemdelegate->setQItemDelegate_PaintingRoles_IsBase(true);
-        QList<int> _ret = vqitemdelegate->paintingRoles();
+        QVector<int> _ret = vqitemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -533,7 +570,7 @@ libqt_list /* of int */ QItemDelegate_QBasePaintingRoles(const QItemDelegate* se
         _out.data = static_cast<void*>(_arr);
         return _out;
     } else {
-        QList<int> _ret = vqitemdelegate->paintingRoles();
+        QVector<int> _ret = vqitemdelegate->paintingRoles();
         // Convert QList<> from C++ memory to manually-managed C memory
         int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
         for (size_t i = 0; i < _ret.length(); ++i) {
@@ -830,6 +867,32 @@ QPixmap* QItemDelegate_QBaseDecoration(const QItemDelegate* self, QStyleOptionVi
 void QItemDelegate_OnDecoration(const QItemDelegate* self, intptr_t slot) {
     if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
         vqitemdelegate->setQItemDelegate_Decoration_Callback(reinterpret_cast<VirtualQItemDelegate::QItemDelegate_Decoration_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QPixmap* QItemDelegate_Selected(const QItemDelegate* self, QPixmap* pixmap, QPalette* palette, bool enabled) {
+    if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
+        return vqitemdelegate->selected(*pixmap, *palette, enabled);
+    } else {
+        return vqitemdelegate->selected(*pixmap, *palette, enabled);
+    }
+}
+
+// Base class handler implementation
+QPixmap* QItemDelegate_QBaseSelected(const QItemDelegate* self, QPixmap* pixmap, QPalette* palette, bool enabled) {
+    if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
+        vqitemdelegate->setQItemDelegate_Selected_IsBase(true);
+        return vqitemdelegate->selected(*pixmap, *palette, enabled);
+    } else {
+        return vqitemdelegate->selected(*pixmap, *palette, enabled);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QItemDelegate_OnSelected(const QItemDelegate* self, intptr_t slot) {
+    if (auto* vqitemdelegate = const_cast<VirtualQItemDelegate*>(dynamic_cast<const VirtualQItemDelegate*>(self))) {
+        vqitemdelegate->setQItemDelegate_Selected_Callback(reinterpret_cast<VirtualQItemDelegate::QItemDelegate_Selected_Callback>(slot));
     }
 }
 

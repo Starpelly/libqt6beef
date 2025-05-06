@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,16 +24,16 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractItemDelegate QAbstractItemDelegate;
 typedef struct QAbstractItemModel QAbstractItemModel;
 typedef struct QAbstractItemView QAbstractItemView;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
+typedef struct QFontMetrics QFontMetrics;
 typedef struct QHelpEvent QHelpEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QModelIndex QModelIndex;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QSize QSize;
 typedef struct QStyleOptionViewItem QStyleOptionViewItem;
@@ -55,6 +57,7 @@ int QAbstractItemDelegate_Metacall(QAbstractItemDelegate* self, int param1, int 
 void QAbstractItemDelegate_OnMetacall(QAbstractItemDelegate* self, intptr_t slot);
 int QAbstractItemDelegate_QBaseMetacall(QAbstractItemDelegate* self, int param1, int param2, void** param3);
 libqt_string QAbstractItemDelegate_Tr(const char* s);
+libqt_string QAbstractItemDelegate_TrUtf8(const char* s);
 void QAbstractItemDelegate_Paint(const QAbstractItemDelegate* self, QPainter* painter, QStyleOptionViewItem* option, QModelIndex* index);
 void QAbstractItemDelegate_OnPaint(const QAbstractItemDelegate* self, intptr_t slot);
 void QAbstractItemDelegate_QBasePaint(const QAbstractItemDelegate* self, QPainter* painter, QStyleOptionViewItem* option, QModelIndex* index);
@@ -79,6 +82,7 @@ void QAbstractItemDelegate_QBaseUpdateEditorGeometry(const QAbstractItemDelegate
 bool QAbstractItemDelegate_EditorEvent(QAbstractItemDelegate* self, QEvent* event, QAbstractItemModel* model, QStyleOptionViewItem* option, QModelIndex* index);
 void QAbstractItemDelegate_OnEditorEvent(QAbstractItemDelegate* self, intptr_t slot);
 bool QAbstractItemDelegate_QBaseEditorEvent(QAbstractItemDelegate* self, QEvent* event, QAbstractItemModel* model, QStyleOptionViewItem* option, QModelIndex* index);
+libqt_string QAbstractItemDelegate_ElidedText(QFontMetrics* fontMetrics, int width, int mode, libqt_string text);
 bool QAbstractItemDelegate_HelpEvent(QAbstractItemDelegate* self, QHelpEvent* event, QAbstractItemView* view, QStyleOptionViewItem* option, QModelIndex* index);
 void QAbstractItemDelegate_OnHelpEvent(QAbstractItemDelegate* self, intptr_t slot);
 bool QAbstractItemDelegate_QBaseHelpEvent(QAbstractItemDelegate* self, QHelpEvent* event, QAbstractItemView* view, QStyleOptionViewItem* option, QModelIndex* index);
@@ -93,6 +97,8 @@ void QAbstractItemDelegate_SizeHintChanged(QAbstractItemDelegate* self, QModelIn
 void QAbstractItemDelegate_Connect_SizeHintChanged(QAbstractItemDelegate* self, intptr_t slot);
 libqt_string QAbstractItemDelegate_Tr2(const char* s, const char* c);
 libqt_string QAbstractItemDelegate_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractItemDelegate_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractItemDelegate_TrUtf83(const char* s, const char* c, int n);
 void QAbstractItemDelegate_CloseEditor2(QAbstractItemDelegate* self, QWidget* editor, int hint);
 void QAbstractItemDelegate_Connect_CloseEditor2(QAbstractItemDelegate* self, intptr_t slot);
 bool QAbstractItemDelegate_Event(QAbstractItemDelegate* self, QEvent* event);

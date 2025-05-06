@@ -1,7 +1,6 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QAccessible__State
 #include <QAccessibleActionInterface>
 #include <QAccessibleEditableTextInterface>
-#include <QAccessibleHyperlinkInterface>
 #include <QAccessibleImageInterface>
 #include <QAccessibleInterface>
 #include <QAccessibleObject>
@@ -54,20 +53,20 @@ int QAccessibleWidget_IndexOfChild(const QAccessibleWidget* self, QAccessibleInt
 }
 
 libqt_list /* of libqt_pair  tuple of QAccessibleInterface* and int  */ QAccessibleWidget_Relations(const QAccessibleWidget* self, int match) {
-    QList<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = self->relations(static_cast<QAccessible::Relation>(match));
+    QVector<QPair<QAccessibleInterface*, QAccessible::Relation>> _ret = self->relations(static_cast<QAccessible::Relation>(match));
     // Convert QList<> from C++ memory to manually-managed C memory
     libqt_pair /* tuple of QAccessibleInterface* and int */* _arr = static_cast<libqt_pair /* tuple of QAccessibleInterface* and int */*>(malloc(sizeof(libqt_pair /* tuple of QAccessibleInterface* and int */) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
-        QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _lv_ret = _ret[i];
+        QPair<QAccessibleInterface*, QFlags<QAccessible::RelationFlag>> _vv_ret = _ret[i];
         // Convert QPair<> from C++ memory to manually-managed C memory
-        QAccessibleInterface** _lv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
-        int* _lv_second = static_cast<int*>(malloc(sizeof(int)));
-        *_lv_first = _lv_ret.first;
-        *_lv_second = static_cast<int>(_lv_ret.second);
-        libqt_pair _lv_out;
-        _lv_out.first = static_cast<void*>(_lv_first);
-        _lv_out.second = static_cast<void*>(_lv_second);
-        _arr[i] = _lv_out;
+        QAccessibleInterface** _vv_first = static_cast<QAccessibleInterface**>(malloc(sizeof(QAccessibleInterface*)));
+        int* _vv_second = static_cast<int*>(malloc(sizeof(int)));
+        *_vv_first = _vv_ret.first;
+        *_vv_second = static_cast<int>(_vv_ret.second);
+        libqt_pair _vv_out;
+        _vv_out.first = static_cast<void*>(_vv_first);
+        _vv_out.second = static_cast<void*>(_vv_second);
+        _arr[i] = _vv_out;
     }
     libqt_list _out;
     _out.len = _ret.length();

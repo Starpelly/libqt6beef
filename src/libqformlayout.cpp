@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -13,6 +11,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QRect>
 #include <QSize>
 #include <QSpacerItem>
@@ -80,6 +79,18 @@ libqt_string QFormLayout_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QFormLayout_TrUtf8(const char* s) {
+    QString _ret = QFormLayout::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QFormLayout_SetFieldGrowthPolicy(QFormLayout* self, int policy) {
     self->setFieldGrowthPolicy(static_cast<QFormLayout::FieldGrowthPolicy>(policy));
 }
@@ -126,6 +137,14 @@ void QFormLayout_SetVerticalSpacing(QFormLayout* self, int spacing) {
 
 int QFormLayout_VerticalSpacing(const QFormLayout* self) {
     return self->verticalSpacing();
+}
+
+int QFormLayout_Spacing(const QFormLayout* self) {
+    return self->spacing();
+}
+
+void QFormLayout_SetSpacing(QFormLayout* self, int spacing) {
+    self->setSpacing(static_cast<int>(spacing));
 }
 
 void QFormLayout_AddRow(QFormLayout* self, QWidget* label, QWidget* field) {
@@ -216,30 +235,6 @@ void QFormLayout_SetLayout(QFormLayout* self, int row, int role, QLayout* layout
     self->setLayout(static_cast<int>(row), static_cast<QFormLayout::ItemRole>(role), layout);
 }
 
-void QFormLayout_SetRowVisible(QFormLayout* self, int row, bool on) {
-    self->setRowVisible(static_cast<int>(row), on);
-}
-
-void QFormLayout_SetRowVisible2(QFormLayout* self, QWidget* widget, bool on) {
-    self->setRowVisible(widget, on);
-}
-
-void QFormLayout_SetRowVisible3(QFormLayout* self, QLayout* layout, bool on) {
-    self->setRowVisible(layout, on);
-}
-
-bool QFormLayout_IsRowVisible(const QFormLayout* self, int row) {
-    return self->isRowVisible(static_cast<int>(row));
-}
-
-bool QFormLayout_IsRowVisibleWithWidget(const QFormLayout* self, QWidget* widget) {
-    return self->isRowVisible(widget);
-}
-
-bool QFormLayout_IsRowVisibleWithLayout(const QFormLayout* self, QLayout* layout) {
-    return self->isRowVisible(layout);
-}
-
 QLayoutItem* QFormLayout_ItemAt(const QFormLayout* self, int row, int role) {
     return self->itemAt(static_cast<int>(row), static_cast<QFormLayout::ItemRole>(role));
 }
@@ -280,64 +275,28 @@ libqt_string QFormLayout_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-int QFormLayout_IndexOfWithQLayoutItem(const QFormLayout* self, QLayoutItem* param1) {
-    if (auto* vqformlayout = dynamic_cast<const VirtualQFormLayout*>(self)) {
-        return self->indexOf(param1);
-    } else {
-        return self->indexOf(param1);
-    }
+libqt_string QFormLayout_TrUtf82(const char* s, const char* c) {
+    QString _ret = QFormLayout::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
-// Derived class handler implementation
-int QFormLayout_Spacing(const QFormLayout* self) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
-        return vqformlayout->spacing();
-    } else {
-        return vqformlayout->spacing();
-    }
-}
-
-// Base class handler implementation
-int QFormLayout_QBaseSpacing(const QFormLayout* self) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
-        vqformlayout->setQFormLayout_Spacing_IsBase(true);
-        return vqformlayout->spacing();
-    } else {
-        return vqformlayout->spacing();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFormLayout_OnSpacing(const QFormLayout* self, intptr_t slot) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
-        vqformlayout->setQFormLayout_Spacing_Callback(reinterpret_cast<VirtualQFormLayout::QFormLayout_Spacing_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QFormLayout_SetSpacing(QFormLayout* self, int spacing) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        vqformlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqformlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Base class handler implementation
-void QFormLayout_QBaseSetSpacing(QFormLayout* self, int spacing) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        vqformlayout->setQFormLayout_SetSpacing_IsBase(true);
-        vqformlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqformlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFormLayout_OnSetSpacing(QFormLayout* self, intptr_t slot) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        vqformlayout->setQFormLayout_SetSpacing_Callback(reinterpret_cast<VirtualQFormLayout::QFormLayout_SetSpacing_Callback>(slot));
-    }
+libqt_string QFormLayout_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QFormLayout::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 // Derived class handler implementation
@@ -757,32 +716,6 @@ void QFormLayout_OnControlTypes(const QFormLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QLayoutItem* QFormLayout_ReplaceWidget(QFormLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        return vqformlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqformlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Base class handler implementation
-QLayoutItem* QFormLayout_QBaseReplaceWidget(QFormLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        vqformlayout->setQFormLayout_ReplaceWidget_IsBase(true);
-        return vqformlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqformlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QFormLayout_OnReplaceWidget(QFormLayout* self, intptr_t slot) {
-    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
-        vqformlayout->setQFormLayout_ReplaceWidget_Callback(reinterpret_cast<VirtualQFormLayout::QFormLayout_ReplaceWidget_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QLayout* QFormLayout_Layout(QFormLayout* self) {
     if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
         return vqformlayout->layout();
@@ -1017,8 +950,8 @@ void QFormLayout_OnMinimumHeightForWidth(const QFormLayout* self, intptr_t slot)
 }
 
 // Derived class handler implementation
-QWidget* QFormLayout_Widget(const QFormLayout* self) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
+QWidget* QFormLayout_Widget(QFormLayout* self) {
+    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
         return vqformlayout->widget();
     } else {
         return vqformlayout->widget();
@@ -1026,8 +959,8 @@ QWidget* QFormLayout_Widget(const QFormLayout* self) {
 }
 
 // Base class handler implementation
-QWidget* QFormLayout_QBaseWidget(const QFormLayout* self) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
+QWidget* QFormLayout_QBaseWidget(QFormLayout* self) {
+    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
         vqformlayout->setQFormLayout_Widget_IsBase(true);
         return vqformlayout->widget();
     } else {
@@ -1036,8 +969,8 @@ QWidget* QFormLayout_QBaseWidget(const QFormLayout* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QFormLayout_OnWidget(const QFormLayout* self, intptr_t slot) {
-    if (auto* vqformlayout = const_cast<VirtualQFormLayout*>(dynamic_cast<const VirtualQFormLayout*>(self))) {
+void QFormLayout_OnWidget(QFormLayout* self, intptr_t slot) {
+    if (auto* vqformlayout = dynamic_cast<VirtualQFormLayout*>(self)) {
         vqformlayout->setQFormLayout_Widget_Callback(reinterpret_cast<VirtualQFormLayout::QFormLayout_Widget_Callback>(slot));
     }
 }

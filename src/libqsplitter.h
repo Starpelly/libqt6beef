@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -94,6 +93,7 @@ int QSplitter_Metacall(QSplitter* self, int param1, int param2, void** param3);
 void QSplitter_OnMetacall(QSplitter* self, intptr_t slot);
 int QSplitter_QBaseMetacall(QSplitter* self, int param1, int param2, void** param3);
 libqt_string QSplitter_Tr(const char* s);
+libqt_string QSplitter_TrUtf8(const char* s);
 void QSplitter_AddWidget(QSplitter* self, QWidget* widget);
 void QSplitter_InsertWidget(QSplitter* self, int index, QWidget* widget);
 QWidget* QSplitter_ReplaceWidget(QSplitter* self, int index, QWidget* widget);
@@ -143,6 +143,8 @@ void QSplitter_OnChangeEvent(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseChangeEvent(QSplitter* self, QEvent* param1);
 libqt_string QSplitter_Tr2(const char* s, const char* c);
 libqt_string QSplitter_Tr3(const char* s, const char* c, int n);
+libqt_string QSplitter_TrUtf82(const char* s, const char* c);
+libqt_string QSplitter_TrUtf83(const char* s, const char* c, int n);
 void QSplitter_SetOpaqueResize1(QSplitter* self, bool opaqueVal);
 void QSplitter_PaintEvent(QSplitter* self, QPaintEvent* param1);
 void QSplitter_OnPaintEvent(QSplitter* self, intptr_t slot);
@@ -189,9 +191,9 @@ void QSplitter_QBaseFocusInEvent(QSplitter* self, QFocusEvent* event);
 void QSplitter_FocusOutEvent(QSplitter* self, QFocusEvent* event);
 void QSplitter_OnFocusOutEvent(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseFocusOutEvent(QSplitter* self, QFocusEvent* event);
-void QSplitter_EnterEvent(QSplitter* self, QEnterEvent* event);
+void QSplitter_EnterEvent(QSplitter* self, QEvent* event);
 void QSplitter_OnEnterEvent(QSplitter* self, intptr_t slot);
-void QSplitter_QBaseEnterEvent(QSplitter* self, QEnterEvent* event);
+void QSplitter_QBaseEnterEvent(QSplitter* self, QEvent* event);
 void QSplitter_LeaveEvent(QSplitter* self, QEvent* event);
 void QSplitter_OnLeaveEvent(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseLeaveEvent(QSplitter* self, QEvent* event);
@@ -228,9 +230,9 @@ void QSplitter_QBaseShowEvent(QSplitter* self, QShowEvent* event);
 void QSplitter_HideEvent(QSplitter* self, QHideEvent* event);
 void QSplitter_OnHideEvent(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseHideEvent(QSplitter* self, QHideEvent* event);
-bool QSplitter_NativeEvent(QSplitter* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSplitter_NativeEvent(QSplitter* self, libqt_string eventType, void* message, long* result);
 void QSplitter_OnNativeEvent(QSplitter* self, intptr_t slot);
-bool QSplitter_QBaseNativeEvent(QSplitter* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSplitter_QBaseNativeEvent(QSplitter* self, libqt_string eventType, void* message, long* result);
 void QSplitter_InputMethodEvent(QSplitter* self, QInputMethodEvent* param1);
 void QSplitter_OnInputMethodEvent(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseInputMethodEvent(QSplitter* self, QInputMethodEvent* param1);
@@ -255,9 +257,6 @@ void QSplitter_QBaseConnectNotify(QSplitter* self, QMetaMethod* signal);
 void QSplitter_DisconnectNotify(QSplitter* self, QMetaMethod* signal);
 void QSplitter_OnDisconnectNotify(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseDisconnectNotify(QSplitter* self, QMetaMethod* signal);
-void QSplitter_InitStyleOption(const QSplitter* self, QStyleOptionFrame* option);
-void QSplitter_OnInitStyleOption(const QSplitter* self, intptr_t slot);
-void QSplitter_QBaseInitStyleOption(const QSplitter* self, QStyleOptionFrame* option);
 int QSplitter_Metric(const QSplitter* self, int param1);
 void QSplitter_OnMetric(const QSplitter* self, intptr_t slot);
 int QSplitter_QBaseMetric(const QSplitter* self, int param1);
@@ -282,6 +281,9 @@ int QSplitter_QBaseClosestLegalPosition(QSplitter* self, int param1, int param2)
 void QSplitter_DrawFrame(QSplitter* self, QPainter* param1);
 void QSplitter_OnDrawFrame(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseDrawFrame(QSplitter* self, QPainter* param1);
+void QSplitter_InitStyleOption(const QSplitter* self, QStyleOptionFrame* option);
+void QSplitter_OnInitStyleOption(const QSplitter* self, intptr_t slot);
+void QSplitter_QBaseInitStyleOption(const QSplitter* self, QStyleOptionFrame* option);
 void QSplitter_UpdateMicroFocus(QSplitter* self);
 void QSplitter_OnUpdateMicroFocus(QSplitter* self, intptr_t slot);
 void QSplitter_QBaseUpdateMicroFocus(QSplitter* self);
@@ -318,6 +320,7 @@ int QSplitterHandle_Metacall(QSplitterHandle* self, int param1, int param2, void
 void QSplitterHandle_OnMetacall(QSplitterHandle* self, intptr_t slot);
 int QSplitterHandle_QBaseMetacall(QSplitterHandle* self, int param1, int param2, void** param3);
 libqt_string QSplitterHandle_Tr(const char* s);
+libqt_string QSplitterHandle_TrUtf8(const char* s);
 void QSplitterHandle_SetOrientation(QSplitterHandle* self, int o);
 int QSplitterHandle_Orientation(const QSplitterHandle* self);
 bool QSplitterHandle_OpaqueResize(const QSplitterHandle* self);
@@ -345,6 +348,8 @@ void QSplitterHandle_OnEvent(QSplitterHandle* self, intptr_t slot);
 bool QSplitterHandle_QBaseEvent(QSplitterHandle* self, QEvent* param1);
 libqt_string QSplitterHandle_Tr2(const char* s, const char* c);
 libqt_string QSplitterHandle_Tr3(const char* s, const char* c, int n);
+libqt_string QSplitterHandle_TrUtf82(const char* s, const char* c);
+libqt_string QSplitterHandle_TrUtf83(const char* s, const char* c, int n);
 int QSplitterHandle_DevType(const QSplitterHandle* self);
 void QSplitterHandle_OnDevType(const QSplitterHandle* self, intptr_t slot);
 int QSplitterHandle_QBaseDevType(const QSplitterHandle* self);
@@ -381,9 +386,9 @@ void QSplitterHandle_QBaseFocusInEvent(QSplitterHandle* self, QFocusEvent* event
 void QSplitterHandle_FocusOutEvent(QSplitterHandle* self, QFocusEvent* event);
 void QSplitterHandle_OnFocusOutEvent(QSplitterHandle* self, intptr_t slot);
 void QSplitterHandle_QBaseFocusOutEvent(QSplitterHandle* self, QFocusEvent* event);
-void QSplitterHandle_EnterEvent(QSplitterHandle* self, QEnterEvent* event);
+void QSplitterHandle_EnterEvent(QSplitterHandle* self, QEvent* event);
 void QSplitterHandle_OnEnterEvent(QSplitterHandle* self, intptr_t slot);
-void QSplitterHandle_QBaseEnterEvent(QSplitterHandle* self, QEnterEvent* event);
+void QSplitterHandle_QBaseEnterEvent(QSplitterHandle* self, QEvent* event);
 void QSplitterHandle_LeaveEvent(QSplitterHandle* self, QEvent* event);
 void QSplitterHandle_OnLeaveEvent(QSplitterHandle* self, intptr_t slot);
 void QSplitterHandle_QBaseLeaveEvent(QSplitterHandle* self, QEvent* event);
@@ -420,9 +425,9 @@ void QSplitterHandle_QBaseShowEvent(QSplitterHandle* self, QShowEvent* event);
 void QSplitterHandle_HideEvent(QSplitterHandle* self, QHideEvent* event);
 void QSplitterHandle_OnHideEvent(QSplitterHandle* self, intptr_t slot);
 void QSplitterHandle_QBaseHideEvent(QSplitterHandle* self, QHideEvent* event);
-bool QSplitterHandle_NativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSplitterHandle_NativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, long* result);
 void QSplitterHandle_OnNativeEvent(QSplitterHandle* self, intptr_t slot);
-bool QSplitterHandle_QBaseNativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSplitterHandle_QBaseNativeEvent(QSplitterHandle* self, libqt_string eventType, void* message, long* result);
 void QSplitterHandle_ChangeEvent(QSplitterHandle* self, QEvent* param1);
 void QSplitterHandle_OnChangeEvent(QSplitterHandle* self, intptr_t slot);
 void QSplitterHandle_QBaseChangeEvent(QSplitterHandle* self, QEvent* param1);

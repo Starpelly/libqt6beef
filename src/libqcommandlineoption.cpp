@@ -195,6 +195,14 @@ void QCommandLineOption_SetFlags(QCommandLineOption* self, int aflags) {
     self->setFlags(static_cast<QCommandLineOption::Flags>(aflags));
 }
 
+void QCommandLineOption_SetHidden(QCommandLineOption* self, bool hidden) {
+    self->setHidden(hidden);
+}
+
+bool QCommandLineOption_IsHidden(const QCommandLineOption* self) {
+    return self->isHidden();
+}
+
 void QCommandLineOption_Delete(QCommandLineOption* self) {
     delete self;
 }

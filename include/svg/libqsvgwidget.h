@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -55,6 +54,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -62,7 +62,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -92,6 +91,7 @@ int QSvgWidget_Metacall(QSvgWidget* self, int param1, int param2, void** param3)
 void QSvgWidget_OnMetacall(QSvgWidget* self, intptr_t slot);
 int QSvgWidget_QBaseMetacall(QSvgWidget* self, int param1, int param2, void** param3);
 libqt_string QSvgWidget_Tr(const char* s);
+libqt_string QSvgWidget_TrUtf8(const char* s);
 QSvgRenderer* QSvgWidget_Renderer(const QSvgWidget* self);
 QSize* QSvgWidget_SizeHint(const QSvgWidget* self);
 void QSvgWidget_OnSizeHint(const QSvgWidget* self, intptr_t slot);
@@ -103,6 +103,8 @@ void QSvgWidget_OnPaintEvent(QSvgWidget* self, intptr_t slot);
 void QSvgWidget_QBasePaintEvent(QSvgWidget* self, QPaintEvent* event);
 libqt_string QSvgWidget_Tr2(const char* s, const char* c);
 libqt_string QSvgWidget_Tr3(const char* s, const char* c, int n);
+libqt_string QSvgWidget_TrUtf82(const char* s, const char* c);
+libqt_string QSvgWidget_TrUtf83(const char* s, const char* c, int n);
 int QSvgWidget_DevType(const QSvgWidget* self);
 void QSvgWidget_OnDevType(const QSvgWidget* self, intptr_t slot);
 int QSvgWidget_QBaseDevType(const QSvgWidget* self);
@@ -151,9 +153,9 @@ void QSvgWidget_QBaseFocusInEvent(QSvgWidget* self, QFocusEvent* event);
 void QSvgWidget_FocusOutEvent(QSvgWidget* self, QFocusEvent* event);
 void QSvgWidget_OnFocusOutEvent(QSvgWidget* self, intptr_t slot);
 void QSvgWidget_QBaseFocusOutEvent(QSvgWidget* self, QFocusEvent* event);
-void QSvgWidget_EnterEvent(QSvgWidget* self, QEnterEvent* event);
+void QSvgWidget_EnterEvent(QSvgWidget* self, QEvent* event);
 void QSvgWidget_OnEnterEvent(QSvgWidget* self, intptr_t slot);
-void QSvgWidget_QBaseEnterEvent(QSvgWidget* self, QEnterEvent* event);
+void QSvgWidget_QBaseEnterEvent(QSvgWidget* self, QEvent* event);
 void QSvgWidget_LeaveEvent(QSvgWidget* self, QEvent* event);
 void QSvgWidget_OnLeaveEvent(QSvgWidget* self, intptr_t slot);
 void QSvgWidget_QBaseLeaveEvent(QSvgWidget* self, QEvent* event);
@@ -193,9 +195,9 @@ void QSvgWidget_QBaseShowEvent(QSvgWidget* self, QShowEvent* event);
 void QSvgWidget_HideEvent(QSvgWidget* self, QHideEvent* event);
 void QSvgWidget_OnHideEvent(QSvgWidget* self, intptr_t slot);
 void QSvgWidget_QBaseHideEvent(QSvgWidget* self, QHideEvent* event);
-bool QSvgWidget_NativeEvent(QSvgWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSvgWidget_NativeEvent(QSvgWidget* self, libqt_string eventType, void* message, long* result);
 void QSvgWidget_OnNativeEvent(QSvgWidget* self, intptr_t slot);
-bool QSvgWidget_QBaseNativeEvent(QSvgWidget* self, libqt_string eventType, void* message, intptr_t* result);
+bool QSvgWidget_QBaseNativeEvent(QSvgWidget* self, libqt_string eventType, void* message, long* result);
 void QSvgWidget_ChangeEvent(QSvgWidget* self, QEvent* param1);
 void QSvgWidget_OnChangeEvent(QSvgWidget* self, intptr_t slot);
 void QSvgWidget_QBaseChangeEvent(QSvgWidget* self, QEvent* param1);

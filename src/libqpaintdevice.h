@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -39,7 +41,7 @@ int QPaintDevice_LogicalDpiX(const QPaintDevice* self);
 int QPaintDevice_LogicalDpiY(const QPaintDevice* self);
 int QPaintDevice_PhysicalDpiX(const QPaintDevice* self);
 int QPaintDevice_PhysicalDpiY(const QPaintDevice* self);
-double QPaintDevice_DevicePixelRatio(const QPaintDevice* self);
+int QPaintDevice_DevicePixelRatio(const QPaintDevice* self);
 double QPaintDevice_DevicePixelRatioF(const QPaintDevice* self);
 int QPaintDevice_ColorCount(const QPaintDevice* self);
 int QPaintDevice_Depth(const QPaintDevice* self);

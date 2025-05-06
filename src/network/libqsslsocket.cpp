@@ -1,19 +1,17 @@
 #include <QAbstractSocket>
-#include <QAnyStringView>
 #include <QAuthenticator>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
 #include <QHostAddress>
 #include <QIODevice>
-#include <QIODeviceBase>
 #include <QList>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QNetworkProxy>
 #include <QObject>
+#include <QObjectUserData>
 #include <QOcspResponse>
 #include <QSslCertificate>
 #include <QSslCipher>
@@ -86,6 +84,18 @@ libqt_string QSslSocket_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QSslSocket_TrUtf8(const char* s) {
+    QString _ret = QSslSocket::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QSslSocket_ConnectToHostEncrypted(QSslSocket* self, libqt_string hostName, uint16_t port) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port));
@@ -144,6 +154,14 @@ libqt_string QSslSocket_PeerVerifyName(const QSslSocket* self) {
 void QSslSocket_SetPeerVerifyName(QSslSocket* self, libqt_string hostName) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     self->setPeerVerifyName(hostName_QString);
+}
+
+bool QSslSocket_Flush(QSslSocket* self) {
+    return self->flush();
+}
+
+void QSslSocket_Abort(QSslSocket* self) {
+    self->abort();
 }
 
 long long QSslSocket_EncryptedBytesAvailable(const QSslSocket* self) {
@@ -224,7 +242,7 @@ int QSslSocket_SessionProtocol(const QSslSocket* self) {
 }
 
 libqt_list /* of QOcspResponse* */ QSslSocket_OcspResponses(const QSslSocket* self) {
-    QList<QOcspResponse> _ret = self->ocspResponses();
+    QVector<QOcspResponse> _ret = self->ocspResponses();
     // Convert QList<> from C++ memory to manually-managed C memory
     QOcspResponse** _arr = static_cast<QOcspResponse**>(malloc(sizeof(QOcspResponse*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -249,8 +267,182 @@ QSslKey* QSslSocket_PrivateKey(const QSslSocket* self) {
     return new QSslKey(self->privateKey());
 }
 
+libqt_list /* of QSslCipher* */ QSslSocket_Ciphers(const QSslSocket* self) {
+    QList<QSslCipher> _ret = self->ciphers();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCipher** _arr = static_cast<QSslCipher**>(malloc(sizeof(QSslCipher*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCipher(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+void QSslSocket_SetCiphers(QSslSocket* self, libqt_list /* of QSslCipher* */ ciphers) {
+    QList<QSslCipher> ciphers_QList;
+    ciphers_QList.reserve(ciphers.len);
+    QSslCipher** ciphers_arr = static_cast<QSslCipher**>(ciphers.data);
+    for (size_t i = 0; i < ciphers.len; ++i) {
+        ciphers_QList.push_back(*(ciphers_arr[i]));
+    }
+    self->setCiphers(ciphers_QList);
+}
+
+void QSslSocket_SetCiphersWithCiphers(QSslSocket* self, libqt_string ciphers) {
+    QString ciphers_QString = QString::fromUtf8(ciphers.data, ciphers.len);
+    self->setCiphers(ciphers_QString);
+}
+
+void QSslSocket_SetDefaultCiphers(libqt_list /* of QSslCipher* */ ciphers) {
+    QList<QSslCipher> ciphers_QList;
+    ciphers_QList.reserve(ciphers.len);
+    QSslCipher** ciphers_arr = static_cast<QSslCipher**>(ciphers.data);
+    for (size_t i = 0; i < ciphers.len; ++i) {
+        ciphers_QList.push_back(*(ciphers_arr[i]));
+    }
+    QSslSocket::setDefaultCiphers(ciphers_QList);
+}
+
+libqt_list /* of QSslCipher* */ QSslSocket_DefaultCiphers() {
+    QList<QSslCipher> _ret = QSslSocket::defaultCiphers();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCipher** _arr = static_cast<QSslCipher**>(malloc(sizeof(QSslCipher*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCipher(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QSslCipher* */ QSslSocket_SupportedCiphers() {
+    QList<QSslCipher> _ret = QSslSocket::supportedCiphers();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCipher** _arr = static_cast<QSslCipher**>(malloc(sizeof(QSslCipher*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCipher(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+bool QSslSocket_AddCaCertificates(QSslSocket* self, libqt_string path) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return self->addCaCertificates(path_QString);
+}
+
+void QSslSocket_AddCaCertificate(QSslSocket* self, QSslCertificate* certificate) {
+    self->addCaCertificate(*certificate);
+}
+
+void QSslSocket_AddCaCertificatesWithCertificates(QSslSocket* self, libqt_list /* of QSslCertificate* */ certificates) {
+    QList<QSslCertificate> certificates_QList;
+    certificates_QList.reserve(certificates.len);
+    QSslCertificate** certificates_arr = static_cast<QSslCertificate**>(certificates.data);
+    for (size_t i = 0; i < certificates.len; ++i) {
+        certificates_QList.push_back(*(certificates_arr[i]));
+    }
+    self->addCaCertificates(certificates_QList);
+}
+
+void QSslSocket_SetCaCertificates(QSslSocket* self, libqt_list /* of QSslCertificate* */ certificates) {
+    QList<QSslCertificate> certificates_QList;
+    certificates_QList.reserve(certificates.len);
+    QSslCertificate** certificates_arr = static_cast<QSslCertificate**>(certificates.data);
+    for (size_t i = 0; i < certificates.len; ++i) {
+        certificates_QList.push_back(*(certificates_arr[i]));
+    }
+    self->setCaCertificates(certificates_QList);
+}
+
+libqt_list /* of QSslCertificate* */ QSslSocket_CaCertificates(const QSslSocket* self) {
+    QList<QSslCertificate> _ret = self->caCertificates();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCertificate** _arr = static_cast<QSslCertificate**>(malloc(sizeof(QSslCertificate*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCertificate(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+bool QSslSocket_AddDefaultCaCertificates(libqt_string path) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return QSslSocket::addDefaultCaCertificates(path_QString);
+}
+
+void QSslSocket_AddDefaultCaCertificate(QSslCertificate* certificate) {
+    QSslSocket::addDefaultCaCertificate(*certificate);
+}
+
+void QSslSocket_AddDefaultCaCertificatesWithCertificates(libqt_list /* of QSslCertificate* */ certificates) {
+    QList<QSslCertificate> certificates_QList;
+    certificates_QList.reserve(certificates.len);
+    QSslCertificate** certificates_arr = static_cast<QSslCertificate**>(certificates.data);
+    for (size_t i = 0; i < certificates.len; ++i) {
+        certificates_QList.push_back(*(certificates_arr[i]));
+    }
+    QSslSocket::addDefaultCaCertificates(certificates_QList);
+}
+
+void QSslSocket_SetDefaultCaCertificates(libqt_list /* of QSslCertificate* */ certificates) {
+    QList<QSslCertificate> certificates_QList;
+    certificates_QList.reserve(certificates.len);
+    QSslCertificate** certificates_arr = static_cast<QSslCertificate**>(certificates.data);
+    for (size_t i = 0; i < certificates.len; ++i) {
+        certificates_QList.push_back(*(certificates_arr[i]));
+    }
+    QSslSocket::setDefaultCaCertificates(certificates_QList);
+}
+
+libqt_list /* of QSslCertificate* */ QSslSocket_DefaultCaCertificates() {
+    QList<QSslCertificate> _ret = QSslSocket::defaultCaCertificates();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCertificate** _arr = static_cast<QSslCertificate**>(malloc(sizeof(QSslCertificate*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCertificate(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QSslCertificate* */ QSslSocket_SystemCaCertificates() {
+    QList<QSslCertificate> _ret = QSslSocket::systemCaCertificates();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslCertificate** _arr = static_cast<QSslCertificate**>(malloc(sizeof(QSslCertificate*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslCertificate(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
 bool QSslSocket_WaitForEncrypted(QSslSocket* self) {
     return self->waitForEncrypted();
+}
+
+libqt_list /* of QSslError* */ QSslSocket_SslErrors(const QSslSocket* self) {
+    QList<QSslError> _ret = self->sslErrors();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSslError** _arr = static_cast<QSslError**>(malloc(sizeof(QSslError*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSslError(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 libqt_list /* of QSslError* */ QSslSocket_SslHandshakeErrors(const QSslSocket* self) {
@@ -302,95 +494,6 @@ libqt_string QSslSocket_SslLibraryBuildVersionString() {
     return _str;
 }
 
-libqt_list /* of libqt_string */ QSslSocket_AvailableBackends() {
-    QList<QString> _ret = QSslSocket::availableBackends();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    libqt_string* _arr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        QString _lv_ret = _ret[i];
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray _lv_b = _lv_ret.toUtf8();
-        libqt_string _lv_str;
-        _lv_str.len = _lv_b.length();
-        _lv_str.data = static_cast<char*>(malloc((_lv_str.len + 1) * sizeof(char)));
-        memcpy(_lv_str.data, _lv_b.data(), _lv_str.len);
-        _lv_str.data[_lv_str.len] = '\0';
-        _arr[i] = _lv_str;
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-libqt_string QSslSocket_ActiveBackend() {
-    QString _ret = QSslSocket::activeBackend();
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
-bool QSslSocket_SetActiveBackend(libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    return QSslSocket::setActiveBackend(backendName_QString);
-}
-
-libqt_list /* of int */ QSslSocket_SupportedProtocols() {
-    QList<QSsl::SslProtocol> _ret = QSslSocket::supportedProtocols();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-bool QSslSocket_IsProtocolSupported(int protocol) {
-    return QSslSocket::isProtocolSupported(static_cast<QSsl::SslProtocol>(protocol));
-}
-
-libqt_list /* of int */ QSslSocket_ImplementedClasses() {
-    QList<QSsl::ImplementedClass> _ret = QSslSocket::implementedClasses();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-bool QSslSocket_IsClassImplemented(int cl) {
-    return QSslSocket::isClassImplemented(static_cast<QSsl::ImplementedClass>(cl));
-}
-
-libqt_list /* of int */ QSslSocket_SupportedFeatures() {
-    QList<QSsl::SupportedFeature> _ret = QSslSocket::supportedFeatures();
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
-    }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-bool QSslSocket_IsFeatureSupported(int feat) {
-    return QSslSocket::isFeatureSupported(static_cast<QSsl::SupportedFeature>(feat));
-}
-
 void QSslSocket_IgnoreSslErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors) {
     QList<QSslError> errors_QList;
     errors_QList.reserve(errors.len);
@@ -399,10 +502,6 @@ void QSslSocket_IgnoreSslErrors(QSslSocket* self, libqt_list /* of QSslError* */
         errors_QList.push_back(*(errors_arr[i]));
     }
     self->ignoreSslErrors(errors_QList);
-}
-
-void QSslSocket_ContinueInterruptedHandshake(QSslSocket* self) {
-    self->continueInterruptedHandshake();
 }
 
 void QSslSocket_StartClientEncryption(QSslSocket* self) {
@@ -442,7 +541,7 @@ void QSslSocket_Connect_PeerVerifyError(QSslSocket* self, intptr_t slot) {
     });
 }
 
-void QSslSocket_SslErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors) {
+void QSslSocket_SslErrorsWithErrors(QSslSocket* self, libqt_list /* of QSslError* */ errors) {
     QList<QSslError> errors_QList;
     errors_QList.reserve(errors.len);
     QSslError** errors_arr = static_cast<QSslError**>(errors.data);
@@ -452,7 +551,7 @@ void QSslSocket_SslErrors(QSslSocket* self, libqt_list /* of QSslError* */ error
     self->sslErrors(errors_QList);
 }
 
-void QSslSocket_Connect_SslErrors(QSslSocket* self, intptr_t slot) {
+void QSslSocket_Connect_SslErrorsWithErrors(QSslSocket* self, intptr_t slot) {
     void (*slotFunc)(QSslSocket*, libqt_list /* of QSslError* */) = reinterpret_cast<void (*)(QSslSocket*, libqt_list /* of QSslError* */)>(slot);
     QSslSocket::connect(self, &QSslSocket::sslErrors, [self, slotFunc](const QList<QSslError>& errors) {
         const QList<QSslError>& errors_ret = errors;
@@ -516,66 +615,6 @@ void QSslSocket_Connect_NewSessionTicketReceived(QSslSocket* self, intptr_t slot
     });
 }
 
-void QSslSocket_AlertSent(QSslSocket* self, int level, int typeVal, libqt_string description) {
-    QString description_QString = QString::fromUtf8(description.data, description.len);
-    self->alertSent(static_cast<QSsl::AlertLevel>(level), static_cast<QSsl::AlertType>(typeVal), description_QString);
-}
-
-void QSslSocket_Connect_AlertSent(QSslSocket* self, intptr_t slot) {
-    void (*slotFunc)(QSslSocket*, int, int, libqt_string) = reinterpret_cast<void (*)(QSslSocket*, int, int, libqt_string)>(slot);
-    QSslSocket::connect(self, &QSslSocket::alertSent, [self, slotFunc](QSsl::AlertLevel level, QSsl::AlertType typeVal, const QString& description) {
-        int sigval1 = static_cast<int>(level);
-        int sigval2 = static_cast<int>(typeVal);
-        const QString description_ret = description;
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray description_b = description_ret.toUtf8();
-        libqt_string description_str;
-        description_str.len = description_b.length();
-        description_str.data = static_cast<char*>(malloc((description_str.len + 1) * sizeof(char)));
-        memcpy(description_str.data, description_b.data(), description_str.len);
-        description_str.data[description_str.len] = '\0';
-        libqt_string sigval3 = description_str;
-        slotFunc(self, sigval1, sigval2, sigval3);
-    });
-}
-
-void QSslSocket_AlertReceived(QSslSocket* self, int level, int typeVal, libqt_string description) {
-    QString description_QString = QString::fromUtf8(description.data, description.len);
-    self->alertReceived(static_cast<QSsl::AlertLevel>(level), static_cast<QSsl::AlertType>(typeVal), description_QString);
-}
-
-void QSslSocket_Connect_AlertReceived(QSslSocket* self, intptr_t slot) {
-    void (*slotFunc)(QSslSocket*, int, int, libqt_string) = reinterpret_cast<void (*)(QSslSocket*, int, int, libqt_string)>(slot);
-    QSslSocket::connect(self, &QSslSocket::alertReceived, [self, slotFunc](QSsl::AlertLevel level, QSsl::AlertType typeVal, const QString& description) {
-        int sigval1 = static_cast<int>(level);
-        int sigval2 = static_cast<int>(typeVal);
-        const QString description_ret = description;
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray description_b = description_ret.toUtf8();
-        libqt_string description_str;
-        description_str.len = description_b.length();
-        description_str.data = static_cast<char*>(malloc((description_str.len + 1) * sizeof(char)));
-        memcpy(description_str.data, description_b.data(), description_str.len);
-        description_str.data[description_str.len] = '\0';
-        libqt_string sigval3 = description_str;
-        slotFunc(self, sigval1, sigval2, sigval3);
-    });
-}
-
-void QSslSocket_HandshakeInterruptedOnError(QSslSocket* self, QSslError* errorVal) {
-    self->handshakeInterruptedOnError(*errorVal);
-}
-
-void QSslSocket_Connect_HandshakeInterruptedOnError(QSslSocket* self, intptr_t slot) {
-    void (*slotFunc)(QSslSocket*, QSslError*) = reinterpret_cast<void (*)(QSslSocket*, QSslError*)>(slot);
-    QSslSocket::connect(self, &QSslSocket::handshakeInterruptedOnError, [self, slotFunc](const QSslError& errorVal) {
-        const QSslError& errorVal_ret = errorVal;
-        // Cast returned reference into pointer
-        QSslError* sigval1 = const_cast<QSslError*>(&errorVal_ret);
-        slotFunc(self, sigval1);
-    });
-}
-
 libqt_string QSslSocket_Tr2(const char* s, const char* c) {
     QString _ret = QSslSocket::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -600,26 +639,50 @@ libqt_string QSslSocket_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QSslSocket_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSslSocket::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSslSocket_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSslSocket::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QSslSocket_ConnectToHostEncrypted3(QSslSocket* self, libqt_string hostName, uint16_t port, int mode) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
-    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode));
+    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
 }
 
 void QSslSocket_ConnectToHostEncrypted4(QSslSocket* self, libqt_string hostName, uint16_t port, int mode, int protocol) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
-    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
 }
 
 void QSslSocket_ConnectToHostEncrypted42(QSslSocket* self, libqt_string hostName, uint16_t port, libqt_string sslPeerName, int mode) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     QString sslPeerName_QString = QString::fromUtf8(sslPeerName.data, sslPeerName.len);
-    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), sslPeerName_QString, static_cast<QIODeviceBase::OpenMode>(mode));
+    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), sslPeerName_QString, static_cast<QIODevice::OpenMode>(mode));
 }
 
 void QSslSocket_ConnectToHostEncrypted5(QSslSocket* self, libqt_string hostName, uint16_t port, libqt_string sslPeerName, int mode, int protocol) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     QString sslPeerName_QString = QString::fromUtf8(sslPeerName.data, sslPeerName.len);
-    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), sslPeerName_QString, static_cast<QIODeviceBase::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+    self->connectToHostEncrypted(hostName_QString, static_cast<quint16>(port), sslPeerName_QString, static_cast<QIODevice::OpenMode>(mode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
 }
 
 void QSslSocket_SetLocalCertificate2(QSslSocket* self, libqt_string fileName, int format) {
@@ -643,65 +706,53 @@ void QSslSocket_SetPrivateKey4(QSslSocket* self, libqt_string fileName, int algo
     self->setPrivateKey(fileName_QString, static_cast<QSsl::KeyAlgorithm>(algorithm), static_cast<QSsl::EncodingFormat>(format), passPhrase_QByteArray);
 }
 
+bool QSslSocket_AddCaCertificates2(QSslSocket* self, libqt_string path, int format) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return self->addCaCertificates(path_QString, static_cast<QSsl::EncodingFormat>(format));
+}
+
+bool QSslSocket_AddCaCertificates3(QSslSocket* self, libqt_string path, int format, int syntax) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return self->addCaCertificates(path_QString, static_cast<QSsl::EncodingFormat>(format), static_cast<QRegExp::PatternSyntax>(syntax));
+}
+
+bool QSslSocket_AddDefaultCaCertificates2(libqt_string path, int format) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return QSslSocket::addDefaultCaCertificates(path_QString, static_cast<QSsl::EncodingFormat>(format));
+}
+
+bool QSslSocket_AddDefaultCaCertificates3(libqt_string path, int format, int syntax) {
+    QString path_QString = QString::fromUtf8(path.data, path.len);
+    return QSslSocket::addDefaultCaCertificates(path_QString, static_cast<QSsl::EncodingFormat>(format), static_cast<QRegExp::PatternSyntax>(syntax));
+}
+
 bool QSslSocket_WaitForEncrypted1(QSslSocket* self, int msecs) {
     return self->waitForEncrypted(static_cast<int>(msecs));
 }
 
-libqt_list /* of int */ QSslSocket_SupportedProtocols1(libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    QList<QSsl::SslProtocol> _ret = QSslSocket::supportedProtocols(backendName_QString);
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
+void QSslSocket_ConnectToHost2(QSslSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
+        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    } else {
+        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
     }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
 }
 
-bool QSslSocket_IsProtocolSupported2(int protocol, libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    return QSslSocket::isProtocolSupported(static_cast<QSsl::SslProtocol>(protocol), backendName_QString);
-}
-
-libqt_list /* of int */ QSslSocket_ImplementedClasses1(libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    QList<QSsl::ImplementedClass> _ret = QSslSocket::implementedClasses(backendName_QString);
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
+// Subclass method to allow providing a virtual method re-implementation
+void QSslSocket_OnConnectToHost2(QSslSocket* self, intptr_t slot) {
+    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
+        vqsslsocket->setQSslSocket_ConnectToHost2_Callback(reinterpret_cast<VirtualQSslSocket::QSslSocket_ConnectToHost2_Callback>(slot));
     }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
 }
 
-bool QSslSocket_IsClassImplemented2(int cl, libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    return QSslSocket::isClassImplemented(static_cast<QSsl::ImplementedClass>(cl), backendName_QString);
-}
-
-libqt_list /* of int */ QSslSocket_SupportedFeatures1(libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    QList<QSsl::SupportedFeature> _ret = QSslSocket::supportedFeatures(backendName_QString);
-    // Convert QList<> from C++ memory to manually-managed C memory
-    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
-    for (size_t i = 0; i < _ret.length(); ++i) {
-        _arr[i] = static_cast<int>(_ret[i]);
+// Virtual base class handler implementation
+void QSslSocket_QBaseConnectToHost2(QSslSocket* self, QHostAddress* address, uint16_t port, int mode) {
+    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
+        vqsslsocket->setQSslSocket_ConnectToHost2_IsBase(true);
+        vqsslsocket->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
+    } else {
+        self->connectToHost(*address, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(mode));
     }
-    libqt_list _out;
-    _out.len = _ret.length();
-    _out.data = static_cast<void*>(_arr);
-    return _out;
-}
-
-bool QSslSocket_IsFeatureSupported2(int feat, libqt_string backendName) {
-    QString backendName_QString = QString::fromUtf8(backendName.data, backendName.len);
-    return QSslSocket::isFeatureSupported(static_cast<QSsl::SupportedFeature>(feat), backendName_QString);
 }
 
 // Derived class handler implementation
@@ -733,9 +784,9 @@ void QSslSocket_OnResume(QSslSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QSslSocket_SetSocketDescriptor(QSslSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -743,9 +794,9 @@ bool QSslSocket_SetSocketDescriptor(QSslSocket* self, intptr_t socketDescriptor,
 bool QSslSocket_QBaseSetSocketDescriptor(QSslSocket* self, intptr_t socketDescriptor, int state, int openMode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         vqsslsocket->setQSslSocket_SetSocketDescriptor_IsBase(true);
-        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODeviceBase::OpenMode>(openMode));
+        return vqsslsocket->setSocketDescriptor((qintptr)(socketDescriptor), static_cast<QAbstractSocket::SocketState>(state), static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -760,9 +811,9 @@ void QSslSocket_OnSetSocketDescriptor(QSslSocket* self, intptr_t slot) {
 void QSslSocket_ConnectToHost(QSslSocket* self, libqt_string hostName, uint16_t port, int openMode, int protocol) {
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -771,9 +822,9 @@ void QSslSocket_QBaseConnectToHost(QSslSocket* self, libqt_string hostName, uint
     QString hostName_QString = QString::fromUtf8(hostName.data, hostName.len);
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         vqsslsocket->setQSslSocket_ConnectToHost_IsBase(true);
-        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     } else {
-        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODeviceBase::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
+        vqsslsocket->connectToHost(hostName_QString, static_cast<quint16>(port), static_cast<QIODevice::OpenMode>(openMode), static_cast<QAbstractSocket::NetworkLayerProtocol>(protocol));
     }
 }
 
@@ -1149,32 +1200,6 @@ void QSslSocket_OnReadData(QSslSocket* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-long long QSslSocket_SkipData(QSslSocket* self, long long maxSize) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        return static_cast<long long>(vqsslsocket->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqsslsocket->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Base class handler implementation
-long long QSslSocket_QBaseSkipData(QSslSocket* self, long long maxSize) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->setQSslSocket_SkipData_IsBase(true);
-        return static_cast<long long>(vqsslsocket->skipData(static_cast<qint64>(maxSize)));
-    } else {
-        return static_cast<long long>(vqsslsocket->skipData(static_cast<qint64>(maxSize)));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSslSocket_OnSkipData(QSslSocket* self, intptr_t slot) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->setQSslSocket_SkipData_Callback(reinterpret_cast<VirtualQSslSocket::QSslSocket_SkipData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 long long QSslSocket_WriteData(QSslSocket* self, const char* data, long long lenVal) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         return static_cast<long long>(vqsslsocket->writeData(data, static_cast<qint64>(lenVal)));
@@ -1197,32 +1222,6 @@ long long QSslSocket_QBaseWriteData(QSslSocket* self, const char* data, long lon
 void QSslSocket_OnWriteData(QSslSocket* self, intptr_t slot) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         vqsslsocket->setQSslSocket_WriteData_Callback(reinterpret_cast<VirtualQSslSocket::QSslSocket_WriteData_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-bool QSslSocket_Bind(QSslSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        return vqsslsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    } else {
-        return vqsslsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    }
-}
-
-// Base class handler implementation
-bool QSslSocket_QBaseBind(QSslSocket* self, QHostAddress* address, uint16_t port, int mode) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->setQSslSocket_Bind_IsBase(true);
-        return vqsslsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    } else {
-        return vqsslsocket->bind(*address, static_cast<quint16>(port), static_cast<QAbstractSocket::BindMode>(mode));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QSslSocket_OnBind(QSslSocket* self, intptr_t slot) {
-    if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->setQSslSocket_Bind_Callback(reinterpret_cast<VirtualQSslSocket::QSslSocket_Bind_Callback>(slot));
     }
 }
 
@@ -1311,9 +1310,9 @@ void QSslSocket_OnReadLineData(QSslSocket* self, intptr_t slot) {
 // Derived class handler implementation
 bool QSslSocket_Open(QSslSocket* self, int mode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        return vqsslsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqsslsocket->open(static_cast<QIODevice::OpenMode>(mode));
     } else {
-        return vqsslsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqsslsocket->open(static_cast<QIODevice::OpenMode>(mode));
     }
 }
 
@@ -1321,9 +1320,9 @@ bool QSslSocket_Open(QSslSocket* self, int mode) {
 bool QSslSocket_QBaseOpen(QSslSocket* self, int mode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         vqsslsocket->setQSslSocket_Open_IsBase(true);
-        return vqsslsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqsslsocket->open(static_cast<QIODevice::OpenMode>(mode));
     } else {
-        return vqsslsocket->open(static_cast<QIODeviceBase::OpenMode>(mode));
+        return vqsslsocket->open(static_cast<QIODevice::OpenMode>(mode));
     }
 }
 
@@ -1807,9 +1806,9 @@ void QSslSocket_OnSetPeerName(QSslSocket* self, intptr_t slot) {
 // Derived class handler implementation
 void QSslSocket_SetOpenMode(QSslSocket* self, int openMode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
-        vqsslsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsslsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqsslsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsslsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 
@@ -1817,9 +1816,9 @@ void QSslSocket_SetOpenMode(QSslSocket* self, int openMode) {
 void QSslSocket_QBaseSetOpenMode(QSslSocket* self, int openMode) {
     if (auto* vqsslsocket = dynamic_cast<VirtualQSslSocket*>(self)) {
         vqsslsocket->setQSslSocket_SetOpenMode_IsBase(true);
-        vqsslsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsslsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     } else {
-        vqsslsocket->setOpenMode(static_cast<QIODeviceBase::OpenMode>(openMode));
+        vqsslsocket->setOpenMode(static_cast<QIODevice::OpenMode>(openMode));
     }
 }
 

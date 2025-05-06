@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QChildEvent QChildEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRadioButton QRadioButton;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
@@ -94,6 +93,7 @@ int QRadioButton_Metacall(QRadioButton* self, int param1, int param2, void** par
 void QRadioButton_OnMetacall(QRadioButton* self, intptr_t slot);
 int QRadioButton_QBaseMetacall(QRadioButton* self, int param1, int param2, void** param3);
 libqt_string QRadioButton_Tr(const char* s);
+libqt_string QRadioButton_TrUtf8(const char* s);
 QSize* QRadioButton_SizeHint(const QRadioButton* self);
 void QRadioButton_OnSizeHint(const QRadioButton* self, intptr_t slot);
 QSize* QRadioButton_QBaseSizeHint(const QRadioButton* self);
@@ -112,11 +112,10 @@ void QRadioButton_QBasePaintEvent(QRadioButton* self, QPaintEvent* param1);
 void QRadioButton_MouseMoveEvent(QRadioButton* self, QMouseEvent* param1);
 void QRadioButton_OnMouseMoveEvent(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseMouseMoveEvent(QRadioButton* self, QMouseEvent* param1);
-void QRadioButton_InitStyleOption(const QRadioButton* self, QStyleOptionButton* button);
-void QRadioButton_OnInitStyleOption(const QRadioButton* self, intptr_t slot);
-void QRadioButton_QBaseInitStyleOption(const QRadioButton* self, QStyleOptionButton* button);
 libqt_string QRadioButton_Tr2(const char* s, const char* c);
 libqt_string QRadioButton_Tr3(const char* s, const char* c, int n);
+libqt_string QRadioButton_TrUtf82(const char* s, const char* c);
+libqt_string QRadioButton_TrUtf83(const char* s, const char* c, int n);
 void QRadioButton_CheckStateSet(QRadioButton* self);
 void QRadioButton_OnCheckStateSet(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseCheckStateSet(QRadioButton* self);
@@ -168,9 +167,9 @@ void QRadioButton_QBaseMouseDoubleClickEvent(QRadioButton* self, QMouseEvent* ev
 void QRadioButton_WheelEvent(QRadioButton* self, QWheelEvent* event);
 void QRadioButton_OnWheelEvent(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseWheelEvent(QRadioButton* self, QWheelEvent* event);
-void QRadioButton_EnterEvent(QRadioButton* self, QEnterEvent* event);
+void QRadioButton_EnterEvent(QRadioButton* self, QEvent* event);
 void QRadioButton_OnEnterEvent(QRadioButton* self, intptr_t slot);
-void QRadioButton_QBaseEnterEvent(QRadioButton* self, QEnterEvent* event);
+void QRadioButton_QBaseEnterEvent(QRadioButton* self, QEvent* event);
 void QRadioButton_LeaveEvent(QRadioButton* self, QEvent* event);
 void QRadioButton_OnLeaveEvent(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseLeaveEvent(QRadioButton* self, QEvent* event);
@@ -210,9 +209,9 @@ void QRadioButton_QBaseShowEvent(QRadioButton* self, QShowEvent* event);
 void QRadioButton_HideEvent(QRadioButton* self, QHideEvent* event);
 void QRadioButton_OnHideEvent(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseHideEvent(QRadioButton* self, QHideEvent* event);
-bool QRadioButton_NativeEvent(QRadioButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QRadioButton_NativeEvent(QRadioButton* self, libqt_string eventType, void* message, long* result);
 void QRadioButton_OnNativeEvent(QRadioButton* self, intptr_t slot);
-bool QRadioButton_QBaseNativeEvent(QRadioButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QRadioButton_QBaseNativeEvent(QRadioButton* self, libqt_string eventType, void* message, long* result);
 void QRadioButton_InputMethodEvent(QRadioButton* self, QInputMethodEvent* param1);
 void QRadioButton_OnInputMethodEvent(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseInputMethodEvent(QRadioButton* self, QInputMethodEvent* param1);
@@ -249,6 +248,9 @@ QPaintDevice* QRadioButton_QBaseRedirected(const QRadioButton* self, QPoint* off
 QPainter* QRadioButton_SharedPainter(const QRadioButton* self);
 void QRadioButton_OnSharedPainter(const QRadioButton* self, intptr_t slot);
 QPainter* QRadioButton_QBaseSharedPainter(const QRadioButton* self);
+void QRadioButton_InitStyleOption(const QRadioButton* self, QStyleOptionButton* button);
+void QRadioButton_OnInitStyleOption(const QRadioButton* self, intptr_t slot);
+void QRadioButton_QBaseInitStyleOption(const QRadioButton* self, QStyleOptionButton* button);
 void QRadioButton_UpdateMicroFocus(QRadioButton* self);
 void QRadioButton_OnUpdateMicroFocus(QRadioButton* self, intptr_t slot);
 void QRadioButton_QBaseUpdateMicroFocus(QRadioButton* self);

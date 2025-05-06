@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -30,7 +32,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     using QAbstractProxyModel_SetData_Callback = bool (*)(QAbstractProxyModel*, const QModelIndex&, const QVariant&, int);
     using QAbstractProxyModel_SetItemData_Callback = bool (*)(QAbstractProxyModel*, const QModelIndex&, const QMap<int, QVariant>&);
     using QAbstractProxyModel_SetHeaderData_Callback = bool (*)(QAbstractProxyModel*, int, Qt::Orientation, const QVariant&, int);
-    using QAbstractProxyModel_ClearItemData_Callback = bool (*)(QAbstractProxyModel*, const QModelIndex&);
     using QAbstractProxyModel_Buddy_Callback = QModelIndex (*)(const QAbstractProxyModel*, const QModelIndex&);
     using QAbstractProxyModel_CanFetchMore_Callback = bool (*)(const QAbstractProxyModel*, const QModelIndex&);
     using QAbstractProxyModel_FetchMore_Callback = void (*)(QAbstractProxyModel*, const QModelIndex&);
@@ -44,7 +45,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     using QAbstractProxyModel_MimeTypes_Callback = QStringList (*)();
     using QAbstractProxyModel_SupportedDragActions_Callback = Qt::DropActions (*)();
     using QAbstractProxyModel_SupportedDropActions_Callback = Qt::DropActions (*)();
-    using QAbstractProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QAbstractProxyModel_Index_Callback = QModelIndex (*)(const QAbstractProxyModel*, int, int, const QModelIndex&);
     using QAbstractProxyModel_Parent_Callback = QModelIndex (*)(const QAbstractProxyModel*, const QModelIndex&);
     using QAbstractProxyModel_RowCount_Callback = int (*)(const QAbstractProxyModel*, const QModelIndex&);
@@ -56,8 +56,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     using QAbstractProxyModel_MoveRows_Callback = bool (*)(QAbstractProxyModel*, const QModelIndex&, int, int, const QModelIndex&, int);
     using QAbstractProxyModel_MoveColumns_Callback = bool (*)(QAbstractProxyModel*, const QModelIndex&, int, int, const QModelIndex&, int);
     using QAbstractProxyModel_Match_Callback = QModelIndexList (*)(const QAbstractProxyModel*, const QModelIndex&, int, const QVariant&, int, Qt::MatchFlags);
-    using QAbstractProxyModel_MultiData_Callback = void (*)(const QAbstractProxyModel*, const QModelIndex&, QModelRoleDataSpan);
-    using QAbstractProxyModel_ResetInternalData_Callback = void (*)();
+    using QAbstractProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
     using QAbstractProxyModel_Event_Callback = bool (*)(QAbstractProxyModel*, QEvent*);
     using QAbstractProxyModel_EventFilter_Callback = bool (*)(QAbstractProxyModel*, QObject*, QEvent*);
     using QAbstractProxyModel_TimerEvent_Callback = void (*)(QAbstractProxyModel*, QTimerEvent*);
@@ -65,7 +64,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     using QAbstractProxyModel_CustomEvent_Callback = void (*)(QAbstractProxyModel*, QEvent*);
     using QAbstractProxyModel_ConnectNotify_Callback = void (*)(QAbstractProxyModel*, const QMetaMethod&);
     using QAbstractProxyModel_DisconnectNotify_Callback = void (*)(QAbstractProxyModel*, const QMetaMethod&);
-    using QAbstractProxyModel_CreateSourceIndex_Callback = QModelIndex (*)(const QAbstractProxyModel*, int, int, void*);
+    using QAbstractProxyModel_ResetInternalData_Callback = void (*)();
     using QAbstractProxyModel_CreateIndex_Callback = QModelIndex (*)(const QAbstractProxyModel*, int, int);
     using QAbstractProxyModel_EncodeData_Callback = void (*)(const QAbstractProxyModel*, const QModelIndexList&, QDataStream&);
     using QAbstractProxyModel_DecodeData_Callback = bool (*)(QAbstractProxyModel*, int, int, const QModelIndex&, QDataStream&);
@@ -108,7 +107,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     QAbstractProxyModel_SetData_Callback qabstractproxymodel_setdata_callback = nullptr;
     QAbstractProxyModel_SetItemData_Callback qabstractproxymodel_setitemdata_callback = nullptr;
     QAbstractProxyModel_SetHeaderData_Callback qabstractproxymodel_setheaderdata_callback = nullptr;
-    QAbstractProxyModel_ClearItemData_Callback qabstractproxymodel_clearitemdata_callback = nullptr;
     QAbstractProxyModel_Buddy_Callback qabstractproxymodel_buddy_callback = nullptr;
     QAbstractProxyModel_CanFetchMore_Callback qabstractproxymodel_canfetchmore_callback = nullptr;
     QAbstractProxyModel_FetchMore_Callback qabstractproxymodel_fetchmore_callback = nullptr;
@@ -122,7 +120,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     QAbstractProxyModel_MimeTypes_Callback qabstractproxymodel_mimetypes_callback = nullptr;
     QAbstractProxyModel_SupportedDragActions_Callback qabstractproxymodel_supporteddragactions_callback = nullptr;
     QAbstractProxyModel_SupportedDropActions_Callback qabstractproxymodel_supporteddropactions_callback = nullptr;
-    QAbstractProxyModel_RoleNames_Callback qabstractproxymodel_rolenames_callback = nullptr;
     QAbstractProxyModel_Index_Callback qabstractproxymodel_index_callback = nullptr;
     QAbstractProxyModel_Parent_Callback qabstractproxymodel_parent_callback = nullptr;
     QAbstractProxyModel_RowCount_Callback qabstractproxymodel_rowcount_callback = nullptr;
@@ -134,8 +131,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     QAbstractProxyModel_MoveRows_Callback qabstractproxymodel_moverows_callback = nullptr;
     QAbstractProxyModel_MoveColumns_Callback qabstractproxymodel_movecolumns_callback = nullptr;
     QAbstractProxyModel_Match_Callback qabstractproxymodel_match_callback = nullptr;
-    QAbstractProxyModel_MultiData_Callback qabstractproxymodel_multidata_callback = nullptr;
-    QAbstractProxyModel_ResetInternalData_Callback qabstractproxymodel_resetinternaldata_callback = nullptr;
+    QAbstractProxyModel_RoleNames_Callback qabstractproxymodel_rolenames_callback = nullptr;
     QAbstractProxyModel_Event_Callback qabstractproxymodel_event_callback = nullptr;
     QAbstractProxyModel_EventFilter_Callback qabstractproxymodel_eventfilter_callback = nullptr;
     QAbstractProxyModel_TimerEvent_Callback qabstractproxymodel_timerevent_callback = nullptr;
@@ -143,7 +139,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     QAbstractProxyModel_CustomEvent_Callback qabstractproxymodel_customevent_callback = nullptr;
     QAbstractProxyModel_ConnectNotify_Callback qabstractproxymodel_connectnotify_callback = nullptr;
     QAbstractProxyModel_DisconnectNotify_Callback qabstractproxymodel_disconnectnotify_callback = nullptr;
-    QAbstractProxyModel_CreateSourceIndex_Callback qabstractproxymodel_createsourceindex_callback = nullptr;
+    QAbstractProxyModel_ResetInternalData_Callback qabstractproxymodel_resetinternaldata_callback = nullptr;
     QAbstractProxyModel_CreateIndex_Callback qabstractproxymodel_createindex_callback = nullptr;
     QAbstractProxyModel_EncodeData_Callback qabstractproxymodel_encodedata_callback = nullptr;
     QAbstractProxyModel_DecodeData_Callback qabstractproxymodel_decodedata_callback = nullptr;
@@ -185,7 +181,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     mutable bool qabstractproxymodel_setdata_isbase = false;
     mutable bool qabstractproxymodel_setitemdata_isbase = false;
     mutable bool qabstractproxymodel_setheaderdata_isbase = false;
-    mutable bool qabstractproxymodel_clearitemdata_isbase = false;
     mutable bool qabstractproxymodel_buddy_isbase = false;
     mutable bool qabstractproxymodel_canfetchmore_isbase = false;
     mutable bool qabstractproxymodel_fetchmore_isbase = false;
@@ -199,7 +194,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     mutable bool qabstractproxymodel_mimetypes_isbase = false;
     mutable bool qabstractproxymodel_supporteddragactions_isbase = false;
     mutable bool qabstractproxymodel_supporteddropactions_isbase = false;
-    mutable bool qabstractproxymodel_rolenames_isbase = false;
     mutable bool qabstractproxymodel_index_isbase = false;
     mutable bool qabstractproxymodel_parent_isbase = false;
     mutable bool qabstractproxymodel_rowcount_isbase = false;
@@ -211,8 +205,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     mutable bool qabstractproxymodel_moverows_isbase = false;
     mutable bool qabstractproxymodel_movecolumns_isbase = false;
     mutable bool qabstractproxymodel_match_isbase = false;
-    mutable bool qabstractproxymodel_multidata_isbase = false;
-    mutable bool qabstractproxymodel_resetinternaldata_isbase = false;
+    mutable bool qabstractproxymodel_rolenames_isbase = false;
     mutable bool qabstractproxymodel_event_isbase = false;
     mutable bool qabstractproxymodel_eventfilter_isbase = false;
     mutable bool qabstractproxymodel_timerevent_isbase = false;
@@ -220,7 +213,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     mutable bool qabstractproxymodel_customevent_isbase = false;
     mutable bool qabstractproxymodel_connectnotify_isbase = false;
     mutable bool qabstractproxymodel_disconnectnotify_isbase = false;
-    mutable bool qabstractproxymodel_createsourceindex_isbase = false;
+    mutable bool qabstractproxymodel_resetinternaldata_isbase = false;
     mutable bool qabstractproxymodel_createindex_isbase = false;
     mutable bool qabstractproxymodel_encodedata_isbase = false;
     mutable bool qabstractproxymodel_decodedata_isbase = false;
@@ -266,7 +259,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
         qabstractproxymodel_setdata_callback = nullptr;
         qabstractproxymodel_setitemdata_callback = nullptr;
         qabstractproxymodel_setheaderdata_callback = nullptr;
-        qabstractproxymodel_clearitemdata_callback = nullptr;
         qabstractproxymodel_buddy_callback = nullptr;
         qabstractproxymodel_canfetchmore_callback = nullptr;
         qabstractproxymodel_fetchmore_callback = nullptr;
@@ -280,7 +272,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
         qabstractproxymodel_mimetypes_callback = nullptr;
         qabstractproxymodel_supporteddragactions_callback = nullptr;
         qabstractproxymodel_supporteddropactions_callback = nullptr;
-        qabstractproxymodel_rolenames_callback = nullptr;
         qabstractproxymodel_index_callback = nullptr;
         qabstractproxymodel_parent_callback = nullptr;
         qabstractproxymodel_rowcount_callback = nullptr;
@@ -292,8 +283,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
         qabstractproxymodel_moverows_callback = nullptr;
         qabstractproxymodel_movecolumns_callback = nullptr;
         qabstractproxymodel_match_callback = nullptr;
-        qabstractproxymodel_multidata_callback = nullptr;
-        qabstractproxymodel_resetinternaldata_callback = nullptr;
+        qabstractproxymodel_rolenames_callback = nullptr;
         qabstractproxymodel_event_callback = nullptr;
         qabstractproxymodel_eventfilter_callback = nullptr;
         qabstractproxymodel_timerevent_callback = nullptr;
@@ -301,7 +291,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
         qabstractproxymodel_customevent_callback = nullptr;
         qabstractproxymodel_connectnotify_callback = nullptr;
         qabstractproxymodel_disconnectnotify_callback = nullptr;
-        qabstractproxymodel_createsourceindex_callback = nullptr;
+        qabstractproxymodel_resetinternaldata_callback = nullptr;
         qabstractproxymodel_createindex_callback = nullptr;
         qabstractproxymodel_encodedata_callback = nullptr;
         qabstractproxymodel_decodedata_callback = nullptr;
@@ -344,7 +334,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_SetData_Callback(QAbstractProxyModel_SetData_Callback cb) { qabstractproxymodel_setdata_callback = cb; }
     void setQAbstractProxyModel_SetItemData_Callback(QAbstractProxyModel_SetItemData_Callback cb) { qabstractproxymodel_setitemdata_callback = cb; }
     void setQAbstractProxyModel_SetHeaderData_Callback(QAbstractProxyModel_SetHeaderData_Callback cb) { qabstractproxymodel_setheaderdata_callback = cb; }
-    void setQAbstractProxyModel_ClearItemData_Callback(QAbstractProxyModel_ClearItemData_Callback cb) { qabstractproxymodel_clearitemdata_callback = cb; }
     void setQAbstractProxyModel_Buddy_Callback(QAbstractProxyModel_Buddy_Callback cb) { qabstractproxymodel_buddy_callback = cb; }
     void setQAbstractProxyModel_CanFetchMore_Callback(QAbstractProxyModel_CanFetchMore_Callback cb) { qabstractproxymodel_canfetchmore_callback = cb; }
     void setQAbstractProxyModel_FetchMore_Callback(QAbstractProxyModel_FetchMore_Callback cb) { qabstractproxymodel_fetchmore_callback = cb; }
@@ -358,7 +347,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_MimeTypes_Callback(QAbstractProxyModel_MimeTypes_Callback cb) { qabstractproxymodel_mimetypes_callback = cb; }
     void setQAbstractProxyModel_SupportedDragActions_Callback(QAbstractProxyModel_SupportedDragActions_Callback cb) { qabstractproxymodel_supporteddragactions_callback = cb; }
     void setQAbstractProxyModel_SupportedDropActions_Callback(QAbstractProxyModel_SupportedDropActions_Callback cb) { qabstractproxymodel_supporteddropactions_callback = cb; }
-    void setQAbstractProxyModel_RoleNames_Callback(QAbstractProxyModel_RoleNames_Callback cb) { qabstractproxymodel_rolenames_callback = cb; }
     void setQAbstractProxyModel_Index_Callback(QAbstractProxyModel_Index_Callback cb) { qabstractproxymodel_index_callback = cb; }
     void setQAbstractProxyModel_Parent_Callback(QAbstractProxyModel_Parent_Callback cb) { qabstractproxymodel_parent_callback = cb; }
     void setQAbstractProxyModel_RowCount_Callback(QAbstractProxyModel_RowCount_Callback cb) { qabstractproxymodel_rowcount_callback = cb; }
@@ -370,8 +358,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_MoveRows_Callback(QAbstractProxyModel_MoveRows_Callback cb) { qabstractproxymodel_moverows_callback = cb; }
     void setQAbstractProxyModel_MoveColumns_Callback(QAbstractProxyModel_MoveColumns_Callback cb) { qabstractproxymodel_movecolumns_callback = cb; }
     void setQAbstractProxyModel_Match_Callback(QAbstractProxyModel_Match_Callback cb) { qabstractproxymodel_match_callback = cb; }
-    void setQAbstractProxyModel_MultiData_Callback(QAbstractProxyModel_MultiData_Callback cb) { qabstractproxymodel_multidata_callback = cb; }
-    void setQAbstractProxyModel_ResetInternalData_Callback(QAbstractProxyModel_ResetInternalData_Callback cb) { qabstractproxymodel_resetinternaldata_callback = cb; }
+    void setQAbstractProxyModel_RoleNames_Callback(QAbstractProxyModel_RoleNames_Callback cb) { qabstractproxymodel_rolenames_callback = cb; }
     void setQAbstractProxyModel_Event_Callback(QAbstractProxyModel_Event_Callback cb) { qabstractproxymodel_event_callback = cb; }
     void setQAbstractProxyModel_EventFilter_Callback(QAbstractProxyModel_EventFilter_Callback cb) { qabstractproxymodel_eventfilter_callback = cb; }
     void setQAbstractProxyModel_TimerEvent_Callback(QAbstractProxyModel_TimerEvent_Callback cb) { qabstractproxymodel_timerevent_callback = cb; }
@@ -379,7 +366,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_CustomEvent_Callback(QAbstractProxyModel_CustomEvent_Callback cb) { qabstractproxymodel_customevent_callback = cb; }
     void setQAbstractProxyModel_ConnectNotify_Callback(QAbstractProxyModel_ConnectNotify_Callback cb) { qabstractproxymodel_connectnotify_callback = cb; }
     void setQAbstractProxyModel_DisconnectNotify_Callback(QAbstractProxyModel_DisconnectNotify_Callback cb) { qabstractproxymodel_disconnectnotify_callback = cb; }
-    void setQAbstractProxyModel_CreateSourceIndex_Callback(QAbstractProxyModel_CreateSourceIndex_Callback cb) { qabstractproxymodel_createsourceindex_callback = cb; }
+    void setQAbstractProxyModel_ResetInternalData_Callback(QAbstractProxyModel_ResetInternalData_Callback cb) { qabstractproxymodel_resetinternaldata_callback = cb; }
     void setQAbstractProxyModel_CreateIndex_Callback(QAbstractProxyModel_CreateIndex_Callback cb) { qabstractproxymodel_createindex_callback = cb; }
     void setQAbstractProxyModel_EncodeData_Callback(QAbstractProxyModel_EncodeData_Callback cb) { qabstractproxymodel_encodedata_callback = cb; }
     void setQAbstractProxyModel_DecodeData_Callback(QAbstractProxyModel_DecodeData_Callback cb) { qabstractproxymodel_decodedata_callback = cb; }
@@ -421,7 +408,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_SetData_IsBase(bool value) const { qabstractproxymodel_setdata_isbase = value; }
     void setQAbstractProxyModel_SetItemData_IsBase(bool value) const { qabstractproxymodel_setitemdata_isbase = value; }
     void setQAbstractProxyModel_SetHeaderData_IsBase(bool value) const { qabstractproxymodel_setheaderdata_isbase = value; }
-    void setQAbstractProxyModel_ClearItemData_IsBase(bool value) const { qabstractproxymodel_clearitemdata_isbase = value; }
     void setQAbstractProxyModel_Buddy_IsBase(bool value) const { qabstractproxymodel_buddy_isbase = value; }
     void setQAbstractProxyModel_CanFetchMore_IsBase(bool value) const { qabstractproxymodel_canfetchmore_isbase = value; }
     void setQAbstractProxyModel_FetchMore_IsBase(bool value) const { qabstractproxymodel_fetchmore_isbase = value; }
@@ -435,7 +421,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_MimeTypes_IsBase(bool value) const { qabstractproxymodel_mimetypes_isbase = value; }
     void setQAbstractProxyModel_SupportedDragActions_IsBase(bool value) const { qabstractproxymodel_supporteddragactions_isbase = value; }
     void setQAbstractProxyModel_SupportedDropActions_IsBase(bool value) const { qabstractproxymodel_supporteddropactions_isbase = value; }
-    void setQAbstractProxyModel_RoleNames_IsBase(bool value) const { qabstractproxymodel_rolenames_isbase = value; }
     void setQAbstractProxyModel_Index_IsBase(bool value) const { qabstractproxymodel_index_isbase = value; }
     void setQAbstractProxyModel_Parent_IsBase(bool value) const { qabstractproxymodel_parent_isbase = value; }
     void setQAbstractProxyModel_RowCount_IsBase(bool value) const { qabstractproxymodel_rowcount_isbase = value; }
@@ -447,8 +432,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_MoveRows_IsBase(bool value) const { qabstractproxymodel_moverows_isbase = value; }
     void setQAbstractProxyModel_MoveColumns_IsBase(bool value) const { qabstractproxymodel_movecolumns_isbase = value; }
     void setQAbstractProxyModel_Match_IsBase(bool value) const { qabstractproxymodel_match_isbase = value; }
-    void setQAbstractProxyModel_MultiData_IsBase(bool value) const { qabstractproxymodel_multidata_isbase = value; }
-    void setQAbstractProxyModel_ResetInternalData_IsBase(bool value) const { qabstractproxymodel_resetinternaldata_isbase = value; }
+    void setQAbstractProxyModel_RoleNames_IsBase(bool value) const { qabstractproxymodel_rolenames_isbase = value; }
     void setQAbstractProxyModel_Event_IsBase(bool value) const { qabstractproxymodel_event_isbase = value; }
     void setQAbstractProxyModel_EventFilter_IsBase(bool value) const { qabstractproxymodel_eventfilter_isbase = value; }
     void setQAbstractProxyModel_TimerEvent_IsBase(bool value) const { qabstractproxymodel_timerevent_isbase = value; }
@@ -456,7 +440,7 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     void setQAbstractProxyModel_CustomEvent_IsBase(bool value) const { qabstractproxymodel_customevent_isbase = value; }
     void setQAbstractProxyModel_ConnectNotify_IsBase(bool value) const { qabstractproxymodel_connectnotify_isbase = value; }
     void setQAbstractProxyModel_DisconnectNotify_IsBase(bool value) const { qabstractproxymodel_disconnectnotify_isbase = value; }
-    void setQAbstractProxyModel_CreateSourceIndex_IsBase(bool value) const { qabstractproxymodel_createsourceindex_isbase = value; }
+    void setQAbstractProxyModel_ResetInternalData_IsBase(bool value) const { qabstractproxymodel_resetinternaldata_isbase = value; }
     void setQAbstractProxyModel_CreateIndex_IsBase(bool value) const { qabstractproxymodel_createindex_isbase = value; }
     void setQAbstractProxyModel_EncodeData_IsBase(bool value) const { qabstractproxymodel_encodedata_isbase = value; }
     void setQAbstractProxyModel_DecodeData_IsBase(bool value) const { qabstractproxymodel_decodedata_isbase = value; }
@@ -649,18 +633,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool clearItemData(const QModelIndex& index) override {
-        if (qabstractproxymodel_clearitemdata_isbase) {
-            qabstractproxymodel_clearitemdata_isbase = false;
-            return QAbstractProxyModel::clearItemData(index);
-        } else if (qabstractproxymodel_clearitemdata_callback != nullptr) {
-            return qabstractproxymodel_clearitemdata_callback(this, index);
-        } else {
-            return QAbstractProxyModel::clearItemData(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QModelIndex buddy(const QModelIndex& index) const override {
         if (qabstractproxymodel_buddy_isbase) {
             qabstractproxymodel_buddy_isbase = false;
@@ -817,18 +789,6 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QHash<int, QByteArray> roleNames() const override {
-        if (qabstractproxymodel_rolenames_isbase) {
-            qabstractproxymodel_rolenames_isbase = false;
-            return QAbstractProxyModel::roleNames();
-        } else if (qabstractproxymodel_rolenames_callback != nullptr) {
-            return qabstractproxymodel_rolenames_callback();
-        } else {
-            return QAbstractProxyModel::roleNames();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QModelIndex index(int row, int column, const QModelIndex& parent) const override {
         return qabstractproxymodel_index_callback(this, row, column, parent);
     }
@@ -933,26 +893,14 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
-        if (qabstractproxymodel_multidata_isbase) {
-            qabstractproxymodel_multidata_isbase = false;
-            QAbstractProxyModel::multiData(index, roleDataSpan);
-        } else if (qabstractproxymodel_multidata_callback != nullptr) {
-            qabstractproxymodel_multidata_callback(this, index, roleDataSpan);
+    virtual QHash<int, QByteArray> roleNames() const override {
+        if (qabstractproxymodel_rolenames_isbase) {
+            qabstractproxymodel_rolenames_isbase = false;
+            return QAbstractProxyModel::roleNames();
+        } else if (qabstractproxymodel_rolenames_callback != nullptr) {
+            return qabstractproxymodel_rolenames_callback();
         } else {
-            QAbstractProxyModel::multiData(index, roleDataSpan);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void resetInternalData() override {
-        if (qabstractproxymodel_resetinternaldata_isbase) {
-            qabstractproxymodel_resetinternaldata_isbase = false;
-            QAbstractProxyModel::resetInternalData();
-        } else if (qabstractproxymodel_resetinternaldata_callback != nullptr) {
-            qabstractproxymodel_resetinternaldata_callback();
-        } else {
-            QAbstractProxyModel::resetInternalData();
+            return QAbstractProxyModel::roleNames();
         }
     }
 
@@ -1041,14 +989,14 @@ class VirtualQAbstractProxyModel : public QAbstractProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    QModelIndex createSourceIndex(int row, int col, void* internalPtr) const {
-        if (qabstractproxymodel_createsourceindex_isbase) {
-            qabstractproxymodel_createsourceindex_isbase = false;
-            return QAbstractProxyModel::createSourceIndex(row, col, internalPtr);
-        } else if (qabstractproxymodel_createsourceindex_callback != nullptr) {
-            return qabstractproxymodel_createsourceindex_callback(this, row, col, internalPtr);
+    void resetInternalData() {
+        if (qabstractproxymodel_resetinternaldata_isbase) {
+            qabstractproxymodel_resetinternaldata_isbase = false;
+            QAbstractProxyModel::resetInternalData();
+        } else if (qabstractproxymodel_resetinternaldata_callback != nullptr) {
+            qabstractproxymodel_resetinternaldata_callback();
         } else {
-            return QAbstractProxyModel::createSourceIndex(row, col, internalPtr);
+            QAbstractProxyModel::resetInternalData();
         }
     }
 

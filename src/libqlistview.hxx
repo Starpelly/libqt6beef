@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -27,7 +29,7 @@ class VirtualQListView : public QListView {
     using QListView_SetRootIndex_Callback = void (*)(QListView*, const QModelIndex&);
     using QListView_Event_Callback = bool (*)(QListView*, QEvent*);
     using QListView_ScrollContentsBy_Callback = void (*)(QListView*, int, int);
-    using QListView_DataChanged_Callback = void (*)(QListView*, const QModelIndex&, const QModelIndex&, const QList<int>&);
+    using QListView_DataChanged_Callback = void (*)(QListView*, const QModelIndex&, const QModelIndex&, const QVector<int>&);
     using QListView_RowsInserted_Callback = void (*)(QListView*, const QModelIndex&, int, int);
     using QListView_RowsAboutToBeRemoved_Callback = void (*)(QListView*, const QModelIndex&, int, int);
     using QListView_MouseMoveEvent_Callback = void (*)(QListView*, QMouseEvent*);
@@ -39,7 +41,7 @@ class VirtualQListView : public QListView {
     using QListView_DragLeaveEvent_Callback = void (*)(QListView*, QDragLeaveEvent*);
     using QListView_DropEvent_Callback = void (*)(QListView*, QDropEvent*);
     using QListView_StartDrag_Callback = void (*)(QListView*, Qt::DropActions);
-    using QListView_InitViewItemOption_Callback = void (*)(const QListView*, QStyleOptionViewItem*);
+    using QListView_ViewOptions_Callback = QStyleOptionViewItem (*)();
     using QListView_PaintEvent_Callback = void (*)(QListView*, QPaintEvent*);
     using QListView_HorizontalOffset_Callback = int (*)();
     using QListView_VerticalOffset_Callback = int (*)();
@@ -57,7 +59,6 @@ class VirtualQListView : public QListView {
     using QListView_KeyboardSearch_Callback = void (*)(QListView*, const QString&);
     using QListView_SizeHintForRow_Callback = int (*)(const QListView*, int);
     using QListView_SizeHintForColumn_Callback = int (*)(const QListView*, int);
-    using QListView_ItemDelegateForIndex_Callback = QAbstractItemDelegate* (*)(const QListView*, const QModelIndex&);
     using QListView_InputMethodQuery_Callback = QVariant (*)(const QListView*, Qt::InputMethodQuery);
     using QListView_SelectAll_Callback = void (*)();
     using QListView_UpdateEditorData_Callback = void (*)();
@@ -86,14 +87,13 @@ class VirtualQListView : public QListView {
     using QListView_SetupViewport_Callback = void (*)(QListView*, QWidget*);
     using QListView_ContextMenuEvent_Callback = void (*)(QListView*, QContextMenuEvent*);
     using QListView_ChangeEvent_Callback = void (*)(QListView*, QEvent*);
-    using QListView_InitStyleOption_Callback = void (*)(const QListView*, QStyleOptionFrame*);
     using QListView_DevType_Callback = int (*)();
     using QListView_SetVisible_Callback = void (*)(QListView*, bool);
     using QListView_HeightForWidth_Callback = int (*)(const QListView*, int);
     using QListView_HasHeightForWidth_Callback = bool (*)();
     using QListView_PaintEngine_Callback = QPaintEngine* (*)();
     using QListView_KeyReleaseEvent_Callback = void (*)(QListView*, QKeyEvent*);
-    using QListView_EnterEvent_Callback = void (*)(QListView*, QEnterEvent*);
+    using QListView_EnterEvent_Callback = void (*)(QListView*, QEvent*);
     using QListView_LeaveEvent_Callback = void (*)(QListView*, QEvent*);
     using QListView_MoveEvent_Callback = void (*)(QListView*, QMoveEvent*);
     using QListView_CloseEvent_Callback = void (*)(QListView*, QCloseEvent*);
@@ -101,7 +101,7 @@ class VirtualQListView : public QListView {
     using QListView_ActionEvent_Callback = void (*)(QListView*, QActionEvent*);
     using QListView_ShowEvent_Callback = void (*)(QListView*, QShowEvent*);
     using QListView_HideEvent_Callback = void (*)(QListView*, QHideEvent*);
-    using QListView_NativeEvent_Callback = bool (*)(QListView*, const QByteArray&, void*, qintptr*);
+    using QListView_NativeEvent_Callback = bool (*)(QListView*, const QByteArray&, void*, long*);
     using QListView_Metric_Callback = int (*)(const QListView*, QPaintDevice::PaintDeviceMetric);
     using QListView_InitPainter_Callback = void (*)(const QListView*, QPainter*);
     using QListView_Redirected_Callback = QPaintDevice* (*)(const QListView*, QPoint*);
@@ -114,6 +114,10 @@ class VirtualQListView : public QListView {
     using QListView_ContentsSize_Callback = QSize (*)();
     using QListView_RectForIndex_Callback = QRect (*)(const QListView*, const QModelIndex&);
     using QListView_SetPositionForIndex_Callback = void (*)(QListView*, const QPoint&, const QModelIndex&);
+    using QListView_SetHorizontalStepsPerItem_Callback = void (*)(QListView*, int);
+    using QListView_HorizontalStepsPerItem_Callback = int (*)();
+    using QListView_SetVerticalStepsPerItem_Callback = void (*)(QListView*, int);
+    using QListView_VerticalStepsPerItem_Callback = int (*)();
     using QListView_State_Callback = QAbstractItemView::State (*)();
     using QListView_SetState_Callback = void (*)(QListView*, int);
     using QListView_ScheduleDelayedItemsLayout_Callback = void (*)();
@@ -128,6 +132,7 @@ class VirtualQListView : public QListView {
     using QListView_SetViewportMargins_Callback = void (*)(QListView*, int, int, int, int);
     using QListView_ViewportMargins_Callback = QMargins (*)();
     using QListView_DrawFrame_Callback = void (*)(QListView*, QPainter*);
+    using QListView_InitStyleOption_Callback = void (*)(const QListView*, QStyleOptionFrame*);
     using QListView_UpdateMicroFocus_Callback = void (*)();
     using QListView_Create_Callback = void (*)();
     using QListView_Destroy_Callback = void (*)();
@@ -161,7 +166,7 @@ class VirtualQListView : public QListView {
     QListView_DragLeaveEvent_Callback qlistview_dragleaveevent_callback = nullptr;
     QListView_DropEvent_Callback qlistview_dropevent_callback = nullptr;
     QListView_StartDrag_Callback qlistview_startdrag_callback = nullptr;
-    QListView_InitViewItemOption_Callback qlistview_initviewitemoption_callback = nullptr;
+    QListView_ViewOptions_Callback qlistview_viewoptions_callback = nullptr;
     QListView_PaintEvent_Callback qlistview_paintevent_callback = nullptr;
     QListView_HorizontalOffset_Callback qlistview_horizontaloffset_callback = nullptr;
     QListView_VerticalOffset_Callback qlistview_verticaloffset_callback = nullptr;
@@ -179,7 +184,6 @@ class VirtualQListView : public QListView {
     QListView_KeyboardSearch_Callback qlistview_keyboardsearch_callback = nullptr;
     QListView_SizeHintForRow_Callback qlistview_sizehintforrow_callback = nullptr;
     QListView_SizeHintForColumn_Callback qlistview_sizehintforcolumn_callback = nullptr;
-    QListView_ItemDelegateForIndex_Callback qlistview_itemdelegateforindex_callback = nullptr;
     QListView_InputMethodQuery_Callback qlistview_inputmethodquery_callback = nullptr;
     QListView_SelectAll_Callback qlistview_selectall_callback = nullptr;
     QListView_UpdateEditorData_Callback qlistview_updateeditordata_callback = nullptr;
@@ -208,7 +212,6 @@ class VirtualQListView : public QListView {
     QListView_SetupViewport_Callback qlistview_setupviewport_callback = nullptr;
     QListView_ContextMenuEvent_Callback qlistview_contextmenuevent_callback = nullptr;
     QListView_ChangeEvent_Callback qlistview_changeevent_callback = nullptr;
-    QListView_InitStyleOption_Callback qlistview_initstyleoption_callback = nullptr;
     QListView_DevType_Callback qlistview_devtype_callback = nullptr;
     QListView_SetVisible_Callback qlistview_setvisible_callback = nullptr;
     QListView_HeightForWidth_Callback qlistview_heightforwidth_callback = nullptr;
@@ -236,6 +239,10 @@ class VirtualQListView : public QListView {
     QListView_ContentsSize_Callback qlistview_contentssize_callback = nullptr;
     QListView_RectForIndex_Callback qlistview_rectforindex_callback = nullptr;
     QListView_SetPositionForIndex_Callback qlistview_setpositionforindex_callback = nullptr;
+    QListView_SetHorizontalStepsPerItem_Callback qlistview_sethorizontalstepsperitem_callback = nullptr;
+    QListView_HorizontalStepsPerItem_Callback qlistview_horizontalstepsperitem_callback = nullptr;
+    QListView_SetVerticalStepsPerItem_Callback qlistview_setverticalstepsperitem_callback = nullptr;
+    QListView_VerticalStepsPerItem_Callback qlistview_verticalstepsperitem_callback = nullptr;
     QListView_State_Callback qlistview_state_callback = nullptr;
     QListView_SetState_Callback qlistview_setstate_callback = nullptr;
     QListView_ScheduleDelayedItemsLayout_Callback qlistview_scheduledelayeditemslayout_callback = nullptr;
@@ -250,6 +257,7 @@ class VirtualQListView : public QListView {
     QListView_SetViewportMargins_Callback qlistview_setviewportmargins_callback = nullptr;
     QListView_ViewportMargins_Callback qlistview_viewportmargins_callback = nullptr;
     QListView_DrawFrame_Callback qlistview_drawframe_callback = nullptr;
+    QListView_InitStyleOption_Callback qlistview_initstyleoption_callback = nullptr;
     QListView_UpdateMicroFocus_Callback qlistview_updatemicrofocus_callback = nullptr;
     QListView_Create_Callback qlistview_create_callback = nullptr;
     QListView_Destroy_Callback qlistview_destroy_callback = nullptr;
@@ -282,7 +290,7 @@ class VirtualQListView : public QListView {
     mutable bool qlistview_dragleaveevent_isbase = false;
     mutable bool qlistview_dropevent_isbase = false;
     mutable bool qlistview_startdrag_isbase = false;
-    mutable bool qlistview_initviewitemoption_isbase = false;
+    mutable bool qlistview_viewoptions_isbase = false;
     mutable bool qlistview_paintevent_isbase = false;
     mutable bool qlistview_horizontaloffset_isbase = false;
     mutable bool qlistview_verticaloffset_isbase = false;
@@ -300,7 +308,6 @@ class VirtualQListView : public QListView {
     mutable bool qlistview_keyboardsearch_isbase = false;
     mutable bool qlistview_sizehintforrow_isbase = false;
     mutable bool qlistview_sizehintforcolumn_isbase = false;
-    mutable bool qlistview_itemdelegateforindex_isbase = false;
     mutable bool qlistview_inputmethodquery_isbase = false;
     mutable bool qlistview_selectall_isbase = false;
     mutable bool qlistview_updateeditordata_isbase = false;
@@ -329,7 +336,6 @@ class VirtualQListView : public QListView {
     mutable bool qlistview_setupviewport_isbase = false;
     mutable bool qlistview_contextmenuevent_isbase = false;
     mutable bool qlistview_changeevent_isbase = false;
-    mutable bool qlistview_initstyleoption_isbase = false;
     mutable bool qlistview_devtype_isbase = false;
     mutable bool qlistview_setvisible_isbase = false;
     mutable bool qlistview_heightforwidth_isbase = false;
@@ -357,6 +363,10 @@ class VirtualQListView : public QListView {
     mutable bool qlistview_contentssize_isbase = false;
     mutable bool qlistview_rectforindex_isbase = false;
     mutable bool qlistview_setpositionforindex_isbase = false;
+    mutable bool qlistview_sethorizontalstepsperitem_isbase = false;
+    mutable bool qlistview_horizontalstepsperitem_isbase = false;
+    mutable bool qlistview_setverticalstepsperitem_isbase = false;
+    mutable bool qlistview_verticalstepsperitem_isbase = false;
     mutable bool qlistview_state_isbase = false;
     mutable bool qlistview_setstate_isbase = false;
     mutable bool qlistview_scheduledelayeditemslayout_isbase = false;
@@ -371,6 +381,7 @@ class VirtualQListView : public QListView {
     mutable bool qlistview_setviewportmargins_isbase = false;
     mutable bool qlistview_viewportmargins_isbase = false;
     mutable bool qlistview_drawframe_isbase = false;
+    mutable bool qlistview_initstyleoption_isbase = false;
     mutable bool qlistview_updatemicrofocus_isbase = false;
     mutable bool qlistview_create_isbase = false;
     mutable bool qlistview_destroy_isbase = false;
@@ -407,7 +418,7 @@ class VirtualQListView : public QListView {
         qlistview_dragleaveevent_callback = nullptr;
         qlistview_dropevent_callback = nullptr;
         qlistview_startdrag_callback = nullptr;
-        qlistview_initviewitemoption_callback = nullptr;
+        qlistview_viewoptions_callback = nullptr;
         qlistview_paintevent_callback = nullptr;
         qlistview_horizontaloffset_callback = nullptr;
         qlistview_verticaloffset_callback = nullptr;
@@ -425,7 +436,6 @@ class VirtualQListView : public QListView {
         qlistview_keyboardsearch_callback = nullptr;
         qlistview_sizehintforrow_callback = nullptr;
         qlistview_sizehintforcolumn_callback = nullptr;
-        qlistview_itemdelegateforindex_callback = nullptr;
         qlistview_inputmethodquery_callback = nullptr;
         qlistview_selectall_callback = nullptr;
         qlistview_updateeditordata_callback = nullptr;
@@ -454,7 +464,6 @@ class VirtualQListView : public QListView {
         qlistview_setupviewport_callback = nullptr;
         qlistview_contextmenuevent_callback = nullptr;
         qlistview_changeevent_callback = nullptr;
-        qlistview_initstyleoption_callback = nullptr;
         qlistview_devtype_callback = nullptr;
         qlistview_setvisible_callback = nullptr;
         qlistview_heightforwidth_callback = nullptr;
@@ -482,6 +491,10 @@ class VirtualQListView : public QListView {
         qlistview_contentssize_callback = nullptr;
         qlistview_rectforindex_callback = nullptr;
         qlistview_setpositionforindex_callback = nullptr;
+        qlistview_sethorizontalstepsperitem_callback = nullptr;
+        qlistview_horizontalstepsperitem_callback = nullptr;
+        qlistview_setverticalstepsperitem_callback = nullptr;
+        qlistview_verticalstepsperitem_callback = nullptr;
         qlistview_state_callback = nullptr;
         qlistview_setstate_callback = nullptr;
         qlistview_scheduledelayeditemslayout_callback = nullptr;
@@ -496,6 +509,7 @@ class VirtualQListView : public QListView {
         qlistview_setviewportmargins_callback = nullptr;
         qlistview_viewportmargins_callback = nullptr;
         qlistview_drawframe_callback = nullptr;
+        qlistview_initstyleoption_callback = nullptr;
         qlistview_updatemicrofocus_callback = nullptr;
         qlistview_create_callback = nullptr;
         qlistview_destroy_callback = nullptr;
@@ -529,7 +543,7 @@ class VirtualQListView : public QListView {
     void setQListView_DragLeaveEvent_Callback(QListView_DragLeaveEvent_Callback cb) { qlistview_dragleaveevent_callback = cb; }
     void setQListView_DropEvent_Callback(QListView_DropEvent_Callback cb) { qlistview_dropevent_callback = cb; }
     void setQListView_StartDrag_Callback(QListView_StartDrag_Callback cb) { qlistview_startdrag_callback = cb; }
-    void setQListView_InitViewItemOption_Callback(QListView_InitViewItemOption_Callback cb) { qlistview_initviewitemoption_callback = cb; }
+    void setQListView_ViewOptions_Callback(QListView_ViewOptions_Callback cb) { qlistview_viewoptions_callback = cb; }
     void setQListView_PaintEvent_Callback(QListView_PaintEvent_Callback cb) { qlistview_paintevent_callback = cb; }
     void setQListView_HorizontalOffset_Callback(QListView_HorizontalOffset_Callback cb) { qlistview_horizontaloffset_callback = cb; }
     void setQListView_VerticalOffset_Callback(QListView_VerticalOffset_Callback cb) { qlistview_verticaloffset_callback = cb; }
@@ -547,7 +561,6 @@ class VirtualQListView : public QListView {
     void setQListView_KeyboardSearch_Callback(QListView_KeyboardSearch_Callback cb) { qlistview_keyboardsearch_callback = cb; }
     void setQListView_SizeHintForRow_Callback(QListView_SizeHintForRow_Callback cb) { qlistview_sizehintforrow_callback = cb; }
     void setQListView_SizeHintForColumn_Callback(QListView_SizeHintForColumn_Callback cb) { qlistview_sizehintforcolumn_callback = cb; }
-    void setQListView_ItemDelegateForIndex_Callback(QListView_ItemDelegateForIndex_Callback cb) { qlistview_itemdelegateforindex_callback = cb; }
     void setQListView_InputMethodQuery_Callback(QListView_InputMethodQuery_Callback cb) { qlistview_inputmethodquery_callback = cb; }
     void setQListView_SelectAll_Callback(QListView_SelectAll_Callback cb) { qlistview_selectall_callback = cb; }
     void setQListView_UpdateEditorData_Callback(QListView_UpdateEditorData_Callback cb) { qlistview_updateeditordata_callback = cb; }
@@ -576,7 +589,6 @@ class VirtualQListView : public QListView {
     void setQListView_SetupViewport_Callback(QListView_SetupViewport_Callback cb) { qlistview_setupviewport_callback = cb; }
     void setQListView_ContextMenuEvent_Callback(QListView_ContextMenuEvent_Callback cb) { qlistview_contextmenuevent_callback = cb; }
     void setQListView_ChangeEvent_Callback(QListView_ChangeEvent_Callback cb) { qlistview_changeevent_callback = cb; }
-    void setQListView_InitStyleOption_Callback(QListView_InitStyleOption_Callback cb) { qlistview_initstyleoption_callback = cb; }
     void setQListView_DevType_Callback(QListView_DevType_Callback cb) { qlistview_devtype_callback = cb; }
     void setQListView_SetVisible_Callback(QListView_SetVisible_Callback cb) { qlistview_setvisible_callback = cb; }
     void setQListView_HeightForWidth_Callback(QListView_HeightForWidth_Callback cb) { qlistview_heightforwidth_callback = cb; }
@@ -604,6 +616,10 @@ class VirtualQListView : public QListView {
     void setQListView_ContentsSize_Callback(QListView_ContentsSize_Callback cb) { qlistview_contentssize_callback = cb; }
     void setQListView_RectForIndex_Callback(QListView_RectForIndex_Callback cb) { qlistview_rectforindex_callback = cb; }
     void setQListView_SetPositionForIndex_Callback(QListView_SetPositionForIndex_Callback cb) { qlistview_setpositionforindex_callback = cb; }
+    void setQListView_SetHorizontalStepsPerItem_Callback(QListView_SetHorizontalStepsPerItem_Callback cb) { qlistview_sethorizontalstepsperitem_callback = cb; }
+    void setQListView_HorizontalStepsPerItem_Callback(QListView_HorizontalStepsPerItem_Callback cb) { qlistview_horizontalstepsperitem_callback = cb; }
+    void setQListView_SetVerticalStepsPerItem_Callback(QListView_SetVerticalStepsPerItem_Callback cb) { qlistview_setverticalstepsperitem_callback = cb; }
+    void setQListView_VerticalStepsPerItem_Callback(QListView_VerticalStepsPerItem_Callback cb) { qlistview_verticalstepsperitem_callback = cb; }
     void setQListView_State_Callback(QListView_State_Callback cb) { qlistview_state_callback = cb; }
     void setQListView_SetState_Callback(QListView_SetState_Callback cb) { qlistview_setstate_callback = cb; }
     void setQListView_ScheduleDelayedItemsLayout_Callback(QListView_ScheduleDelayedItemsLayout_Callback cb) { qlistview_scheduledelayeditemslayout_callback = cb; }
@@ -618,6 +634,7 @@ class VirtualQListView : public QListView {
     void setQListView_SetViewportMargins_Callback(QListView_SetViewportMargins_Callback cb) { qlistview_setviewportmargins_callback = cb; }
     void setQListView_ViewportMargins_Callback(QListView_ViewportMargins_Callback cb) { qlistview_viewportmargins_callback = cb; }
     void setQListView_DrawFrame_Callback(QListView_DrawFrame_Callback cb) { qlistview_drawframe_callback = cb; }
+    void setQListView_InitStyleOption_Callback(QListView_InitStyleOption_Callback cb) { qlistview_initstyleoption_callback = cb; }
     void setQListView_UpdateMicroFocus_Callback(QListView_UpdateMicroFocus_Callback cb) { qlistview_updatemicrofocus_callback = cb; }
     void setQListView_Create_Callback(QListView_Create_Callback cb) { qlistview_create_callback = cb; }
     void setQListView_Destroy_Callback(QListView_Destroy_Callback cb) { qlistview_destroy_callback = cb; }
@@ -650,7 +667,7 @@ class VirtualQListView : public QListView {
     void setQListView_DragLeaveEvent_IsBase(bool value) const { qlistview_dragleaveevent_isbase = value; }
     void setQListView_DropEvent_IsBase(bool value) const { qlistview_dropevent_isbase = value; }
     void setQListView_StartDrag_IsBase(bool value) const { qlistview_startdrag_isbase = value; }
-    void setQListView_InitViewItemOption_IsBase(bool value) const { qlistview_initviewitemoption_isbase = value; }
+    void setQListView_ViewOptions_IsBase(bool value) const { qlistview_viewoptions_isbase = value; }
     void setQListView_PaintEvent_IsBase(bool value) const { qlistview_paintevent_isbase = value; }
     void setQListView_HorizontalOffset_IsBase(bool value) const { qlistview_horizontaloffset_isbase = value; }
     void setQListView_VerticalOffset_IsBase(bool value) const { qlistview_verticaloffset_isbase = value; }
@@ -668,7 +685,6 @@ class VirtualQListView : public QListView {
     void setQListView_KeyboardSearch_IsBase(bool value) const { qlistview_keyboardsearch_isbase = value; }
     void setQListView_SizeHintForRow_IsBase(bool value) const { qlistview_sizehintforrow_isbase = value; }
     void setQListView_SizeHintForColumn_IsBase(bool value) const { qlistview_sizehintforcolumn_isbase = value; }
-    void setQListView_ItemDelegateForIndex_IsBase(bool value) const { qlistview_itemdelegateforindex_isbase = value; }
     void setQListView_InputMethodQuery_IsBase(bool value) const { qlistview_inputmethodquery_isbase = value; }
     void setQListView_SelectAll_IsBase(bool value) const { qlistview_selectall_isbase = value; }
     void setQListView_UpdateEditorData_IsBase(bool value) const { qlistview_updateeditordata_isbase = value; }
@@ -697,7 +713,6 @@ class VirtualQListView : public QListView {
     void setQListView_SetupViewport_IsBase(bool value) const { qlistview_setupviewport_isbase = value; }
     void setQListView_ContextMenuEvent_IsBase(bool value) const { qlistview_contextmenuevent_isbase = value; }
     void setQListView_ChangeEvent_IsBase(bool value) const { qlistview_changeevent_isbase = value; }
-    void setQListView_InitStyleOption_IsBase(bool value) const { qlistview_initstyleoption_isbase = value; }
     void setQListView_DevType_IsBase(bool value) const { qlistview_devtype_isbase = value; }
     void setQListView_SetVisible_IsBase(bool value) const { qlistview_setvisible_isbase = value; }
     void setQListView_HeightForWidth_IsBase(bool value) const { qlistview_heightforwidth_isbase = value; }
@@ -725,6 +740,10 @@ class VirtualQListView : public QListView {
     void setQListView_ContentsSize_IsBase(bool value) const { qlistview_contentssize_isbase = value; }
     void setQListView_RectForIndex_IsBase(bool value) const { qlistview_rectforindex_isbase = value; }
     void setQListView_SetPositionForIndex_IsBase(bool value) const { qlistview_setpositionforindex_isbase = value; }
+    void setQListView_SetHorizontalStepsPerItem_IsBase(bool value) const { qlistview_sethorizontalstepsperitem_isbase = value; }
+    void setQListView_HorizontalStepsPerItem_IsBase(bool value) const { qlistview_horizontalstepsperitem_isbase = value; }
+    void setQListView_SetVerticalStepsPerItem_IsBase(bool value) const { qlistview_setverticalstepsperitem_isbase = value; }
+    void setQListView_VerticalStepsPerItem_IsBase(bool value) const { qlistview_verticalstepsperitem_isbase = value; }
     void setQListView_State_IsBase(bool value) const { qlistview_state_isbase = value; }
     void setQListView_SetState_IsBase(bool value) const { qlistview_setstate_isbase = value; }
     void setQListView_ScheduleDelayedItemsLayout_IsBase(bool value) const { qlistview_scheduledelayeditemslayout_isbase = value; }
@@ -739,6 +758,7 @@ class VirtualQListView : public QListView {
     void setQListView_SetViewportMargins_IsBase(bool value) const { qlistview_setviewportmargins_isbase = value; }
     void setQListView_ViewportMargins_IsBase(bool value) const { qlistview_viewportmargins_isbase = value; }
     void setQListView_DrawFrame_IsBase(bool value) const { qlistview_drawframe_isbase = value; }
+    void setQListView_InitStyleOption_IsBase(bool value) const { qlistview_initstyleoption_isbase = value; }
     void setQListView_UpdateMicroFocus_IsBase(bool value) const { qlistview_updatemicrofocus_isbase = value; }
     void setQListView_Create_IsBase(bool value) const { qlistview_create_isbase = value; }
     void setQListView_Destroy_IsBase(bool value) const { qlistview_destroy_isbase = value; }
@@ -858,7 +878,7 @@ class VirtualQListView : public QListView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QList<int>& roles) override {
+    virtual void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles) override {
         if (qlistview_datachanged_isbase) {
             qlistview_datachanged_isbase = false;
             QListView::dataChanged(topLeft, bottomRight, roles);
@@ -1002,14 +1022,14 @@ class VirtualQListView : public QListView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initViewItemOption(QStyleOptionViewItem* option) const override {
-        if (qlistview_initviewitemoption_isbase) {
-            qlistview_initviewitemoption_isbase = false;
-            QListView::initViewItemOption(option);
-        } else if (qlistview_initviewitemoption_callback != nullptr) {
-            qlistview_initviewitemoption_callback(this, option);
+    virtual QStyleOptionViewItem viewOptions() const override {
+        if (qlistview_viewoptions_isbase) {
+            qlistview_viewoptions_isbase = false;
+            return QListView::viewOptions();
+        } else if (qlistview_viewoptions_callback != nullptr) {
+            return qlistview_viewoptions_callback();
         } else {
-            QListView::initViewItemOption(option);
+            return QListView::viewOptions();
         }
     }
 
@@ -1214,18 +1234,6 @@ class VirtualQListView : public QListView {
             return qlistview_sizehintforcolumn_callback(this, column);
         } else {
             return QListView::sizeHintForColumn(column);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QAbstractItemDelegate* itemDelegateForIndex(const QModelIndex& index) const override {
-        if (qlistview_itemdelegateforindex_isbase) {
-            qlistview_itemdelegateforindex_isbase = false;
-            return QListView::itemDelegateForIndex(index);
-        } else if (qlistview_itemdelegateforindex_callback != nullptr) {
-            return qlistview_itemdelegateforindex_callback(this, index);
-        } else {
-            return QListView::itemDelegateForIndex(index);
         }
     }
 
@@ -1566,18 +1574,6 @@ class VirtualQListView : public QListView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qlistview_initstyleoption_isbase) {
-            qlistview_initstyleoption_isbase = false;
-            QListView::initStyleOption(option);
-        } else if (qlistview_initstyleoption_callback != nullptr) {
-            qlistview_initstyleoption_callback(this, option);
-        } else {
-            QListView::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qlistview_devtype_isbase) {
             qlistview_devtype_isbase = false;
@@ -1650,7 +1646,7 @@ class VirtualQListView : public QListView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qlistview_enterevent_isbase) {
             qlistview_enterevent_isbase = false;
             QListView::enterEvent(event);
@@ -1746,7 +1742,7 @@ class VirtualQListView : public QListView {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qlistview_nativeevent_isbase) {
             qlistview_nativeevent_isbase = false;
             return QListView::nativeEvent(eventType, message, result);
@@ -1898,6 +1894,54 @@ class VirtualQListView : public QListView {
             qlistview_setpositionforindex_callback(this, position, index);
         } else {
             QListView::setPositionForIndex(position, index);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void setHorizontalStepsPerItem(int steps) {
+        if (qlistview_sethorizontalstepsperitem_isbase) {
+            qlistview_sethorizontalstepsperitem_isbase = false;
+            QListView::setHorizontalStepsPerItem(steps);
+        } else if (qlistview_sethorizontalstepsperitem_callback != nullptr) {
+            qlistview_sethorizontalstepsperitem_callback(this, steps);
+        } else {
+            QListView::setHorizontalStepsPerItem(steps);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int horizontalStepsPerItem() const {
+        if (qlistview_horizontalstepsperitem_isbase) {
+            qlistview_horizontalstepsperitem_isbase = false;
+            return QListView::horizontalStepsPerItem();
+        } else if (qlistview_horizontalstepsperitem_callback != nullptr) {
+            return qlistview_horizontalstepsperitem_callback();
+        } else {
+            return QListView::horizontalStepsPerItem();
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void setVerticalStepsPerItem(int steps) {
+        if (qlistview_setverticalstepsperitem_isbase) {
+            qlistview_setverticalstepsperitem_isbase = false;
+            QListView::setVerticalStepsPerItem(steps);
+        } else if (qlistview_setverticalstepsperitem_callback != nullptr) {
+            qlistview_setverticalstepsperitem_callback(this, steps);
+        } else {
+            QListView::setVerticalStepsPerItem(steps);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    int verticalStepsPerItem() const {
+        if (qlistview_verticalstepsperitem_isbase) {
+            qlistview_verticalstepsperitem_isbase = false;
+            return QListView::verticalStepsPerItem();
+        } else if (qlistview_verticalstepsperitem_callback != nullptr) {
+            return qlistview_verticalstepsperitem_callback();
+        } else {
+            return QListView::verticalStepsPerItem();
         }
     }
 
@@ -2066,6 +2110,18 @@ class VirtualQListView : public QListView {
             qlistview_drawframe_callback(this, param1);
         } else {
             QListView::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qlistview_initstyleoption_isbase) {
+            qlistview_initstyleoption_isbase = false;
+            QListView::initStyleOption(option);
+        } else if (qlistview_initstyleoption_callback != nullptr) {
+            qlistview_initstyleoption_callback(this, option);
+        } else {
+            QListView::initStyleOption(option);
         }
     }
 

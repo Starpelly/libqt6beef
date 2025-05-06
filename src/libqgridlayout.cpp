@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -12,6 +10,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QRect>
 #include <QSize>
 #include <QSpacerItem>
@@ -79,6 +78,18 @@ libqt_string QGridLayout_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QGridLayout_TrUtf8(const char* s) {
+    QString _ret = QGridLayout::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QGridLayout_SetHorizontalSpacing(QGridLayout* self, int spacing) {
     self->setHorizontalSpacing(static_cast<int>(spacing));
 }
@@ -93,6 +104,14 @@ void QGridLayout_SetVerticalSpacing(QGridLayout* self, int spacing) {
 
 int QGridLayout_VerticalSpacing(const QGridLayout* self) {
     return self->verticalSpacing();
+}
+
+void QGridLayout_SetSpacing(QGridLayout* self, int spacing) {
+    self->setSpacing(static_cast<int>(spacing));
+}
+
+int QGridLayout_Spacing(const QGridLayout* self) {
+    return self->spacing();
 }
 
 void QGridLayout_SetRowStretch(QGridLayout* self, int row, int stretch) {
@@ -207,6 +226,30 @@ libqt_string QGridLayout_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QGridLayout_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGridLayout::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGridLayout_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGridLayout::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QGridLayout_AddWidget4(QGridLayout* self, QWidget* param1, int row, int column, int param4) {
     self->addWidget(param1, static_cast<int>(row), static_cast<int>(column), static_cast<QFlags<Qt::AlignmentFlag>>(param4));
 }
@@ -233,14 +276,6 @@ void QGridLayout_AddItem5(QGridLayout* self, QLayoutItem* item, int row, int col
 
 void QGridLayout_AddItem6(QGridLayout* self, QLayoutItem* item, int row, int column, int rowSpan, int columnSpan, int param6) {
     self->addItem(item, static_cast<int>(row), static_cast<int>(column), static_cast<int>(rowSpan), static_cast<int>(columnSpan), static_cast<QFlags<Qt::AlignmentFlag>>(param6));
-}
-
-int QGridLayout_IndexOfWithQLayoutItem(const QGridLayout* self, QLayoutItem* param1) {
-    if (auto* vqgridlayout = dynamic_cast<const VirtualQGridLayout*>(self)) {
-        return self->indexOf(param1);
-    } else {
-        return self->indexOf(param1);
-    }
 }
 
 // Derived class handler implementation
@@ -318,58 +353,6 @@ QSize* QGridLayout_QBaseMaximumSize(const QGridLayout* self) {
 void QGridLayout_OnMaximumSize(const QGridLayout* self, intptr_t slot) {
     if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
         vqgridlayout->setQGridLayout_MaximumSize_Callback(reinterpret_cast<VirtualQGridLayout::QGridLayout_MaximumSize_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QGridLayout_SetSpacing(QGridLayout* self, int spacing) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        vqgridlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqgridlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Base class handler implementation
-void QGridLayout_QBaseSetSpacing(QGridLayout* self, int spacing) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        vqgridlayout->setQGridLayout_SetSpacing_IsBase(true);
-        vqgridlayout->setSpacing(static_cast<int>(spacing));
-    } else {
-        vqgridlayout->setSpacing(static_cast<int>(spacing));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGridLayout_OnSetSpacing(QGridLayout* self, intptr_t slot) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        vqgridlayout->setQGridLayout_SetSpacing_Callback(reinterpret_cast<VirtualQGridLayout::QGridLayout_SetSpacing_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-int QGridLayout_Spacing(const QGridLayout* self) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
-        return vqgridlayout->spacing();
-    } else {
-        return vqgridlayout->spacing();
-    }
-}
-
-// Base class handler implementation
-int QGridLayout_QBaseSpacing(const QGridLayout* self) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
-        vqgridlayout->setQGridLayout_Spacing_IsBase(true);
-        return vqgridlayout->spacing();
-    } else {
-        return vqgridlayout->spacing();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGridLayout_OnSpacing(const QGridLayout* self, intptr_t slot) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
-        vqgridlayout->setQGridLayout_Spacing_Callback(reinterpret_cast<VirtualQGridLayout::QGridLayout_Spacing_Callback>(slot));
     }
 }
 
@@ -738,32 +721,6 @@ void QGridLayout_OnControlTypes(const QGridLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QLayoutItem* QGridLayout_ReplaceWidget(QGridLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        return vqgridlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqgridlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Base class handler implementation
-QLayoutItem* QGridLayout_QBaseReplaceWidget(QGridLayout* self, QWidget* from, QWidget* to, int options) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        vqgridlayout->setQGridLayout_ReplaceWidget_IsBase(true);
-        return vqgridlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    } else {
-        return vqgridlayout->replaceWidget(from, to, static_cast<Qt::FindChildOptions>(options));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGridLayout_OnReplaceWidget(QGridLayout* self, intptr_t slot) {
-    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
-        vqgridlayout->setQGridLayout_ReplaceWidget_Callback(reinterpret_cast<VirtualQGridLayout::QGridLayout_ReplaceWidget_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QLayout* QGridLayout_Layout(QGridLayout* self) {
     if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
         return vqgridlayout->layout();
@@ -972,8 +929,8 @@ void QGridLayout_OnDisconnectNotify(QGridLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QWidget* QGridLayout_Widget(const QGridLayout* self) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
+QWidget* QGridLayout_Widget(QGridLayout* self) {
+    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
         return vqgridlayout->widget();
     } else {
         return vqgridlayout->widget();
@@ -981,8 +938,8 @@ QWidget* QGridLayout_Widget(const QGridLayout* self) {
 }
 
 // Base class handler implementation
-QWidget* QGridLayout_QBaseWidget(const QGridLayout* self) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
+QWidget* QGridLayout_QBaseWidget(QGridLayout* self) {
+    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
         vqgridlayout->setQGridLayout_Widget_IsBase(true);
         return vqgridlayout->widget();
     } else {
@@ -991,8 +948,8 @@ QWidget* QGridLayout_QBaseWidget(const QGridLayout* self) {
 }
 
 // Auxiliary method to allow providing re-implementation
-void QGridLayout_OnWidget(const QGridLayout* self, intptr_t slot) {
-    if (auto* vqgridlayout = const_cast<VirtualQGridLayout*>(dynamic_cast<const VirtualQGridLayout*>(self))) {
+void QGridLayout_OnWidget(QGridLayout* self, intptr_t slot) {
+    if (auto* vqgridlayout = dynamic_cast<VirtualQGridLayout*>(self)) {
         vqgridlayout->setQGridLayout_Widget_Callback(reinterpret_cast<VirtualQGridLayout::QGridLayout_Widget_Callback>(slot));
     }
 }

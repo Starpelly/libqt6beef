@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -24,7 +26,6 @@ class VirtualQGuiApplication : public QGuiApplication {
     using QGuiApplication_CustomEvent_Callback = void (*)(QGuiApplication*, QEvent*);
     using QGuiApplication_ConnectNotify_Callback = void (*)(QGuiApplication*, const QMetaMethod&);
     using QGuiApplication_DisconnectNotify_Callback = void (*)(QGuiApplication*, const QMetaMethod&);
-    using QGuiApplication_ResolveInterface_Callback = void* (*)(const QGuiApplication*, const char*, int);
     using QGuiApplication_Sender_Callback = QObject* (*)();
     using QGuiApplication_SenderSignalIndex_Callback = int (*)();
     using QGuiApplication_Receivers_Callback = int (*)(const QGuiApplication*, const char*);
@@ -41,7 +42,6 @@ class VirtualQGuiApplication : public QGuiApplication {
     QGuiApplication_CustomEvent_Callback qguiapplication_customevent_callback = nullptr;
     QGuiApplication_ConnectNotify_Callback qguiapplication_connectnotify_callback = nullptr;
     QGuiApplication_DisconnectNotify_Callback qguiapplication_disconnectnotify_callback = nullptr;
-    QGuiApplication_ResolveInterface_Callback qguiapplication_resolveinterface_callback = nullptr;
     QGuiApplication_Sender_Callback qguiapplication_sender_callback = nullptr;
     QGuiApplication_SenderSignalIndex_Callback qguiapplication_sendersignalindex_callback = nullptr;
     QGuiApplication_Receivers_Callback qguiapplication_receivers_callback = nullptr;
@@ -57,7 +57,6 @@ class VirtualQGuiApplication : public QGuiApplication {
     mutable bool qguiapplication_customevent_isbase = false;
     mutable bool qguiapplication_connectnotify_isbase = false;
     mutable bool qguiapplication_disconnectnotify_isbase = false;
-    mutable bool qguiapplication_resolveinterface_isbase = false;
     mutable bool qguiapplication_sender_isbase = false;
     mutable bool qguiapplication_sendersignalindex_isbase = false;
     mutable bool qguiapplication_receivers_isbase = false;
@@ -77,7 +76,6 @@ class VirtualQGuiApplication : public QGuiApplication {
         qguiapplication_customevent_callback = nullptr;
         qguiapplication_connectnotify_callback = nullptr;
         qguiapplication_disconnectnotify_callback = nullptr;
-        qguiapplication_resolveinterface_callback = nullptr;
         qguiapplication_sender_callback = nullptr;
         qguiapplication_sendersignalindex_callback = nullptr;
         qguiapplication_receivers_callback = nullptr;
@@ -94,7 +92,6 @@ class VirtualQGuiApplication : public QGuiApplication {
     void setQGuiApplication_CustomEvent_Callback(QGuiApplication_CustomEvent_Callback cb) { qguiapplication_customevent_callback = cb; }
     void setQGuiApplication_ConnectNotify_Callback(QGuiApplication_ConnectNotify_Callback cb) { qguiapplication_connectnotify_callback = cb; }
     void setQGuiApplication_DisconnectNotify_Callback(QGuiApplication_DisconnectNotify_Callback cb) { qguiapplication_disconnectnotify_callback = cb; }
-    void setQGuiApplication_ResolveInterface_Callback(QGuiApplication_ResolveInterface_Callback cb) { qguiapplication_resolveinterface_callback = cb; }
     void setQGuiApplication_Sender_Callback(QGuiApplication_Sender_Callback cb) { qguiapplication_sender_callback = cb; }
     void setQGuiApplication_SenderSignalIndex_Callback(QGuiApplication_SenderSignalIndex_Callback cb) { qguiapplication_sendersignalindex_callback = cb; }
     void setQGuiApplication_Receivers_Callback(QGuiApplication_Receivers_Callback cb) { qguiapplication_receivers_callback = cb; }
@@ -110,7 +107,6 @@ class VirtualQGuiApplication : public QGuiApplication {
     void setQGuiApplication_CustomEvent_IsBase(bool value) const { qguiapplication_customevent_isbase = value; }
     void setQGuiApplication_ConnectNotify_IsBase(bool value) const { qguiapplication_connectnotify_isbase = value; }
     void setQGuiApplication_DisconnectNotify_IsBase(bool value) const { qguiapplication_disconnectnotify_isbase = value; }
-    void setQGuiApplication_ResolveInterface_IsBase(bool value) const { qguiapplication_resolveinterface_isbase = value; }
     void setQGuiApplication_Sender_IsBase(bool value) const { qguiapplication_sender_isbase = value; }
     void setQGuiApplication_SenderSignalIndex_IsBase(bool value) const { qguiapplication_sendersignalindex_isbase = value; }
     void setQGuiApplication_Receivers_IsBase(bool value) const { qguiapplication_receivers_isbase = value; }
@@ -221,18 +217,6 @@ class VirtualQGuiApplication : public QGuiApplication {
             qguiapplication_disconnectnotify_callback(this, signal);
         } else {
             QGuiApplication::disconnectNotify(signal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    void* resolveInterface(const char* name, int revision) const {
-        if (qguiapplication_resolveinterface_isbase) {
-            qguiapplication_resolveinterface_isbase = false;
-            return QGuiApplication::resolveInterface(name, revision);
-        } else if (qguiapplication_resolveinterface_callback != nullptr) {
-            return qguiapplication_resolveinterface_callback(this, name, revision);
-        } else {
-            return QGuiApplication::resolveInterface(name, revision);
         }
     }
 

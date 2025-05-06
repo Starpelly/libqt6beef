@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QChildEvent QChildEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -58,6 +57,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -65,7 +65,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QPushButton QPushButton;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
@@ -97,6 +96,7 @@ int QPushButton_Metacall(QPushButton* self, int param1, int param2, void** param
 void QPushButton_OnMetacall(QPushButton* self, intptr_t slot);
 int QPushButton_QBaseMetacall(QPushButton* self, int param1, int param2, void** param3);
 libqt_string QPushButton_Tr(const char* s);
+libqt_string QPushButton_TrUtf8(const char* s);
 QSize* QPushButton_SizeHint(const QPushButton* self);
 void QPushButton_OnSizeHint(const QPushButton* self, intptr_t slot);
 QSize* QPushButton_QBaseSizeHint(const QPushButton* self);
@@ -127,17 +127,13 @@ void QPushButton_QBaseFocusInEvent(QPushButton* self, QFocusEvent* param1);
 void QPushButton_FocusOutEvent(QPushButton* self, QFocusEvent* param1);
 void QPushButton_OnFocusOutEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseFocusOutEvent(QPushButton* self, QFocusEvent* param1);
-void QPushButton_MouseMoveEvent(QPushButton* self, QMouseEvent* param1);
-void QPushButton_OnMouseMoveEvent(QPushButton* self, intptr_t slot);
-void QPushButton_QBaseMouseMoveEvent(QPushButton* self, QMouseEvent* param1);
-void QPushButton_InitStyleOption(const QPushButton* self, QStyleOptionButton* option);
-void QPushButton_OnInitStyleOption(const QPushButton* self, intptr_t slot);
-void QPushButton_QBaseInitStyleOption(const QPushButton* self, QStyleOptionButton* option);
 bool QPushButton_HitButton(const QPushButton* self, QPoint* pos);
 void QPushButton_OnHitButton(const QPushButton* self, intptr_t slot);
 bool QPushButton_QBaseHitButton(const QPushButton* self, QPoint* pos);
 libqt_string QPushButton_Tr2(const char* s, const char* c);
 libqt_string QPushButton_Tr3(const char* s, const char* c, int n);
+libqt_string QPushButton_TrUtf82(const char* s, const char* c);
+libqt_string QPushButton_TrUtf83(const char* s, const char* c, int n);
 void QPushButton_CheckStateSet(QPushButton* self);
 void QPushButton_OnCheckStateSet(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseCheckStateSet(QPushButton* self);
@@ -153,6 +149,9 @@ void QPushButton_QBaseMousePressEvent(QPushButton* self, QMouseEvent* e);
 void QPushButton_MouseReleaseEvent(QPushButton* self, QMouseEvent* e);
 void QPushButton_OnMouseReleaseEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseMouseReleaseEvent(QPushButton* self, QMouseEvent* e);
+void QPushButton_MouseMoveEvent(QPushButton* self, QMouseEvent* e);
+void QPushButton_OnMouseMoveEvent(QPushButton* self, intptr_t slot);
+void QPushButton_QBaseMouseMoveEvent(QPushButton* self, QMouseEvent* e);
 void QPushButton_ChangeEvent(QPushButton* self, QEvent* e);
 void QPushButton_OnChangeEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseChangeEvent(QPushButton* self, QEvent* e);
@@ -180,9 +179,9 @@ void QPushButton_QBaseMouseDoubleClickEvent(QPushButton* self, QMouseEvent* even
 void QPushButton_WheelEvent(QPushButton* self, QWheelEvent* event);
 void QPushButton_OnWheelEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseWheelEvent(QPushButton* self, QWheelEvent* event);
-void QPushButton_EnterEvent(QPushButton* self, QEnterEvent* event);
+void QPushButton_EnterEvent(QPushButton* self, QEvent* event);
 void QPushButton_OnEnterEvent(QPushButton* self, intptr_t slot);
-void QPushButton_QBaseEnterEvent(QPushButton* self, QEnterEvent* event);
+void QPushButton_QBaseEnterEvent(QPushButton* self, QEvent* event);
 void QPushButton_LeaveEvent(QPushButton* self, QEvent* event);
 void QPushButton_OnLeaveEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseLeaveEvent(QPushButton* self, QEvent* event);
@@ -222,9 +221,9 @@ void QPushButton_QBaseShowEvent(QPushButton* self, QShowEvent* event);
 void QPushButton_HideEvent(QPushButton* self, QHideEvent* event);
 void QPushButton_OnHideEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseHideEvent(QPushButton* self, QHideEvent* event);
-bool QPushButton_NativeEvent(QPushButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPushButton_NativeEvent(QPushButton* self, libqt_string eventType, void* message, long* result);
 void QPushButton_OnNativeEvent(QPushButton* self, intptr_t slot);
-bool QPushButton_QBaseNativeEvent(QPushButton* self, libqt_string eventType, void* message, intptr_t* result);
+bool QPushButton_QBaseNativeEvent(QPushButton* self, libqt_string eventType, void* message, long* result);
 void QPushButton_InputMethodEvent(QPushButton* self, QInputMethodEvent* param1);
 void QPushButton_OnInputMethodEvent(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseInputMethodEvent(QPushButton* self, QInputMethodEvent* param1);
@@ -261,6 +260,9 @@ QPaintDevice* QPushButton_QBaseRedirected(const QPushButton* self, QPoint* offse
 QPainter* QPushButton_SharedPainter(const QPushButton* self);
 void QPushButton_OnSharedPainter(const QPushButton* self, intptr_t slot);
 QPainter* QPushButton_QBaseSharedPainter(const QPushButton* self);
+void QPushButton_InitStyleOption(const QPushButton* self, QStyleOptionButton* option);
+void QPushButton_OnInitStyleOption(const QPushButton* self, intptr_t slot);
+void QPushButton_QBaseInitStyleOption(const QPushButton* self, QStyleOptionButton* option);
 void QPushButton_UpdateMicroFocus(QPushButton* self);
 void QPushButton_OnUpdateMicroFocus(QPushButton* self, intptr_t slot);
 void QPushButton_QBaseUpdateMicroFocus(QPushButton* self);

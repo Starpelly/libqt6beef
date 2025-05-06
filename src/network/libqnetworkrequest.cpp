@@ -163,14 +163,6 @@ void QNetworkRequest_SetHttp2Configuration(QNetworkRequest* self, QHttp2Configur
     self->setHttp2Configuration(*configuration);
 }
 
-long long QNetworkRequest_DecompressedSafetyCheckThreshold(const QNetworkRequest* self) {
-    return static_cast<long long>(self->decompressedSafetyCheckThreshold());
-}
-
-void QNetworkRequest_SetDecompressedSafetyCheckThreshold(QNetworkRequest* self, long long threshold) {
-    self->setDecompressedSafetyCheckThreshold(static_cast<qint64>(threshold));
-}
-
 int QNetworkRequest_TransferTimeout(const QNetworkRequest* self) {
     return self->transferTimeout();
 }

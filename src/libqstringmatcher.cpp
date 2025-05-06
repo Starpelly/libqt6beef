@@ -16,8 +16,8 @@ QStringMatcher* QStringMatcher_new2(libqt_string pattern) {
     return new QStringMatcher(pattern_QString);
 }
 
-QStringMatcher* QStringMatcher_new3(QChar* uc, ptrdiff_t lenVal) {
-    return new QStringMatcher(uc, (qsizetype)(lenVal));
+QStringMatcher* QStringMatcher_new3(QChar* uc, int lenVal) {
+    return new QStringMatcher(uc, static_cast<int>(lenVal));
 }
 
 QStringMatcher* QStringMatcher_new4(QStringMatcher* other) {
@@ -29,8 +29,8 @@ QStringMatcher* QStringMatcher_new5(libqt_string pattern, int cs) {
     return new QStringMatcher(pattern_QString, static_cast<Qt::CaseSensitivity>(cs));
 }
 
-QStringMatcher* QStringMatcher_new6(QChar* uc, ptrdiff_t lenVal, int cs) {
-    return new QStringMatcher(uc, (qsizetype)(lenVal), static_cast<Qt::CaseSensitivity>(cs));
+QStringMatcher* QStringMatcher_new6(QChar* uc, int lenVal, int cs) {
+    return new QStringMatcher(uc, static_cast<int>(lenVal), static_cast<Qt::CaseSensitivity>(cs));
 }
 
 void QStringMatcher_OperatorAssign(QStringMatcher* self, QStringMatcher* other) {
@@ -46,13 +46,13 @@ void QStringMatcher_SetCaseSensitivity(QStringMatcher* self, int cs) {
     self->setCaseSensitivity(static_cast<Qt::CaseSensitivity>(cs));
 }
 
-ptrdiff_t QStringMatcher_IndexIn(const QStringMatcher* self, libqt_string str) {
+int QStringMatcher_IndexIn(const QStringMatcher* self, libqt_string str) {
     QString str_QString = QString::fromUtf8(str.data, str.len);
-    return static_cast<ptrdiff_t>(self->indexIn(str_QString));
+    return self->indexIn(str_QString);
 }
 
-ptrdiff_t QStringMatcher_IndexIn2(const QStringMatcher* self, QChar* str, ptrdiff_t length) {
-    return static_cast<ptrdiff_t>(self->indexIn(str, (qsizetype)(length)));
+int QStringMatcher_IndexIn2(const QStringMatcher* self, QChar* str, int length) {
+    return self->indexIn(str, static_cast<int>(length));
 }
 
 libqt_string QStringMatcher_Pattern(const QStringMatcher* self) {
@@ -71,13 +71,13 @@ int QStringMatcher_CaseSensitivity(const QStringMatcher* self) {
     return static_cast<int>(self->caseSensitivity());
 }
 
-ptrdiff_t QStringMatcher_IndexIn22(const QStringMatcher* self, libqt_string str, ptrdiff_t from) {
+int QStringMatcher_IndexIn22(const QStringMatcher* self, libqt_string str, int from) {
     QString str_QString = QString::fromUtf8(str.data, str.len);
-    return static_cast<ptrdiff_t>(self->indexIn(str_QString, (qsizetype)(from)));
+    return self->indexIn(str_QString, static_cast<int>(from));
 }
 
-ptrdiff_t QStringMatcher_IndexIn3(const QStringMatcher* self, QChar* str, ptrdiff_t length, ptrdiff_t from) {
-    return static_cast<ptrdiff_t>(self->indexIn(str, (qsizetype)(length), (qsizetype)(from)));
+int QStringMatcher_IndexIn3(const QStringMatcher* self, QChar* str, int length, int from) {
+    return self->indexIn(str, static_cast<int>(length), static_cast<int>(from));
 }
 
 void QStringMatcher_Delete(QStringMatcher* self) {

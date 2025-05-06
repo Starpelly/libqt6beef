@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -33,7 +35,7 @@ class VirtualQPrintPreviewWidget : public QPrintPreviewWidget {
     using QPrintPreviewWidget_KeyReleaseEvent_Callback = void (*)(QPrintPreviewWidget*, QKeyEvent*);
     using QPrintPreviewWidget_FocusInEvent_Callback = void (*)(QPrintPreviewWidget*, QFocusEvent*);
     using QPrintPreviewWidget_FocusOutEvent_Callback = void (*)(QPrintPreviewWidget*, QFocusEvent*);
-    using QPrintPreviewWidget_EnterEvent_Callback = void (*)(QPrintPreviewWidget*, QEnterEvent*);
+    using QPrintPreviewWidget_EnterEvent_Callback = void (*)(QPrintPreviewWidget*, QEvent*);
     using QPrintPreviewWidget_LeaveEvent_Callback = void (*)(QPrintPreviewWidget*, QEvent*);
     using QPrintPreviewWidget_PaintEvent_Callback = void (*)(QPrintPreviewWidget*, QPaintEvent*);
     using QPrintPreviewWidget_MoveEvent_Callback = void (*)(QPrintPreviewWidget*, QMoveEvent*);
@@ -48,7 +50,7 @@ class VirtualQPrintPreviewWidget : public QPrintPreviewWidget {
     using QPrintPreviewWidget_DropEvent_Callback = void (*)(QPrintPreviewWidget*, QDropEvent*);
     using QPrintPreviewWidget_ShowEvent_Callback = void (*)(QPrintPreviewWidget*, QShowEvent*);
     using QPrintPreviewWidget_HideEvent_Callback = void (*)(QPrintPreviewWidget*, QHideEvent*);
-    using QPrintPreviewWidget_NativeEvent_Callback = bool (*)(QPrintPreviewWidget*, const QByteArray&, void*, qintptr*);
+    using QPrintPreviewWidget_NativeEvent_Callback = bool (*)(QPrintPreviewWidget*, const QByteArray&, void*, long*);
     using QPrintPreviewWidget_ChangeEvent_Callback = void (*)(QPrintPreviewWidget*, QEvent*);
     using QPrintPreviewWidget_Metric_Callback = int (*)(const QPrintPreviewWidget*, QPaintDevice::PaintDeviceMetric);
     using QPrintPreviewWidget_InitPainter_Callback = void (*)(const QPrintPreviewWidget*, QPainter*);
@@ -595,7 +597,7 @@ class VirtualQPrintPreviewWidget : public QPrintPreviewWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qprintpreviewwidget_enterevent_isbase) {
             qprintpreviewwidget_enterevent_isbase = false;
             QPrintPreviewWidget::enterEvent(event);
@@ -775,7 +777,7 @@ class VirtualQPrintPreviewWidget : public QPrintPreviewWidget {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qprintpreviewwidget_nativeevent_isbase) {
             qprintpreviewwidget_nativeevent_isbase = false;
             return QPrintPreviewWidget::nativeEvent(eventType, message, result);

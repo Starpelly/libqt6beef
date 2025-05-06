@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEasingCurve QEasingCurve;
 typedef struct QEvent QEvent;
@@ -30,6 +30,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -41,7 +42,8 @@ typedef QVariantAnimation::Interpolator Interpolator; // C++ QFlags
 typedef QVariantAnimation::KeyValue KeyValue;         // C++ QFlags
 typedef QVariantAnimation::KeyValues KeyValues;       // C++ QFlags
 #else
-typedef libqt_pair /* tuple of double and QVariant* */ KeyValue; // C ABI QFlags
+typedef libqt_list /* of libqt_pair  tuple of double and QVariant*  */ KeyValues; // C ABI QFlags
+typedef libqt_pair /* tuple of double and QVariant* */ KeyValue;                  // C ABI QFlags
 #endif
 
 QVariantAnimation* QVariantAnimation_new();
@@ -52,6 +54,7 @@ int QVariantAnimation_Metacall(QVariantAnimation* self, int param1, int param2, 
 void QVariantAnimation_OnMetacall(QVariantAnimation* self, intptr_t slot);
 int QVariantAnimation_QBaseMetacall(QVariantAnimation* self, int param1, int param2, void** param3);
 libqt_string QVariantAnimation_Tr(const char* s);
+libqt_string QVariantAnimation_TrUtf8(const char* s);
 QVariant* QVariantAnimation_StartValue(const QVariantAnimation* self);
 void QVariantAnimation_SetStartValue(QVariantAnimation* self, QVariant* value);
 QVariant* QVariantAnimation_EndValue(const QVariantAnimation* self);
@@ -86,6 +89,8 @@ void QVariantAnimation_OnInterpolated(const QVariantAnimation* self, intptr_t sl
 QVariant* QVariantAnimation_QBaseInterpolated(const QVariantAnimation* self, QVariant* from, QVariant* to, double progress);
 libqt_string QVariantAnimation_Tr2(const char* s, const char* c);
 libqt_string QVariantAnimation_Tr3(const char* s, const char* c, int n);
+libqt_string QVariantAnimation_TrUtf82(const char* s, const char* c);
+libqt_string QVariantAnimation_TrUtf83(const char* s, const char* c, int n);
 void QVariantAnimation_UpdateDirection(QVariantAnimation* self, int direction);
 void QVariantAnimation_OnUpdateDirection(QVariantAnimation* self, intptr_t slot);
 void QVariantAnimation_QBaseUpdateDirection(QVariantAnimation* self, int direction);

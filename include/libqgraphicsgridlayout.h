@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -96,9 +98,6 @@ void QGraphicsGridLayout_QBaseUpdateGeometry(QGraphicsGridLayout* self);
 void QGraphicsGridLayout_WidgetEvent(QGraphicsGridLayout* self, QEvent* e);
 void QGraphicsGridLayout_OnWidgetEvent(QGraphicsGridLayout* self, intptr_t slot);
 void QGraphicsGridLayout_QBaseWidgetEvent(QGraphicsGridLayout* self, QEvent* e);
-bool QGraphicsGridLayout_IsEmpty(const QGraphicsGridLayout* self);
-void QGraphicsGridLayout_OnIsEmpty(const QGraphicsGridLayout* self, intptr_t slot);
-bool QGraphicsGridLayout_QBaseIsEmpty(const QGraphicsGridLayout* self);
 void QGraphicsGridLayout_AddChildLayoutItem(QGraphicsGridLayout* self, QGraphicsLayoutItem* layoutItem);
 void QGraphicsGridLayout_OnAddChildLayoutItem(QGraphicsGridLayout* self, intptr_t slot);
 void QGraphicsGridLayout_QBaseAddChildLayoutItem(QGraphicsGridLayout* self, QGraphicsLayoutItem* layoutItem);

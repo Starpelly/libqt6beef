@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -21,17 +23,13 @@ typedef struct QIPv6Address QIPv6Address;
 #endif
 
 #ifdef __cplusplus
-typedef QHostAddress::ConversionMode ConversionMode;             // C++ QFlags
-typedef QHostAddress::ConversionModeFlag ConversionModeFlag;     // C++ enum
-typedef QHostAddress::NetworkLayerProtocol NetworkLayerProtocol; // C++ QFlags
-typedef QHostAddress::QtGadgetHelper QtGadgetHelper;             // C++ QFlags
-typedef QHostAddress::SpecialAddress SpecialAddress;             // C++ enum
+typedef QHostAddress::ConversionMode ConversionMode;         // C++ QFlags
+typedef QHostAddress::ConversionModeFlag ConversionModeFlag; // C++ enum
+typedef QHostAddress::SpecialAddress SpecialAddress;         // C++ enum
 #else
-typedef int ConversionMode;       // C ABI QFlags
-typedef int ConversionModeFlag;   // C ABI enum
-typedef int NetworkLayerProtocol; // C ABI QFlags
-typedef int SpecialAddress;       // C ABI enum
-typedef void QtGadgetHelper;      // C ABI QFlags
+typedef int ConversionMode;     // C ABI QFlags
+typedef int ConversionModeFlag; // C ABI enum
+typedef int SpecialAddress;     // C ABI enum
 #endif
 
 unsigned char QIPv6Address_OperatorSubscript(const QIPv6Address* self, int index);
@@ -39,21 +37,25 @@ void QIPv6Address_Delete(QIPv6Address* self);
 
 QHostAddress* QHostAddress_new();
 QHostAddress* QHostAddress_new2(unsigned int ip4Addr);
-QHostAddress* QHostAddress_new3(const unsigned char* ip6Addr);
-QHostAddress* QHostAddress_new4(QIPv6Address* ip6Addr);
-QHostAddress* QHostAddress_new5(libqt_string address);
-QHostAddress* QHostAddress_new6(QHostAddress* copyVal);
-QHostAddress* QHostAddress_new7(int address);
+QHostAddress* QHostAddress_new3(unsigned char* ip6Addr);
+QHostAddress* QHostAddress_new4(const unsigned char* ip6Addr);
+QHostAddress* QHostAddress_new5(QIPv6Address* ip6Addr);
+QHostAddress* QHostAddress_new6(libqt_string address);
+QHostAddress* QHostAddress_new7(QHostAddress* copyVal);
+QHostAddress* QHostAddress_new8(int address);
 void QHostAddress_OperatorAssign(QHostAddress* self, QHostAddress* other);
-void QHostAddress_OperatorAssignWithAddress(QHostAddress* self, int address);
+void QHostAddress_OperatorAssignWithAddress(QHostAddress* self, libqt_string address);
+void QHostAddress_OperatorAssign2(QHostAddress* self, int address);
 void QHostAddress_Swap(QHostAddress* self, QHostAddress* other);
 void QHostAddress_SetAddress(QHostAddress* self, unsigned int ip4Addr);
-void QHostAddress_SetAddressWithIp6Addr(QHostAddress* self, const unsigned char* ip6Addr);
-void QHostAddress_SetAddress2(QHostAddress* self, QIPv6Address* ip6Addr);
-bool QHostAddress_SetAddress3(QHostAddress* self, libqt_string address);
-void QHostAddress_SetAddress4(QHostAddress* self, int address);
+void QHostAddress_SetAddressWithIp6Addr(QHostAddress* self, unsigned char* ip6Addr);
+void QHostAddress_SetAddress2(QHostAddress* self, const unsigned char* ip6Addr);
+void QHostAddress_SetAddress3(QHostAddress* self, QIPv6Address* ip6Addr);
+bool QHostAddress_SetAddress4(QHostAddress* self, libqt_string address);
+void QHostAddress_SetAddress5(QHostAddress* self, int address);
 int QHostAddress_Protocol(const QHostAddress* self);
 unsigned int QHostAddress_ToIPv4Address(const QHostAddress* self);
+unsigned int QHostAddress_ToIPv4AddressWithOk(const QHostAddress* self, bool* ok);
 QIPv6Address* QHostAddress_ToIPv6Address(const QHostAddress* self);
 libqt_string QHostAddress_ToString(const QHostAddress* self);
 libqt_string QHostAddress_ScopeId(const QHostAddress* self);
@@ -74,7 +76,6 @@ bool QHostAddress_IsUniqueLocalUnicast(const QHostAddress* self);
 bool QHostAddress_IsMulticast(const QHostAddress* self);
 bool QHostAddress_IsBroadcast(const QHostAddress* self);
 libqt_pair /* tuple of QHostAddress* and int */ QHostAddress_ParseSubnet(libqt_string subnet);
-unsigned int QHostAddress_ToIPv4Address1(const QHostAddress* self, bool* ok);
 bool QHostAddress_IsEqual2(const QHostAddress* self, QHostAddress* address, int mode);
 void QHostAddress_Delete(QHostAddress* self);
 

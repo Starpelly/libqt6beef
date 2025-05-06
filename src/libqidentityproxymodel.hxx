@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -43,7 +45,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     using QIdentityProxyModel_SetData_Callback = bool (*)(QIdentityProxyModel*, const QModelIndex&, const QVariant&, int);
     using QIdentityProxyModel_SetItemData_Callback = bool (*)(QIdentityProxyModel*, const QModelIndex&, const QMap<int, QVariant>&);
     using QIdentityProxyModel_SetHeaderData_Callback = bool (*)(QIdentityProxyModel*, int, Qt::Orientation, const QVariant&, int);
-    using QIdentityProxyModel_ClearItemData_Callback = bool (*)(QIdentityProxyModel*, const QModelIndex&);
     using QIdentityProxyModel_Buddy_Callback = QModelIndex (*)(const QIdentityProxyModel*, const QModelIndex&);
     using QIdentityProxyModel_CanFetchMore_Callback = bool (*)(const QIdentityProxyModel*, const QModelIndex&);
     using QIdentityProxyModel_FetchMore_Callback = void (*)(QIdentityProxyModel*, const QModelIndex&);
@@ -56,8 +57,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     using QIdentityProxyModel_SupportedDragActions_Callback = Qt::DropActions (*)();
     using QIdentityProxyModel_SupportedDropActions_Callback = Qt::DropActions (*)();
     using QIdentityProxyModel_RoleNames_Callback = QHash<int, QByteArray> (*)();
-    using QIdentityProxyModel_MultiData_Callback = void (*)(const QIdentityProxyModel*, const QModelIndex&, QModelRoleDataSpan);
-    using QIdentityProxyModel_ResetInternalData_Callback = void (*)();
     using QIdentityProxyModel_Event_Callback = bool (*)(QIdentityProxyModel*, QEvent*);
     using QIdentityProxyModel_EventFilter_Callback = bool (*)(QIdentityProxyModel*, QObject*, QEvent*);
     using QIdentityProxyModel_TimerEvent_Callback = void (*)(QIdentityProxyModel*, QTimerEvent*);
@@ -65,7 +64,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     using QIdentityProxyModel_CustomEvent_Callback = void (*)(QIdentityProxyModel*, QEvent*);
     using QIdentityProxyModel_ConnectNotify_Callback = void (*)(QIdentityProxyModel*, const QMetaMethod&);
     using QIdentityProxyModel_DisconnectNotify_Callback = void (*)(QIdentityProxyModel*, const QMetaMethod&);
-    using QIdentityProxyModel_CreateSourceIndex_Callback = QModelIndex (*)(const QIdentityProxyModel*, int, int, void*);
+    using QIdentityProxyModel_ResetInternalData_Callback = void (*)();
     using QIdentityProxyModel_CreateIndex_Callback = QModelIndex (*)(const QIdentityProxyModel*, int, int);
     using QIdentityProxyModel_EncodeData_Callback = void (*)(const QIdentityProxyModel*, const QModelIndexList&, QDataStream&);
     using QIdentityProxyModel_DecodeData_Callback = bool (*)(QIdentityProxyModel*, int, int, const QModelIndex&, QDataStream&);
@@ -121,7 +120,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     QIdentityProxyModel_SetData_Callback qidentityproxymodel_setdata_callback = nullptr;
     QIdentityProxyModel_SetItemData_Callback qidentityproxymodel_setitemdata_callback = nullptr;
     QIdentityProxyModel_SetHeaderData_Callback qidentityproxymodel_setheaderdata_callback = nullptr;
-    QIdentityProxyModel_ClearItemData_Callback qidentityproxymodel_clearitemdata_callback = nullptr;
     QIdentityProxyModel_Buddy_Callback qidentityproxymodel_buddy_callback = nullptr;
     QIdentityProxyModel_CanFetchMore_Callback qidentityproxymodel_canfetchmore_callback = nullptr;
     QIdentityProxyModel_FetchMore_Callback qidentityproxymodel_fetchmore_callback = nullptr;
@@ -134,8 +132,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     QIdentityProxyModel_SupportedDragActions_Callback qidentityproxymodel_supporteddragactions_callback = nullptr;
     QIdentityProxyModel_SupportedDropActions_Callback qidentityproxymodel_supporteddropactions_callback = nullptr;
     QIdentityProxyModel_RoleNames_Callback qidentityproxymodel_rolenames_callback = nullptr;
-    QIdentityProxyModel_MultiData_Callback qidentityproxymodel_multidata_callback = nullptr;
-    QIdentityProxyModel_ResetInternalData_Callback qidentityproxymodel_resetinternaldata_callback = nullptr;
     QIdentityProxyModel_Event_Callback qidentityproxymodel_event_callback = nullptr;
     QIdentityProxyModel_EventFilter_Callback qidentityproxymodel_eventfilter_callback = nullptr;
     QIdentityProxyModel_TimerEvent_Callback qidentityproxymodel_timerevent_callback = nullptr;
@@ -143,7 +139,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     QIdentityProxyModel_CustomEvent_Callback qidentityproxymodel_customevent_callback = nullptr;
     QIdentityProxyModel_ConnectNotify_Callback qidentityproxymodel_connectnotify_callback = nullptr;
     QIdentityProxyModel_DisconnectNotify_Callback qidentityproxymodel_disconnectnotify_callback = nullptr;
-    QIdentityProxyModel_CreateSourceIndex_Callback qidentityproxymodel_createsourceindex_callback = nullptr;
+    QIdentityProxyModel_ResetInternalData_Callback qidentityproxymodel_resetinternaldata_callback = nullptr;
     QIdentityProxyModel_CreateIndex_Callback qidentityproxymodel_createindex_callback = nullptr;
     QIdentityProxyModel_EncodeData_Callback qidentityproxymodel_encodedata_callback = nullptr;
     QIdentityProxyModel_DecodeData_Callback qidentityproxymodel_decodedata_callback = nullptr;
@@ -198,7 +194,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     mutable bool qidentityproxymodel_setdata_isbase = false;
     mutable bool qidentityproxymodel_setitemdata_isbase = false;
     mutable bool qidentityproxymodel_setheaderdata_isbase = false;
-    mutable bool qidentityproxymodel_clearitemdata_isbase = false;
     mutable bool qidentityproxymodel_buddy_isbase = false;
     mutable bool qidentityproxymodel_canfetchmore_isbase = false;
     mutable bool qidentityproxymodel_fetchmore_isbase = false;
@@ -211,8 +206,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     mutable bool qidentityproxymodel_supporteddragactions_isbase = false;
     mutable bool qidentityproxymodel_supporteddropactions_isbase = false;
     mutable bool qidentityproxymodel_rolenames_isbase = false;
-    mutable bool qidentityproxymodel_multidata_isbase = false;
-    mutable bool qidentityproxymodel_resetinternaldata_isbase = false;
     mutable bool qidentityproxymodel_event_isbase = false;
     mutable bool qidentityproxymodel_eventfilter_isbase = false;
     mutable bool qidentityproxymodel_timerevent_isbase = false;
@@ -220,7 +213,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     mutable bool qidentityproxymodel_customevent_isbase = false;
     mutable bool qidentityproxymodel_connectnotify_isbase = false;
     mutable bool qidentityproxymodel_disconnectnotify_isbase = false;
-    mutable bool qidentityproxymodel_createsourceindex_isbase = false;
+    mutable bool qidentityproxymodel_resetinternaldata_isbase = false;
     mutable bool qidentityproxymodel_createindex_isbase = false;
     mutable bool qidentityproxymodel_encodedata_isbase = false;
     mutable bool qidentityproxymodel_decodedata_isbase = false;
@@ -279,7 +272,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
         qidentityproxymodel_setdata_callback = nullptr;
         qidentityproxymodel_setitemdata_callback = nullptr;
         qidentityproxymodel_setheaderdata_callback = nullptr;
-        qidentityproxymodel_clearitemdata_callback = nullptr;
         qidentityproxymodel_buddy_callback = nullptr;
         qidentityproxymodel_canfetchmore_callback = nullptr;
         qidentityproxymodel_fetchmore_callback = nullptr;
@@ -292,8 +284,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
         qidentityproxymodel_supporteddragactions_callback = nullptr;
         qidentityproxymodel_supporteddropactions_callback = nullptr;
         qidentityproxymodel_rolenames_callback = nullptr;
-        qidentityproxymodel_multidata_callback = nullptr;
-        qidentityproxymodel_resetinternaldata_callback = nullptr;
         qidentityproxymodel_event_callback = nullptr;
         qidentityproxymodel_eventfilter_callback = nullptr;
         qidentityproxymodel_timerevent_callback = nullptr;
@@ -301,7 +291,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
         qidentityproxymodel_customevent_callback = nullptr;
         qidentityproxymodel_connectnotify_callback = nullptr;
         qidentityproxymodel_disconnectnotify_callback = nullptr;
-        qidentityproxymodel_createsourceindex_callback = nullptr;
+        qidentityproxymodel_resetinternaldata_callback = nullptr;
         qidentityproxymodel_createindex_callback = nullptr;
         qidentityproxymodel_encodedata_callback = nullptr;
         qidentityproxymodel_decodedata_callback = nullptr;
@@ -357,7 +347,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_SetData_Callback(QIdentityProxyModel_SetData_Callback cb) { qidentityproxymodel_setdata_callback = cb; }
     void setQIdentityProxyModel_SetItemData_Callback(QIdentityProxyModel_SetItemData_Callback cb) { qidentityproxymodel_setitemdata_callback = cb; }
     void setQIdentityProxyModel_SetHeaderData_Callback(QIdentityProxyModel_SetHeaderData_Callback cb) { qidentityproxymodel_setheaderdata_callback = cb; }
-    void setQIdentityProxyModel_ClearItemData_Callback(QIdentityProxyModel_ClearItemData_Callback cb) { qidentityproxymodel_clearitemdata_callback = cb; }
     void setQIdentityProxyModel_Buddy_Callback(QIdentityProxyModel_Buddy_Callback cb) { qidentityproxymodel_buddy_callback = cb; }
     void setQIdentityProxyModel_CanFetchMore_Callback(QIdentityProxyModel_CanFetchMore_Callback cb) { qidentityproxymodel_canfetchmore_callback = cb; }
     void setQIdentityProxyModel_FetchMore_Callback(QIdentityProxyModel_FetchMore_Callback cb) { qidentityproxymodel_fetchmore_callback = cb; }
@@ -370,8 +359,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_SupportedDragActions_Callback(QIdentityProxyModel_SupportedDragActions_Callback cb) { qidentityproxymodel_supporteddragactions_callback = cb; }
     void setQIdentityProxyModel_SupportedDropActions_Callback(QIdentityProxyModel_SupportedDropActions_Callback cb) { qidentityproxymodel_supporteddropactions_callback = cb; }
     void setQIdentityProxyModel_RoleNames_Callback(QIdentityProxyModel_RoleNames_Callback cb) { qidentityproxymodel_rolenames_callback = cb; }
-    void setQIdentityProxyModel_MultiData_Callback(QIdentityProxyModel_MultiData_Callback cb) { qidentityproxymodel_multidata_callback = cb; }
-    void setQIdentityProxyModel_ResetInternalData_Callback(QIdentityProxyModel_ResetInternalData_Callback cb) { qidentityproxymodel_resetinternaldata_callback = cb; }
     void setQIdentityProxyModel_Event_Callback(QIdentityProxyModel_Event_Callback cb) { qidentityproxymodel_event_callback = cb; }
     void setQIdentityProxyModel_EventFilter_Callback(QIdentityProxyModel_EventFilter_Callback cb) { qidentityproxymodel_eventfilter_callback = cb; }
     void setQIdentityProxyModel_TimerEvent_Callback(QIdentityProxyModel_TimerEvent_Callback cb) { qidentityproxymodel_timerevent_callback = cb; }
@@ -379,7 +366,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_CustomEvent_Callback(QIdentityProxyModel_CustomEvent_Callback cb) { qidentityproxymodel_customevent_callback = cb; }
     void setQIdentityProxyModel_ConnectNotify_Callback(QIdentityProxyModel_ConnectNotify_Callback cb) { qidentityproxymodel_connectnotify_callback = cb; }
     void setQIdentityProxyModel_DisconnectNotify_Callback(QIdentityProxyModel_DisconnectNotify_Callback cb) { qidentityproxymodel_disconnectnotify_callback = cb; }
-    void setQIdentityProxyModel_CreateSourceIndex_Callback(QIdentityProxyModel_CreateSourceIndex_Callback cb) { qidentityproxymodel_createsourceindex_callback = cb; }
+    void setQIdentityProxyModel_ResetInternalData_Callback(QIdentityProxyModel_ResetInternalData_Callback cb) { qidentityproxymodel_resetinternaldata_callback = cb; }
     void setQIdentityProxyModel_CreateIndex_Callback(QIdentityProxyModel_CreateIndex_Callback cb) { qidentityproxymodel_createindex_callback = cb; }
     void setQIdentityProxyModel_EncodeData_Callback(QIdentityProxyModel_EncodeData_Callback cb) { qidentityproxymodel_encodedata_callback = cb; }
     void setQIdentityProxyModel_DecodeData_Callback(QIdentityProxyModel_DecodeData_Callback cb) { qidentityproxymodel_decodedata_callback = cb; }
@@ -434,7 +421,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_SetData_IsBase(bool value) const { qidentityproxymodel_setdata_isbase = value; }
     void setQIdentityProxyModel_SetItemData_IsBase(bool value) const { qidentityproxymodel_setitemdata_isbase = value; }
     void setQIdentityProxyModel_SetHeaderData_IsBase(bool value) const { qidentityproxymodel_setheaderdata_isbase = value; }
-    void setQIdentityProxyModel_ClearItemData_IsBase(bool value) const { qidentityproxymodel_clearitemdata_isbase = value; }
     void setQIdentityProxyModel_Buddy_IsBase(bool value) const { qidentityproxymodel_buddy_isbase = value; }
     void setQIdentityProxyModel_CanFetchMore_IsBase(bool value) const { qidentityproxymodel_canfetchmore_isbase = value; }
     void setQIdentityProxyModel_FetchMore_IsBase(bool value) const { qidentityproxymodel_fetchmore_isbase = value; }
@@ -447,8 +433,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_SupportedDragActions_IsBase(bool value) const { qidentityproxymodel_supporteddragactions_isbase = value; }
     void setQIdentityProxyModel_SupportedDropActions_IsBase(bool value) const { qidentityproxymodel_supporteddropactions_isbase = value; }
     void setQIdentityProxyModel_RoleNames_IsBase(bool value) const { qidentityproxymodel_rolenames_isbase = value; }
-    void setQIdentityProxyModel_MultiData_IsBase(bool value) const { qidentityproxymodel_multidata_isbase = value; }
-    void setQIdentityProxyModel_ResetInternalData_IsBase(bool value) const { qidentityproxymodel_resetinternaldata_isbase = value; }
     void setQIdentityProxyModel_Event_IsBase(bool value) const { qidentityproxymodel_event_isbase = value; }
     void setQIdentityProxyModel_EventFilter_IsBase(bool value) const { qidentityproxymodel_eventfilter_isbase = value; }
     void setQIdentityProxyModel_TimerEvent_IsBase(bool value) const { qidentityproxymodel_timerevent_isbase = value; }
@@ -456,7 +440,7 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     void setQIdentityProxyModel_CustomEvent_IsBase(bool value) const { qidentityproxymodel_customevent_isbase = value; }
     void setQIdentityProxyModel_ConnectNotify_IsBase(bool value) const { qidentityproxymodel_connectnotify_isbase = value; }
     void setQIdentityProxyModel_DisconnectNotify_IsBase(bool value) const { qidentityproxymodel_disconnectnotify_isbase = value; }
-    void setQIdentityProxyModel_CreateSourceIndex_IsBase(bool value) const { qidentityproxymodel_createsourceindex_isbase = value; }
+    void setQIdentityProxyModel_ResetInternalData_IsBase(bool value) const { qidentityproxymodel_resetinternaldata_isbase = value; }
     void setQIdentityProxyModel_CreateIndex_IsBase(bool value) const { qidentityproxymodel_createindex_isbase = value; }
     void setQIdentityProxyModel_EncodeData_IsBase(bool value) const { qidentityproxymodel_encodedata_isbase = value; }
     void setQIdentityProxyModel_DecodeData_IsBase(bool value) const { qidentityproxymodel_decodedata_isbase = value; }
@@ -819,18 +803,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool clearItemData(const QModelIndex& index) override {
-        if (qidentityproxymodel_clearitemdata_isbase) {
-            qidentityproxymodel_clearitemdata_isbase = false;
-            return QIdentityProxyModel::clearItemData(index);
-        } else if (qidentityproxymodel_clearitemdata_callback != nullptr) {
-            return qidentityproxymodel_clearitemdata_callback(this, index);
-        } else {
-            return QIdentityProxyModel::clearItemData(index);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual QModelIndex buddy(const QModelIndex& index) const override {
         if (qidentityproxymodel_buddy_isbase) {
             qidentityproxymodel_buddy_isbase = false;
@@ -975,30 +947,6 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void multiData(const QModelIndex& index, QModelRoleDataSpan roleDataSpan) const override {
-        if (qidentityproxymodel_multidata_isbase) {
-            qidentityproxymodel_multidata_isbase = false;
-            QIdentityProxyModel::multiData(index, roleDataSpan);
-        } else if (qidentityproxymodel_multidata_callback != nullptr) {
-            qidentityproxymodel_multidata_callback(this, index, roleDataSpan);
-        } else {
-            QIdentityProxyModel::multiData(index, roleDataSpan);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void resetInternalData() override {
-        if (qidentityproxymodel_resetinternaldata_isbase) {
-            qidentityproxymodel_resetinternaldata_isbase = false;
-            QIdentityProxyModel::resetInternalData();
-        } else if (qidentityproxymodel_resetinternaldata_callback != nullptr) {
-            qidentityproxymodel_resetinternaldata_callback();
-        } else {
-            QIdentityProxyModel::resetInternalData();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool event(QEvent* event) override {
         if (qidentityproxymodel_event_isbase) {
             qidentityproxymodel_event_isbase = false;
@@ -1083,14 +1031,14 @@ class VirtualQIdentityProxyModel : public QIdentityProxyModel {
     }
 
     // Virtual method for C ABI access and custom callback
-    QModelIndex createSourceIndex(int row, int col, void* internalPtr) const {
-        if (qidentityproxymodel_createsourceindex_isbase) {
-            qidentityproxymodel_createsourceindex_isbase = false;
-            return QIdentityProxyModel::createSourceIndex(row, col, internalPtr);
-        } else if (qidentityproxymodel_createsourceindex_callback != nullptr) {
-            return qidentityproxymodel_createsourceindex_callback(this, row, col, internalPtr);
+    void resetInternalData() {
+        if (qidentityproxymodel_resetinternaldata_isbase) {
+            qidentityproxymodel_resetinternaldata_isbase = false;
+            QIdentityProxyModel::resetInternalData();
+        } else if (qidentityproxymodel_resetinternaldata_callback != nullptr) {
+            qidentityproxymodel_resetinternaldata_callback();
         } else {
-            return QIdentityProxyModel::createSourceIndex(row, col, internalPtr);
+            QIdentityProxyModel::resetInternalData();
         }
     }
 

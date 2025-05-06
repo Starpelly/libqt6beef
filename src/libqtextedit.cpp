@@ -1,9 +1,7 @@
 #include <QAbstractScrollArea>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -15,7 +13,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -41,6 +38,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPagedPaintDevice>
 #include <QPaintDevice>
 #include <QPaintEngine>
@@ -49,8 +47,8 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
+#include <QRegExp>
 #include <QRegion>
 #include <QRegularExpression>
 #include <QResizeEvent>
@@ -134,6 +132,18 @@ int QTextEdit_QBaseMetacall(QTextEdit* self, int param1, int param2, void** para
 
 libqt_string QTextEdit_Tr(const char* s) {
     QString _ret = QTextEdit::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextEdit_TrUtf8(const char* s) {
+    QString _ret = QTextEdit::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -319,7 +329,11 @@ bool QTextEdit_Find(QTextEdit* self, libqt_string exp) {
     return self->find(exp_QString);
 }
 
-bool QTextEdit_FindWithExp(QTextEdit* self, QRegularExpression* exp) {
+bool QTextEdit_FindWithExp(QTextEdit* self, QRegExp* exp) {
+    return self->find(*exp);
+}
+
+bool QTextEdit_Find2(QTextEdit* self, QRegularExpression* exp) {
     return self->find(*exp);
 }
 
@@ -401,6 +415,14 @@ bool QTextEdit_OverwriteMode(const QTextEdit* self) {
 
 void QTextEdit_SetOverwriteMode(QTextEdit* self, bool overwrite) {
     self->setOverwriteMode(overwrite);
+}
+
+int QTextEdit_TabStopWidth(const QTextEdit* self) {
+    return self->tabStopWidth();
+}
+
+void QTextEdit_SetTabStopWidth(QTextEdit* self, int width) {
+    self->setTabStopWidth(static_cast<int>(width));
 }
 
 double QTextEdit_TabStopDistance(const QTextEdit* self) {
@@ -686,12 +708,40 @@ libqt_string QTextEdit_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-bool QTextEdit_Find2(QTextEdit* self, libqt_string exp, int options) {
+libqt_string QTextEdit_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTextEdit::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextEdit_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTextEdit::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+bool QTextEdit_Find22(QTextEdit* self, libqt_string exp, int options) {
     QString exp_QString = QString::fromUtf8(exp.data, exp.len);
     return self->find(exp_QString, static_cast<QTextDocument::FindFlags>(options));
 }
 
-bool QTextEdit_Find22(QTextEdit* self, QRegularExpression* exp, int options) {
+bool QTextEdit_Find23(QTextEdit* self, QRegExp* exp, int options) {
+    return self->find(*exp, static_cast<QTextDocument::FindFlags>(options));
+}
+
+bool QTextEdit_Find24(QTextEdit* self, QRegularExpression* exp, int options) {
     return self->find(*exp, static_cast<QTextDocument::FindFlags>(options));
 }
 
@@ -1628,32 +1678,6 @@ void QTextEdit_OnViewportSizeHint(const QTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTextEdit_InitStyleOption(const QTextEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
-        vqtextedit->initStyleOption(option);
-    } else {
-        vqtextedit->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QTextEdit_QBaseInitStyleOption(const QTextEdit* self, QStyleOptionFrame* option) {
-    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
-        vqtextedit->setQTextEdit_InitStyleOption_IsBase(true);
-        vqtextedit->initStyleOption(option);
-    } else {
-        vqtextedit->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QTextEdit_OnInitStyleOption(const QTextEdit* self, intptr_t slot) {
-    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
-        vqtextedit->setQTextEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQTextEdit::QTextEdit_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QTextEdit_DevType(const QTextEdit* self) {
     if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
         return vqtextedit->devType();
@@ -1784,7 +1808,7 @@ void QTextEdit_OnPaintEngine(const QTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QTextEdit_EnterEvent(QTextEdit* self, QEnterEvent* event) {
+void QTextEdit_EnterEvent(QTextEdit* self, QEvent* event) {
     if (auto* vqtextedit = dynamic_cast<VirtualQTextEdit*>(self)) {
         vqtextedit->enterEvent(event);
     } else {
@@ -1793,7 +1817,7 @@ void QTextEdit_EnterEvent(QTextEdit* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QTextEdit_QBaseEnterEvent(QTextEdit* self, QEnterEvent* event) {
+void QTextEdit_QBaseEnterEvent(QTextEdit* self, QEvent* event) {
     if (auto* vqtextedit = dynamic_cast<VirtualQTextEdit*>(self)) {
         vqtextedit->setQTextEdit_EnterEvent_IsBase(true);
         vqtextedit->enterEvent(event);
@@ -1966,23 +1990,23 @@ void QTextEdit_OnHideEvent(QTextEdit* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QTextEdit_NativeEvent(QTextEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTextEdit_NativeEvent(QTextEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtextedit = dynamic_cast<VirtualQTextEdit*>(self)) {
-        return vqtextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QTextEdit_QBaseNativeEvent(QTextEdit* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QTextEdit_QBaseNativeEvent(QTextEdit* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtextedit = dynamic_cast<VirtualQTextEdit*>(self)) {
         vqtextedit->setQTextEdit_NativeEvent_IsBase(true);
-        return vqtextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtextedit->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtextedit->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -2300,6 +2324,32 @@ void QTextEdit_QBaseDrawFrame(QTextEdit* self, QPainter* param1) {
 void QTextEdit_OnDrawFrame(QTextEdit* self, intptr_t slot) {
     if (auto* vqtextedit = dynamic_cast<VirtualQTextEdit*>(self)) {
         vqtextedit->setQTextEdit_DrawFrame_Callback(reinterpret_cast<VirtualQTextEdit::QTextEdit_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QTextEdit_InitStyleOption(const QTextEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
+        vqtextedit->initStyleOption(option);
+    } else {
+        vqtextedit->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QTextEdit_QBaseInitStyleOption(const QTextEdit* self, QStyleOptionFrame* option) {
+    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
+        vqtextedit->setQTextEdit_InitStyleOption_IsBase(true);
+        vqtextedit->initStyleOption(option);
+    } else {
+        vqtextedit->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QTextEdit_OnInitStyleOption(const QTextEdit* self, intptr_t slot) {
+    if (auto* vqtextedit = const_cast<VirtualQTextEdit*>(dynamic_cast<const VirtualQTextEdit*>(self))) {
+        vqtextedit->setQTextEdit_InitStyleOption_Callback(reinterpret_cast<VirtualQTextEdit::QTextEdit_InitStyleOption_Callback>(slot));
     }
 }
 

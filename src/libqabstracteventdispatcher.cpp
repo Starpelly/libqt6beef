@@ -1,8 +1,6 @@
 #include <QAbstractEventDispatcher>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QAbstractEventDispatcher__TimerInfo
 #include <QAbstractNativeEventFilter>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -11,6 +9,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QSocketNotifier>
 #include <QString>
 #include <QByteArray>
@@ -46,12 +45,28 @@ libqt_string QAbstractEventDispatcher_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QAbstractEventDispatcher_TrUtf8(const char* s) {
+    QString _ret = QAbstractEventDispatcher::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QAbstractEventDispatcher* QAbstractEventDispatcher_Instance() {
     return QAbstractEventDispatcher::instance();
 }
 
 bool QAbstractEventDispatcher_ProcessEvents(QAbstractEventDispatcher* self, int flags) {
     return self->processEvents(static_cast<QEventLoop::ProcessEventsFlags>(flags));
+}
+
+bool QAbstractEventDispatcher_HasPendingEvents(QAbstractEventDispatcher* self) {
+    return self->hasPendingEvents();
 }
 
 void QAbstractEventDispatcher_RegisterSocketNotifier(QAbstractEventDispatcher* self, QSocketNotifier* notifier) {
@@ -62,12 +77,12 @@ void QAbstractEventDispatcher_UnregisterSocketNotifier(QAbstractEventDispatcher*
     self->unregisterSocketNotifier(notifier);
 }
 
-int QAbstractEventDispatcher_RegisterTimer(QAbstractEventDispatcher* self, long long interval, int timerType, QObject* object) {
-    return self->registerTimer(static_cast<qint64>(interval), static_cast<Qt::TimerType>(timerType), object);
+int QAbstractEventDispatcher_RegisterTimer(QAbstractEventDispatcher* self, int interval, int timerType, QObject* object) {
+    return self->registerTimer(static_cast<int>(interval), static_cast<Qt::TimerType>(timerType), object);
 }
 
-void QAbstractEventDispatcher_RegisterTimer2(QAbstractEventDispatcher* self, int timerId, long long interval, int timerType, QObject* object) {
-    self->registerTimer(static_cast<int>(timerId), static_cast<qint64>(interval), static_cast<Qt::TimerType>(timerType), object);
+void QAbstractEventDispatcher_RegisterTimer2(QAbstractEventDispatcher* self, int timerId, int interval, int timerType, QObject* object) {
+    self->registerTimer(static_cast<int>(timerId), static_cast<int>(interval), static_cast<Qt::TimerType>(timerType), object);
 }
 
 bool QAbstractEventDispatcher_UnregisterTimer(QAbstractEventDispatcher* self, int timerId) {
@@ -103,6 +118,10 @@ void QAbstractEventDispatcher_Interrupt(QAbstractEventDispatcher* self) {
     self->interrupt();
 }
 
+void QAbstractEventDispatcher_Flush(QAbstractEventDispatcher* self) {
+    self->flush();
+}
+
 void QAbstractEventDispatcher_StartingUp(QAbstractEventDispatcher* self) {
     self->startingUp();
 }
@@ -119,9 +138,9 @@ void QAbstractEventDispatcher_RemoveNativeEventFilter(QAbstractEventDispatcher* 
     self->removeNativeEventFilter(filterObj);
 }
 
-bool QAbstractEventDispatcher_FilterNativeEvent(QAbstractEventDispatcher* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QAbstractEventDispatcher_FilterNativeEvent(QAbstractEventDispatcher* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
-    return self->filterNativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+    return self->filterNativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
 }
 
 void QAbstractEventDispatcher_AboutToBlock(QAbstractEventDispatcher* self) {
@@ -160,6 +179,30 @@ libqt_string QAbstractEventDispatcher_Tr2(const char* s, const char* c) {
 
 libqt_string QAbstractEventDispatcher_Tr3(const char* s, const char* c, int n) {
     QString _ret = QAbstractEventDispatcher::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractEventDispatcher_TrUtf82(const char* s, const char* c) {
+    QString _ret = QAbstractEventDispatcher::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QAbstractEventDispatcher_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QAbstractEventDispatcher::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

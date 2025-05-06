@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -92,6 +91,7 @@ int QGroupBox_Metacall(QGroupBox* self, int param1, int param2, void** param3);
 void QGroupBox_OnMetacall(QGroupBox* self, intptr_t slot);
 int QGroupBox_QBaseMetacall(QGroupBox* self, int param1, int param2, void** param3);
 libqt_string QGroupBox_Tr(const char* s);
+libqt_string QGroupBox_TrUtf8(const char* s);
 libqt_string QGroupBox_Title(const QGroupBox* self);
 void QGroupBox_SetTitle(QGroupBox* self, libqt_string title);
 int QGroupBox_Alignment(const QGroupBox* self);
@@ -136,11 +136,10 @@ void QGroupBox_QBaseMouseMoveEvent(QGroupBox* self, QMouseEvent* event);
 void QGroupBox_MouseReleaseEvent(QGroupBox* self, QMouseEvent* event);
 void QGroupBox_OnMouseReleaseEvent(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseMouseReleaseEvent(QGroupBox* self, QMouseEvent* event);
-void QGroupBox_InitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option);
-void QGroupBox_OnInitStyleOption(const QGroupBox* self, intptr_t slot);
-void QGroupBox_QBaseInitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option);
 libqt_string QGroupBox_Tr2(const char* s, const char* c);
 libqt_string QGroupBox_Tr3(const char* s, const char* c, int n);
+libqt_string QGroupBox_TrUtf82(const char* s, const char* c);
+libqt_string QGroupBox_TrUtf83(const char* s, const char* c, int n);
 void QGroupBox_Clicked1(QGroupBox* self, bool checked);
 void QGroupBox_Connect_Clicked1(QGroupBox* self, intptr_t slot);
 int QGroupBox_DevType(const QGroupBox* self);
@@ -176,9 +175,9 @@ void QGroupBox_QBaseKeyReleaseEvent(QGroupBox* self, QKeyEvent* event);
 void QGroupBox_FocusOutEvent(QGroupBox* self, QFocusEvent* event);
 void QGroupBox_OnFocusOutEvent(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseFocusOutEvent(QGroupBox* self, QFocusEvent* event);
-void QGroupBox_EnterEvent(QGroupBox* self, QEnterEvent* event);
+void QGroupBox_EnterEvent(QGroupBox* self, QEvent* event);
 void QGroupBox_OnEnterEvent(QGroupBox* self, intptr_t slot);
-void QGroupBox_QBaseEnterEvent(QGroupBox* self, QEnterEvent* event);
+void QGroupBox_QBaseEnterEvent(QGroupBox* self, QEvent* event);
 void QGroupBox_LeaveEvent(QGroupBox* self, QEvent* event);
 void QGroupBox_OnLeaveEvent(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseLeaveEvent(QGroupBox* self, QEvent* event);
@@ -215,9 +214,9 @@ void QGroupBox_QBaseShowEvent(QGroupBox* self, QShowEvent* event);
 void QGroupBox_HideEvent(QGroupBox* self, QHideEvent* event);
 void QGroupBox_OnHideEvent(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseHideEvent(QGroupBox* self, QHideEvent* event);
-bool QGroupBox_NativeEvent(QGroupBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QGroupBox_NativeEvent(QGroupBox* self, libqt_string eventType, void* message, long* result);
 void QGroupBox_OnNativeEvent(QGroupBox* self, intptr_t slot);
-bool QGroupBox_QBaseNativeEvent(QGroupBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QGroupBox_QBaseNativeEvent(QGroupBox* self, libqt_string eventType, void* message, long* result);
 void QGroupBox_InputMethodEvent(QGroupBox* self, QInputMethodEvent* param1);
 void QGroupBox_OnInputMethodEvent(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseInputMethodEvent(QGroupBox* self, QInputMethodEvent* param1);
@@ -254,6 +253,9 @@ QPaintDevice* QGroupBox_QBaseRedirected(const QGroupBox* self, QPoint* offset);
 QPainter* QGroupBox_SharedPainter(const QGroupBox* self);
 void QGroupBox_OnSharedPainter(const QGroupBox* self, intptr_t slot);
 QPainter* QGroupBox_QBaseSharedPainter(const QGroupBox* self);
+void QGroupBox_InitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option);
+void QGroupBox_OnInitStyleOption(const QGroupBox* self, intptr_t slot);
+void QGroupBox_QBaseInitStyleOption(const QGroupBox* self, QStyleOptionGroupBox* option);
 void QGroupBox_UpdateMicroFocus(QGroupBox* self);
 void QGroupBox_OnUpdateMicroFocus(QGroupBox* self, intptr_t slot);
 void QGroupBox_QBaseUpdateMicroFocus(QGroupBox* self);

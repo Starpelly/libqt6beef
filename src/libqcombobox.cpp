@@ -3,9 +3,7 @@
 #include <QAbstractItemView>
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -18,7 +16,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -43,6 +40,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -50,7 +48,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -128,6 +125,18 @@ libqt_string QComboBox_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QComboBox_TrUtf8(const char* s) {
+    QString _ret = QComboBox::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 int QComboBox_MaxVisibleItems(const QComboBox* self) {
     return self->maxVisibleItems();
 }
@@ -146,6 +155,22 @@ void QComboBox_SetMaxCount(QComboBox* self, int max) {
 
 int QComboBox_MaxCount(const QComboBox* self) {
     return self->maxCount();
+}
+
+bool QComboBox_AutoCompletion(const QComboBox* self) {
+    return self->autoCompletion();
+}
+
+void QComboBox_SetAutoCompletion(QComboBox* self, bool enable) {
+    self->setAutoCompletion(enable);
+}
+
+int QComboBox_AutoCompletionCaseSensitivity(const QComboBox* self) {
+    return static_cast<int>(self->autoCompletionCaseSensitivity());
+}
+
+void QComboBox_SetAutoCompletionCaseSensitivity(QComboBox* self, int sensitivity) {
+    self->setAutoCompletionCaseSensitivity(static_cast<Qt::CaseSensitivity>(sensitivity));
 }
 
 bool QComboBox_DuplicatesEnabled(const QComboBox* self) {
@@ -264,6 +289,10 @@ void QComboBox_SetItemDelegate(QComboBox* self, QAbstractItemDelegate* delegate)
 
 QAbstractItemModel* QComboBox_Model(const QComboBox* self) {
     return self->model();
+}
+
+void QComboBox_SetModel(QComboBox* self, QAbstractItemModel* model) {
+    self->setModel(model);
 }
 
 QModelIndex* QComboBox_RootModelIndex(const QComboBox* self) {
@@ -518,6 +547,27 @@ void QComboBox_Connect_CurrentIndexChanged(QComboBox* self, intptr_t slot) {
     });
 }
 
+void QComboBox_CurrentIndexChangedWithQString(QComboBox* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    self->currentIndexChanged(param1_QString);
+}
+
+void QComboBox_Connect_CurrentIndexChangedWithQString(QComboBox* self, intptr_t slot) {
+    void (*slotFunc)(QComboBox*, libqt_string) = reinterpret_cast<void (*)(QComboBox*, libqt_string)>(slot);
+    QComboBox::connect(self, &QComboBox::currentIndexChanged, [self, slotFunc](const QString& param1) {
+        const QString param1_ret = param1;
+        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+        QByteArray param1_b = param1_ret.toUtf8();
+        libqt_string param1_str;
+        param1_str.len = param1_b.length();
+        param1_str.data = static_cast<char*>(malloc((param1_str.len + 1) * sizeof(char)));
+        memcpy(param1_str.data, param1_b.data(), param1_str.len);
+        param1_str.data[param1_str.len] = '\0';
+        libqt_string sigval1 = param1_str;
+        slotFunc(self, sigval1);
+    });
+}
+
 void QComboBox_CurrentTextChanged(QComboBox* self, libqt_string param1) {
     QString param1_QString = QString::fromUtf8(param1.data, param1.len);
     self->currentTextChanged(param1_QString);
@@ -526,6 +576,48 @@ void QComboBox_CurrentTextChanged(QComboBox* self, libqt_string param1) {
 void QComboBox_Connect_CurrentTextChanged(QComboBox* self, intptr_t slot) {
     void (*slotFunc)(QComboBox*, libqt_string) = reinterpret_cast<void (*)(QComboBox*, libqt_string)>(slot);
     QComboBox::connect(self, &QComboBox::currentTextChanged, [self, slotFunc](const QString& param1) {
+        const QString param1_ret = param1;
+        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+        QByteArray param1_b = param1_ret.toUtf8();
+        libqt_string param1_str;
+        param1_str.len = param1_b.length();
+        param1_str.data = static_cast<char*>(malloc((param1_str.len + 1) * sizeof(char)));
+        memcpy(param1_str.data, param1_b.data(), param1_str.len);
+        param1_str.data[param1_str.len] = '\0';
+        libqt_string sigval1 = param1_str;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QComboBox_ActivatedWithQString(QComboBox* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    self->activated(param1_QString);
+}
+
+void QComboBox_Connect_ActivatedWithQString(QComboBox* self, intptr_t slot) {
+    void (*slotFunc)(QComboBox*, libqt_string) = reinterpret_cast<void (*)(QComboBox*, libqt_string)>(slot);
+    QComboBox::connect(self, &QComboBox::activated, [self, slotFunc](const QString& param1) {
+        const QString param1_ret = param1;
+        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+        QByteArray param1_b = param1_ret.toUtf8();
+        libqt_string param1_str;
+        param1_str.len = param1_b.length();
+        param1_str.data = static_cast<char*>(malloc((param1_str.len + 1) * sizeof(char)));
+        memcpy(param1_str.data, param1_b.data(), param1_str.len);
+        param1_str.data[param1_str.len] = '\0';
+        libqt_string sigval1 = param1_str;
+        slotFunc(self, sigval1);
+    });
+}
+
+void QComboBox_HighlightedWithQString(QComboBox* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    self->highlighted(param1_QString);
+}
+
+void QComboBox_Connect_HighlightedWithQString(QComboBox* self, intptr_t slot) {
+    void (*slotFunc)(QComboBox*, libqt_string) = reinterpret_cast<void (*)(QComboBox*, libqt_string)>(slot);
+    QComboBox::connect(self, &QComboBox::highlighted, [self, slotFunc](const QString& param1) {
         const QString param1_ret = param1;
         // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
         QByteArray param1_b = param1_ret.toUtf8();
@@ -553,6 +645,30 @@ libqt_string QComboBox_Tr2(const char* s, const char* c) {
 
 libqt_string QComboBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QComboBox::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QComboBox_TrUtf82(const char* s, const char* c) {
+    QString _ret = QComboBox::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QComboBox_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QComboBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -606,32 +722,6 @@ void QComboBox_InsertItem4(QComboBox* self, int index, QIcon* icon, libqt_string
 
 void QComboBox_SetItemData3(QComboBox* self, int index, QVariant* value, int role) {
     self->setItemData(static_cast<int>(index), *value, static_cast<int>(role));
-}
-
-// Derived class handler implementation
-void QComboBox_SetModel(QComboBox* self, QAbstractItemModel* model) {
-    if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
-        vqcombobox->setModel(model);
-    } else {
-        vqcombobox->setModel(model);
-    }
-}
-
-// Base class handler implementation
-void QComboBox_QBaseSetModel(QComboBox* self, QAbstractItemModel* model) {
-    if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
-        vqcombobox->setQComboBox_SetModel_IsBase(true);
-        vqcombobox->setModel(model);
-    } else {
-        vqcombobox->setModel(model);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QComboBox_OnSetModel(QComboBox* self, intptr_t slot) {
-    if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
-        vqcombobox->setQComboBox_SetModel_Callback(reinterpret_cast<VirtualQComboBox::QComboBox_SetModel_Callback>(slot));
-    }
 }
 
 // Derived class handler implementation
@@ -1155,32 +1245,6 @@ void QComboBox_OnInputMethodEvent(QComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QComboBox_InitStyleOption(const QComboBox* self, QStyleOptionComboBox* option) {
-    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
-        vqcombobox->initStyleOption(option);
-    } else {
-        vqcombobox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QComboBox_QBaseInitStyleOption(const QComboBox* self, QStyleOptionComboBox* option) {
-    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
-        vqcombobox->setQComboBox_InitStyleOption_IsBase(true);
-        vqcombobox->initStyleOption(option);
-    } else {
-        vqcombobox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QComboBox_OnInitStyleOption(const QComboBox* self, intptr_t slot) {
-    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
-        vqcombobox->setQComboBox_InitStyleOption_Callback(reinterpret_cast<VirtualQComboBox::QComboBox_InitStyleOption_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 int QComboBox_DevType(const QComboBox* self) {
     if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
         return vqcombobox->devType();
@@ -1363,7 +1427,7 @@ void QComboBox_OnMouseMoveEvent(QComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QComboBox_EnterEvent(QComboBox* self, QEnterEvent* event) {
+void QComboBox_EnterEvent(QComboBox* self, QEvent* event) {
     if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
         vqcombobox->enterEvent(event);
     } else {
@@ -1372,7 +1436,7 @@ void QComboBox_EnterEvent(QComboBox* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QComboBox_QBaseEnterEvent(QComboBox* self, QEnterEvent* event) {
+void QComboBox_QBaseEnterEvent(QComboBox* self, QEvent* event) {
     if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
         vqcombobox->setQComboBox_EnterEvent_IsBase(true);
         vqcombobox->enterEvent(event);
@@ -1623,23 +1687,23 @@ void QComboBox_OnDropEvent(QComboBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QComboBox_NativeEvent(QComboBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QComboBox_NativeEvent(QComboBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
-        return vqcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QComboBox_QBaseNativeEvent(QComboBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QComboBox_QBaseNativeEvent(QComboBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
         vqcombobox->setQComboBox_NativeEvent_IsBase(true);
-        return vqcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqcombobox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqcombobox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1933,6 +1997,32 @@ void QComboBox_QBaseDisconnectNotify(QComboBox* self, QMetaMethod* signal) {
 void QComboBox_OnDisconnectNotify(QComboBox* self, intptr_t slot) {
     if (auto* vqcombobox = dynamic_cast<VirtualQComboBox*>(self)) {
         vqcombobox->setQComboBox_DisconnectNotify_Callback(reinterpret_cast<VirtualQComboBox::QComboBox_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QComboBox_InitStyleOption(const QComboBox* self, QStyleOptionComboBox* option) {
+    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
+        vqcombobox->initStyleOption(option);
+    } else {
+        vqcombobox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QComboBox_QBaseInitStyleOption(const QComboBox* self, QStyleOptionComboBox* option) {
+    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
+        vqcombobox->setQComboBox_InitStyleOption_IsBase(true);
+        vqcombobox->initStyleOption(option);
+    } else {
+        vqcombobox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QComboBox_OnInitStyleOption(const QComboBox* self, intptr_t slot) {
+    if (auto* vqcombobox = const_cast<VirtualQComboBox*>(dynamic_cast<const VirtualQComboBox*>(self))) {
+        vqcombobox->setQComboBox_InitStyleOption_Callback(reinterpret_cast<VirtualQComboBox::QComboBox_InitStyleOption_Callback>(slot));
     }
 }
 

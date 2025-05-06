@@ -246,32 +246,6 @@ void QGraphicsLayout_OnSetGeometry(QGraphicsLayout* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QGraphicsLayout_IsEmpty(const QGraphicsLayout* self) {
-    if (auto* vqgraphicslayout = const_cast<VirtualQGraphicsLayout*>(dynamic_cast<const VirtualQGraphicsLayout*>(self))) {
-        return vqgraphicslayout->isEmpty();
-    } else {
-        return vqgraphicslayout->isEmpty();
-    }
-}
-
-// Base class handler implementation
-bool QGraphicsLayout_QBaseIsEmpty(const QGraphicsLayout* self) {
-    if (auto* vqgraphicslayout = const_cast<VirtualQGraphicsLayout*>(dynamic_cast<const VirtualQGraphicsLayout*>(self))) {
-        vqgraphicslayout->setQGraphicsLayout_IsEmpty_IsBase(true);
-        return vqgraphicslayout->isEmpty();
-    } else {
-        return vqgraphicslayout->isEmpty();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGraphicsLayout_OnIsEmpty(const QGraphicsLayout* self, intptr_t slot) {
-    if (auto* vqgraphicslayout = const_cast<VirtualQGraphicsLayout*>(dynamic_cast<const VirtualQGraphicsLayout*>(self))) {
-        vqgraphicslayout->setQGraphicsLayout_IsEmpty_Callback(reinterpret_cast<VirtualQGraphicsLayout::QGraphicsLayout_IsEmpty_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 QSizeF* QGraphicsLayout_SizeHint(const QGraphicsLayout* self, int which, QSizeF* constraint) {
     if (auto* vqgraphicslayout = const_cast<VirtualQGraphicsLayout*>(dynamic_cast<const VirtualQGraphicsLayout*>(self))) {
         return new QSizeF(vqgraphicslayout->sizeHint(static_cast<Qt::SizeHint>(which), *constraint));

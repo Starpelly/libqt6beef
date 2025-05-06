@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,19 +21,25 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
-typedef struct QIODeviceBase QIODeviceBase;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
+#endif
+
+#ifdef __cplusplus
+typedef QIODevice::OpenMode OpenMode;         // C++ QFlags
+typedef QIODevice::OpenModeFlag OpenModeFlag; // C++ enum
+#else
+typedef int OpenMode;     // C ABI QFlags
+typedef int OpenModeFlag; // C ABI enum
 #endif
 
 QIODevice* QIODevice_new();
@@ -42,6 +50,7 @@ int QIODevice_Metacall(QIODevice* self, int param1, int param2, void** param3);
 void QIODevice_OnMetacall(QIODevice* self, intptr_t slot);
 int QIODevice_QBaseMetacall(QIODevice* self, int param1, int param2, void** param3);
 libqt_string QIODevice_Tr(const char* s);
+libqt_string QIODevice_TrUtf8(const char* s);
 int QIODevice_OpenMode(const QIODevice* self);
 void QIODevice_SetTextModeEnabled(QIODevice* self, bool enabled);
 bool QIODevice_IsTextModeEnabled(const QIODevice* self);
@@ -130,14 +139,13 @@ long long QIODevice_QBaseReadData(QIODevice* self, char* data, long long maxlen)
 long long QIODevice_ReadLineData(QIODevice* self, char* data, long long maxlen);
 void QIODevice_OnReadLineData(QIODevice* self, intptr_t slot);
 long long QIODevice_QBaseReadLineData(QIODevice* self, char* data, long long maxlen);
-long long QIODevice_SkipData(QIODevice* self, long long maxSize);
-void QIODevice_OnSkipData(QIODevice* self, intptr_t slot);
-long long QIODevice_QBaseSkipData(QIODevice* self, long long maxSize);
 long long QIODevice_WriteData(QIODevice* self, const char* data, long long lenVal);
 void QIODevice_OnWriteData(QIODevice* self, intptr_t slot);
 long long QIODevice_QBaseWriteData(QIODevice* self, const char* data, long long lenVal);
 libqt_string QIODevice_Tr2(const char* s, const char* c);
 libqt_string QIODevice_Tr3(const char* s, const char* c, int n);
+libqt_string QIODevice_TrUtf82(const char* s, const char* c);
+libqt_string QIODevice_TrUtf83(const char* s, const char* c, int n);
 libqt_string QIODevice_ReadLine1(QIODevice* self, long long maxlen);
 bool QIODevice_Event(QIODevice* self, QEvent* event);
 void QIODevice_OnEvent(QIODevice* self, intptr_t slot);

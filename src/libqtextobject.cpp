@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -9,6 +7,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -61,6 +60,18 @@ libqt_string QTextObject_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QTextObject_TrUtf8(const char* s) {
+    QString _ret = QTextObject::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QTextFormat* QTextObject_Format(const QTextObject* self) {
     return new QTextFormat(self->format());
 }
@@ -91,6 +102,30 @@ libqt_string QTextObject_Tr2(const char* s, const char* c) {
 
 libqt_string QTextObject_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTextObject::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextObject_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTextObject::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextObject_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTextObject::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -133,6 +168,18 @@ libqt_string QTextBlockGroup_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QTextBlockGroup_TrUtf8(const char* s) {
+    QString _ret = QTextBlockGroup::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 libqt_string QTextBlockGroup_Tr2(const char* s, const char* c) {
     QString _ret = QTextBlockGroup::tr(s, c);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
@@ -147,6 +194,30 @@ libqt_string QTextBlockGroup_Tr2(const char* s, const char* c) {
 
 libqt_string QTextBlockGroup_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTextBlockGroup::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextBlockGroup_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTextBlockGroup::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextBlockGroup_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTextBlockGroup::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -212,6 +283,18 @@ int QTextFrame_QBaseMetacall(QTextFrame* self, int param1, int param2, void** pa
 
 libqt_string QTextFrame_Tr(const char* s) {
     QString _ret = QTextFrame::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextFrame_TrUtf8(const char* s) {
+    QString _ret = QTextFrame::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -293,6 +376,30 @@ libqt_string QTextFrame_Tr2(const char* s, const char* c) {
 
 libqt_string QTextFrame_Tr3(const char* s, const char* c, int n) {
     QString _ret = QTextFrame::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextFrame_TrUtf82(const char* s, const char* c) {
+    QString _ret = QTextFrame::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QTextFrame_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QTextFrame::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -708,7 +815,7 @@ libqt_string QTextBlock_Text(const QTextBlock* self) {
 }
 
 libqt_list /* of QTextLayout__FormatRange* */ QTextBlock_TextFormats(const QTextBlock* self) {
-    QList<QTextLayout::FormatRange> _ret = self->textFormats();
+    QVector<QTextLayout::FormatRange> _ret = self->textFormats();
     // Convert QList<> from C++ memory to manually-managed C memory
     QTextLayout__FormatRange** _arr = static_cast<QTextLayout__FormatRange**>(malloc(sizeof(QTextLayout__FormatRange*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -903,28 +1010,16 @@ void QTextFragment_Delete(QTextFragment* self) {
     delete self;
 }
 
-QTextFrame__iterator* QTextFrame__iterator_new(QTextFrame__iterator* other) {
-    return new QTextFrame::iterator(*other);
-}
-
-QTextFrame__iterator* QTextFrame__iterator_new2(QTextFrame__iterator* other) {
-    return new QTextFrame::iterator(std::move(*other));
-}
-
-QTextFrame__iterator* QTextFrame__iterator_new3() {
+QTextFrame__iterator* QTextFrame__iterator_new() {
     return new QTextFrame::iterator();
 }
 
-QTextFrame__iterator* QTextFrame__iterator_new4(QTextFrame__iterator* param1) {
-    return new QTextFrame::iterator(*param1);
+QTextFrame__iterator* QTextFrame__iterator_new2(QTextFrame__iterator* o) {
+    return new QTextFrame::iterator(*o);
 }
 
-void QTextFrame__iterator_CopyAssign(QTextFrame__iterator* self, QTextFrame__iterator* other) {
-    *self = *other;
-}
-
-void QTextFrame__iterator_MoveAssign(QTextFrame__iterator* self, QTextFrame__iterator* other) {
-    *self = std::move(*other);
+void QTextFrame__iterator_OperatorAssign(QTextFrame__iterator* self, QTextFrame__iterator* o) {
+    self->operator=(*o);
 }
 
 QTextFrame* QTextFrame__iterator_ParentFrame(const QTextFrame__iterator* self) {
@@ -975,28 +1070,16 @@ void QTextFrame__iterator_Delete(QTextFrame__iterator* self) {
     delete self;
 }
 
-QTextBlock__iterator* QTextBlock__iterator_new(QTextBlock__iterator* other) {
-    return new QTextBlock::iterator(*other);
-}
-
-QTextBlock__iterator* QTextBlock__iterator_new2(QTextBlock__iterator* other) {
-    return new QTextBlock::iterator(std::move(*other));
-}
-
-QTextBlock__iterator* QTextBlock__iterator_new3() {
+QTextBlock__iterator* QTextBlock__iterator_new() {
     return new QTextBlock::iterator();
 }
 
-QTextBlock__iterator* QTextBlock__iterator_new4(QTextBlock__iterator* param1) {
-    return new QTextBlock::iterator(*param1);
+QTextBlock__iterator* QTextBlock__iterator_new2(QTextBlock__iterator* o) {
+    return new QTextBlock::iterator(*o);
 }
 
-void QTextBlock__iterator_CopyAssign(QTextBlock__iterator* self, QTextBlock__iterator* other) {
-    *self = *other;
-}
-
-void QTextBlock__iterator_MoveAssign(QTextBlock__iterator* self, QTextBlock__iterator* other) {
-    *self = std::move(*other);
+void QTextBlock__iterator_OperatorAssign(QTextBlock__iterator* self, QTextBlock__iterator* o) {
+    self->operator=(*o);
 }
 
 QTextFragment* QTextBlock__iterator_Fragment(const QTextBlock__iterator* self) {

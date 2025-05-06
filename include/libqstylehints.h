@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChar QChar;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
@@ -28,6 +28,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QStyleHints QStyleHints;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -38,6 +39,7 @@ QMetaObject* QStyleHints_MetaObject(const QStyleHints* self);
 void* QStyleHints_Metacast(QStyleHints* self, const char* param1);
 int QStyleHints_Metacall(QStyleHints* self, int param1, int param2, void** param3);
 libqt_string QStyleHints_Tr(const char* s);
+libqt_string QStyleHints_TrUtf8(const char* s);
 void QStyleHints_SetMouseDoubleClickInterval(QStyleHints* self, int mouseDoubleClickInterval);
 int QStyleHints_MouseDoubleClickInterval(const QStyleHints* self);
 int QStyleHints_MouseDoubleClickDistance(const QStyleHints* self);
@@ -96,6 +98,8 @@ void QStyleHints_MouseQuickSelectionThresholdChanged(QStyleHints* self, int thre
 void QStyleHints_Connect_MouseQuickSelectionThresholdChanged(QStyleHints* self, intptr_t slot);
 libqt_string QStyleHints_Tr2(const char* s, const char* c);
 libqt_string QStyleHints_Tr3(const char* s, const char* c, int n);
+libqt_string QStyleHints_TrUtf82(const char* s, const char* c);
+libqt_string QStyleHints_TrUtf83(const char* s, const char* c, int n);
 bool QStyleHints_Event(QStyleHints* self, QEvent* event);
 bool QStyleHints_EventFilter(QStyleHints* self, QObject* watched, QEvent* event);
 void QStyleHints_Delete(QStyleHints* self);

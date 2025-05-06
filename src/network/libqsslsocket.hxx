@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -17,8 +19,8 @@ class VirtualQSslSocket : public QSslSocket {
     // Virtual class public types (including callbacks)
     using QSslSocket_Metacall_Callback = int (*)(QSslSocket*, QMetaObject::Call, int, void**);
     using QSslSocket_Resume_Callback = void (*)();
-    using QSslSocket_SetSocketDescriptor_Callback = bool (*)(QSslSocket*, qintptr, QAbstractSocket::SocketState, QIODeviceBase::OpenMode);
-    using QSslSocket_ConnectToHost_Callback = void (*)(QSslSocket*, const QString&, quint16, QIODeviceBase::OpenMode, QAbstractSocket::NetworkLayerProtocol);
+    using QSslSocket_SetSocketDescriptor_Callback = bool (*)(QSslSocket*, qintptr, QAbstractSocket::SocketState, QIODevice::OpenMode);
+    using QSslSocket_ConnectToHost_Callback = void (*)(QSslSocket*, const QString&, quint16, QIODevice::OpenMode, QAbstractSocket::NetworkLayerProtocol);
     using QSslSocket_DisconnectFromHost_Callback = void (*)();
     using QSslSocket_SetSocketOption_Callback = void (*)(QSslSocket*, QAbstractSocket::SocketOption, const QVariant&);
     using QSslSocket_SocketOption_Callback = QVariant (*)(QSslSocket*, QAbstractSocket::SocketOption);
@@ -33,13 +35,11 @@ class VirtualQSslSocket : public QSslSocket {
     using QSslSocket_WaitForBytesWritten_Callback = bool (*)(QSslSocket*, int);
     using QSslSocket_WaitForDisconnected_Callback = bool (*)(QSslSocket*, int);
     using QSslSocket_ReadData_Callback = qint64 (*)(QSslSocket*, char*, qint64);
-    using QSslSocket_SkipData_Callback = qint64 (*)(QSslSocket*, qint64);
     using QSslSocket_WriteData_Callback = qint64 (*)(QSslSocket*, const char*, qint64);
-    using QSslSocket_Bind_Callback = bool (*)(QSslSocket*, const QHostAddress&, quint16, QAbstractSocket::BindMode);
     using QSslSocket_SocketDescriptor_Callback = qintptr (*)();
     using QSslSocket_IsSequential_Callback = bool (*)();
     using QSslSocket_ReadLineData_Callback = qint64 (*)(QSslSocket*, char*, qint64);
-    using QSslSocket_Open_Callback = bool (*)(QSslSocket*, QIODeviceBase::OpenMode);
+    using QSslSocket_Open_Callback = bool (*)(QSslSocket*, QIODevice::OpenMode);
     using QSslSocket_Pos_Callback = qint64 (*)();
     using QSslSocket_Size_Callback = qint64 (*)();
     using QSslSocket_Seek_Callback = bool (*)(QSslSocket*, qint64);
@@ -58,7 +58,7 @@ class VirtualQSslSocket : public QSslSocket {
     using QSslSocket_SetPeerPort_Callback = void (*)(QSslSocket*, quint16);
     using QSslSocket_SetPeerAddress_Callback = void (*)(QSslSocket*, const QHostAddress&);
     using QSslSocket_SetPeerName_Callback = void (*)(QSslSocket*, const QString&);
-    using QSslSocket_SetOpenMode_Callback = void (*)(QSslSocket*, QIODeviceBase::OpenMode);
+    using QSslSocket_SetOpenMode_Callback = void (*)(QSslSocket*, QIODevice::OpenMode);
     using QSslSocket_SetErrorString_Callback = void (*)(QSslSocket*, const QString&);
     using QSslSocket_Sender_Callback = QObject* (*)();
     using QSslSocket_SenderSignalIndex_Callback = int (*)();
@@ -85,9 +85,7 @@ class VirtualQSslSocket : public QSslSocket {
     QSslSocket_WaitForBytesWritten_Callback qsslsocket_waitforbyteswritten_callback = nullptr;
     QSslSocket_WaitForDisconnected_Callback qsslsocket_waitfordisconnected_callback = nullptr;
     QSslSocket_ReadData_Callback qsslsocket_readdata_callback = nullptr;
-    QSslSocket_SkipData_Callback qsslsocket_skipdata_callback = nullptr;
     QSslSocket_WriteData_Callback qsslsocket_writedata_callback = nullptr;
-    QSslSocket_Bind_Callback qsslsocket_bind_callback = nullptr;
     QSslSocket_SocketDescriptor_Callback qsslsocket_socketdescriptor_callback = nullptr;
     QSslSocket_IsSequential_Callback qsslsocket_issequential_callback = nullptr;
     QSslSocket_ReadLineData_Callback qsslsocket_readlinedata_callback = nullptr;
@@ -136,9 +134,7 @@ class VirtualQSslSocket : public QSslSocket {
     mutable bool qsslsocket_waitforbyteswritten_isbase = false;
     mutable bool qsslsocket_waitfordisconnected_isbase = false;
     mutable bool qsslsocket_readdata_isbase = false;
-    mutable bool qsslsocket_skipdata_isbase = false;
     mutable bool qsslsocket_writedata_isbase = false;
-    mutable bool qsslsocket_bind_isbase = false;
     mutable bool qsslsocket_socketdescriptor_isbase = false;
     mutable bool qsslsocket_issequential_isbase = false;
     mutable bool qsslsocket_readlinedata_isbase = false;
@@ -191,9 +187,7 @@ class VirtualQSslSocket : public QSslSocket {
         qsslsocket_waitforbyteswritten_callback = nullptr;
         qsslsocket_waitfordisconnected_callback = nullptr;
         qsslsocket_readdata_callback = nullptr;
-        qsslsocket_skipdata_callback = nullptr;
         qsslsocket_writedata_callback = nullptr;
-        qsslsocket_bind_callback = nullptr;
         qsslsocket_socketdescriptor_callback = nullptr;
         qsslsocket_issequential_callback = nullptr;
         qsslsocket_readlinedata_callback = nullptr;
@@ -243,9 +237,7 @@ class VirtualQSslSocket : public QSslSocket {
     void setQSslSocket_WaitForBytesWritten_Callback(QSslSocket_WaitForBytesWritten_Callback cb) { qsslsocket_waitforbyteswritten_callback = cb; }
     void setQSslSocket_WaitForDisconnected_Callback(QSslSocket_WaitForDisconnected_Callback cb) { qsslsocket_waitfordisconnected_callback = cb; }
     void setQSslSocket_ReadData_Callback(QSslSocket_ReadData_Callback cb) { qsslsocket_readdata_callback = cb; }
-    void setQSslSocket_SkipData_Callback(QSslSocket_SkipData_Callback cb) { qsslsocket_skipdata_callback = cb; }
     void setQSslSocket_WriteData_Callback(QSslSocket_WriteData_Callback cb) { qsslsocket_writedata_callback = cb; }
-    void setQSslSocket_Bind_Callback(QSslSocket_Bind_Callback cb) { qsslsocket_bind_callback = cb; }
     void setQSslSocket_SocketDescriptor_Callback(QSslSocket_SocketDescriptor_Callback cb) { qsslsocket_socketdescriptor_callback = cb; }
     void setQSslSocket_IsSequential_Callback(QSslSocket_IsSequential_Callback cb) { qsslsocket_issequential_callback = cb; }
     void setQSslSocket_ReadLineData_Callback(QSslSocket_ReadLineData_Callback cb) { qsslsocket_readlinedata_callback = cb; }
@@ -294,9 +286,7 @@ class VirtualQSslSocket : public QSslSocket {
     void setQSslSocket_WaitForBytesWritten_IsBase(bool value) const { qsslsocket_waitforbyteswritten_isbase = value; }
     void setQSslSocket_WaitForDisconnected_IsBase(bool value) const { qsslsocket_waitfordisconnected_isbase = value; }
     void setQSslSocket_ReadData_IsBase(bool value) const { qsslsocket_readdata_isbase = value; }
-    void setQSslSocket_SkipData_IsBase(bool value) const { qsslsocket_skipdata_isbase = value; }
     void setQSslSocket_WriteData_IsBase(bool value) const { qsslsocket_writedata_isbase = value; }
-    void setQSslSocket_Bind_IsBase(bool value) const { qsslsocket_bind_isbase = value; }
     void setQSslSocket_SocketDescriptor_IsBase(bool value) const { qsslsocket_socketdescriptor_isbase = value; }
     void setQSslSocket_IsSequential_IsBase(bool value) const { qsslsocket_issequential_isbase = value; }
     void setQSslSocket_ReadLineData_IsBase(bool value) const { qsslsocket_readlinedata_isbase = value; }
@@ -351,7 +341,7 @@ class VirtualQSslSocket : public QSslSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODeviceBase::OpenMode openMode) override {
+    virtual bool setSocketDescriptor(qintptr socketDescriptor, QAbstractSocket::SocketState state, QIODevice::OpenMode openMode) override {
         if (qsslsocket_setsocketdescriptor_isbase) {
             qsslsocket_setsocketdescriptor_isbase = false;
             return QSslSocket::setSocketDescriptor(socketDescriptor, state, openMode);
@@ -363,7 +353,7 @@ class VirtualQSslSocket : public QSslSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void connectToHost(const QString& hostName, quint16 port, QIODeviceBase::OpenMode openMode, QAbstractSocket::NetworkLayerProtocol protocol) override {
+    virtual void connectToHost(const QString& hostName, quint16 port, QIODevice::OpenMode openMode, QAbstractSocket::NetworkLayerProtocol protocol) override {
         if (qsslsocket_connecttohost_isbase) {
             qsslsocket_connecttohost_isbase = false;
             QSslSocket::connectToHost(hostName, port, openMode, protocol);
@@ -543,18 +533,6 @@ class VirtualQSslSocket : public QSslSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual qint64 skipData(qint64 maxSize) override {
-        if (qsslsocket_skipdata_isbase) {
-            qsslsocket_skipdata_isbase = false;
-            return QSslSocket::skipData(maxSize);
-        } else if (qsslsocket_skipdata_callback != nullptr) {
-            return qsslsocket_skipdata_callback(this, maxSize);
-        } else {
-            return QSslSocket::skipData(maxSize);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual qint64 writeData(const char* data, qint64 lenVal) override {
         if (qsslsocket_writedata_isbase) {
             qsslsocket_writedata_isbase = false;
@@ -563,18 +541,6 @@ class VirtualQSslSocket : public QSslSocket {
             return qsslsocket_writedata_callback(this, data, lenVal);
         } else {
             return QSslSocket::writeData(data, lenVal);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual bool bind(const QHostAddress& address, quint16 port, QAbstractSocket::BindMode mode) override {
-        if (qsslsocket_bind_isbase) {
-            qsslsocket_bind_isbase = false;
-            return QSslSocket::bind(address, port, mode);
-        } else if (qsslsocket_bind_callback != nullptr) {
-            return qsslsocket_bind_callback(this, address, port, mode);
-        } else {
-            return QSslSocket::bind(address, port, mode);
         }
     }
 
@@ -615,7 +581,7 @@ class VirtualQSslSocket : public QSslSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODeviceBase::OpenMode mode) override {
+    virtual bool open(QIODevice::OpenMode mode) override {
         if (qsslsocket_open_isbase) {
             qsslsocket_open_isbase = false;
             return QSslSocket::open(mode);
@@ -843,7 +809,7 @@ class VirtualQSslSocket : public QSslSocket {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODeviceBase::OpenMode openMode) {
+    void setOpenMode(QIODevice::OpenMode openMode) {
         if (qsslsocket_setopenmode_isbase) {
             qsslsocket_setopenmode_isbase = false;
             QSslSocket::setOpenMode(openMode);

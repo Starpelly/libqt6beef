@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -18,7 +20,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     using QFontComboBox_Metacall_Callback = int (*)(QFontComboBox*, QMetaObject::Call, int, void**);
     using QFontComboBox_SizeHint_Callback = QSize (*)();
     using QFontComboBox_Event_Callback = bool (*)(QFontComboBox*, QEvent*);
-    using QFontComboBox_SetModel_Callback = void (*)(QFontComboBox*, QAbstractItemModel*);
     using QFontComboBox_MinimumSizeHint_Callback = QSize (*)();
     using QFontComboBox_ShowPopup_Callback = void (*)();
     using QFontComboBox_HidePopup_Callback = void (*)();
@@ -37,7 +38,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     using QFontComboBox_WheelEvent_Callback = void (*)(QFontComboBox*, QWheelEvent*);
     using QFontComboBox_ContextMenuEvent_Callback = void (*)(QFontComboBox*, QContextMenuEvent*);
     using QFontComboBox_InputMethodEvent_Callback = void (*)(QFontComboBox*, QInputMethodEvent*);
-    using QFontComboBox_InitStyleOption_Callback = void (*)(const QFontComboBox*, QStyleOptionComboBox*);
     using QFontComboBox_DevType_Callback = int (*)();
     using QFontComboBox_SetVisible_Callback = void (*)(QFontComboBox*, bool);
     using QFontComboBox_HeightForWidth_Callback = int (*)(const QFontComboBox*, int);
@@ -45,7 +45,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     using QFontComboBox_PaintEngine_Callback = QPaintEngine* (*)();
     using QFontComboBox_MouseDoubleClickEvent_Callback = void (*)(QFontComboBox*, QMouseEvent*);
     using QFontComboBox_MouseMoveEvent_Callback = void (*)(QFontComboBox*, QMouseEvent*);
-    using QFontComboBox_EnterEvent_Callback = void (*)(QFontComboBox*, QEnterEvent*);
+    using QFontComboBox_EnterEvent_Callback = void (*)(QFontComboBox*, QEvent*);
     using QFontComboBox_LeaveEvent_Callback = void (*)(QFontComboBox*, QEvent*);
     using QFontComboBox_MoveEvent_Callback = void (*)(QFontComboBox*, QMoveEvent*);
     using QFontComboBox_CloseEvent_Callback = void (*)(QFontComboBox*, QCloseEvent*);
@@ -55,7 +55,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     using QFontComboBox_DragMoveEvent_Callback = void (*)(QFontComboBox*, QDragMoveEvent*);
     using QFontComboBox_DragLeaveEvent_Callback = void (*)(QFontComboBox*, QDragLeaveEvent*);
     using QFontComboBox_DropEvent_Callback = void (*)(QFontComboBox*, QDropEvent*);
-    using QFontComboBox_NativeEvent_Callback = bool (*)(QFontComboBox*, const QByteArray&, void*, qintptr*);
+    using QFontComboBox_NativeEvent_Callback = bool (*)(QFontComboBox*, const QByteArray&, void*, long*);
     using QFontComboBox_Metric_Callback = int (*)(const QFontComboBox*, QPaintDevice::PaintDeviceMetric);
     using QFontComboBox_InitPainter_Callback = void (*)(const QFontComboBox*, QPainter*);
     using QFontComboBox_Redirected_Callback = QPaintDevice* (*)(const QFontComboBox*, QPoint*);
@@ -67,6 +67,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     using QFontComboBox_CustomEvent_Callback = void (*)(QFontComboBox*, QEvent*);
     using QFontComboBox_ConnectNotify_Callback = void (*)(QFontComboBox*, const QMetaMethod&);
     using QFontComboBox_DisconnectNotify_Callback = void (*)(QFontComboBox*, const QMetaMethod&);
+    using QFontComboBox_InitStyleOption_Callback = void (*)(const QFontComboBox*, QStyleOptionComboBox*);
     using QFontComboBox_UpdateMicroFocus_Callback = void (*)();
     using QFontComboBox_Create_Callback = void (*)();
     using QFontComboBox_Destroy_Callback = void (*)();
@@ -82,7 +83,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     QFontComboBox_Metacall_Callback qfontcombobox_metacall_callback = nullptr;
     QFontComboBox_SizeHint_Callback qfontcombobox_sizehint_callback = nullptr;
     QFontComboBox_Event_Callback qfontcombobox_event_callback = nullptr;
-    QFontComboBox_SetModel_Callback qfontcombobox_setmodel_callback = nullptr;
     QFontComboBox_MinimumSizeHint_Callback qfontcombobox_minimumsizehint_callback = nullptr;
     QFontComboBox_ShowPopup_Callback qfontcombobox_showpopup_callback = nullptr;
     QFontComboBox_HidePopup_Callback qfontcombobox_hidepopup_callback = nullptr;
@@ -101,7 +101,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     QFontComboBox_WheelEvent_Callback qfontcombobox_wheelevent_callback = nullptr;
     QFontComboBox_ContextMenuEvent_Callback qfontcombobox_contextmenuevent_callback = nullptr;
     QFontComboBox_InputMethodEvent_Callback qfontcombobox_inputmethodevent_callback = nullptr;
-    QFontComboBox_InitStyleOption_Callback qfontcombobox_initstyleoption_callback = nullptr;
     QFontComboBox_DevType_Callback qfontcombobox_devtype_callback = nullptr;
     QFontComboBox_SetVisible_Callback qfontcombobox_setvisible_callback = nullptr;
     QFontComboBox_HeightForWidth_Callback qfontcombobox_heightforwidth_callback = nullptr;
@@ -131,6 +130,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     QFontComboBox_CustomEvent_Callback qfontcombobox_customevent_callback = nullptr;
     QFontComboBox_ConnectNotify_Callback qfontcombobox_connectnotify_callback = nullptr;
     QFontComboBox_DisconnectNotify_Callback qfontcombobox_disconnectnotify_callback = nullptr;
+    QFontComboBox_InitStyleOption_Callback qfontcombobox_initstyleoption_callback = nullptr;
     QFontComboBox_UpdateMicroFocus_Callback qfontcombobox_updatemicrofocus_callback = nullptr;
     QFontComboBox_Create_Callback qfontcombobox_create_callback = nullptr;
     QFontComboBox_Destroy_Callback qfontcombobox_destroy_callback = nullptr;
@@ -145,7 +145,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     mutable bool qfontcombobox_metacall_isbase = false;
     mutable bool qfontcombobox_sizehint_isbase = false;
     mutable bool qfontcombobox_event_isbase = false;
-    mutable bool qfontcombobox_setmodel_isbase = false;
     mutable bool qfontcombobox_minimumsizehint_isbase = false;
     mutable bool qfontcombobox_showpopup_isbase = false;
     mutable bool qfontcombobox_hidepopup_isbase = false;
@@ -164,7 +163,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     mutable bool qfontcombobox_wheelevent_isbase = false;
     mutable bool qfontcombobox_contextmenuevent_isbase = false;
     mutable bool qfontcombobox_inputmethodevent_isbase = false;
-    mutable bool qfontcombobox_initstyleoption_isbase = false;
     mutable bool qfontcombobox_devtype_isbase = false;
     mutable bool qfontcombobox_setvisible_isbase = false;
     mutable bool qfontcombobox_heightforwidth_isbase = false;
@@ -194,6 +192,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     mutable bool qfontcombobox_customevent_isbase = false;
     mutable bool qfontcombobox_connectnotify_isbase = false;
     mutable bool qfontcombobox_disconnectnotify_isbase = false;
+    mutable bool qfontcombobox_initstyleoption_isbase = false;
     mutable bool qfontcombobox_updatemicrofocus_isbase = false;
     mutable bool qfontcombobox_create_isbase = false;
     mutable bool qfontcombobox_destroy_isbase = false;
@@ -212,7 +211,6 @@ class VirtualQFontComboBox : public QFontComboBox {
         qfontcombobox_metacall_callback = nullptr;
         qfontcombobox_sizehint_callback = nullptr;
         qfontcombobox_event_callback = nullptr;
-        qfontcombobox_setmodel_callback = nullptr;
         qfontcombobox_minimumsizehint_callback = nullptr;
         qfontcombobox_showpopup_callback = nullptr;
         qfontcombobox_hidepopup_callback = nullptr;
@@ -231,7 +229,6 @@ class VirtualQFontComboBox : public QFontComboBox {
         qfontcombobox_wheelevent_callback = nullptr;
         qfontcombobox_contextmenuevent_callback = nullptr;
         qfontcombobox_inputmethodevent_callback = nullptr;
-        qfontcombobox_initstyleoption_callback = nullptr;
         qfontcombobox_devtype_callback = nullptr;
         qfontcombobox_setvisible_callback = nullptr;
         qfontcombobox_heightforwidth_callback = nullptr;
@@ -261,6 +258,7 @@ class VirtualQFontComboBox : public QFontComboBox {
         qfontcombobox_customevent_callback = nullptr;
         qfontcombobox_connectnotify_callback = nullptr;
         qfontcombobox_disconnectnotify_callback = nullptr;
+        qfontcombobox_initstyleoption_callback = nullptr;
         qfontcombobox_updatemicrofocus_callback = nullptr;
         qfontcombobox_create_callback = nullptr;
         qfontcombobox_destroy_callback = nullptr;
@@ -276,7 +274,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_Metacall_Callback(QFontComboBox_Metacall_Callback cb) { qfontcombobox_metacall_callback = cb; }
     void setQFontComboBox_SizeHint_Callback(QFontComboBox_SizeHint_Callback cb) { qfontcombobox_sizehint_callback = cb; }
     void setQFontComboBox_Event_Callback(QFontComboBox_Event_Callback cb) { qfontcombobox_event_callback = cb; }
-    void setQFontComboBox_SetModel_Callback(QFontComboBox_SetModel_Callback cb) { qfontcombobox_setmodel_callback = cb; }
     void setQFontComboBox_MinimumSizeHint_Callback(QFontComboBox_MinimumSizeHint_Callback cb) { qfontcombobox_minimumsizehint_callback = cb; }
     void setQFontComboBox_ShowPopup_Callback(QFontComboBox_ShowPopup_Callback cb) { qfontcombobox_showpopup_callback = cb; }
     void setQFontComboBox_HidePopup_Callback(QFontComboBox_HidePopup_Callback cb) { qfontcombobox_hidepopup_callback = cb; }
@@ -295,7 +292,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_WheelEvent_Callback(QFontComboBox_WheelEvent_Callback cb) { qfontcombobox_wheelevent_callback = cb; }
     void setQFontComboBox_ContextMenuEvent_Callback(QFontComboBox_ContextMenuEvent_Callback cb) { qfontcombobox_contextmenuevent_callback = cb; }
     void setQFontComboBox_InputMethodEvent_Callback(QFontComboBox_InputMethodEvent_Callback cb) { qfontcombobox_inputmethodevent_callback = cb; }
-    void setQFontComboBox_InitStyleOption_Callback(QFontComboBox_InitStyleOption_Callback cb) { qfontcombobox_initstyleoption_callback = cb; }
     void setQFontComboBox_DevType_Callback(QFontComboBox_DevType_Callback cb) { qfontcombobox_devtype_callback = cb; }
     void setQFontComboBox_SetVisible_Callback(QFontComboBox_SetVisible_Callback cb) { qfontcombobox_setvisible_callback = cb; }
     void setQFontComboBox_HeightForWidth_Callback(QFontComboBox_HeightForWidth_Callback cb) { qfontcombobox_heightforwidth_callback = cb; }
@@ -325,6 +321,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_CustomEvent_Callback(QFontComboBox_CustomEvent_Callback cb) { qfontcombobox_customevent_callback = cb; }
     void setQFontComboBox_ConnectNotify_Callback(QFontComboBox_ConnectNotify_Callback cb) { qfontcombobox_connectnotify_callback = cb; }
     void setQFontComboBox_DisconnectNotify_Callback(QFontComboBox_DisconnectNotify_Callback cb) { qfontcombobox_disconnectnotify_callback = cb; }
+    void setQFontComboBox_InitStyleOption_Callback(QFontComboBox_InitStyleOption_Callback cb) { qfontcombobox_initstyleoption_callback = cb; }
     void setQFontComboBox_UpdateMicroFocus_Callback(QFontComboBox_UpdateMicroFocus_Callback cb) { qfontcombobox_updatemicrofocus_callback = cb; }
     void setQFontComboBox_Create_Callback(QFontComboBox_Create_Callback cb) { qfontcombobox_create_callback = cb; }
     void setQFontComboBox_Destroy_Callback(QFontComboBox_Destroy_Callback cb) { qfontcombobox_destroy_callback = cb; }
@@ -339,7 +336,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_Metacall_IsBase(bool value) const { qfontcombobox_metacall_isbase = value; }
     void setQFontComboBox_SizeHint_IsBase(bool value) const { qfontcombobox_sizehint_isbase = value; }
     void setQFontComboBox_Event_IsBase(bool value) const { qfontcombobox_event_isbase = value; }
-    void setQFontComboBox_SetModel_IsBase(bool value) const { qfontcombobox_setmodel_isbase = value; }
     void setQFontComboBox_MinimumSizeHint_IsBase(bool value) const { qfontcombobox_minimumsizehint_isbase = value; }
     void setQFontComboBox_ShowPopup_IsBase(bool value) const { qfontcombobox_showpopup_isbase = value; }
     void setQFontComboBox_HidePopup_IsBase(bool value) const { qfontcombobox_hidepopup_isbase = value; }
@@ -358,7 +354,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_WheelEvent_IsBase(bool value) const { qfontcombobox_wheelevent_isbase = value; }
     void setQFontComboBox_ContextMenuEvent_IsBase(bool value) const { qfontcombobox_contextmenuevent_isbase = value; }
     void setQFontComboBox_InputMethodEvent_IsBase(bool value) const { qfontcombobox_inputmethodevent_isbase = value; }
-    void setQFontComboBox_InitStyleOption_IsBase(bool value) const { qfontcombobox_initstyleoption_isbase = value; }
     void setQFontComboBox_DevType_IsBase(bool value) const { qfontcombobox_devtype_isbase = value; }
     void setQFontComboBox_SetVisible_IsBase(bool value) const { qfontcombobox_setvisible_isbase = value; }
     void setQFontComboBox_HeightForWidth_IsBase(bool value) const { qfontcombobox_heightforwidth_isbase = value; }
@@ -388,6 +383,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     void setQFontComboBox_CustomEvent_IsBase(bool value) const { qfontcombobox_customevent_isbase = value; }
     void setQFontComboBox_ConnectNotify_IsBase(bool value) const { qfontcombobox_connectnotify_isbase = value; }
     void setQFontComboBox_DisconnectNotify_IsBase(bool value) const { qfontcombobox_disconnectnotify_isbase = value; }
+    void setQFontComboBox_InitStyleOption_IsBase(bool value) const { qfontcombobox_initstyleoption_isbase = value; }
     void setQFontComboBox_UpdateMicroFocus_IsBase(bool value) const { qfontcombobox_updatemicrofocus_isbase = value; }
     void setQFontComboBox_Create_IsBase(bool value) const { qfontcombobox_create_isbase = value; }
     void setQFontComboBox_Destroy_IsBase(bool value) const { qfontcombobox_destroy_isbase = value; }
@@ -431,18 +427,6 @@ class VirtualQFontComboBox : public QFontComboBox {
             return qfontcombobox_event_callback(this, e);
         } else {
             return QFontComboBox::event(e);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setModel(QAbstractItemModel* model) override {
-        if (qfontcombobox_setmodel_isbase) {
-            qfontcombobox_setmodel_isbase = false;
-            QFontComboBox::setModel(model);
-        } else if (qfontcombobox_setmodel_callback != nullptr) {
-            qfontcombobox_setmodel_callback(this, model);
-        } else {
-            QFontComboBox::setModel(model);
         }
     }
 
@@ -663,18 +647,6 @@ class VirtualQFontComboBox : public QFontComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionComboBox* option) const override {
-        if (qfontcombobox_initstyleoption_isbase) {
-            qfontcombobox_initstyleoption_isbase = false;
-            QFontComboBox::initStyleOption(option);
-        } else if (qfontcombobox_initstyleoption_callback != nullptr) {
-            qfontcombobox_initstyleoption_callback(this, option);
-        } else {
-            QFontComboBox::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qfontcombobox_devtype_isbase) {
             qfontcombobox_devtype_isbase = false;
@@ -759,7 +731,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qfontcombobox_enterevent_isbase) {
             qfontcombobox_enterevent_isbase = false;
             QFontComboBox::enterEvent(event);
@@ -879,7 +851,7 @@ class VirtualQFontComboBox : public QFontComboBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qfontcombobox_nativeevent_isbase) {
             qfontcombobox_nativeevent_isbase = false;
             return QFontComboBox::nativeEvent(eventType, message, result);
@@ -1019,6 +991,18 @@ class VirtualQFontComboBox : public QFontComboBox {
             qfontcombobox_disconnectnotify_callback(this, signal);
         } else {
             QFontComboBox::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionComboBox* option) const {
+        if (qfontcombobox_initstyleoption_isbase) {
+            qfontcombobox_initstyleoption_isbase = false;
+            QFontComboBox::initStyleOption(option);
+        } else if (qfontcombobox_initstyleoption_callback != nullptr) {
+            qfontcombobox_initstyleoption_callback(this, option);
+        } else {
+            QFontComboBox::initStyleOption(option);
         }
     }
 

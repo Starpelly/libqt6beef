@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,7 +18,6 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
-typedef struct QByteArrayView QByteArrayView;
 typedef struct QCryptographicHash QCryptographicHash;
 typedef struct QIODevice QIODevice;
 #endif
@@ -31,12 +32,11 @@ typedef void QtGadgetHelper; // C ABI QFlags
 
 QCryptographicHash* QCryptographicHash_new(int method);
 void QCryptographicHash_Reset(QCryptographicHash* self);
-void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, ptrdiff_t length);
-void QCryptographicHash_AddDataWithData(QCryptographicHash* self, QByteArrayView* data);
+void QCryptographicHash_AddData(QCryptographicHash* self, const char* data, int length);
+void QCryptographicHash_AddDataWithData(QCryptographicHash* self, libqt_string data);
 bool QCryptographicHash_AddDataWithDevice(QCryptographicHash* self, QIODevice* device);
 libqt_string QCryptographicHash_Result(const QCryptographicHash* self);
-QByteArrayView* QCryptographicHash_ResultView(const QCryptographicHash* self);
-libqt_string QCryptographicHash_Hash(QByteArrayView* data, int method);
+libqt_string QCryptographicHash_Hash(libqt_string data, int method);
 int QCryptographicHash_HashLength(int method);
 void QCryptographicHash_Delete(QCryptographicHash* self);
 

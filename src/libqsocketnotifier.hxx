@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -58,9 +60,7 @@ class VirtualQSocketNotifier : public QSocketNotifier {
     mutable bool qsocketnotifier_issignalconnected_isbase = false;
 
   public:
-    VirtualQSocketNotifier(QSocketNotifier::Type param1) : QSocketNotifier(param1){};
     VirtualQSocketNotifier(qintptr socket, QSocketNotifier::Type param2) : QSocketNotifier(socket, param2){};
-    VirtualQSocketNotifier(QSocketNotifier::Type param1, QObject* parent) : QSocketNotifier(param1, parent){};
     VirtualQSocketNotifier(qintptr socket, QSocketNotifier::Type param2, QObject* parent) : QSocketNotifier(socket, param2, parent){};
 
     ~VirtualQSocketNotifier() {

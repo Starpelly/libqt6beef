@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAbstractNetworkCache QAbstractNetworkCache;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QIODevice QIODevice;
@@ -31,6 +31,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QNetworkCacheMetaData QNetworkCacheMetaData;
 typedef struct QNetworkDiskCache QNetworkDiskCache;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUrl QUrl;
@@ -45,6 +46,7 @@ int QNetworkDiskCache_Metacall(QNetworkDiskCache* self, int param1, int param2, 
 void QNetworkDiskCache_OnMetacall(QNetworkDiskCache* self, intptr_t slot);
 int QNetworkDiskCache_QBaseMetacall(QNetworkDiskCache* self, int param1, int param2, void** param3);
 libqt_string QNetworkDiskCache_Tr(const char* s);
+libqt_string QNetworkDiskCache_TrUtf8(const char* s);
 libqt_string QNetworkDiskCache_CacheDirectory(const QNetworkDiskCache* self);
 void QNetworkDiskCache_SetCacheDirectory(QNetworkDiskCache* self, libqt_string cacheDir);
 long long QNetworkDiskCache_MaximumCacheSize(const QNetworkDiskCache* self);
@@ -79,6 +81,8 @@ void QNetworkDiskCache_OnExpire(QNetworkDiskCache* self, intptr_t slot);
 long long QNetworkDiskCache_QBaseExpire(QNetworkDiskCache* self);
 libqt_string QNetworkDiskCache_Tr2(const char* s, const char* c);
 libqt_string QNetworkDiskCache_Tr3(const char* s, const char* c, int n);
+libqt_string QNetworkDiskCache_TrUtf82(const char* s, const char* c);
+libqt_string QNetworkDiskCache_TrUtf83(const char* s, const char* c, int n);
 bool QNetworkDiskCache_Event(QNetworkDiskCache* self, QEvent* event);
 void QNetworkDiskCache_OnEvent(QNetworkDiskCache* self, intptr_t slot);
 bool QNetworkDiskCache_QBaseEvent(QNetworkDiskCache* self, QEvent* event);

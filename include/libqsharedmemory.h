@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,14 +21,13 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QSharedMemory QSharedMemory;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -51,12 +52,13 @@ int QSharedMemory_Metacall(QSharedMemory* self, int param1, int param2, void** p
 void QSharedMemory_OnMetacall(QSharedMemory* self, intptr_t slot);
 int QSharedMemory_QBaseMetacall(QSharedMemory* self, int param1, int param2, void** param3);
 libqt_string QSharedMemory_Tr(const char* s);
+libqt_string QSharedMemory_TrUtf8(const char* s);
 void QSharedMemory_SetKey(QSharedMemory* self, libqt_string key);
 libqt_string QSharedMemory_Key(const QSharedMemory* self);
 void QSharedMemory_SetNativeKey(QSharedMemory* self, libqt_string key);
 libqt_string QSharedMemory_NativeKey(const QSharedMemory* self);
-bool QSharedMemory_Create(QSharedMemory* self, ptrdiff_t size);
-ptrdiff_t QSharedMemory_Size(const QSharedMemory* self);
+bool QSharedMemory_Create(QSharedMemory* self, int size);
+int QSharedMemory_Size(const QSharedMemory* self);
 bool QSharedMemory_Attach(QSharedMemory* self);
 bool QSharedMemory_IsAttached(const QSharedMemory* self);
 bool QSharedMemory_Detach(QSharedMemory* self);
@@ -69,7 +71,9 @@ int QSharedMemory_Error(const QSharedMemory* self);
 libqt_string QSharedMemory_ErrorString(const QSharedMemory* self);
 libqt_string QSharedMemory_Tr2(const char* s, const char* c);
 libqt_string QSharedMemory_Tr3(const char* s, const char* c, int n);
-bool QSharedMemory_Create2(QSharedMemory* self, ptrdiff_t size, int mode);
+libqt_string QSharedMemory_TrUtf82(const char* s, const char* c);
+libqt_string QSharedMemory_TrUtf83(const char* s, const char* c, int n);
+bool QSharedMemory_Create2(QSharedMemory* self, int size, int mode);
 bool QSharedMemory_Attach1(QSharedMemory* self, int mode);
 bool QSharedMemory_Event(QSharedMemory* self, QEvent* event);
 void QSharedMemory_OnEvent(QSharedMemory* self, intptr_t slot);

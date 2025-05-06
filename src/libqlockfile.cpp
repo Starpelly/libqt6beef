@@ -11,18 +11,6 @@ QLockFile* QLockFile_new(libqt_string fileName) {
     return new QLockFile(fileName_QString);
 }
 
-libqt_string QLockFile_FileName(const QLockFile* self) {
-    QString _ret = self->fileName();
-    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-    QByteArray _b = _ret.toUtf8();
-    libqt_string _str;
-    _str.len = _b.length();
-    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
-    memcpy(_str.data, _b.data(), _str.len);
-    _str.data[_str.len] = '\0';
-    return _str;
-}
-
 bool QLockFile_Lock(QLockFile* self) {
     return self->lock();
 }

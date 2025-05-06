@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -8,6 +6,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QSocketDescriptor>
 #include <QSocketNotifier>
 #include <QString>
@@ -20,19 +19,11 @@
 #include "libqsocketnotifier.h"
 #include "libqsocketnotifier.hxx"
 
-QSocketNotifier* QSocketNotifier_new(int param1) {
-    return new VirtualQSocketNotifier(static_cast<QSocketNotifier::Type>(param1));
-}
-
-QSocketNotifier* QSocketNotifier_new2(intptr_t socket, int param2) {
+QSocketNotifier* QSocketNotifier_new(intptr_t socket, int param2) {
     return new VirtualQSocketNotifier((qintptr)(socket), static_cast<QSocketNotifier::Type>(param2));
 }
 
-QSocketNotifier* QSocketNotifier_new3(int param1, QObject* parent) {
-    return new VirtualQSocketNotifier(static_cast<QSocketNotifier::Type>(param1), parent);
-}
-
-QSocketNotifier* QSocketNotifier_new4(intptr_t socket, int param2, QObject* parent) {
+QSocketNotifier* QSocketNotifier_new2(intptr_t socket, int param2, QObject* parent) {
     return new VirtualQSocketNotifier((qintptr)(socket), static_cast<QSocketNotifier::Type>(param2), parent);
 }
 
@@ -81,8 +72,16 @@ libqt_string QSocketNotifier_Tr(const char* s) {
     return _str;
 }
 
-void QSocketNotifier_SetSocket(QSocketNotifier* self, intptr_t socket) {
-    self->setSocket((qintptr)(socket));
+libqt_string QSocketNotifier_TrUtf8(const char* s) {
+    QString _ret = QSocketNotifier::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 intptr_t QSocketNotifier_Socket(const QSocketNotifier* self) {
@@ -92,10 +91,6 @@ intptr_t QSocketNotifier_Socket(const QSocketNotifier* self) {
 
 int QSocketNotifier_Type(const QSocketNotifier* self) {
     return static_cast<int>(self->type());
-}
-
-bool QSocketNotifier_IsValid(const QSocketNotifier* self) {
-    return self->isValid();
 }
 
 bool QSocketNotifier_IsEnabled(const QSocketNotifier* self) {
@@ -120,6 +115,30 @@ libqt_string QSocketNotifier_Tr2(const char* s, const char* c) {
 
 libqt_string QSocketNotifier_Tr3(const char* s, const char* c, int n) {
     QString _ret = QSocketNotifier::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSocketNotifier_TrUtf82(const char* s, const char* c) {
+    QString _ret = QSocketNotifier::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QSocketNotifier_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QSocketNotifier::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

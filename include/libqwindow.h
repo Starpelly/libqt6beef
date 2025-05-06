@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,10 +22,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAccessibleInterface QAccessibleInterface;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
-typedef struct QCloseEvent QCloseEvent;
 typedef struct QCursor QCursor;
 typedef struct QEvent QEvent;
 typedef struct QExposeEvent QExposeEvent;
@@ -38,9 +37,8 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
-typedef struct QPaintEvent QPaintEvent;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -75,6 +73,7 @@ int QWindow_Metacall(QWindow* self, int param1, int param2, void** param3);
 void QWindow_OnMetacall(QWindow* self, intptr_t slot);
 int QWindow_QBaseMetacall(QWindow* self, int param1, int param2, void** param3);
 libqt_string QWindow_Tr(const char* s);
+libqt_string QWindow_TrUtf8(const char* s);
 void QWindow_SetSurfaceType(QWindow* self, int surfaceType);
 int QWindow_SurfaceType(const QWindow* self);
 void QWindow_OnSurfaceType(const QWindow* self, intptr_t slot);
@@ -84,7 +83,8 @@ int QWindow_Visibility(const QWindow* self);
 void QWindow_SetVisibility(QWindow* self, int v);
 void QWindow_Create(QWindow* self);
 uintptr_t QWindow_WinId(const QWindow* self);
-QWindow* QWindow_Parent(const QWindow* self);
+QWindow* QWindow_Parent(const QWindow* self, int mode);
+QWindow* QWindow_Parent2(const QWindow* self);
 void QWindow_SetParent(QWindow* self, QWindow* parent);
 bool QWindow_IsTopLevel(const QWindow* self);
 bool QWindow_IsModal(const QWindow* self);
@@ -160,10 +160,8 @@ QAccessibleInterface* QWindow_QBaseAccessibleRoot(const QWindow* self);
 QObject* QWindow_FocusObject(const QWindow* self);
 void QWindow_OnFocusObject(const QWindow* self, intptr_t slot);
 QObject* QWindow_QBaseFocusObject(const QWindow* self);
-QPointF* QWindow_MapToGlobal(const QWindow* self, QPointF* pos);
-QPointF* QWindow_MapFromGlobal(const QWindow* self, QPointF* pos);
-QPoint* QWindow_MapToGlobalWithPos(const QWindow* self, QPoint* pos);
-QPoint* QWindow_MapFromGlobalWithPos(const QWindow* self, QPoint* pos);
+QPoint* QWindow_MapToGlobal(const QWindow* self, QPoint* pos);
+QPoint* QWindow_MapFromGlobal(const QWindow* self, QPoint* pos);
 QCursor* QWindow_Cursor(const QWindow* self);
 void QWindow_SetCursor(QWindow* self, QCursor* cursor);
 void QWindow_UnsetCursor(QWindow* self);
@@ -238,9 +236,6 @@ void QWindow_QBaseExposeEvent(QWindow* self, QExposeEvent* param1);
 void QWindow_ResizeEvent(QWindow* self, QResizeEvent* param1);
 void QWindow_OnResizeEvent(QWindow* self, intptr_t slot);
 void QWindow_QBaseResizeEvent(QWindow* self, QResizeEvent* param1);
-void QWindow_PaintEvent(QWindow* self, QPaintEvent* param1);
-void QWindow_OnPaintEvent(QWindow* self, intptr_t slot);
-void QWindow_QBasePaintEvent(QWindow* self, QPaintEvent* param1);
 void QWindow_MoveEvent(QWindow* self, QMoveEvent* param1);
 void QWindow_OnMoveEvent(QWindow* self, intptr_t slot);
 void QWindow_QBaseMoveEvent(QWindow* self, QMoveEvent* param1);
@@ -256,9 +251,6 @@ void QWindow_QBaseShowEvent(QWindow* self, QShowEvent* param1);
 void QWindow_HideEvent(QWindow* self, QHideEvent* param1);
 void QWindow_OnHideEvent(QWindow* self, intptr_t slot);
 void QWindow_QBaseHideEvent(QWindow* self, QHideEvent* param1);
-void QWindow_CloseEvent(QWindow* self, QCloseEvent* param1);
-void QWindow_OnCloseEvent(QWindow* self, intptr_t slot);
-void QWindow_QBaseCloseEvent(QWindow* self, QCloseEvent* param1);
 bool QWindow_Event(QWindow* self, QEvent* param1);
 void QWindow_OnEvent(QWindow* self, intptr_t slot);
 bool QWindow_QBaseEvent(QWindow* self, QEvent* param1);
@@ -289,12 +281,13 @@ void QWindow_QBaseTouchEvent(QWindow* self, QTouchEvent* param1);
 void QWindow_TabletEvent(QWindow* self, QTabletEvent* param1);
 void QWindow_OnTabletEvent(QWindow* self, intptr_t slot);
 void QWindow_QBaseTabletEvent(QWindow* self, QTabletEvent* param1);
-bool QWindow_NativeEvent(QWindow* self, libqt_string eventType, void* message, intptr_t* result);
+bool QWindow_NativeEvent(QWindow* self, libqt_string eventType, void* message, long* result);
 void QWindow_OnNativeEvent(QWindow* self, intptr_t slot);
-bool QWindow_QBaseNativeEvent(QWindow* self, libqt_string eventType, void* message, intptr_t* result);
+bool QWindow_QBaseNativeEvent(QWindow* self, libqt_string eventType, void* message, long* result);
 libqt_string QWindow_Tr2(const char* s, const char* c);
 libqt_string QWindow_Tr3(const char* s, const char* c, int n);
-QWindow* QWindow_Parent1(const QWindow* self, int mode);
+libqt_string QWindow_TrUtf82(const char* s, const char* c);
+libqt_string QWindow_TrUtf83(const char* s, const char* c, int n);
 void QWindow_SetFlag2(QWindow* self, int param1, bool on);
 bool QWindow_IsAncestorOf2(const QWindow* self, QWindow* child, int mode);
 bool QWindow_EventFilter(QWindow* self, QObject* watched, QEvent* event);
@@ -315,9 +308,6 @@ void QWindow_QBaseConnectNotify(QWindow* self, QMetaMethod* signal);
 void QWindow_DisconnectNotify(QWindow* self, QMetaMethod* signal);
 void QWindow_OnDisconnectNotify(QWindow* self, intptr_t slot);
 void QWindow_QBaseDisconnectNotify(QWindow* self, QMetaMethod* signal);
-void* QWindow_ResolveInterface(const QWindow* self, const char* name, int revision);
-void QWindow_OnResolveInterface(const QWindow* self, intptr_t slot);
-void* QWindow_QBaseResolveInterface(const QWindow* self, const char* name, int revision);
 QObject* QWindow_Sender(const QWindow* self);
 void QWindow_OnSender(const QWindow* self, intptr_t slot);
 QObject* QWindow_QBaseSender(const QWindow* self);

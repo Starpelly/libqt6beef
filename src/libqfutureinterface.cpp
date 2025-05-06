@@ -21,10 +21,6 @@ QFutureInterfaceBase* QFutureInterfaceBase_new3(int initialState) {
     return new QFutureInterfaceBase(static_cast<QFutureInterfaceBase::State>(initialState));
 }
 
-void QFutureInterfaceBase_OperatorAssign(QFutureInterfaceBase* self, QFutureInterfaceBase* other) {
-    self->operator=(*other);
-}
-
 void QFutureInterfaceBase_ReportStarted(QFutureInterfaceBase* self) {
     self->reportStarted();
 }
@@ -47,10 +43,6 @@ void QFutureInterfaceBase_SetRunnable(QFutureInterfaceBase* self, QRunnable* run
 
 void QFutureInterfaceBase_SetThreadPool(QFutureInterfaceBase* self, QThreadPool* pool) {
     self->setThreadPool(pool);
-}
-
-QThreadPool* QFutureInterfaceBase_ThreadPool(const QFutureInterfaceBase* self) {
-    return self->threadPool();
 }
 
 void QFutureInterfaceBase_SetFilterMode(QFutureInterfaceBase* self, bool enable) {
@@ -134,22 +126,6 @@ bool QFutureInterfaceBase_IsPaused(const QFutureInterfaceBase* self) {
     return self->isPaused();
 }
 
-void QFutureInterfaceBase_SetPaused(QFutureInterfaceBase* self, bool paused) {
-    self->setPaused(paused);
-}
-
-void QFutureInterfaceBase_TogglePaused(QFutureInterfaceBase* self) {
-    self->togglePaused();
-}
-
-bool QFutureInterfaceBase_IsSuspending(const QFutureInterfaceBase* self) {
-    return self->isSuspending();
-}
-
-bool QFutureInterfaceBase_IsSuspended(const QFutureInterfaceBase* self) {
-    return self->isSuspended();
-}
-
 bool QFutureInterfaceBase_IsThrottled(const QFutureInterfaceBase* self) {
     return self->isThrottled();
 }
@@ -158,32 +134,16 @@ bool QFutureInterfaceBase_IsResultReadyAt(const QFutureInterfaceBase* self, int 
     return self->isResultReadyAt(static_cast<int>(index));
 }
 
-bool QFutureInterfaceBase_IsValid(const QFutureInterfaceBase* self) {
-    return self->isValid();
-}
-
-int QFutureInterfaceBase_LoadState(const QFutureInterfaceBase* self) {
-    return self->loadState();
-}
-
 void QFutureInterfaceBase_Cancel(QFutureInterfaceBase* self) {
     self->cancel();
 }
 
-void QFutureInterfaceBase_CancelAndFinish(QFutureInterfaceBase* self) {
-    self->cancelAndFinish();
+void QFutureInterfaceBase_SetPaused(QFutureInterfaceBase* self, bool paused) {
+    self->setPaused(paused);
 }
 
-void QFutureInterfaceBase_SetSuspended(QFutureInterfaceBase* self, bool suspendVal) {
-    self->setSuspended(suspendVal);
-}
-
-void QFutureInterfaceBase_ToggleSuspended(QFutureInterfaceBase* self) {
-    self->toggleSuspended();
-}
-
-void QFutureInterfaceBase_ReportSuspended(const QFutureInterfaceBase* self) {
-    self->reportSuspended();
+void QFutureInterfaceBase_TogglePaused(QFutureInterfaceBase* self) {
+    self->togglePaused();
 }
 
 void QFutureInterfaceBase_SetThrottled(QFutureInterfaceBase* self, bool enable) {
@@ -206,18 +166,14 @@ void QFutureInterfaceBase_WaitForResume(QFutureInterfaceBase* self) {
     self->waitForResume();
 }
 
-void QFutureInterfaceBase_SuspendIfRequested(QFutureInterfaceBase* self) {
-    self->suspendIfRequested();
+QMutex* QFutureInterfaceBase_Mutex(const QFutureInterfaceBase* self) {
+    return self->mutex();
 }
 
-QMutex* QFutureInterfaceBase_Mutex(const QFutureInterfaceBase* self) {
-    QMutex& _ret = self->mutex();
+QMutex* QFutureInterfaceBase_MutexWithInt(const QFutureInterfaceBase* self, int param1) {
+    QMutex& _ret = self->mutex(static_cast<int>(param1));
     // Cast returned reference into pointer
     return &_ret;
-}
-
-bool QFutureInterfaceBase_HasException(const QFutureInterfaceBase* self) {
-    return self->hasException();
 }
 
 bool QFutureInterfaceBase_OperatorEqual(const QFutureInterfaceBase* self, QFutureInterfaceBase* other) {
@@ -228,12 +184,8 @@ bool QFutureInterfaceBase_OperatorNotEqual(const QFutureInterfaceBase* self, QFu
     return (*self != *other);
 }
 
-void QFutureInterfaceBase_Swap(QFutureInterfaceBase* self, QFutureInterfaceBase* other) {
-    self->swap(*other);
-}
-
-bool QFutureInterfaceBase_IsChainCanceled(const QFutureInterfaceBase* self) {
-    return self->isChainCanceled();
+void QFutureInterfaceBase_OperatorAssign(QFutureInterfaceBase* self, QFutureInterfaceBase* other) {
+    self->operator=(*other);
 }
 
 void QFutureInterfaceBase_Delete(QFutureInterfaceBase* self) {

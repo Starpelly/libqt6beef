@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDoubleValidator>
@@ -11,6 +9,9 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
+#include <QRegExp>
+#include <QRegExpValidator>
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QString>
@@ -77,6 +78,18 @@ libqt_string QValidator_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QValidator_TrUtf8(const char* s) {
+    QString _ret = QValidator::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QValidator_SetLocale(QValidator* self, QLocale* locale) {
     self->setLocale(*locale);
 }
@@ -110,6 +123,30 @@ libqt_string QValidator_Tr2(const char* s, const char* c) {
 
 libqt_string QValidator_Tr3(const char* s, const char* c, int n) {
     QString _ret = QValidator::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QValidator_TrUtf82(const char* s, const char* c) {
+    QString _ret = QValidator::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QValidator_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QValidator::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -527,16 +564,24 @@ libqt_string QIntValidator_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QIntValidator_TrUtf8(const char* s) {
+    QString _ret = QIntValidator::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QIntValidator_SetBottom(QIntValidator* self, int bottom) {
     self->setBottom(static_cast<int>(bottom));
 }
 
 void QIntValidator_SetTop(QIntValidator* self, int top) {
     self->setTop(static_cast<int>(top));
-}
-
-void QIntValidator_SetRange(QIntValidator* self, int bottom, int top) {
-    self->setRange(static_cast<int>(bottom), static_cast<int>(top));
 }
 
 int QIntValidator_Bottom(const QIntValidator* self) {
@@ -585,6 +630,30 @@ libqt_string QIntValidator_Tr2(const char* s, const char* c) {
 
 libqt_string QIntValidator_Tr3(const char* s, const char* c, int n) {
     QString _ret = QIntValidator::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QIntValidator_TrUtf82(const char* s, const char* c) {
+    QString _ret = QIntValidator::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QIntValidator_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QIntValidator::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -648,6 +717,32 @@ void QIntValidator_QBaseFixup(const QIntValidator* self, libqt_string input) {
 void QIntValidator_OnFixup(const QIntValidator* self, intptr_t slot) {
     if (auto* vqintvalidator = const_cast<VirtualQIntValidator*>(dynamic_cast<const VirtualQIntValidator*>(self))) {
         vqintvalidator->setQIntValidator_Fixup_Callback(reinterpret_cast<VirtualQIntValidator::QIntValidator_Fixup_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QIntValidator_SetRange(QIntValidator* self, int bottom, int top) {
+    if (auto* vqintvalidator = dynamic_cast<VirtualQIntValidator*>(self)) {
+        vqintvalidator->setRange(static_cast<int>(bottom), static_cast<int>(top));
+    } else {
+        vqintvalidator->setRange(static_cast<int>(bottom), static_cast<int>(top));
+    }
+}
+
+// Base class handler implementation
+void QIntValidator_QBaseSetRange(QIntValidator* self, int bottom, int top) {
+    if (auto* vqintvalidator = dynamic_cast<VirtualQIntValidator*>(self)) {
+        vqintvalidator->setQIntValidator_SetRange_IsBase(true);
+        vqintvalidator->setRange(static_cast<int>(bottom), static_cast<int>(top));
+    } else {
+        vqintvalidator->setRange(static_cast<int>(bottom), static_cast<int>(top));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QIntValidator_OnSetRange(QIntValidator* self, intptr_t slot) {
+    if (auto* vqintvalidator = dynamic_cast<VirtualQIntValidator*>(self)) {
+        vqintvalidator->setQIntValidator_SetRange_Callback(reinterpret_cast<VirtualQIntValidator::QIntValidator_SetRange_Callback>(slot));
     }
 }
 
@@ -1002,12 +1097,16 @@ libqt_string QDoubleValidator_Tr(const char* s) {
     return _str;
 }
 
-void QDoubleValidator_SetRange(QDoubleValidator* self, double bottom, double top, int decimals) {
-    self->setRange(static_cast<double>(bottom), static_cast<double>(top), static_cast<int>(decimals));
-}
-
-void QDoubleValidator_SetRange2(QDoubleValidator* self, double bottom, double top) {
-    self->setRange(static_cast<double>(bottom), static_cast<double>(top));
+libqt_string QDoubleValidator_TrUtf8(const char* s) {
+    QString _ret = QDoubleValidator::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 void QDoubleValidator_SetBottom(QDoubleValidator* self, double bottom) {
@@ -1114,6 +1213,30 @@ libqt_string QDoubleValidator_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QDoubleValidator_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDoubleValidator::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDoubleValidator_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDoubleValidator::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 // Derived class handler implementation
 int QDoubleValidator_Validate(const QDoubleValidator* self, libqt_string param1, int* param2) {
     QString param1_QString = QString::fromUtf8(param1.data, param1.len);
@@ -1143,23 +1266,49 @@ void QDoubleValidator_OnValidate(const QDoubleValidator* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QDoubleValidator_Fixup(const QDoubleValidator* self, libqt_string input) {
-    QString input_QString = QString::fromUtf8(input.data, input.len);
-    if (auto* vqdoublevalidator = const_cast<VirtualQDoubleValidator*>(dynamic_cast<const VirtualQDoubleValidator*>(self))) {
-        vqdoublevalidator->fixup(input_QString);
+void QDoubleValidator_SetRange(QDoubleValidator* self, double bottom, double top, int decimals) {
+    if (auto* vqdoublevalidator = dynamic_cast<VirtualQDoubleValidator*>(self)) {
+        vqdoublevalidator->setRange(static_cast<double>(bottom), static_cast<double>(top), static_cast<int>(decimals));
     } else {
-        vqdoublevalidator->fixup(input_QString);
+        vqdoublevalidator->setRange(static_cast<double>(bottom), static_cast<double>(top), static_cast<int>(decimals));
     }
 }
 
 // Base class handler implementation
-void QDoubleValidator_QBaseFixup(const QDoubleValidator* self, libqt_string input) {
-    QString input_QString = QString::fromUtf8(input.data, input.len);
+void QDoubleValidator_QBaseSetRange(QDoubleValidator* self, double bottom, double top, int decimals) {
+    if (auto* vqdoublevalidator = dynamic_cast<VirtualQDoubleValidator*>(self)) {
+        vqdoublevalidator->setQDoubleValidator_SetRange_IsBase(true);
+        vqdoublevalidator->setRange(static_cast<double>(bottom), static_cast<double>(top), static_cast<int>(decimals));
+    } else {
+        vqdoublevalidator->setRange(static_cast<double>(bottom), static_cast<double>(top), static_cast<int>(decimals));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QDoubleValidator_OnSetRange(QDoubleValidator* self, intptr_t slot) {
+    if (auto* vqdoublevalidator = dynamic_cast<VirtualQDoubleValidator*>(self)) {
+        vqdoublevalidator->setQDoubleValidator_SetRange_Callback(reinterpret_cast<VirtualQDoubleValidator::QDoubleValidator_SetRange_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QDoubleValidator_Fixup(const QDoubleValidator* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    if (auto* vqdoublevalidator = const_cast<VirtualQDoubleValidator*>(dynamic_cast<const VirtualQDoubleValidator*>(self))) {
+        vqdoublevalidator->fixup(param1_QString);
+    } else {
+        vqdoublevalidator->fixup(param1_QString);
+    }
+}
+
+// Base class handler implementation
+void QDoubleValidator_QBaseFixup(const QDoubleValidator* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
     if (auto* vqdoublevalidator = const_cast<VirtualQDoubleValidator*>(dynamic_cast<const VirtualQDoubleValidator*>(self))) {
         vqdoublevalidator->setQDoubleValidator_Fixup_IsBase(true);
-        vqdoublevalidator->fixup(input_QString);
+        vqdoublevalidator->fixup(param1_QString);
     } else {
-        vqdoublevalidator->fixup(input_QString);
+        vqdoublevalidator->fixup(param1_QString);
     }
 }
 
@@ -1460,6 +1609,497 @@ void QDoubleValidator_Delete(QDoubleValidator* self) {
     delete self;
 }
 
+QRegExpValidator* QRegExpValidator_new() {
+    return new VirtualQRegExpValidator();
+}
+
+QRegExpValidator* QRegExpValidator_new2(QRegExp* rx) {
+    return new VirtualQRegExpValidator(*rx);
+}
+
+QRegExpValidator* QRegExpValidator_new3(QObject* parent) {
+    return new VirtualQRegExpValidator(parent);
+}
+
+QRegExpValidator* QRegExpValidator_new4(QRegExp* rx, QObject* parent) {
+    return new VirtualQRegExpValidator(*rx, parent);
+}
+
+QMetaObject* QRegExpValidator_MetaObject(const QRegExpValidator* self) {
+    return (QMetaObject*)self->metaObject();
+}
+
+void* QRegExpValidator_Metacast(QRegExpValidator* self, const char* param1) {
+    return self->qt_metacast(param1);
+}
+
+int QRegExpValidator_Metacall(QRegExpValidator* self, int param1, int param2, void** param3) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        return self->qt_metacall(static_cast<QMetaObject::Call>(param1), static_cast<int>(param2), param3);
+    } else {
+        return self->qt_metacall(static_cast<QMetaObject::Call>(param1), static_cast<int>(param2), param3);
+    }
+}
+
+// Subclass method to allow providing a virtual method re-implementation
+void QRegExpValidator_OnMetacall(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_Metacall_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Metacall_Callback>(slot));
+    }
+}
+
+// Virtual base class handler implementation
+int QRegExpValidator_QBaseMetacall(QRegExpValidator* self, int param1, int param2, void** param3) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_Metacall_IsBase(true);
+        return vqregexpvalidator->qt_metacall(static_cast<QMetaObject::Call>(param1), static_cast<int>(param2), param3);
+    } else {
+        return self->qt_metacall(static_cast<QMetaObject::Call>(param1), static_cast<int>(param2), param3);
+    }
+}
+
+libqt_string QRegExpValidator_Tr(const char* s) {
+    QString _ret = QRegExpValidator::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegExpValidator_TrUtf8(const char* s) {
+    QString _ret = QRegExpValidator::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+void QRegExpValidator_SetRegExp(QRegExpValidator* self, QRegExp* rx) {
+    self->setRegExp(*rx);
+}
+
+QRegExp* QRegExpValidator_RegExp(const QRegExpValidator* self) {
+    const QRegExp& _ret = self->regExp();
+    // Cast returned reference into pointer
+    return const_cast<QRegExp*>(&_ret);
+}
+
+void QRegExpValidator_RegExpChanged(QRegExpValidator* self, QRegExp* regExp) {
+    self->regExpChanged(*regExp);
+}
+
+void QRegExpValidator_Connect_RegExpChanged(QRegExpValidator* self, intptr_t slot) {
+    void (*slotFunc)(QRegExpValidator*, QRegExp*) = reinterpret_cast<void (*)(QRegExpValidator*, QRegExp*)>(slot);
+    QRegExpValidator::connect(self, &QRegExpValidator::regExpChanged, [self, slotFunc](const QRegExp& regExp) {
+        const QRegExp& regExp_ret = regExp;
+        // Cast returned reference into pointer
+        QRegExp* sigval1 = const_cast<QRegExp*>(&regExp_ret);
+        slotFunc(self, sigval1);
+    });
+}
+
+libqt_string QRegExpValidator_Tr2(const char* s, const char* c) {
+    QString _ret = QRegExpValidator::tr(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegExpValidator_Tr3(const char* s, const char* c, int n) {
+    QString _ret = QRegExpValidator::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegExpValidator_TrUtf82(const char* s, const char* c) {
+    QString _ret = QRegExpValidator::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegExpValidator_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QRegExpValidator::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+// Derived class handler implementation
+int QRegExpValidator_Validate(const QRegExpValidator* self, libqt_string input, int* pos) {
+    QString input_QString = QString::fromUtf8(input.data, input.len);
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        return static_cast<int>(vqregexpvalidator->validate(input_QString, static_cast<int&>(*pos)));
+    } else {
+        return static_cast<int>(vqregexpvalidator->validate(input_QString, static_cast<int&>(*pos)));
+    }
+}
+
+// Base class handler implementation
+int QRegExpValidator_QBaseValidate(const QRegExpValidator* self, libqt_string input, int* pos) {
+    QString input_QString = QString::fromUtf8(input.data, input.len);
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Validate_IsBase(true);
+        return static_cast<int>(vqregexpvalidator->validate(input_QString, static_cast<int&>(*pos)));
+    } else {
+        return static_cast<int>(vqregexpvalidator->validate(input_QString, static_cast<int&>(*pos)));
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnValidate(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Validate_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Validate_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_Fixup(const QRegExpValidator* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->fixup(param1_QString);
+    } else {
+        vqregexpvalidator->fixup(param1_QString);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseFixup(const QRegExpValidator* self, libqt_string param1) {
+    QString param1_QString = QString::fromUtf8(param1.data, param1.len);
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Fixup_IsBase(true);
+        vqregexpvalidator->fixup(param1_QString);
+    } else {
+        vqregexpvalidator->fixup(param1_QString);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnFixup(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Fixup_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Fixup_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QRegExpValidator_Event(QRegExpValidator* self, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        return vqregexpvalidator->event(event);
+    } else {
+        return vqregexpvalidator->event(event);
+    }
+}
+
+// Base class handler implementation
+bool QRegExpValidator_QBaseEvent(QRegExpValidator* self, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_Event_IsBase(true);
+        return vqregexpvalidator->event(event);
+    } else {
+        return vqregexpvalidator->event(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnEvent(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_Event_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Event_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QRegExpValidator_EventFilter(QRegExpValidator* self, QObject* watched, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        return vqregexpvalidator->eventFilter(watched, event);
+    } else {
+        return vqregexpvalidator->eventFilter(watched, event);
+    }
+}
+
+// Base class handler implementation
+bool QRegExpValidator_QBaseEventFilter(QRegExpValidator* self, QObject* watched, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_EventFilter_IsBase(true);
+        return vqregexpvalidator->eventFilter(watched, event);
+    } else {
+        return vqregexpvalidator->eventFilter(watched, event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnEventFilter(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_EventFilter_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_EventFilter_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_TimerEvent(QRegExpValidator* self, QTimerEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->timerEvent(event);
+    } else {
+        vqregexpvalidator->timerEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseTimerEvent(QRegExpValidator* self, QTimerEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_TimerEvent_IsBase(true);
+        vqregexpvalidator->timerEvent(event);
+    } else {
+        vqregexpvalidator->timerEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnTimerEvent(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_TimerEvent_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_TimerEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_ChildEvent(QRegExpValidator* self, QChildEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->childEvent(event);
+    } else {
+        vqregexpvalidator->childEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseChildEvent(QRegExpValidator* self, QChildEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_ChildEvent_IsBase(true);
+        vqregexpvalidator->childEvent(event);
+    } else {
+        vqregexpvalidator->childEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnChildEvent(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_ChildEvent_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_ChildEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_CustomEvent(QRegExpValidator* self, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->customEvent(event);
+    } else {
+        vqregexpvalidator->customEvent(event);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseCustomEvent(QRegExpValidator* self, QEvent* event) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_CustomEvent_IsBase(true);
+        vqregexpvalidator->customEvent(event);
+    } else {
+        vqregexpvalidator->customEvent(event);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnCustomEvent(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_CustomEvent_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_CustomEvent_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_ConnectNotify(QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->connectNotify(*signal);
+    } else {
+        vqregexpvalidator->connectNotify(*signal);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseConnectNotify(QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_ConnectNotify_IsBase(true);
+        vqregexpvalidator->connectNotify(*signal);
+    } else {
+        vqregexpvalidator->connectNotify(*signal);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnConnectNotify(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_ConnectNotify_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_ConnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QRegExpValidator_DisconnectNotify(QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->disconnectNotify(*signal);
+    } else {
+        vqregexpvalidator->disconnectNotify(*signal);
+    }
+}
+
+// Base class handler implementation
+void QRegExpValidator_QBaseDisconnectNotify(QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_DisconnectNotify_IsBase(true);
+        vqregexpvalidator->disconnectNotify(*signal);
+    } else {
+        vqregexpvalidator->disconnectNotify(*signal);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnDisconnectNotify(QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = dynamic_cast<VirtualQRegExpValidator*>(self)) {
+        vqregexpvalidator->setQRegExpValidator_DisconnectNotify_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_DisconnectNotify_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QObject* QRegExpValidator_Sender(const QRegExpValidator* self) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        return vqregexpvalidator->sender();
+    } else {
+        return vqregexpvalidator->sender();
+    }
+}
+
+// Base class handler implementation
+QObject* QRegExpValidator_QBaseSender(const QRegExpValidator* self) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Sender_IsBase(true);
+        return vqregexpvalidator->sender();
+    } else {
+        return vqregexpvalidator->sender();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnSender(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Sender_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Sender_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QRegExpValidator_SenderSignalIndex(const QRegExpValidator* self) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        return vqregexpvalidator->senderSignalIndex();
+    } else {
+        return vqregexpvalidator->senderSignalIndex();
+    }
+}
+
+// Base class handler implementation
+int QRegExpValidator_QBaseSenderSignalIndex(const QRegExpValidator* self) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_SenderSignalIndex_IsBase(true);
+        return vqregexpvalidator->senderSignalIndex();
+    } else {
+        return vqregexpvalidator->senderSignalIndex();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnSenderSignalIndex(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_SenderSignalIndex_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_SenderSignalIndex_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QRegExpValidator_Receivers(const QRegExpValidator* self, const char* signal) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        return vqregexpvalidator->receivers(signal);
+    } else {
+        return vqregexpvalidator->receivers(signal);
+    }
+}
+
+// Base class handler implementation
+int QRegExpValidator_QBaseReceivers(const QRegExpValidator* self, const char* signal) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Receivers_IsBase(true);
+        return vqregexpvalidator->receivers(signal);
+    } else {
+        return vqregexpvalidator->receivers(signal);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnReceivers(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_Receivers_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_Receivers_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QRegExpValidator_IsSignalConnected(const QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        return vqregexpvalidator->isSignalConnected(*signal);
+    } else {
+        return vqregexpvalidator->isSignalConnected(*signal);
+    }
+}
+
+// Base class handler implementation
+bool QRegExpValidator_QBaseIsSignalConnected(const QRegExpValidator* self, QMetaMethod* signal) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_IsSignalConnected_IsBase(true);
+        return vqregexpvalidator->isSignalConnected(*signal);
+    } else {
+        return vqregexpvalidator->isSignalConnected(*signal);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QRegExpValidator_OnIsSignalConnected(const QRegExpValidator* self, intptr_t slot) {
+    if (auto* vqregexpvalidator = const_cast<VirtualQRegExpValidator*>(dynamic_cast<const VirtualQRegExpValidator*>(self))) {
+        vqregexpvalidator->setQRegExpValidator_IsSignalConnected_Callback(reinterpret_cast<VirtualQRegExpValidator::QRegExpValidator_IsSignalConnected_Callback>(slot));
+    }
+}
+
+void QRegExpValidator_Delete(QRegExpValidator* self) {
+    delete self;
+}
+
 QRegularExpressionValidator* QRegularExpressionValidator_new() {
     return new VirtualQRegularExpressionValidator();
 }
@@ -1521,6 +2161,18 @@ libqt_string QRegularExpressionValidator_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QRegularExpressionValidator_TrUtf8(const char* s) {
+    QString _ret = QRegularExpressionValidator::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 QRegularExpression* QRegularExpressionValidator_RegularExpression(const QRegularExpressionValidator* self) {
     return new QRegularExpression(self->regularExpression());
 }
@@ -1557,6 +2209,30 @@ libqt_string QRegularExpressionValidator_Tr2(const char* s, const char* c) {
 
 libqt_string QRegularExpressionValidator_Tr3(const char* s, const char* c, int n) {
     QString _ret = QRegularExpressionValidator::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegularExpressionValidator_TrUtf82(const char* s, const char* c) {
+    QString _ret = QRegularExpressionValidator::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QRegularExpressionValidator_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QRegularExpressionValidator::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;

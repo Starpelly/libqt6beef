@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -22,8 +24,6 @@ typedef QDtlsClientVerifier::GeneratorParameters QDtlsClientVerifier__GeneratorP
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QDtls QDtls;
 typedef struct QDtlsClientVerifier QDtlsClientVerifier;
@@ -34,6 +34,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QSslCipher QSslCipher;
 typedef struct QSslConfiguration QSslConfiguration;
 typedef struct QSslError QSslError;
@@ -62,6 +63,7 @@ int QDtlsClientVerifier_Metacall(QDtlsClientVerifier* self, int param1, int para
 void QDtlsClientVerifier_OnMetacall(QDtlsClientVerifier* self, intptr_t slot);
 int QDtlsClientVerifier_QBaseMetacall(QDtlsClientVerifier* self, int param1, int param2, void** param3);
 libqt_string QDtlsClientVerifier_Tr(const char* s);
+libqt_string QDtlsClientVerifier_TrUtf8(const char* s);
 bool QDtlsClientVerifier_SetCookieGeneratorParameters(QDtlsClientVerifier* self, QDtlsClientVerifier__GeneratorParameters* params);
 QDtlsClientVerifier__GeneratorParameters* QDtlsClientVerifier_CookieGeneratorParameters(const QDtlsClientVerifier* self);
 bool QDtlsClientVerifier_VerifyClient(QDtlsClientVerifier* self, QUdpSocket* socket, libqt_string dgram, QHostAddress* address, uint16_t port);
@@ -70,6 +72,8 @@ unsigned char QDtlsClientVerifier_DtlsError(const QDtlsClientVerifier* self);
 libqt_string QDtlsClientVerifier_DtlsErrorString(const QDtlsClientVerifier* self);
 libqt_string QDtlsClientVerifier_Tr2(const char* s, const char* c);
 libqt_string QDtlsClientVerifier_Tr3(const char* s, const char* c, int n);
+libqt_string QDtlsClientVerifier_TrUtf82(const char* s, const char* c);
+libqt_string QDtlsClientVerifier_TrUtf83(const char* s, const char* c, int n);
 bool QDtlsClientVerifier_Event(QDtlsClientVerifier* self, QEvent* event);
 void QDtlsClientVerifier_OnEvent(QDtlsClientVerifier* self, intptr_t slot);
 bool QDtlsClientVerifier_QBaseEvent(QDtlsClientVerifier* self, QEvent* event);
@@ -113,6 +117,7 @@ int QDtls_Metacall(QDtls* self, int param1, int param2, void** param3);
 void QDtls_OnMetacall(QDtls* self, intptr_t slot);
 int QDtls_QBaseMetacall(QDtls* self, int param1, int param2, void** param3);
 libqt_string QDtls_Tr(const char* s);
+libqt_string QDtls_TrUtf8(const char* s);
 bool QDtls_SetPeer(QDtls* self, QHostAddress* address, uint16_t port);
 bool QDtls_SetPeerVerificationName(QDtls* self, libqt_string name);
 QHostAddress* QDtls_PeerAddress(const QDtls* self);
@@ -146,6 +151,8 @@ void QDtls_HandshakeTimeout(QDtls* self);
 void QDtls_Connect_HandshakeTimeout(QDtls* self, intptr_t slot);
 libqt_string QDtls_Tr2(const char* s, const char* c);
 libqt_string QDtls_Tr3(const char* s, const char* c, int n);
+libqt_string QDtls_TrUtf82(const char* s, const char* c);
+libqt_string QDtls_TrUtf83(const char* s, const char* c, int n);
 bool QDtls_SetPeer3(QDtls* self, QHostAddress* address, uint16_t port, libqt_string verificationName);
 bool QDtls_DoHandshake2(QDtls* self, QUdpSocket* socket, libqt_string dgram);
 bool QDtls_Event(QDtls* self, QEvent* event);

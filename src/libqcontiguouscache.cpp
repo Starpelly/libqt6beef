@@ -3,8 +3,8 @@
 #include "libqcontiguouscache.h"
 #include "libqcontiguouscache.hxx"
 
-QContiguousCacheData* QContiguousCacheData_AllocateData(ptrdiff_t size, ptrdiff_t alignment) {
-    return QContiguousCacheData::allocateData((qsizetype)(size), (qsizetype)(alignment));
+QContiguousCacheData* QContiguousCacheData_AllocateData(int size, int alignment) {
+    return QContiguousCacheData::allocateData(static_cast<int>(size), static_cast<int>(alignment));
 }
 
 void QContiguousCacheData_FreeData(QContiguousCacheData* data) {

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,8 +23,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAbstractAnimation QAbstractAnimation;
 typedef struct QAnimationGroup QAnimationGroup;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEasingCurve QEasingCurve;
 typedef struct QEvent QEvent;
@@ -30,6 +30,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPropertyAnimation QPropertyAnimation;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
@@ -47,6 +48,7 @@ int QPropertyAnimation_Metacall(QPropertyAnimation* self, int param1, int param2
 void QPropertyAnimation_OnMetacall(QPropertyAnimation* self, intptr_t slot);
 int QPropertyAnimation_QBaseMetacall(QPropertyAnimation* self, int param1, int param2, void** param3);
 libqt_string QPropertyAnimation_Tr(const char* s);
+libqt_string QPropertyAnimation_TrUtf8(const char* s);
 QObject* QPropertyAnimation_TargetObject(const QPropertyAnimation* self);
 void QPropertyAnimation_SetTargetObject(QPropertyAnimation* self, QObject* target);
 libqt_string QPropertyAnimation_PropertyName(const QPropertyAnimation* self);
@@ -62,6 +64,8 @@ void QPropertyAnimation_OnUpdateState(QPropertyAnimation* self, intptr_t slot);
 void QPropertyAnimation_QBaseUpdateState(QPropertyAnimation* self, int newState, int oldState);
 libqt_string QPropertyAnimation_Tr2(const char* s, const char* c);
 libqt_string QPropertyAnimation_Tr3(const char* s, const char* c, int n);
+libqt_string QPropertyAnimation_TrUtf82(const char* s, const char* c);
+libqt_string QPropertyAnimation_TrUtf83(const char* s, const char* c, int n);
 int QPropertyAnimation_Duration(const QPropertyAnimation* self);
 void QPropertyAnimation_OnDuration(const QPropertyAnimation* self, intptr_t slot);
 int QPropertyAnimation_QBaseDuration(const QPropertyAnimation* self);

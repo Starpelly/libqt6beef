@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractScrollArea QAbstractScrollArea;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QBrush QBrush;
 typedef struct QChildEvent QChildEvent;
@@ -35,7 +35,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -60,6 +59,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -67,7 +67,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -107,6 +106,7 @@ int QMdiArea_Metacall(QMdiArea* self, int param1, int param2, void** param3);
 void QMdiArea_OnMetacall(QMdiArea* self, intptr_t slot);
 int QMdiArea_QBaseMetacall(QMdiArea* self, int param1, int param2, void** param3);
 libqt_string QMdiArea_Tr(const char* s);
+libqt_string QMdiArea_TrUtf8(const char* s);
 QSize* QMdiArea_SizeHint(const QMdiArea* self);
 void QMdiArea_OnSizeHint(const QMdiArea* self, intptr_t slot);
 QSize* QMdiArea_QBaseSizeHint(const QMdiArea* self);
@@ -177,6 +177,8 @@ void QMdiArea_OnScrollContentsBy(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseScrollContentsBy(QMdiArea* self, int dx, int dy);
 libqt_string QMdiArea_Tr2(const char* s, const char* c);
 libqt_string QMdiArea_Tr3(const char* s, const char* c, int n);
+libqt_string QMdiArea_TrUtf82(const char* s, const char* c);
+libqt_string QMdiArea_TrUtf83(const char* s, const char* c, int n);
 libqt_list /* of QMdiSubWindow* */ QMdiArea_SubWindowList1(const QMdiArea* self, int order);
 QMdiSubWindow* QMdiArea_AddSubWindow2(QMdiArea* self, QWidget* widget, int flags);
 void QMdiArea_SetOption2(QMdiArea* self, int option, bool on);
@@ -240,9 +242,9 @@ void QMdiArea_QBaseFocusInEvent(QMdiArea* self, QFocusEvent* event);
 void QMdiArea_FocusOutEvent(QMdiArea* self, QFocusEvent* event);
 void QMdiArea_OnFocusOutEvent(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseFocusOutEvent(QMdiArea* self, QFocusEvent* event);
-void QMdiArea_EnterEvent(QMdiArea* self, QEnterEvent* event);
+void QMdiArea_EnterEvent(QMdiArea* self, QEvent* event);
 void QMdiArea_OnEnterEvent(QMdiArea* self, intptr_t slot);
-void QMdiArea_QBaseEnterEvent(QMdiArea* self, QEnterEvent* event);
+void QMdiArea_QBaseEnterEvent(QMdiArea* self, QEvent* event);
 void QMdiArea_LeaveEvent(QMdiArea* self, QEvent* event);
 void QMdiArea_OnLeaveEvent(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseLeaveEvent(QMdiArea* self, QEvent* event);
@@ -261,9 +263,9 @@ void QMdiArea_QBaseActionEvent(QMdiArea* self, QActionEvent* event);
 void QMdiArea_HideEvent(QMdiArea* self, QHideEvent* event);
 void QMdiArea_OnHideEvent(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseHideEvent(QMdiArea* self, QHideEvent* event);
-bool QMdiArea_NativeEvent(QMdiArea* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMdiArea_NativeEvent(QMdiArea* self, libqt_string eventType, void* message, long* result);
 void QMdiArea_OnNativeEvent(QMdiArea* self, intptr_t slot);
-bool QMdiArea_QBaseNativeEvent(QMdiArea* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMdiArea_QBaseNativeEvent(QMdiArea* self, libqt_string eventType, void* message, long* result);
 void QMdiArea_InputMethodEvent(QMdiArea* self, QInputMethodEvent* param1);
 void QMdiArea_OnInputMethodEvent(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseInputMethodEvent(QMdiArea* self, QInputMethodEvent* param1);
@@ -285,9 +287,6 @@ void QMdiArea_QBaseDisconnectNotify(QMdiArea* self, QMetaMethod* signal);
 QSize* QMdiArea_ViewportSizeHint(const QMdiArea* self);
 void QMdiArea_OnViewportSizeHint(const QMdiArea* self, intptr_t slot);
 QSize* QMdiArea_QBaseViewportSizeHint(const QMdiArea* self);
-void QMdiArea_InitStyleOption(const QMdiArea* self, QStyleOptionFrame* option);
-void QMdiArea_OnInitStyleOption(const QMdiArea* self, intptr_t slot);
-void QMdiArea_QBaseInitStyleOption(const QMdiArea* self, QStyleOptionFrame* option);
 int QMdiArea_Metric(const QMdiArea* self, int param1);
 void QMdiArea_OnMetric(const QMdiArea* self, intptr_t slot);
 int QMdiArea_QBaseMetric(const QMdiArea* self, int param1);
@@ -309,6 +308,9 @@ QMargins* QMdiArea_QBaseViewportMargins(const QMdiArea* self);
 void QMdiArea_DrawFrame(QMdiArea* self, QPainter* param1);
 void QMdiArea_OnDrawFrame(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseDrawFrame(QMdiArea* self, QPainter* param1);
+void QMdiArea_InitStyleOption(const QMdiArea* self, QStyleOptionFrame* option);
+void QMdiArea_OnInitStyleOption(const QMdiArea* self, intptr_t slot);
+void QMdiArea_QBaseInitStyleOption(const QMdiArea* self, QStyleOptionFrame* option);
 void QMdiArea_UpdateMicroFocus(QMdiArea* self);
 void QMdiArea_OnUpdateMicroFocus(QMdiArea* self, intptr_t slot);
 void QMdiArea_QBaseUpdateMicroFocus(QMdiArea* self);

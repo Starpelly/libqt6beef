@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractScrollArea QAbstractScrollArea;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -98,6 +97,7 @@ int QAbstractScrollArea_Metacall(QAbstractScrollArea* self, int param1, int para
 void QAbstractScrollArea_OnMetacall(QAbstractScrollArea* self, intptr_t slot);
 int QAbstractScrollArea_QBaseMetacall(QAbstractScrollArea* self, int param1, int param2, void** param3);
 libqt_string QAbstractScrollArea_Tr(const char* s);
+libqt_string QAbstractScrollArea_TrUtf8(const char* s);
 int QAbstractScrollArea_VerticalScrollBarPolicy(const QAbstractScrollArea* self);
 void QAbstractScrollArea_SetVerticalScrollBarPolicy(QAbstractScrollArea* self, int verticalScrollBarPolicy);
 QScrollBar* QAbstractScrollArea_VerticalScrollBar(const QAbstractScrollArea* self);
@@ -180,6 +180,8 @@ void QAbstractScrollArea_OnViewportSizeHint(const QAbstractScrollArea* self, int
 QSize* QAbstractScrollArea_QBaseViewportSizeHint(const QAbstractScrollArea* self);
 libqt_string QAbstractScrollArea_Tr2(const char* s, const char* c);
 libqt_string QAbstractScrollArea_Tr3(const char* s, const char* c, int n);
+libqt_string QAbstractScrollArea_TrUtf82(const char* s, const char* c);
+libqt_string QAbstractScrollArea_TrUtf83(const char* s, const char* c, int n);
 void QAbstractScrollArea_ChangeEvent(QAbstractScrollArea* self, QEvent* param1);
 void QAbstractScrollArea_OnChangeEvent(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseChangeEvent(QAbstractScrollArea* self, QEvent* param1);
@@ -207,9 +209,9 @@ void QAbstractScrollArea_QBaseFocusInEvent(QAbstractScrollArea* self, QFocusEven
 void QAbstractScrollArea_FocusOutEvent(QAbstractScrollArea* self, QFocusEvent* event);
 void QAbstractScrollArea_OnFocusOutEvent(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseFocusOutEvent(QAbstractScrollArea* self, QFocusEvent* event);
-void QAbstractScrollArea_EnterEvent(QAbstractScrollArea* self, QEnterEvent* event);
+void QAbstractScrollArea_EnterEvent(QAbstractScrollArea* self, QEvent* event);
 void QAbstractScrollArea_OnEnterEvent(QAbstractScrollArea* self, intptr_t slot);
-void QAbstractScrollArea_QBaseEnterEvent(QAbstractScrollArea* self, QEnterEvent* event);
+void QAbstractScrollArea_QBaseEnterEvent(QAbstractScrollArea* self, QEvent* event);
 void QAbstractScrollArea_LeaveEvent(QAbstractScrollArea* self, QEvent* event);
 void QAbstractScrollArea_OnLeaveEvent(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseLeaveEvent(QAbstractScrollArea* self, QEvent* event);
@@ -231,9 +233,9 @@ void QAbstractScrollArea_QBaseShowEvent(QAbstractScrollArea* self, QShowEvent* e
 void QAbstractScrollArea_HideEvent(QAbstractScrollArea* self, QHideEvent* event);
 void QAbstractScrollArea_OnHideEvent(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseHideEvent(QAbstractScrollArea* self, QHideEvent* event);
-bool QAbstractScrollArea_NativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractScrollArea_NativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, long* result);
 void QAbstractScrollArea_OnNativeEvent(QAbstractScrollArea* self, intptr_t slot);
-bool QAbstractScrollArea_QBaseNativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, intptr_t* result);
+bool QAbstractScrollArea_QBaseNativeEvent(QAbstractScrollArea* self, libqt_string eventType, void* message, long* result);
 void QAbstractScrollArea_InputMethodEvent(QAbstractScrollArea* self, QInputMethodEvent* param1);
 void QAbstractScrollArea_OnInputMethodEvent(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseInputMethodEvent(QAbstractScrollArea* self, QInputMethodEvent* param1);
@@ -258,9 +260,6 @@ void QAbstractScrollArea_QBaseConnectNotify(QAbstractScrollArea* self, QMetaMeth
 void QAbstractScrollArea_DisconnectNotify(QAbstractScrollArea* self, QMetaMethod* signal);
 void QAbstractScrollArea_OnDisconnectNotify(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseDisconnectNotify(QAbstractScrollArea* self, QMetaMethod* signal);
-void QAbstractScrollArea_InitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option);
-void QAbstractScrollArea_OnInitStyleOption(const QAbstractScrollArea* self, intptr_t slot);
-void QAbstractScrollArea_QBaseInitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option);
 int QAbstractScrollArea_Metric(const QAbstractScrollArea* self, int param1);
 void QAbstractScrollArea_OnMetric(const QAbstractScrollArea* self, intptr_t slot);
 int QAbstractScrollArea_QBaseMetric(const QAbstractScrollArea* self, int param1);
@@ -285,6 +284,9 @@ QMargins* QAbstractScrollArea_QBaseViewportMargins(const QAbstractScrollArea* se
 void QAbstractScrollArea_DrawFrame(QAbstractScrollArea* self, QPainter* param1);
 void QAbstractScrollArea_OnDrawFrame(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseDrawFrame(QAbstractScrollArea* self, QPainter* param1);
+void QAbstractScrollArea_InitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option);
+void QAbstractScrollArea_OnInitStyleOption(const QAbstractScrollArea* self, intptr_t slot);
+void QAbstractScrollArea_QBaseInitStyleOption(const QAbstractScrollArea* self, QStyleOptionFrame* option);
 void QAbstractScrollArea_UpdateMicroFocus(QAbstractScrollArea* self);
 void QAbstractScrollArea_OnUpdateMicroFocus(QAbstractScrollArea* self, intptr_t slot);
 void QAbstractScrollArea_QBaseUpdateMicroFocus(QAbstractScrollArea* self);

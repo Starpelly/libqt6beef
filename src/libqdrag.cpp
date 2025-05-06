@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QDrag>
@@ -10,6 +8,7 @@
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QMimeData>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPixmap>
 #include <QPoint>
 #include <QString>
@@ -71,6 +70,18 @@ libqt_string QDrag_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QDrag_TrUtf8(const char* s) {
+    QString _ret = QDrag::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QDrag_SetMimeData(QDrag* self, QMimeData* data) {
     self->setMimeData(data);
 }
@@ -101,6 +112,10 @@ QObject* QDrag_Source(const QDrag* self) {
 
 QObject* QDrag_Target(const QDrag* self) {
     return self->target();
+}
+
+int QDrag_Start(QDrag* self) {
+    return static_cast<int>(self->start());
 }
 
 int QDrag_Exec(QDrag* self) {
@@ -177,6 +192,34 @@ libqt_string QDrag_Tr3(const char* s, const char* c, int n) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+libqt_string QDrag_TrUtf82(const char* s, const char* c) {
+    QString _ret = QDrag::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QDrag_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QDrag::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+int QDrag_Start1(QDrag* self, int supportedActions) {
+    return static_cast<int>(self->start(static_cast<Qt::DropActions>(supportedActions)));
 }
 
 int QDrag_Exec1(QDrag* self, int supportedActions) {

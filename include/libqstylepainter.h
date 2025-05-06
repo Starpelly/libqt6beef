@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -28,6 +30,7 @@ typedef struct QGlyphRun QGlyphRun;
 typedef struct QImage QImage;
 typedef struct QLine QLine;
 typedef struct QLineF QLineF;
+typedef struct QMatrix QMatrix;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPainter QPainter;

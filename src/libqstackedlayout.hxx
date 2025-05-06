@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -25,16 +27,13 @@ class VirtualQStackedLayout : public QStackedLayout {
     using QStackedLayout_SetGeometry_Callback = void (*)(QStackedLayout*, const QRect&);
     using QStackedLayout_HasHeightForWidth_Callback = bool (*)();
     using QStackedLayout_HeightForWidth_Callback = int (*)(const QStackedLayout*, int);
-    using QStackedLayout_Spacing_Callback = int (*)();
-    using QStackedLayout_SetSpacing_Callback = void (*)(QStackedLayout*, int);
     using QStackedLayout_Invalidate_Callback = void (*)();
     using QStackedLayout_Geometry_Callback = QRect (*)();
     using QStackedLayout_ExpandingDirections_Callback = Qt::Orientations (*)();
     using QStackedLayout_MaximumSize_Callback = QSize (*)();
-    using QStackedLayout_IndexOf_Callback = int (*)(const QStackedLayout*, const QWidget*);
+    using QStackedLayout_IndexOf_Callback = int (*)(const QStackedLayout*, QWidget*);
     using QStackedLayout_IsEmpty_Callback = bool (*)();
     using QStackedLayout_ControlTypes_Callback = QSizePolicy::ControlTypes (*)();
-    using QStackedLayout_ReplaceWidget_Callback = QLayoutItem* (*)(QStackedLayout*, QWidget*, QWidget*, Qt::FindChildOptions);
     using QStackedLayout_Layout_Callback = QLayout* (*)();
     using QStackedLayout_ChildEvent_Callback = void (*)(QStackedLayout*, QChildEvent*);
     using QStackedLayout_Event_Callback = bool (*)(QStackedLayout*, QEvent*);
@@ -68,8 +67,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     QStackedLayout_SetGeometry_Callback qstackedlayout_setgeometry_callback = nullptr;
     QStackedLayout_HasHeightForWidth_Callback qstackedlayout_hasheightforwidth_callback = nullptr;
     QStackedLayout_HeightForWidth_Callback qstackedlayout_heightforwidth_callback = nullptr;
-    QStackedLayout_Spacing_Callback qstackedlayout_spacing_callback = nullptr;
-    QStackedLayout_SetSpacing_Callback qstackedlayout_setspacing_callback = nullptr;
     QStackedLayout_Invalidate_Callback qstackedlayout_invalidate_callback = nullptr;
     QStackedLayout_Geometry_Callback qstackedlayout_geometry_callback = nullptr;
     QStackedLayout_ExpandingDirections_Callback qstackedlayout_expandingdirections_callback = nullptr;
@@ -77,7 +74,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     QStackedLayout_IndexOf_Callback qstackedlayout_indexof_callback = nullptr;
     QStackedLayout_IsEmpty_Callback qstackedlayout_isempty_callback = nullptr;
     QStackedLayout_ControlTypes_Callback qstackedlayout_controltypes_callback = nullptr;
-    QStackedLayout_ReplaceWidget_Callback qstackedlayout_replacewidget_callback = nullptr;
     QStackedLayout_Layout_Callback qstackedlayout_layout_callback = nullptr;
     QStackedLayout_ChildEvent_Callback qstackedlayout_childevent_callback = nullptr;
     QStackedLayout_Event_Callback qstackedlayout_event_callback = nullptr;
@@ -110,8 +106,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     mutable bool qstackedlayout_setgeometry_isbase = false;
     mutable bool qstackedlayout_hasheightforwidth_isbase = false;
     mutable bool qstackedlayout_heightforwidth_isbase = false;
-    mutable bool qstackedlayout_spacing_isbase = false;
-    mutable bool qstackedlayout_setspacing_isbase = false;
     mutable bool qstackedlayout_invalidate_isbase = false;
     mutable bool qstackedlayout_geometry_isbase = false;
     mutable bool qstackedlayout_expandingdirections_isbase = false;
@@ -119,7 +113,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     mutable bool qstackedlayout_indexof_isbase = false;
     mutable bool qstackedlayout_isempty_isbase = false;
     mutable bool qstackedlayout_controltypes_isbase = false;
-    mutable bool qstackedlayout_replacewidget_isbase = false;
     mutable bool qstackedlayout_layout_isbase = false;
     mutable bool qstackedlayout_childevent_isbase = false;
     mutable bool qstackedlayout_event_isbase = false;
@@ -157,8 +150,6 @@ class VirtualQStackedLayout : public QStackedLayout {
         qstackedlayout_setgeometry_callback = nullptr;
         qstackedlayout_hasheightforwidth_callback = nullptr;
         qstackedlayout_heightforwidth_callback = nullptr;
-        qstackedlayout_spacing_callback = nullptr;
-        qstackedlayout_setspacing_callback = nullptr;
         qstackedlayout_invalidate_callback = nullptr;
         qstackedlayout_geometry_callback = nullptr;
         qstackedlayout_expandingdirections_callback = nullptr;
@@ -166,7 +157,6 @@ class VirtualQStackedLayout : public QStackedLayout {
         qstackedlayout_indexof_callback = nullptr;
         qstackedlayout_isempty_callback = nullptr;
         qstackedlayout_controltypes_callback = nullptr;
-        qstackedlayout_replacewidget_callback = nullptr;
         qstackedlayout_layout_callback = nullptr;
         qstackedlayout_childevent_callback = nullptr;
         qstackedlayout_event_callback = nullptr;
@@ -200,8 +190,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     void setQStackedLayout_SetGeometry_Callback(QStackedLayout_SetGeometry_Callback cb) { qstackedlayout_setgeometry_callback = cb; }
     void setQStackedLayout_HasHeightForWidth_Callback(QStackedLayout_HasHeightForWidth_Callback cb) { qstackedlayout_hasheightforwidth_callback = cb; }
     void setQStackedLayout_HeightForWidth_Callback(QStackedLayout_HeightForWidth_Callback cb) { qstackedlayout_heightforwidth_callback = cb; }
-    void setQStackedLayout_Spacing_Callback(QStackedLayout_Spacing_Callback cb) { qstackedlayout_spacing_callback = cb; }
-    void setQStackedLayout_SetSpacing_Callback(QStackedLayout_SetSpacing_Callback cb) { qstackedlayout_setspacing_callback = cb; }
     void setQStackedLayout_Invalidate_Callback(QStackedLayout_Invalidate_Callback cb) { qstackedlayout_invalidate_callback = cb; }
     void setQStackedLayout_Geometry_Callback(QStackedLayout_Geometry_Callback cb) { qstackedlayout_geometry_callback = cb; }
     void setQStackedLayout_ExpandingDirections_Callback(QStackedLayout_ExpandingDirections_Callback cb) { qstackedlayout_expandingdirections_callback = cb; }
@@ -209,7 +197,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     void setQStackedLayout_IndexOf_Callback(QStackedLayout_IndexOf_Callback cb) { qstackedlayout_indexof_callback = cb; }
     void setQStackedLayout_IsEmpty_Callback(QStackedLayout_IsEmpty_Callback cb) { qstackedlayout_isempty_callback = cb; }
     void setQStackedLayout_ControlTypes_Callback(QStackedLayout_ControlTypes_Callback cb) { qstackedlayout_controltypes_callback = cb; }
-    void setQStackedLayout_ReplaceWidget_Callback(QStackedLayout_ReplaceWidget_Callback cb) { qstackedlayout_replacewidget_callback = cb; }
     void setQStackedLayout_Layout_Callback(QStackedLayout_Layout_Callback cb) { qstackedlayout_layout_callback = cb; }
     void setQStackedLayout_ChildEvent_Callback(QStackedLayout_ChildEvent_Callback cb) { qstackedlayout_childevent_callback = cb; }
     void setQStackedLayout_Event_Callback(QStackedLayout_Event_Callback cb) { qstackedlayout_event_callback = cb; }
@@ -242,8 +229,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     void setQStackedLayout_SetGeometry_IsBase(bool value) const { qstackedlayout_setgeometry_isbase = value; }
     void setQStackedLayout_HasHeightForWidth_IsBase(bool value) const { qstackedlayout_hasheightforwidth_isbase = value; }
     void setQStackedLayout_HeightForWidth_IsBase(bool value) const { qstackedlayout_heightforwidth_isbase = value; }
-    void setQStackedLayout_Spacing_IsBase(bool value) const { qstackedlayout_spacing_isbase = value; }
-    void setQStackedLayout_SetSpacing_IsBase(bool value) const { qstackedlayout_setspacing_isbase = value; }
     void setQStackedLayout_Invalidate_IsBase(bool value) const { qstackedlayout_invalidate_isbase = value; }
     void setQStackedLayout_Geometry_IsBase(bool value) const { qstackedlayout_geometry_isbase = value; }
     void setQStackedLayout_ExpandingDirections_IsBase(bool value) const { qstackedlayout_expandingdirections_isbase = value; }
@@ -251,7 +236,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     void setQStackedLayout_IndexOf_IsBase(bool value) const { qstackedlayout_indexof_isbase = value; }
     void setQStackedLayout_IsEmpty_IsBase(bool value) const { qstackedlayout_isempty_isbase = value; }
     void setQStackedLayout_ControlTypes_IsBase(bool value) const { qstackedlayout_controltypes_isbase = value; }
-    void setQStackedLayout_ReplaceWidget_IsBase(bool value) const { qstackedlayout_replacewidget_isbase = value; }
     void setQStackedLayout_Layout_IsBase(bool value) const { qstackedlayout_layout_isbase = value; }
     void setQStackedLayout_ChildEvent_IsBase(bool value) const { qstackedlayout_childevent_isbase = value; }
     void setQStackedLayout_Event_IsBase(bool value) const { qstackedlayout_event_isbase = value; }
@@ -394,30 +378,6 @@ class VirtualQStackedLayout : public QStackedLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int spacing() const override {
-        if (qstackedlayout_spacing_isbase) {
-            qstackedlayout_spacing_isbase = false;
-            return QStackedLayout::spacing();
-        } else if (qstackedlayout_spacing_callback != nullptr) {
-            return qstackedlayout_spacing_callback();
-        } else {
-            return QStackedLayout::spacing();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setSpacing(int spacing) override {
-        if (qstackedlayout_setspacing_isbase) {
-            qstackedlayout_setspacing_isbase = false;
-            QStackedLayout::setSpacing(spacing);
-        } else if (qstackedlayout_setspacing_callback != nullptr) {
-            qstackedlayout_setspacing_callback(this, spacing);
-        } else {
-            QStackedLayout::setSpacing(spacing);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual void invalidate() override {
         if (qstackedlayout_invalidate_isbase) {
             qstackedlayout_invalidate_isbase = false;
@@ -466,7 +426,7 @@ class VirtualQStackedLayout : public QStackedLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int indexOf(const QWidget* param1) const override {
+    virtual int indexOf(QWidget* param1) const override {
         if (qstackedlayout_indexof_isbase) {
             qstackedlayout_indexof_isbase = false;
             return QStackedLayout::indexOf(param1);
@@ -498,18 +458,6 @@ class VirtualQStackedLayout : public QStackedLayout {
             return qstackedlayout_controltypes_callback();
         } else {
             return QStackedLayout::controlTypes();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QLayoutItem* replaceWidget(QWidget* from, QWidget* to, Qt::FindChildOptions options) override {
-        if (qstackedlayout_replacewidget_isbase) {
-            qstackedlayout_replacewidget_isbase = false;
-            return QStackedLayout::replaceWidget(from, to, options);
-        } else if (qstackedlayout_replacewidget_callback != nullptr) {
-            return qstackedlayout_replacewidget_callback(this, from, to, options);
-        } else {
-            return QStackedLayout::replaceWidget(from, to, options);
         }
     }
 
@@ -622,7 +570,7 @@ class VirtualQStackedLayout : public QStackedLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qstackedlayout_widget_isbase) {
             qstackedlayout_widget_isbase = false;
             return QStackedLayout::widget();

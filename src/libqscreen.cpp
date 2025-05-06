@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -8,6 +6,7 @@
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QPixmap>
 #include <QPoint>
 #include <QRect>
@@ -39,6 +38,18 @@ int QScreen_Metacall(QScreen* self, int param1, int param2, void** param3) {
 
 libqt_string QScreen_Tr(const char* s) {
     QString _ret = QScreen::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QScreen_TrUtf8(const char* s) {
+    QString _ret = QScreen::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -194,6 +205,14 @@ int QScreen_NativeOrientation(const QScreen* self) {
     return static_cast<int>(self->nativeOrientation());
 }
 
+int QScreen_OrientationUpdateMask(const QScreen* self) {
+    return static_cast<int>(self->orientationUpdateMask());
+}
+
+void QScreen_SetOrientationUpdateMask(QScreen* self, int mask) {
+    self->setOrientationUpdateMask(static_cast<Qt::ScreenOrientations>(mask));
+}
+
 int QScreen_AngleBetween(const QScreen* self, int a, int b) {
     return self->angleBetween(static_cast<Qt::ScreenOrientation>(a), static_cast<Qt::ScreenOrientation>(b));
 }
@@ -214,8 +233,8 @@ bool QScreen_IsLandscape(const QScreen* self, int orientation) {
     return self->isLandscape(static_cast<Qt::ScreenOrientation>(orientation));
 }
 
-QPixmap* QScreen_GrabWindow(QScreen* self) {
-    return new QPixmap(self->grabWindow());
+QPixmap* QScreen_GrabWindow(QScreen* self, uintptr_t window) {
+    return new QPixmap(self->grabWindow(static_cast<WId>(window)));
 }
 
 double QScreen_RefreshRate(const QScreen* self) {
@@ -362,8 +381,28 @@ libqt_string QScreen_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-QPixmap* QScreen_GrabWindow1(QScreen* self, uintptr_t window) {
-    return new QPixmap(self->grabWindow(static_cast<WId>(window)));
+libqt_string QScreen_TrUtf82(const char* s, const char* c) {
+    QString _ret = QScreen::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QScreen_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QScreen::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 QPixmap* QScreen_GrabWindow2(QScreen* self, uintptr_t window, int x) {

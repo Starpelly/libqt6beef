@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,8 +22,6 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAction QAction;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
 typedef struct QCursor QCursor;
@@ -49,10 +49,12 @@ typedef struct QInputMethodEvent QInputMethodEvent;
 typedef struct QKeyEvent QKeyEvent;
 typedef struct QKeySequence QKeySequence;
 typedef struct QMarginsF QMarginsF;
+typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPalette QPalette;
@@ -82,6 +84,7 @@ int QGraphicsWidget_Metacall(QGraphicsWidget* self, int param1, int param2, void
 void QGraphicsWidget_OnMetacall(QGraphicsWidget* self, intptr_t slot);
 int QGraphicsWidget_QBaseMetacall(QGraphicsWidget* self, int param1, int param2, void** param3);
 libqt_string QGraphicsWidget_Tr(const char* s);
+libqt_string QGraphicsWidget_TrUtf8(const char* s);
 QGraphicsLayout* QGraphicsWidget_Layout(const QGraphicsWidget* self);
 void QGraphicsWidget_SetLayout(QGraphicsWidget* self, QGraphicsLayout* layout);
 void QGraphicsWidget_AdjustSize(QGraphicsWidget* self);
@@ -234,6 +237,8 @@ void QGraphicsWidget_OnUngrabKeyboardEvent(QGraphicsWidget* self, intptr_t slot)
 void QGraphicsWidget_QBaseUngrabKeyboardEvent(QGraphicsWidget* self, QEvent* event);
 libqt_string QGraphicsWidget_Tr2(const char* s, const char* c);
 libqt_string QGraphicsWidget_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsWidget_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsWidget_TrUtf83(const char* s, const char* c, int n);
 int QGraphicsWidget_GrabShortcut2(QGraphicsWidget* self, QKeySequence* sequence, int context);
 void QGraphicsWidget_SetShortcutEnabled2(QGraphicsWidget* self, int id, bool enabled);
 void QGraphicsWidget_SetShortcutAutoRepeat2(QGraphicsWidget* self, int id, bool enabled);
@@ -322,9 +327,6 @@ void QGraphicsWidget_QBaseInputMethodEvent(QGraphicsWidget* self, QInputMethodEv
 void QGraphicsWidget_SetExtension(QGraphicsWidget* self, int extension, QVariant* variant);
 void QGraphicsWidget_OnSetExtension(QGraphicsWidget* self, intptr_t slot);
 void QGraphicsWidget_QBaseSetExtension(QGraphicsWidget* self, int extension, QVariant* variant);
-bool QGraphicsWidget_IsEmpty(const QGraphicsWidget* self);
-void QGraphicsWidget_OnIsEmpty(const QGraphicsWidget* self, intptr_t slot);
-bool QGraphicsWidget_QBaseIsEmpty(const QGraphicsWidget* self);
 QVariant* QGraphicsWidget_InputMethodQuery(const QGraphicsWidget* self, int query);
 void QGraphicsWidget_OnInputMethodQuery(const QGraphicsWidget* self, intptr_t slot);
 QVariant* QGraphicsWidget_QBaseInputMethodQuery(const QGraphicsWidget* self, int query);

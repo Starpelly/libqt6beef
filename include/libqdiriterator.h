@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -39,7 +41,6 @@ QDirIterator* QDirIterator_new7(libqt_string path, int filter, int flags);
 QDirIterator* QDirIterator_new8(libqt_string path, libqt_list /* of libqt_string */ nameFilters, int filters);
 QDirIterator* QDirIterator_new9(libqt_string path, libqt_list /* of libqt_string */ nameFilters, int filters, int flags);
 libqt_string QDirIterator_Next(QDirIterator* self);
-QFileInfo* QDirIterator_NextFileInfo(QDirIterator* self);
 bool QDirIterator_HasNext(const QDirIterator* self);
 libqt_string QDirIterator_FileName(const QDirIterator* self);
 libqt_string QDirIterator_FilePath(const QDirIterator* self);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -23,7 +25,6 @@ class VirtualQToolBox : public QToolBox {
     using QToolBox_ChangeEvent_Callback = void (*)(QToolBox*, QEvent*);
     using QToolBox_SizeHint_Callback = QSize (*)();
     using QToolBox_PaintEvent_Callback = void (*)(QToolBox*, QPaintEvent*);
-    using QToolBox_InitStyleOption_Callback = void (*)(const QToolBox*, QStyleOptionFrame*);
     using QToolBox_DevType_Callback = int (*)();
     using QToolBox_SetVisible_Callback = void (*)(QToolBox*, bool);
     using QToolBox_MinimumSizeHint_Callback = QSize (*)();
@@ -39,7 +40,7 @@ class VirtualQToolBox : public QToolBox {
     using QToolBox_KeyReleaseEvent_Callback = void (*)(QToolBox*, QKeyEvent*);
     using QToolBox_FocusInEvent_Callback = void (*)(QToolBox*, QFocusEvent*);
     using QToolBox_FocusOutEvent_Callback = void (*)(QToolBox*, QFocusEvent*);
-    using QToolBox_EnterEvent_Callback = void (*)(QToolBox*, QEnterEvent*);
+    using QToolBox_EnterEvent_Callback = void (*)(QToolBox*, QEvent*);
     using QToolBox_LeaveEvent_Callback = void (*)(QToolBox*, QEvent*);
     using QToolBox_MoveEvent_Callback = void (*)(QToolBox*, QMoveEvent*);
     using QToolBox_ResizeEvent_Callback = void (*)(QToolBox*, QResizeEvent*);
@@ -52,7 +53,7 @@ class VirtualQToolBox : public QToolBox {
     using QToolBox_DragLeaveEvent_Callback = void (*)(QToolBox*, QDragLeaveEvent*);
     using QToolBox_DropEvent_Callback = void (*)(QToolBox*, QDropEvent*);
     using QToolBox_HideEvent_Callback = void (*)(QToolBox*, QHideEvent*);
-    using QToolBox_NativeEvent_Callback = bool (*)(QToolBox*, const QByteArray&, void*, qintptr*);
+    using QToolBox_NativeEvent_Callback = bool (*)(QToolBox*, const QByteArray&, void*, long*);
     using QToolBox_Metric_Callback = int (*)(const QToolBox*, QPaintDevice::PaintDeviceMetric);
     using QToolBox_InitPainter_Callback = void (*)(const QToolBox*, QPainter*);
     using QToolBox_Redirected_Callback = QPaintDevice* (*)(const QToolBox*, QPoint*);
@@ -67,6 +68,7 @@ class VirtualQToolBox : public QToolBox {
     using QToolBox_ConnectNotify_Callback = void (*)(QToolBox*, const QMetaMethod&);
     using QToolBox_DisconnectNotify_Callback = void (*)(QToolBox*, const QMetaMethod&);
     using QToolBox_DrawFrame_Callback = void (*)(QToolBox*, QPainter*);
+    using QToolBox_InitStyleOption_Callback = void (*)(const QToolBox*, QStyleOptionFrame*);
     using QToolBox_UpdateMicroFocus_Callback = void (*)();
     using QToolBox_Create_Callback = void (*)();
     using QToolBox_Destroy_Callback = void (*)();
@@ -87,7 +89,6 @@ class VirtualQToolBox : public QToolBox {
     QToolBox_ChangeEvent_Callback qtoolbox_changeevent_callback = nullptr;
     QToolBox_SizeHint_Callback qtoolbox_sizehint_callback = nullptr;
     QToolBox_PaintEvent_Callback qtoolbox_paintevent_callback = nullptr;
-    QToolBox_InitStyleOption_Callback qtoolbox_initstyleoption_callback = nullptr;
     QToolBox_DevType_Callback qtoolbox_devtype_callback = nullptr;
     QToolBox_SetVisible_Callback qtoolbox_setvisible_callback = nullptr;
     QToolBox_MinimumSizeHint_Callback qtoolbox_minimumsizehint_callback = nullptr;
@@ -131,6 +132,7 @@ class VirtualQToolBox : public QToolBox {
     QToolBox_ConnectNotify_Callback qtoolbox_connectnotify_callback = nullptr;
     QToolBox_DisconnectNotify_Callback qtoolbox_disconnectnotify_callback = nullptr;
     QToolBox_DrawFrame_Callback qtoolbox_drawframe_callback = nullptr;
+    QToolBox_InitStyleOption_Callback qtoolbox_initstyleoption_callback = nullptr;
     QToolBox_UpdateMicroFocus_Callback qtoolbox_updatemicrofocus_callback = nullptr;
     QToolBox_Create_Callback qtoolbox_create_callback = nullptr;
     QToolBox_Destroy_Callback qtoolbox_destroy_callback = nullptr;
@@ -150,7 +152,6 @@ class VirtualQToolBox : public QToolBox {
     mutable bool qtoolbox_changeevent_isbase = false;
     mutable bool qtoolbox_sizehint_isbase = false;
     mutable bool qtoolbox_paintevent_isbase = false;
-    mutable bool qtoolbox_initstyleoption_isbase = false;
     mutable bool qtoolbox_devtype_isbase = false;
     mutable bool qtoolbox_setvisible_isbase = false;
     mutable bool qtoolbox_minimumsizehint_isbase = false;
@@ -194,6 +195,7 @@ class VirtualQToolBox : public QToolBox {
     mutable bool qtoolbox_connectnotify_isbase = false;
     mutable bool qtoolbox_disconnectnotify_isbase = false;
     mutable bool qtoolbox_drawframe_isbase = false;
+    mutable bool qtoolbox_initstyleoption_isbase = false;
     mutable bool qtoolbox_updatemicrofocus_isbase = false;
     mutable bool qtoolbox_create_isbase = false;
     mutable bool qtoolbox_destroy_isbase = false;
@@ -218,7 +220,6 @@ class VirtualQToolBox : public QToolBox {
         qtoolbox_changeevent_callback = nullptr;
         qtoolbox_sizehint_callback = nullptr;
         qtoolbox_paintevent_callback = nullptr;
-        qtoolbox_initstyleoption_callback = nullptr;
         qtoolbox_devtype_callback = nullptr;
         qtoolbox_setvisible_callback = nullptr;
         qtoolbox_minimumsizehint_callback = nullptr;
@@ -262,6 +263,7 @@ class VirtualQToolBox : public QToolBox {
         qtoolbox_connectnotify_callback = nullptr;
         qtoolbox_disconnectnotify_callback = nullptr;
         qtoolbox_drawframe_callback = nullptr;
+        qtoolbox_initstyleoption_callback = nullptr;
         qtoolbox_updatemicrofocus_callback = nullptr;
         qtoolbox_create_callback = nullptr;
         qtoolbox_destroy_callback = nullptr;
@@ -282,7 +284,6 @@ class VirtualQToolBox : public QToolBox {
     void setQToolBox_ChangeEvent_Callback(QToolBox_ChangeEvent_Callback cb) { qtoolbox_changeevent_callback = cb; }
     void setQToolBox_SizeHint_Callback(QToolBox_SizeHint_Callback cb) { qtoolbox_sizehint_callback = cb; }
     void setQToolBox_PaintEvent_Callback(QToolBox_PaintEvent_Callback cb) { qtoolbox_paintevent_callback = cb; }
-    void setQToolBox_InitStyleOption_Callback(QToolBox_InitStyleOption_Callback cb) { qtoolbox_initstyleoption_callback = cb; }
     void setQToolBox_DevType_Callback(QToolBox_DevType_Callback cb) { qtoolbox_devtype_callback = cb; }
     void setQToolBox_SetVisible_Callback(QToolBox_SetVisible_Callback cb) { qtoolbox_setvisible_callback = cb; }
     void setQToolBox_MinimumSizeHint_Callback(QToolBox_MinimumSizeHint_Callback cb) { qtoolbox_minimumsizehint_callback = cb; }
@@ -326,6 +327,7 @@ class VirtualQToolBox : public QToolBox {
     void setQToolBox_ConnectNotify_Callback(QToolBox_ConnectNotify_Callback cb) { qtoolbox_connectnotify_callback = cb; }
     void setQToolBox_DisconnectNotify_Callback(QToolBox_DisconnectNotify_Callback cb) { qtoolbox_disconnectnotify_callback = cb; }
     void setQToolBox_DrawFrame_Callback(QToolBox_DrawFrame_Callback cb) { qtoolbox_drawframe_callback = cb; }
+    void setQToolBox_InitStyleOption_Callback(QToolBox_InitStyleOption_Callback cb) { qtoolbox_initstyleoption_callback = cb; }
     void setQToolBox_UpdateMicroFocus_Callback(QToolBox_UpdateMicroFocus_Callback cb) { qtoolbox_updatemicrofocus_callback = cb; }
     void setQToolBox_Create_Callback(QToolBox_Create_Callback cb) { qtoolbox_create_callback = cb; }
     void setQToolBox_Destroy_Callback(QToolBox_Destroy_Callback cb) { qtoolbox_destroy_callback = cb; }
@@ -345,7 +347,6 @@ class VirtualQToolBox : public QToolBox {
     void setQToolBox_ChangeEvent_IsBase(bool value) const { qtoolbox_changeevent_isbase = value; }
     void setQToolBox_SizeHint_IsBase(bool value) const { qtoolbox_sizehint_isbase = value; }
     void setQToolBox_PaintEvent_IsBase(bool value) const { qtoolbox_paintevent_isbase = value; }
-    void setQToolBox_InitStyleOption_IsBase(bool value) const { qtoolbox_initstyleoption_isbase = value; }
     void setQToolBox_DevType_IsBase(bool value) const { qtoolbox_devtype_isbase = value; }
     void setQToolBox_SetVisible_IsBase(bool value) const { qtoolbox_setvisible_isbase = value; }
     void setQToolBox_MinimumSizeHint_IsBase(bool value) const { qtoolbox_minimumsizehint_isbase = value; }
@@ -389,6 +390,7 @@ class VirtualQToolBox : public QToolBox {
     void setQToolBox_ConnectNotify_IsBase(bool value) const { qtoolbox_connectnotify_isbase = value; }
     void setQToolBox_DisconnectNotify_IsBase(bool value) const { qtoolbox_disconnectnotify_isbase = value; }
     void setQToolBox_DrawFrame_IsBase(bool value) const { qtoolbox_drawframe_isbase = value; }
+    void setQToolBox_InitStyleOption_IsBase(bool value) const { qtoolbox_initstyleoption_isbase = value; }
     void setQToolBox_UpdateMicroFocus_IsBase(bool value) const { qtoolbox_updatemicrofocus_isbase = value; }
     void setQToolBox_Create_IsBase(bool value) const { qtoolbox_create_isbase = value; }
     void setQToolBox_Destroy_IsBase(bool value) const { qtoolbox_destroy_isbase = value; }
@@ -492,18 +494,6 @@ class VirtualQToolBox : public QToolBox {
             qtoolbox_paintevent_callback(this, param1);
         } else {
             QToolBox::paintEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qtoolbox_initstyleoption_isbase) {
-            qtoolbox_initstyleoption_isbase = false;
-            QToolBox::initStyleOption(option);
-        } else if (qtoolbox_initstyleoption_callback != nullptr) {
-            qtoolbox_initstyleoption_callback(this, option);
-        } else {
-            QToolBox::initStyleOption(option);
         }
     }
 
@@ -688,7 +678,7 @@ class VirtualQToolBox : public QToolBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtoolbox_enterevent_isbase) {
             qtoolbox_enterevent_isbase = false;
             QToolBox::enterEvent(event);
@@ -844,7 +834,7 @@ class VirtualQToolBox : public QToolBox {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtoolbox_nativeevent_isbase) {
             qtoolbox_nativeevent_isbase = false;
             return QToolBox::nativeEvent(eventType, message, result);
@@ -1020,6 +1010,18 @@ class VirtualQToolBox : public QToolBox {
             qtoolbox_drawframe_callback(this, param1);
         } else {
             QToolBox::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qtoolbox_initstyleoption_isbase) {
+            qtoolbox_initstyleoption_isbase = false;
+            QToolBox::initStyleOption(option);
+        } else if (qtoolbox_initstyleoption_callback != nullptr) {
+            qtoolbox_initstyleoption_callback(this, option);
+        } else {
+            QToolBox::initStyleOption(option);
         }
     }
 

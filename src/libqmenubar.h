@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -91,6 +90,8 @@ int QMenuBar_Metacall(QMenuBar* self, int param1, int param2, void** param3);
 void QMenuBar_OnMetacall(QMenuBar* self, intptr_t slot);
 int QMenuBar_QBaseMetacall(QMenuBar* self, int param1, int param2, void** param3);
 libqt_string QMenuBar_Tr(const char* s);
+libqt_string QMenuBar_TrUtf8(const char* s);
+QAction* QMenuBar_AddAction(QMenuBar* self, libqt_string text);
 QAction* QMenuBar_AddMenu(QMenuBar* self, QMenu* menu);
 QMenu* QMenuBar_AddMenuWithTitle(QMenuBar* self, libqt_string title);
 QMenu* QMenuBar_AddMenu2(QMenuBar* self, QIcon* icon, libqt_string title);
@@ -166,11 +167,10 @@ bool QMenuBar_QBaseEventFilter(QMenuBar* self, QObject* param1, QEvent* param2);
 bool QMenuBar_Event(QMenuBar* self, QEvent* param1);
 void QMenuBar_OnEvent(QMenuBar* self, intptr_t slot);
 bool QMenuBar_QBaseEvent(QMenuBar* self, QEvent* param1);
-void QMenuBar_InitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action);
-void QMenuBar_OnInitStyleOption(const QMenuBar* self, intptr_t slot);
-void QMenuBar_QBaseInitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action);
 libqt_string QMenuBar_Tr2(const char* s, const char* c);
 libqt_string QMenuBar_Tr3(const char* s, const char* c, int n);
+libqt_string QMenuBar_TrUtf82(const char* s, const char* c);
+libqt_string QMenuBar_TrUtf83(const char* s, const char* c, int n);
 void QMenuBar_SetCornerWidget2(QMenuBar* self, QWidget* w, int corner);
 QWidget* QMenuBar_CornerWidget1(const QMenuBar* self, int corner);
 int QMenuBar_DevType(const QMenuBar* self);
@@ -191,9 +191,9 @@ void QMenuBar_QBaseWheelEvent(QMenuBar* self, QWheelEvent* event);
 void QMenuBar_KeyReleaseEvent(QMenuBar* self, QKeyEvent* event);
 void QMenuBar_OnKeyReleaseEvent(QMenuBar* self, intptr_t slot);
 void QMenuBar_QBaseKeyReleaseEvent(QMenuBar* self, QKeyEvent* event);
-void QMenuBar_EnterEvent(QMenuBar* self, QEnterEvent* event);
+void QMenuBar_EnterEvent(QMenuBar* self, QEvent* event);
 void QMenuBar_OnEnterEvent(QMenuBar* self, intptr_t slot);
-void QMenuBar_QBaseEnterEvent(QMenuBar* self, QEnterEvent* event);
+void QMenuBar_QBaseEnterEvent(QMenuBar* self, QEvent* event);
 void QMenuBar_MoveEvent(QMenuBar* self, QMoveEvent* event);
 void QMenuBar_OnMoveEvent(QMenuBar* self, intptr_t slot);
 void QMenuBar_QBaseMoveEvent(QMenuBar* self, QMoveEvent* event);
@@ -224,9 +224,9 @@ void QMenuBar_QBaseShowEvent(QMenuBar* self, QShowEvent* event);
 void QMenuBar_HideEvent(QMenuBar* self, QHideEvent* event);
 void QMenuBar_OnHideEvent(QMenuBar* self, intptr_t slot);
 void QMenuBar_QBaseHideEvent(QMenuBar* self, QHideEvent* event);
-bool QMenuBar_NativeEvent(QMenuBar* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMenuBar_NativeEvent(QMenuBar* self, libqt_string eventType, void* message, long* result);
 void QMenuBar_OnNativeEvent(QMenuBar* self, intptr_t slot);
-bool QMenuBar_QBaseNativeEvent(QMenuBar* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMenuBar_QBaseNativeEvent(QMenuBar* self, libqt_string eventType, void* message, long* result);
 void QMenuBar_InputMethodEvent(QMenuBar* self, QInputMethodEvent* param1);
 void QMenuBar_OnInputMethodEvent(QMenuBar* self, intptr_t slot);
 void QMenuBar_QBaseInputMethodEvent(QMenuBar* self, QInputMethodEvent* param1);
@@ -260,6 +260,9 @@ QPaintDevice* QMenuBar_QBaseRedirected(const QMenuBar* self, QPoint* offset);
 QPainter* QMenuBar_SharedPainter(const QMenuBar* self);
 void QMenuBar_OnSharedPainter(const QMenuBar* self, intptr_t slot);
 QPainter* QMenuBar_QBaseSharedPainter(const QMenuBar* self);
+void QMenuBar_InitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action);
+void QMenuBar_OnInitStyleOption(const QMenuBar* self, intptr_t slot);
+void QMenuBar_QBaseInitStyleOption(const QMenuBar* self, QStyleOptionMenuItem* option, QAction* action);
 void QMenuBar_UpdateMicroFocus(QMenuBar* self);
 void QMenuBar_OnUpdateMicroFocus(QMenuBar* self, intptr_t slot);
 void QMenuBar_QBaseUpdateMicroFocus(QMenuBar* self);

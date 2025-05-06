@@ -1,5 +1,4 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
+#include <QAbstractVideoSurface>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QCursor>
@@ -21,10 +20,14 @@
 #include <QInputMethodEvent>
 #include <QKeyEvent>
 #include <QList>
+#include <QMatrix>
+#include <QMediaBindableInterface>
+#include <QMediaObject>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
+#include <QObjectUserData>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPointF>
@@ -40,7 +43,6 @@
 #include <QTimerEvent>
 #include <QTransform>
 #include <QVariant>
-#include <QVideoSink>
 #include <QWidget>
 #include <qgraphicsvideoitem.h>
 #include "libqgraphicsvideoitem.h"
@@ -99,8 +101,20 @@ libqt_string QGraphicsVideoItem_Tr(const char* s) {
     return _str;
 }
 
-QVideoSink* QGraphicsVideoItem_VideoSink(const QGraphicsVideoItem* self) {
-    return self->videoSink();
+libqt_string QGraphicsVideoItem_TrUtf8(const char* s) {
+    QString _ret = QGraphicsVideoItem::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+QAbstractVideoSurface* QGraphicsVideoItem_VideoSurface(const QGraphicsVideoItem* self) {
+    return self->videoSurface();
 }
 
 int QGraphicsVideoItem_AspectRatioMode(const QGraphicsVideoItem* self) {
@@ -169,6 +183,56 @@ libqt_string QGraphicsVideoItem_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QGraphicsVideoItem_TrUtf82(const char* s, const char* c) {
+    QString _ret = QGraphicsVideoItem::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QGraphicsVideoItem_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QGraphicsVideoItem::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+// Derived class handler implementation
+QMediaObject* QGraphicsVideoItem_MediaObject(const QGraphicsVideoItem* self) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        return vqgraphicsvideoitem->mediaObject();
+    } else {
+        return vqgraphicsvideoitem->mediaObject();
+    }
+}
+
+// Base class handler implementation
+QMediaObject* QGraphicsVideoItem_QBaseMediaObject(const QGraphicsVideoItem* self) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_MediaObject_IsBase(true);
+        return vqgraphicsvideoitem->mediaObject();
+    } else {
+        return vqgraphicsvideoitem->mediaObject();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsVideoItem_OnMediaObject(const QGraphicsVideoItem* self, intptr_t slot) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_MediaObject_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_MediaObject_Callback>(slot));
+    }
+}
+
 // Derived class handler implementation
 QRectF* QGraphicsVideoItem_BoundingRect(const QGraphicsVideoItem* self) {
     if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
@@ -222,32 +286,6 @@ void QGraphicsVideoItem_OnPaint(QGraphicsVideoItem* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-int QGraphicsVideoItem_Type(const QGraphicsVideoItem* self) {
-    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
-        return vqgraphicsvideoitem->type();
-    } else {
-        return vqgraphicsvideoitem->type();
-    }
-}
-
-// Base class handler implementation
-int QGraphicsVideoItem_QBaseType(const QGraphicsVideoItem* self) {
-    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
-        vqgraphicsvideoitem->setQGraphicsVideoItem_Type_IsBase(true);
-        return vqgraphicsvideoitem->type();
-    } else {
-        return vqgraphicsvideoitem->type();
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QGraphicsVideoItem_OnType(const QGraphicsVideoItem* self, intptr_t slot) {
-    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
-        vqgraphicsvideoitem->setQGraphicsVideoItem_Type_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_Type_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QGraphicsVideoItem_TimerEvent(QGraphicsVideoItem* self, QTimerEvent* event) {
     if (auto* vqgraphicsvideoitem = dynamic_cast<VirtualQGraphicsVideoItem*>(self)) {
         vqgraphicsvideoitem->timerEvent(event);
@@ -294,6 +332,32 @@ QVariant* QGraphicsVideoItem_QBaseItemChange(QGraphicsVideoItem* self, int chang
 void QGraphicsVideoItem_OnItemChange(QGraphicsVideoItem* self, intptr_t slot) {
     if (auto* vqgraphicsvideoitem = dynamic_cast<VirtualQGraphicsVideoItem*>(self)) {
         vqgraphicsvideoitem->setQGraphicsVideoItem_ItemChange_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_ItemChange_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QGraphicsVideoItem_SetMediaObject(QGraphicsVideoItem* self, QMediaObject* object) {
+    if (auto* vqgraphicsvideoitem = dynamic_cast<VirtualQGraphicsVideoItem*>(self)) {
+        return vqgraphicsvideoitem->setMediaObject(object);
+    } else {
+        return vqgraphicsvideoitem->setMediaObject(object);
+    }
+}
+
+// Base class handler implementation
+bool QGraphicsVideoItem_QBaseSetMediaObject(QGraphicsVideoItem* self, QMediaObject* object) {
+    if (auto* vqgraphicsvideoitem = dynamic_cast<VirtualQGraphicsVideoItem*>(self)) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_SetMediaObject_IsBase(true);
+        return vqgraphicsvideoitem->setMediaObject(object);
+    } else {
+        return vqgraphicsvideoitem->setMediaObject(object);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsVideoItem_OnSetMediaObject(QGraphicsVideoItem* self, intptr_t slot) {
+    if (auto* vqgraphicsvideoitem = dynamic_cast<VirtualQGraphicsVideoItem*>(self)) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_SetMediaObject_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_SetMediaObject_Callback>(slot));
     }
 }
 
@@ -632,6 +696,32 @@ QPainterPath* QGraphicsVideoItem_QBaseOpaqueArea(const QGraphicsVideoItem* self)
 void QGraphicsVideoItem_OnOpaqueArea(const QGraphicsVideoItem* self, intptr_t slot) {
     if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
         vqgraphicsvideoitem->setQGraphicsVideoItem_OpaqueArea_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_OpaqueArea_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+int QGraphicsVideoItem_Type(const QGraphicsVideoItem* self) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        return vqgraphicsvideoitem->type();
+    } else {
+        return vqgraphicsvideoitem->type();
+    }
+}
+
+// Base class handler implementation
+int QGraphicsVideoItem_QBaseType(const QGraphicsVideoItem* self) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_Type_IsBase(true);
+        return vqgraphicsvideoitem->type();
+    } else {
+        return vqgraphicsvideoitem->type();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QGraphicsVideoItem_OnType(const QGraphicsVideoItem* self, intptr_t slot) {
+    if (auto* vqgraphicsvideoitem = const_cast<VirtualQGraphicsVideoItem*>(dynamic_cast<const VirtualQGraphicsVideoItem*>(self))) {
+        vqgraphicsvideoitem->setQGraphicsVideoItem_Type_Callback(reinterpret_cast<VirtualQGraphicsVideoItem::QGraphicsVideoItem_Type_Callback>(slot));
     }
 }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,6 +18,7 @@ extern "C" {
 
 #ifdef __cplusplus
 #else
+typedef struct QMatrix QMatrix;
 typedef struct QMatrix4x4 QMatrix4x4;
 typedef struct QPoint QPoint;
 typedef struct QPointF QPointF;
@@ -28,14 +31,6 @@ typedef struct QVector3D QVector3D;
 typedef struct QVector4D QVector4D;
 #endif
 
-#ifdef __cplusplus
-typedef QMatrix4x4::Flag Flag;   // C++ enum
-typedef QMatrix4x4::Flags Flags; // C++ QFlags
-#else
-typedef int Flag;  // C ABI enum
-typedef int Flags; // C ABI QFlags
-#endif
-
 QMatrix4x4* QMatrix4x4_new(QMatrix4x4* other);
 QMatrix4x4* QMatrix4x4_new2(QMatrix4x4* other);
 QMatrix4x4* QMatrix4x4_new3();
@@ -44,7 +39,8 @@ QMatrix4x4* QMatrix4x4_new5(const float* values);
 QMatrix4x4* QMatrix4x4_new6(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 QMatrix4x4* QMatrix4x4_new7(const float* values, int cols, int rows);
 QMatrix4x4* QMatrix4x4_new8(QTransform* transform);
-QMatrix4x4* QMatrix4x4_new9(QMatrix4x4* param1);
+QMatrix4x4* QMatrix4x4_new9(QMatrix* matrix);
+QMatrix4x4* QMatrix4x4_new10(QMatrix4x4* param1);
 void QMatrix4x4_CopyAssign(QMatrix4x4* self, QMatrix4x4* other);
 void QMatrix4x4_MoveAssign(QMatrix4x4* self, QMatrix4x4* other);
 QVector4D* QMatrix4x4_Column(const QMatrix4x4* self, int index);
@@ -85,6 +81,7 @@ void QMatrix4x4_Viewport(QMatrix4x4* self, QRectF* rect);
 void QMatrix4x4_Viewport2(QMatrix4x4* self, float left, float bottom, float width, float height);
 void QMatrix4x4_FlipCoordinates(QMatrix4x4* self);
 void QMatrix4x4_CopyDataTo(const QMatrix4x4* self, float* values);
+QMatrix* QMatrix4x4_ToAffine(const QMatrix4x4* self);
 QTransform* QMatrix4x4_ToTransform(const QMatrix4x4* self);
 QTransform* QMatrix4x4_ToTransformWithDistanceToPlane(const QMatrix4x4* self, float distanceToPlane);
 QPoint* QMatrix4x4_Map(const QMatrix4x4* self, QPoint* point);
@@ -99,8 +96,6 @@ const float* QMatrix4x4_Data2(const QMatrix4x4* self);
 const float* QMatrix4x4_ConstData(const QMatrix4x4* self);
 void QMatrix4x4_Optimize(QMatrix4x4* self);
 QVariant* QMatrix4x4_ToQVariant(const QMatrix4x4* self);
-void QMatrix4x4_ProjectedRotate(QMatrix4x4* self, float angle, float x, float y, float z);
-int QMatrix4x4_Flags(const QMatrix4x4* self);
 QMatrix4x4* QMatrix4x4_Inverted1(const QMatrix4x4* self, bool* invertible);
 void QMatrix4x4_Rotate4(QMatrix4x4* self, float angle, float x, float y, float z);
 void QMatrix4x4_Viewport5(QMatrix4x4* self, float left, float bottom, float width, float height, float nearPlane);

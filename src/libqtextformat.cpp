@@ -179,7 +179,7 @@ QTextLength* QTextFormat_LengthProperty(const QTextFormat* self, int propertyId)
 }
 
 libqt_list /* of QTextLength* */ QTextFormat_LengthVectorProperty(const QTextFormat* self, int propertyId) {
-    QList<QTextLength> _ret = self->lengthVectorProperty(static_cast<int>(propertyId));
+    QVector<QTextLength> _ret = self->lengthVectorProperty(static_cast<int>(propertyId));
     // Convert QList<> from C++ memory to manually-managed C memory
     QTextLength** _arr = static_cast<QTextLength**>(malloc(sizeof(QTextLength*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -192,7 +192,7 @@ libqt_list /* of QTextLength* */ QTextFormat_LengthVectorProperty(const QTextFor
 }
 
 void QTextFormat_SetProperty2(QTextFormat* self, int propertyId, libqt_list /* of QTextLength* */ lengths) {
-    QList<QTextLength> lengths_QList;
+    QVector<QTextLength> lengths_QList;
     lengths_QList.reserve(lengths.len);
     QTextLength** lengths_arr = static_cast<QTextLength**>(lengths.data);
     for (size_t i = 0; i < lengths.len; ++i) {
@@ -347,7 +347,11 @@ bool QTextCharFormat_IsValid(const QTextCharFormat* self) {
     return self->isValid();
 }
 
-void QTextCharFormat_SetFont(QTextCharFormat* self, QFont* font) {
+void QTextCharFormat_SetFont(QTextCharFormat* self, QFont* font, int behavior) {
+    self->setFont(*font, static_cast<QTextCharFormat::FontPropertiesInheritanceBehavior>(behavior));
+}
+
+void QTextCharFormat_SetFontWithFont(QTextCharFormat* self, QFont* font) {
     self->setFont(*font);
 }
 
@@ -573,30 +577,6 @@ libqt_string QTextCharFormat_ToolTip(const QTextCharFormat* self) {
     return _str;
 }
 
-void QTextCharFormat_SetSuperScriptBaseline(QTextCharFormat* self, double baseline) {
-    self->setSuperScriptBaseline(static_cast<qreal>(baseline));
-}
-
-double QTextCharFormat_SuperScriptBaseline(const QTextCharFormat* self) {
-    return static_cast<double>(self->superScriptBaseline());
-}
-
-void QTextCharFormat_SetSubScriptBaseline(QTextCharFormat* self, double baseline) {
-    self->setSubScriptBaseline(static_cast<qreal>(baseline));
-}
-
-double QTextCharFormat_SubScriptBaseline(const QTextCharFormat* self) {
-    return static_cast<double>(self->subScriptBaseline());
-}
-
-void QTextCharFormat_SetBaselineOffset(QTextCharFormat* self, double baseline) {
-    self->setBaselineOffset(static_cast<qreal>(baseline));
-}
-
-double QTextCharFormat_BaselineOffset(const QTextCharFormat* self) {
-    return static_cast<double>(self->baselineOffset());
-}
-
 void QTextCharFormat_SetAnchor(QTextCharFormat* self, bool anchor) {
     self->setAnchor(anchor);
 }
@@ -612,6 +592,23 @@ void QTextCharFormat_SetAnchorHref(QTextCharFormat* self, libqt_string value) {
 
 libqt_string QTextCharFormat_AnchorHref(const QTextCharFormat* self) {
     QString _ret = self->anchorHref();
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+void QTextCharFormat_SetAnchorName(QTextCharFormat* self, libqt_string name) {
+    QString name_QString = QString::fromUtf8(name.data, name.len);
+    self->setAnchorName(name_QString);
+}
+
+libqt_string QTextCharFormat_AnchorName(const QTextCharFormat* self) {
+    QString _ret = self->anchorName();
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -668,10 +665,6 @@ void QTextCharFormat_SetTableCellColumnSpan(QTextCharFormat* self, int tableCell
 
 int QTextCharFormat_TableCellColumnSpan(const QTextCharFormat* self) {
     return self->tableCellColumnSpan();
-}
-
-void QTextCharFormat_SetFont2(QTextCharFormat* self, QFont* font, int behavior) {
-    self->setFont(*font, static_cast<QTextCharFormat::FontPropertiesInheritanceBehavior>(behavior));
 }
 
 void QTextCharFormat_SetFontStyleHint2(QTextCharFormat* self, int hint, int strategy) {
@@ -932,16 +925,16 @@ double QTextImageFormat_Height(const QTextImageFormat* self) {
     return static_cast<double>(self->height());
 }
 
-void QTextImageFormat_SetQuality(QTextImageFormat* self, int quality) {
-    self->setQuality(static_cast<int>(quality));
-}
-
-void QTextImageFormat_SetQuality2(QTextImageFormat* self) {
+void QTextImageFormat_SetQuality(QTextImageFormat* self) {
     self->setQuality();
 }
 
 int QTextImageFormat_Quality(const QTextImageFormat* self) {
     return self->quality();
+}
+
+void QTextImageFormat_SetQuality1(QTextImageFormat* self, int quality) {
+    self->setQuality(static_cast<int>(quality));
 }
 
 void QTextImageFormat_Delete(QTextImageFormat* self) {
@@ -1093,7 +1086,7 @@ void QTextTableFormat_SetColumns(QTextTableFormat* self, int columns) {
 }
 
 void QTextTableFormat_SetColumnWidthConstraints(QTextTableFormat* self, libqt_list /* of QTextLength* */ constraints) {
-    QList<QTextLength> constraints_QList;
+    QVector<QTextLength> constraints_QList;
     constraints_QList.reserve(constraints.len);
     QTextLength** constraints_arr = static_cast<QTextLength**>(constraints.data);
     for (size_t i = 0; i < constraints.len; ++i) {
@@ -1103,7 +1096,7 @@ void QTextTableFormat_SetColumnWidthConstraints(QTextTableFormat* self, libqt_li
 }
 
 libqt_list /* of QTextLength* */ QTextTableFormat_ColumnWidthConstraints(const QTextTableFormat* self) {
-    QList<QTextLength> _ret = self->columnWidthConstraints();
+    QVector<QTextLength> _ret = self->columnWidthConstraints();
     // Convert QList<> from C++ memory to manually-managed C memory
     QTextLength** _arr = static_cast<QTextLength**>(malloc(sizeof(QTextLength*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

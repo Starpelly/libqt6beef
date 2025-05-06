@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,7 +19,7 @@ class VirtualQFile : public QFile {
     // Virtual class public types (including callbacks)
     using QFile_Metacall_Callback = int (*)(QFile*, QMetaObject::Call, int, void**);
     using QFile_FileName_Callback = QString (*)();
-    using QFile_Open_Callback = bool (*)(QFile*, QIODeviceBase::OpenMode);
+    using QFile_Open_Callback = bool (*)(QFile*, QIODevice::OpenMode);
     using QFile_Size_Callback = qint64 (*)();
     using QFile_Resize_Callback = bool (*)(QFile*, qint64);
     using QFile_Permissions_Callback = QFileDevice::Permissions (*)();
@@ -36,7 +38,6 @@ class VirtualQFile : public QFile {
     using QFile_CanReadLine_Callback = bool (*)();
     using QFile_WaitForReadyRead_Callback = bool (*)(QFile*, int);
     using QFile_WaitForBytesWritten_Callback = bool (*)(QFile*, int);
-    using QFile_SkipData_Callback = qint64 (*)(QFile*, qint64);
     using QFile_Event_Callback = bool (*)(QFile*, QEvent*);
     using QFile_EventFilter_Callback = bool (*)(QFile*, QObject*, QEvent*);
     using QFile_TimerEvent_Callback = void (*)(QFile*, QTimerEvent*);
@@ -44,7 +45,7 @@ class VirtualQFile : public QFile {
     using QFile_CustomEvent_Callback = void (*)(QFile*, QEvent*);
     using QFile_ConnectNotify_Callback = void (*)(QFile*, const QMetaMethod&);
     using QFile_DisconnectNotify_Callback = void (*)(QFile*, const QMetaMethod&);
-    using QFile_SetOpenMode_Callback = void (*)(QFile*, QIODeviceBase::OpenMode);
+    using QFile_SetOpenMode_Callback = void (*)(QFile*, QIODevice::OpenMode);
     using QFile_SetErrorString_Callback = void (*)(QFile*, const QString&);
     using QFile_Sender_Callback = QObject* (*)();
     using QFile_SenderSignalIndex_Callback = int (*)();
@@ -74,7 +75,6 @@ class VirtualQFile : public QFile {
     QFile_CanReadLine_Callback qfile_canreadline_callback = nullptr;
     QFile_WaitForReadyRead_Callback qfile_waitforreadyread_callback = nullptr;
     QFile_WaitForBytesWritten_Callback qfile_waitforbyteswritten_callback = nullptr;
-    QFile_SkipData_Callback qfile_skipdata_callback = nullptr;
     QFile_Event_Callback qfile_event_callback = nullptr;
     QFile_EventFilter_Callback qfile_eventfilter_callback = nullptr;
     QFile_TimerEvent_Callback qfile_timerevent_callback = nullptr;
@@ -111,7 +111,6 @@ class VirtualQFile : public QFile {
     mutable bool qfile_canreadline_isbase = false;
     mutable bool qfile_waitforreadyread_isbase = false;
     mutable bool qfile_waitforbyteswritten_isbase = false;
-    mutable bool qfile_skipdata_isbase = false;
     mutable bool qfile_event_isbase = false;
     mutable bool qfile_eventfilter_isbase = false;
     mutable bool qfile_timerevent_isbase = false;
@@ -154,7 +153,6 @@ class VirtualQFile : public QFile {
         qfile_canreadline_callback = nullptr;
         qfile_waitforreadyread_callback = nullptr;
         qfile_waitforbyteswritten_callback = nullptr;
-        qfile_skipdata_callback = nullptr;
         qfile_event_callback = nullptr;
         qfile_eventfilter_callback = nullptr;
         qfile_timerevent_callback = nullptr;
@@ -192,7 +190,6 @@ class VirtualQFile : public QFile {
     void setQFile_CanReadLine_Callback(QFile_CanReadLine_Callback cb) { qfile_canreadline_callback = cb; }
     void setQFile_WaitForReadyRead_Callback(QFile_WaitForReadyRead_Callback cb) { qfile_waitforreadyread_callback = cb; }
     void setQFile_WaitForBytesWritten_Callback(QFile_WaitForBytesWritten_Callback cb) { qfile_waitforbyteswritten_callback = cb; }
-    void setQFile_SkipData_Callback(QFile_SkipData_Callback cb) { qfile_skipdata_callback = cb; }
     void setQFile_Event_Callback(QFile_Event_Callback cb) { qfile_event_callback = cb; }
     void setQFile_EventFilter_Callback(QFile_EventFilter_Callback cb) { qfile_eventfilter_callback = cb; }
     void setQFile_TimerEvent_Callback(QFile_TimerEvent_Callback cb) { qfile_timerevent_callback = cb; }
@@ -229,7 +226,6 @@ class VirtualQFile : public QFile {
     void setQFile_CanReadLine_IsBase(bool value) const { qfile_canreadline_isbase = value; }
     void setQFile_WaitForReadyRead_IsBase(bool value) const { qfile_waitforreadyread_isbase = value; }
     void setQFile_WaitForBytesWritten_IsBase(bool value) const { qfile_waitforbyteswritten_isbase = value; }
-    void setQFile_SkipData_IsBase(bool value) const { qfile_skipdata_isbase = value; }
     void setQFile_Event_IsBase(bool value) const { qfile_event_isbase = value; }
     void setQFile_EventFilter_IsBase(bool value) const { qfile_eventfilter_isbase = value; }
     void setQFile_TimerEvent_IsBase(bool value) const { qfile_timerevent_isbase = value; }
@@ -269,7 +265,7 @@ class VirtualQFile : public QFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODeviceBase::OpenMode flags) override {
+    virtual bool open(QIODevice::OpenMode flags) override {
         if (qfile_open_isbase) {
             qfile_open_isbase = false;
             return QFile::open(flags);
@@ -497,18 +493,6 @@ class VirtualQFile : public QFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual qint64 skipData(qint64 maxSize) override {
-        if (qfile_skipdata_isbase) {
-            qfile_skipdata_isbase = false;
-            return QFile::skipData(maxSize);
-        } else if (qfile_skipdata_callback != nullptr) {
-            return qfile_skipdata_callback(this, maxSize);
-        } else {
-            return QFile::skipData(maxSize);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool event(QEvent* event) override {
         if (qfile_event_isbase) {
             qfile_event_isbase = false;
@@ -593,7 +577,7 @@ class VirtualQFile : public QFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODeviceBase::OpenMode openMode) {
+    void setOpenMode(QIODevice::OpenMode openMode) {
         if (qfile_setopenmode_isbase) {
             qfile_setopenmode_isbase = false;
             QFile::setOpenMode(openMode);

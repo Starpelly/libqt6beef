@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -16,8 +18,6 @@ class VirtualQFormLayout : public QFormLayout {
   public:
     // Virtual class public types (including callbacks)
     using QFormLayout_Metacall_Callback = int (*)(QFormLayout*, QMetaObject::Call, int, void**);
-    using QFormLayout_Spacing_Callback = int (*)();
-    using QFormLayout_SetSpacing_Callback = void (*)(QFormLayout*, int);
     using QFormLayout_AddItem_Callback = void (*)(QFormLayout*, QLayoutItem*);
     using QFormLayout_ItemAtWithIndex_Callback = QLayoutItem* (*)(const QFormLayout*, int);
     using QFormLayout_TakeAt_Callback = QLayoutItem* (*)(QFormLayout*, int);
@@ -31,10 +31,9 @@ class VirtualQFormLayout : public QFormLayout {
     using QFormLayout_Count_Callback = int (*)();
     using QFormLayout_Geometry_Callback = QRect (*)();
     using QFormLayout_MaximumSize_Callback = QSize (*)();
-    using QFormLayout_IndexOf_Callback = int (*)(const QFormLayout*, const QWidget*);
+    using QFormLayout_IndexOf_Callback = int (*)(const QFormLayout*, QWidget*);
     using QFormLayout_IsEmpty_Callback = bool (*)();
     using QFormLayout_ControlTypes_Callback = QSizePolicy::ControlTypes (*)();
-    using QFormLayout_ReplaceWidget_Callback = QLayoutItem* (*)(QFormLayout*, QWidget*, QWidget*, Qt::FindChildOptions);
     using QFormLayout_Layout_Callback = QLayout* (*)();
     using QFormLayout_ChildEvent_Callback = void (*)(QFormLayout*, QChildEvent*);
     using QFormLayout_Event_Callback = bool (*)(QFormLayout*, QEvent*);
@@ -59,8 +58,6 @@ class VirtualQFormLayout : public QFormLayout {
   protected:
     // Instance callback storage
     QFormLayout_Metacall_Callback qformlayout_metacall_callback = nullptr;
-    QFormLayout_Spacing_Callback qformlayout_spacing_callback = nullptr;
-    QFormLayout_SetSpacing_Callback qformlayout_setspacing_callback = nullptr;
     QFormLayout_AddItem_Callback qformlayout_additem_callback = nullptr;
     QFormLayout_ItemAtWithIndex_Callback qformlayout_itematwithindex_callback = nullptr;
     QFormLayout_TakeAt_Callback qformlayout_takeat_callback = nullptr;
@@ -77,7 +74,6 @@ class VirtualQFormLayout : public QFormLayout {
     QFormLayout_IndexOf_Callback qformlayout_indexof_callback = nullptr;
     QFormLayout_IsEmpty_Callback qformlayout_isempty_callback = nullptr;
     QFormLayout_ControlTypes_Callback qformlayout_controltypes_callback = nullptr;
-    QFormLayout_ReplaceWidget_Callback qformlayout_replacewidget_callback = nullptr;
     QFormLayout_Layout_Callback qformlayout_layout_callback = nullptr;
     QFormLayout_ChildEvent_Callback qformlayout_childevent_callback = nullptr;
     QFormLayout_Event_Callback qformlayout_event_callback = nullptr;
@@ -101,8 +97,6 @@ class VirtualQFormLayout : public QFormLayout {
 
     // Instance base flags
     mutable bool qformlayout_metacall_isbase = false;
-    mutable bool qformlayout_spacing_isbase = false;
-    mutable bool qformlayout_setspacing_isbase = false;
     mutable bool qformlayout_additem_isbase = false;
     mutable bool qformlayout_itematwithindex_isbase = false;
     mutable bool qformlayout_takeat_isbase = false;
@@ -119,7 +113,6 @@ class VirtualQFormLayout : public QFormLayout {
     mutable bool qformlayout_indexof_isbase = false;
     mutable bool qformlayout_isempty_isbase = false;
     mutable bool qformlayout_controltypes_isbase = false;
-    mutable bool qformlayout_replacewidget_isbase = false;
     mutable bool qformlayout_layout_isbase = false;
     mutable bool qformlayout_childevent_isbase = false;
     mutable bool qformlayout_event_isbase = false;
@@ -147,8 +140,6 @@ class VirtualQFormLayout : public QFormLayout {
 
     ~VirtualQFormLayout() {
         qformlayout_metacall_callback = nullptr;
-        qformlayout_spacing_callback = nullptr;
-        qformlayout_setspacing_callback = nullptr;
         qformlayout_additem_callback = nullptr;
         qformlayout_itematwithindex_callback = nullptr;
         qformlayout_takeat_callback = nullptr;
@@ -165,7 +156,6 @@ class VirtualQFormLayout : public QFormLayout {
         qformlayout_indexof_callback = nullptr;
         qformlayout_isempty_callback = nullptr;
         qformlayout_controltypes_callback = nullptr;
-        qformlayout_replacewidget_callback = nullptr;
         qformlayout_layout_callback = nullptr;
         qformlayout_childevent_callback = nullptr;
         qformlayout_event_callback = nullptr;
@@ -190,8 +180,6 @@ class VirtualQFormLayout : public QFormLayout {
 
     // Callback setters
     void setQFormLayout_Metacall_Callback(QFormLayout_Metacall_Callback cb) { qformlayout_metacall_callback = cb; }
-    void setQFormLayout_Spacing_Callback(QFormLayout_Spacing_Callback cb) { qformlayout_spacing_callback = cb; }
-    void setQFormLayout_SetSpacing_Callback(QFormLayout_SetSpacing_Callback cb) { qformlayout_setspacing_callback = cb; }
     void setQFormLayout_AddItem_Callback(QFormLayout_AddItem_Callback cb) { qformlayout_additem_callback = cb; }
     void setQFormLayout_ItemAtWithIndex_Callback(QFormLayout_ItemAtWithIndex_Callback cb) { qformlayout_itematwithindex_callback = cb; }
     void setQFormLayout_TakeAt_Callback(QFormLayout_TakeAt_Callback cb) { qformlayout_takeat_callback = cb; }
@@ -208,7 +196,6 @@ class VirtualQFormLayout : public QFormLayout {
     void setQFormLayout_IndexOf_Callback(QFormLayout_IndexOf_Callback cb) { qformlayout_indexof_callback = cb; }
     void setQFormLayout_IsEmpty_Callback(QFormLayout_IsEmpty_Callback cb) { qformlayout_isempty_callback = cb; }
     void setQFormLayout_ControlTypes_Callback(QFormLayout_ControlTypes_Callback cb) { qformlayout_controltypes_callback = cb; }
-    void setQFormLayout_ReplaceWidget_Callback(QFormLayout_ReplaceWidget_Callback cb) { qformlayout_replacewidget_callback = cb; }
     void setQFormLayout_Layout_Callback(QFormLayout_Layout_Callback cb) { qformlayout_layout_callback = cb; }
     void setQFormLayout_ChildEvent_Callback(QFormLayout_ChildEvent_Callback cb) { qformlayout_childevent_callback = cb; }
     void setQFormLayout_Event_Callback(QFormLayout_Event_Callback cb) { qformlayout_event_callback = cb; }
@@ -232,8 +219,6 @@ class VirtualQFormLayout : public QFormLayout {
 
     // Base flag setters
     void setQFormLayout_Metacall_IsBase(bool value) const { qformlayout_metacall_isbase = value; }
-    void setQFormLayout_Spacing_IsBase(bool value) const { qformlayout_spacing_isbase = value; }
-    void setQFormLayout_SetSpacing_IsBase(bool value) const { qformlayout_setspacing_isbase = value; }
     void setQFormLayout_AddItem_IsBase(bool value) const { qformlayout_additem_isbase = value; }
     void setQFormLayout_ItemAtWithIndex_IsBase(bool value) const { qformlayout_itematwithindex_isbase = value; }
     void setQFormLayout_TakeAt_IsBase(bool value) const { qformlayout_takeat_isbase = value; }
@@ -250,7 +235,6 @@ class VirtualQFormLayout : public QFormLayout {
     void setQFormLayout_IndexOf_IsBase(bool value) const { qformlayout_indexof_isbase = value; }
     void setQFormLayout_IsEmpty_IsBase(bool value) const { qformlayout_isempty_isbase = value; }
     void setQFormLayout_ControlTypes_IsBase(bool value) const { qformlayout_controltypes_isbase = value; }
-    void setQFormLayout_ReplaceWidget_IsBase(bool value) const { qformlayout_replacewidget_isbase = value; }
     void setQFormLayout_Layout_IsBase(bool value) const { qformlayout_layout_isbase = value; }
     void setQFormLayout_ChildEvent_IsBase(bool value) const { qformlayout_childevent_isbase = value; }
     void setQFormLayout_Event_IsBase(bool value) const { qformlayout_event_isbase = value; }
@@ -281,30 +265,6 @@ class VirtualQFormLayout : public QFormLayout {
             return qformlayout_metacall_callback(this, param1, param2, param3);
         } else {
             return QFormLayout::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual int spacing() const override {
-        if (qformlayout_spacing_isbase) {
-            qformlayout_spacing_isbase = false;
-            return QFormLayout::spacing();
-        } else if (qformlayout_spacing_callback != nullptr) {
-            return qformlayout_spacing_callback();
-        } else {
-            return QFormLayout::spacing();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void setSpacing(int spacing) override {
-        if (qformlayout_setspacing_isbase) {
-            qformlayout_setspacing_isbase = false;
-            QFormLayout::setSpacing(spacing);
-        } else if (qformlayout_setspacing_callback != nullptr) {
-            qformlayout_setspacing_callback(this, spacing);
-        } else {
-            QFormLayout::setSpacing(spacing);
         }
     }
 
@@ -465,7 +425,7 @@ class VirtualQFormLayout : public QFormLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual int indexOf(const QWidget* param1) const override {
+    virtual int indexOf(QWidget* param1) const override {
         if (qformlayout_indexof_isbase) {
             qformlayout_indexof_isbase = false;
             return QFormLayout::indexOf(param1);
@@ -497,18 +457,6 @@ class VirtualQFormLayout : public QFormLayout {
             return qformlayout_controltypes_callback();
         } else {
             return QFormLayout::controlTypes();
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QLayoutItem* replaceWidget(QWidget* from, QWidget* to, Qt::FindChildOptions options) override {
-        if (qformlayout_replacewidget_isbase) {
-            qformlayout_replacewidget_isbase = false;
-            return QFormLayout::replaceWidget(from, to, options);
-        } else if (qformlayout_replacewidget_callback != nullptr) {
-            return qformlayout_replacewidget_callback(this, from, to, options);
-        } else {
-            return QFormLayout::replaceWidget(from, to, options);
         }
     }
 
@@ -621,7 +569,7 @@ class VirtualQFormLayout : public QFormLayout {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual QWidget* widget() const override {
+    virtual QWidget* widget() override {
         if (qformlayout_widget_isbase) {
             qformlayout_widget_isbase = false;
             return QFormLayout::widget();

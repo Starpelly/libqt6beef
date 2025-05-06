@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QFileSystemWatcher QFileSystemWatcher;
@@ -28,6 +28,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
@@ -43,6 +44,7 @@ int QFileSystemWatcher_Metacall(QFileSystemWatcher* self, int param1, int param2
 void QFileSystemWatcher_OnMetacall(QFileSystemWatcher* self, intptr_t slot);
 int QFileSystemWatcher_QBaseMetacall(QFileSystemWatcher* self, int param1, int param2, void** param3);
 libqt_string QFileSystemWatcher_Tr(const char* s);
+libqt_string QFileSystemWatcher_TrUtf8(const char* s);
 bool QFileSystemWatcher_AddPath(QFileSystemWatcher* self, libqt_string file);
 libqt_list /* of libqt_string */ QFileSystemWatcher_AddPaths(QFileSystemWatcher* self, libqt_list /* of libqt_string */ files);
 bool QFileSystemWatcher_RemovePath(QFileSystemWatcher* self, libqt_string file);
@@ -51,6 +53,8 @@ libqt_list /* of libqt_string */ QFileSystemWatcher_Files(const QFileSystemWatch
 libqt_list /* of libqt_string */ QFileSystemWatcher_Directories(const QFileSystemWatcher* self);
 libqt_string QFileSystemWatcher_Tr2(const char* s, const char* c);
 libqt_string QFileSystemWatcher_Tr3(const char* s, const char* c, int n);
+libqt_string QFileSystemWatcher_TrUtf82(const char* s, const char* c);
+libqt_string QFileSystemWatcher_TrUtf83(const char* s, const char* c, int n);
 bool QFileSystemWatcher_Event(QFileSystemWatcher* self, QEvent* event);
 void QFileSystemWatcher_OnEvent(QFileSystemWatcher* self, intptr_t slot);
 bool QFileSystemWatcher_QBaseEvent(QFileSystemWatcher* self, QEvent* event);

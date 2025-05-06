@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -55,6 +54,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -62,7 +62,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -96,6 +95,7 @@ int QRubberBand_Metacall(QRubberBand* self, int param1, int param2, void** param
 void QRubberBand_OnMetacall(QRubberBand* self, intptr_t slot);
 int QRubberBand_QBaseMetacall(QRubberBand* self, int param1, int param2, void** param3);
 libqt_string QRubberBand_Tr(const char* s);
+libqt_string QRubberBand_TrUtf8(const char* s);
 int QRubberBand_Shape(const QRubberBand* self);
 void QRubberBand_SetGeometry(QRubberBand* self, QRect* r);
 void QRubberBand_SetGeometry2(QRubberBand* self, int x, int y, int w, int h);
@@ -121,11 +121,10 @@ void QRubberBand_QBaseResizeEvent(QRubberBand* self, QResizeEvent* param1);
 void QRubberBand_MoveEvent(QRubberBand* self, QMoveEvent* param1);
 void QRubberBand_OnMoveEvent(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseMoveEvent(QRubberBand* self, QMoveEvent* param1);
-void QRubberBand_InitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option);
-void QRubberBand_OnInitStyleOption(const QRubberBand* self, intptr_t slot);
-void QRubberBand_QBaseInitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option);
 libqt_string QRubberBand_Tr2(const char* s, const char* c);
 libqt_string QRubberBand_Tr3(const char* s, const char* c, int n);
+libqt_string QRubberBand_TrUtf82(const char* s, const char* c);
+libqt_string QRubberBand_TrUtf83(const char* s, const char* c, int n);
 int QRubberBand_DevType(const QRubberBand* self);
 void QRubberBand_OnDevType(const QRubberBand* self, intptr_t slot);
 int QRubberBand_QBaseDevType(const QRubberBand* self);
@@ -174,9 +173,9 @@ void QRubberBand_QBaseFocusInEvent(QRubberBand* self, QFocusEvent* event);
 void QRubberBand_FocusOutEvent(QRubberBand* self, QFocusEvent* event);
 void QRubberBand_OnFocusOutEvent(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseFocusOutEvent(QRubberBand* self, QFocusEvent* event);
-void QRubberBand_EnterEvent(QRubberBand* self, QEnterEvent* event);
+void QRubberBand_EnterEvent(QRubberBand* self, QEvent* event);
 void QRubberBand_OnEnterEvent(QRubberBand* self, intptr_t slot);
-void QRubberBand_QBaseEnterEvent(QRubberBand* self, QEnterEvent* event);
+void QRubberBand_QBaseEnterEvent(QRubberBand* self, QEvent* event);
 void QRubberBand_LeaveEvent(QRubberBand* self, QEvent* event);
 void QRubberBand_OnLeaveEvent(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseLeaveEvent(QRubberBand* self, QEvent* event);
@@ -207,9 +206,9 @@ void QRubberBand_QBaseDropEvent(QRubberBand* self, QDropEvent* event);
 void QRubberBand_HideEvent(QRubberBand* self, QHideEvent* event);
 void QRubberBand_OnHideEvent(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseHideEvent(QRubberBand* self, QHideEvent* event);
-bool QRubberBand_NativeEvent(QRubberBand* self, libqt_string eventType, void* message, intptr_t* result);
+bool QRubberBand_NativeEvent(QRubberBand* self, libqt_string eventType, void* message, long* result);
 void QRubberBand_OnNativeEvent(QRubberBand* self, intptr_t slot);
-bool QRubberBand_QBaseNativeEvent(QRubberBand* self, libqt_string eventType, void* message, intptr_t* result);
+bool QRubberBand_QBaseNativeEvent(QRubberBand* self, libqt_string eventType, void* message, long* result);
 void QRubberBand_InputMethodEvent(QRubberBand* self, QInputMethodEvent* param1);
 void QRubberBand_OnInputMethodEvent(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseInputMethodEvent(QRubberBand* self, QInputMethodEvent* param1);
@@ -249,6 +248,9 @@ QPaintDevice* QRubberBand_QBaseRedirected(const QRubberBand* self, QPoint* offse
 QPainter* QRubberBand_SharedPainter(const QRubberBand* self);
 void QRubberBand_OnSharedPainter(const QRubberBand* self, intptr_t slot);
 QPainter* QRubberBand_QBaseSharedPainter(const QRubberBand* self);
+void QRubberBand_InitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option);
+void QRubberBand_OnInitStyleOption(const QRubberBand* self, intptr_t slot);
+void QRubberBand_QBaseInitStyleOption(const QRubberBand* self, QStyleOptionRubberBand* option);
 void QRubberBand_UpdateMicroFocus(QRubberBand* self);
 void QRubberBand_OnUpdateMicroFocus(QRubberBand* self, intptr_t slot);
 void QRubberBand_QBaseUpdateMicroFocus(QRubberBand* self);

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,7 +21,7 @@ extern "C" {
 typedef struct QContiguousCacheData QContiguousCacheData;
 #endif
 
-QContiguousCacheData* QContiguousCacheData_AllocateData(ptrdiff_t size, ptrdiff_t alignment);
+QContiguousCacheData* QContiguousCacheData_AllocateData(int size, int alignment);
 void QContiguousCacheData_FreeData(QContiguousCacheData* data);
 void QContiguousCacheData_Delete(QContiguousCacheData* self);
 

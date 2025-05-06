@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -31,6 +33,7 @@ typedef int SingleDashWordOptionMode;            // C ABI enum
 
 QCommandLineParser* QCommandLineParser_new();
 libqt_string QCommandLineParser_Tr(const char* sourceText);
+libqt_string QCommandLineParser_TrUtf8(const char* sourceText);
 void QCommandLineParser_SetSingleDashWordOptionMode(QCommandLineParser* self, int parsingMode);
 void QCommandLineParser_SetOptionsAfterPositionalArgumentsMode(QCommandLineParser* self, int mode);
 bool QCommandLineParser_AddOption(QCommandLineParser* self, QCommandLineOption* commandLineOption);
@@ -54,13 +57,12 @@ libqt_list /* of libqt_string */ QCommandLineParser_ValuesWithOption(const QComm
 libqt_list /* of libqt_string */ QCommandLineParser_PositionalArguments(const QCommandLineParser* self);
 libqt_list /* of libqt_string */ QCommandLineParser_OptionNames(const QCommandLineParser* self);
 libqt_list /* of libqt_string */ QCommandLineParser_UnknownOptionNames(const QCommandLineParser* self);
-void QCommandLineParser_ShowVersion(QCommandLineParser* self);
-void QCommandLineParser_ShowHelp(QCommandLineParser* self);
 libqt_string QCommandLineParser_HelpText(const QCommandLineParser* self);
 libqt_string QCommandLineParser_Tr2(const char* sourceText, const char* disambiguation);
 libqt_string QCommandLineParser_Tr3(const char* sourceText, const char* disambiguation, int n);
+libqt_string QCommandLineParser_TrUtf82(const char* sourceText, const char* disambiguation);
+libqt_string QCommandLineParser_TrUtf83(const char* sourceText, const char* disambiguation, int n);
 void QCommandLineParser_AddPositionalArgument3(QCommandLineParser* self, libqt_string name, libqt_string description, libqt_string syntax);
-void QCommandLineParser_ShowHelp1(QCommandLineParser* self, int exitCode);
 void QCommandLineParser_Delete(QCommandLineParser* self);
 
 #ifdef __cplusplus

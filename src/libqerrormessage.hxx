@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -44,7 +46,7 @@ class VirtualQErrorMessage : public QErrorMessage {
     using QErrorMessage_KeyReleaseEvent_Callback = void (*)(QErrorMessage*, QKeyEvent*);
     using QErrorMessage_FocusInEvent_Callback = void (*)(QErrorMessage*, QFocusEvent*);
     using QErrorMessage_FocusOutEvent_Callback = void (*)(QErrorMessage*, QFocusEvent*);
-    using QErrorMessage_EnterEvent_Callback = void (*)(QErrorMessage*, QEnterEvent*);
+    using QErrorMessage_EnterEvent_Callback = void (*)(QErrorMessage*, QEvent*);
     using QErrorMessage_LeaveEvent_Callback = void (*)(QErrorMessage*, QEvent*);
     using QErrorMessage_PaintEvent_Callback = void (*)(QErrorMessage*, QPaintEvent*);
     using QErrorMessage_MoveEvent_Callback = void (*)(QErrorMessage*, QMoveEvent*);
@@ -55,7 +57,7 @@ class VirtualQErrorMessage : public QErrorMessage {
     using QErrorMessage_DragLeaveEvent_Callback = void (*)(QErrorMessage*, QDragLeaveEvent*);
     using QErrorMessage_DropEvent_Callback = void (*)(QErrorMessage*, QDropEvent*);
     using QErrorMessage_HideEvent_Callback = void (*)(QErrorMessage*, QHideEvent*);
-    using QErrorMessage_NativeEvent_Callback = bool (*)(QErrorMessage*, const QByteArray&, void*, qintptr*);
+    using QErrorMessage_NativeEvent_Callback = bool (*)(QErrorMessage*, const QByteArray&, void*, long*);
     using QErrorMessage_Metric_Callback = int (*)(const QErrorMessage*, QPaintDevice::PaintDeviceMetric);
     using QErrorMessage_InitPainter_Callback = void (*)(const QErrorMessage*, QPainter*);
     using QErrorMessage_Redirected_Callback = QPaintDevice* (*)(const QErrorMessage*, QPoint*);
@@ -759,7 +761,7 @@ class VirtualQErrorMessage : public QErrorMessage {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qerrormessage_enterevent_isbase) {
             qerrormessage_enterevent_isbase = false;
             QErrorMessage::enterEvent(event);
@@ -891,7 +893,7 @@ class VirtualQErrorMessage : public QErrorMessage {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qerrormessage_nativeevent_isbase) {
             qerrormessage_nativeevent_isbase = false;
             return QErrorMessage::nativeEvent(eventType, message, result);

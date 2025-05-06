@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,7 +19,7 @@ class VirtualQSaveFile : public QSaveFile {
     // Virtual class public types (including callbacks)
     using QSaveFile_Metacall_Callback = int (*)(QSaveFile*, QMetaObject::Call, int, void**);
     using QSaveFile_FileName_Callback = QString (*)();
-    using QSaveFile_Open_Callback = bool (*)(QSaveFile*, QIODeviceBase::OpenMode);
+    using QSaveFile_Open_Callback = bool (*)(QSaveFile*, QIODevice::OpenMode);
     using QSaveFile_WriteData_Callback = qint64 (*)(QSaveFile*, const char*, qint64);
     using QSaveFile_IsSequential_Callback = bool (*)();
     using QSaveFile_Pos_Callback = qint64 (*)();
@@ -35,7 +37,6 @@ class VirtualQSaveFile : public QSaveFile {
     using QSaveFile_CanReadLine_Callback = bool (*)();
     using QSaveFile_WaitForReadyRead_Callback = bool (*)(QSaveFile*, int);
     using QSaveFile_WaitForBytesWritten_Callback = bool (*)(QSaveFile*, int);
-    using QSaveFile_SkipData_Callback = qint64 (*)(QSaveFile*, qint64);
     using QSaveFile_Event_Callback = bool (*)(QSaveFile*, QEvent*);
     using QSaveFile_EventFilter_Callback = bool (*)(QSaveFile*, QObject*, QEvent*);
     using QSaveFile_TimerEvent_Callback = void (*)(QSaveFile*, QTimerEvent*);
@@ -43,7 +44,7 @@ class VirtualQSaveFile : public QSaveFile {
     using QSaveFile_CustomEvent_Callback = void (*)(QSaveFile*, QEvent*);
     using QSaveFile_ConnectNotify_Callback = void (*)(QSaveFile*, const QMetaMethod&);
     using QSaveFile_DisconnectNotify_Callback = void (*)(QSaveFile*, const QMetaMethod&);
-    using QSaveFile_SetOpenMode_Callback = void (*)(QSaveFile*, QIODeviceBase::OpenMode);
+    using QSaveFile_SetOpenMode_Callback = void (*)(QSaveFile*, QIODevice::OpenMode);
     using QSaveFile_SetErrorString_Callback = void (*)(QSaveFile*, const QString&);
     using QSaveFile_Sender_Callback = QObject* (*)();
     using QSaveFile_SenderSignalIndex_Callback = int (*)();
@@ -72,7 +73,6 @@ class VirtualQSaveFile : public QSaveFile {
     QSaveFile_CanReadLine_Callback qsavefile_canreadline_callback = nullptr;
     QSaveFile_WaitForReadyRead_Callback qsavefile_waitforreadyread_callback = nullptr;
     QSaveFile_WaitForBytesWritten_Callback qsavefile_waitforbyteswritten_callback = nullptr;
-    QSaveFile_SkipData_Callback qsavefile_skipdata_callback = nullptr;
     QSaveFile_Event_Callback qsavefile_event_callback = nullptr;
     QSaveFile_EventFilter_Callback qsavefile_eventfilter_callback = nullptr;
     QSaveFile_TimerEvent_Callback qsavefile_timerevent_callback = nullptr;
@@ -108,7 +108,6 @@ class VirtualQSaveFile : public QSaveFile {
     mutable bool qsavefile_canreadline_isbase = false;
     mutable bool qsavefile_waitforreadyread_isbase = false;
     mutable bool qsavefile_waitforbyteswritten_isbase = false;
-    mutable bool qsavefile_skipdata_isbase = false;
     mutable bool qsavefile_event_isbase = false;
     mutable bool qsavefile_eventfilter_isbase = false;
     mutable bool qsavefile_timerevent_isbase = false;
@@ -150,7 +149,6 @@ class VirtualQSaveFile : public QSaveFile {
         qsavefile_canreadline_callback = nullptr;
         qsavefile_waitforreadyread_callback = nullptr;
         qsavefile_waitforbyteswritten_callback = nullptr;
-        qsavefile_skipdata_callback = nullptr;
         qsavefile_event_callback = nullptr;
         qsavefile_eventfilter_callback = nullptr;
         qsavefile_timerevent_callback = nullptr;
@@ -187,7 +185,6 @@ class VirtualQSaveFile : public QSaveFile {
     void setQSaveFile_CanReadLine_Callback(QSaveFile_CanReadLine_Callback cb) { qsavefile_canreadline_callback = cb; }
     void setQSaveFile_WaitForReadyRead_Callback(QSaveFile_WaitForReadyRead_Callback cb) { qsavefile_waitforreadyread_callback = cb; }
     void setQSaveFile_WaitForBytesWritten_Callback(QSaveFile_WaitForBytesWritten_Callback cb) { qsavefile_waitforbyteswritten_callback = cb; }
-    void setQSaveFile_SkipData_Callback(QSaveFile_SkipData_Callback cb) { qsavefile_skipdata_callback = cb; }
     void setQSaveFile_Event_Callback(QSaveFile_Event_Callback cb) { qsavefile_event_callback = cb; }
     void setQSaveFile_EventFilter_Callback(QSaveFile_EventFilter_Callback cb) { qsavefile_eventfilter_callback = cb; }
     void setQSaveFile_TimerEvent_Callback(QSaveFile_TimerEvent_Callback cb) { qsavefile_timerevent_callback = cb; }
@@ -223,7 +220,6 @@ class VirtualQSaveFile : public QSaveFile {
     void setQSaveFile_CanReadLine_IsBase(bool value) const { qsavefile_canreadline_isbase = value; }
     void setQSaveFile_WaitForReadyRead_IsBase(bool value) const { qsavefile_waitforreadyread_isbase = value; }
     void setQSaveFile_WaitForBytesWritten_IsBase(bool value) const { qsavefile_waitforbyteswritten_isbase = value; }
-    void setQSaveFile_SkipData_IsBase(bool value) const { qsavefile_skipdata_isbase = value; }
     void setQSaveFile_Event_IsBase(bool value) const { qsavefile_event_isbase = value; }
     void setQSaveFile_EventFilter_IsBase(bool value) const { qsavefile_eventfilter_isbase = value; }
     void setQSaveFile_TimerEvent_IsBase(bool value) const { qsavefile_timerevent_isbase = value; }
@@ -263,7 +259,7 @@ class VirtualQSaveFile : public QSaveFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool open(QIODeviceBase::OpenMode flags) override {
+    virtual bool open(QIODevice::OpenMode flags) override {
         if (qsavefile_open_isbase) {
             qsavefile_open_isbase = false;
             return QSaveFile::open(flags);
@@ -479,18 +475,6 @@ class VirtualQSaveFile : public QSaveFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual qint64 skipData(qint64 maxSize) override {
-        if (qsavefile_skipdata_isbase) {
-            qsavefile_skipdata_isbase = false;
-            return QSaveFile::skipData(maxSize);
-        } else if (qsavefile_skipdata_callback != nullptr) {
-            return qsavefile_skipdata_callback(this, maxSize);
-        } else {
-            return QSaveFile::skipData(maxSize);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual bool event(QEvent* event) override {
         if (qsavefile_event_isbase) {
             qsavefile_event_isbase = false;
@@ -575,7 +559,7 @@ class VirtualQSaveFile : public QSaveFile {
     }
 
     // Virtual method for C ABI access and custom callback
-    void setOpenMode(QIODeviceBase::OpenMode openMode) {
+    void setOpenMode(QIODevice::OpenMode openMode) {
         if (qsavefile_setopenmode_isbase) {
             qsavefile_setopenmode_isbase = false;
             QSaveFile::setOpenMode(openMode);

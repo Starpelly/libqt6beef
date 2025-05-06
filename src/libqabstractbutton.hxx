@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -39,7 +41,7 @@ class VirtualQAbstractButton : public QAbstractButton {
     using QAbstractButton_PaintEngine_Callback = QPaintEngine* (*)();
     using QAbstractButton_MouseDoubleClickEvent_Callback = void (*)(QAbstractButton*, QMouseEvent*);
     using QAbstractButton_WheelEvent_Callback = void (*)(QAbstractButton*, QWheelEvent*);
-    using QAbstractButton_EnterEvent_Callback = void (*)(QAbstractButton*, QEnterEvent*);
+    using QAbstractButton_EnterEvent_Callback = void (*)(QAbstractButton*, QEvent*);
     using QAbstractButton_LeaveEvent_Callback = void (*)(QAbstractButton*, QEvent*);
     using QAbstractButton_MoveEvent_Callback = void (*)(QAbstractButton*, QMoveEvent*);
     using QAbstractButton_ResizeEvent_Callback = void (*)(QAbstractButton*, QResizeEvent*);
@@ -53,7 +55,7 @@ class VirtualQAbstractButton : public QAbstractButton {
     using QAbstractButton_DropEvent_Callback = void (*)(QAbstractButton*, QDropEvent*);
     using QAbstractButton_ShowEvent_Callback = void (*)(QAbstractButton*, QShowEvent*);
     using QAbstractButton_HideEvent_Callback = void (*)(QAbstractButton*, QHideEvent*);
-    using QAbstractButton_NativeEvent_Callback = bool (*)(QAbstractButton*, const QByteArray&, void*, qintptr*);
+    using QAbstractButton_NativeEvent_Callback = bool (*)(QAbstractButton*, const QByteArray&, void*, long*);
     using QAbstractButton_Metric_Callback = int (*)(const QAbstractButton*, QPaintDevice::PaintDeviceMetric);
     using QAbstractButton_InitPainter_Callback = void (*)(const QAbstractButton*, QPainter*);
     using QAbstractButton_Redirected_Callback = QPaintDevice* (*)(const QAbstractButton*, QPoint*);
@@ -674,7 +676,7 @@ class VirtualQAbstractButton : public QAbstractButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qabstractbutton_enterevent_isbase) {
             qabstractbutton_enterevent_isbase = false;
             QAbstractButton::enterEvent(event);
@@ -842,7 +844,7 @@ class VirtualQAbstractButton : public QAbstractButton {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qabstractbutton_nativeevent_isbase) {
             qabstractbutton_nativeevent_isbase = false;
             return QAbstractButton::nativeEvent(eventType, message, result);

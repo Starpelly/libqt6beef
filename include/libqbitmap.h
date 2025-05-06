@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,6 +23,8 @@ typedef struct QColor QColor;
 typedef struct QIODevice QIODevice;
 typedef struct QImage QImage;
 typedef struct QImageReader QImageReader;
+typedef struct QMatrix QMatrix;
+typedef struct QObject QObject;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPainter QPainter;
@@ -29,7 +33,6 @@ typedef struct QPoint QPoint;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QSize QSize;
-typedef struct QSizeF QSizeF;
 typedef struct QTransform QTransform;
 typedef struct QVariant QVariant;
 #endif
@@ -45,17 +48,17 @@ QBitmap* QBitmap_new2(QPixmap* param1);
 QBitmap* QBitmap_new3(int w, int h);
 QBitmap* QBitmap_new4(QSize* param1);
 QBitmap* QBitmap_new5(libqt_string fileName);
-QBitmap* QBitmap_new6(QBitmap* param1);
+QBitmap* QBitmap_new6(QBitmap* other);
 QBitmap* QBitmap_new7(libqt_string fileName, const char* format);
-void QBitmap_OperatorAssign(QBitmap* self, QPixmap* param1);
+void QBitmap_OperatorAssign(QBitmap* self, QBitmap* other);
+void QBitmap_OperatorAssignWithQPixmap(QBitmap* self, QPixmap* param1);
 void QBitmap_Swap(QBitmap* self, QBitmap* other);
 QVariant* QBitmap_ToQVariant(const QBitmap* self);
 void QBitmap_Clear(QBitmap* self);
 QBitmap* QBitmap_FromImage(QImage* image);
 QBitmap* QBitmap_FromData(QSize* size, const unsigned char* bits);
-QBitmap* QBitmap_FromPixmap(QPixmap* pixmap);
-QBitmap* QBitmap_Transformed(const QBitmap* self, QTransform* matrix);
-void QBitmap_OperatorAssignWithQBitmap(QBitmap* self, QBitmap* param1);
+QBitmap* QBitmap_Transformed(const QBitmap* self, QMatrix* param1);
+QBitmap* QBitmap_TransformedWithMatrix(const QBitmap* self, QTransform* matrix);
 QBitmap* QBitmap_FromImage2(QImage* image, int flags);
 QBitmap* QBitmap_FromData3(QSize* size, const unsigned char* bits, int monoFormat);
 int QBitmap_DevType(const QBitmap* self);

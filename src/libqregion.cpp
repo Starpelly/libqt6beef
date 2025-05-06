@@ -1,4 +1,5 @@
 #include <QBitmap>
+#include <QList>
 #include <QPoint>
 #include <QRect>
 #include <QRegion>
@@ -129,6 +130,19 @@ bool QRegion_IntersectsWithQRect(const QRegion* self, QRect* r) {
 
 QRect* QRegion_BoundingRect(const QRegion* self) {
     return new QRect(self->boundingRect());
+}
+
+libqt_list /* of QRect* */ QRegion_Rects(const QRegion* self) {
+    QVector<QRect> _ret = self->rects();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QRect** _arr = static_cast<QRect**>(malloc(sizeof(QRect*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QRect(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 void QRegion_SetRects(QRegion* self, QRect* rect, int num) {

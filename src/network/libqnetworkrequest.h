@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -71,8 +73,6 @@ libqt_string QNetworkRequest_PeerVerifyName(const QNetworkRequest* self);
 void QNetworkRequest_SetPeerVerifyName(QNetworkRequest* self, libqt_string peerName);
 QHttp2Configuration* QNetworkRequest_Http2Configuration(const QNetworkRequest* self);
 void QNetworkRequest_SetHttp2Configuration(QNetworkRequest* self, QHttp2Configuration* configuration);
-long long QNetworkRequest_DecompressedSafetyCheckThreshold(const QNetworkRequest* self);
-void QNetworkRequest_SetDecompressedSafetyCheckThreshold(QNetworkRequest* self, long long threshold);
 int QNetworkRequest_TransferTimeout(const QNetworkRequest* self);
 void QNetworkRequest_SetTransferTimeout(QNetworkRequest* self);
 QVariant* QNetworkRequest_Attribute2(const QNetworkRequest* self, int code, QVariant* defaultValue);

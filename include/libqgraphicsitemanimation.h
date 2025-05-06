@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,16 +21,16 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QGraphicsItem QGraphicsItem;
 typedef struct QGraphicsItemAnimation QGraphicsItemAnimation;
+typedef struct QMatrix QMatrix;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPointF QPointF;
 typedef struct QThread QThread;
 typedef struct QTimeLine QTimeLine;
@@ -45,6 +47,7 @@ int QGraphicsItemAnimation_Metacall(QGraphicsItemAnimation* self, int param1, in
 void QGraphicsItemAnimation_OnMetacall(QGraphicsItemAnimation* self, intptr_t slot);
 int QGraphicsItemAnimation_QBaseMetacall(QGraphicsItemAnimation* self, int param1, int param2, void** param3);
 libqt_string QGraphicsItemAnimation_Tr(const char* s);
+libqt_string QGraphicsItemAnimation_TrUtf8(const char* s);
 QGraphicsItem* QGraphicsItemAnimation_Item(const QGraphicsItemAnimation* self);
 void QGraphicsItemAnimation_SetItem(QGraphicsItemAnimation* self, QGraphicsItem* item);
 QTimeLine* QGraphicsItemAnimation_TimeLine(const QGraphicsItemAnimation* self);
@@ -52,6 +55,7 @@ void QGraphicsItemAnimation_SetTimeLine(QGraphicsItemAnimation* self, QTimeLine*
 QPointF* QGraphicsItemAnimation_PosAt(const QGraphicsItemAnimation* self, double step);
 libqt_list /* of libqt_pair  tuple of double and QPointF*  */ QGraphicsItemAnimation_PosList(const QGraphicsItemAnimation* self);
 void QGraphicsItemAnimation_SetPosAt(QGraphicsItemAnimation* self, double step, QPointF* pos);
+QMatrix* QGraphicsItemAnimation_MatrixAt(const QGraphicsItemAnimation* self, double step);
 QTransform* QGraphicsItemAnimation_TransformAt(const QGraphicsItemAnimation* self, double step);
 double QGraphicsItemAnimation_RotationAt(const QGraphicsItemAnimation* self, double step);
 libqt_list /* of libqt_pair  tuple of double and double  */ QGraphicsItemAnimation_RotationList(const QGraphicsItemAnimation* self);
@@ -70,6 +74,7 @@ libqt_list /* of libqt_pair  tuple of double and QPointF*  */ QGraphicsItemAnima
 void QGraphicsItemAnimation_SetShearAt(QGraphicsItemAnimation* self, double step, double sh, double sv);
 void QGraphicsItemAnimation_Clear(QGraphicsItemAnimation* self);
 void QGraphicsItemAnimation_SetStep(QGraphicsItemAnimation* self, double x);
+void QGraphicsItemAnimation_Reset(QGraphicsItemAnimation* self);
 void QGraphicsItemAnimation_BeforeAnimationStep(QGraphicsItemAnimation* self, double step);
 void QGraphicsItemAnimation_OnBeforeAnimationStep(QGraphicsItemAnimation* self, intptr_t slot);
 void QGraphicsItemAnimation_QBaseBeforeAnimationStep(QGraphicsItemAnimation* self, double step);
@@ -78,6 +83,8 @@ void QGraphicsItemAnimation_OnAfterAnimationStep(QGraphicsItemAnimation* self, i
 void QGraphicsItemAnimation_QBaseAfterAnimationStep(QGraphicsItemAnimation* self, double step);
 libqt_string QGraphicsItemAnimation_Tr2(const char* s, const char* c);
 libqt_string QGraphicsItemAnimation_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsItemAnimation_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsItemAnimation_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsItemAnimation_Event(QGraphicsItemAnimation* self, QEvent* event);
 void QGraphicsItemAnimation_OnEvent(QGraphicsItemAnimation* self, intptr_t slot);
 bool QGraphicsItemAnimation_QBaseEvent(QGraphicsItemAnimation* self, QEvent* event);

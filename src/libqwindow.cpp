@@ -1,9 +1,6 @@
 #include <QAccessibleInterface>
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
-#include <QCloseEvent>
 #include <QCursor>
 #include <QEvent>
 #include <QExposeEvent>
@@ -19,9 +16,8 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
-#include <QPaintEvent>
+#include <QObjectUserData>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -101,6 +97,18 @@ libqt_string QWindow_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QWindow_TrUtf8(const char* s) {
+    QString _ret = QWindow::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 void QWindow_SetSurfaceType(QWindow* self, int surfaceType) {
     self->setSurfaceType(static_cast<QSurface::SurfaceType>(surfaceType));
 }
@@ -125,7 +133,11 @@ uintptr_t QWindow_WinId(const QWindow* self) {
     return static_cast<uintptr_t>(self->winId());
 }
 
-QWindow* QWindow_Parent(const QWindow* self) {
+QWindow* QWindow_Parent(const QWindow* self, int mode) {
+    return self->parent(static_cast<QWindow::AncestorMode>(mode));
+}
+
+QWindow* QWindow_Parent2(const QWindow* self) {
     return self->parent();
 }
 
@@ -398,19 +410,11 @@ void QWindow_SetScreen(QWindow* self, QScreen* screen) {
     self->setScreen(screen);
 }
 
-QPointF* QWindow_MapToGlobal(const QWindow* self, QPointF* pos) {
-    return new QPointF(self->mapToGlobal(*pos));
-}
-
-QPointF* QWindow_MapFromGlobal(const QWindow* self, QPointF* pos) {
-    return new QPointF(self->mapFromGlobal(*pos));
-}
-
-QPoint* QWindow_MapToGlobalWithPos(const QWindow* self, QPoint* pos) {
+QPoint* QWindow_MapToGlobal(const QWindow* self, QPoint* pos) {
     return new QPoint(self->mapToGlobal(*pos));
 }
 
-QPoint* QWindow_MapFromGlobalWithPos(const QWindow* self, QPoint* pos) {
+QPoint* QWindow_MapFromGlobal(const QWindow* self, QPoint* pos) {
     return new QPoint(self->mapFromGlobal(*pos));
 }
 
@@ -795,8 +799,28 @@ libqt_string QWindow_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
-QWindow* QWindow_Parent1(const QWindow* self, int mode) {
-    return self->parent(static_cast<QWindow::AncestorMode>(mode));
+libqt_string QWindow_TrUtf82(const char* s, const char* c) {
+    QString _ret = QWindow::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWindow_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QWindow::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
 void QWindow_SetFlag2(QWindow* self, int param1, bool on) {
@@ -990,32 +1014,6 @@ void QWindow_OnResizeEvent(QWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QWindow_PaintEvent(QWindow* self, QPaintEvent* param1) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->paintEvent(param1);
-    } else {
-        vqwindow->paintEvent(param1);
-    }
-}
-
-// Base class handler implementation
-void QWindow_QBasePaintEvent(QWindow* self, QPaintEvent* param1) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->setQWindow_PaintEvent_IsBase(true);
-        vqwindow->paintEvent(param1);
-    } else {
-        vqwindow->paintEvent(param1);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWindow_OnPaintEvent(QWindow* self, intptr_t slot) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->setQWindow_PaintEvent_Callback(reinterpret_cast<VirtualQWindow::QWindow_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
 void QWindow_MoveEvent(QWindow* self, QMoveEvent* param1) {
     if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
         vqwindow->moveEvent(param1);
@@ -1142,32 +1140,6 @@ void QWindow_QBaseHideEvent(QWindow* self, QHideEvent* param1) {
 void QWindow_OnHideEvent(QWindow* self, intptr_t slot) {
     if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
         vqwindow->setQWindow_HideEvent_Callback(reinterpret_cast<VirtualQWindow::QWindow_HideEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QWindow_CloseEvent(QWindow* self, QCloseEvent* param1) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->closeEvent(param1);
-    } else {
-        vqwindow->closeEvent(param1);
-    }
-}
-
-// Base class handler implementation
-void QWindow_QBaseCloseEvent(QWindow* self, QCloseEvent* param1) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->setQWindow_CloseEvent_IsBase(true);
-        vqwindow->closeEvent(param1);
-    } else {
-        vqwindow->closeEvent(param1);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWindow_OnCloseEvent(QWindow* self, intptr_t slot) {
-    if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        vqwindow->setQWindow_CloseEvent_Callback(reinterpret_cast<VirtualQWindow::QWindow_CloseEvent_Callback>(slot));
     }
 }
 
@@ -1432,23 +1404,23 @@ void QWindow_OnTabletEvent(QWindow* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QWindow_NativeEvent(QWindow* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWindow_NativeEvent(QWindow* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
-        return vqwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QWindow_QBaseNativeEvent(QWindow* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWindow_QBaseNativeEvent(QWindow* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
         vqwindow->setQWindow_NativeEvent_IsBase(true);
-        return vqwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwindow->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwindow->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1612,32 +1584,6 @@ void QWindow_QBaseDisconnectNotify(QWindow* self, QMetaMethod* signal) {
 void QWindow_OnDisconnectNotify(QWindow* self, intptr_t slot) {
     if (auto* vqwindow = dynamic_cast<VirtualQWindow*>(self)) {
         vqwindow->setQWindow_DisconnectNotify_Callback(reinterpret_cast<VirtualQWindow::QWindow_DisconnectNotify_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void* QWindow_ResolveInterface(const QWindow* self, const char* name, int revision) {
-    if (auto* vqwindow = const_cast<VirtualQWindow*>(dynamic_cast<const VirtualQWindow*>(self))) {
-        return vqwindow->resolveInterface(name, static_cast<int>(revision));
-    } else {
-        return vqwindow->resolveInterface(name, static_cast<int>(revision));
-    }
-}
-
-// Base class handler implementation
-void* QWindow_QBaseResolveInterface(const QWindow* self, const char* name, int revision) {
-    if (auto* vqwindow = const_cast<VirtualQWindow*>(dynamic_cast<const VirtualQWindow*>(self))) {
-        vqwindow->setQWindow_ResolveInterface_IsBase(true);
-        return vqwindow->resolveInterface(name, static_cast<int>(revision));
-    } else {
-        return vqwindow->resolveInterface(name, static_cast<int>(revision));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWindow_OnResolveInterface(const QWindow* self, intptr_t slot) {
-    if (auto* vqwindow = const_cast<VirtualQWindow*>(dynamic_cast<const VirtualQWindow*>(self))) {
-        vqwindow->setQWindow_ResolveInterface_Callback(reinterpret_cast<VirtualQWindow::QWindow_ResolveInterface_Callback>(slot));
     }
 }
 

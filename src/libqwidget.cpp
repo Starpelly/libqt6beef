@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -36,6 +33,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -43,7 +41,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -136,6 +133,18 @@ libqt_string QWidget_Tr(const char* s) {
     return _str;
 }
 
+libqt_string QWidget_TrUtf8(const char* s) {
+    QString _ret = QWidget::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 uintptr_t QWidget_WinId(const QWidget* self) {
     return static_cast<uintptr_t>(self->winId());
 }
@@ -186,6 +195,10 @@ bool QWidget_IsEnabled(const QWidget* self) {
 
 bool QWidget_IsEnabledTo(const QWidget* self, QWidget* param1) {
     return self->isEnabledTo(param1);
+}
+
+bool QWidget_IsEnabledToTLW(const QWidget* self) {
+    return self->isEnabledToTLW();
 }
 
 void QWidget_SetEnabled(QWidget* self, bool enabled) {
@@ -350,51 +363,27 @@ void QWidget_SetFixedHeight(QWidget* self, int h) {
     self->setFixedHeight(static_cast<int>(h));
 }
 
-QPointF* QWidget_MapToGlobal(const QWidget* self, QPointF* param1) {
-    return new QPointF(self->mapToGlobal(*param1));
-}
-
-QPoint* QWidget_MapToGlobalWithQPoint(const QWidget* self, QPoint* param1) {
+QPoint* QWidget_MapToGlobal(const QWidget* self, QPoint* param1) {
     return new QPoint(self->mapToGlobal(*param1));
 }
 
-QPointF* QWidget_MapFromGlobal(const QWidget* self, QPointF* param1) {
-    return new QPointF(self->mapFromGlobal(*param1));
-}
-
-QPoint* QWidget_MapFromGlobalWithQPoint(const QWidget* self, QPoint* param1) {
+QPoint* QWidget_MapFromGlobal(const QWidget* self, QPoint* param1) {
     return new QPoint(self->mapFromGlobal(*param1));
 }
 
-QPointF* QWidget_MapToParent(const QWidget* self, QPointF* param1) {
-    return new QPointF(self->mapToParent(*param1));
-}
-
-QPoint* QWidget_MapToParentWithQPoint(const QWidget* self, QPoint* param1) {
+QPoint* QWidget_MapToParent(const QWidget* self, QPoint* param1) {
     return new QPoint(self->mapToParent(*param1));
 }
 
-QPointF* QWidget_MapFromParent(const QWidget* self, QPointF* param1) {
-    return new QPointF(self->mapFromParent(*param1));
-}
-
-QPoint* QWidget_MapFromParentWithQPoint(const QWidget* self, QPoint* param1) {
+QPoint* QWidget_MapFromParent(const QWidget* self, QPoint* param1) {
     return new QPoint(self->mapFromParent(*param1));
 }
 
-QPointF* QWidget_MapTo(const QWidget* self, QWidget* param1, QPointF* param2) {
-    return new QPointF(self->mapTo(param1, *param2));
-}
-
-QPoint* QWidget_MapTo2(const QWidget* self, QWidget* param1, QPoint* param2) {
+QPoint* QWidget_MapTo(const QWidget* self, QWidget* param1, QPoint* param2) {
     return new QPoint(self->mapTo(param1, *param2));
 }
 
-QPointF* QWidget_MapFrom(const QWidget* self, QWidget* param1, QPointF* param2) {
-    return new QPointF(self->mapFrom(param1, *param2));
-}
-
-QPoint* QWidget_MapFrom2(const QWidget* self, QWidget* param1, QPoint* param2) {
+QPoint* QWidget_MapFrom(const QWidget* self, QWidget* param1, QPoint* param2) {
     return new QPoint(self->mapFrom(param1, *param2));
 }
 
@@ -1047,6 +1036,10 @@ void QWidget_SetContentsMarginsWithMargins(QWidget* self, QMargins* margins) {
     self->setContentsMargins(*margins);
 }
 
+void QWidget_GetContentsMargins(const QWidget* self, int* left, int* top, int* right, int* bottom) {
+    self->getContentsMargins(static_cast<int*>(left), static_cast<int*>(top), static_cast<int*>(right), static_cast<int*>(bottom));
+}
+
 QMargins* QWidget_ContentsMargins(const QWidget* self) {
     return new QMargins(self->contentsMargins());
 }
@@ -1148,26 +1141,6 @@ libqt_list /* of QAction* */ QWidget_Actions(const QWidget* self) {
     return _out;
 }
 
-QAction* QWidget_AddActionWithText(QWidget* self, libqt_string text) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    return self->addAction(text_QString);
-}
-
-QAction* QWidget_AddAction2(QWidget* self, QIcon* icon, libqt_string text) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    return self->addAction(*icon, text_QString);
-}
-
-QAction* QWidget_AddAction3(QWidget* self, libqt_string text, QKeySequence* shortcut) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    return self->addAction(text_QString, *shortcut);
-}
-
-QAction* QWidget_AddAction4(QWidget* self, QIcon* icon, libqt_string text, QKeySequence* shortcut) {
-    QString text_QString = QString::fromUtf8(text.data, text.len);
-    return self->addAction(*icon, text_QString, *shortcut);
-}
-
 QWidget* QWidget_ParentWidget(const QWidget* self) {
     return self->parentWidget();
 }
@@ -1238,10 +1211,6 @@ QWindow* QWidget_WindowHandle(const QWidget* self) {
 
 QScreen* QWidget_Screen(const QWidget* self) {
     return self->screen();
-}
-
-void QWidget_SetScreen(QWidget* self, QScreen* screen) {
-    self->setScreen(screen);
 }
 
 QWidget* QWidget_CreateWindowContainer(QWindow* window) {
@@ -1340,6 +1309,30 @@ libqt_string QWidget_Tr2(const char* s, const char* c) {
 
 libqt_string QWidget_Tr3(const char* s, const char* c, int n) {
     QString _ret = QWidget::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWidget_TrUtf82(const char* s, const char* c) {
+    QString _ret = QWidget::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QWidget_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QWidget::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -1853,7 +1846,7 @@ void QWidget_OnFocusOutEvent(QWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QWidget_EnterEvent(QWidget* self, QEnterEvent* event) {
+void QWidget_EnterEvent(QWidget* self, QEvent* event) {
     if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
         vqwidget->enterEvent(event);
     } else {
@@ -1862,7 +1855,7 @@ void QWidget_EnterEvent(QWidget* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QWidget_QBaseEnterEvent(QWidget* self, QEnterEvent* event) {
+void QWidget_QBaseEnterEvent(QWidget* self, QEvent* event) {
     if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
         vqwidget->setQWidget_EnterEvent_IsBase(true);
         vqwidget->enterEvent(event);
@@ -2243,23 +2236,23 @@ void QWidget_OnHideEvent(QWidget* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QWidget_NativeEvent(QWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWidget_NativeEvent(QWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
-        return vqwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QWidget_QBaseNativeEvent(QWidget* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QWidget_QBaseNativeEvent(QWidget* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
         vqwidget->setQWidget_NativeEvent_IsBase(true);
-        return vqwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqwidget->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqwidget->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -2761,32 +2754,6 @@ bool QWidget_QBaseFocusPreviousChild(QWidget* self) {
 void QWidget_OnFocusPreviousChild(QWidget* self, intptr_t slot) {
     if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
         vqwidget->setQWidget_FocusPreviousChild_Callback(reinterpret_cast<VirtualQWidget::QWidget_FocusPreviousChild_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QWidget_UpdateMicroFocus1(QWidget* self, int query) {
-    if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
-        vqwidget->updateMicroFocus(static_cast<Qt::InputMethodQuery>(query));
-    } else {
-        vqwidget->updateMicroFocus(static_cast<Qt::InputMethodQuery>(query));
-    }
-}
-
-// Base class handler implementation
-void QWidget_QBaseUpdateMicroFocus1(QWidget* self, int query) {
-    if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
-        vqwidget->setQWidget_UpdateMicroFocus1_IsBase(true);
-        vqwidget->updateMicroFocus(static_cast<Qt::InputMethodQuery>(query));
-    } else {
-        vqwidget->updateMicroFocus(static_cast<Qt::InputMethodQuery>(query));
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QWidget_OnUpdateMicroFocus1(QWidget* self, intptr_t slot) {
-    if (auto* vqwidget = dynamic_cast<VirtualQWidget*>(self)) {
-        vqwidget->setQWidget_UpdateMicroFocus1_Callback(reinterpret_cast<VirtualQWidget::QWidget_UpdateMicroFocus1_Callback>(slot));
     }
 }
 

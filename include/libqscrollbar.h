@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractSlider QAbstractSlider;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -93,6 +92,7 @@ int QScrollBar_Metacall(QScrollBar* self, int param1, int param2, void** param3)
 void QScrollBar_OnMetacall(QScrollBar* self, intptr_t slot);
 int QScrollBar_QBaseMetacall(QScrollBar* self, int param1, int param2, void** param3);
 libqt_string QScrollBar_Tr(const char* s);
+libqt_string QScrollBar_TrUtf8(const char* s);
 QSize* QScrollBar_SizeHint(const QScrollBar* self);
 void QScrollBar_OnSizeHint(const QScrollBar* self, intptr_t slot);
 QSize* QScrollBar_QBaseSizeHint(const QScrollBar* self);
@@ -123,11 +123,10 @@ void QScrollBar_QBaseSliderChange(QScrollBar* self, int change);
 void QScrollBar_ContextMenuEvent(QScrollBar* self, QContextMenuEvent* param1);
 void QScrollBar_OnContextMenuEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseContextMenuEvent(QScrollBar* self, QContextMenuEvent* param1);
-void QScrollBar_InitStyleOption(const QScrollBar* self, QStyleOptionSlider* option);
-void QScrollBar_OnInitStyleOption(const QScrollBar* self, intptr_t slot);
-void QScrollBar_QBaseInitStyleOption(const QScrollBar* self, QStyleOptionSlider* option);
 libqt_string QScrollBar_Tr2(const char* s, const char* c);
 libqt_string QScrollBar_Tr3(const char* s, const char* c, int n);
+libqt_string QScrollBar_TrUtf82(const char* s, const char* c);
+libqt_string QScrollBar_TrUtf83(const char* s, const char* c, int n);
 void QScrollBar_KeyPressEvent(QScrollBar* self, QKeyEvent* ev);
 void QScrollBar_OnKeyPressEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseKeyPressEvent(QScrollBar* self, QKeyEvent* ev);
@@ -167,9 +166,9 @@ void QScrollBar_QBaseFocusInEvent(QScrollBar* self, QFocusEvent* event);
 void QScrollBar_FocusOutEvent(QScrollBar* self, QFocusEvent* event);
 void QScrollBar_OnFocusOutEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseFocusOutEvent(QScrollBar* self, QFocusEvent* event);
-void QScrollBar_EnterEvent(QScrollBar* self, QEnterEvent* event);
+void QScrollBar_EnterEvent(QScrollBar* self, QEvent* event);
 void QScrollBar_OnEnterEvent(QScrollBar* self, intptr_t slot);
-void QScrollBar_QBaseEnterEvent(QScrollBar* self, QEnterEvent* event);
+void QScrollBar_QBaseEnterEvent(QScrollBar* self, QEvent* event);
 void QScrollBar_LeaveEvent(QScrollBar* self, QEvent* event);
 void QScrollBar_OnLeaveEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseLeaveEvent(QScrollBar* self, QEvent* event);
@@ -203,9 +202,9 @@ void QScrollBar_QBaseDropEvent(QScrollBar* self, QDropEvent* event);
 void QScrollBar_ShowEvent(QScrollBar* self, QShowEvent* event);
 void QScrollBar_OnShowEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseShowEvent(QScrollBar* self, QShowEvent* event);
-bool QScrollBar_NativeEvent(QScrollBar* self, libqt_string eventType, void* message, intptr_t* result);
+bool QScrollBar_NativeEvent(QScrollBar* self, libqt_string eventType, void* message, long* result);
 void QScrollBar_OnNativeEvent(QScrollBar* self, intptr_t slot);
-bool QScrollBar_QBaseNativeEvent(QScrollBar* self, libqt_string eventType, void* message, intptr_t* result);
+bool QScrollBar_QBaseNativeEvent(QScrollBar* self, libqt_string eventType, void* message, long* result);
 void QScrollBar_InputMethodEvent(QScrollBar* self, QInputMethodEvent* param1);
 void QScrollBar_OnInputMethodEvent(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseInputMethodEvent(QScrollBar* self, QInputMethodEvent* param1);
@@ -242,6 +241,9 @@ QPaintDevice* QScrollBar_QBaseRedirected(const QScrollBar* self, QPoint* offset)
 QPainter* QScrollBar_SharedPainter(const QScrollBar* self);
 void QScrollBar_OnSharedPainter(const QScrollBar* self, intptr_t slot);
 QPainter* QScrollBar_QBaseSharedPainter(const QScrollBar* self);
+void QScrollBar_InitStyleOption(const QScrollBar* self, QStyleOptionSlider* option);
+void QScrollBar_OnInitStyleOption(const QScrollBar* self, intptr_t slot);
+void QScrollBar_QBaseInitStyleOption(const QScrollBar* self, QStyleOptionSlider* option);
 void QScrollBar_SetRepeatAction(QScrollBar* self, int action);
 void QScrollBar_OnSetRepeatAction(QScrollBar* self, intptr_t slot);
 void QScrollBar_QBaseSetRepeatAction(QScrollBar* self, int action);

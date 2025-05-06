@@ -97,7 +97,7 @@ int QRawFont_Weight(const QRawFont* self) {
 
 libqt_list /* of unsigned int */ QRawFont_GlyphIndexesForString(const QRawFont* self, libqt_string text) {
     QString text_QString = QString::fromUtf8(text.data, text.len);
-    QList<quint32> _ret = self->glyphIndexesForString(text_QString);
+    QVector<quint32> _ret = self->glyphIndexesForString(text_QString);
     // Convert QList<> from C++ memory to manually-managed C memory
     unsigned int* _arr = static_cast<unsigned int*>(malloc(sizeof(unsigned int) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -110,13 +110,13 @@ libqt_list /* of unsigned int */ QRawFont_GlyphIndexesForString(const QRawFont* 
 }
 
 libqt_list /* of QPointF* */ QRawFont_AdvancesForGlyphIndexes(const QRawFont* self, libqt_list /* of unsigned int */ glyphIndexes) {
-    QList<quint32> glyphIndexes_QList;
+    QVector<quint32> glyphIndexes_QList;
     glyphIndexes_QList.reserve(glyphIndexes.len);
     unsigned int* glyphIndexes_arr = static_cast<unsigned int*>(glyphIndexes.data);
     for (size_t i = 0; i < glyphIndexes.len; ++i) {
         glyphIndexes_QList.push_back(static_cast<unsigned int>(glyphIndexes_arr[i]));
     }
-    QList<QPointF> _ret = self->advancesForGlyphIndexes(glyphIndexes_QList);
+    QVector<QPointF> _ret = self->advancesForGlyphIndexes(glyphIndexes_QList);
     // Convert QList<> from C++ memory to manually-managed C memory
     QPointF** _arr = static_cast<QPointF**>(malloc(sizeof(QPointF*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {
@@ -129,13 +129,13 @@ libqt_list /* of QPointF* */ QRawFont_AdvancesForGlyphIndexes(const QRawFont* se
 }
 
 libqt_list /* of QPointF* */ QRawFont_AdvancesForGlyphIndexes2(const QRawFont* self, libqt_list /* of unsigned int */ glyphIndexes, int layoutFlags) {
-    QList<quint32> glyphIndexes_QList;
+    QVector<quint32> glyphIndexes_QList;
     glyphIndexes_QList.reserve(glyphIndexes.len);
     unsigned int* glyphIndexes_arr = static_cast<unsigned int*>(glyphIndexes.data);
     for (size_t i = 0; i < glyphIndexes.len; ++i) {
         glyphIndexes_QList.push_back(static_cast<unsigned int>(glyphIndexes_arr[i]));
     }
-    QList<QPointF> _ret = self->advancesForGlyphIndexes(glyphIndexes_QList, static_cast<QRawFont::LayoutFlags>(layoutFlags));
+    QVector<QPointF> _ret = self->advancesForGlyphIndexes(glyphIndexes_QList, static_cast<QRawFont::LayoutFlags>(layoutFlags));
     // Convert QList<> from C++ memory to manually-managed C memory
     QPointF** _arr = static_cast<QPointF**>(malloc(sizeof(QPointF*) * _ret.length()));
     for (size_t i = 0; i < _ret.length(); ++i) {

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -27,6 +29,7 @@ typedef struct QGradient QGradient;
 typedef struct QGradient__QGradientData QGradient__QGradientData;
 typedef struct QImage QImage;
 typedef struct QLinearGradient QLinearGradient;
+typedef struct QMatrix QMatrix;
 typedef struct QPixmap QPixmap;
 typedef struct QPointF QPointF;
 typedef struct QRadialGradient QRadialGradient;
@@ -68,6 +71,8 @@ void QBrush_Swap(QBrush* self, QBrush* other);
 QVariant* QBrush_ToQVariant(const QBrush* self);
 int QBrush_Style(const QBrush* self);
 void QBrush_SetStyle(QBrush* self, int style);
+QMatrix* QBrush_Matrix(const QBrush* self);
+void QBrush_SetMatrix(QBrush* self, QMatrix* mat);
 QTransform* QBrush_Transform(const QBrush* self);
 void QBrush_SetTransform(QBrush* self, QTransform* transform);
 QPixmap* QBrush_Texture(const QBrush* self);
@@ -150,6 +155,7 @@ void QConicalGradient_SetAngle(QConicalGradient* self, double angle);
 void QConicalGradient_Delete(QConicalGradient* self);
 
 QGradient__QGradientData* QGradient__QGradientData_new(QGradient__QGradientData* param1);
+void QGradient__QGradientData_OperatorAssign(QGradient__QGradientData* self, QGradient__QGradientData* param1);
 void QGradient__QGradientData_Delete(QGradient__QGradientData* self);
 
 #ifdef __cplusplus

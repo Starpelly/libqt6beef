@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -48,6 +50,8 @@ void QCommandLineOption_SetDefaultValues(QCommandLineOption* self, libqt_list /*
 libqt_list /* of libqt_string */ QCommandLineOption_DefaultValues(const QCommandLineOption* self);
 int QCommandLineOption_Flags(const QCommandLineOption* self);
 void QCommandLineOption_SetFlags(QCommandLineOption* self, int aflags);
+void QCommandLineOption_SetHidden(QCommandLineOption* self, bool hidden);
+bool QCommandLineOption_IsHidden(const QCommandLineOption* self);
 void QCommandLineOption_Delete(QCommandLineOption* self);
 
 #ifdef __cplusplus

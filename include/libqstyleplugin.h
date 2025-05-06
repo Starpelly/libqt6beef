@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,14 +21,13 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QStyle QStyle;
 typedef struct QStylePlugin QStylePlugin;
 typedef struct QThread QThread;
@@ -42,11 +43,14 @@ int QStylePlugin_Metacall(QStylePlugin* self, int param1, int param2, void** par
 void QStylePlugin_OnMetacall(QStylePlugin* self, intptr_t slot);
 int QStylePlugin_QBaseMetacall(QStylePlugin* self, int param1, int param2, void** param3);
 libqt_string QStylePlugin_Tr(const char* s);
+libqt_string QStylePlugin_TrUtf8(const char* s);
 QStyle* QStylePlugin_Create(QStylePlugin* self, libqt_string key);
 void QStylePlugin_OnCreate(QStylePlugin* self, intptr_t slot);
 QStyle* QStylePlugin_QBaseCreate(QStylePlugin* self, libqt_string key);
 libqt_string QStylePlugin_Tr2(const char* s, const char* c);
 libqt_string QStylePlugin_Tr3(const char* s, const char* c, int n);
+libqt_string QStylePlugin_TrUtf82(const char* s, const char* c);
+libqt_string QStylePlugin_TrUtf83(const char* s, const char* c, int n);
 bool QStylePlugin_Event(QStylePlugin* self, QEvent* event);
 void QStylePlugin_OnEvent(QStylePlugin* self, intptr_t slot);
 bool QStylePlugin_QBaseEvent(QStylePlugin* self, QEvent* event);

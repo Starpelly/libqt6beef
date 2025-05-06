@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -51,20 +53,19 @@ class VirtualQTextEdit : public QTextEdit {
     using QTextEdit_EventFilter_Callback = bool (*)(QTextEdit*, QObject*, QEvent*);
     using QTextEdit_ViewportEvent_Callback = bool (*)(QTextEdit*, QEvent*);
     using QTextEdit_ViewportSizeHint_Callback = QSize (*)();
-    using QTextEdit_InitStyleOption_Callback = void (*)(const QTextEdit*, QStyleOptionFrame*);
     using QTextEdit_DevType_Callback = int (*)();
     using QTextEdit_SetVisible_Callback = void (*)(QTextEdit*, bool);
     using QTextEdit_HeightForWidth_Callback = int (*)(const QTextEdit*, int);
     using QTextEdit_HasHeightForWidth_Callback = bool (*)();
     using QTextEdit_PaintEngine_Callback = QPaintEngine* (*)();
-    using QTextEdit_EnterEvent_Callback = void (*)(QTextEdit*, QEnterEvent*);
+    using QTextEdit_EnterEvent_Callback = void (*)(QTextEdit*, QEvent*);
     using QTextEdit_LeaveEvent_Callback = void (*)(QTextEdit*, QEvent*);
     using QTextEdit_MoveEvent_Callback = void (*)(QTextEdit*, QMoveEvent*);
     using QTextEdit_CloseEvent_Callback = void (*)(QTextEdit*, QCloseEvent*);
     using QTextEdit_TabletEvent_Callback = void (*)(QTextEdit*, QTabletEvent*);
     using QTextEdit_ActionEvent_Callback = void (*)(QTextEdit*, QActionEvent*);
     using QTextEdit_HideEvent_Callback = void (*)(QTextEdit*, QHideEvent*);
-    using QTextEdit_NativeEvent_Callback = bool (*)(QTextEdit*, const QByteArray&, void*, qintptr*);
+    using QTextEdit_NativeEvent_Callback = bool (*)(QTextEdit*, const QByteArray&, void*, long*);
     using QTextEdit_Metric_Callback = int (*)(const QTextEdit*, QPaintDevice::PaintDeviceMetric);
     using QTextEdit_InitPainter_Callback = void (*)(const QTextEdit*, QPainter*);
     using QTextEdit_Redirected_Callback = QPaintDevice* (*)(const QTextEdit*, QPoint*);
@@ -77,6 +78,7 @@ class VirtualQTextEdit : public QTextEdit {
     using QTextEdit_SetViewportMargins_Callback = void (*)(QTextEdit*, int, int, int, int);
     using QTextEdit_ViewportMargins_Callback = QMargins (*)();
     using QTextEdit_DrawFrame_Callback = void (*)(QTextEdit*, QPainter*);
+    using QTextEdit_InitStyleOption_Callback = void (*)(const QTextEdit*, QStyleOptionFrame*);
     using QTextEdit_UpdateMicroFocus_Callback = void (*)();
     using QTextEdit_Create_Callback = void (*)();
     using QTextEdit_Destroy_Callback = void (*)();
@@ -125,7 +127,6 @@ class VirtualQTextEdit : public QTextEdit {
     QTextEdit_EventFilter_Callback qtextedit_eventfilter_callback = nullptr;
     QTextEdit_ViewportEvent_Callback qtextedit_viewportevent_callback = nullptr;
     QTextEdit_ViewportSizeHint_Callback qtextedit_viewportsizehint_callback = nullptr;
-    QTextEdit_InitStyleOption_Callback qtextedit_initstyleoption_callback = nullptr;
     QTextEdit_DevType_Callback qtextedit_devtype_callback = nullptr;
     QTextEdit_SetVisible_Callback qtextedit_setvisible_callback = nullptr;
     QTextEdit_HeightForWidth_Callback qtextedit_heightforwidth_callback = nullptr;
@@ -151,6 +152,7 @@ class VirtualQTextEdit : public QTextEdit {
     QTextEdit_SetViewportMargins_Callback qtextedit_setviewportmargins_callback = nullptr;
     QTextEdit_ViewportMargins_Callback qtextedit_viewportmargins_callback = nullptr;
     QTextEdit_DrawFrame_Callback qtextedit_drawframe_callback = nullptr;
+    QTextEdit_InitStyleOption_Callback qtextedit_initstyleoption_callback = nullptr;
     QTextEdit_UpdateMicroFocus_Callback qtextedit_updatemicrofocus_callback = nullptr;
     QTextEdit_Create_Callback qtextedit_create_callback = nullptr;
     QTextEdit_Destroy_Callback qtextedit_destroy_callback = nullptr;
@@ -198,7 +200,6 @@ class VirtualQTextEdit : public QTextEdit {
     mutable bool qtextedit_eventfilter_isbase = false;
     mutable bool qtextedit_viewportevent_isbase = false;
     mutable bool qtextedit_viewportsizehint_isbase = false;
-    mutable bool qtextedit_initstyleoption_isbase = false;
     mutable bool qtextedit_devtype_isbase = false;
     mutable bool qtextedit_setvisible_isbase = false;
     mutable bool qtextedit_heightforwidth_isbase = false;
@@ -224,6 +225,7 @@ class VirtualQTextEdit : public QTextEdit {
     mutable bool qtextedit_setviewportmargins_isbase = false;
     mutable bool qtextedit_viewportmargins_isbase = false;
     mutable bool qtextedit_drawframe_isbase = false;
+    mutable bool qtextedit_initstyleoption_isbase = false;
     mutable bool qtextedit_updatemicrofocus_isbase = false;
     mutable bool qtextedit_create_isbase = false;
     mutable bool qtextedit_destroy_isbase = false;
@@ -277,7 +279,6 @@ class VirtualQTextEdit : public QTextEdit {
         qtextedit_eventfilter_callback = nullptr;
         qtextedit_viewportevent_callback = nullptr;
         qtextedit_viewportsizehint_callback = nullptr;
-        qtextedit_initstyleoption_callback = nullptr;
         qtextedit_devtype_callback = nullptr;
         qtextedit_setvisible_callback = nullptr;
         qtextedit_heightforwidth_callback = nullptr;
@@ -303,6 +304,7 @@ class VirtualQTextEdit : public QTextEdit {
         qtextedit_setviewportmargins_callback = nullptr;
         qtextedit_viewportmargins_callback = nullptr;
         qtextedit_drawframe_callback = nullptr;
+        qtextedit_initstyleoption_callback = nullptr;
         qtextedit_updatemicrofocus_callback = nullptr;
         qtextedit_create_callback = nullptr;
         qtextedit_destroy_callback = nullptr;
@@ -351,7 +353,6 @@ class VirtualQTextEdit : public QTextEdit {
     void setQTextEdit_EventFilter_Callback(QTextEdit_EventFilter_Callback cb) { qtextedit_eventfilter_callback = cb; }
     void setQTextEdit_ViewportEvent_Callback(QTextEdit_ViewportEvent_Callback cb) { qtextedit_viewportevent_callback = cb; }
     void setQTextEdit_ViewportSizeHint_Callback(QTextEdit_ViewportSizeHint_Callback cb) { qtextedit_viewportsizehint_callback = cb; }
-    void setQTextEdit_InitStyleOption_Callback(QTextEdit_InitStyleOption_Callback cb) { qtextedit_initstyleoption_callback = cb; }
     void setQTextEdit_DevType_Callback(QTextEdit_DevType_Callback cb) { qtextedit_devtype_callback = cb; }
     void setQTextEdit_SetVisible_Callback(QTextEdit_SetVisible_Callback cb) { qtextedit_setvisible_callback = cb; }
     void setQTextEdit_HeightForWidth_Callback(QTextEdit_HeightForWidth_Callback cb) { qtextedit_heightforwidth_callback = cb; }
@@ -377,6 +378,7 @@ class VirtualQTextEdit : public QTextEdit {
     void setQTextEdit_SetViewportMargins_Callback(QTextEdit_SetViewportMargins_Callback cb) { qtextedit_setviewportmargins_callback = cb; }
     void setQTextEdit_ViewportMargins_Callback(QTextEdit_ViewportMargins_Callback cb) { qtextedit_viewportmargins_callback = cb; }
     void setQTextEdit_DrawFrame_Callback(QTextEdit_DrawFrame_Callback cb) { qtextedit_drawframe_callback = cb; }
+    void setQTextEdit_InitStyleOption_Callback(QTextEdit_InitStyleOption_Callback cb) { qtextedit_initstyleoption_callback = cb; }
     void setQTextEdit_UpdateMicroFocus_Callback(QTextEdit_UpdateMicroFocus_Callback cb) { qtextedit_updatemicrofocus_callback = cb; }
     void setQTextEdit_Create_Callback(QTextEdit_Create_Callback cb) { qtextedit_create_callback = cb; }
     void setQTextEdit_Destroy_Callback(QTextEdit_Destroy_Callback cb) { qtextedit_destroy_callback = cb; }
@@ -424,7 +426,6 @@ class VirtualQTextEdit : public QTextEdit {
     void setQTextEdit_EventFilter_IsBase(bool value) const { qtextedit_eventfilter_isbase = value; }
     void setQTextEdit_ViewportEvent_IsBase(bool value) const { qtextedit_viewportevent_isbase = value; }
     void setQTextEdit_ViewportSizeHint_IsBase(bool value) const { qtextedit_viewportsizehint_isbase = value; }
-    void setQTextEdit_InitStyleOption_IsBase(bool value) const { qtextedit_initstyleoption_isbase = value; }
     void setQTextEdit_DevType_IsBase(bool value) const { qtextedit_devtype_isbase = value; }
     void setQTextEdit_SetVisible_IsBase(bool value) const { qtextedit_setvisible_isbase = value; }
     void setQTextEdit_HeightForWidth_IsBase(bool value) const { qtextedit_heightforwidth_isbase = value; }
@@ -450,6 +451,7 @@ class VirtualQTextEdit : public QTextEdit {
     void setQTextEdit_SetViewportMargins_IsBase(bool value) const { qtextedit_setviewportmargins_isbase = value; }
     void setQTextEdit_ViewportMargins_IsBase(bool value) const { qtextedit_viewportmargins_isbase = value; }
     void setQTextEdit_DrawFrame_IsBase(bool value) const { qtextedit_drawframe_isbase = value; }
+    void setQTextEdit_InitStyleOption_IsBase(bool value) const { qtextedit_initstyleoption_isbase = value; }
     void setQTextEdit_UpdateMicroFocus_IsBase(bool value) const { qtextedit_updatemicrofocus_isbase = value; }
     void setQTextEdit_Create_IsBase(bool value) const { qtextedit_create_isbase = value; }
     void setQTextEdit_Destroy_IsBase(bool value) const { qtextedit_destroy_isbase = value; }
@@ -893,18 +895,6 @@ class VirtualQTextEdit : public QTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionFrame* option) const override {
-        if (qtextedit_initstyleoption_isbase) {
-            qtextedit_initstyleoption_isbase = false;
-            QTextEdit::initStyleOption(option);
-        } else if (qtextedit_initstyleoption_callback != nullptr) {
-            qtextedit_initstyleoption_callback(this, option);
-        } else {
-            QTextEdit::initStyleOption(option);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
     virtual int devType() const override {
         if (qtextedit_devtype_isbase) {
             qtextedit_devtype_isbase = false;
@@ -965,7 +955,7 @@ class VirtualQTextEdit : public QTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qtextedit_enterevent_isbase) {
             qtextedit_enterevent_isbase = false;
             QTextEdit::enterEvent(event);
@@ -1049,7 +1039,7 @@ class VirtualQTextEdit : public QTextEdit {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qtextedit_nativeevent_isbase) {
             qtextedit_nativeevent_isbase = false;
             return QTextEdit::nativeEvent(eventType, message, result);
@@ -1201,6 +1191,18 @@ class VirtualQTextEdit : public QTextEdit {
             qtextedit_drawframe_callback(this, param1);
         } else {
             QTextEdit::drawFrame(param1);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionFrame* option) const {
+        if (qtextedit_initstyleoption_isbase) {
+            qtextedit_initstyleoption_isbase = false;
+            QTextEdit::initStyleOption(option);
+        } else if (qtextedit_initstyleoption_callback != nullptr) {
+            qtextedit_initstyleoption_callback(this, option);
+        } else {
+            QTextEdit::initStyleOption(option);
         }
     }
 

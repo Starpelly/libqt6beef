@@ -1,5 +1,3 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
 #include <QByteArray>
 #include <QChildEvent>
 #include <QEvent>
@@ -7,9 +5,9 @@
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
-#include <QMetaType>
 #include <QMimeData>
 #include <QObject>
+#include <QObjectUserData>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -60,6 +58,18 @@ int QMimeData_QBaseMetacall(QMimeData* self, int param1, int param2, void** para
 
 libqt_string QMimeData_Tr(const char* s) {
     QString _ret = QMimeData::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMimeData_TrUtf8(const char* s) {
+    QString _ret = QMimeData::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -213,6 +223,30 @@ libqt_string QMimeData_Tr3(const char* s, const char* c, int n) {
     return _str;
 }
 
+libqt_string QMimeData_TrUtf82(const char* s, const char* c) {
+    QString _ret = QMimeData::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QMimeData_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QMimeData::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
 // Derived class handler implementation
 bool QMimeData_HasFormat(const QMimeData* self, libqt_string mimetype) {
     QString mimetype_QString = QString::fromUtf8(mimetype.data, mimetype.len);
@@ -336,20 +370,20 @@ void QMimeData_OnFormats(const QMimeData* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-QVariant* QMimeData_RetrieveData(const QMimeData* self, libqt_string mimetype, QMetaType* preferredType) {
+QVariant* QMimeData_RetrieveData(const QMimeData* self, libqt_string mimetype, int preferredType) {
     QString mimetype_QString = QString::fromUtf8(mimetype.data, mimetype.len);
     if (auto* vqmimedata = const_cast<VirtualQMimeData*>(dynamic_cast<const VirtualQMimeData*>(self))) {
-        return new QVariant(vqmimedata->retrieveData(mimetype_QString, *preferredType));
+        return new QVariant(vqmimedata->retrieveData(mimetype_QString, static_cast<QVariant::Type>(preferredType)));
     }
     return {};
 }
 
 // Base class handler implementation
-QVariant* QMimeData_QBaseRetrieveData(const QMimeData* self, libqt_string mimetype, QMetaType* preferredType) {
+QVariant* QMimeData_QBaseRetrieveData(const QMimeData* self, libqt_string mimetype, int preferredType) {
     QString mimetype_QString = QString::fromUtf8(mimetype.data, mimetype.len);
     if (auto* vqmimedata = const_cast<VirtualQMimeData*>(dynamic_cast<const VirtualQMimeData*>(self))) {
         vqmimedata->setQMimeData_RetrieveData_IsBase(true);
-        return new QVariant(vqmimedata->retrieveData(mimetype_QString, *preferredType));
+        return new QVariant(vqmimedata->retrieveData(mimetype_QString, static_cast<QVariant::Type>(preferredType)));
     }
     return {};
 }

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -27,7 +29,6 @@ class VirtualQScrollBar : public QScrollBar {
     using QScrollBar_HideEvent_Callback = void (*)(QScrollBar*, QHideEvent*);
     using QScrollBar_SliderChange_Callback = void (*)(QScrollBar*, int);
     using QScrollBar_ContextMenuEvent_Callback = void (*)(QScrollBar*, QContextMenuEvent*);
-    using QScrollBar_InitStyleOption_Callback = void (*)(const QScrollBar*, QStyleOptionSlider*);
     using QScrollBar_KeyPressEvent_Callback = void (*)(QScrollBar*, QKeyEvent*);
     using QScrollBar_TimerEvent_Callback = void (*)(QScrollBar*, QTimerEvent*);
     using QScrollBar_ChangeEvent_Callback = void (*)(QScrollBar*, QEvent*);
@@ -41,7 +42,7 @@ class VirtualQScrollBar : public QScrollBar {
     using QScrollBar_KeyReleaseEvent_Callback = void (*)(QScrollBar*, QKeyEvent*);
     using QScrollBar_FocusInEvent_Callback = void (*)(QScrollBar*, QFocusEvent*);
     using QScrollBar_FocusOutEvent_Callback = void (*)(QScrollBar*, QFocusEvent*);
-    using QScrollBar_EnterEvent_Callback = void (*)(QScrollBar*, QEnterEvent*);
+    using QScrollBar_EnterEvent_Callback = void (*)(QScrollBar*, QEvent*);
     using QScrollBar_LeaveEvent_Callback = void (*)(QScrollBar*, QEvent*);
     using QScrollBar_MoveEvent_Callback = void (*)(QScrollBar*, QMoveEvent*);
     using QScrollBar_ResizeEvent_Callback = void (*)(QScrollBar*, QResizeEvent*);
@@ -53,7 +54,7 @@ class VirtualQScrollBar : public QScrollBar {
     using QScrollBar_DragLeaveEvent_Callback = void (*)(QScrollBar*, QDragLeaveEvent*);
     using QScrollBar_DropEvent_Callback = void (*)(QScrollBar*, QDropEvent*);
     using QScrollBar_ShowEvent_Callback = void (*)(QScrollBar*, QShowEvent*);
-    using QScrollBar_NativeEvent_Callback = bool (*)(QScrollBar*, const QByteArray&, void*, qintptr*);
+    using QScrollBar_NativeEvent_Callback = bool (*)(QScrollBar*, const QByteArray&, void*, long*);
     using QScrollBar_Metric_Callback = int (*)(const QScrollBar*, QPaintDevice::PaintDeviceMetric);
     using QScrollBar_InitPainter_Callback = void (*)(const QScrollBar*, QPainter*);
     using QScrollBar_Redirected_Callback = QPaintDevice* (*)(const QScrollBar*, QPoint*);
@@ -66,6 +67,7 @@ class VirtualQScrollBar : public QScrollBar {
     using QScrollBar_CustomEvent_Callback = void (*)(QScrollBar*, QEvent*);
     using QScrollBar_ConnectNotify_Callback = void (*)(QScrollBar*, const QMetaMethod&);
     using QScrollBar_DisconnectNotify_Callback = void (*)(QScrollBar*, const QMetaMethod&);
+    using QScrollBar_InitStyleOption_Callback = void (*)(const QScrollBar*, QStyleOptionSlider*);
     using QScrollBar_SetRepeatAction_Callback = void (*)(QScrollBar*, QAbstractSlider::SliderAction);
     using QScrollBar_RepeatAction_Callback = QAbstractSlider::SliderAction (*)();
     using QScrollBar_UpdateMicroFocus_Callback = void (*)();
@@ -91,7 +93,6 @@ class VirtualQScrollBar : public QScrollBar {
     QScrollBar_HideEvent_Callback qscrollbar_hideevent_callback = nullptr;
     QScrollBar_SliderChange_Callback qscrollbar_sliderchange_callback = nullptr;
     QScrollBar_ContextMenuEvent_Callback qscrollbar_contextmenuevent_callback = nullptr;
-    QScrollBar_InitStyleOption_Callback qscrollbar_initstyleoption_callback = nullptr;
     QScrollBar_KeyPressEvent_Callback qscrollbar_keypressevent_callback = nullptr;
     QScrollBar_TimerEvent_Callback qscrollbar_timerevent_callback = nullptr;
     QScrollBar_ChangeEvent_Callback qscrollbar_changeevent_callback = nullptr;
@@ -130,6 +131,7 @@ class VirtualQScrollBar : public QScrollBar {
     QScrollBar_CustomEvent_Callback qscrollbar_customevent_callback = nullptr;
     QScrollBar_ConnectNotify_Callback qscrollbar_connectnotify_callback = nullptr;
     QScrollBar_DisconnectNotify_Callback qscrollbar_disconnectnotify_callback = nullptr;
+    QScrollBar_InitStyleOption_Callback qscrollbar_initstyleoption_callback = nullptr;
     QScrollBar_SetRepeatAction_Callback qscrollbar_setrepeataction_callback = nullptr;
     QScrollBar_RepeatAction_Callback qscrollbar_repeataction_callback = nullptr;
     QScrollBar_UpdateMicroFocus_Callback qscrollbar_updatemicrofocus_callback = nullptr;
@@ -154,7 +156,6 @@ class VirtualQScrollBar : public QScrollBar {
     mutable bool qscrollbar_hideevent_isbase = false;
     mutable bool qscrollbar_sliderchange_isbase = false;
     mutable bool qscrollbar_contextmenuevent_isbase = false;
-    mutable bool qscrollbar_initstyleoption_isbase = false;
     mutable bool qscrollbar_keypressevent_isbase = false;
     mutable bool qscrollbar_timerevent_isbase = false;
     mutable bool qscrollbar_changeevent_isbase = false;
@@ -193,6 +194,7 @@ class VirtualQScrollBar : public QScrollBar {
     mutable bool qscrollbar_customevent_isbase = false;
     mutable bool qscrollbar_connectnotify_isbase = false;
     mutable bool qscrollbar_disconnectnotify_isbase = false;
+    mutable bool qscrollbar_initstyleoption_isbase = false;
     mutable bool qscrollbar_setrepeataction_isbase = false;
     mutable bool qscrollbar_repeataction_isbase = false;
     mutable bool qscrollbar_updatemicrofocus_isbase = false;
@@ -223,7 +225,6 @@ class VirtualQScrollBar : public QScrollBar {
         qscrollbar_hideevent_callback = nullptr;
         qscrollbar_sliderchange_callback = nullptr;
         qscrollbar_contextmenuevent_callback = nullptr;
-        qscrollbar_initstyleoption_callback = nullptr;
         qscrollbar_keypressevent_callback = nullptr;
         qscrollbar_timerevent_callback = nullptr;
         qscrollbar_changeevent_callback = nullptr;
@@ -262,6 +263,7 @@ class VirtualQScrollBar : public QScrollBar {
         qscrollbar_customevent_callback = nullptr;
         qscrollbar_connectnotify_callback = nullptr;
         qscrollbar_disconnectnotify_callback = nullptr;
+        qscrollbar_initstyleoption_callback = nullptr;
         qscrollbar_setrepeataction_callback = nullptr;
         qscrollbar_repeataction_callback = nullptr;
         qscrollbar_updatemicrofocus_callback = nullptr;
@@ -287,7 +289,6 @@ class VirtualQScrollBar : public QScrollBar {
     void setQScrollBar_HideEvent_Callback(QScrollBar_HideEvent_Callback cb) { qscrollbar_hideevent_callback = cb; }
     void setQScrollBar_SliderChange_Callback(QScrollBar_SliderChange_Callback cb) { qscrollbar_sliderchange_callback = cb; }
     void setQScrollBar_ContextMenuEvent_Callback(QScrollBar_ContextMenuEvent_Callback cb) { qscrollbar_contextmenuevent_callback = cb; }
-    void setQScrollBar_InitStyleOption_Callback(QScrollBar_InitStyleOption_Callback cb) { qscrollbar_initstyleoption_callback = cb; }
     void setQScrollBar_KeyPressEvent_Callback(QScrollBar_KeyPressEvent_Callback cb) { qscrollbar_keypressevent_callback = cb; }
     void setQScrollBar_TimerEvent_Callback(QScrollBar_TimerEvent_Callback cb) { qscrollbar_timerevent_callback = cb; }
     void setQScrollBar_ChangeEvent_Callback(QScrollBar_ChangeEvent_Callback cb) { qscrollbar_changeevent_callback = cb; }
@@ -326,6 +327,7 @@ class VirtualQScrollBar : public QScrollBar {
     void setQScrollBar_CustomEvent_Callback(QScrollBar_CustomEvent_Callback cb) { qscrollbar_customevent_callback = cb; }
     void setQScrollBar_ConnectNotify_Callback(QScrollBar_ConnectNotify_Callback cb) { qscrollbar_connectnotify_callback = cb; }
     void setQScrollBar_DisconnectNotify_Callback(QScrollBar_DisconnectNotify_Callback cb) { qscrollbar_disconnectnotify_callback = cb; }
+    void setQScrollBar_InitStyleOption_Callback(QScrollBar_InitStyleOption_Callback cb) { qscrollbar_initstyleoption_callback = cb; }
     void setQScrollBar_SetRepeatAction_Callback(QScrollBar_SetRepeatAction_Callback cb) { qscrollbar_setrepeataction_callback = cb; }
     void setQScrollBar_RepeatAction_Callback(QScrollBar_RepeatAction_Callback cb) { qscrollbar_repeataction_callback = cb; }
     void setQScrollBar_UpdateMicroFocus_Callback(QScrollBar_UpdateMicroFocus_Callback cb) { qscrollbar_updatemicrofocus_callback = cb; }
@@ -350,7 +352,6 @@ class VirtualQScrollBar : public QScrollBar {
     void setQScrollBar_HideEvent_IsBase(bool value) const { qscrollbar_hideevent_isbase = value; }
     void setQScrollBar_SliderChange_IsBase(bool value) const { qscrollbar_sliderchange_isbase = value; }
     void setQScrollBar_ContextMenuEvent_IsBase(bool value) const { qscrollbar_contextmenuevent_isbase = value; }
-    void setQScrollBar_InitStyleOption_IsBase(bool value) const { qscrollbar_initstyleoption_isbase = value; }
     void setQScrollBar_KeyPressEvent_IsBase(bool value) const { qscrollbar_keypressevent_isbase = value; }
     void setQScrollBar_TimerEvent_IsBase(bool value) const { qscrollbar_timerevent_isbase = value; }
     void setQScrollBar_ChangeEvent_IsBase(bool value) const { qscrollbar_changeevent_isbase = value; }
@@ -389,6 +390,7 @@ class VirtualQScrollBar : public QScrollBar {
     void setQScrollBar_CustomEvent_IsBase(bool value) const { qscrollbar_customevent_isbase = value; }
     void setQScrollBar_ConnectNotify_IsBase(bool value) const { qscrollbar_connectnotify_isbase = value; }
     void setQScrollBar_DisconnectNotify_IsBase(bool value) const { qscrollbar_disconnectnotify_isbase = value; }
+    void setQScrollBar_InitStyleOption_IsBase(bool value) const { qscrollbar_initstyleoption_isbase = value; }
     void setQScrollBar_SetRepeatAction_IsBase(bool value) const { qscrollbar_setrepeataction_isbase = value; }
     void setQScrollBar_RepeatAction_IsBase(bool value) const { qscrollbar_repeataction_isbase = value; }
     void setQScrollBar_UpdateMicroFocus_IsBase(bool value) const { qscrollbar_updatemicrofocus_isbase = value; }
@@ -530,18 +532,6 @@ class VirtualQScrollBar : public QScrollBar {
             qscrollbar_contextmenuevent_callback(this, param1);
         } else {
             QScrollBar::contextMenuEvent(param1);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual void initStyleOption(QStyleOptionSlider* option) const override {
-        if (qscrollbar_initstyleoption_isbase) {
-            qscrollbar_initstyleoption_isbase = false;
-            QScrollBar::initStyleOption(option);
-        } else if (qscrollbar_initstyleoption_callback != nullptr) {
-            qscrollbar_initstyleoption_callback(this, option);
-        } else {
-            QScrollBar::initStyleOption(option);
         }
     }
 
@@ -702,7 +692,7 @@ class VirtualQScrollBar : public QScrollBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual void enterEvent(QEnterEvent* event) override {
+    virtual void enterEvent(QEvent* event) override {
         if (qscrollbar_enterevent_isbase) {
             qscrollbar_enterevent_isbase = false;
             QScrollBar::enterEvent(event);
@@ -846,7 +836,7 @@ class VirtualQScrollBar : public QScrollBar {
     }
 
     // Virtual method for C ABI access and custom callback
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, qintptr* result) override {
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override {
         if (qscrollbar_nativeevent_isbase) {
             qscrollbar_nativeevent_isbase = false;
             return QScrollBar::nativeEvent(eventType, message, result);
@@ -998,6 +988,18 @@ class VirtualQScrollBar : public QScrollBar {
             qscrollbar_disconnectnotify_callback(this, signal);
         } else {
             QScrollBar::disconnectNotify(signal);
+        }
+    }
+
+    // Virtual method for C ABI access and custom callback
+    void initStyleOption(QStyleOptionSlider* option) const {
+        if (qscrollbar_initstyleoption_isbase) {
+            qscrollbar_initstyleoption_isbase = false;
+            QScrollBar::initStyleOption(option);
+        } else if (qscrollbar_initstyleoption_callback != nullptr) {
+            qscrollbar_initstyleoption_callback(this, option);
+        } else {
+            QScrollBar::initStyleOption(option);
         }
     }
 

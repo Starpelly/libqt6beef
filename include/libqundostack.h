@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -20,14 +22,13 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
 typedef struct QAction QAction;
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QUndoCommand QUndoCommand;
@@ -68,6 +69,7 @@ int QUndoStack_Metacall(QUndoStack* self, int param1, int param2, void** param3)
 void QUndoStack_OnMetacall(QUndoStack* self, intptr_t slot);
 int QUndoStack_QBaseMetacall(QUndoStack* self, int param1, int param2, void** param3);
 libqt_string QUndoStack_Tr(const char* s);
+libqt_string QUndoStack_TrUtf8(const char* s);
 void QUndoStack_Clear(QUndoStack* self);
 void QUndoStack_Push(QUndoStack* self, QUndoCommand* cmd);
 bool QUndoStack_CanUndo(const QUndoStack* self);
@@ -107,6 +109,8 @@ void QUndoStack_RedoTextChanged(QUndoStack* self, libqt_string redoText);
 void QUndoStack_Connect_RedoTextChanged(QUndoStack* self, intptr_t slot);
 libqt_string QUndoStack_Tr2(const char* s, const char* c);
 libqt_string QUndoStack_Tr3(const char* s, const char* c, int n);
+libqt_string QUndoStack_TrUtf82(const char* s, const char* c);
+libqt_string QUndoStack_TrUtf83(const char* s, const char* c, int n);
 QAction* QUndoStack_CreateUndoAction2(const QUndoStack* self, QObject* parent, libqt_string prefix);
 QAction* QUndoStack_CreateRedoAction2(const QUndoStack* self, QObject* parent, libqt_string prefix);
 void QUndoStack_SetActive1(QUndoStack* self, bool active);

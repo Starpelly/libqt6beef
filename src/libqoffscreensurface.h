@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,14 +21,13 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QOffscreenSurface QOffscreenSurface;
 typedef struct QScreen QScreen;
 typedef struct QSize QSize;
@@ -37,15 +38,16 @@ typedef struct QTimerEvent QTimerEvent;
 typedef struct QVariant QVariant;
 #endif
 
-QOffscreenSurface* QOffscreenSurface_new();
-QOffscreenSurface* QOffscreenSurface_new2(QScreen* screen);
-QOffscreenSurface* QOffscreenSurface_new3(QScreen* screen, QObject* parent);
+QOffscreenSurface* QOffscreenSurface_new(QScreen* screen, QObject* parent);
+QOffscreenSurface* QOffscreenSurface_new2();
+QOffscreenSurface* QOffscreenSurface_new3(QScreen* screen);
 QMetaObject* QOffscreenSurface_MetaObject(const QOffscreenSurface* self);
 void* QOffscreenSurface_Metacast(QOffscreenSurface* self, const char* param1);
 int QOffscreenSurface_Metacall(QOffscreenSurface* self, int param1, int param2, void** param3);
 void QOffscreenSurface_OnMetacall(QOffscreenSurface* self, intptr_t slot);
 int QOffscreenSurface_QBaseMetacall(QOffscreenSurface* self, int param1, int param2, void** param3);
 libqt_string QOffscreenSurface_Tr(const char* s);
+libqt_string QOffscreenSurface_TrUtf8(const char* s);
 int QOffscreenSurface_SurfaceType(const QOffscreenSurface* self);
 void QOffscreenSurface_OnSurfaceType(const QOffscreenSurface* self, intptr_t slot);
 int QOffscreenSurface_QBaseSurfaceType(const QOffscreenSurface* self);
@@ -62,10 +64,14 @@ void QOffscreenSurface_OnSize(const QOffscreenSurface* self, intptr_t slot);
 QSize* QOffscreenSurface_QBaseSize(const QOffscreenSurface* self);
 QScreen* QOffscreenSurface_Screen(const QOffscreenSurface* self);
 void QOffscreenSurface_SetScreen(QOffscreenSurface* self, QScreen* screen);
+void* QOffscreenSurface_NativeHandle(const QOffscreenSurface* self);
+void QOffscreenSurface_SetNativeHandle(QOffscreenSurface* self, void* handle);
 void QOffscreenSurface_ScreenChanged(QOffscreenSurface* self, QScreen* screen);
 void QOffscreenSurface_Connect_ScreenChanged(QOffscreenSurface* self, intptr_t slot);
 libqt_string QOffscreenSurface_Tr2(const char* s, const char* c);
 libqt_string QOffscreenSurface_Tr3(const char* s, const char* c, int n);
+libqt_string QOffscreenSurface_TrUtf82(const char* s, const char* c);
+libqt_string QOffscreenSurface_TrUtf83(const char* s, const char* c, int n);
 bool QOffscreenSurface_Event(QOffscreenSurface* self, QEvent* event);
 void QOffscreenSurface_OnEvent(QOffscreenSurface* self, intptr_t slot);
 bool QOffscreenSurface_QBaseEvent(QOffscreenSurface* self, QEvent* event);
@@ -87,9 +93,6 @@ void QOffscreenSurface_QBaseConnectNotify(QOffscreenSurface* self, QMetaMethod* 
 void QOffscreenSurface_DisconnectNotify(QOffscreenSurface* self, QMetaMethod* signal);
 void QOffscreenSurface_OnDisconnectNotify(QOffscreenSurface* self, intptr_t slot);
 void QOffscreenSurface_QBaseDisconnectNotify(QOffscreenSurface* self, QMetaMethod* signal);
-void* QOffscreenSurface_ResolveInterface(const QOffscreenSurface* self, const char* name, int revision);
-void QOffscreenSurface_OnResolveInterface(const QOffscreenSurface* self, intptr_t slot);
-void* QOffscreenSurface_QBaseResolveInterface(const QOffscreenSurface* self, const char* name, int revision);
 QObject* QOffscreenSurface_Sender(const QOffscreenSurface* self);
 void QOffscreenSurface_OnSender(const QOffscreenSurface* self, intptr_t slot);
 QObject* QOffscreenSurface_QBaseSender(const QOffscreenSurface* self);

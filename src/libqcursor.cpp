@@ -64,20 +64,20 @@ void QCursor_SetShape(QCursor* self, int newShape) {
     self->setShape(static_cast<Qt::CursorShape>(newShape));
 }
 
-QBitmap* QCursor_Bitmap(const QCursor* self, int param1) {
+QBitmap* QCursor_Bitmap(const QCursor* self) {
+    return (QBitmap*)self->bitmap();
+}
+
+QBitmap* QCursor_Mask(const QCursor* self) {
+    return (QBitmap*)self->mask();
+}
+
+QBitmap* QCursor_BitmapWithQtReturnByValueConstant(const QCursor* self, int param1) {
     return new QBitmap(self->bitmap(static_cast<Qt::ReturnByValueConstant>(param1)));
 }
 
-QBitmap* QCursor_Mask(const QCursor* self, int param1) {
+QBitmap* QCursor_MaskWithQtReturnByValueConstant(const QCursor* self, int param1) {
     return new QBitmap(self->mask(static_cast<Qt::ReturnByValueConstant>(param1)));
-}
-
-QBitmap* QCursor_Bitmap2(const QCursor* self) {
-    return new QBitmap(self->bitmap());
-}
-
-QBitmap* QCursor_Mask2(const QCursor* self) {
-    return new QBitmap(self->mask());
 }
 
 QPixmap* QCursor_Pixmap(const QCursor* self) {

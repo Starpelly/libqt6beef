@@ -4,6 +4,8 @@
 #include <QIODevice>
 #include <QImage>
 #include <QImageReader>
+#include <QMatrix>
+#include <QObject>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPainter>
@@ -12,7 +14,6 @@
 #include <QRect>
 #include <QRegion>
 #include <QSize>
-#include <QSizeF>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
@@ -43,8 +44,8 @@ QBitmap* QBitmap_new5(libqt_string fileName) {
     return new VirtualQBitmap(fileName_QString);
 }
 
-QBitmap* QBitmap_new6(QBitmap* param1) {
-    return new VirtualQBitmap(*param1);
+QBitmap* QBitmap_new6(QBitmap* other) {
+    return new VirtualQBitmap(*other);
 }
 
 QBitmap* QBitmap_new7(libqt_string fileName, const char* format) {
@@ -52,7 +53,11 @@ QBitmap* QBitmap_new7(libqt_string fileName, const char* format) {
     return new VirtualQBitmap(fileName_QString, format);
 }
 
-void QBitmap_OperatorAssign(QBitmap* self, QPixmap* param1) {
+void QBitmap_OperatorAssign(QBitmap* self, QBitmap* other) {
+    self->operator=(*other);
+}
+
+void QBitmap_OperatorAssignWithQPixmap(QBitmap* self, QPixmap* param1) {
     self->operator=(*param1);
 }
 
@@ -76,16 +81,12 @@ QBitmap* QBitmap_FromData(QSize* size, const unsigned char* bits) {
     return new QBitmap(QBitmap::fromData(*size, static_cast<const uchar*>(bits)));
 }
 
-QBitmap* QBitmap_FromPixmap(QPixmap* pixmap) {
-    return new QBitmap(QBitmap::fromPixmap(*pixmap));
+QBitmap* QBitmap_Transformed(const QBitmap* self, QMatrix* param1) {
+    return new QBitmap(self->transformed(*param1));
 }
 
-QBitmap* QBitmap_Transformed(const QBitmap* self, QTransform* matrix) {
+QBitmap* QBitmap_TransformedWithMatrix(const QBitmap* self, QTransform* matrix) {
     return new QBitmap(self->transformed(*matrix));
-}
-
-void QBitmap_OperatorAssignWithQBitmap(QBitmap* self, QBitmap* param1) {
-    self->operator=(*param1);
 }
 
 QBitmap* QBitmap_FromImage2(QImage* image, int flags) {

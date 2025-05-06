@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -33,7 +33,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -56,6 +55,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -63,7 +63,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -92,6 +91,9 @@ int QMenu_Metacall(QMenu* self, int param1, int param2, void** param3);
 void QMenu_OnMetacall(QMenu* self, intptr_t slot);
 int QMenu_QBaseMetacall(QMenu* self, int param1, int param2, void** param3);
 libqt_string QMenu_Tr(const char* s);
+libqt_string QMenu_TrUtf8(const char* s);
+QAction* QMenu_AddAction(QMenu* self, libqt_string text);
+QAction* QMenu_AddAction2(QMenu* self, QIcon* icon, libqt_string text);
 QAction* QMenu_AddMenu(QMenu* self, QMenu* menu);
 QMenu* QMenu_AddMenuWithTitle(QMenu* self, libqt_string title);
 QMenu* QMenu_AddMenu2(QMenu* self, QIcon* icon, libqt_string title);
@@ -124,7 +126,6 @@ QSize* QMenu_QBaseSizeHint(const QMenu* self);
 QRect* QMenu_ActionGeometry(const QMenu* self, QAction* param1);
 QAction* QMenu_ActionAt(const QMenu* self, QPoint* param1);
 QAction* QMenu_MenuAction(const QMenu* self);
-QMenu* QMenu_MenuInAction(QAction* action);
 libqt_string QMenu_Title(const QMenu* self);
 void QMenu_SetTitle(QMenu* self, libqt_string title);
 QIcon* QMenu_Icon(const QMenu* self);
@@ -160,9 +161,9 @@ void QMenu_QBaseMouseMoveEvent(QMenu* self, QMouseEvent* param1);
 void QMenu_WheelEvent(QMenu* self, QWheelEvent* param1);
 void QMenu_OnWheelEvent(QMenu* self, intptr_t slot);
 void QMenu_QBaseWheelEvent(QMenu* self, QWheelEvent* param1);
-void QMenu_EnterEvent(QMenu* self, QEnterEvent* param1);
+void QMenu_EnterEvent(QMenu* self, QEvent* param1);
 void QMenu_OnEnterEvent(QMenu* self, intptr_t slot);
-void QMenu_QBaseEnterEvent(QMenu* self, QEnterEvent* param1);
+void QMenu_QBaseEnterEvent(QMenu* self, QEvent* param1);
 void QMenu_LeaveEvent(QMenu* self, QEvent* param1);
 void QMenu_OnLeaveEvent(QMenu* self, intptr_t slot);
 void QMenu_QBaseLeaveEvent(QMenu* self, QEvent* param1);
@@ -184,11 +185,10 @@ bool QMenu_QBaseEvent(QMenu* self, QEvent* param1);
 bool QMenu_FocusNextPrevChild(QMenu* self, bool next);
 void QMenu_OnFocusNextPrevChild(QMenu* self, intptr_t slot);
 bool QMenu_QBaseFocusNextPrevChild(QMenu* self, bool next);
-void QMenu_InitStyleOption(const QMenu* self, QStyleOptionMenuItem* option, QAction* action);
-void QMenu_OnInitStyleOption(const QMenu* self, intptr_t slot);
-void QMenu_QBaseInitStyleOption(const QMenu* self, QStyleOptionMenuItem* option, QAction* action);
 libqt_string QMenu_Tr2(const char* s, const char* c);
 libqt_string QMenu_Tr3(const char* s, const char* c, int n);
+libqt_string QMenu_TrUtf82(const char* s, const char* c);
+libqt_string QMenu_TrUtf83(const char* s, const char* c, int n);
 void QMenu_Popup2(QMenu* self, QPoint* pos, QAction* at);
 QAction* QMenu_Exec22(QMenu* self, QPoint* pos, QAction* at);
 QAction* QMenu_Exec3(libqt_list /* of QAction* */ actions, QPoint* pos, QAction* at);
@@ -253,9 +253,9 @@ void QMenu_QBaseDropEvent(QMenu* self, QDropEvent* event);
 void QMenu_ShowEvent(QMenu* self, QShowEvent* event);
 void QMenu_OnShowEvent(QMenu* self, intptr_t slot);
 void QMenu_QBaseShowEvent(QMenu* self, QShowEvent* event);
-bool QMenu_NativeEvent(QMenu* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMenu_NativeEvent(QMenu* self, libqt_string eventType, void* message, long* result);
 void QMenu_OnNativeEvent(QMenu* self, intptr_t slot);
-bool QMenu_QBaseNativeEvent(QMenu* self, libqt_string eventType, void* message, intptr_t* result);
+bool QMenu_QBaseNativeEvent(QMenu* self, libqt_string eventType, void* message, long* result);
 void QMenu_InputMethodEvent(QMenu* self, QInputMethodEvent* param1);
 void QMenu_OnInputMethodEvent(QMenu* self, intptr_t slot);
 void QMenu_QBaseInputMethodEvent(QMenu* self, QInputMethodEvent* param1);
@@ -292,6 +292,9 @@ QPainter* QMenu_QBaseSharedPainter(const QMenu* self);
 int QMenu_ColumnCount(const QMenu* self);
 void QMenu_OnColumnCount(const QMenu* self, intptr_t slot);
 int QMenu_QBaseColumnCount(const QMenu* self);
+void QMenu_InitStyleOption(const QMenu* self, QStyleOptionMenuItem* option, QAction* action);
+void QMenu_OnInitStyleOption(const QMenu* self, intptr_t slot);
+void QMenu_QBaseInitStyleOption(const QMenu* self, QStyleOptionMenuItem* option, QAction* action);
 void QMenu_UpdateMicroFocus(QMenu* self);
 void QMenu_OnUpdateMicroFocus(QMenu* self, intptr_t slot);
 void QMenu_QBaseUpdateMicroFocus(QMenu* self);

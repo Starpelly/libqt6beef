@@ -1,8 +1,6 @@
 #include <QAction>
 #include <QActionEvent>
-#include <QAnyStringView>
 #include <QBackingStore>
-#include <QBindingStorage>
 #include <QBitmap>
 #include <QByteArray>
 #include <QChildEvent>
@@ -13,7 +11,6 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
-#include <QEnterEvent>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QFont>
@@ -37,6 +34,7 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QObject>
+#include <QObjectUserData>
 #include <QPaintDevice>
 #include <QPaintEngine>
 #include <QPaintEvent>
@@ -44,7 +42,6 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QPoint>
-#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QResizeEvent>
@@ -116,6 +113,18 @@ int QToolBox_QBaseMetacall(QToolBox* self, int param1, int param2, void** param3
 
 libqt_string QToolBox_Tr(const char* s) {
     QString _ret = QToolBox::tr(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolBox_TrUtf8(const char* s) {
+    QString _ret = QToolBox::trUtf8(s);
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -254,6 +263,30 @@ libqt_string QToolBox_Tr2(const char* s, const char* c) {
 
 libqt_string QToolBox_Tr3(const char* s, const char* c, int n) {
     QString _ret = QToolBox::tr(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolBox_TrUtf82(const char* s, const char* c) {
+    QString _ret = QToolBox::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QToolBox_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QToolBox::trUtf8(s, c, static_cast<int>(n));
     // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
     QByteArray _b = _ret.toUtf8();
     libqt_string _str;
@@ -443,32 +476,6 @@ void QToolBox_QBasePaintEvent(QToolBox* self, QPaintEvent* param1) {
 void QToolBox_OnPaintEvent(QToolBox* self, intptr_t slot) {
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
         vqtoolbox->setQToolBox_PaintEvent_Callback(reinterpret_cast<VirtualQToolBox::QToolBox_PaintEvent_Callback>(slot));
-    }
-}
-
-// Derived class handler implementation
-void QToolBox_InitStyleOption(const QToolBox* self, QStyleOptionFrame* option) {
-    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
-        vqtoolbox->initStyleOption(option);
-    } else {
-        vqtoolbox->initStyleOption(option);
-    }
-}
-
-// Base class handler implementation
-void QToolBox_QBaseInitStyleOption(const QToolBox* self, QStyleOptionFrame* option) {
-    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
-        vqtoolbox->setQToolBox_InitStyleOption_IsBase(true);
-        vqtoolbox->initStyleOption(option);
-    } else {
-        vqtoolbox->initStyleOption(option);
-    }
-}
-
-// Auxiliary method to allow providing re-implementation
-void QToolBox_OnInitStyleOption(const QToolBox* self, intptr_t slot) {
-    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
-        vqtoolbox->setQToolBox_InitStyleOption_Callback(reinterpret_cast<VirtualQToolBox::QToolBox_InitStyleOption_Callback>(slot));
     }
 }
 
@@ -863,7 +870,7 @@ void QToolBox_OnFocusOutEvent(QToolBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-void QToolBox_EnterEvent(QToolBox* self, QEnterEvent* event) {
+void QToolBox_EnterEvent(QToolBox* self, QEvent* event) {
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
         vqtoolbox->enterEvent(event);
     } else {
@@ -872,7 +879,7 @@ void QToolBox_EnterEvent(QToolBox* self, QEnterEvent* event) {
 }
 
 // Base class handler implementation
-void QToolBox_QBaseEnterEvent(QToolBox* self, QEnterEvent* event) {
+void QToolBox_QBaseEnterEvent(QToolBox* self, QEvent* event) {
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
         vqtoolbox->setQToolBox_EnterEvent_IsBase(true);
         vqtoolbox->enterEvent(event);
@@ -1201,23 +1208,23 @@ void QToolBox_OnHideEvent(QToolBox* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
-bool QToolBox_NativeEvent(QToolBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolBox_NativeEvent(QToolBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
-        return vqtoolbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
 // Base class handler implementation
-bool QToolBox_QBaseNativeEvent(QToolBox* self, libqt_string eventType, void* message, intptr_t* result) {
+bool QToolBox_QBaseNativeEvent(QToolBox* self, libqt_string eventType, void* message, long* result) {
     QByteArray eventType_QByteArray(eventType.data, eventType.len);
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
         vqtoolbox->setQToolBox_NativeEvent_IsBase(true);
-        return vqtoolbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     } else {
-        return vqtoolbox->nativeEvent(eventType_QByteArray, message, (qintptr*)(result));
+        return vqtoolbox->nativeEvent(eventType_QByteArray, message, static_cast<long*>(result));
     }
 }
 
@@ -1589,6 +1596,32 @@ void QToolBox_QBaseDrawFrame(QToolBox* self, QPainter* param1) {
 void QToolBox_OnDrawFrame(QToolBox* self, intptr_t slot) {
     if (auto* vqtoolbox = dynamic_cast<VirtualQToolBox*>(self)) {
         vqtoolbox->setQToolBox_DrawFrame_Callback(reinterpret_cast<VirtualQToolBox::QToolBox_DrawFrame_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QToolBox_InitStyleOption(const QToolBox* self, QStyleOptionFrame* option) {
+    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
+        vqtoolbox->initStyleOption(option);
+    } else {
+        vqtoolbox->initStyleOption(option);
+    }
+}
+
+// Base class handler implementation
+void QToolBox_QBaseInitStyleOption(const QToolBox* self, QStyleOptionFrame* option) {
+    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
+        vqtoolbox->setQToolBox_InitStyleOption_IsBase(true);
+        vqtoolbox->initStyleOption(option);
+    } else {
+        vqtoolbox->initStyleOption(option);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QToolBox_OnInitStyleOption(const QToolBox* self, intptr_t slot) {
+    if (auto* vqtoolbox = const_cast<VirtualQToolBox*>(dynamic_cast<const VirtualQToolBox*>(self))) {
+        vqtoolbox->setQToolBox_InitStyleOption_Callback(reinterpret_cast<VirtualQToolBox::QToolBox_InitStyleOption_Callback>(slot));
     }
 }
 

@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -16,7 +18,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
   public:
     // Virtual class public types (including callbacks)
     using QNetworkAccessManager_Metacall_Callback = int (*)(QNetworkAccessManager*, QMetaObject::Call, int, void**);
-    using QNetworkAccessManager_SupportedSchemes_Callback = QStringList (*)();
     using QNetworkAccessManager_CreateRequest_Callback = QNetworkReply* (*)(QNetworkAccessManager*, QNetworkAccessManager::Operation, const QNetworkRequest&, QIODevice*);
     using QNetworkAccessManager_Event_Callback = bool (*)(QNetworkAccessManager*, QEvent*);
     using QNetworkAccessManager_EventFilter_Callback = bool (*)(QNetworkAccessManager*, QObject*, QEvent*);
@@ -34,7 +35,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
   protected:
     // Instance callback storage
     QNetworkAccessManager_Metacall_Callback qnetworkaccessmanager_metacall_callback = nullptr;
-    QNetworkAccessManager_SupportedSchemes_Callback qnetworkaccessmanager_supportedschemes_callback = nullptr;
     QNetworkAccessManager_CreateRequest_Callback qnetworkaccessmanager_createrequest_callback = nullptr;
     QNetworkAccessManager_Event_Callback qnetworkaccessmanager_event_callback = nullptr;
     QNetworkAccessManager_EventFilter_Callback qnetworkaccessmanager_eventfilter_callback = nullptr;
@@ -51,7 +51,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
 
     // Instance base flags
     mutable bool qnetworkaccessmanager_metacall_isbase = false;
-    mutable bool qnetworkaccessmanager_supportedschemes_isbase = false;
     mutable bool qnetworkaccessmanager_createrequest_isbase = false;
     mutable bool qnetworkaccessmanager_event_isbase = false;
     mutable bool qnetworkaccessmanager_eventfilter_isbase = false;
@@ -72,7 +71,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
 
     ~VirtualQNetworkAccessManager() {
         qnetworkaccessmanager_metacall_callback = nullptr;
-        qnetworkaccessmanager_supportedschemes_callback = nullptr;
         qnetworkaccessmanager_createrequest_callback = nullptr;
         qnetworkaccessmanager_event_callback = nullptr;
         qnetworkaccessmanager_eventfilter_callback = nullptr;
@@ -90,7 +88,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
 
     // Callback setters
     void setQNetworkAccessManager_Metacall_Callback(QNetworkAccessManager_Metacall_Callback cb) { qnetworkaccessmanager_metacall_callback = cb; }
-    void setQNetworkAccessManager_SupportedSchemes_Callback(QNetworkAccessManager_SupportedSchemes_Callback cb) { qnetworkaccessmanager_supportedschemes_callback = cb; }
     void setQNetworkAccessManager_CreateRequest_Callback(QNetworkAccessManager_CreateRequest_Callback cb) { qnetworkaccessmanager_createrequest_callback = cb; }
     void setQNetworkAccessManager_Event_Callback(QNetworkAccessManager_Event_Callback cb) { qnetworkaccessmanager_event_callback = cb; }
     void setQNetworkAccessManager_EventFilter_Callback(QNetworkAccessManager_EventFilter_Callback cb) { qnetworkaccessmanager_eventfilter_callback = cb; }
@@ -107,7 +104,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
 
     // Base flag setters
     void setQNetworkAccessManager_Metacall_IsBase(bool value) const { qnetworkaccessmanager_metacall_isbase = value; }
-    void setQNetworkAccessManager_SupportedSchemes_IsBase(bool value) const { qnetworkaccessmanager_supportedschemes_isbase = value; }
     void setQNetworkAccessManager_CreateRequest_IsBase(bool value) const { qnetworkaccessmanager_createrequest_isbase = value; }
     void setQNetworkAccessManager_Event_IsBase(bool value) const { qnetworkaccessmanager_event_isbase = value; }
     void setQNetworkAccessManager_EventFilter_IsBase(bool value) const { qnetworkaccessmanager_eventfilter_isbase = value; }
@@ -131,18 +127,6 @@ class VirtualQNetworkAccessManager : public QNetworkAccessManager {
             return qnetworkaccessmanager_metacall_callback(this, param1, param2, param3);
         } else {
             return QNetworkAccessManager::qt_metacall(param1, param2, param3);
-        }
-    }
-
-    // Virtual method for C ABI access and custom callback
-    virtual QStringList supportedSchemes() const override {
-        if (qnetworkaccessmanager_supportedschemes_isbase) {
-            qnetworkaccessmanager_supportedschemes_isbase = false;
-            return QNetworkAccessManager::supportedSchemes();
-        } else if (qnetworkaccessmanager_supportedschemes_callback != nullptr) {
-            return qnetworkaccessmanager_supportedschemes_callback();
-        } else {
-            return QNetworkAccessManager::supportedSchemes();
         }
     }
 

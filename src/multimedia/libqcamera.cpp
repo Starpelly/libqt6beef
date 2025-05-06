@@ -1,24 +1,31 @@
-#include <QAnyStringView>
-#include <QBindingStorage>
+#include <QAbstractVideoSurface>
 #include <QByteArray>
 #include <QCamera>
-#include <QCameraDevice>
-#include <QCameraFormat>
+#define WORKAROUND_INNER_CLASS_DEFINITION_QCamera__FrameRateRange
+#include <QCameraExposure>
+#include <QCameraFocus>
+#include <QCameraImageProcessing>
+#include <QCameraInfo>
+#include <QCameraViewfinderSettings>
 #include <QChildEvent>
 #include <QEvent>
+#include <QGraphicsVideoItem>
 #include <QList>
-#include <QMediaCaptureSession>
+#include <QMediaObject>
+#include <QMediaService>
 #include <QMetaMethod>
 #include <QMetaObject>
 #define WORKAROUND_INNER_CLASS_DEFINITION_QMetaObject__Connection
 #include <QObject>
-#include <QPointF>
+#include <QObjectUserData>
+#include <QSize>
 #include <QString>
 #include <QByteArray>
 #include <cstring>
 #include <QThread>
 #include <QTimerEvent>
 #include <QVariant>
+#include <QVideoWidget>
 #include <qcamera.h>
 #include "libqcamera.h"
 #include "libqcamera.hxx"
@@ -27,24 +34,34 @@ QCamera* QCamera_new() {
     return new VirtualQCamera();
 }
 
-QCamera* QCamera_new2(QCameraDevice* cameraDevice) {
-    return new VirtualQCamera(*cameraDevice);
+QCamera* QCamera_new2(libqt_string deviceName) {
+    QByteArray deviceName_QByteArray(deviceName.data, deviceName.len);
+    return new VirtualQCamera(deviceName_QByteArray);
 }
 
-QCamera* QCamera_new3(int position) {
-    return new VirtualQCamera(static_cast<QCameraDevice::Position>(position));
+QCamera* QCamera_new3(QCameraInfo* cameraInfo) {
+    return new VirtualQCamera(*cameraInfo);
 }
 
-QCamera* QCamera_new4(QObject* parent) {
+QCamera* QCamera_new4(int position) {
+    return new VirtualQCamera(static_cast<QCamera::Position>(position));
+}
+
+QCamera* QCamera_new5(QObject* parent) {
     return new VirtualQCamera(parent);
 }
 
-QCamera* QCamera_new5(QCameraDevice* cameraDevice, QObject* parent) {
-    return new VirtualQCamera(*cameraDevice, parent);
+QCamera* QCamera_new6(libqt_string deviceName, QObject* parent) {
+    QByteArray deviceName_QByteArray(deviceName.data, deviceName.len);
+    return new VirtualQCamera(deviceName_QByteArray, parent);
 }
 
-QCamera* QCamera_new6(int position, QObject* parent) {
-    return new VirtualQCamera(static_cast<QCameraDevice::Position>(position), parent);
+QCamera* QCamera_new7(QCameraInfo* cameraInfo, QObject* parent) {
+    return new VirtualQCamera(*cameraInfo, parent);
+}
+
+QCamera* QCamera_new8(int position, QObject* parent) {
+    return new VirtualQCamera(static_cast<QCamera::Position>(position), parent);
 }
 
 QMetaObject* QCamera_MetaObject(const QCamera* self) {
@@ -92,32 +109,148 @@ libqt_string QCamera_Tr(const char* s) {
     return _str;
 }
 
-bool QCamera_IsAvailable(const QCamera* self) {
-    return self->isAvailable();
+libqt_string QCamera_TrUtf8(const char* s) {
+    QString _ret = QCamera::trUtf8(s);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
-bool QCamera_IsActive(const QCamera* self) {
-    return self->isActive();
+libqt_list /* of libqt_string */ QCamera_AvailableDevices() {
+    QList<QByteArray> _ret = QCamera::availableDevices();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    libqt_string* _arr = static_cast<libqt_string*>(malloc(sizeof(libqt_string) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        QByteArray _lv_qb = _ret[i];
+        libqt_string _lv_str;
+        _lv_str.len = _lv_qb.length();
+        _lv_str.data = static_cast<char*>(malloc((_lv_str.len + 1) * sizeof(char)));
+        memcpy(_lv_str.data, _lv_qb.data(), _lv_str.len);
+        _lv_str.data[_lv_str.len] = '\0';
+        _arr[i] = _lv_str;
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
-QMediaCaptureSession* QCamera_CaptureSession(const QCamera* self) {
-    return self->captureSession();
+libqt_string QCamera_DeviceDescription(libqt_string device) {
+    QByteArray device_QByteArray(device.data, device.len);
+    QString _ret = QCamera::deviceDescription(device_QByteArray);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
 }
 
-QCameraDevice* QCamera_CameraDevice(const QCamera* self) {
-    return new QCameraDevice(self->cameraDevice());
+int QCamera_State(const QCamera* self) {
+    return static_cast<int>(self->state());
 }
 
-void QCamera_SetCameraDevice(QCamera* self, QCameraDevice* cameraDevice) {
-    self->setCameraDevice(*cameraDevice);
+int QCamera_Status(const QCamera* self) {
+    return static_cast<int>(self->status());
 }
 
-QCameraFormat* QCamera_CameraFormat(const QCamera* self) {
-    return new QCameraFormat(self->cameraFormat());
+int QCamera_CaptureMode(const QCamera* self) {
+    return static_cast<int>(self->captureMode());
 }
 
-void QCamera_SetCameraFormat(QCamera* self, QCameraFormat* format) {
-    self->setCameraFormat(*format);
+bool QCamera_IsCaptureModeSupported(const QCamera* self, int mode) {
+    return self->isCaptureModeSupported(static_cast<QCamera::CaptureModes>(mode));
+}
+
+QCameraExposure* QCamera_Exposure(const QCamera* self) {
+    return self->exposure();
+}
+
+QCameraFocus* QCamera_Focus(const QCamera* self) {
+    return self->focus();
+}
+
+QCameraImageProcessing* QCamera_ImageProcessing(const QCamera* self) {
+    return self->imageProcessing();
+}
+
+void QCamera_SetViewfinder(QCamera* self, QVideoWidget* viewfinder) {
+    self->setViewfinder(viewfinder);
+}
+
+void QCamera_SetViewfinderWithViewfinder(QCamera* self, QGraphicsVideoItem* viewfinder) {
+    self->setViewfinder(viewfinder);
+}
+
+void QCamera_SetViewfinderWithSurface(QCamera* self, QAbstractVideoSurface* surface) {
+    self->setViewfinder(surface);
+}
+
+QCameraViewfinderSettings* QCamera_ViewfinderSettings(const QCamera* self) {
+    return new QCameraViewfinderSettings(self->viewfinderSettings());
+}
+
+void QCamera_SetViewfinderSettings(QCamera* self, QCameraViewfinderSettings* settings) {
+    self->setViewfinderSettings(*settings);
+}
+
+libqt_list /* of QCameraViewfinderSettings* */ QCamera_SupportedViewfinderSettings(const QCamera* self) {
+    QList<QCameraViewfinderSettings> _ret = self->supportedViewfinderSettings();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QCameraViewfinderSettings** _arr = static_cast<QCameraViewfinderSettings**>(malloc(sizeof(QCameraViewfinderSettings*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QCameraViewfinderSettings(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QSize* */ QCamera_SupportedViewfinderResolutions(const QCamera* self) {
+    QList<QSize> _ret = self->supportedViewfinderResolutions();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSize** _arr = static_cast<QSize**>(malloc(sizeof(QSize*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSize(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QCamera__FrameRateRange* */ QCamera_SupportedViewfinderFrameRateRanges(const QCamera* self) {
+    QList<QCamera::FrameRateRange> _ret = self->supportedViewfinderFrameRateRanges();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QCamera__FrameRateRange** _arr = static_cast<QCamera__FrameRateRange**>(malloc(sizeof(QCamera__FrameRateRange*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QCamera::FrameRateRange(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of int */ QCamera_SupportedViewfinderPixelFormats(const QCamera* self) {
+    QList<QVideoFrame::PixelFormat> _ret = self->supportedViewfinderPixelFormats();
+    // Convert QList<> from C++ memory to manually-managed C memory
+    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = static_cast<int>(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
 }
 
 int QCamera_Error(const QCamera* self) {
@@ -136,136 +269,32 @@ libqt_string QCamera_ErrorString(const QCamera* self) {
     return _str;
 }
 
-int QCamera_SupportedFeatures(const QCamera* self) {
-    return static_cast<int>(self->supportedFeatures());
+int QCamera_SupportedLocks(const QCamera* self) {
+    return static_cast<int>(self->supportedLocks());
 }
 
-int QCamera_FocusMode(const QCamera* self) {
-    return static_cast<int>(self->focusMode());
+int QCamera_RequestedLocks(const QCamera* self) {
+    return static_cast<int>(self->requestedLocks());
 }
 
-void QCamera_SetFocusMode(QCamera* self, int mode) {
-    self->setFocusMode(static_cast<QCamera::FocusMode>(mode));
+int QCamera_LockStatus(const QCamera* self) {
+    return static_cast<int>(self->lockStatus());
 }
 
-bool QCamera_IsFocusModeSupported(const QCamera* self, int mode) {
-    return self->isFocusModeSupported(static_cast<QCamera::FocusMode>(mode));
+int QCamera_LockStatusWithLock(const QCamera* self, int lock) {
+    return static_cast<int>(self->lockStatus(static_cast<QCamera::LockType>(lock)));
 }
 
-QPointF* QCamera_FocusPoint(const QCamera* self) {
-    return new QPointF(self->focusPoint());
+void QCamera_SetCaptureMode(QCamera* self, int mode) {
+    self->setCaptureMode(static_cast<QCamera::CaptureModes>(mode));
 }
 
-QPointF* QCamera_CustomFocusPoint(const QCamera* self) {
-    return new QPointF(self->customFocusPoint());
+void QCamera_Load(QCamera* self) {
+    self->load();
 }
 
-void QCamera_SetCustomFocusPoint(QCamera* self, QPointF* point) {
-    self->setCustomFocusPoint(*point);
-}
-
-void QCamera_SetFocusDistance(QCamera* self, float d) {
-    self->setFocusDistance(static_cast<float>(d));
-}
-
-float QCamera_FocusDistance(const QCamera* self) {
-    return self->focusDistance();
-}
-
-float QCamera_MinimumZoomFactor(const QCamera* self) {
-    return self->minimumZoomFactor();
-}
-
-float QCamera_MaximumZoomFactor(const QCamera* self) {
-    return self->maximumZoomFactor();
-}
-
-float QCamera_ZoomFactor(const QCamera* self) {
-    return self->zoomFactor();
-}
-
-void QCamera_SetZoomFactor(QCamera* self, float factor) {
-    self->setZoomFactor(static_cast<float>(factor));
-}
-
-int QCamera_FlashMode(const QCamera* self) {
-    return static_cast<int>(self->flashMode());
-}
-
-bool QCamera_IsFlashModeSupported(const QCamera* self, int mode) {
-    return self->isFlashModeSupported(static_cast<QCamera::FlashMode>(mode));
-}
-
-bool QCamera_IsFlashReady(const QCamera* self) {
-    return self->isFlashReady();
-}
-
-int QCamera_TorchMode(const QCamera* self) {
-    return static_cast<int>(self->torchMode());
-}
-
-bool QCamera_IsTorchModeSupported(const QCamera* self, int mode) {
-    return self->isTorchModeSupported(static_cast<QCamera::TorchMode>(mode));
-}
-
-int QCamera_ExposureMode(const QCamera* self) {
-    return static_cast<int>(self->exposureMode());
-}
-
-bool QCamera_IsExposureModeSupported(const QCamera* self, int mode) {
-    return self->isExposureModeSupported(static_cast<QCamera::ExposureMode>(mode));
-}
-
-float QCamera_ExposureCompensation(const QCamera* self) {
-    return self->exposureCompensation();
-}
-
-int QCamera_IsoSensitivity(const QCamera* self) {
-    return self->isoSensitivity();
-}
-
-int QCamera_ManualIsoSensitivity(const QCamera* self) {
-    return self->manualIsoSensitivity();
-}
-
-float QCamera_ExposureTime(const QCamera* self) {
-    return self->exposureTime();
-}
-
-float QCamera_ManualExposureTime(const QCamera* self) {
-    return self->manualExposureTime();
-}
-
-int QCamera_MinimumIsoSensitivity(const QCamera* self) {
-    return self->minimumIsoSensitivity();
-}
-
-int QCamera_MaximumIsoSensitivity(const QCamera* self) {
-    return self->maximumIsoSensitivity();
-}
-
-float QCamera_MinimumExposureTime(const QCamera* self) {
-    return self->minimumExposureTime();
-}
-
-float QCamera_MaximumExposureTime(const QCamera* self) {
-    return self->maximumExposureTime();
-}
-
-int QCamera_WhiteBalanceMode(const QCamera* self) {
-    return static_cast<int>(self->whiteBalanceMode());
-}
-
-bool QCamera_IsWhiteBalanceModeSupported(const QCamera* self, int mode) {
-    return self->isWhiteBalanceModeSupported(static_cast<QCamera::WhiteBalanceMode>(mode));
-}
-
-int QCamera_ColorTemperature(const QCamera* self) {
-    return self->colorTemperature();
-}
-
-void QCamera_SetActive(QCamera* self, bool active) {
-    self->setActive(active);
+void QCamera_Unload(QCamera* self) {
+    self->unload();
 }
 
 void QCamera_Start(QCamera* self) {
@@ -276,377 +305,128 @@ void QCamera_Stop(QCamera* self) {
     self->stop();
 }
 
-void QCamera_ZoomTo(QCamera* self, float zoom, float rate) {
-    self->zoomTo(static_cast<float>(zoom), static_cast<float>(rate));
+void QCamera_SearchAndLock(QCamera* self) {
+    self->searchAndLock();
 }
 
-void QCamera_SetFlashMode(QCamera* self, int mode) {
-    self->setFlashMode(static_cast<QCamera::FlashMode>(mode));
+void QCamera_Unlock(QCamera* self) {
+    self->unlock();
 }
 
-void QCamera_SetTorchMode(QCamera* self, int mode) {
-    self->setTorchMode(static_cast<QCamera::TorchMode>(mode));
+void QCamera_SearchAndLockWithLocks(QCamera* self, int locks) {
+    self->searchAndLock(static_cast<QCamera::LockTypes>(locks));
 }
 
-void QCamera_SetExposureMode(QCamera* self, int mode) {
-    self->setExposureMode(static_cast<QCamera::ExposureMode>(mode));
+void QCamera_UnlockWithLocks(QCamera* self, int locks) {
+    self->unlock(static_cast<QCamera::LockTypes>(locks));
 }
 
-void QCamera_SetExposureCompensation(QCamera* self, float ev) {
-    self->setExposureCompensation(static_cast<float>(ev));
+void QCamera_StateChanged(QCamera* self, int state) {
+    self->stateChanged(static_cast<QCamera::State>(state));
 }
 
-void QCamera_SetManualIsoSensitivity(QCamera* self, int iso) {
-    self->setManualIsoSensitivity(static_cast<int>(iso));
-}
-
-void QCamera_SetAutoIsoSensitivity(QCamera* self) {
-    self->setAutoIsoSensitivity();
-}
-
-void QCamera_SetManualExposureTime(QCamera* self, float seconds) {
-    self->setManualExposureTime(static_cast<float>(seconds));
-}
-
-void QCamera_SetAutoExposureTime(QCamera* self) {
-    self->setAutoExposureTime();
-}
-
-void QCamera_SetWhiteBalanceMode(QCamera* self, int mode) {
-    self->setWhiteBalanceMode(static_cast<QCamera::WhiteBalanceMode>(mode));
-}
-
-void QCamera_SetColorTemperature(QCamera* self, int colorTemperature) {
-    self->setColorTemperature(static_cast<int>(colorTemperature));
-}
-
-void QCamera_ActiveChanged(QCamera* self, bool param1) {
-    self->activeChanged(param1);
-}
-
-void QCamera_Connect_ActiveChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, bool) = reinterpret_cast<void (*)(QCamera*, bool)>(slot);
-    QCamera::connect(self, &QCamera::activeChanged, [self, slotFunc](bool param1) {
-        bool sigval1 = param1;
+void QCamera_Connect_StateChanged(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*, int) = reinterpret_cast<void (*)(QCamera*, int)>(slot);
+    QCamera::connect(self, &QCamera::stateChanged, [self, slotFunc](QCamera::State state) {
+        int sigval1 = static_cast<int>(state);
         slotFunc(self, sigval1);
     });
 }
 
-void QCamera_ErrorChanged(QCamera* self) {
-    self->errorChanged();
+void QCamera_CaptureModeChanged(QCamera* self, int param1) {
+    self->captureModeChanged(static_cast<QFlags<QCamera::CaptureMode>>(param1));
 }
 
-void QCamera_Connect_ErrorChanged(QCamera* self, intptr_t slot) {
+void QCamera_Connect_CaptureModeChanged(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*, int) = reinterpret_cast<void (*)(QCamera*, int)>(slot);
+    QCamera::connect(self, &QCamera::captureModeChanged, [self, slotFunc](QFlags<QCamera::CaptureMode> param1) {
+        int sigval1 = static_cast<int>(param1);
+        slotFunc(self, sigval1);
+    });
+}
+
+void QCamera_StatusChanged(QCamera* self, int status) {
+    self->statusChanged(static_cast<QCamera::Status>(status));
+}
+
+void QCamera_Connect_StatusChanged(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*, int) = reinterpret_cast<void (*)(QCamera*, int)>(slot);
+    QCamera::connect(self, &QCamera::statusChanged, [self, slotFunc](QCamera::Status status) {
+        int sigval1 = static_cast<int>(status);
+        slotFunc(self, sigval1);
+    });
+}
+
+void QCamera_Locked(QCamera* self) {
+    self->locked();
+}
+
+void QCamera_Connect_Locked(QCamera* self, intptr_t slot) {
     void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::errorChanged, [self, slotFunc]() {
+    QCamera::connect(self, &QCamera::locked, [self, slotFunc]() {
         slotFunc(self);
     });
 }
 
-void QCamera_ErrorOccurred(QCamera* self, int errorVal, libqt_string errorString) {
-    QString errorString_QString = QString::fromUtf8(errorString.data, errorString.len);
-    self->errorOccurred(static_cast<QCamera::Error>(errorVal), errorString_QString);
+void QCamera_LockFailed(QCamera* self) {
+    self->lockFailed();
 }
 
-void QCamera_Connect_ErrorOccurred(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, int, libqt_string) = reinterpret_cast<void (*)(QCamera*, int, libqt_string)>(slot);
-    QCamera::connect(self, &QCamera::errorOccurred, [self, slotFunc](QCamera::Error errorVal, const QString& errorString) {
-        int sigval1 = static_cast<int>(errorVal);
-        const QString errorString_ret = errorString;
-        // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
-        QByteArray errorString_b = errorString_ret.toUtf8();
-        libqt_string errorString_str;
-        errorString_str.len = errorString_b.length();
-        errorString_str.data = static_cast<char*>(malloc((errorString_str.len + 1) * sizeof(char)));
-        memcpy(errorString_str.data, errorString_b.data(), errorString_str.len);
-        errorString_str.data[errorString_str.len] = '\0';
-        libqt_string sigval2 = errorString_str;
+void QCamera_Connect_LockFailed(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
+    QCamera::connect(self, &QCamera::lockFailed, [self, slotFunc]() {
+        slotFunc(self);
+    });
+}
+
+void QCamera_LockStatusChanged(QCamera* self, int status, int reason) {
+    self->lockStatusChanged(static_cast<QCamera::LockStatus>(status), static_cast<QCamera::LockChangeReason>(reason));
+}
+
+void QCamera_Connect_LockStatusChanged(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*, int, int) = reinterpret_cast<void (*)(QCamera*, int, int)>(slot);
+    QCamera::connect(self, &QCamera::lockStatusChanged, [self, slotFunc](QCamera::LockStatus status, QCamera::LockChangeReason reason) {
+        int sigval1 = static_cast<int>(status);
+        int sigval2 = static_cast<int>(reason);
         slotFunc(self, sigval1, sigval2);
     });
 }
 
-void QCamera_CameraDeviceChanged(QCamera* self) {
-    self->cameraDeviceChanged();
+void QCamera_LockStatusChanged2(QCamera* self, int lock, int status, int reason) {
+    self->lockStatusChanged(static_cast<QCamera::LockType>(lock), static_cast<QCamera::LockStatus>(status), static_cast<QCamera::LockChangeReason>(reason));
 }
 
-void QCamera_Connect_CameraDeviceChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::cameraDeviceChanged, [self, slotFunc]() {
-        slotFunc(self);
+void QCamera_Connect_LockStatusChanged2(QCamera* self, intptr_t slot) {
+    void (*slotFunc)(QCamera*, int, int, int) = reinterpret_cast<void (*)(QCamera*, int, int, int)>(slot);
+    QCamera::connect(self, &QCamera::lockStatusChanged, [self, slotFunc](QCamera::LockType lock, QCamera::LockStatus status, QCamera::LockChangeReason reason) {
+        int sigval1 = static_cast<int>(lock);
+        int sigval2 = static_cast<int>(status);
+        int sigval3 = static_cast<int>(reason);
+        slotFunc(self, sigval1, sigval2, sigval3);
     });
 }
 
-void QCamera_CameraFormatChanged(QCamera* self) {
-    self->cameraFormatChanged();
+void QCamera_ErrorWithQCameraError(QCamera* self, int param1) {
+    self->error(static_cast<QCamera::Error>(param1));
 }
 
-void QCamera_Connect_CameraFormatChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::cameraFormatChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_SupportedFeaturesChanged(QCamera* self) {
-    self->supportedFeaturesChanged();
-}
-
-void QCamera_Connect_SupportedFeaturesChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::supportedFeaturesChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_FocusModeChanged(QCamera* self) {
-    self->focusModeChanged();
-}
-
-void QCamera_Connect_FocusModeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::focusModeChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_ZoomFactorChanged(QCamera* self, float param1) {
-    self->zoomFactorChanged(static_cast<float>(param1));
-}
-
-void QCamera_Connect_ZoomFactorChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::zoomFactorChanged, [self, slotFunc](float param1) {
-        float sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_MinimumZoomFactorChanged(QCamera* self, float param1) {
-    self->minimumZoomFactorChanged(static_cast<float>(param1));
-}
-
-void QCamera_Connect_MinimumZoomFactorChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::minimumZoomFactorChanged, [self, slotFunc](float param1) {
-        float sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_MaximumZoomFactorChanged(QCamera* self, float param1) {
-    self->maximumZoomFactorChanged(static_cast<float>(param1));
-}
-
-void QCamera_Connect_MaximumZoomFactorChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::maximumZoomFactorChanged, [self, slotFunc](float param1) {
-        float sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_FocusDistanceChanged(QCamera* self, float param1) {
-    self->focusDistanceChanged(static_cast<float>(param1));
-}
-
-void QCamera_Connect_FocusDistanceChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::focusDistanceChanged, [self, slotFunc](float param1) {
-        float sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_FocusPointChanged(QCamera* self) {
-    self->focusPointChanged();
-}
-
-void QCamera_Connect_FocusPointChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::focusPointChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_CustomFocusPointChanged(QCamera* self) {
-    self->customFocusPointChanged();
-}
-
-void QCamera_Connect_CustomFocusPointChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::customFocusPointChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_FlashReady(QCamera* self, bool param1) {
-    self->flashReady(param1);
-}
-
-void QCamera_Connect_FlashReady(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, bool) = reinterpret_cast<void (*)(QCamera*, bool)>(slot);
-    QCamera::connect(self, &QCamera::flashReady, [self, slotFunc](bool param1) {
-        bool sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_FlashModeChanged(QCamera* self) {
-    self->flashModeChanged();
-}
-
-void QCamera_Connect_FlashModeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::flashModeChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_TorchModeChanged(QCamera* self) {
-    self->torchModeChanged();
-}
-
-void QCamera_Connect_TorchModeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::torchModeChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_ExposureTimeChanged(QCamera* self, float speed) {
-    self->exposureTimeChanged(static_cast<float>(speed));
-}
-
-void QCamera_Connect_ExposureTimeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::exposureTimeChanged, [self, slotFunc](float speed) {
-        float sigval1 = speed;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_ManualExposureTimeChanged(QCamera* self, float speed) {
-    self->manualExposureTimeChanged(static_cast<float>(speed));
-}
-
-void QCamera_Connect_ManualExposureTimeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::manualExposureTimeChanged, [self, slotFunc](float speed) {
-        float sigval1 = speed;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_IsoSensitivityChanged(QCamera* self, int param1) {
-    self->isoSensitivityChanged(static_cast<int>(param1));
-}
-
-void QCamera_Connect_IsoSensitivityChanged(QCamera* self, intptr_t slot) {
+void QCamera_Connect_ErrorWithQCameraError(QCamera* self, intptr_t slot) {
     void (*slotFunc)(QCamera*, int) = reinterpret_cast<void (*)(QCamera*, int)>(slot);
-    QCamera::connect(self, &QCamera::isoSensitivityChanged, [self, slotFunc](int param1) {
-        int sigval1 = param1;
+    QCamera::connect(self, &QCamera::error, [self, slotFunc](QCamera::Error param1) {
+        int sigval1 = static_cast<int>(param1);
         slotFunc(self, sigval1);
     });
 }
 
-void QCamera_ManualIsoSensitivityChanged(QCamera* self, int param1) {
-    self->manualIsoSensitivityChanged(static_cast<int>(param1));
+void QCamera_ErrorOccurred(QCamera* self, int param1) {
+    self->errorOccurred(static_cast<QCamera::Error>(param1));
 }
 
-void QCamera_Connect_ManualIsoSensitivityChanged(QCamera* self, intptr_t slot) {
+void QCamera_Connect_ErrorOccurred(QCamera* self, intptr_t slot) {
     void (*slotFunc)(QCamera*, int) = reinterpret_cast<void (*)(QCamera*, int)>(slot);
-    QCamera::connect(self, &QCamera::manualIsoSensitivityChanged, [self, slotFunc](int param1) {
-        int sigval1 = param1;
+    QCamera::connect(self, &QCamera::errorOccurred, [self, slotFunc](QCamera::Error param1) {
+        int sigval1 = static_cast<int>(param1);
         slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_ExposureCompensationChanged(QCamera* self, float param1) {
-    self->exposureCompensationChanged(static_cast<float>(param1));
-}
-
-void QCamera_Connect_ExposureCompensationChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*, float) = reinterpret_cast<void (*)(QCamera*, float)>(slot);
-    QCamera::connect(self, &QCamera::exposureCompensationChanged, [self, slotFunc](float param1) {
-        float sigval1 = param1;
-        slotFunc(self, sigval1);
-    });
-}
-
-void QCamera_ExposureModeChanged(QCamera* self) {
-    self->exposureModeChanged();
-}
-
-void QCamera_Connect_ExposureModeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::exposureModeChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_WhiteBalanceModeChanged(const QCamera* self) {
-    self->whiteBalanceModeChanged();
-}
-
-void QCamera_Connect_WhiteBalanceModeChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::whiteBalanceModeChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_ColorTemperatureChanged(const QCamera* self) {
-    self->colorTemperatureChanged();
-}
-
-void QCamera_Connect_ColorTemperatureChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::colorTemperatureChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_BrightnessChanged(QCamera* self) {
-    self->brightnessChanged();
-}
-
-void QCamera_Connect_BrightnessChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::brightnessChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_ContrastChanged(QCamera* self) {
-    self->contrastChanged();
-}
-
-void QCamera_Connect_ContrastChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::contrastChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_SaturationChanged(QCamera* self) {
-    self->saturationChanged();
-}
-
-void QCamera_Connect_SaturationChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::saturationChanged, [self, slotFunc]() {
-        slotFunc(self);
-    });
-}
-
-void QCamera_HueChanged(QCamera* self) {
-    self->hueChanged();
-}
-
-void QCamera_Connect_HueChanged(QCamera* self, intptr_t slot) {
-    void (*slotFunc)(QCamera*) = reinterpret_cast<void (*)(QCamera*)>(slot);
-    QCamera::connect(self, &QCamera::hueChanged, [self, slotFunc]() {
-        slotFunc(self);
     });
 }
 
@@ -672,6 +452,212 @@ libqt_string QCamera_Tr3(const char* s, const char* c, int n) {
     memcpy(_str.data, _b.data(), _str.len);
     _str.data[_str.len] = '\0';
     return _str;
+}
+
+libqt_string QCamera_TrUtf82(const char* s, const char* c) {
+    QString _ret = QCamera::trUtf8(s, c);
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_string QCamera_TrUtf83(const char* s, const char* c, int n) {
+    QString _ret = QCamera::trUtf8(s, c, static_cast<int>(n));
+    // Convert QString from UTF-16 in C++ RAII memory to UTF-8 in manually-managed C memory
+    QByteArray _b = _ret.toUtf8();
+    libqt_string _str;
+    _str.len = _b.length();
+    _str.data = static_cast<char*>(malloc((_str.len + 1) * sizeof(char)));
+    memcpy(_str.data, _b.data(), _str.len);
+    _str.data[_str.len] = '\0';
+    return _str;
+}
+
+libqt_list /* of QCameraViewfinderSettings* */ QCamera_SupportedViewfinderSettings1(const QCamera* self, QCameraViewfinderSettings* settings) {
+    QList<QCameraViewfinderSettings> _ret = self->supportedViewfinderSettings(*settings);
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QCameraViewfinderSettings** _arr = static_cast<QCameraViewfinderSettings**>(malloc(sizeof(QCameraViewfinderSettings*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QCameraViewfinderSettings(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QSize* */ QCamera_SupportedViewfinderResolutions1(const QCamera* self, QCameraViewfinderSettings* settings) {
+    QList<QSize> _ret = self->supportedViewfinderResolutions(*settings);
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QSize** _arr = static_cast<QSize**>(malloc(sizeof(QSize*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QSize(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of QCamera__FrameRateRange* */ QCamera_SupportedViewfinderFrameRateRanges1(const QCamera* self, QCameraViewfinderSettings* settings) {
+    QList<QCamera::FrameRateRange> _ret = self->supportedViewfinderFrameRateRanges(*settings);
+    // Convert QList<> from C++ memory to manually-managed C memory
+    QCamera__FrameRateRange** _arr = static_cast<QCamera__FrameRateRange**>(malloc(sizeof(QCamera__FrameRateRange*) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = new QCamera::FrameRateRange(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+libqt_list /* of int */ QCamera_SupportedViewfinderPixelFormats1(const QCamera* self, QCameraViewfinderSettings* settings) {
+    QList<QVideoFrame::PixelFormat> _ret = self->supportedViewfinderPixelFormats(*settings);
+    // Convert QList<> from C++ memory to manually-managed C memory
+    int* _arr = static_cast<int*>(malloc(sizeof(int) * _ret.length()));
+    for (size_t i = 0; i < _ret.length(); ++i) {
+        _arr[i] = static_cast<int>(_ret[i]);
+    }
+    libqt_list _out;
+    _out.len = _ret.length();
+    _out.data = static_cast<void*>(_arr);
+    return _out;
+}
+
+// Derived class handler implementation
+int QCamera_Availability(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        return static_cast<int>(vqcamera->availability());
+    } else {
+        return static_cast<int>(vqcamera->availability());
+    }
+}
+
+// Base class handler implementation
+int QCamera_QBaseAvailability(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_Availability_IsBase(true);
+        return static_cast<int>(vqcamera->availability());
+    } else {
+        return static_cast<int>(vqcamera->availability());
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnAvailability(const QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_Availability_Callback(reinterpret_cast<VirtualQCamera::QCamera_Availability_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QCamera_IsAvailable(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        return vqcamera->isAvailable();
+    } else {
+        return vqcamera->isAvailable();
+    }
+}
+
+// Base class handler implementation
+bool QCamera_QBaseIsAvailable(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_IsAvailable_IsBase(true);
+        return vqcamera->isAvailable();
+    } else {
+        return vqcamera->isAvailable();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnIsAvailable(const QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_IsAvailable_Callback(reinterpret_cast<VirtualQCamera::QCamera_IsAvailable_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+QMediaService* QCamera_Service(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        return vqcamera->service();
+    } else {
+        return vqcamera->service();
+    }
+}
+
+// Base class handler implementation
+QMediaService* QCamera_QBaseService(const QCamera* self) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_Service_IsBase(true);
+        return vqcamera->service();
+    } else {
+        return vqcamera->service();
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnService(const QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
+        vqcamera->setQCamera_Service_Callback(reinterpret_cast<VirtualQCamera::QCamera_Service_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+bool QCamera_Bind(QCamera* self, QObject* param1) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        return vqcamera->bind(param1);
+    } else {
+        return vqcamera->bind(param1);
+    }
+}
+
+// Base class handler implementation
+bool QCamera_QBaseBind(QCamera* self, QObject* param1) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_Bind_IsBase(true);
+        return vqcamera->bind(param1);
+    } else {
+        return vqcamera->bind(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnBind(QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_Bind_Callback(reinterpret_cast<VirtualQCamera::QCamera_Bind_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QCamera_Unbind(QCamera* self, QObject* param1) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->unbind(param1);
+    } else {
+        vqcamera->unbind(param1);
+    }
+}
+
+// Base class handler implementation
+void QCamera_QBaseUnbind(QCamera* self, QObject* param1) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_Unbind_IsBase(true);
+        vqcamera->unbind(param1);
+    } else {
+        vqcamera->unbind(param1);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnUnbind(QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_Unbind_Callback(reinterpret_cast<VirtualQCamera::QCamera_Unbind_Callback>(slot));
+    }
 }
 
 // Derived class handler implementation
@@ -857,6 +843,62 @@ void QCamera_OnDisconnectNotify(QCamera* self, intptr_t slot) {
 }
 
 // Derived class handler implementation
+void QCamera_AddPropertyWatch(QCamera* self, libqt_string name) {
+    QByteArray name_QByteArray(name.data, name.len);
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->addPropertyWatch(name_QByteArray);
+    } else {
+        vqcamera->addPropertyWatch(name_QByteArray);
+    }
+}
+
+// Base class handler implementation
+void QCamera_QBaseAddPropertyWatch(QCamera* self, libqt_string name) {
+    QByteArray name_QByteArray(name.data, name.len);
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_AddPropertyWatch_IsBase(true);
+        vqcamera->addPropertyWatch(name_QByteArray);
+    } else {
+        vqcamera->addPropertyWatch(name_QByteArray);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnAddPropertyWatch(QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_AddPropertyWatch_Callback(reinterpret_cast<VirtualQCamera::QCamera_AddPropertyWatch_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
+void QCamera_RemovePropertyWatch(QCamera* self, libqt_string name) {
+    QByteArray name_QByteArray(name.data, name.len);
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->removePropertyWatch(name_QByteArray);
+    } else {
+        vqcamera->removePropertyWatch(name_QByteArray);
+    }
+}
+
+// Base class handler implementation
+void QCamera_QBaseRemovePropertyWatch(QCamera* self, libqt_string name) {
+    QByteArray name_QByteArray(name.data, name.len);
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_RemovePropertyWatch_IsBase(true);
+        vqcamera->removePropertyWatch(name_QByteArray);
+    } else {
+        vqcamera->removePropertyWatch(name_QByteArray);
+    }
+}
+
+// Auxiliary method to allow providing re-implementation
+void QCamera_OnRemovePropertyWatch(QCamera* self, intptr_t slot) {
+    if (auto* vqcamera = dynamic_cast<VirtualQCamera*>(self)) {
+        vqcamera->setQCamera_RemovePropertyWatch_Callback(reinterpret_cast<VirtualQCamera::QCamera_RemovePropertyWatch_Callback>(slot));
+    }
+}
+
+// Derived class handler implementation
 QObject* QCamera_Sender(const QCamera* self) {
     if (auto* vqcamera = const_cast<VirtualQCamera*>(dynamic_cast<const VirtualQCamera*>(self))) {
         return vqcamera->sender();
@@ -961,5 +1003,37 @@ void QCamera_OnIsSignalConnected(const QCamera* self, intptr_t slot) {
 }
 
 void QCamera_Delete(QCamera* self) {
+    delete self;
+}
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new(QCamera__FrameRateRange* other) {
+    return new QCamera::FrameRateRange(*other);
+}
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new2(QCamera__FrameRateRange* other) {
+    return new QCamera::FrameRateRange(std::move(*other));
+}
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new3() {
+    return new QCamera::FrameRateRange();
+}
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new4(double minimum, double maximum) {
+    return new QCamera::FrameRateRange(static_cast<qreal>(minimum), static_cast<qreal>(maximum));
+}
+
+QCamera__FrameRateRange* QCamera__FrameRateRange_new5(QCamera__FrameRateRange* param1) {
+    return new QCamera::FrameRateRange(*param1);
+}
+
+void QCamera__FrameRateRange_CopyAssign(QCamera__FrameRateRange* self, QCamera__FrameRateRange* other) {
+    *self = *other;
+}
+
+void QCamera__FrameRateRange_MoveAssign(QCamera__FrameRateRange* self, QCamera__FrameRateRange* other) {
+    *self = std::move(*other);
+}
+
+void QCamera__FrameRateRange_Delete(QCamera__FrameRateRange* self) {
     delete self;
 }

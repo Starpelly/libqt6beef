@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "../qtlibc.h"
 
@@ -19,8 +21,7 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
+typedef struct QAbstractVideoSurface QAbstractVideoSurface;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCursor QCursor;
 typedef struct QEvent QEvent;
@@ -40,10 +41,14 @@ typedef struct QGraphicsVideoItem QGraphicsVideoItem;
 typedef struct QGraphicsWidget QGraphicsWidget;
 typedef struct QInputMethodEvent QInputMethodEvent;
 typedef struct QKeyEvent QKeyEvent;
+typedef struct QMatrix QMatrix;
+typedef struct QMediaBindableInterface QMediaBindableInterface;
+typedef struct QMediaObject QMediaObject;
 typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPainter QPainter;
 typedef struct QPainterPath QPainterPath;
 typedef struct QPointF QPointF;
@@ -56,7 +61,6 @@ typedef struct QThread QThread;
 typedef struct QTimerEvent QTimerEvent;
 typedef struct QTransform QTransform;
 typedef struct QVariant QVariant;
-typedef struct QVideoSink QVideoSink;
 typedef struct QWidget QWidget;
 #endif
 
@@ -68,7 +72,11 @@ int QGraphicsVideoItem_Metacall(QGraphicsVideoItem* self, int param1, int param2
 void QGraphicsVideoItem_OnMetacall(QGraphicsVideoItem* self, intptr_t slot);
 int QGraphicsVideoItem_QBaseMetacall(QGraphicsVideoItem* self, int param1, int param2, void** param3);
 libqt_string QGraphicsVideoItem_Tr(const char* s);
-QVideoSink* QGraphicsVideoItem_VideoSink(const QGraphicsVideoItem* self);
+libqt_string QGraphicsVideoItem_TrUtf8(const char* s);
+QMediaObject* QGraphicsVideoItem_MediaObject(const QGraphicsVideoItem* self);
+void QGraphicsVideoItem_OnMediaObject(const QGraphicsVideoItem* self, intptr_t slot);
+QMediaObject* QGraphicsVideoItem_QBaseMediaObject(const QGraphicsVideoItem* self);
+QAbstractVideoSurface* QGraphicsVideoItem_VideoSurface(const QGraphicsVideoItem* self);
 int QGraphicsVideoItem_AspectRatioMode(const QGraphicsVideoItem* self);
 void QGraphicsVideoItem_SetAspectRatioMode(QGraphicsVideoItem* self, int mode);
 QPointF* QGraphicsVideoItem_Offset(const QGraphicsVideoItem* self);
@@ -82,9 +90,6 @@ QRectF* QGraphicsVideoItem_QBaseBoundingRect(const QGraphicsVideoItem* self);
 void QGraphicsVideoItem_Paint(QGraphicsVideoItem* self, QPainter* painter, QStyleOptionGraphicsItem* option, QWidget* widget);
 void QGraphicsVideoItem_OnPaint(QGraphicsVideoItem* self, intptr_t slot);
 void QGraphicsVideoItem_QBasePaint(QGraphicsVideoItem* self, QPainter* painter, QStyleOptionGraphicsItem* option, QWidget* widget);
-int QGraphicsVideoItem_Type(const QGraphicsVideoItem* self);
-void QGraphicsVideoItem_OnType(const QGraphicsVideoItem* self, intptr_t slot);
-int QGraphicsVideoItem_QBaseType(const QGraphicsVideoItem* self);
 void QGraphicsVideoItem_NativeSizeChanged(QGraphicsVideoItem* self, QSizeF* size);
 void QGraphicsVideoItem_Connect_NativeSizeChanged(QGraphicsVideoItem* self, intptr_t slot);
 void QGraphicsVideoItem_TimerEvent(QGraphicsVideoItem* self, QTimerEvent* event);
@@ -93,8 +98,13 @@ void QGraphicsVideoItem_QBaseTimerEvent(QGraphicsVideoItem* self, QTimerEvent* e
 QVariant* QGraphicsVideoItem_ItemChange(QGraphicsVideoItem* self, int change, QVariant* value);
 void QGraphicsVideoItem_OnItemChange(QGraphicsVideoItem* self, intptr_t slot);
 QVariant* QGraphicsVideoItem_QBaseItemChange(QGraphicsVideoItem* self, int change, QVariant* value);
+bool QGraphicsVideoItem_SetMediaObject(QGraphicsVideoItem* self, QMediaObject* object);
+void QGraphicsVideoItem_OnSetMediaObject(QGraphicsVideoItem* self, intptr_t slot);
+bool QGraphicsVideoItem_QBaseSetMediaObject(QGraphicsVideoItem* self, QMediaObject* object);
 libqt_string QGraphicsVideoItem_Tr2(const char* s, const char* c);
 libqt_string QGraphicsVideoItem_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsVideoItem_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsVideoItem_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsVideoItem_Event(QGraphicsVideoItem* self, QEvent* ev);
 void QGraphicsVideoItem_OnEvent(QGraphicsVideoItem* self, intptr_t slot);
 bool QGraphicsVideoItem_QBaseEvent(QGraphicsVideoItem* self, QEvent* ev);
@@ -134,6 +144,9 @@ bool QGraphicsVideoItem_QBaseIsObscuredBy(const QGraphicsVideoItem* self, QGraph
 QPainterPath* QGraphicsVideoItem_OpaqueArea(const QGraphicsVideoItem* self);
 void QGraphicsVideoItem_OnOpaqueArea(const QGraphicsVideoItem* self, intptr_t slot);
 QPainterPath* QGraphicsVideoItem_QBaseOpaqueArea(const QGraphicsVideoItem* self);
+int QGraphicsVideoItem_Type(const QGraphicsVideoItem* self);
+void QGraphicsVideoItem_OnType(const QGraphicsVideoItem* self, intptr_t slot);
+int QGraphicsVideoItem_QBaseType(const QGraphicsVideoItem* self);
 bool QGraphicsVideoItem_SceneEventFilter(QGraphicsVideoItem* self, QGraphicsItem* watched, QEvent* event);
 void QGraphicsVideoItem_OnSceneEventFilter(QGraphicsVideoItem* self, intptr_t slot);
 bool QGraphicsVideoItem_QBaseSceneEventFilter(QGraphicsVideoItem* self, QGraphicsItem* watched, QEvent* event);

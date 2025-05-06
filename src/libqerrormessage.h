@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -21,9 +23,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 #else
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QChildEvent QChildEvent;
 typedef struct QCloseEvent QCloseEvent;
@@ -34,7 +34,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QErrorMessage QErrorMessage;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
@@ -57,6 +56,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -64,7 +64,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -90,6 +89,7 @@ int QErrorMessage_Metacall(QErrorMessage* self, int param1, int param2, void** p
 void QErrorMessage_OnMetacall(QErrorMessage* self, intptr_t slot);
 int QErrorMessage_QBaseMetacall(QErrorMessage* self, int param1, int param2, void** param3);
 libqt_string QErrorMessage_Tr(const char* s);
+libqt_string QErrorMessage_TrUtf8(const char* s);
 QErrorMessage* QErrorMessage_QtHandler();
 void QErrorMessage_ShowMessage(QErrorMessage* self, libqt_string message);
 void QErrorMessage_ShowMessage2(QErrorMessage* self, libqt_string message, libqt_string typeVal);
@@ -101,6 +101,8 @@ void QErrorMessage_OnChangeEvent(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseChangeEvent(QErrorMessage* self, QEvent* e);
 libqt_string QErrorMessage_Tr2(const char* s, const char* c);
 libqt_string QErrorMessage_Tr3(const char* s, const char* c, int n);
+libqt_string QErrorMessage_TrUtf82(const char* s, const char* c);
+libqt_string QErrorMessage_TrUtf83(const char* s, const char* c, int n);
 void QErrorMessage_SetVisible(QErrorMessage* self, bool visible);
 void QErrorMessage_OnSetVisible(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseSetVisible(QErrorMessage* self, bool visible);
@@ -179,9 +181,9 @@ void QErrorMessage_QBaseFocusInEvent(QErrorMessage* self, QFocusEvent* event);
 void QErrorMessage_FocusOutEvent(QErrorMessage* self, QFocusEvent* event);
 void QErrorMessage_OnFocusOutEvent(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseFocusOutEvent(QErrorMessage* self, QFocusEvent* event);
-void QErrorMessage_EnterEvent(QErrorMessage* self, QEnterEvent* event);
+void QErrorMessage_EnterEvent(QErrorMessage* self, QEvent* event);
 void QErrorMessage_OnEnterEvent(QErrorMessage* self, intptr_t slot);
-void QErrorMessage_QBaseEnterEvent(QErrorMessage* self, QEnterEvent* event);
+void QErrorMessage_QBaseEnterEvent(QErrorMessage* self, QEvent* event);
 void QErrorMessage_LeaveEvent(QErrorMessage* self, QEvent* event);
 void QErrorMessage_OnLeaveEvent(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseLeaveEvent(QErrorMessage* self, QEvent* event);
@@ -212,9 +214,9 @@ void QErrorMessage_QBaseDropEvent(QErrorMessage* self, QDropEvent* event);
 void QErrorMessage_HideEvent(QErrorMessage* self, QHideEvent* event);
 void QErrorMessage_OnHideEvent(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseHideEvent(QErrorMessage* self, QHideEvent* event);
-bool QErrorMessage_NativeEvent(QErrorMessage* self, libqt_string eventType, void* message, intptr_t* result);
+bool QErrorMessage_NativeEvent(QErrorMessage* self, libqt_string eventType, void* message, long* result);
 void QErrorMessage_OnNativeEvent(QErrorMessage* self, intptr_t slot);
-bool QErrorMessage_QBaseNativeEvent(QErrorMessage* self, libqt_string eventType, void* message, intptr_t* result);
+bool QErrorMessage_QBaseNativeEvent(QErrorMessage* self, libqt_string eventType, void* message, long* result);
 void QErrorMessage_InputMethodEvent(QErrorMessage* self, QInputMethodEvent* param1);
 void QErrorMessage_OnInputMethodEvent(QErrorMessage* self, intptr_t slot);
 void QErrorMessage_QBaseInputMethodEvent(QErrorMessage* self, QInputMethodEvent* param1);

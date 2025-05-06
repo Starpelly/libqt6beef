@@ -939,7 +939,9 @@ func emitVirtualBindingHeader(src *CppParsedHeader, filename, packageName string
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "` + bindingInclude + "\"\n" + extraInclude + "\n\n")
 
@@ -1186,7 +1188,9 @@ func emitBindingHeader(src *CppParsedHeader, filename, packageName string) (stri
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "` + bindingInclude + "\"\n" + extraInclude + "\n" + `
 #ifdef __cplusplus

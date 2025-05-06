@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -22,9 +24,7 @@ typedef QMetaObject::Connection QMetaObject__Connection;
 typedef struct QAbstractButton QAbstractButton;
 typedef struct QAction QAction;
 typedef struct QActionEvent QActionEvent;
-typedef struct QAnyStringView QAnyStringView;
 typedef struct QBackingStore QBackingStore;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QBitmap QBitmap;
 typedef struct QButtonGroup QButtonGroup;
 typedef struct QCheckBox QCheckBox;
@@ -36,7 +36,6 @@ typedef struct QDragEnterEvent QDragEnterEvent;
 typedef struct QDragLeaveEvent QDragLeaveEvent;
 typedef struct QDragMoveEvent QDragMoveEvent;
 typedef struct QDropEvent QDropEvent;
-typedef struct QEnterEvent QEnterEvent;
 typedef struct QEvent QEvent;
 typedef struct QFocusEvent QFocusEvent;
 typedef struct QFont QFont;
@@ -58,6 +57,7 @@ typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QMouseEvent QMouseEvent;
 typedef struct QMoveEvent QMoveEvent;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QPaintDevice QPaintDevice;
 typedef struct QPaintEngine QPaintEngine;
 typedef struct QPaintEvent QPaintEvent;
@@ -65,7 +65,6 @@ typedef struct QPainter QPainter;
 typedef struct QPalette QPalette;
 typedef struct QPixmap QPixmap;
 typedef struct QPoint QPoint;
-typedef struct QPointF QPointF;
 typedef struct QRect QRect;
 typedef struct QRegion QRegion;
 typedef struct QResizeEvent QResizeEvent;
@@ -94,6 +93,7 @@ int QCheckBox_Metacall(QCheckBox* self, int param1, int param2, void** param3);
 void QCheckBox_OnMetacall(QCheckBox* self, intptr_t slot);
 int QCheckBox_QBaseMetacall(QCheckBox* self, int param1, int param2, void** param3);
 libqt_string QCheckBox_Tr(const char* s);
+libqt_string QCheckBox_TrUtf8(const char* s);
 QSize* QCheckBox_SizeHint(const QCheckBox* self);
 void QCheckBox_OnSizeHint(const QCheckBox* self, intptr_t slot);
 QSize* QCheckBox_QBaseSizeHint(const QCheckBox* self);
@@ -124,11 +124,10 @@ void QCheckBox_QBasePaintEvent(QCheckBox* self, QPaintEvent* param1);
 void QCheckBox_MouseMoveEvent(QCheckBox* self, QMouseEvent* param1);
 void QCheckBox_OnMouseMoveEvent(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseMouseMoveEvent(QCheckBox* self, QMouseEvent* param1);
-void QCheckBox_InitStyleOption(const QCheckBox* self, QStyleOptionButton* option);
-void QCheckBox_OnInitStyleOption(const QCheckBox* self, intptr_t slot);
-void QCheckBox_QBaseInitStyleOption(const QCheckBox* self, QStyleOptionButton* option);
 libqt_string QCheckBox_Tr2(const char* s, const char* c);
 libqt_string QCheckBox_Tr3(const char* s, const char* c, int n);
+libqt_string QCheckBox_TrUtf82(const char* s, const char* c);
+libqt_string QCheckBox_TrUtf83(const char* s, const char* c, int n);
 void QCheckBox_SetTristate1(QCheckBox* self, bool y);
 void QCheckBox_KeyPressEvent(QCheckBox* self, QKeyEvent* e);
 void QCheckBox_OnKeyPressEvent(QCheckBox* self, intptr_t slot);
@@ -175,9 +174,9 @@ void QCheckBox_QBaseMouseDoubleClickEvent(QCheckBox* self, QMouseEvent* event);
 void QCheckBox_WheelEvent(QCheckBox* self, QWheelEvent* event);
 void QCheckBox_OnWheelEvent(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseWheelEvent(QCheckBox* self, QWheelEvent* event);
-void QCheckBox_EnterEvent(QCheckBox* self, QEnterEvent* event);
+void QCheckBox_EnterEvent(QCheckBox* self, QEvent* event);
 void QCheckBox_OnEnterEvent(QCheckBox* self, intptr_t slot);
-void QCheckBox_QBaseEnterEvent(QCheckBox* self, QEnterEvent* event);
+void QCheckBox_QBaseEnterEvent(QCheckBox* self, QEvent* event);
 void QCheckBox_LeaveEvent(QCheckBox* self, QEvent* event);
 void QCheckBox_OnLeaveEvent(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseLeaveEvent(QCheckBox* self, QEvent* event);
@@ -217,9 +216,9 @@ void QCheckBox_QBaseShowEvent(QCheckBox* self, QShowEvent* event);
 void QCheckBox_HideEvent(QCheckBox* self, QHideEvent* event);
 void QCheckBox_OnHideEvent(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseHideEvent(QCheckBox* self, QHideEvent* event);
-bool QCheckBox_NativeEvent(QCheckBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QCheckBox_NativeEvent(QCheckBox* self, libqt_string eventType, void* message, long* result);
 void QCheckBox_OnNativeEvent(QCheckBox* self, intptr_t slot);
-bool QCheckBox_QBaseNativeEvent(QCheckBox* self, libqt_string eventType, void* message, intptr_t* result);
+bool QCheckBox_QBaseNativeEvent(QCheckBox* self, libqt_string eventType, void* message, long* result);
 void QCheckBox_InputMethodEvent(QCheckBox* self, QInputMethodEvent* param1);
 void QCheckBox_OnInputMethodEvent(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseInputMethodEvent(QCheckBox* self, QInputMethodEvent* param1);
@@ -256,6 +255,9 @@ QPaintDevice* QCheckBox_QBaseRedirected(const QCheckBox* self, QPoint* offset);
 QPainter* QCheckBox_SharedPainter(const QCheckBox* self);
 void QCheckBox_OnSharedPainter(const QCheckBox* self, intptr_t slot);
 QPainter* QCheckBox_QBaseSharedPainter(const QCheckBox* self);
+void QCheckBox_InitStyleOption(const QCheckBox* self, QStyleOptionButton* option);
+void QCheckBox_OnInitStyleOption(const QCheckBox* self, intptr_t slot);
+void QCheckBox_QBaseInitStyleOption(const QCheckBox* self, QStyleOptionButton* option);
 void QCheckBox_UpdateMicroFocus(QCheckBox* self);
 void QCheckBox_OnUpdateMicroFocus(QCheckBox* self, intptr_t slot);
 void QCheckBox_QBaseUpdateMicroFocus(QCheckBox* self);

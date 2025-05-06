@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -19,8 +21,6 @@ extern "C" {
 typedef QMetaObject::Connection QMetaObject__Connection;
 #endif
 #else
-typedef struct QAnyStringView QAnyStringView;
-typedef struct QBindingStorage QBindingStorage;
 typedef struct QChildEvent QChildEvent;
 typedef struct QEvent QEvent;
 typedef struct QGraphicsAnchor QGraphicsAnchor;
@@ -32,6 +32,7 @@ typedef struct QMetaMethod QMetaMethod;
 typedef struct QMetaObject QMetaObject;
 typedef struct QMetaObject__Connection QMetaObject__Connection;
 typedef struct QObject QObject;
+typedef struct QObjectUserData QObjectUserData;
 typedef struct QRectF QRectF;
 typedef struct QSizeF QSizeF;
 typedef struct QSizePolicy QSizePolicy;
@@ -44,6 +45,7 @@ QMetaObject* QGraphicsAnchor_MetaObject(const QGraphicsAnchor* self);
 void* QGraphicsAnchor_Metacast(QGraphicsAnchor* self, const char* param1);
 int QGraphicsAnchor_Metacall(QGraphicsAnchor* self, int param1, int param2, void** param3);
 libqt_string QGraphicsAnchor_Tr(const char* s);
+libqt_string QGraphicsAnchor_TrUtf8(const char* s);
 void QGraphicsAnchor_SetSpacing(QGraphicsAnchor* self, double spacing);
 void QGraphicsAnchor_UnsetSpacing(QGraphicsAnchor* self);
 double QGraphicsAnchor_Spacing(const QGraphicsAnchor* self);
@@ -51,6 +53,8 @@ void QGraphicsAnchor_SetSizePolicy(QGraphicsAnchor* self, int policy);
 int QGraphicsAnchor_SizePolicy(const QGraphicsAnchor* self);
 libqt_string QGraphicsAnchor_Tr2(const char* s, const char* c);
 libqt_string QGraphicsAnchor_Tr3(const char* s, const char* c, int n);
+libqt_string QGraphicsAnchor_TrUtf82(const char* s, const char* c);
+libqt_string QGraphicsAnchor_TrUtf83(const char* s, const char* c, int n);
 bool QGraphicsAnchor_Event(QGraphicsAnchor* self, QEvent* event);
 bool QGraphicsAnchor_EventFilter(QGraphicsAnchor* self, QObject* watched, QEvent* event);
 void QGraphicsAnchor_Delete(QGraphicsAnchor* self);
@@ -94,9 +98,6 @@ void QGraphicsAnchorLayout_QBaseUpdateGeometry(QGraphicsAnchorLayout* self);
 void QGraphicsAnchorLayout_WidgetEvent(QGraphicsAnchorLayout* self, QEvent* e);
 void QGraphicsAnchorLayout_OnWidgetEvent(QGraphicsAnchorLayout* self, intptr_t slot);
 void QGraphicsAnchorLayout_QBaseWidgetEvent(QGraphicsAnchorLayout* self, QEvent* e);
-bool QGraphicsAnchorLayout_IsEmpty(const QGraphicsAnchorLayout* self);
-void QGraphicsAnchorLayout_OnIsEmpty(const QGraphicsAnchorLayout* self, intptr_t slot);
-bool QGraphicsAnchorLayout_QBaseIsEmpty(const QGraphicsAnchorLayout* self);
 void QGraphicsAnchorLayout_AddChildLayoutItem(QGraphicsAnchorLayout* self, QGraphicsLayoutItem* layoutItem);
 void QGraphicsAnchorLayout_OnAddChildLayoutItem(QGraphicsAnchorLayout* self, intptr_t slot);
 void QGraphicsAnchorLayout_QBaseAddChildLayoutItem(QGraphicsAnchorLayout* self, QGraphicsLayoutItem* layoutItem);

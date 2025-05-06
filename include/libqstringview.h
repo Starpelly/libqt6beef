@@ -6,7 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "qtlibc.h"
 
@@ -17,8 +19,6 @@ extern "C" {
 #ifdef __cplusplus
 #else
 typedef struct QChar QChar;
-typedef struct QRegularExpression QRegularExpression;
-typedef struct QRegularExpressionMatch QRegularExpressionMatch;
 typedef struct QStringView QStringView;
 #endif
 
@@ -43,7 +43,6 @@ void QStringView_MoveAssign(QStringView* self, QStringView* other);
 libqt_string QStringView_ToString(const QStringView* self);
 ptrdiff_t QStringView_Size(const QStringView* self);
 QChar* QStringView_Data(const QStringView* self);
-QChar* QStringView_ConstData(const QStringView* self);
 QChar* QStringView_OperatorSubscript(const QStringView* self, ptrdiff_t n);
 libqt_string QStringView_ToLatin1(const QStringView* self);
 libqt_string QStringView_ToUtf8(const QStringView* self);
@@ -62,11 +61,6 @@ ptrdiff_t QStringView_IndexOf(const QStringView* self, QChar* c);
 bool QStringView_Contains(const QStringView* self, QChar* c);
 ptrdiff_t QStringView_Count(const QStringView* self, QChar* c);
 ptrdiff_t QStringView_LastIndexOf(const QStringView* self, QChar* c);
-ptrdiff_t QStringView_LastIndexOf2(const QStringView* self, QChar* c, ptrdiff_t from);
-ptrdiff_t QStringView_IndexOfWithRe(const QStringView* self, QRegularExpression* re);
-ptrdiff_t QStringView_LastIndexOf5(const QStringView* self, QRegularExpression* re, ptrdiff_t from);
-bool QStringView_ContainsWithRe(const QStringView* self, QRegularExpression* re);
-ptrdiff_t QStringView_CountWithRe(const QStringView* self, QRegularExpression* re);
 bool QStringView_IsRightToLeft(const QStringView* self);
 bool QStringView_IsValidUtf16(const QStringView* self);
 int16_t QStringView_ToShort(const QStringView* self);
@@ -86,23 +80,17 @@ QChar* QStringView_Cend(const QStringView* self);
 bool QStringView_Empty(const QStringView* self);
 QChar* QStringView_Front(const QStringView* self);
 QChar* QStringView_Back(const QStringView* self);
-QChar* QStringView_ConstBegin(const QStringView* self);
-QChar* QStringView_ConstEnd(const QStringView* self);
 bool QStringView_IsNull(const QStringView* self);
 bool QStringView_IsEmpty(const QStringView* self);
-ptrdiff_t QStringView_Length(const QStringView* self);
-QChar* QStringView_First2(const QStringView* self);
-QChar* QStringView_Last2(const QStringView* self);
+int QStringView_Length(const QStringView* self);
+QChar* QStringView_First(const QStringView* self);
+QChar* QStringView_Last(const QStringView* self);
 ptrdiff_t QStringView_IndexOf2(const QStringView* self, QChar* c, ptrdiff_t from);
 ptrdiff_t QStringView_IndexOf3(const QStringView* self, QChar* c, ptrdiff_t from, int cs);
 bool QStringView_Contains2(const QStringView* self, QChar* c, int cs);
 ptrdiff_t QStringView_Count2(const QStringView* self, QChar* c, int cs);
-ptrdiff_t QStringView_LastIndexOf22(const QStringView* self, QChar* c, int cs);
-ptrdiff_t QStringView_LastIndexOf32(const QStringView* self, QChar* c, ptrdiff_t from, int cs);
-ptrdiff_t QStringView_IndexOf24(const QStringView* self, QRegularExpression* re, ptrdiff_t from);
-ptrdiff_t QStringView_IndexOf34(const QStringView* self, QRegularExpression* re, ptrdiff_t from, QRegularExpressionMatch* rmatch);
-ptrdiff_t QStringView_LastIndexOf35(const QStringView* self, QRegularExpression* re, ptrdiff_t from, QRegularExpressionMatch* rmatch);
-bool QStringView_Contains24(const QStringView* self, QRegularExpression* re, QRegularExpressionMatch* rmatch);
+ptrdiff_t QStringView_LastIndexOf2(const QStringView* self, QChar* c, ptrdiff_t from);
+ptrdiff_t QStringView_LastIndexOf3(const QStringView* self, QChar* c, ptrdiff_t from, int cs);
 int16_t QStringView_ToShort1(const QStringView* self, bool* ok);
 int16_t QStringView_ToShort2(const QStringView* self, bool* ok, int base);
 uint16_t QStringView_ToUShort1(const QStringView* self, bool* ok);
