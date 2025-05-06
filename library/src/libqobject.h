@@ -43,9 +43,9 @@ typedef struct QVariant QVariant;
 
 // This method's return type was changed from non-const to const in Qt 6.9
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-QTLIBC_API const QMetaObject* QObjectData_DynamicMetaObject(const QObjectData* self);
+const QMetaObject* QObjectData_DynamicMetaObject(const QObjectData* self);
 #else
-QTLIBC_API QMetaObject* QObjectData_DynamicMetaObject(const QObjectData* self);
+QMetaObject* QObjectData_DynamicMetaObject(const QObjectData* self);
 #endif
 QTLIBC_API void QObjectData_Delete(QObjectData* self);
 

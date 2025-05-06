@@ -36,14 +36,30 @@ func cabiEnumNameBF(className string) string {
 	return strings.Replace(enumName, `::`, `__`, -1)
 }
 
+func (p CppParameter) parameterTypeBeef() string {
+	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
+		return "libqt_string"
+	}
+
+	tmp := strings.Replace(p.RenderTypeCabi(), `*`, "", -1)
+
+	return tmp
+}
+
 func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
 	if p.Pointer && p.ParameterType == "char" {
 		return "char8[]"
 	}
 
-	if p.ParameterType == "QString" || p.ParameterType == "QAnyStringView" ||
-		p.ParameterType == "QByteArrayView" || p.ParameterType == "QStringView" {
-		return "char8[]"
+	/*
+		if p.ParameterType == "QString" || p.ParameterType == "QAnyStringView" ||
+			p.ParameterType == "QByteArrayView" || p.ParameterType == "QStringView" {
+			return "char8[]"
+		}
+	*/
+
+	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
+		return "libqt_string"
 	}
 
 	if p.ParameterType == "QByteArray" {
@@ -158,6 +174,12 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 		ret = "void" // but for now becuase I'm lazy
 	}
 
+	if p.Pointer {
+		ret += strings.Repeat("*", p.PointerCount)
+	} else if p.ByRef {
+		ret += "*"
+	}
+
 	return ret
 }
 
@@ -191,7 +213,7 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 	tmp := make([]string, 0, len(m.Parameters)+2)
 
 	if !m.IsStatic {
-		tmp = append(tmp, "void* c_this")
+		tmp = append(tmp, "Self* c_this")
 	}
 
 	skipNext := false
@@ -342,14 +364,21 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 		ret.AppendNewLine()
 		ret.WriteString(`public struct ` + cabiClassName(c.ClassName))
 
-		// Inheritance
-		/*
-			for _, base := range c.DirectInherits {
-				ret.WriteString(" : ")
-				ret.WriteString(cabiClassName(base))
-				// ret.WriteLine(cabiClassName(base))
+		// Inheritance... it probably shouldn't exist for CABI structs...?
+		for i, base := range c.DirectInherits {
+			if strings.HasPrefix(base, `QList<`) {
+
+				ret.WriteString("// Also inherits unprojectable " + base + "\n")
+
+			} else {
+
+				if i == len(c.DirectInherits)-1 {
+					ret.WriteString(" : ")
+					ret.WriteString(cabiClassName(base))
+				}
+
 			}
-		*/
+		}
 
 		// Class body
 		ret.WriteLine("{")
@@ -376,7 +405,7 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 				cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
 
 				ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-				ret.WriteLine("public static extern " + "void*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
+				ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + "*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
 			}
 
 			for _, m := range baseMethods {
