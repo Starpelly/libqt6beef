@@ -3,8 +3,8 @@ FileVersion = 1
 [Project]
 Name = "Qt-6"
 TargetType = "BeefLib"
-StartupObject = "beef_seaqt_5.15.Program"
-DefaultNamespace = "beef_seaqt_5.15"
+StartupObject = "Qt6.Program"
+DefaultNamespace = "Qt6"
 
 [Configs.Debug.Win64]
 LibPaths = ["$(ProjectDir)/library/build/lib/Debug/QtBeefLink.lib"]

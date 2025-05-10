@@ -89,6 +89,9 @@ func pkgConfigCflags(packageName string) string {
 
 func generate(packageName string, srcDirs []string, allowHeaderFn func(string) bool, clangBin, cflagsCombined, outDir, includePath string, matcher ClangMatcher, headerList *[]string, zigIncs map[string]string, qtstructdefs map[string]struct{}) {
 
+	writeCPP := true
+	writeBeef := true
+
 	var includeFiles []string
 	for _, srcDir := range srcDirs {
 		if strings.HasSuffix(srcDir, `.h`) {
@@ -110,11 +113,15 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 	// cleanGeneratedFilesInDir(libDir)
 	// cleanGeneratedFilesInDir(outDir)
 
-	os.RemoveAll(libDir)
-	os.MkdirAll(libDir, 0755)
+	if writeCPP {
+		os.RemoveAll(libDir)
+		os.MkdirAll(libDir, 0755)
+	}
 
-	os.RemoveAll(outDir)
-	os.MkdirAll(outDir, 0755)
+	if writeBeef {
+		os.RemoveAll(outDir)
+		os.MkdirAll(outDir, 0755)
+	}
 
 	var processHeaders []*CppParsedHeader
 	atr := astTransformRedundant{
@@ -264,60 +271,66 @@ func generate(packageName string, srcDirs []string, allowHeaderFn func(string) b
 		// ------------------------------------------------------------------------------------------------------
 		// Emit library files
 		// ------------------------------------------------------------------------------------------------------
-		bindingCppSrc, err := emitBindingCpp(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
+
+		if writeCPP {
+			bindingCppSrc, err := emitBindingCpp(parsed, filepath.Base(parsed.Filename), packageName)
+			if err != nil {
+				panic(err)
+			}
+
+			err = os.WriteFile(outputNameLib+".cpp", []byte(bindingCppSrc), 0644)
+			if err != nil {
+				panic(err)
+			}
+
+			bindingHSrc, structdefs, err := emitBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
+			if err != nil {
+				panic(err)
+			}
+
+			for k := range structdefs {
+				qtstructdefs[k] = struct{}{}
+			}
+
+			err = os.WriteFile(outputNameLib+".h", []byte(bindingHSrc), 0644)
+			if err != nil {
+				panic(err)
+			}
+
+			bindingHxxSrc, err := emitVirtualBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
+			if err != nil {
+				panic(err)
+			}
+
+			err = os.WriteFile(outputNameLib+".hxx", []byte(bindingHxxSrc), 0644)
+			if err != nil {
+				panic(err)
+			}
 		}
 
-		err = os.WriteFile(outputNameLib+".cpp", []byte(bindingCppSrc), 0644)
-		if err != nil {
-			panic(err)
-		}
-
-		bindingHSrc, structdefs, err := emitBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
-
-		for k := range structdefs {
-			qtstructdefs[k] = struct{}{}
-		}
-
-		err = os.WriteFile(outputNameLib+".h", []byte(bindingHSrc), 0644)
-		if err != nil {
-			panic(err)
-		}
-
-		bindingHxxSrc, err := emitVirtualBindingHeader(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
-
-		err = os.WriteFile(outputNameLib+".hxx", []byte(bindingHxxSrc), 0644)
-		if err != nil {
-			panic(err)
-		}
 		// ------------------------------------------------------------------------------------------------------
 		// Emit Beef files
 		// ------------------------------------------------------------------------------------------------------
 
-		bfSrc, err := emitBeef(parsed, filepath.Base(parsed.Filename), packageName)
-		if err != nil {
-			panic(err)
-		}
+		if writeBeef {
+			bfSrc, err := emitBeef(parsed, filepath.Base(parsed.Filename), packageName)
+			if err != nil {
+				panic(err)
+			}
 
-		err = os.WriteFile(outputNameBf+".bf", []byte(bfSrc), 0644)
-		if err != nil {
-			panic(err)
+			err = os.WriteFile(outputNameBf+".bf", []byte(bfSrc), 0644)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		// ------------------------------------------------------------------------------------------------------
 		// Format library files
 		// ------------------------------------------------------------------------------------------------------
-		{
+		if writeCPP {
 			cmdCpp := exec.Command("clang-format", "-i", outputNameLib+".cpp")
 			cmdCpp.Stderr = os.Stderr
-			err = cmdCpp.Start()
+			err := cmdCpp.Start()
 			if err != nil {
 				panic(err)
 			}
@@ -450,8 +463,8 @@ func generateClangCaches(includeFiles []string, clangBin string, cflags []string
 
 func main() {
 	clang := flag.String("clang", "clang", "Custom path to clang")
-	outDir := flag.String("outdir", "../../", "Output directory for generated gen_** files")
-	// outDir := flag.String("outdir", "/mnt/d/libqt6zig", "Output directory for generated gen_** files")
+	// outDir := flag.String("outdir", "../../", "Output directory for generated gen_** files")
+	outDir := flag.String("outdir", "/mnt/d/libqt6zig", "Output directory for generated gen_** files")
 	extraLibsDir := flag.String("extralibs", "/usr/local/src/", "Base directory to find extra library checkouts")
 
 	flag.Parse()

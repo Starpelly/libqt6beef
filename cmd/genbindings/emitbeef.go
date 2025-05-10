@@ -25,6 +25,45 @@ func beefReservedWord(s string) bool {
 	}
 }
 
+func collectInheritedMethodsForBeef(class string, seenMethods map[string]struct{}) []InheritedMethod {
+	var methods []InheritedMethod
+
+	if pkg, ok := KnownClassnames[class]; ok {
+		for _, m := range pkg.Class.Methods {
+			if _, seen := seenMethods[m.MethodName]; !seen {
+				if m.InheritedFrom != "" {
+					continue
+				}
+				if m.IsConst && m.IsVirtual && m.IsProtected {
+					continue
+				}
+
+				// Create a copy of the method to avoid modifying the original
+				methodCopy := m
+				// Apply typedefs to ensure proper type resolution
+				applyTypedefs_Method(&methodCopy)
+				if err := blocklist_MethodAllowed(&methodCopy); err != nil {
+					continue
+				}
+
+				methods = append(methods, InheritedMethod{
+					Method:      methodCopy,
+					SourceClass: pkg.Class.ClassName,
+				})
+				seenMethods[m.MethodName] = struct{}{}
+			}
+		}
+
+		for _, parentClass := range pkg.Class.DirectInherits {
+			if parentMethods := collectInheritedMethodsForBeef(parentClass, seenMethods); parentMethods != nil {
+				methods = append(methods, parentMethods...)
+			}
+		}
+	}
+
+	return methods
+}
+
 // cabiEnumName returns the Beef enum name for a Qt C++ class.
 // Normally this is the same, except for class types that are nested inside another class definition.
 func cabiEnumNameBF(className string) string {
@@ -97,6 +136,8 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 
 	ret := ""
 	switch p.ParameterType {
+	case "void":
+		ret += "void"
 	case "bool", "volatile bool": // What the fuck could the volatile be for? I hope it works???
 		ret += "bool"
 	case "unsigned char", "uchar", "quint8":
@@ -158,7 +199,8 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 			ret += cabiClassName(p.ParameterType)
 		} else {
 			// Do not transform this type
-			ret += p.ParameterType
+			// ret += p.ParameterType + ".Ptr"
+			ret += "void"
 		}
 	}
 
@@ -213,7 +255,7 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 	tmp := make([]string, 0, len(m.Parameters)+2)
 
 	if !m.IsStatic {
-		tmp = append(tmp, "Self* c_this")
+		tmp = append(tmp, "void* c_this")
 	}
 
 	skipNext := false
@@ -270,6 +312,28 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 	return strings.Join(tmp, ", ")
 }
 
+func (bfs *bfFileState) emitArgumentsBeef(m CppMethod) (forwarding string) {
+	tmp := make([]string, 0, len(m.Parameters)+2)
+
+	if !m.IsStatic {
+		tmp = append(tmp, "this.nativePtr")
+	}
+
+	for _, p := range m.Parameters {
+		// Ordinary parameter
+		paramName := p.ParameterName
+
+		if beefReservedWord(paramName) {
+			paramName = "_" + paramName
+		}
+
+		tmp = append(tmp, paramName)
+
+	}
+
+	return strings.Join(tmp, ", ")
+}
+
 func (bfs *bfFileState) emitParametersBeef(params []CppParameter, isSlot bool) string {
 	tmp := make([]string, 0, len(params))
 	skipNext := false
@@ -301,7 +365,102 @@ func (bfs *bfFileState) emitParametersBeef(params []CppParameter, isSlot bool) s
 	return strings.Join(tmp, ", ")
 }
 
+func beefCtorName(c *CppClass, i int) string {
+	methodPrefixName := cabiClassName(c.ClassName)
+
+	return methodPrefixName + "_new" + maybeSuffix(i)
+}
+
 type bfFileState struct {
+}
+
+func beef_emitClassStruct(c *CppClass, ret *CodeBuilder, bfs *bfFileState) {
+	ret.WriteLine(`extension CQt`)
+
+	// Inheritance... it probably shouldn't exist for CABI structs...?
+	/*
+		for i, base := range c.DirectInherits {
+			if strings.HasPrefix(base, `QList<`) {
+
+				ret.WriteString("// Also inherits unprojectable " + base + "\n")
+
+			} else {
+
+				if i == len(c.DirectInherits)-1 {
+					ret.WriteString(" : " + cabiClassName(base) + ".Ptr")
+				}
+
+			}
+		}
+	*/
+
+	// Ptr struct body
+	ret.WriteLine("{")
+	ret.IncreaseTab()
+	{
+		// ---------------------------------------------------------------------
+		// Methods
+		// ---------------------------------------------------------------------
+		seenMethods := make(map[string]struct{})
+		baseMethods := c.Methods
+		protectedMethods := c.ProtectedMethods()
+		virtualEligible := AllowVirtualForClass(c.ClassName)
+
+		UNUSED(seenMethods)
+		UNUSED(baseMethods)
+		UNUSED(protectedMethods)
+		UNUSED(virtualEligible)
+
+		methodPrefixName := cabiClassName(c.ClassName)
+
+		for i, ctor := range c.Ctors {
+
+			// cMethodName := cabiNewName(c, i)
+			cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
+
+			ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+			ret.WriteLine("public static extern " + "void* " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
+		}
+
+		for _, m := range baseMethods {
+
+			// cMethodName := cabiMethodName(c, m)
+			cMethodName := methodPrefixName + "_" + m.SafeMethodName()
+			// ret.WriteLine("[Import(" + `"` + pcName + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
+			// ret.WriteLine("[Import(" + `"` + "QtBeefLink" + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
+
+			if m.IsSignal {
+				addConnect := true
+				if _, ok := noQtConnect[methodPrefixName]; ok {
+					addConnect = false
+				}
+				if addConnect {
+					cMethodName := methodPrefixName + "_Connect_" + m.SafeMethodName()
+
+					ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+					ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(bfs) + " " + cMethodName + "(void* c_this, c_intptr slot);")
+					// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
+				}
+			} else {
+
+				ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+				ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
+
+			}
+		}
+
+		if c.CanDelete && (len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0) {
+			ret.WriteLine("/// Delete this object from C++ memory")
+
+			cMethodName := methodPrefixName + "_Delete"
+
+			ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+			ret.WriteLine("public static extern " + "void " + cMethodName + "(" + "void* self" + ");")
+		}
+	}
+	ret.DecreaseTab()
+	ret.WriteLine("}")
+	// End class body
 }
 
 func emitBeef(src *CppParsedHeader, headerName string, packageName string) (string, error) {
@@ -353,71 +512,190 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 			continue
 		}
 
-		// Class header
-		/*
-			if len(c.Ctors) > 0 || len(c.Methods) > 0 || len(virtualMethods) > 0 {
-				pageName := getPageName(cabiClassName(c.ClassName))
-				ret.WriteLine("/// https://doc.qt.io/qt-5/" + pageName + ".html")
-			}
-		*/
+		virtualMethods := c.VirtualMethods()
 
-		ret.AppendNewLine()
-		ret.WriteString(`public struct ` + cabiClassName(c.ClassName))
+		baseMethods := c.Methods
+		protectedMethods := c.ProtectedMethods()
+		virtualEligible := AllowVirtualForClass(c.ClassName)
 
-		// Inheritance... it probably shouldn't exist for CABI structs...?
-		for i, base := range c.DirectInherits {
-			if strings.HasPrefix(base, `QList<`) {
+		if virtualEligible && len(virtualMethods) > 0 {
+			virtualMethods = append(virtualMethods, protectedMethods...)
+		}
 
-				ret.WriteString("// Also inherits unprojectable " + base + "\n")
-
-			} else {
-
-				if i == len(c.DirectInherits)-1 {
-					ret.WriteString(" : ")
-					ret.WriteString(cabiClassName(base))
-				}
-
+		seenMethods := make(map[string]struct{})
+		var inheritedMethods []InheritedMethod
+		for _, base := range c.DirectInherits {
+			inherited := collectInheritedMethodsForBeef(base, seenMethods)
+			if inherited != nil {
+				inheritedMethods = append(inheritedMethods, inherited...)
 			}
 		}
 
-		// Class body
+		for _, im := range inheritedMethods {
+			im.Method.InheritedFrom = im.SourceClass
+			baseMethods = append(baseMethods, im.Method)
+		}
+
+		// previousMethods := map[string]struct{}{}
+		seenMethodVariants := map[string]bool{}
+
+		ret.WriteLine("public class " + cabiClassName(c.ClassName))
 		ret.WriteLine("{")
 		ret.IncreaseTab()
 		{
+			// Ptr member variable
+			if true {
+				ret.WriteLine("protected void* nativePtr;")
+				if len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0 {
+					ret.WriteEmptyLine()
+				}
+			}
+
 			// ---------------------------------------------------------------------
 			// Methods
 			// ---------------------------------------------------------------------
-			seenMethods := make(map[string]struct{})
-			baseMethods := c.Methods
-			protectedMethods := c.ProtectedMethods()
-			virtualEligible := AllowVirtualForClass(c.ClassName)
 
-			UNUSED(seenMethods)
 			UNUSED(baseMethods)
 			UNUSED(protectedMethods)
 			UNUSED(virtualEligible)
 
-			methodPrefixName := cabiClassName(c.ClassName)
+			seenCtors := make(map[string]struct{})
 
 			for i, ctor := range c.Ctors {
 
-				// cMethodName := cabiNewName(c, i)
-				cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
+				_, ok := seenCtors[ctor.MethodName]
+				if ok {
+					continue
+				}
 
-				ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-				ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + "*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
+				/*
+					cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
+
+					ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+					ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + ".Ptr*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
+				*/
+
+				ret.WriteLine("public this" + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ")")
+				ret.WriteLine("{")
+				ret.IncreaseTab()
+				{
+					params := ctor.Parameters
+					tmp := make([]string, 0, len(params))
+					skipNext := false
+
+					for i, p := range params {
+						if IsArgcArgv(params, i) {
+							// Ordinary parameter
+							paramName := p.ParameterName
+
+							if beefReservedWord(paramName) {
+								paramName = "_" + paramName
+							}
+
+							tmp = append(tmp, paramName)
+						} else if skipNext {
+							// Skip this parameter, already handled
+							skipNext = false
+						} else {
+							// Ordinary parameter
+							paramName := p.ParameterName
+
+							if beefReservedWord(paramName) {
+								paramName = "_" + paramName
+							}
+
+							tmp = append(tmp, paramName)
+						}
+					}
+
+					args := strings.Join(tmp, ", ")
+
+					// ret.WriteLine("this.nativePtr = *Ptr." + beefCtorName(&c, i) + "(" + args + ");")
+					ret.WriteLine("this.nativePtr = CQt." + beefCtorName(&c, i) + "(" + args + ");")
+
+					// New function?
+					/*
+						ret.WriteLine("return new Self()")
+						ret.WriteLine("{")
+						ret.IncreaseTab()
+						{
+							ret.WriteLine("nativePtr = Ptr." + beefCtorName(&c, i) + "(" + args + ")")
+						}
+						ret.DecreaseTab()
+						ret.WriteLine("};")
+					*/
+				}
+				ret.DecreaseTab()
+				ret.WriteLine("}")
+
+				if len(baseMethods) > 0 {
+					ret.WriteEmptyLine()
+				}
+
+				seenCtors[ctor.MethodName] = struct{}{}
+			}
+
+			if c.CanDelete && (len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0) {
+				ret.WriteLine("public ~this()")
+				ret.WriteLine("{")
+				ret.IncreaseTab()
+				{
+					cMethodName := cabiClassName(c.ClassName) + "_Delete"
+					ret.WriteLine("CQt." + cMethodName + "(this.nativePtr);")
+				}
+				ret.DecreaseTab()
+				ret.WriteLine("}")
+
+				if len(baseMethods) > 0 {
+					ret.WriteEmptyLine()
+				}
 			}
 
 			for _, m := range baseMethods {
 
-				// DLL Linking
-				{
-					// cMethodName := cabiMethodName(c, m)
-					cMethodName := methodPrefixName + "_" + m.SafeMethodName()
-					// ret.WriteLine("[Import(" + `"` + pcName + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
-					// ret.WriteLine("[Import(" + `"` + "QtBeefLink" + ".dll" + `"` + "), LinkName(" + `"` + cMethodName + `"` + ")]")
+				if m.IsProtected && m.InheritedFrom != "" {
+					continue
+				}
 
-					if m.IsSignal {
+				if m.IsProtected && !virtualEligible {
+					continue
+				}
+
+				if _, ok := privateAndSkippedMethods[c.ClassName+"_"+m.SafeMethodName()]; ok {
+					if m.InheritedFrom == "" {
+						continue
+					}
+				}
+
+				var showHiddenParams bool
+				if _, ok := seenMethodVariants[m.SafeMethodName()]; ok {
+					continue
+				}
+				if b, ok := seenMethodVariants[m.MethodName]; ok {
+					if b {
+						continue
+					} else {
+						showHiddenParams = true
+						seenMethodVariants[m.MethodName] = true
+					}
+				}
+				seenMethodVariants[m.MethodName] = false
+				seenMethodVariants[m.SafeMethodName()] = false
+
+				UNUSED(showHiddenParams)
+
+				writeEmptyLine := false
+
+				var methodPrefixName string
+				if m.InheritedFrom != "" {
+					methodPrefixName = cabiClassName(m.InheritedFrom)
+				} else {
+					methodPrefixName = cabiClassName(c.ClassName)
+				}
+				cMethodName := methodPrefixName + "_" + m.SafeMethodName()
+
+				if m.IsSignal {
+					/*
 						addConnect := true
 						if _, ok := noQtConnect[methodPrefixName]; ok {
 							addConnect = false
@@ -428,48 +706,50 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 							ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
 							ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(Self* c_this, c_intptr slot);")
 							// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
+							writeEmptyLine = true
 						}
-					} else {
+					*/
+				} else {
 
-						ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-						ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
-
+					staticStr := ""
+					if m.IsStatic {
+						staticStr += "static "
 					}
-				}
-
-				/*
-					mSafeMethodName := m.SafeMethodName()
-					// cSafeMethodName := mSafeMethodName
-
-					if beefReservedWord(mSafeMethodName) {
-						mSafeMethodName = "_" + mSafeMethodName
+					if m.IsVirtual {
+						staticStr += "virtual "
 					}
 
-					ret.WriteLine("")
+					// args
+					args := bfs.emitArgumentsBeef(m)
 
-					// Accessor
-					ret.WriteString("public ")
-
-					ret.WriteString(m.ReturnType.renderTypeForMethod())
-					ret.WriteString(" ")
-					ret.WriteString(mSafeMethodName)
-					ret.WriteString("(" + bfs.emitParametersBeef(m.Parameters, false) + ")")
-
-					// Method body
+					ret.WriteLine("public " + staticStr + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + m.SafeMethodName() + "(" + bfs.emitParametersBeef(m.Parameters, false) + ")")
 					ret.WriteLine("{")
 					ret.IncreaseTab()
 					{
-
+						ret.AppendNewLine()
+						ret.AppendTabs(ret.tabCount)
+						if m.ReturnType.renderReturnTypeBeef(&bfs) != "void" {
+							ret.WriteString("return ")
+						}
+						ret.WriteString("CQt." + cMethodName + "(" + args + ");")
 					}
 					ret.DecreaseTab()
 					ret.WriteLine("}")
 
+					writeEmptyLine = true
+				}
+
+				if writeEmptyLine {
 					ret.WriteEmptyLine()
-				*/
+				}
 			}
 		}
+
 		ret.DecreaseTab()
 		ret.WriteLine("}")
+
+		// Ptr struct
+		beef_emitClassStruct(&c, &ret, &bfs)
 	}
 
 	bfSrc := ret.String()
