@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAbstractNativeEventFilter
+public interface IQAbstractNativeEventFilter
+{
+	void* NativePtr { get; }
+}
+public class QAbstractNativeEventFilter : IQAbstractNativeEventFilter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QAbstractNativeEventFilter
 		CQt.QAbstractNativeEventFilter_Delete(this.nativePtr);
 	}
 	
-	public virtual bool NativeEventFilter(libqt_string eventType, void* message, c_uintptr* result)
+	public virtual bool NativeEventFilter(String eventType, void* message, c_uintptr* result)
 	{
-		return CQt.QAbstractNativeEventFilter_NativeEventFilter(this.nativePtr, eventType, message, result);
+		return CQt.QAbstractNativeEventFilter_NativeEventFilter(this.nativePtr, libqt_string(eventType), message, result);
 	}
 	
 }

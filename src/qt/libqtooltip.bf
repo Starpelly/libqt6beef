@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QToolTip
+public interface IQToolTip
+{
+	void* NativePtr { get; }
+}
+public class QToolTip : IQToolTip
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQToolTip other)
 	{
-		this.nativePtr = CQt.QToolTip_new(other);
+		this.nativePtr = CQt.QToolTip_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -16,9 +21,9 @@ public class QToolTip
 		CQt.QToolTip_Delete(this.nativePtr);
 	}
 	
-	public static void ShowText(void* pos, libqt_string text)
+	public static void ShowText(IQPoint pos, String text)
 	{
-		CQt.QToolTip_ShowText(pos, text);
+		CQt.QToolTip_ShowText((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text));
 	}
 	
 	public static void HideText()
@@ -41,9 +46,9 @@ public class QToolTip
 		CQt.QToolTip_Palette();
 	}
 	
-	public static void SetPalette(void* palette)
+	public static void SetPalette(IQPalette palette)
 	{
-		CQt.QToolTip_SetPalette(palette);
+		CQt.QToolTip_SetPalette((palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
 	public static void Font()
@@ -51,24 +56,24 @@ public class QToolTip
 		CQt.QToolTip_Font();
 	}
 	
-	public static void SetFont(void* font)
+	public static void SetFont(IQFont font)
 	{
-		CQt.QToolTip_SetFont(font);
+		CQt.QToolTip_SetFont((font == default) ? default : (void*)font.NativePtr);
 	}
 	
-	public static void ShowText3(void* pos, libqt_string text, void* w)
+	public static void ShowText3(IQPoint pos, String text, IQWidget w)
 	{
-		CQt.QToolTip_ShowText3(pos, text, w);
+		CQt.QToolTip_ShowText3((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text), (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public static void ShowText4(void* pos, libqt_string text, void* w, void* rect)
+	public static void ShowText4(IQPoint pos, String text, IQWidget w, IQRect rect)
 	{
-		CQt.QToolTip_ShowText4(pos, text, w, rect);
+		CQt.QToolTip_ShowText4((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text), (w == null) ? null : (void*)w.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public static void ShowText5(void* pos, libqt_string text, void* w, void* rect, int32 msecShowTime)
+	public static void ShowText5(IQPoint pos, String text, IQWidget w, IQRect rect, int32 msecShowTime)
 	{
-		CQt.QToolTip_ShowText5(pos, text, w, rect, msecShowTime);
+		CQt.QToolTip_ShowText5((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text), (w == null) ? null : (void*)w.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, msecShowTime);
 	}
 	
 }

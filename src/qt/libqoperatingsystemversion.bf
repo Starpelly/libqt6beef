@@ -24,9 +24,14 @@ public enum QOperatingSystemVersion__OSType
 	WatchOS = 5,
 	Android = 6,
 }
-public class QOperatingSystemVersionBase
+public interface IQOperatingSystemVersionBase
+{
+	void* NativePtr { get; }
+}
+public class QOperatingSystemVersionBase : IQOperatingSystemVersionBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 osType, int32 vmajor)
 	{
@@ -43,9 +48,9 @@ public class QOperatingSystemVersionBase
 		CQt.QOperatingSystemVersionBase_Current();
 	}
 	
-	public static libqt_string Name(void osversion)
+	public static libqt_string Name(IQOperatingSystemVersionBase osversion)
 	{
-		return CQt.QOperatingSystemVersionBase_Name(osversion);
+		return CQt.QOperatingSystemVersionBase_Name((osversion == default) ? default : (void)osversion.NativePtr);
 	}
 	
 	public static int64 CurrentType()
@@ -123,13 +128,18 @@ extension CQt
 	[LinkName("QOperatingSystemVersionBase_Delete")]
 	public static extern void QOperatingSystemVersionBase_Delete(void* self);
 }
-public class QOperatingSystemVersion
+public interface IQOperatingSystemVersion
+{
+	void* NativePtr { get; }
+}
+public class QOperatingSystemVersion : IQOperatingSystemVersion, IQOperatingSystemVersionBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* osversion)
+	public this(IQOperatingSystemVersionBase osversion)
 	{
-		this.nativePtr = CQt.QOperatingSystemVersion_new(osversion);
+		this.nativePtr = CQt.QOperatingSystemVersion_new((osversion == default) ? default : (void*)osversion.NativePtr);
 	}
 	
 	public ~this()

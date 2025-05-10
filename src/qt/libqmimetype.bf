@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QMimeType
+public interface IQMimeType
+{
+	void* NativePtr { get; }
+}
+public class QMimeType : IQMimeType
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,24 +21,24 @@ public class QMimeType
 		CQt.QMimeType_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQMimeType other)
 	{
-		CQt.QMimeType_OperatorAssign(this.nativePtr, other);
+		CQt.QMimeType_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQMimeType other)
 	{
-		CQt.QMimeType_Swap(this.nativePtr, other);
+		CQt.QMimeType_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQMimeType other)
 	{
-		return CQt.QMimeType_OperatorEqual(this.nativePtr, other);
+		return CQt.QMimeType_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQMimeType other)
 	{
-		return CQt.QMimeType_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QMimeType_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -96,9 +101,9 @@ public class QMimeType
 		return CQt.QMimeType_PreferredSuffix(this.nativePtr);
 	}
 	
-	public bool Inherits(libqt_string mimeTypeName)
+	public bool Inherits(String mimeTypeName)
 	{
-		return CQt.QMimeType_Inherits(this.nativePtr, mimeTypeName);
+		return CQt.QMimeType_Inherits(this.nativePtr, libqt_string(mimeTypeName));
 	}
 	
 	public libqt_string FilterString()

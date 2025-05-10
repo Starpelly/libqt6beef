@@ -2,16 +2,21 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QTextObject
+public interface IQTextObject
+{
+	void* NativePtr { get; }
+}
+public class QTextObject : IQTextObject, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public virtual void* MetaObject()
 	{
 		return CQt.QTextObject_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QTextObject_Metacast(this.nativePtr, param1);
 	}
@@ -21,7 +26,7 @@ public class QTextObject
 		return CQt.QTextObject_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QTextObject_Tr(s);
 	}
@@ -46,24 +51,24 @@ public class QTextObject
 		return CQt.QTextObject_ObjectIndex(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QTextObject_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QTextObject_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -71,9 +76,9 @@ public class QTextObject
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -106,9 +111,9 @@ public class QTextObject
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -126,39 +131,39 @@ public class QTextObject
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -171,12 +176,12 @@ public class QTextObject
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -201,7 +206,7 @@ public class QTextObject
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -216,14 +221,14 @@ public class QTextObject
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -232,11 +237,11 @@ extension CQt
 	[LinkName("QTextObject_MetaObject")]
 	public static extern void* QTextObject_MetaObject(void* c_this);
 	[LinkName("QTextObject_Metacast")]
-	public static extern void* QTextObject_Metacast(void* c_this, char8[] param1);
+	public static extern void* QTextObject_Metacast(void* c_this, char8* param1);
 	[LinkName("QTextObject_Metacall")]
-	public static extern int32 QTextObject_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QTextObject_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QTextObject_Tr")]
-	public static extern libqt_string QTextObject_Tr(char8[] s);
+	public static extern libqt_string QTextObject_Tr(char8* s);
 	[LinkName("QTextObject_SetFormat")]
 	public static extern void QTextObject_SetFormat(void* c_this, void* format);
 	[LinkName("QTextObject_Format")]
@@ -248,20 +253,25 @@ extension CQt
 	[LinkName("QTextObject_ObjectIndex")]
 	public static extern int32 QTextObject_ObjectIndex(void* c_this);
 	[LinkName("QTextObject_Tr2")]
-	public static extern libqt_string QTextObject_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QTextObject_Tr2(char8* s, char8* c);
 	[LinkName("QTextObject_Tr3")]
-	public static extern libqt_string QTextObject_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QTextObject_Tr3(char8* s, char8* c, int32 n);
 }
-public class QTextBlockGroup
+public interface IQTextBlockGroup
+{
+	void* NativePtr { get; }
+}
+public class QTextBlockGroup : IQTextBlockGroup, IQTextObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public virtual void* MetaObject()
 	{
 		return CQt.QTextBlockGroup_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QTextBlockGroup_Metacast(this.nativePtr, param1);
 	}
@@ -271,17 +281,17 @@ public class QTextBlockGroup
 		return CQt.QTextBlockGroup_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QTextBlockGroup_Tr(s);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QTextBlockGroup_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QTextBlockGroup_Tr3(s, c, n);
 	}
@@ -306,14 +316,14 @@ public class QTextBlockGroup
 		return CQt.QTextObject_ObjectIndex(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -321,9 +331,9 @@ public class QTextBlockGroup
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -356,9 +366,9 @@ public class QTextBlockGroup
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -376,39 +386,39 @@ public class QTextBlockGroup
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -421,12 +431,12 @@ public class QTextBlockGroup
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -451,7 +461,7 @@ public class QTextBlockGroup
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -466,14 +476,14 @@ public class QTextBlockGroup
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -482,11 +492,11 @@ extension CQt
 	[LinkName("QTextBlockGroup_MetaObject")]
 	public static extern void* QTextBlockGroup_MetaObject(void* c_this);
 	[LinkName("QTextBlockGroup_Metacast")]
-	public static extern void* QTextBlockGroup_Metacast(void* c_this, char8[] param1);
+	public static extern void* QTextBlockGroup_Metacast(void* c_this, char8* param1);
 	[LinkName("QTextBlockGroup_Metacall")]
-	public static extern int32 QTextBlockGroup_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QTextBlockGroup_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QTextBlockGroup_Tr")]
-	public static extern libqt_string QTextBlockGroup_Tr(char8[] s);
+	public static extern libqt_string QTextBlockGroup_Tr(char8* s);
 	[LinkName("QTextBlockGroup_BlockInserted")]
 	public static extern void QTextBlockGroup_BlockInserted(void* c_this, void* block);
 	[LinkName("QTextBlockGroup_BlockRemoved")]
@@ -496,22 +506,27 @@ extension CQt
 	[LinkName("QTextBlockGroup_BlockList")]
 	public static extern void[] QTextBlockGroup_BlockList(void* c_this);
 	[LinkName("QTextBlockGroup_Tr2")]
-	public static extern libqt_string QTextBlockGroup_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QTextBlockGroup_Tr2(char8* s, char8* c);
 	[LinkName("QTextBlockGroup_Tr3")]
-	public static extern libqt_string QTextBlockGroup_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QTextBlockGroup_Tr3(char8* s, char8* c, int32 n);
 }
-public class QTextFrameLayoutData
+public interface IQTextFrameLayoutData
+{
+	void* NativePtr { get; }
+}
+public class QTextFrameLayoutData : IQTextFrameLayoutData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
 		CQt.QTextFrameLayoutData_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQTextFrameLayoutData param1)
 	{
-		CQt.QTextFrameLayoutData_OperatorAssign(this.nativePtr, param1);
+		CQt.QTextFrameLayoutData_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -523,13 +538,18 @@ extension CQt
 	[LinkName("QTextFrameLayoutData_Delete")]
 	public static extern void QTextFrameLayoutData_Delete(void* self);
 }
-public class QTextFrame
+public interface IQTextFrame
+{
+	void* NativePtr { get; }
+}
+public class QTextFrame : IQTextFrame, IQTextObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* doc)
+	public this(IQTextDocument doc)
 	{
-		this.nativePtr = CQt.QTextFrame_new(doc);
+		this.nativePtr = CQt.QTextFrame_new((doc == null) ? null : (void*)doc.NativePtr);
 	}
 	
 	public ~this()
@@ -542,7 +562,7 @@ public class QTextFrame
 		return CQt.QTextFrame_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QTextFrame_Metacast(this.nativePtr, param1);
 	}
@@ -552,14 +572,14 @@ public class QTextFrame
 		return CQt.QTextFrame_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QTextFrame_Tr(s);
 	}
 	
-	public void SetFrameFormat(void* format)
+	public void SetFrameFormat(IQTextFrameFormat format)
 	{
-		CQt.QTextFrame_SetFrameFormat(this.nativePtr, format);
+		CQt.QTextFrame_SetFrameFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void FrameFormat()
@@ -592,9 +612,9 @@ public class QTextFrame
 		return CQt.QTextFrame_LayoutData(this.nativePtr);
 	}
 	
-	public void SetLayoutData(void* data)
+	public void SetLayoutData(IQTextFrameLayoutData data)
 	{
-		CQt.QTextFrame_SetLayoutData(this.nativePtr, data);
+		CQt.QTextFrame_SetLayoutData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 	public void*[] ChildFrames()
@@ -607,22 +627,22 @@ public class QTextFrame
 		return CQt.QTextFrame_ParentFrame(this.nativePtr);
 	}
 	
-	public QTextFrame__iterator Begin()
+	public void Begin()
 	{
-		return CQt.QTextFrame_Begin(this.nativePtr);
+		CQt.QTextFrame_Begin(this.nativePtr);
 	}
 	
-	public QTextFrame__iterator End()
+	public void End()
 	{
-		return CQt.QTextFrame_End(this.nativePtr);
+		CQt.QTextFrame_End(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QTextFrame_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QTextFrame_Tr3(s, c, n);
 	}
@@ -647,14 +667,14 @@ public class QTextFrame
 		return CQt.QTextObject_ObjectIndex(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -662,9 +682,9 @@ public class QTextFrame
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -697,9 +717,9 @@ public class QTextFrame
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -717,39 +737,39 @@ public class QTextFrame
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -762,12 +782,12 @@ public class QTextFrame
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -792,7 +812,7 @@ public class QTextFrame
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -807,14 +827,14 @@ public class QTextFrame
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -825,11 +845,11 @@ extension CQt
 	[LinkName("QTextFrame_MetaObject")]
 	public static extern void* QTextFrame_MetaObject(void* c_this);
 	[LinkName("QTextFrame_Metacast")]
-	public static extern void* QTextFrame_Metacast(void* c_this, char8[] param1);
+	public static extern void* QTextFrame_Metacast(void* c_this, char8* param1);
 	[LinkName("QTextFrame_Metacall")]
-	public static extern int32 QTextFrame_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QTextFrame_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QTextFrame_Tr")]
-	public static extern libqt_string QTextFrame_Tr(char8[] s);
+	public static extern libqt_string QTextFrame_Tr(char8* s);
 	[LinkName("QTextFrame_SetFrameFormat")]
 	public static extern void QTextFrame_SetFrameFormat(void* c_this, void* format);
 	[LinkName("QTextFrame_FrameFormat")]
@@ -851,29 +871,34 @@ extension CQt
 	[LinkName("QTextFrame_ParentFrame")]
 	public static extern void* QTextFrame_ParentFrame(void* c_this);
 	[LinkName("QTextFrame_Begin")]
-	public static extern QTextFrame__iterator QTextFrame_Begin(void* c_this);
+	public static extern void QTextFrame_Begin(void* c_this);
 	[LinkName("QTextFrame_End")]
-	public static extern QTextFrame__iterator QTextFrame_End(void* c_this);
+	public static extern void QTextFrame_End(void* c_this);
 	[LinkName("QTextFrame_Tr2")]
-	public static extern libqt_string QTextFrame_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QTextFrame_Tr2(char8* s, char8* c);
 	[LinkName("QTextFrame_Tr3")]
-	public static extern libqt_string QTextFrame_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QTextFrame_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QTextFrame_Delete")]
 	public static extern void QTextFrame_Delete(void* self);
 }
-public class QTextBlockUserData
+public interface IQTextBlockUserData
+{
+	void* NativePtr { get; }
+}
+public class QTextBlockUserData : IQTextBlockUserData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
 		CQt.QTextBlockUserData_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQTextBlockUserData param1)
 	{
-		CQt.QTextBlockUserData_OperatorAssign(this.nativePtr, param1);
+		CQt.QTextBlockUserData_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -885,9 +910,14 @@ extension CQt
 	[LinkName("QTextBlockUserData_Delete")]
 	public static extern void QTextBlockUserData_Delete(void* self);
 }
-public class QTextBlock
+public interface IQTextBlock
+{
+	void* NativePtr { get; }
+}
+public class QTextBlock : IQTextBlock
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -899,9 +929,9 @@ public class QTextBlock
 		CQt.QTextBlock_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* o)
+	public void OperatorAssign(IQTextBlock o)
 	{
-		CQt.QTextBlock_OperatorAssign(this.nativePtr, o);
+		CQt.QTextBlock_OperatorAssign(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -909,19 +939,19 @@ public class QTextBlock
 		return CQt.QTextBlock_IsValid(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* o)
+	public bool OperatorEqual(IQTextBlock o)
 	{
-		return CQt.QTextBlock_OperatorEqual(this.nativePtr, o);
+		return CQt.QTextBlock_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* o)
+	public bool OperatorNotEqual(IQTextBlock o)
 	{
-		return CQt.QTextBlock_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QTextBlock_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* o)
+	public bool OperatorLesser(IQTextBlock o)
 	{
-		return CQt.QTextBlock_OperatorLesser(this.nativePtr, o);
+		return CQt.QTextBlock_OperatorLesser(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public int32 Position()
@@ -979,7 +1009,7 @@ public class QTextBlock
 		return CQt.QTextBlock_Text(this.nativePtr);
 	}
 	
-	public QTextLayout__FormatRange[] TextFormats()
+	public void[] TextFormats()
 	{
 		return CQt.QTextBlock_TextFormats(this.nativePtr);
 	}
@@ -999,9 +1029,9 @@ public class QTextBlock
 		return CQt.QTextBlock_UserData(this.nativePtr);
 	}
 	
-	public void SetUserData(void* data)
+	public void SetUserData(IQTextBlockUserData data)
 	{
-		CQt.QTextBlock_SetUserData(this.nativePtr, data);
+		CQt.QTextBlock_SetUserData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 	public int32 UserState()
@@ -1054,14 +1084,14 @@ public class QTextBlock
 		return CQt.QTextBlock_LineCount(this.nativePtr);
 	}
 	
-	public QTextBlock__iterator Begin()
+	public void Begin()
 	{
-		return CQt.QTextBlock_Begin(this.nativePtr);
+		CQt.QTextBlock_Begin(this.nativePtr);
 	}
 	
-	public QTextBlock__iterator End()
+	public void End()
 	{
-		return CQt.QTextBlock_End(this.nativePtr);
+		CQt.QTextBlock_End(this.nativePtr);
 	}
 	
 	public void Next()
@@ -1119,7 +1149,7 @@ extension CQt
 	[LinkName("QTextBlock_Text")]
 	public static extern libqt_string QTextBlock_Text(void* c_this);
 	[LinkName("QTextBlock_TextFormats")]
-	public static extern QTextLayout__FormatRange[] QTextBlock_TextFormats(void* c_this);
+	public static extern void[] QTextBlock_TextFormats(void* c_this);
 	[LinkName("QTextBlock_Document")]
 	public static extern void* QTextBlock_Document(void* c_this);
 	[LinkName("QTextBlock_TextList")]
@@ -1149,9 +1179,9 @@ extension CQt
 	[LinkName("QTextBlock_LineCount")]
 	public static extern int32 QTextBlock_LineCount(void* c_this);
 	[LinkName("QTextBlock_Begin")]
-	public static extern QTextBlock__iterator QTextBlock_Begin(void* c_this);
+	public static extern void QTextBlock_Begin(void* c_this);
 	[LinkName("QTextBlock_End")]
-	public static extern QTextBlock__iterator QTextBlock_End(void* c_this);
+	public static extern void QTextBlock_End(void* c_this);
 	[LinkName("QTextBlock_Next")]
 	public static extern void QTextBlock_Next(void* c_this);
 	[LinkName("QTextBlock_Previous")]
@@ -1162,9 +1192,14 @@ extension CQt
 	[LinkName("QTextBlock_Delete")]
 	public static extern void QTextBlock_Delete(void* self);
 }
-public class QTextFragment
+public interface IQTextFragment
+{
+	void* NativePtr { get; }
+}
+public class QTextFragment : IQTextFragment
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1176,9 +1211,9 @@ public class QTextFragment
 		CQt.QTextFragment_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* o)
+	public void OperatorAssign(IQTextFragment o)
 	{
-		CQt.QTextFragment_OperatorAssign(this.nativePtr, o);
+		CQt.QTextFragment_OperatorAssign(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -1186,19 +1221,19 @@ public class QTextFragment
 		return CQt.QTextFragment_IsValid(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* o)
+	public bool OperatorEqual(IQTextFragment o)
 	{
-		return CQt.QTextFragment_OperatorEqual(this.nativePtr, o);
+		return CQt.QTextFragment_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* o)
+	public bool OperatorNotEqual(IQTextFragment o)
 	{
-		return CQt.QTextFragment_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QTextFragment_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* o)
+	public bool OperatorLesser(IQTextFragment o)
 	{
-		return CQt.QTextFragment_OperatorLesser(this.nativePtr, o);
+		return CQt.QTextFragment_OperatorLesser(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public int32 Position()
@@ -1285,13 +1320,18 @@ extension CQt
 	[LinkName("QTextFragment_Delete")]
 	public static extern void QTextFragment_Delete(void* self);
 }
-public class QTextFrame__iterator
+public interface IQTextFrame__iterator
+{
+	void* NativePtr { get; }
+}
+public class QTextFrame__iterator : IQTextFrame__iterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QTextFrame__iterator* other)
+	public this(QTextFrame__iterator other)
 	{
-		this.nativePtr = CQt.QTextFrame__iterator_new(other);
+		this.nativePtr = CQt.QTextFrame__iterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -1319,47 +1359,47 @@ public class QTextFrame__iterator
 		return CQt.QTextFrame__iterator_AtEnd(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QTextFrame__iterator* o)
+	public bool OperatorEqual(QTextFrame__iterator o)
 	{
-		return CQt.QTextFrame__iterator_OperatorEqual(this.nativePtr, o);
+		return CQt.QTextFrame__iterator_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QTextFrame__iterator* o)
+	public bool OperatorNotEqual(QTextFrame__iterator o)
 	{
-		return CQt.QTextFrame__iterator_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QTextFrame__iterator_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public QTextFrame__iterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QTextFrame__iterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QTextFrame__iterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QTextFrame__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QTextFrame__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QTextFrame__iterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QTextFrame__iterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QTextFrame__iterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QTextFrame__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QTextFrame__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QTextFrame__iterator_new")]
-	public static extern void* QTextFrame__iterator_new(QTextFrame__iterator* other);
+	public static extern void* QTextFrame__iterator_new(void* other);
 	[LinkName("QTextFrame__iterator_new2")]
-	public static extern void* QTextFrame__iterator_new2(QTextFrame__iterator* other);
+	public static extern void* QTextFrame__iterator_new2(void* other);
 	[LinkName("QTextFrame__iterator_new3")]
 	public static extern void* QTextFrame__iterator_new3();
 	[LinkName("QTextFrame__iterator_new4")]
-	public static extern void* QTextFrame__iterator_new4(QTextFrame__iterator* param1);
+	public static extern void* QTextFrame__iterator_new4(void* param1);
 	[LinkName("QTextFrame__iterator_ParentFrame")]
 	public static extern void* QTextFrame__iterator_ParentFrame(void* c_this);
 	[LinkName("QTextFrame__iterator_CurrentFrame")]
@@ -1369,28 +1409,33 @@ extension CQt
 	[LinkName("QTextFrame__iterator_AtEnd")]
 	public static extern bool QTextFrame__iterator_AtEnd(void* c_this);
 	[LinkName("QTextFrame__iterator_OperatorEqual")]
-	public static extern bool QTextFrame__iterator_OperatorEqual(void* c_this, QTextFrame__iterator* o);
+	public static extern bool QTextFrame__iterator_OperatorEqual(void* c_this, void* o);
 	[LinkName("QTextFrame__iterator_OperatorNotEqual")]
-	public static extern bool QTextFrame__iterator_OperatorNotEqual(void* c_this, QTextFrame__iterator* o);
+	public static extern bool QTextFrame__iterator_OperatorNotEqual(void* c_this, void* o);
 	[LinkName("QTextFrame__iterator_OperatorPlusPlus")]
-	public static extern QTextFrame__iterator* QTextFrame__iterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QTextFrame__iterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QTextFrame__iterator_OperatorPlusPlusWithInt")]
-	public static extern QTextFrame__iterator QTextFrame__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QTextFrame__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QTextFrame__iterator_OperatorMinusMinus")]
-	public static extern QTextFrame__iterator* QTextFrame__iterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QTextFrame__iterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QTextFrame__iterator_OperatorMinusMinusWithInt")]
-	public static extern QTextFrame__iterator QTextFrame__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QTextFrame__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	/// Delete this object from C++ memory
 	[LinkName("QTextFrame__iterator_Delete")]
 	public static extern void QTextFrame__iterator_Delete(void* self);
 }
-public class QTextBlock__iterator
+public interface IQTextBlock__iterator
+{
+	void* NativePtr { get; }
+}
+public class QTextBlock__iterator : IQTextBlock__iterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QTextBlock__iterator* other)
+	public this(QTextBlock__iterator other)
 	{
-		this.nativePtr = CQt.QTextBlock__iterator_new(other);
+		this.nativePtr = CQt.QTextBlock__iterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -1408,63 +1453,63 @@ public class QTextBlock__iterator
 		return CQt.QTextBlock__iterator_AtEnd(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QTextBlock__iterator* o)
+	public bool OperatorEqual(QTextBlock__iterator o)
 	{
-		return CQt.QTextBlock__iterator_OperatorEqual(this.nativePtr, o);
+		return CQt.QTextBlock__iterator_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QTextBlock__iterator* o)
+	public bool OperatorNotEqual(QTextBlock__iterator o)
 	{
-		return CQt.QTextBlock__iterator_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QTextBlock__iterator_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public QTextBlock__iterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QTextBlock__iterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QTextBlock__iterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QTextBlock__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QTextBlock__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QTextBlock__iterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QTextBlock__iterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QTextBlock__iterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QTextBlock__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QTextBlock__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QTextBlock__iterator_new")]
-	public static extern void* QTextBlock__iterator_new(QTextBlock__iterator* other);
+	public static extern void* QTextBlock__iterator_new(void* other);
 	[LinkName("QTextBlock__iterator_new2")]
-	public static extern void* QTextBlock__iterator_new2(QTextBlock__iterator* other);
+	public static extern void* QTextBlock__iterator_new2(void* other);
 	[LinkName("QTextBlock__iterator_new3")]
 	public static extern void* QTextBlock__iterator_new3();
 	[LinkName("QTextBlock__iterator_new4")]
-	public static extern void* QTextBlock__iterator_new4(QTextBlock__iterator* param1);
+	public static extern void* QTextBlock__iterator_new4(void* param1);
 	[LinkName("QTextBlock__iterator_Fragment")]
 	public static extern void QTextBlock__iterator_Fragment(void* c_this);
 	[LinkName("QTextBlock__iterator_AtEnd")]
 	public static extern bool QTextBlock__iterator_AtEnd(void* c_this);
 	[LinkName("QTextBlock__iterator_OperatorEqual")]
-	public static extern bool QTextBlock__iterator_OperatorEqual(void* c_this, QTextBlock__iterator* o);
+	public static extern bool QTextBlock__iterator_OperatorEqual(void* c_this, void* o);
 	[LinkName("QTextBlock__iterator_OperatorNotEqual")]
-	public static extern bool QTextBlock__iterator_OperatorNotEqual(void* c_this, QTextBlock__iterator* o);
+	public static extern bool QTextBlock__iterator_OperatorNotEqual(void* c_this, void* o);
 	[LinkName("QTextBlock__iterator_OperatorPlusPlus")]
-	public static extern QTextBlock__iterator* QTextBlock__iterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QTextBlock__iterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QTextBlock__iterator_OperatorPlusPlusWithInt")]
-	public static extern QTextBlock__iterator QTextBlock__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QTextBlock__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QTextBlock__iterator_OperatorMinusMinus")]
-	public static extern QTextBlock__iterator* QTextBlock__iterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QTextBlock__iterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QTextBlock__iterator_OperatorMinusMinusWithInt")]
-	public static extern QTextBlock__iterator QTextBlock__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QTextBlock__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	/// Delete this object from C++ memory
 	[LinkName("QTextBlock__iterator_Delete")]
 	public static extern void QTextBlock__iterator_Delete(void* self);

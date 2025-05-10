@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QProxyStyle
+public interface IQProxyStyle
+{
+	void* NativePtr { get; }
+}
+public class QProxyStyle : IQProxyStyle, IQCommonStyle
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QProxyStyle
 		return CQt.QProxyStyle_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QProxyStyle_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QProxyStyle
 		return CQt.QProxyStyle_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QProxyStyle_Tr(s);
 	}
@@ -41,94 +46,94 @@ public class QProxyStyle
 		return CQt.QProxyStyle_BaseStyle(this.nativePtr);
 	}
 	
-	public void SetBaseStyle(void* style)
+	public void SetBaseStyle(IQStyle style)
 	{
-		CQt.QProxyStyle_SetBaseStyle(this.nativePtr, style);
+		CQt.QProxyStyle_SetBaseStyle(this.nativePtr, (style == null) ? null : (void*)style.NativePtr);
 	}
 	
-	public virtual void DrawPrimitive(int64 element, void* option, void* painter, void* widget)
+	public virtual void DrawPrimitive(int64 element, IQStyleOption option, IQPainter painter, IQWidget widget)
 	{
-		CQt.QProxyStyle_DrawPrimitive(this.nativePtr, element, option, painter, widget);
+		CQt.QProxyStyle_DrawPrimitive(this.nativePtr, element, (option == null) ? null : (void*)option.NativePtr, (painter == null) ? null : (void*)painter.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void DrawControl(int64 element, void* option, void* painter, void* widget)
+	public virtual void DrawControl(int64 element, IQStyleOption option, IQPainter painter, IQWidget widget)
 	{
-		CQt.QProxyStyle_DrawControl(this.nativePtr, element, option, painter, widget);
+		CQt.QProxyStyle_DrawControl(this.nativePtr, element, (option == null) ? null : (void*)option.NativePtr, (painter == null) ? null : (void*)painter.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void DrawComplexControl(int64 control, void* option, void* painter, void* widget)
+	public virtual void DrawComplexControl(int64 control, IQStyleOptionComplex option, IQPainter painter, IQWidget widget)
 	{
-		CQt.QProxyStyle_DrawComplexControl(this.nativePtr, control, option, painter, widget);
+		CQt.QProxyStyle_DrawComplexControl(this.nativePtr, control, (option == null) ? null : (void*)option.NativePtr, (painter == null) ? null : (void*)painter.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void DrawItemText(void* painter, void* rect, int32 flags, void* pal, bool enabled, libqt_string text, int64 textRole)
+	public virtual void DrawItemText(IQPainter painter, IQRect rect, int32 flags, IQPalette pal, bool enabled, String text, int64 textRole)
 	{
-		CQt.QProxyStyle_DrawItemText(this.nativePtr, painter, rect, flags, pal, enabled, text, textRole);
+		CQt.QProxyStyle_DrawItemText(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, flags, (pal == default) ? default : (void*)pal.NativePtr, enabled, libqt_string(text), textRole);
 	}
 	
-	public virtual void DrawItemPixmap(void* painter, void* rect, int32 alignment, void* pixmap)
+	public virtual void DrawItemPixmap(IQPainter painter, IQRect rect, int32 alignment, IQPixmap pixmap)
 	{
-		CQt.QProxyStyle_DrawItemPixmap(this.nativePtr, painter, rect, alignment, pixmap);
+		CQt.QProxyStyle_DrawItemPixmap(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, alignment, (pixmap == default) ? default : (void*)pixmap.NativePtr);
 	}
 	
-	public virtual void SizeFromContents(int64 typeVal, void* option, void* size, void* widget)
+	public virtual void SizeFromContents(int64 typeVal, IQStyleOption option, IQSize size, IQWidget widget)
 	{
-		CQt.QProxyStyle_SizeFromContents(this.nativePtr, typeVal, option, size, widget);
+		CQt.QProxyStyle_SizeFromContents(this.nativePtr, typeVal, (option == null) ? null : (void*)option.NativePtr, (size == default) ? default : (void*)size.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void SubElementRect(int64 element, void* option, void* widget)
+	public virtual void SubElementRect(int64 element, IQStyleOption option, IQWidget widget)
 	{
-		CQt.QProxyStyle_SubElementRect(this.nativePtr, element, option, widget);
+		CQt.QProxyStyle_SubElementRect(this.nativePtr, element, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void SubControlRect(int64 cc, void* opt, int64 sc, void* widget)
+	public virtual void SubControlRect(int64 cc, IQStyleOptionComplex opt, int64 sc, IQWidget widget)
 	{
-		CQt.QProxyStyle_SubControlRect(this.nativePtr, cc, opt, sc, widget);
+		CQt.QProxyStyle_SubControlRect(this.nativePtr, cc, (opt == null) ? null : (void*)opt.NativePtr, sc, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void ItemTextRect(void* fm, void* r, int32 flags, bool enabled, libqt_string text)
+	public virtual void ItemTextRect(IQFontMetrics fm, IQRect r, int32 flags, bool enabled, String text)
 	{
-		CQt.QProxyStyle_ItemTextRect(this.nativePtr, fm, r, flags, enabled, text);
+		CQt.QProxyStyle_ItemTextRect(this.nativePtr, (fm == default) ? default : (void*)fm.NativePtr, (r == default) ? default : (void*)r.NativePtr, flags, enabled, libqt_string(text));
 	}
 	
-	public virtual void ItemPixmapRect(void* r, int32 flags, void* pixmap)
+	public virtual void ItemPixmapRect(IQRect r, int32 flags, IQPixmap pixmap)
 	{
-		CQt.QProxyStyle_ItemPixmapRect(this.nativePtr, r, flags, pixmap);
+		CQt.QProxyStyle_ItemPixmapRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, (pixmap == default) ? default : (void*)pixmap.NativePtr);
 	}
 	
-	public virtual int64 HitTestComplexControl(int64 control, void* option, void* pos, void* widget)
+	public virtual int64 HitTestComplexControl(int64 control, IQStyleOptionComplex option, IQPoint pos, IQWidget widget)
 	{
-		return CQt.QProxyStyle_HitTestComplexControl(this.nativePtr, control, option, pos, widget);
+		return CQt.QProxyStyle_HitTestComplexControl(this.nativePtr, control, (option == null) ? null : (void*)option.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual int32 StyleHint(int64 hint, void* option, void* widget, void* returnData)
+	public virtual int32 StyleHint(int64 hint, IQStyleOption option, IQWidget widget, IQStyleHintReturn returnData)
 	{
-		return CQt.QProxyStyle_StyleHint(this.nativePtr, hint, option, widget, returnData);
+		return CQt.QProxyStyle_StyleHint(this.nativePtr, hint, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr, (returnData == null) ? null : (void*)returnData.NativePtr);
 	}
 	
-	public virtual int32 PixelMetric(int64 metric, void* option, void* widget)
+	public virtual int32 PixelMetric(int64 metric, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QProxyStyle_PixelMetric(this.nativePtr, metric, option, widget);
+		return CQt.QProxyStyle_PixelMetric(this.nativePtr, metric, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, void* option, void* widget)
+	public virtual int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QProxyStyle_LayoutSpacing(this.nativePtr, control1, control2, orientation, option, widget);
+		return CQt.QProxyStyle_LayoutSpacing(this.nativePtr, control1, control2, orientation, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void StandardIcon(int64 standardIcon, void* option, void* widget)
+	public virtual void StandardIcon(int64 standardIcon, IQStyleOption option, IQWidget widget)
 	{
-		CQt.QProxyStyle_StandardIcon(this.nativePtr, standardIcon, option, widget);
+		CQt.QProxyStyle_StandardIcon(this.nativePtr, standardIcon, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void StandardPixmap(int64 standardPixmap, void* opt, void* widget)
+	public virtual void StandardPixmap(int64 standardPixmap, IQStyleOption opt, IQWidget widget)
 	{
-		CQt.QProxyStyle_StandardPixmap(this.nativePtr, standardPixmap, opt, widget);
+		CQt.QProxyStyle_StandardPixmap(this.nativePtr, standardPixmap, (opt == null) ? null : (void*)opt.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void GeneratedIconPixmap(int64 iconMode, void* pixmap, void* opt)
+	public virtual void GeneratedIconPixmap(int64 iconMode, IQPixmap pixmap, IQStyleOption opt)
 	{
-		CQt.QProxyStyle_GeneratedIconPixmap(this.nativePtr, iconMode, pixmap, opt);
+		CQt.QProxyStyle_GeneratedIconPixmap(this.nativePtr, iconMode, (pixmap == default) ? default : (void*)pixmap.NativePtr, (opt == null) ? null : (void*)opt.NativePtr);
 	}
 	
 	public virtual void StandardPalette()
@@ -136,54 +141,54 @@ public class QProxyStyle
 		CQt.QProxyStyle_StandardPalette(this.nativePtr);
 	}
 	
-	public virtual void Polish(void* widget)
+	public virtual void Polish(IQWidget widget)
 	{
-		CQt.QProxyStyle_Polish(this.nativePtr, widget);
+		CQt.QProxyStyle_Polish(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void PolishWithPal(void* pal)
+	public virtual void PolishWithPal(IQPalette pal)
 	{
-		CQt.QProxyStyle_PolishWithPal(this.nativePtr, pal);
+		CQt.QProxyStyle_PolishWithPal(this.nativePtr, (pal == default) ? default : (void*)pal.NativePtr);
 	}
 	
-	public virtual void PolishWithApp(void* app)
+	public virtual void PolishWithApp(IQApplication app)
 	{
-		CQt.QProxyStyle_PolishWithApp(this.nativePtr, app);
+		CQt.QProxyStyle_PolishWithApp(this.nativePtr, (app == null) ? null : (void*)app.NativePtr);
 	}
 	
-	public virtual void Unpolish(void* widget)
+	public virtual void Unpolish(IQWidget widget)
 	{
-		CQt.QProxyStyle_Unpolish(this.nativePtr, widget);
+		CQt.QProxyStyle_Unpolish(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void UnpolishWithApp(void* app)
+	public virtual void UnpolishWithApp(IQApplication app)
 	{
-		CQt.QProxyStyle_UnpolishWithApp(this.nativePtr, app);
+		CQt.QProxyStyle_UnpolishWithApp(this.nativePtr, (app == null) ? null : (void*)app.NativePtr);
 	}
 	
-	public virtual bool Event(void* e)
+	public virtual bool Event(IQEvent e)
 	{
-		return CQt.QProxyStyle_Event(this.nativePtr, e);
+		return CQt.QProxyStyle_Event(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QProxyStyle_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QProxyStyle_Tr3(s, c, n);
 	}
 	
-	public virtual void PolishWithWidget(void* widget)
+	public virtual void PolishWithWidget(IQWidget widget)
 	{
-		CQt.QCommonStyle_PolishWithWidget(this.nativePtr, widget);
+		CQt.QCommonStyle_PolishWithWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual void UnpolishWithApplication(void* application)
+	public virtual void UnpolishWithApplication(IQApplication application)
 	{
-		CQt.QCommonStyle_UnpolishWithApplication(this.nativePtr, application);
+		CQt.QCommonStyle_UnpolishWithApplication(this.nativePtr, (application == null) ? null : (void*)application.NativePtr);
 	}
 	
 	public libqt_string Name()
@@ -191,24 +196,24 @@ public class QProxyStyle
 		return CQt.QStyle_Name(this.nativePtr);
 	}
 	
-	public virtual void PolishWithApplication(void* application)
+	public virtual void PolishWithApplication(IQApplication application)
 	{
-		CQt.QStyle_PolishWithApplication(this.nativePtr, application);
+		CQt.QStyle_PolishWithApplication(this.nativePtr, (application == null) ? null : (void*)application.NativePtr);
 	}
 	
-	public virtual void PolishWithPalette(void* palette)
+	public virtual void PolishWithPalette(IQPalette palette)
 	{
-		CQt.QStyle_PolishWithPalette(this.nativePtr, palette);
+		CQt.QStyle_PolishWithPalette(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
-	public static void VisualRect(int64 direction, void* boundingRect, void* logicalRect)
+	public static void VisualRect(int64 direction, IQRect boundingRect, IQRect logicalRect)
 	{
-		CQt.QStyle_VisualRect(direction, boundingRect, logicalRect);
+		CQt.QStyle_VisualRect(direction, (boundingRect == default) ? default : (void*)boundingRect.NativePtr, (logicalRect == default) ? default : (void*)logicalRect.NativePtr);
 	}
 	
-	public static void VisualPos(int64 direction, void* boundingRect, void* logicalPos)
+	public static void VisualPos(int64 direction, IQRect boundingRect, IQPoint logicalPos)
 	{
-		CQt.QStyle_VisualPos(direction, boundingRect, logicalPos);
+		CQt.QStyle_VisualPos(direction, (boundingRect == default) ? default : (void*)boundingRect.NativePtr, (logicalPos == default) ? default : (void*)logicalPos.NativePtr);
 	}
 	
 	public static int32 SliderPositionFromValue(int32 min, int32 max, int32 val, int32 space)
@@ -226,9 +231,9 @@ public class QProxyStyle
 		return CQt.QStyle_VisualAlignment(direction, alignment);
 	}
 	
-	public static void AlignedRect(int64 direction, int64 alignment, void* size, void* rectangle)
+	public static void AlignedRect(int64 direction, int64 alignment, IQSize size, IQRect rectangle)
 	{
-		CQt.QStyle_AlignedRect(direction, alignment, size, rectangle);
+		CQt.QStyle_AlignedRect(direction, alignment, (size == default) ? default : (void*)size.NativePtr, (rectangle == default) ? default : (void*)rectangle.NativePtr);
 	}
 	
 	public int32 CombinedLayoutSpacing(int64 controls1, int64 controls2, int64 orientation)
@@ -251,19 +256,19 @@ public class QProxyStyle
 		return CQt.QStyle_SliderValueFromPosition5(min, max, pos, space, upsideDown);
 	}
 	
-	public int32 CombinedLayoutSpacing4(int64 controls1, int64 controls2, int64 orientation, void* option)
+	public int32 CombinedLayoutSpacing4(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option)
 	{
-		return CQt.QStyle_CombinedLayoutSpacing4(this.nativePtr, controls1, controls2, orientation, option);
+		return CQt.QStyle_CombinedLayoutSpacing4(this.nativePtr, controls1, controls2, orientation, (option == null) ? null : (void*)option.NativePtr);
 	}
 	
-	public int32 CombinedLayoutSpacing5(int64 controls1, int64 controls2, int64 orientation, void* option, void* widget)
+	public int32 CombinedLayoutSpacing5(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QStyle_CombinedLayoutSpacing5(this.nativePtr, controls1, controls2, orientation, option, widget);
+		return CQt.QStyle_CombinedLayoutSpacing5(this.nativePtr, controls1, controls2, orientation, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -271,9 +276,9 @@ public class QProxyStyle
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -306,9 +311,9 @@ public class QProxyStyle
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -326,39 +331,39 @@ public class QProxyStyle
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -371,12 +376,12 @@ public class QProxyStyle
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -401,7 +406,7 @@ public class QProxyStyle
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -416,14 +421,14 @@ public class QProxyStyle
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -438,11 +443,11 @@ extension CQt
 	[LinkName("QProxyStyle_MetaObject")]
 	public static extern void* QProxyStyle_MetaObject(void* c_this);
 	[LinkName("QProxyStyle_Metacast")]
-	public static extern void* QProxyStyle_Metacast(void* c_this, char8[] param1);
+	public static extern void* QProxyStyle_Metacast(void* c_this, char8* param1);
 	[LinkName("QProxyStyle_Metacall")]
-	public static extern int32 QProxyStyle_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QProxyStyle_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QProxyStyle_Tr")]
-	public static extern libqt_string QProxyStyle_Tr(char8[] s);
+	public static extern libqt_string QProxyStyle_Tr(char8* s);
 	[LinkName("QProxyStyle_BaseStyle")]
 	public static extern void* QProxyStyle_BaseStyle(void* c_this);
 	[LinkName("QProxyStyle_SetBaseStyle")]
@@ -496,9 +501,9 @@ extension CQt
 	[LinkName("QProxyStyle_Event")]
 	public static extern bool QProxyStyle_Event(void* c_this, void* e);
 	[LinkName("QProxyStyle_Tr2")]
-	public static extern libqt_string QProxyStyle_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QProxyStyle_Tr2(char8* s, char8* c);
 	[LinkName("QProxyStyle_Tr3")]
-	public static extern libqt_string QProxyStyle_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QProxyStyle_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QProxyStyle_Delete")]
 	public static extern void QProxyStyle_Delete(void* self);

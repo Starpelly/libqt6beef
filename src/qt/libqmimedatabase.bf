@@ -9,9 +9,14 @@ public enum QMimeDatabase__MatchMode
 	MatchExtension = 1,
 	MatchContent = 2,
 }
-public class QMimeDatabase
+public interface IQMimeDatabase
+{
+	void* NativePtr { get; }
+}
+public class QMimeDatabase : IQMimeDatabase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -23,54 +28,54 @@ public class QMimeDatabase
 		CQt.QMimeDatabase_Delete(this.nativePtr);
 	}
 	
-	public void MimeTypeForName(libqt_string nameOrAlias)
+	public void MimeTypeForName(String nameOrAlias)
 	{
-		CQt.QMimeDatabase_MimeTypeForName(this.nativePtr, nameOrAlias);
+		CQt.QMimeDatabase_MimeTypeForName(this.nativePtr, libqt_string(nameOrAlias));
 	}
 	
-	public void MimeTypeForFile(libqt_string fileName)
+	public void MimeTypeForFile(String fileName)
 	{
-		CQt.QMimeDatabase_MimeTypeForFile(this.nativePtr, fileName);
+		CQt.QMimeDatabase_MimeTypeForFile(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public void MimeTypeForFileWithFileInfo(void* fileInfo)
+	public void MimeTypeForFileWithFileInfo(IQFileInfo fileInfo)
 	{
-		CQt.QMimeDatabase_MimeTypeForFileWithFileInfo(this.nativePtr, fileInfo);
+		CQt.QMimeDatabase_MimeTypeForFileWithFileInfo(this.nativePtr, (fileInfo == default) ? default : (void*)fileInfo.NativePtr);
 	}
 	
-	public void[] MimeTypesForFileName(libqt_string fileName)
+	public void[] MimeTypesForFileName(String fileName)
 	{
-		return CQt.QMimeDatabase_MimeTypesForFileName(this.nativePtr, fileName);
+		return CQt.QMimeDatabase_MimeTypesForFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public void MimeTypeForData(libqt_string data)
+	public void MimeTypeForData(String data)
 	{
-		CQt.QMimeDatabase_MimeTypeForData(this.nativePtr, data);
+		CQt.QMimeDatabase_MimeTypeForData(this.nativePtr, libqt_string(data));
 	}
 	
-	public void MimeTypeForDataWithDevice(void* device)
+	public void MimeTypeForDataWithDevice(IQIODevice device)
 	{
-		CQt.QMimeDatabase_MimeTypeForDataWithDevice(this.nativePtr, device);
+		CQt.QMimeDatabase_MimeTypeForDataWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
-	public void MimeTypeForUrl(void* url)
+	public void MimeTypeForUrl(IQUrl url)
 	{
-		CQt.QMimeDatabase_MimeTypeForUrl(this.nativePtr, url);
+		CQt.QMimeDatabase_MimeTypeForUrl(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
 	}
 	
-	public void MimeTypeForFileNameAndData(libqt_string fileName, void* device)
+	public void MimeTypeForFileNameAndData(String fileName, IQIODevice device)
 	{
-		CQt.QMimeDatabase_MimeTypeForFileNameAndData(this.nativePtr, fileName, device);
+		CQt.QMimeDatabase_MimeTypeForFileNameAndData(this.nativePtr, libqt_string(fileName), (device == null) ? null : (void*)device.NativePtr);
 	}
 	
-	public void MimeTypeForFileNameAndData2(libqt_string fileName, libqt_string data)
+	public void MimeTypeForFileNameAndData2(String fileName, String data)
 	{
-		CQt.QMimeDatabase_MimeTypeForFileNameAndData2(this.nativePtr, fileName, data);
+		CQt.QMimeDatabase_MimeTypeForFileNameAndData2(this.nativePtr, libqt_string(fileName), libqt_string(data));
 	}
 	
-	public libqt_string SuffixForFileName(libqt_string fileName)
+	public libqt_string SuffixForFileName(String fileName)
 	{
-		return CQt.QMimeDatabase_SuffixForFileName(this.nativePtr, fileName);
+		return CQt.QMimeDatabase_SuffixForFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public void[] AllMimeTypes()
@@ -78,14 +83,14 @@ public class QMimeDatabase
 		return CQt.QMimeDatabase_AllMimeTypes(this.nativePtr);
 	}
 	
-	public void MimeTypeForFile2(libqt_string fileName, int64 mode)
+	public void MimeTypeForFile2(String fileName, int64 mode)
 	{
-		CQt.QMimeDatabase_MimeTypeForFile2(this.nativePtr, fileName, mode);
+		CQt.QMimeDatabase_MimeTypeForFile2(this.nativePtr, libqt_string(fileName), mode);
 	}
 	
-	public void MimeTypeForFile22(void* fileInfo, int64 mode)
+	public void MimeTypeForFile22(IQFileInfo fileInfo, int64 mode)
 	{
-		CQt.QMimeDatabase_MimeTypeForFile22(this.nativePtr, fileInfo, mode);
+		CQt.QMimeDatabase_MimeTypeForFile22(this.nativePtr, (fileInfo == default) ? default : (void*)fileInfo.NativePtr, mode);
 	}
 	
 }

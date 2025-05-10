@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QSharedData
+public interface IQSharedData
+{
+	void* NativePtr { get; }
+}
+public class QSharedData : IQSharedData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -25,13 +30,18 @@ extension CQt
 	[LinkName("QSharedData_Delete")]
 	public static extern void QSharedData_Delete(void* self);
 }
-public class QAdoptSharedDataTag
+public interface IQAdoptSharedDataTag
+{
+	void* NativePtr { get; }
+}
+public class QAdoptSharedDataTag : IQAdoptSharedDataTag
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQAdoptSharedDataTag other)
 	{
-		this.nativePtr = CQt.QAdoptSharedDataTag_new(other);
+		this.nativePtr = CQt.QAdoptSharedDataTag_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{

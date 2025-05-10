@@ -68,13 +68,18 @@ public enum QPixelFormat__ByteOrder
 	BigEndian = 1,
 	CurrentSystemEndian = 2,
 }
-public class QPixelFormat
+public interface IQPixelFormat
+{
+	void* NativePtr { get; }
+}
+public class QPixelFormat : IQPixelFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPixelFormat other)
 	{
-		this.nativePtr = CQt.QPixelFormat_new(other);
+		this.nativePtr = CQt.QPixelFormat_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QBasicMutex
+public interface IQBasicMutex
+{
+	void* NativePtr { get; }
+}
+public class QBasicMutex : IQBasicMutex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -53,9 +58,14 @@ extension CQt
 	[LinkName("QBasicMutex_Delete")]
 	public static extern void QBasicMutex_Delete(void* self);
 }
-public class QMutex
+public interface IQMutex
+{
+	void* NativePtr { get; }
+}
+public class QMutex : IQMutex, IQBasicMutex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -105,9 +115,14 @@ extension CQt
 	[LinkName("QMutex_Delete")]
 	public static extern void QMutex_Delete(void* self);
 }
-public class QRecursiveMutex
+public interface IQRecursiveMutex
+{
+	void* NativePtr { get; }
+}
+public class QRecursiveMutex : IQRecursiveMutex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{

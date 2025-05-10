@@ -29,9 +29,14 @@ public enum QColorSpace__TransferFunction
 	SRgb = 3,
 	ProPhotoRgb = 4,
 }
-public class QColorSpace
+public interface IQColorSpace
+{
+	void* NativePtr { get; }
+}
+public class QColorSpace : IQColorSpace
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -43,14 +48,14 @@ public class QColorSpace
 		CQt.QColorSpace_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* colorSpace)
+	public void OperatorAssign(IQColorSpace colorSpace)
 	{
-		CQt.QColorSpace_OperatorAssign(this.nativePtr, colorSpace);
+		CQt.QColorSpace_OperatorAssign(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
 	}
 	
-	public void Swap(void* colorSpace)
+	public void Swap(IQColorSpace colorSpace)
 	{
-		CQt.QColorSpace_Swap(this.nativePtr, colorSpace);
+		CQt.QColorSpace_Swap(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
 	}
 	
 	public int64 Primaries()
@@ -73,9 +78,9 @@ public class QColorSpace
 		return CQt.QColorSpace_Description(this.nativePtr);
 	}
 	
-	public void SetDescription(libqt_string description)
+	public void SetDescription(String description)
 	{
-		CQt.QColorSpace_SetDescription(this.nativePtr, description);
+		CQt.QColorSpace_SetDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public void SetTransferFunction(int64 transferFunction)
@@ -85,12 +90,12 @@ public class QColorSpace
 	
 	public void SetTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
 	{
-		CQt.QColorSpace_SetTransferFunctionWithTransferFunctionTable(this.nativePtr, transferFunctionTable);
+		CQt.QColorSpace_SetTransferFunctionWithTransferFunctionTable(this.nativePtr, null);
 	}
 	
 	public void SetTransferFunctions(uint16[] redTransferFunctionTable, uint16[] greenTransferFunctionTable, uint16[] blueTransferFunctionTable)
 	{
-		CQt.QColorSpace_SetTransferFunctions(this.nativePtr, redTransferFunctionTable, greenTransferFunctionTable, blueTransferFunctionTable);
+		CQt.QColorSpace_SetTransferFunctions(this.nativePtr, null, null, null);
 	}
 	
 	public void WithTransferFunction(int64 transferFunction)
@@ -100,12 +105,12 @@ public class QColorSpace
 	
 	public void WithTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
 	{
-		CQt.QColorSpace_WithTransferFunctionWithTransferFunctionTable(this.nativePtr, transferFunctionTable);
+		CQt.QColorSpace_WithTransferFunctionWithTransferFunctionTable(this.nativePtr, null);
 	}
 	
 	public void WithTransferFunctions(uint16[] redTransferFunctionTable, uint16[] greenTransferFunctionTable, uint16[] blueTransferFunctionTable)
 	{
-		CQt.QColorSpace_WithTransferFunctions(this.nativePtr, redTransferFunctionTable, greenTransferFunctionTable, blueTransferFunctionTable);
+		CQt.QColorSpace_WithTransferFunctions(this.nativePtr, null, null, null);
 	}
 	
 	public void SetPrimaries(int64 primariesId)
@@ -113,9 +118,9 @@ public class QColorSpace
 		CQt.QColorSpace_SetPrimaries(this.nativePtr, primariesId);
 	}
 	
-	public void SetPrimaries2(void* whitePoint, void* redPoint, void* greenPoint, void* bluePoint)
+	public void SetPrimaries2(IQPointF whitePoint, IQPointF redPoint, IQPointF greenPoint, IQPointF bluePoint)
 	{
-		CQt.QColorSpace_SetPrimaries2(this.nativePtr, whitePoint, redPoint, greenPoint, bluePoint);
+		CQt.QColorSpace_SetPrimaries2(this.nativePtr, (whitePoint == default) ? default : (void*)whitePoint.NativePtr, (redPoint == default) ? default : (void*)redPoint.NativePtr, (greenPoint == default) ? default : (void*)greenPoint.NativePtr, (bluePoint == default) ? default : (void*)bluePoint.NativePtr);
 	}
 	
 	public void Detach()
@@ -128,9 +133,9 @@ public class QColorSpace
 		return CQt.QColorSpace_IsValid(this.nativePtr);
 	}
 	
-	public static void FromIccProfile(libqt_string iccProfile)
+	public static void FromIccProfile(String iccProfile)
 	{
-		CQt.QColorSpace_FromIccProfile(iccProfile);
+		CQt.QColorSpace_FromIccProfile(libqt_string(iccProfile));
 	}
 	
 	public libqt_string IccProfile()
@@ -138,9 +143,9 @@ public class QColorSpace
 		return CQt.QColorSpace_IccProfile(this.nativePtr);
 	}
 	
-	public void TransformationToColorSpace(void* colorspace)
+	public void TransformationToColorSpace(IQColorSpace colorspace)
 	{
-		CQt.QColorSpace_TransformationToColorSpace(this.nativePtr, colorspace);
+		CQt.QColorSpace_TransformationToColorSpace(this.nativePtr, (colorspace == default) ? default : (void*)colorspace.NativePtr);
 	}
 	
 	public void ToQVariant()

@@ -35,9 +35,14 @@ public enum QInputDevice__Capability
 	ZPosition = 16384,
 	All = 2147483647,
 }
-public class QInputDevice
+public interface IQInputDevice
+{
+	void* NativePtr { get; }
+}
+public class QInputDevice : IQInputDevice, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -54,7 +59,7 @@ public class QInputDevice
 		return CQt.QInputDevice_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QInputDevice_Metacast(this.nativePtr, param1);
 	}
@@ -64,7 +69,7 @@ public class QInputDevice
 		return CQt.QInputDevice_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QInputDevice_Tr(s);
 	}
@@ -119,34 +124,34 @@ public class QInputDevice
 		return CQt.QInputDevice_PrimaryKeyboard();
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQInputDevice other)
 	{
-		return CQt.QInputDevice_OperatorEqual(this.nativePtr, other);
+		return CQt.QInputDevice_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QInputDevice_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QInputDevice_Tr3(s, c, n);
 	}
 	
-	public static void* PrimaryKeyboard1(libqt_string seatName)
+	public static void* PrimaryKeyboard1(String seatName)
 	{
-		return CQt.QInputDevice_PrimaryKeyboard1(seatName);
+		return CQt.QInputDevice_PrimaryKeyboard1(libqt_string(seatName));
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -154,9 +159,9 @@ public class QInputDevice
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -189,9 +194,9 @@ public class QInputDevice
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -209,39 +214,39 @@ public class QInputDevice
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -254,12 +259,12 @@ public class QInputDevice
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -284,7 +289,7 @@ public class QInputDevice
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -299,14 +304,14 @@ public class QInputDevice
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -325,11 +330,11 @@ extension CQt
 	[LinkName("QInputDevice_MetaObject")]
 	public static extern void* QInputDevice_MetaObject(void* c_this);
 	[LinkName("QInputDevice_Metacast")]
-	public static extern void* QInputDevice_Metacast(void* c_this, char8[] param1);
+	public static extern void* QInputDevice_Metacast(void* c_this, char8* param1);
 	[LinkName("QInputDevice_Metacall")]
-	public static extern int32 QInputDevice_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QInputDevice_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QInputDevice_Tr")]
-	public static extern libqt_string QInputDevice_Tr(char8[] s);
+	public static extern libqt_string QInputDevice_Tr(char8* s);
 	[LinkName("QInputDevice_Name")]
 	public static extern libqt_string QInputDevice_Name(void* c_this);
 	[LinkName("QInputDevice_Type")]
@@ -355,9 +360,9 @@ extension CQt
 	[LinkName("QInputDevice_Connect_AvailableVirtualGeometryChanged")]
 	public static extern void QInputDevice_Connect_AvailableVirtualGeometryChanged(void* c_this, c_intptr slot);
 	[LinkName("QInputDevice_Tr2")]
-	public static extern libqt_string QInputDevice_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QInputDevice_Tr2(char8* s, char8* c);
 	[LinkName("QInputDevice_Tr3")]
-	public static extern libqt_string QInputDevice_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QInputDevice_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QInputDevice_PrimaryKeyboard1")]
 	public static extern void* QInputDevice_PrimaryKeyboard1(libqt_string seatName);
 	/// Delete this object from C++ memory

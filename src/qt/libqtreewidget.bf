@@ -15,9 +15,14 @@ public enum QTreeWidgetItem__ChildIndicatorPolicy
 	DontShowIndicator = 1,
 	DontShowIndicatorWhenChildless = 2,
 }
-public class QTreeWidgetItem
+public interface IQTreeWidgetItem
+{
+	void* NativePtr { get; }
+}
+public class QTreeWidgetItem : IQTreeWidgetItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -114,9 +119,9 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_Text(this.nativePtr, column);
 	}
 	
-	public void SetText(int32 column, libqt_string text)
+	public void SetText(int32 column, String text)
 	{
-		CQt.QTreeWidgetItem_SetText(this.nativePtr, column, text);
+		CQt.QTreeWidgetItem_SetText(this.nativePtr, column, libqt_string(text));
 	}
 	
 	public void Icon(int32 column)
@@ -124,9 +129,9 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_Icon(this.nativePtr, column);
 	}
 	
-	public void SetIcon(int32 column, void* icon)
+	public void SetIcon(int32 column, IQIcon icon)
 	{
-		CQt.QTreeWidgetItem_SetIcon(this.nativePtr, column, icon);
+		CQt.QTreeWidgetItem_SetIcon(this.nativePtr, column, (icon == default) ? default : (void*)icon.NativePtr);
 	}
 	
 	public libqt_string StatusTip(int32 column)
@@ -134,9 +139,9 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_StatusTip(this.nativePtr, column);
 	}
 	
-	public void SetStatusTip(int32 column, libqt_string statusTip)
+	public void SetStatusTip(int32 column, String statusTip)
 	{
-		CQt.QTreeWidgetItem_SetStatusTip(this.nativePtr, column, statusTip);
+		CQt.QTreeWidgetItem_SetStatusTip(this.nativePtr, column, libqt_string(statusTip));
 	}
 	
 	public libqt_string ToolTip(int32 column)
@@ -144,9 +149,9 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_ToolTip(this.nativePtr, column);
 	}
 	
-	public void SetToolTip(int32 column, libqt_string toolTip)
+	public void SetToolTip(int32 column, String toolTip)
 	{
-		CQt.QTreeWidgetItem_SetToolTip(this.nativePtr, column, toolTip);
+		CQt.QTreeWidgetItem_SetToolTip(this.nativePtr, column, libqt_string(toolTip));
 	}
 	
 	public libqt_string WhatsThis(int32 column)
@@ -154,9 +159,9 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_WhatsThis(this.nativePtr, column);
 	}
 	
-	public void SetWhatsThis(int32 column, libqt_string whatsThis)
+	public void SetWhatsThis(int32 column, String whatsThis)
 	{
-		CQt.QTreeWidgetItem_SetWhatsThis(this.nativePtr, column, whatsThis);
+		CQt.QTreeWidgetItem_SetWhatsThis(this.nativePtr, column, libqt_string(whatsThis));
 	}
 	
 	public void Font(int32 column)
@@ -164,9 +169,9 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_Font(this.nativePtr, column);
 	}
 	
-	public void SetFont(int32 column, void* font)
+	public void SetFont(int32 column, IQFont font)
 	{
-		CQt.QTreeWidgetItem_SetFont(this.nativePtr, column, font);
+		CQt.QTreeWidgetItem_SetFont(this.nativePtr, column, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public int32 TextAlignment(int32 column)
@@ -194,9 +199,9 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_Background(this.nativePtr, column);
 	}
 	
-	public void SetBackground(int32 column, void* brush)
+	public void SetBackground(int32 column, IQBrush brush)
 	{
-		CQt.QTreeWidgetItem_SetBackground(this.nativePtr, column, brush);
+		CQt.QTreeWidgetItem_SetBackground(this.nativePtr, column, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground(int32 column)
@@ -204,9 +209,9 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_Foreground(this.nativePtr, column);
 	}
 	
-	public void SetForeground(int32 column, void* brush)
+	public void SetForeground(int32 column, IQBrush brush)
 	{
-		CQt.QTreeWidgetItem_SetForeground(this.nativePtr, column, brush);
+		CQt.QTreeWidgetItem_SetForeground(this.nativePtr, column, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public int64 CheckState(int32 column)
@@ -224,9 +229,9 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_SizeHint(this.nativePtr, column);
 	}
 	
-	public void SetSizeHint(int32 column, void* size)
+	public void SetSizeHint(int32 column, IQSize size)
 	{
-		CQt.QTreeWidgetItem_SetSizeHint(this.nativePtr, column, size);
+		CQt.QTreeWidgetItem_SetSizeHint(this.nativePtr, column, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public virtual void Data(int32 column, int32 role)
@@ -234,29 +239,29 @@ public class QTreeWidgetItem
 		CQt.QTreeWidgetItem_Data(this.nativePtr, column, role);
 	}
 	
-	public virtual void SetData(int32 column, int32 role, void* value)
+	public virtual void SetData(int32 column, int32 role, IQVariant value)
 	{
-		CQt.QTreeWidgetItem_SetData(this.nativePtr, column, role, value);
+		CQt.QTreeWidgetItem_SetData(this.nativePtr, column, role, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public virtual bool OperatorLesser(void* other)
+	public virtual bool OperatorLesser(IQTreeWidgetItem other)
 	{
-		return CQt.QTreeWidgetItem_OperatorLesser(this.nativePtr, other);
+		return CQt.QTreeWidgetItem_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public virtual void Read(void* _in)
+	public virtual void Read(IQDataStream _in)
 	{
-		CQt.QTreeWidgetItem_Read(this.nativePtr, _in);
+		CQt.QTreeWidgetItem_Read(this.nativePtr, (_in == default) ? default : (void*)_in.NativePtr);
 	}
 	
-	public virtual void Write(void* _out)
+	public virtual void Write(IQDataStream _out)
 	{
-		CQt.QTreeWidgetItem_Write(this.nativePtr, _out);
+		CQt.QTreeWidgetItem_Write(this.nativePtr, (_out == default) ? default : (void*)_out.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQTreeWidgetItem other)
 	{
-		CQt.QTreeWidgetItem_OperatorAssign(this.nativePtr, other);
+		CQt.QTreeWidgetItem_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* Parent()
@@ -279,24 +284,24 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_ColumnCount(this.nativePtr);
 	}
 	
-	public int32 IndexOfChild(void* child)
+	public int32 IndexOfChild(IQTreeWidgetItem child)
 	{
-		return CQt.QTreeWidgetItem_IndexOfChild(this.nativePtr, child);
+		return CQt.QTreeWidgetItem_IndexOfChild(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
-	public void AddChild(void* child)
+	public void AddChild(IQTreeWidgetItem child)
 	{
-		CQt.QTreeWidgetItem_AddChild(this.nativePtr, child);
+		CQt.QTreeWidgetItem_AddChild(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
-	public void InsertChild(int32 index, void* child)
+	public void InsertChild(int32 index, IQTreeWidgetItem child)
 	{
-		CQt.QTreeWidgetItem_InsertChild(this.nativePtr, index, child);
+		CQt.QTreeWidgetItem_InsertChild(this.nativePtr, index, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
-	public void RemoveChild(void* child)
+	public void RemoveChild(IQTreeWidgetItem child)
 	{
-		CQt.QTreeWidgetItem_RemoveChild(this.nativePtr, child);
+		CQt.QTreeWidgetItem_RemoveChild(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public void* TakeChild(int32 index)
@@ -304,14 +309,14 @@ public class QTreeWidgetItem
 		return CQt.QTreeWidgetItem_TakeChild(this.nativePtr, index);
 	}
 	
-	public void AddChildren(void*[] children)
+	public void AddChildren(IQTreeWidgetItem[] children)
 	{
-		CQt.QTreeWidgetItem_AddChildren(this.nativePtr, children);
+		CQt.QTreeWidgetItem_AddChildren(this.nativePtr, null);
 	}
 	
-	public void InsertChildren(int32 index, void*[] children)
+	public void InsertChildren(int32 index, IQTreeWidgetItem[] children)
 	{
-		CQt.QTreeWidgetItem_InsertChildren(this.nativePtr, index, children);
+		CQt.QTreeWidgetItem_InsertChildren(this.nativePtr, index, null);
 	}
 	
 	public void*[] TakeChildren()
@@ -497,13 +502,18 @@ extension CQt
 	[LinkName("QTreeWidgetItem_Delete")]
 	public static extern void QTreeWidgetItem_Delete(void* self);
 }
-public class QTreeWidget
+public interface IQTreeWidget
+{
+	void* NativePtr { get; }
+}
+public class QTreeWidget : IQTreeWidget, IQTreeView
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* parent)
+	public this(IQWidget parent)
 	{
-		this.nativePtr = CQt.QTreeWidget_new(parent);
+		this.nativePtr = CQt.QTreeWidget_new((parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public ~this()
@@ -516,7 +526,7 @@ public class QTreeWidget
 		return CQt.QTreeWidget_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QTreeWidget_Metacast(this.nativePtr, param1);
 	}
@@ -526,7 +536,7 @@ public class QTreeWidget
 		return CQt.QTreeWidget_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QTreeWidget_Tr(s);
 	}
@@ -556,14 +566,14 @@ public class QTreeWidget
 		return CQt.QTreeWidget_TopLevelItemCount(this.nativePtr);
 	}
 	
-	public void InsertTopLevelItem(int32 index, void* item)
+	public void InsertTopLevelItem(int32 index, IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_InsertTopLevelItem(this.nativePtr, index, item);
+		CQt.QTreeWidget_InsertTopLevelItem(this.nativePtr, index, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void AddTopLevelItem(void* item)
+	public void AddTopLevelItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_AddTopLevelItem(this.nativePtr, item);
+		CQt.QTreeWidget_AddTopLevelItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void* TakeTopLevelItem(int32 index)
@@ -571,19 +581,19 @@ public class QTreeWidget
 		return CQt.QTreeWidget_TakeTopLevelItem(this.nativePtr, index);
 	}
 	
-	public int32 IndexOfTopLevelItem(void* item)
+	public int32 IndexOfTopLevelItem(IQTreeWidgetItem item)
 	{
-		return CQt.QTreeWidget_IndexOfTopLevelItem(this.nativePtr, item);
+		return CQt.QTreeWidget_IndexOfTopLevelItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void InsertTopLevelItems(int32 index, void*[] items)
+	public void InsertTopLevelItems(int32 index, IQTreeWidgetItem[] items)
 	{
-		CQt.QTreeWidget_InsertTopLevelItems(this.nativePtr, index, items);
+		CQt.QTreeWidget_InsertTopLevelItems(this.nativePtr, index, null);
 	}
 	
-	public void AddTopLevelItems(void*[] items)
+	public void AddTopLevelItems(IQTreeWidgetItem[] items)
 	{
-		CQt.QTreeWidget_AddTopLevelItems(this.nativePtr, items);
+		CQt.QTreeWidget_AddTopLevelItems(this.nativePtr, null);
 	}
 	
 	public void* HeaderItem()
@@ -591,19 +601,19 @@ public class QTreeWidget
 		return CQt.QTreeWidget_HeaderItem(this.nativePtr);
 	}
 	
-	public void SetHeaderItem(void* item)
+	public void SetHeaderItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_SetHeaderItem(this.nativePtr, item);
+		CQt.QTreeWidget_SetHeaderItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void SetHeaderLabels(libqt_string[] labels)
+	public void SetHeaderLabels(String[] labels)
 	{
-		CQt.QTreeWidget_SetHeaderLabels(this.nativePtr, labels);
+		CQt.QTreeWidget_SetHeaderLabels(this.nativePtr, null);
 	}
 	
-	public void SetHeaderLabel(libqt_string label)
+	public void SetHeaderLabel(String label)
 	{
-		CQt.QTreeWidget_SetHeaderLabel(this.nativePtr, label);
+		CQt.QTreeWidget_SetHeaderLabel(this.nativePtr, libqt_string(label));
 	}
 	
 	public void* CurrentItem()
@@ -616,24 +626,24 @@ public class QTreeWidget
 		return CQt.QTreeWidget_CurrentColumn(this.nativePtr);
 	}
 	
-	public void SetCurrentItem(void* item)
+	public void SetCurrentItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_SetCurrentItem(this.nativePtr, item);
+		CQt.QTreeWidget_SetCurrentItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void SetCurrentItem2(void* item, int32 column)
+	public void SetCurrentItem2(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_SetCurrentItem2(this.nativePtr, item, column);
+		CQt.QTreeWidget_SetCurrentItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void SetCurrentItem3(void* item, int32 column, int64 command)
+	public void SetCurrentItem3(IQTreeWidgetItem item, int32 column, int64 command)
 	{
-		CQt.QTreeWidget_SetCurrentItem3(this.nativePtr, item, column, command);
+		CQt.QTreeWidget_SetCurrentItem3(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column, command);
 	}
 	
-	public void* ItemAt(void* p)
+	public void* ItemAt(IQPoint p)
 	{
-		return CQt.QTreeWidget_ItemAt(this.nativePtr, p);
+		return CQt.QTreeWidget_ItemAt(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void* ItemAt2(int32 x, int32 y)
@@ -641,9 +651,9 @@ public class QTreeWidget
 		return CQt.QTreeWidget_ItemAt2(this.nativePtr, x, y);
 	}
 	
-	public void VisualItemRect(void* item)
+	public void VisualItemRect(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_VisualItemRect(this.nativePtr, item);
+		CQt.QTreeWidget_VisualItemRect(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public int32 SortColumn()
@@ -656,39 +666,39 @@ public class QTreeWidget
 		CQt.QTreeWidget_SortItems(this.nativePtr, column, order);
 	}
 	
-	public void EditItem(void* item)
+	public void EditItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_EditItem(this.nativePtr, item);
+		CQt.QTreeWidget_EditItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void OpenPersistentEditor(void* item)
+	public void OpenPersistentEditor(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_OpenPersistentEditor(this.nativePtr, item);
+		CQt.QTreeWidget_OpenPersistentEditor(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void ClosePersistentEditor(void* item)
+	public void ClosePersistentEditor(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_ClosePersistentEditor(this.nativePtr, item);
+		CQt.QTreeWidget_ClosePersistentEditor(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public bool IsPersistentEditorOpen(void* item)
+	public bool IsPersistentEditorOpen(IQTreeWidgetItem item)
 	{
-		return CQt.QTreeWidget_IsPersistentEditorOpen(this.nativePtr, item);
+		return CQt.QTreeWidget_IsPersistentEditorOpen(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void* ItemWidget(void* item, int32 column)
+	public void* ItemWidget(IQTreeWidgetItem item, int32 column)
 	{
-		return CQt.QTreeWidget_ItemWidget(this.nativePtr, item, column);
+		return CQt.QTreeWidget_ItemWidget(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void SetItemWidget(void* item, int32 column, void* widget)
+	public void SetItemWidget(IQTreeWidgetItem item, int32 column, IQWidget widget)
 	{
-		CQt.QTreeWidget_SetItemWidget(this.nativePtr, item, column, widget);
+		CQt.QTreeWidget_SetItemWidget(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public void RemoveItemWidget(void* item, int32 column)
+	public void RemoveItemWidget(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_RemoveItemWidget(this.nativePtr, item, column);
+		CQt.QTreeWidget_RemoveItemWidget(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
 	public void*[] SelectedItems()
@@ -696,49 +706,49 @@ public class QTreeWidget
 		return CQt.QTreeWidget_SelectedItems(this.nativePtr);
 	}
 	
-	public void*[] FindItems(libqt_string text, int64 flags)
+	public void*[] FindItems(String text, int64 flags)
 	{
-		return CQt.QTreeWidget_FindItems(this.nativePtr, text, flags);
+		return CQt.QTreeWidget_FindItems(this.nativePtr, libqt_string(text), flags);
 	}
 	
-	public void* ItemAbove(void* item)
+	public void* ItemAbove(IQTreeWidgetItem item)
 	{
-		return CQt.QTreeWidget_ItemAbove(this.nativePtr, item);
+		return CQt.QTreeWidget_ItemAbove(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void* ItemBelow(void* item)
+	public void* ItemBelow(IQTreeWidgetItem item)
 	{
-		return CQt.QTreeWidget_ItemBelow(this.nativePtr, item);
+		return CQt.QTreeWidget_ItemBelow(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void IndexFromItem(void* item)
+	public void IndexFromItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_IndexFromItem(this.nativePtr, item);
+		CQt.QTreeWidget_IndexFromItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void* ItemFromIndex(void* index)
+	public void* ItemFromIndex(IQModelIndex index)
 	{
-		return CQt.QTreeWidget_ItemFromIndex(this.nativePtr, index);
+		return CQt.QTreeWidget_ItemFromIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void SetSelectionModel(void* selectionModel)
+	public virtual void SetSelectionModel(IQItemSelectionModel selectionModel)
 	{
-		CQt.QTreeWidget_SetSelectionModel(this.nativePtr, selectionModel);
+		CQt.QTreeWidget_SetSelectionModel(this.nativePtr, (selectionModel == null) ? null : (void*)selectionModel.NativePtr);
 	}
 	
-	public void ScrollToItem(void* item)
+	public void ScrollToItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_ScrollToItem(this.nativePtr, item);
+		CQt.QTreeWidget_ScrollToItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void ExpandItem(void* item)
+	public void ExpandItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_ExpandItem(this.nativePtr, item);
+		CQt.QTreeWidget_ExpandItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void CollapseItem(void* item)
+	public void CollapseItem(IQTreeWidgetItem item)
 	{
-		CQt.QTreeWidget_CollapseItem(this.nativePtr, item);
+		CQt.QTreeWidget_CollapseItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void Clear()
@@ -746,9 +756,9 @@ public class QTreeWidget
 		CQt.QTreeWidget_Clear(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* e)
+	public virtual bool Event(IQEvent e)
 	{
-		return CQt.QTreeWidget_Event(this.nativePtr, e);
+		return CQt.QTreeWidget_Event(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
 	public virtual libqt_string[] MimeTypes()
@@ -756,14 +766,14 @@ public class QTreeWidget
 		return CQt.QTreeWidget_MimeTypes(this.nativePtr);
 	}
 	
-	public virtual void* MimeData(void*[] items)
+	public virtual void* MimeData(IQTreeWidgetItem[] items)
 	{
-		return CQt.QTreeWidget_MimeData(this.nativePtr, items);
+		return CQt.QTreeWidget_MimeData(this.nativePtr, null);
 	}
 	
-	public virtual bool DropMimeData(void* parent, int32 index, void* data, int64 action)
+	public virtual bool DropMimeData(IQTreeWidgetItem parent, int32 index, IQMimeData data, int64 action)
 	{
-		return CQt.QTreeWidget_DropMimeData(this.nativePtr, parent, index, data, action);
+		return CQt.QTreeWidget_DropMimeData(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr, index, (data == null) ? null : (void*)data.NativePtr, action);
 	}
 	
 	public virtual int64 SupportedDropActions()
@@ -771,64 +781,64 @@ public class QTreeWidget
 		return CQt.QTreeWidget_SupportedDropActions(this.nativePtr);
 	}
 	
-	public virtual void DropEvent(void* event)
+	public virtual void DropEvent(IQDropEvent event)
 	{
-		CQt.QTreeWidget_DropEvent(this.nativePtr, event);
+		CQt.QTreeWidget_DropEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QTreeWidget_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QTreeWidget_Tr3(s, c, n);
 	}
 	
-	public void EditItem2(void* item, int32 column)
+	public void EditItem2(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_EditItem2(this.nativePtr, item, column);
+		CQt.QTreeWidget_EditItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void OpenPersistentEditor2(void* item, int32 column)
+	public void OpenPersistentEditor2(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_OpenPersistentEditor2(this.nativePtr, item, column);
+		CQt.QTreeWidget_OpenPersistentEditor2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void ClosePersistentEditor2(void* item, int32 column)
+	public void ClosePersistentEditor2(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_ClosePersistentEditor2(this.nativePtr, item, column);
+		CQt.QTreeWidget_ClosePersistentEditor2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public bool IsPersistentEditorOpen2(void* item, int32 column)
+	public bool IsPersistentEditorOpen2(IQTreeWidgetItem item, int32 column)
 	{
-		return CQt.QTreeWidget_IsPersistentEditorOpen2(this.nativePtr, item, column);
+		return CQt.QTreeWidget_IsPersistentEditorOpen2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void*[] FindItems3(libqt_string text, int64 flags, int32 column)
+	public void*[] FindItems3(String text, int64 flags, int32 column)
 	{
-		return CQt.QTreeWidget_FindItems3(this.nativePtr, text, flags, column);
+		return CQt.QTreeWidget_FindItems3(this.nativePtr, libqt_string(text), flags, column);
 	}
 	
-	public void IndexFromItem2(void* item, int32 column)
+	public void IndexFromItem2(IQTreeWidgetItem item, int32 column)
 	{
-		CQt.QTreeWidget_IndexFromItem2(this.nativePtr, item, column);
+		CQt.QTreeWidget_IndexFromItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, column);
 	}
 	
-	public void ScrollToItem2(void* item, int64 hint)
+	public void ScrollToItem2(IQTreeWidgetItem item, int64 hint)
 	{
-		CQt.QTreeWidget_ScrollToItem2(this.nativePtr, item, hint);
+		CQt.QTreeWidget_ScrollToItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, hint);
 	}
 	
-	public virtual void SetModel(void* model)
+	public virtual void SetModel(IQAbstractItemModel model)
 	{
-		CQt.QTreeView_SetModel(this.nativePtr, model);
+		CQt.QTreeView_SetModel(this.nativePtr, (model == null) ? null : (void*)model.NativePtr);
 	}
 	
-	public virtual void SetRootIndex(void* index)
+	public virtual void SetRootIndex(IQModelIndex index)
 	{
-		CQt.QTreeView_SetRootIndex(this.nativePtr, index);
+		CQt.QTreeView_SetRootIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void* Header()
@@ -836,9 +846,9 @@ public class QTreeWidget
 		return CQt.QTreeView_Header(this.nativePtr);
 	}
 	
-	public void SetHeader(void* header)
+	public void SetHeader(IQHeaderView header)
 	{
-		CQt.QTreeView_SetHeader(this.nativePtr, header);
+		CQt.QTreeView_SetHeader(this.nativePtr, (header == null) ? null : (void*)header.NativePtr);
 	}
 	
 	public int32 AutoExpandDelay()
@@ -946,34 +956,34 @@ public class QTreeWidget
 		CQt.QTreeView_SetHeaderHidden(this.nativePtr, hide);
 	}
 	
-	public bool IsRowHidden(int32 row, void* parent)
+	public bool IsRowHidden(int32 row, IQModelIndex parent)
 	{
-		return CQt.QTreeView_IsRowHidden(this.nativePtr, row, parent);
+		return CQt.QTreeView_IsRowHidden(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr);
 	}
 	
-	public void SetRowHidden(int32 row, void* parent, bool hide)
+	public void SetRowHidden(int32 row, IQModelIndex parent, bool hide)
 	{
-		CQt.QTreeView_SetRowHidden(this.nativePtr, row, parent, hide);
+		CQt.QTreeView_SetRowHidden(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr, hide);
 	}
 	
-	public bool IsFirstColumnSpanned(int32 row, void* parent)
+	public bool IsFirstColumnSpanned(int32 row, IQModelIndex parent)
 	{
-		return CQt.QTreeView_IsFirstColumnSpanned(this.nativePtr, row, parent);
+		return CQt.QTreeView_IsFirstColumnSpanned(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr);
 	}
 	
-	public void SetFirstColumnSpanned(int32 row, void* parent, bool span)
+	public void SetFirstColumnSpanned(int32 row, IQModelIndex parent, bool span)
 	{
-		CQt.QTreeView_SetFirstColumnSpanned(this.nativePtr, row, parent, span);
+		CQt.QTreeView_SetFirstColumnSpanned(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr, span);
 	}
 	
-	public bool IsExpanded(void* index)
+	public bool IsExpanded(IQModelIndex index)
 	{
-		return CQt.QTreeView_IsExpanded(this.nativePtr, index);
+		return CQt.QTreeView_IsExpanded(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void SetExpanded(void* index, bool expand)
+	public void SetExpanded(IQModelIndex index, bool expand)
 	{
-		CQt.QTreeView_SetExpanded(this.nativePtr, index, expand);
+		CQt.QTreeView_SetExpanded(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, expand);
 	}
 	
 	public void SetSortingEnabled(bool enable)
@@ -1026,34 +1036,34 @@ public class QTreeWidget
 		return CQt.QTreeView_TreePosition(this.nativePtr);
 	}
 	
-	public virtual void KeyboardSearch(libqt_string search)
+	public virtual void KeyboardSearch(String search)
 	{
-		CQt.QTreeView_KeyboardSearch(this.nativePtr, search);
+		CQt.QTreeView_KeyboardSearch(this.nativePtr, libqt_string(search));
 	}
 	
-	public virtual void VisualRect(void* index)
+	public virtual void VisualRect(IQModelIndex index)
 	{
-		CQt.QTreeView_VisualRect(this.nativePtr, index);
+		CQt.QTreeView_VisualRect(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void ScrollTo(void* index, int64 hint)
+	public virtual void ScrollTo(IQModelIndex index, int64 hint)
 	{
-		CQt.QTreeView_ScrollTo(this.nativePtr, index, hint);
+		CQt.QTreeView_ScrollTo(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, hint);
 	}
 	
-	public virtual void IndexAt(void* p)
+	public virtual void IndexAt(IQPoint p)
 	{
-		CQt.QTreeView_IndexAt(this.nativePtr, p);
+		CQt.QTreeView_IndexAt(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void IndexAbove(void* index)
+	public void IndexAbove(IQModelIndex index)
 	{
-		CQt.QTreeView_IndexAbove(this.nativePtr, index);
+		CQt.QTreeView_IndexAbove(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void IndexBelow(void* index)
+	public void IndexBelow(IQModelIndex index)
 	{
-		CQt.QTreeView_IndexBelow(this.nativePtr, index);
+		CQt.QTreeView_IndexBelow(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public virtual void DoItemsLayout()
@@ -1066,9 +1076,9 @@ public class QTreeWidget
 		CQt.QTreeView_Reset(this.nativePtr);
 	}
 	
-	public virtual void DataChanged(void* topLeft, void* bottomRight, int32[] roles)
+	public virtual void DataChanged(IQModelIndex topLeft, IQModelIndex bottomRight, int32[] roles)
 	{
-		CQt.QTreeView_DataChanged(this.nativePtr, topLeft, bottomRight, roles);
+		CQt.QTreeView_DataChanged(this.nativePtr, (topLeft == default) ? default : (void*)topLeft.NativePtr, (bottomRight == default) ? default : (void*)bottomRight.NativePtr, null);
 	}
 	
 	public virtual void SelectAll()
@@ -1086,14 +1096,14 @@ public class QTreeWidget
 		CQt.QTreeView_ShowColumn(this.nativePtr, column);
 	}
 	
-	public void Expand(void* index)
+	public void Expand(IQModelIndex index)
 	{
-		CQt.QTreeView_Expand(this.nativePtr, index);
+		CQt.QTreeView_Expand(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void Collapse(void* index)
+	public void Collapse(IQModelIndex index)
 	{
-		CQt.QTreeView_Collapse(this.nativePtr, index);
+		CQt.QTreeView_Collapse(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void ResizeColumnToContents(int32 column)
@@ -1111,9 +1121,9 @@ public class QTreeWidget
 		CQt.QTreeView_ExpandAll(this.nativePtr);
 	}
 	
-	public void ExpandRecursively(void* index)
+	public void ExpandRecursively(IQModelIndex index)
 	{
-		CQt.QTreeView_ExpandRecursively(this.nativePtr, index);
+		CQt.QTreeView_ExpandRecursively(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void CollapseAll()
@@ -1126,9 +1136,9 @@ public class QTreeWidget
 		CQt.QTreeView_ExpandToDepth(this.nativePtr, depth);
 	}
 	
-	public void ExpandRecursively2(void* index, int32 depth)
+	public void ExpandRecursively2(IQModelIndex index, int32 depth)
 	{
-		CQt.QTreeView_ExpandRecursively2(this.nativePtr, index, depth);
+		CQt.QTreeView_ExpandRecursively2(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, depth);
 	}
 	
 	public void* Model()
@@ -1141,9 +1151,9 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_SelectionModel(this.nativePtr);
 	}
 	
-	public void SetItemDelegate(void* _delegate)
+	public void SetItemDelegate(IQAbstractItemDelegate _delegate)
 	{
-		CQt.QAbstractItemView_SetItemDelegate(this.nativePtr, _delegate);
+		CQt.QAbstractItemView_SetItemDelegate(this.nativePtr, (_delegate == null) ? null : (void*)_delegate.NativePtr);
 	}
 	
 	public void* ItemDelegate()
@@ -1311,9 +1321,9 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_AlternatingRowColors(this.nativePtr);
 	}
 	
-	public void SetIconSize(void* size)
+	public void SetIconSize(IQSize size)
 	{
-		CQt.QAbstractItemView_SetIconSize(this.nativePtr, size);
+		CQt.QAbstractItemView_SetIconSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void IconSize()
@@ -1331,9 +1341,9 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_TextElideMode(this.nativePtr);
 	}
 	
-	public void SizeHintForIndex(void* index)
+	public void SizeHintForIndex(IQModelIndex index)
 	{
-		CQt.QAbstractItemView_SizeHintForIndex(this.nativePtr, index);
+		CQt.QAbstractItemView_SizeHintForIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public virtual int32 SizeHintForRow(int32 row)
@@ -1346,19 +1356,19 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_SizeHintForColumn(this.nativePtr, column);
 	}
 	
-	public void SetIndexWidget(void* index, void* widget)
+	public void SetIndexWidget(IQModelIndex index, IQWidget widget)
 	{
-		CQt.QAbstractItemView_SetIndexWidget(this.nativePtr, index, widget);
+		CQt.QAbstractItemView_SetIndexWidget(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public void* IndexWidget(void* index)
+	public void* IndexWidget(IQModelIndex index)
 	{
-		return CQt.QAbstractItemView_IndexWidget(this.nativePtr, index);
+		return CQt.QAbstractItemView_IndexWidget(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void SetItemDelegateForRow(int32 row, void* _delegate)
+	public void SetItemDelegateForRow(int32 row, IQAbstractItemDelegate _delegate)
 	{
-		CQt.QAbstractItemView_SetItemDelegateForRow(this.nativePtr, row, _delegate);
+		CQt.QAbstractItemView_SetItemDelegateForRow(this.nativePtr, row, (_delegate == null) ? null : (void*)_delegate.NativePtr);
 	}
 	
 	public void* ItemDelegateForRow(int32 row)
@@ -1366,9 +1376,9 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_ItemDelegateForRow(this.nativePtr, row);
 	}
 	
-	public void SetItemDelegateForColumn(int32 column, void* _delegate)
+	public void SetItemDelegateForColumn(int32 column, IQAbstractItemDelegate _delegate)
 	{
-		CQt.QAbstractItemView_SetItemDelegateForColumn(this.nativePtr, column, _delegate);
+		CQt.QAbstractItemView_SetItemDelegateForColumn(this.nativePtr, column, (_delegate == null) ? null : (void*)_delegate.NativePtr);
 	}
 	
 	public void* ItemDelegateForColumn(int32 column)
@@ -1376,14 +1386,14 @@ public class QTreeWidget
 		return CQt.QAbstractItemView_ItemDelegateForColumn(this.nativePtr, column);
 	}
 	
-	public void* ItemDelegateWithIndex(void* index)
+	public void* ItemDelegateWithIndex(IQModelIndex index)
 	{
-		return CQt.QAbstractItemView_ItemDelegateWithIndex(this.nativePtr, index);
+		return CQt.QAbstractItemView_ItemDelegateWithIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void* ItemDelegateForIndex(void* index)
+	public virtual void* ItemDelegateForIndex(IQModelIndex index)
 	{
-		return CQt.QAbstractItemView_ItemDelegateForIndex(this.nativePtr, index);
+		return CQt.QAbstractItemView_ItemDelegateForIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public virtual void InputMethodQuery(int64 query)
@@ -1391,9 +1401,9 @@ public class QTreeWidget
 		CQt.QAbstractItemView_InputMethodQuery(this.nativePtr, query);
 	}
 	
-	public void Edit(void* index)
+	public void Edit(IQModelIndex index)
 	{
-		CQt.QAbstractItemView_Edit(this.nativePtr, index);
+		CQt.QAbstractItemView_Edit(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void ClearSelection()
@@ -1401,9 +1411,9 @@ public class QTreeWidget
 		CQt.QAbstractItemView_ClearSelection(this.nativePtr);
 	}
 	
-	public void SetCurrentIndex(void* index)
+	public void SetCurrentIndex(IQModelIndex index)
 	{
-		CQt.QAbstractItemView_SetCurrentIndex(this.nativePtr, index);
+		CQt.QAbstractItemView_SetCurrentIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void ScrollToTop()
@@ -1416,9 +1426,9 @@ public class QTreeWidget
 		CQt.QAbstractItemView_ScrollToBottom(this.nativePtr);
 	}
 	
-	public void Update(void* index)
+	public void Update(IQModelIndex index)
 	{
-		CQt.QAbstractItemView_Update(this.nativePtr, index);
+		CQt.QAbstractItemView_Update(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public int64 VerticalScrollBarPolicy()
@@ -1436,9 +1446,9 @@ public class QTreeWidget
 		return CQt.QAbstractScrollArea_VerticalScrollBar(this.nativePtr);
 	}
 	
-	public void SetVerticalScrollBar(void* scrollbar)
+	public void SetVerticalScrollBar(IQScrollBar scrollbar)
 	{
-		CQt.QAbstractScrollArea_SetVerticalScrollBar(this.nativePtr, scrollbar);
+		CQt.QAbstractScrollArea_SetVerticalScrollBar(this.nativePtr, (scrollbar == null) ? null : (void*)scrollbar.NativePtr);
 	}
 	
 	public int64 HorizontalScrollBarPolicy()
@@ -1456,9 +1466,9 @@ public class QTreeWidget
 		return CQt.QAbstractScrollArea_HorizontalScrollBar(this.nativePtr);
 	}
 	
-	public void SetHorizontalScrollBar(void* scrollbar)
+	public void SetHorizontalScrollBar(IQScrollBar scrollbar)
 	{
-		CQt.QAbstractScrollArea_SetHorizontalScrollBar(this.nativePtr, scrollbar);
+		CQt.QAbstractScrollArea_SetHorizontalScrollBar(this.nativePtr, (scrollbar == null) ? null : (void*)scrollbar.NativePtr);
 	}
 	
 	public void* CornerWidget()
@@ -1466,14 +1476,14 @@ public class QTreeWidget
 		return CQt.QAbstractScrollArea_CornerWidget(this.nativePtr);
 	}
 	
-	public void SetCornerWidget(void* widget)
+	public void SetCornerWidget(IQWidget widget)
 	{
-		CQt.QAbstractScrollArea_SetCornerWidget(this.nativePtr, widget);
+		CQt.QAbstractScrollArea_SetCornerWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public void AddScrollBarWidget(void* widget, int64 alignment)
+	public void AddScrollBarWidget(IQWidget widget, int64 alignment)
 	{
-		CQt.QAbstractScrollArea_AddScrollBarWidget(this.nativePtr, widget, alignment);
+		CQt.QAbstractScrollArea_AddScrollBarWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr, alignment);
 	}
 	
 	public void*[] ScrollBarWidgets(int64 alignment)
@@ -1486,9 +1496,9 @@ public class QTreeWidget
 		return CQt.QAbstractScrollArea_Viewport(this.nativePtr);
 	}
 	
-	public void SetViewport(void* widget)
+	public void SetViewport(IQWidget widget)
 	{
-		CQt.QAbstractScrollArea_SetViewport(this.nativePtr, widget);
+		CQt.QAbstractScrollArea_SetViewport(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public void MaximumViewportSize()
@@ -1506,9 +1516,9 @@ public class QTreeWidget
 		CQt.QAbstractScrollArea_SizeHint(this.nativePtr);
 	}
 	
-	public virtual void SetupViewport(void* viewport)
+	public virtual void SetupViewport(IQWidget viewport)
 	{
-		CQt.QAbstractScrollArea_SetupViewport(this.nativePtr, viewport);
+		CQt.QAbstractScrollArea_SetupViewport(this.nativePtr, (viewport == null) ? null : (void*)viewport.NativePtr);
 	}
 	
 	public int64 SizeAdjustPolicy()
@@ -1581,9 +1591,9 @@ public class QTreeWidget
 		CQt.QFrame_FrameRect(this.nativePtr);
 	}
 	
-	public void SetFrameRect(void* frameRect)
+	public void SetFrameRect(IQRect frameRect)
 	{
-		CQt.QFrame_SetFrameRect(this.nativePtr, frameRect);
+		CQt.QFrame_SetFrameRect(this.nativePtr, (frameRect == default) ? default : (void*)frameRect.NativePtr);
 	}
 	
 	public virtual int32 DevType()
@@ -1616,9 +1626,9 @@ public class QTreeWidget
 		return CQt.QWidget_Style(this.nativePtr);
 	}
 	
-	public void SetStyle(void* style)
+	public void SetStyle(IQStyle style)
 	{
-		CQt.QWidget_SetStyle(this.nativePtr, style);
+		CQt.QWidget_SetStyle(this.nativePtr, (style == null) ? null : (void*)style.NativePtr);
 	}
 	
 	public bool IsTopLevel()
@@ -1651,9 +1661,9 @@ public class QTreeWidget
 		return CQt.QWidget_IsEnabled(this.nativePtr);
 	}
 	
-	public bool IsEnabledTo(void* param1)
+	public bool IsEnabledTo(IQWidget param1)
 	{
-		return CQt.QWidget_IsEnabledTo(this.nativePtr, param1);
+		return CQt.QWidget_IsEnabledTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public void SetEnabled(bool enabled)
@@ -1766,9 +1776,9 @@ public class QTreeWidget
 		return CQt.QWidget_MaximumHeight(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* minimumSize)
+	public void SetMinimumSize(IQSize minimumSize)
 	{
-		CQt.QWidget_SetMinimumSize(this.nativePtr, minimumSize);
+		CQt.QWidget_SetMinimumSize(this.nativePtr, (minimumSize == default) ? default : (void*)minimumSize.NativePtr);
 	}
 	
 	public void SetMinimumSize2(int32 minw, int32 minh)
@@ -1776,9 +1786,9 @@ public class QTreeWidget
 		CQt.QWidget_SetMinimumSize2(this.nativePtr, minw, minh);
 	}
 	
-	public void SetMaximumSize(void* maximumSize)
+	public void SetMaximumSize(IQSize maximumSize)
 	{
-		CQt.QWidget_SetMaximumSize(this.nativePtr, maximumSize);
+		CQt.QWidget_SetMaximumSize(this.nativePtr, (maximumSize == default) ? default : (void*)maximumSize.NativePtr);
 	}
 	
 	public void SetMaximumSize2(int32 maxw, int32 maxh)
@@ -1811,9 +1821,9 @@ public class QTreeWidget
 		CQt.QWidget_SizeIncrement(this.nativePtr);
 	}
 	
-	public void SetSizeIncrement(void* sizeIncrement)
+	public void SetSizeIncrement(IQSize sizeIncrement)
 	{
-		CQt.QWidget_SetSizeIncrement(this.nativePtr, sizeIncrement);
+		CQt.QWidget_SetSizeIncrement(this.nativePtr, (sizeIncrement == default) ? default : (void*)sizeIncrement.NativePtr);
 	}
 	
 	public void SetSizeIncrement2(int32 w, int32 h)
@@ -1826,9 +1836,9 @@ public class QTreeWidget
 		CQt.QWidget_BaseSize(this.nativePtr);
 	}
 	
-	public void SetBaseSize(void* baseSize)
+	public void SetBaseSize(IQSize baseSize)
 	{
-		CQt.QWidget_SetBaseSize(this.nativePtr, baseSize);
+		CQt.QWidget_SetBaseSize(this.nativePtr, (baseSize == default) ? default : (void*)baseSize.NativePtr);
 	}
 	
 	public void SetBaseSize2(int32 basew, int32 baseh)
@@ -1836,9 +1846,9 @@ public class QTreeWidget
 		CQt.QWidget_SetBaseSize2(this.nativePtr, basew, baseh);
 	}
 	
-	public void SetFixedSize(void* fixedSize)
+	public void SetFixedSize(IQSize fixedSize)
 	{
-		CQt.QWidget_SetFixedSize(this.nativePtr, fixedSize);
+		CQt.QWidget_SetFixedSize(this.nativePtr, (fixedSize == default) ? default : (void*)fixedSize.NativePtr);
 	}
 	
 	public void SetFixedSize2(int32 w, int32 h)
@@ -1856,64 +1866,64 @@ public class QTreeWidget
 		CQt.QWidget_SetFixedHeight(this.nativePtr, h);
 	}
 	
-	public void MapToGlobal(void* param1)
+	public void MapToGlobal(IQPointF param1)
 	{
-		CQt.QWidget_MapToGlobal(this.nativePtr, param1);
+		CQt.QWidget_MapToGlobal(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToGlobalWithQPoint(void* param1)
+	public void MapToGlobalWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapToGlobalWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapToGlobalWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromGlobal(void* param1)
+	public void MapFromGlobal(IQPointF param1)
 	{
-		CQt.QWidget_MapFromGlobal(this.nativePtr, param1);
+		CQt.QWidget_MapFromGlobal(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromGlobalWithQPoint(void* param1)
+	public void MapFromGlobalWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapFromGlobalWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapFromGlobalWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToParent(void* param1)
+	public void MapToParent(IQPointF param1)
 	{
-		CQt.QWidget_MapToParent(this.nativePtr, param1);
+		CQt.QWidget_MapToParent(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToParentWithQPoint(void* param1)
+	public void MapToParentWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapToParentWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapToParentWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromParent(void* param1)
+	public void MapFromParent(IQPointF param1)
 	{
-		CQt.QWidget_MapFromParent(this.nativePtr, param1);
+		CQt.QWidget_MapFromParent(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromParentWithQPoint(void* param1)
+	public void MapFromParentWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapFromParentWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapFromParentWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapTo(void* param1, void* param2)
+	public void MapTo(IQWidget param1, IQPointF param2)
 	{
-		CQt.QWidget_MapTo(this.nativePtr, param1, param2);
+		CQt.QWidget_MapTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapTo2(void* param1, void* param2)
+	public void MapTo2(IQWidget param1, IQPoint param2)
 	{
-		CQt.QWidget_MapTo2(this.nativePtr, param1, param2);
+		CQt.QWidget_MapTo2(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapFrom(void* param1, void* param2)
+	public void MapFrom(IQWidget param1, IQPointF param2)
 	{
-		CQt.QWidget_MapFrom(this.nativePtr, param1, param2);
+		CQt.QWidget_MapFrom(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapFrom2(void* param1, void* param2)
+	public void MapFrom2(IQWidget param1, IQPoint param2)
 	{
-		CQt.QWidget_MapFrom2(this.nativePtr, param1, param2);
+		CQt.QWidget_MapFrom2(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
 	public void* Window()
@@ -1936,9 +1946,9 @@ public class QTreeWidget
 		return CQt.QWidget_Palette(this.nativePtr);
 	}
 	
-	public void SetPalette(void* palette)
+	public void SetPalette(IQPalette palette)
 	{
-		CQt.QWidget_SetPalette(this.nativePtr, palette);
+		CQt.QWidget_SetPalette(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
 	public void SetBackgroundRole(int64 backgroundRole)
@@ -1966,9 +1976,9 @@ public class QTreeWidget
 		return CQt.QWidget_Font(this.nativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QWidget_SetFont(this.nativePtr, font);
+		CQt.QWidget_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void FontMetrics()
@@ -1986,9 +1996,9 @@ public class QTreeWidget
 		CQt.QWidget_Cursor(this.nativePtr);
 	}
 	
-	public void SetCursor(void* cursor)
+	public void SetCursor(IQCursor cursor)
 	{
-		CQt.QWidget_SetCursor(this.nativePtr, cursor);
+		CQt.QWidget_SetCursor(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
 	}
 	
 	public void UnsetCursor()
@@ -2021,14 +2031,14 @@ public class QTreeWidget
 		return CQt.QWidget_HasTabletTracking(this.nativePtr);
 	}
 	
-	public void SetMask(void* mask)
+	public void SetMask(IQBitmap mask)
 	{
-		CQt.QWidget_SetMask(this.nativePtr, mask);
+		CQt.QWidget_SetMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
-	public void SetMaskWithMask(void* mask)
+	public void SetMaskWithMask(IQRegion mask)
 	{
-		CQt.QWidget_SetMaskWithMask(this.nativePtr, mask);
+		CQt.QWidget_SetMaskWithMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
 	public void Mask()
@@ -2041,14 +2051,14 @@ public class QTreeWidget
 		CQt.QWidget_ClearMask(this.nativePtr);
 	}
 	
-	public void Render(void* target)
+	public void Render(IQPaintDevice target)
 	{
-		CQt.QWidget_Render(this.nativePtr, target);
+		CQt.QWidget_Render(this.nativePtr, (target == null) ? null : (void*)target.NativePtr);
 	}
 	
-	public void RenderWithPainter(void* painter)
+	public void RenderWithPainter(IQPainter painter)
 	{
-		CQt.QWidget_RenderWithPainter(this.nativePtr, painter);
+		CQt.QWidget_RenderWithPainter(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public void Grab()
@@ -2061,9 +2071,9 @@ public class QTreeWidget
 		return CQt.QWidget_GraphicsEffect(this.nativePtr);
 	}
 	
-	public void SetGraphicsEffect(void* effect)
+	public void SetGraphicsEffect(IQGraphicsEffect effect)
 	{
-		CQt.QWidget_SetGraphicsEffect(this.nativePtr, effect);
+		CQt.QWidget_SetGraphicsEffect(this.nativePtr, (effect == null) ? null : (void*)effect.NativePtr);
 	}
 	
 	public void GrabGesture(int64 typeVal)
@@ -2076,14 +2086,14 @@ public class QTreeWidget
 		CQt.QWidget_UngrabGesture(this.nativePtr, typeVal);
 	}
 	
-	public void SetWindowTitle(libqt_string windowTitle)
+	public void SetWindowTitle(String windowTitle)
 	{
-		CQt.QWidget_SetWindowTitle(this.nativePtr, windowTitle);
+		CQt.QWidget_SetWindowTitle(this.nativePtr, libqt_string(windowTitle));
 	}
 	
-	public void SetStyleSheet(libqt_string styleSheet)
+	public void SetStyleSheet(String styleSheet)
 	{
-		CQt.QWidget_SetStyleSheet(this.nativePtr, styleSheet);
+		CQt.QWidget_SetStyleSheet(this.nativePtr, libqt_string(styleSheet));
 	}
 	
 	public libqt_string StyleSheet()
@@ -2096,9 +2106,9 @@ public class QTreeWidget
 		return CQt.QWidget_WindowTitle(this.nativePtr);
 	}
 	
-	public void SetWindowIcon(void* icon)
+	public void SetWindowIcon(IQIcon icon)
 	{
-		CQt.QWidget_SetWindowIcon(this.nativePtr, icon);
+		CQt.QWidget_SetWindowIcon(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr);
 	}
 	
 	public void WindowIcon()
@@ -2106,9 +2116,9 @@ public class QTreeWidget
 		CQt.QWidget_WindowIcon(this.nativePtr);
 	}
 	
-	public void SetWindowIconText(libqt_string windowIconText)
+	public void SetWindowIconText(String windowIconText)
 	{
-		CQt.QWidget_SetWindowIconText(this.nativePtr, windowIconText);
+		CQt.QWidget_SetWindowIconText(this.nativePtr, libqt_string(windowIconText));
 	}
 	
 	public libqt_string WindowIconText()
@@ -2116,9 +2126,9 @@ public class QTreeWidget
 		return CQt.QWidget_WindowIconText(this.nativePtr);
 	}
 	
-	public void SetWindowRole(libqt_string windowRole)
+	public void SetWindowRole(String windowRole)
 	{
-		CQt.QWidget_SetWindowRole(this.nativePtr, windowRole);
+		CQt.QWidget_SetWindowRole(this.nativePtr, libqt_string(windowRole));
 	}
 	
 	public libqt_string WindowRole()
@@ -2126,9 +2136,9 @@ public class QTreeWidget
 		return CQt.QWidget_WindowRole(this.nativePtr);
 	}
 	
-	public void SetWindowFilePath(libqt_string filePath)
+	public void SetWindowFilePath(String filePath)
 	{
-		CQt.QWidget_SetWindowFilePath(this.nativePtr, filePath);
+		CQt.QWidget_SetWindowFilePath(this.nativePtr, libqt_string(filePath));
 	}
 	
 	public libqt_string WindowFilePath()
@@ -2151,9 +2161,9 @@ public class QTreeWidget
 		return CQt.QWidget_IsWindowModified(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string toolTip)
+	public void SetToolTip(String toolTip)
 	{
-		CQt.QWidget_SetToolTip(this.nativePtr, toolTip);
+		CQt.QWidget_SetToolTip(this.nativePtr, libqt_string(toolTip));
 	}
 	
 	public libqt_string ToolTip()
@@ -2171,9 +2181,9 @@ public class QTreeWidget
 		return CQt.QWidget_ToolTipDuration(this.nativePtr);
 	}
 	
-	public void SetStatusTip(libqt_string statusTip)
+	public void SetStatusTip(String statusTip)
 	{
-		CQt.QWidget_SetStatusTip(this.nativePtr, statusTip);
+		CQt.QWidget_SetStatusTip(this.nativePtr, libqt_string(statusTip));
 	}
 	
 	public libqt_string StatusTip()
@@ -2181,9 +2191,9 @@ public class QTreeWidget
 		return CQt.QWidget_StatusTip(this.nativePtr);
 	}
 	
-	public void SetWhatsThis(libqt_string whatsThis)
+	public void SetWhatsThis(String whatsThis)
 	{
-		CQt.QWidget_SetWhatsThis(this.nativePtr, whatsThis);
+		CQt.QWidget_SetWhatsThis(this.nativePtr, libqt_string(whatsThis));
 	}
 	
 	public libqt_string WhatsThis()
@@ -2196,9 +2206,9 @@ public class QTreeWidget
 		return CQt.QWidget_AccessibleName(this.nativePtr);
 	}
 	
-	public void SetAccessibleName(libqt_string name)
+	public void SetAccessibleName(String name)
 	{
-		CQt.QWidget_SetAccessibleName(this.nativePtr, name);
+		CQt.QWidget_SetAccessibleName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string AccessibleDescription()
@@ -2206,9 +2216,9 @@ public class QTreeWidget
 		return CQt.QWidget_AccessibleDescription(this.nativePtr);
 	}
 	
-	public void SetAccessibleDescription(libqt_string description)
+	public void SetAccessibleDescription(String description)
 	{
-		CQt.QWidget_SetAccessibleDescription(this.nativePtr, description);
+		CQt.QWidget_SetAccessibleDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public void SetLayoutDirection(int64 direction)
@@ -2226,9 +2236,9 @@ public class QTreeWidget
 		CQt.QWidget_UnsetLayoutDirection(this.nativePtr);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QWidget_SetLocale(this.nativePtr, locale);
+		CQt.QWidget_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -2291,14 +2301,14 @@ public class QTreeWidget
 		return CQt.QWidget_HasFocus(this.nativePtr);
 	}
 	
-	public static void SetTabOrder(void* param1, void* param2)
+	public static void SetTabOrder(IQWidget param1, IQWidget param2)
 	{
-		CQt.QWidget_SetTabOrder(param1, param2);
+		CQt.QWidget_SetTabOrder((param1 == null) ? null : (void*)param1.NativePtr, (param2 == null) ? null : (void*)param2.NativePtr);
 	}
 	
-	public void SetFocusProxy(void* focusProxy)
+	public void SetFocusProxy(IQWidget focusProxy)
 	{
-		CQt.QWidget_SetFocusProxy(this.nativePtr, focusProxy);
+		CQt.QWidget_SetFocusProxy(this.nativePtr, (focusProxy == null) ? null : (void*)focusProxy.NativePtr);
 	}
 	
 	public void* FocusProxy()
@@ -2321,9 +2331,9 @@ public class QTreeWidget
 		CQt.QWidget_GrabMouse(this.nativePtr);
 	}
 	
-	public void GrabMouseWithQCursor(void* param1)
+	public void GrabMouseWithQCursor(IQCursor param1)
 	{
-		CQt.QWidget_GrabMouseWithQCursor(this.nativePtr, param1);
+		CQt.QWidget_GrabMouseWithQCursor(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void ReleaseMouse()
@@ -2341,9 +2351,9 @@ public class QTreeWidget
 		CQt.QWidget_ReleaseKeyboard(this.nativePtr);
 	}
 	
-	public int32 GrabShortcut(void* key)
+	public int32 GrabShortcut(IQKeySequence key)
 	{
-		return CQt.QWidget_GrabShortcut(this.nativePtr, key);
+		return CQt.QWidget_GrabShortcut(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void ReleaseShortcut(int32 id)
@@ -2396,14 +2406,14 @@ public class QTreeWidget
 		CQt.QWidget_Update2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void UpdateWithQRect(void* param1)
+	public void UpdateWithQRect(IQRect param1)
 	{
-		CQt.QWidget_UpdateWithQRect(this.nativePtr, param1);
+		CQt.QWidget_UpdateWithQRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void UpdateWithQRegion(void* param1)
+	public void UpdateWithQRegion(IQRegion param1)
 	{
-		CQt.QWidget_UpdateWithQRegion(this.nativePtr, param1);
+		CQt.QWidget_UpdateWithQRegion(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void Repaint2(int32 x, int32 y, int32 w, int32 h)
@@ -2411,14 +2421,14 @@ public class QTreeWidget
 		CQt.QWidget_Repaint2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void RepaintWithQRect(void* param1)
+	public void RepaintWithQRect(IQRect param1)
 	{
-		CQt.QWidget_RepaintWithQRect(this.nativePtr, param1);
+		CQt.QWidget_RepaintWithQRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void RepaintWithQRegion(void* param1)
+	public void RepaintWithQRegion(IQRegion param1)
 	{
-		CQt.QWidget_RepaintWithQRegion(this.nativePtr, param1);
+		CQt.QWidget_RepaintWithQRegion(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public virtual void SetVisible(bool visible)
@@ -2476,9 +2486,9 @@ public class QTreeWidget
 		CQt.QWidget_Lower(this.nativePtr);
 	}
 	
-	public void StackUnder(void* param1)
+	public void StackUnder(IQWidget param1)
 	{
-		CQt.QWidget_StackUnder(this.nativePtr, param1);
+		CQt.QWidget_StackUnder(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public void Move(int32 x, int32 y)
@@ -2486,9 +2496,9 @@ public class QTreeWidget
 		CQt.QWidget_Move(this.nativePtr, x, y);
 	}
 	
-	public void MoveWithQPoint(void* param1)
+	public void MoveWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MoveWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MoveWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void Resize(int32 w, int32 h)
@@ -2496,9 +2506,9 @@ public class QTreeWidget
 		CQt.QWidget_Resize(this.nativePtr, w, h);
 	}
 	
-	public void ResizeWithQSize(void* param1)
+	public void ResizeWithQSize(IQSize param1)
 	{
-		CQt.QWidget_ResizeWithQSize(this.nativePtr, param1);
+		CQt.QWidget_ResizeWithQSize(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void SetGeometry(int32 x, int32 y, int32 w, int32 h)
@@ -2506,9 +2516,9 @@ public class QTreeWidget
 		CQt.QWidget_SetGeometry(this.nativePtr, x, y, w, h);
 	}
 	
-	public void SetGeometryWithGeometry(void* geometry)
+	public void SetGeometryWithGeometry(IQRect geometry)
 	{
-		CQt.QWidget_SetGeometryWithGeometry(this.nativePtr, geometry);
+		CQt.QWidget_SetGeometryWithGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public libqt_string SaveGeometry()
@@ -2516,9 +2526,9 @@ public class QTreeWidget
 		return CQt.QWidget_SaveGeometry(this.nativePtr);
 	}
 	
-	public bool RestoreGeometry(libqt_string geometry)
+	public bool RestoreGeometry(String geometry)
 	{
-		return CQt.QWidget_RestoreGeometry(this.nativePtr, geometry);
+		return CQt.QWidget_RestoreGeometry(this.nativePtr, libqt_string(geometry));
 	}
 	
 	public void AdjustSize()
@@ -2531,9 +2541,9 @@ public class QTreeWidget
 		return CQt.QWidget_IsVisible(this.nativePtr);
 	}
 	
-	public bool IsVisibleTo(void* param1)
+	public bool IsVisibleTo(IQWidget param1)
 	{
-		return CQt.QWidget_IsVisibleTo(this.nativePtr, param1);
+		return CQt.QWidget_IsVisibleTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public bool IsHidden()
@@ -2576,9 +2586,9 @@ public class QTreeWidget
 		CQt.QWidget_SizePolicy(this.nativePtr);
 	}
 	
-	public void SetSizePolicy(void sizePolicy)
+	public void SetSizePolicy(IQSizePolicy sizePolicy)
 	{
-		CQt.QWidget_SetSizePolicy(this.nativePtr, sizePolicy);
+		CQt.QWidget_SetSizePolicy(this.nativePtr, (sizePolicy == default) ? default : (void)sizePolicy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 horizontal, int64 vertical)
@@ -2606,9 +2616,9 @@ public class QTreeWidget
 		CQt.QWidget_SetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
 	
-	public void SetContentsMarginsWithMargins(void* margins)
+	public void SetContentsMarginsWithMargins(IQMargins margins)
 	{
-		CQt.QWidget_SetContentsMarginsWithMargins(this.nativePtr, margins);
+		CQt.QWidget_SetContentsMarginsWithMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public void ContentsMargins()
@@ -2626,9 +2636,9 @@ public class QTreeWidget
 		return CQt.QWidget_Layout(this.nativePtr);
 	}
 	
-	public void SetLayout(void* layout)
+	public void SetLayout(IQLayout layout)
 	{
-		CQt.QWidget_SetLayout(this.nativePtr, layout);
+		CQt.QWidget_SetLayout(this.nativePtr, (layout == null) ? null : (void*)layout.NativePtr);
 	}
 	
 	public void UpdateGeometry()
@@ -2636,14 +2646,14 @@ public class QTreeWidget
 		CQt.QWidget_UpdateGeometry(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQWidget parent)
 	{
-		CQt.QWidget_SetParent(this.nativePtr, parent);
+		CQt.QWidget_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void SetParent2(void* parent, int64 f)
+	public void SetParent2(IQWidget parent, int64 f)
 	{
-		CQt.QWidget_SetParent2(this.nativePtr, parent, f);
+		CQt.QWidget_SetParent2(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr, f);
 	}
 	
 	public void Scroll(int32 dx, int32 dy)
@@ -2651,9 +2661,9 @@ public class QTreeWidget
 		CQt.QWidget_Scroll(this.nativePtr, dx, dy);
 	}
 	
-	public void Scroll2(int32 dx, int32 dy, void* param3)
+	public void Scroll2(int32 dx, int32 dy, IQRect param3)
 	{
-		CQt.QWidget_Scroll2(this.nativePtr, dx, dy, param3);
+		CQt.QWidget_Scroll2(this.nativePtr, dx, dy, (param3 == default) ? default : (void*)param3.NativePtr);
 	}
 	
 	public void* FocusWidget()
@@ -2681,29 +2691,29 @@ public class QTreeWidget
 		CQt.QWidget_SetAcceptDrops(this.nativePtr, on);
 	}
 	
-	public void AddAction(void* action)
+	public void AddAction(IQAction action)
 	{
-		CQt.QWidget_AddAction(this.nativePtr, action);
+		CQt.QWidget_AddAction(this.nativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
-	public void AddActions(void*[] actions)
+	public void AddActions(IQAction[] actions)
 	{
-		CQt.QWidget_AddActions(this.nativePtr, actions);
+		CQt.QWidget_AddActions(this.nativePtr, null);
 	}
 	
-	public void InsertActions(void* before, void*[] actions)
+	public void InsertActions(IQAction before, IQAction[] actions)
 	{
-		CQt.QWidget_InsertActions(this.nativePtr, before, actions);
+		CQt.QWidget_InsertActions(this.nativePtr, (before == null) ? null : (void*)before.NativePtr, null);
 	}
 	
-	public void InsertAction(void* before, void* action)
+	public void InsertAction(IQAction before, IQAction action)
 	{
-		CQt.QWidget_InsertAction(this.nativePtr, before, action);
+		CQt.QWidget_InsertAction(this.nativePtr, (before == null) ? null : (void*)before.NativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
-	public void RemoveAction(void* action)
+	public void RemoveAction(IQAction action)
 	{
-		CQt.QWidget_RemoveAction(this.nativePtr, action);
+		CQt.QWidget_RemoveAction(this.nativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
 	public void*[] Actions()
@@ -2711,24 +2721,24 @@ public class QTreeWidget
 		return CQt.QWidget_Actions(this.nativePtr);
 	}
 	
-	public void* AddActionWithText(libqt_string text)
+	public void* AddActionWithText(String text)
 	{
-		return CQt.QWidget_AddActionWithText(this.nativePtr, text);
+		return CQt.QWidget_AddActionWithText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void* AddAction2(void* icon, libqt_string text)
+	public void* AddAction2(IQIcon icon, String text)
 	{
-		return CQt.QWidget_AddAction2(this.nativePtr, icon, text);
+		return CQt.QWidget_AddAction2(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr, libqt_string(text));
 	}
 	
-	public void* AddAction3(libqt_string text, void* shortcut)
+	public void* AddAction3(String text, IQKeySequence shortcut)
 	{
-		return CQt.QWidget_AddAction3(this.nativePtr, text, shortcut);
+		return CQt.QWidget_AddAction3(this.nativePtr, libqt_string(text), (shortcut == default) ? default : (void*)shortcut.NativePtr);
 	}
 	
-	public void* AddAction4(void* icon, libqt_string text, void* shortcut)
+	public void* AddAction4(IQIcon icon, String text, IQKeySequence shortcut)
 	{
-		return CQt.QWidget_AddAction4(this.nativePtr, icon, text, shortcut);
+		return CQt.QWidget_AddAction4(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr, libqt_string(text), (shortcut == default) ? default : (void*)shortcut.NativePtr);
 	}
 	
 	public void* ParentWidget()
@@ -2771,9 +2781,9 @@ public class QTreeWidget
 		return CQt.QWidget_ChildAt(this.nativePtr, x, y);
 	}
 	
-	public void* ChildAtWithQPoint(void* p)
+	public void* ChildAtWithQPoint(IQPoint p)
 	{
-		return CQt.QWidget_ChildAtWithQPoint(this.nativePtr, p);
+		return CQt.QWidget_ChildAtWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void SetAttribute(int64 param1)
@@ -2796,9 +2806,9 @@ public class QTreeWidget
 		CQt.QWidget_EnsurePolished(this.nativePtr);
 	}
 	
-	public bool IsAncestorOf(void* child)
+	public bool IsAncestorOf(IQWidget child)
 	{
-		return CQt.QWidget_IsAncestorOf(this.nativePtr, child);
+		return CQt.QWidget_IsAncestorOf(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public bool AutoFillBackground()
@@ -2826,14 +2836,14 @@ public class QTreeWidget
 		return CQt.QWidget_Screen(this.nativePtr);
 	}
 	
-	public void SetScreen(void* screen)
+	public void SetScreen(IQScreen screen)
 	{
-		CQt.QWidget_SetScreen(this.nativePtr, screen);
+		CQt.QWidget_SetScreen(this.nativePtr, (screen == null) ? null : (void*)screen.NativePtr);
 	}
 	
-	public static void* CreateWindowContainer(void* window)
+	public static void* CreateWindowContainer(IQWindow window)
 	{
-		return CQt.QWidget_CreateWindowContainer(window);
+		return CQt.QWidget_CreateWindowContainer((window == null) ? null : (void*)window.NativePtr);
 	}
 	
 	public int64 InputMethodHints()
@@ -2846,39 +2856,39 @@ public class QTreeWidget
 		CQt.QWidget_SetInputMethodHints(this.nativePtr, hints);
 	}
 	
-	public void Render2(void* target, void* targetOffset)
+	public void Render2(IQPaintDevice target, IQPoint targetOffset)
 	{
-		CQt.QWidget_Render2(this.nativePtr, target, targetOffset);
+		CQt.QWidget_Render2(this.nativePtr, (target == null) ? null : (void*)target.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr);
 	}
 	
-	public void Render3(void* target, void* targetOffset, void* sourceRegion)
+	public void Render3(IQPaintDevice target, IQPoint targetOffset, IQRegion sourceRegion)
 	{
-		CQt.QWidget_Render3(this.nativePtr, target, targetOffset, sourceRegion);
+		CQt.QWidget_Render3(this.nativePtr, (target == null) ? null : (void*)target.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr);
 	}
 	
-	public void Render4(void* target, void* targetOffset, void* sourceRegion, int64 renderFlags)
+	public void Render4(IQPaintDevice target, IQPoint targetOffset, IQRegion sourceRegion, int64 renderFlags)
 	{
-		CQt.QWidget_Render4(this.nativePtr, target, targetOffset, sourceRegion, renderFlags);
+		CQt.QWidget_Render4(this.nativePtr, (target == null) ? null : (void*)target.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr, renderFlags);
 	}
 	
-	public void Render22(void* painter, void* targetOffset)
+	public void Render22(IQPainter painter, IQPoint targetOffset)
 	{
-		CQt.QWidget_Render22(this.nativePtr, painter, targetOffset);
+		CQt.QWidget_Render22(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr);
 	}
 	
-	public void Render32(void* painter, void* targetOffset, void* sourceRegion)
+	public void Render32(IQPainter painter, IQPoint targetOffset, IQRegion sourceRegion)
 	{
-		CQt.QWidget_Render32(this.nativePtr, painter, targetOffset, sourceRegion);
+		CQt.QWidget_Render32(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr);
 	}
 	
-	public void Render42(void* painter, void* targetOffset, void* sourceRegion, int64 renderFlags)
+	public void Render42(IQPainter painter, IQPoint targetOffset, IQRegion sourceRegion, int64 renderFlags)
 	{
-		CQt.QWidget_Render42(this.nativePtr, painter, targetOffset, sourceRegion, renderFlags);
+		CQt.QWidget_Render42(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr, renderFlags);
 	}
 	
-	public void Grab1(void* rectangle)
+	public void Grab1(IQRect rectangle)
 	{
-		CQt.QWidget_Grab1(this.nativePtr, rectangle);
+		CQt.QWidget_Grab1(this.nativePtr, (rectangle == default) ? default : (void*)rectangle.NativePtr);
 	}
 	
 	public void GrabGesture2(int64 typeVal, int64 flags)
@@ -2886,9 +2896,9 @@ public class QTreeWidget
 		CQt.QWidget_GrabGesture2(this.nativePtr, typeVal, flags);
 	}
 	
-	public int32 GrabShortcut2(void* key, int64 context)
+	public int32 GrabShortcut2(IQKeySequence key, int64 context)
 	{
-		return CQt.QWidget_GrabShortcut2(this.nativePtr, key, context);
+		return CQt.QWidget_GrabShortcut2(this.nativePtr, (key == default) ? default : (void*)key.NativePtr, context);
 	}
 	
 	public void SetShortcutEnabled2(int32 id, bool enable)
@@ -2911,14 +2921,14 @@ public class QTreeWidget
 		CQt.QWidget_SetAttribute2(this.nativePtr, param1, on);
 	}
 	
-	public static void* CreateWindowContainer2(void* window, void* parent)
+	public static void* CreateWindowContainer2(IQWindow window, IQWidget parent)
 	{
-		return CQt.QWidget_CreateWindowContainer2(window, parent);
+		return CQt.QWidget_CreateWindowContainer2((window == null) ? null : (void*)window.NativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public static void* CreateWindowContainer3(void* window, void* parent, int64 flags)
+	public static void* CreateWindowContainer3(IQWindow window, IQWidget parent, int64 flags)
 	{
-		return CQt.QWidget_CreateWindowContainer3(window, parent, flags);
+		return CQt.QWidget_CreateWindowContainer3((window == null) ? null : (void*)window.NativePtr, (parent == null) ? null : (void*)parent.NativePtr, flags);
 	}
 	
 	public libqt_string ObjectName()
@@ -2926,9 +2936,9 @@ public class QTreeWidget
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -2961,9 +2971,9 @@ public class QTreeWidget
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -2981,34 +2991,34 @@ public class QTreeWidget
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -3021,12 +3031,12 @@ public class QTreeWidget
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -3051,7 +3061,7 @@ public class QTreeWidget
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -3066,14 +3076,14 @@ public class QTreeWidget
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 	public bool PaintingActive()
@@ -3146,11 +3156,11 @@ extension CQt
 	[LinkName("QTreeWidget_MetaObject")]
 	public static extern void* QTreeWidget_MetaObject(void* c_this);
 	[LinkName("QTreeWidget_Metacast")]
-	public static extern void* QTreeWidget_Metacast(void* c_this, char8[] param1);
+	public static extern void* QTreeWidget_Metacast(void* c_this, char8* param1);
 	[LinkName("QTreeWidget_Metacall")]
-	public static extern int32 QTreeWidget_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QTreeWidget_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QTreeWidget_Tr")]
-	public static extern libqt_string QTreeWidget_Tr(char8[] s);
+	public static extern libqt_string QTreeWidget_Tr(char8* s);
 	[LinkName("QTreeWidget_ColumnCount")]
 	public static extern int32 QTreeWidget_ColumnCount(void* c_this);
 	[LinkName("QTreeWidget_SetColumnCount")]
@@ -3270,9 +3280,9 @@ extension CQt
 	[LinkName("QTreeWidget_DropEvent")]
 	public static extern void QTreeWidget_DropEvent(void* c_this, void* event);
 	[LinkName("QTreeWidget_Tr2")]
-	public static extern libqt_string QTreeWidget_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QTreeWidget_Tr2(char8* s, char8* c);
 	[LinkName("QTreeWidget_Tr3")]
-	public static extern libqt_string QTreeWidget_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QTreeWidget_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QTreeWidget_EditItem2")]
 	public static extern void QTreeWidget_EditItem2(void* c_this, void* item, int32 column);
 	[LinkName("QTreeWidget_OpenPersistentEditor2")]

@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QVersionNumber
+public interface IQVersionNumber
+{
+	void* NativePtr { get; }
+}
+public class QVersionNumber : IQVersionNumber
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -61,19 +66,19 @@ public class QVersionNumber
 		return CQt.QVersionNumber_SegmentCount(this.nativePtr);
 	}
 	
-	public bool IsPrefixOf(void* other)
+	public bool IsPrefixOf(IQVersionNumber other)
 	{
-		return CQt.QVersionNumber_IsPrefixOf(this.nativePtr, other);
+		return CQt.QVersionNumber_IsPrefixOf(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public static int32 Compare(void* v1, void* v2)
+	public static int32 Compare(IQVersionNumber v1, IQVersionNumber v2)
 	{
-		return CQt.QVersionNumber_Compare(v1, v2);
+		return CQt.QVersionNumber_Compare((v1 == default) ? default : (void*)v1.NativePtr, (v2 == default) ? default : (void*)v2.NativePtr);
 	}
 	
-	public static void CommonPrefix(void* v1, void* v2)
+	public static void CommonPrefix(IQVersionNumber v1, IQVersionNumber v2)
 	{
-		CQt.QVersionNumber_CommonPrefix(v1, v2);
+		CQt.QVersionNumber_CommonPrefix((v1 == default) ? default : (void*)v1.NativePtr, (v2 == default) ? default : (void*)v2.NativePtr);
 	}
 	
 	public libqt_string ToString()
@@ -81,14 +86,14 @@ public class QVersionNumber
 		return CQt.QVersionNumber_ToString(this.nativePtr);
 	}
 	
-	public static void FromString(void stringVal)
+	public static void FromString(IQAnyStringView stringVal)
 	{
-		CQt.QVersionNumber_FromString(stringVal);
+		CQt.QVersionNumber_FromString((stringVal == default) ? default : (char8*)stringVal.NativePtr);
 	}
 	
-	public static void FromString2(void stringVal, int32* suffixIndex)
+	public static void FromString2(IQAnyStringView stringVal, int32* suffixIndex)
 	{
-		CQt.QVersionNumber_FromString2(stringVal, suffixIndex);
+		CQt.QVersionNumber_FromString2((stringVal == default) ? default : (char8*)stringVal.NativePtr, suffixIndex);
 	}
 	
 }
@@ -133,20 +138,25 @@ extension CQt
 	[LinkName("QVersionNumber_ToString")]
 	public static extern libqt_string QVersionNumber_ToString(void* c_this);
 	[LinkName("QVersionNumber_FromString")]
-	public static extern void QVersionNumber_FromString(void stringVal);
+	public static extern void QVersionNumber_FromString(char8* stringVal);
 	[LinkName("QVersionNumber_FromString2")]
-	public static extern void QVersionNumber_FromString2(void stringVal, int32* suffixIndex);
+	public static extern void QVersionNumber_FromString2(char8* stringVal, int32* suffixIndex);
 	/// Delete this object from C++ memory
 	[LinkName("QVersionNumber_Delete")]
 	public static extern void QVersionNumber_Delete(void* self);
 }
-public class QTypeRevision
+public interface IQTypeRevision
+{
+	void* NativePtr { get; }
+}
+public class QTypeRevision : IQTypeRevision
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTypeRevision other)
 	{
-		this.nativePtr = CQt.QTypeRevision_new(other);
+		this.nativePtr = CQt.QTypeRevision_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

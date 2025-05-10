@@ -50,9 +50,14 @@ public enum QUrl__AceProcessingOption
 	IgnoreIDNWhitelist = 1,
 	AceTransitionalProcessing = 2,
 }
-public class QUrl
+public interface IQUrl
+{
+	void* NativePtr { get; }
+}
+public class QUrl : IQUrl
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -64,24 +69,24 @@ public class QUrl
 		CQt.QUrl_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* copyVal)
+	public void OperatorAssign(IQUrl copyVal)
 	{
-		CQt.QUrl_OperatorAssign(this.nativePtr, copyVal);
+		CQt.QUrl_OperatorAssign(this.nativePtr, (copyVal == default) ? default : (void*)copyVal.NativePtr);
 	}
 	
-	public void OperatorAssignWithUrl(libqt_string url)
+	public void OperatorAssignWithUrl(String url)
 	{
-		CQt.QUrl_OperatorAssignWithUrl(this.nativePtr, url);
+		CQt.QUrl_OperatorAssignWithUrl(this.nativePtr, libqt_string(url));
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQUrl other)
 	{
-		CQt.QUrl_Swap(this.nativePtr, other);
+		CQt.QUrl_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetUrl(libqt_string url)
+	public void SetUrl(String url)
 	{
-		CQt.QUrl_SetUrl(this.nativePtr, url);
+		CQt.QUrl_SetUrl(this.nativePtr, libqt_string(url));
 	}
 	
 	public libqt_string Url()
@@ -104,14 +109,14 @@ public class QUrl
 		return CQt.QUrl_ToEncoded(this.nativePtr);
 	}
 	
-	public static void FromEncoded(libqt_string url)
+	public static void FromEncoded(String url)
 	{
-		CQt.QUrl_FromEncoded(url);
+		CQt.QUrl_FromEncoded(libqt_string(url));
 	}
 	
-	public static void FromUserInput(libqt_string userInput)
+	public static void FromUserInput(String userInput)
 	{
-		CQt.QUrl_FromUserInput(userInput);
+		CQt.QUrl_FromUserInput(libqt_string(userInput));
 	}
 	
 	public bool IsValid()
@@ -134,9 +139,9 @@ public class QUrl
 		CQt.QUrl_Clear(this.nativePtr);
 	}
 	
-	public void SetScheme(libqt_string scheme)
+	public void SetScheme(String scheme)
 	{
-		CQt.QUrl_SetScheme(this.nativePtr, scheme);
+		CQt.QUrl_SetScheme(this.nativePtr, libqt_string(scheme));
 	}
 	
 	public libqt_string Scheme()
@@ -144,9 +149,9 @@ public class QUrl
 		return CQt.QUrl_Scheme(this.nativePtr);
 	}
 	
-	public void SetAuthority(libqt_string authority)
+	public void SetAuthority(String authority)
 	{
-		CQt.QUrl_SetAuthority(this.nativePtr, authority);
+		CQt.QUrl_SetAuthority(this.nativePtr, libqt_string(authority));
 	}
 	
 	public libqt_string Authority()
@@ -154,9 +159,9 @@ public class QUrl
 		return CQt.QUrl_Authority(this.nativePtr);
 	}
 	
-	public void SetUserInfo(libqt_string userInfo)
+	public void SetUserInfo(String userInfo)
 	{
-		CQt.QUrl_SetUserInfo(this.nativePtr, userInfo);
+		CQt.QUrl_SetUserInfo(this.nativePtr, libqt_string(userInfo));
 	}
 	
 	public libqt_string UserInfo()
@@ -164,9 +169,9 @@ public class QUrl
 		return CQt.QUrl_UserInfo(this.nativePtr);
 	}
 	
-	public void SetUserName(libqt_string userName)
+	public void SetUserName(String userName)
 	{
-		CQt.QUrl_SetUserName(this.nativePtr, userName);
+		CQt.QUrl_SetUserName(this.nativePtr, libqt_string(userName));
 	}
 	
 	public libqt_string UserName()
@@ -174,9 +179,9 @@ public class QUrl
 		return CQt.QUrl_UserName(this.nativePtr);
 	}
 	
-	public void SetPassword(libqt_string password)
+	public void SetPassword(String password)
 	{
-		CQt.QUrl_SetPassword(this.nativePtr, password);
+		CQt.QUrl_SetPassword(this.nativePtr, libqt_string(password));
 	}
 	
 	public libqt_string Password()
@@ -184,9 +189,9 @@ public class QUrl
 		return CQt.QUrl_Password(this.nativePtr);
 	}
 	
-	public void SetHost(libqt_string host)
+	public void SetHost(String host)
 	{
-		CQt.QUrl_SetHost(this.nativePtr, host);
+		CQt.QUrl_SetHost(this.nativePtr, libqt_string(host));
 	}
 	
 	public libqt_string Host()
@@ -204,9 +209,9 @@ public class QUrl
 		return CQt.QUrl_Port(this.nativePtr);
 	}
 	
-	public void SetPath(libqt_string path)
+	public void SetPath(String path)
 	{
-		CQt.QUrl_SetPath(this.nativePtr, path);
+		CQt.QUrl_SetPath(this.nativePtr, libqt_string(path));
 	}
 	
 	public libqt_string Path()
@@ -224,14 +229,14 @@ public class QUrl
 		return CQt.QUrl_HasQuery(this.nativePtr);
 	}
 	
-	public void SetQuery(libqt_string query)
+	public void SetQuery(String query)
 	{
-		CQt.QUrl_SetQuery(this.nativePtr, query);
+		CQt.QUrl_SetQuery(this.nativePtr, libqt_string(query));
 	}
 	
-	public void SetQueryWithQuery(void* query)
+	public void SetQueryWithQuery(IQUrlQuery query)
 	{
-		CQt.QUrl_SetQueryWithQuery(this.nativePtr, query);
+		CQt.QUrl_SetQueryWithQuery(this.nativePtr, (query == default) ? default : (void*)query.NativePtr);
 	}
 	
 	public libqt_string Query()
@@ -249,14 +254,14 @@ public class QUrl
 		return CQt.QUrl_Fragment(this.nativePtr);
 	}
 	
-	public void SetFragment(libqt_string fragment)
+	public void SetFragment(String fragment)
 	{
-		CQt.QUrl_SetFragment(this.nativePtr, fragment);
+		CQt.QUrl_SetFragment(this.nativePtr, libqt_string(fragment));
 	}
 	
-	public void Resolved(void* relative)
+	public void Resolved(IQUrl relative)
 	{
-		CQt.QUrl_Resolved(this.nativePtr, relative);
+		CQt.QUrl_Resolved(this.nativePtr, (relative == default) ? default : (void*)relative.NativePtr);
 	}
 	
 	public bool IsRelative()
@@ -264,9 +269,9 @@ public class QUrl
 		return CQt.QUrl_IsRelative(this.nativePtr);
 	}
 	
-	public bool IsParentOf(void* url)
+	public bool IsParentOf(IQUrl url)
 	{
-		return CQt.QUrl_IsParentOf(this.nativePtr, url);
+		return CQt.QUrl_IsParentOf(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
 	}
 	
 	public bool IsLocalFile()
@@ -274,9 +279,9 @@ public class QUrl
 		return CQt.QUrl_IsLocalFile(this.nativePtr);
 	}
 	
-	public static void FromLocalFile(libqt_string localfile)
+	public static void FromLocalFile(String localfile)
 	{
-		CQt.QUrl_FromLocalFile(localfile);
+		CQt.QUrl_FromLocalFile(libqt_string(localfile));
 	}
 	
 	public libqt_string ToLocalFile()
@@ -294,39 +299,39 @@ public class QUrl
 		return CQt.QUrl_IsDetached(this.nativePtr);
 	}
 	
-	public bool OperatorLesser(void* url)
+	public bool OperatorLesser(IQUrl url)
 	{
-		return CQt.QUrl_OperatorLesser(this.nativePtr, url);
+		return CQt.QUrl_OperatorLesser(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* url)
+	public bool OperatorEqual(IQUrl url)
 	{
-		return CQt.QUrl_OperatorEqual(this.nativePtr, url);
+		return CQt.QUrl_OperatorEqual(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* url)
+	public bool OperatorNotEqual(IQUrl url)
 	{
-		return CQt.QUrl_OperatorNotEqual(this.nativePtr, url);
+		return CQt.QUrl_OperatorNotEqual(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
 	}
 	
-	public static libqt_string FromPercentEncoding(libqt_string param1)
+	public static libqt_string FromPercentEncoding(String param1)
 	{
-		return CQt.QUrl_FromPercentEncoding(param1);
+		return CQt.QUrl_FromPercentEncoding(libqt_string(param1));
 	}
 	
-	public static libqt_string ToPercentEncoding(libqt_string param1)
+	public static libqt_string ToPercentEncoding(String param1)
 	{
-		return CQt.QUrl_ToPercentEncoding(param1);
+		return CQt.QUrl_ToPercentEncoding(libqt_string(param1));
 	}
 	
-	public static libqt_string FromAce(libqt_string domain)
+	public static libqt_string FromAce(String domain)
 	{
-		return CQt.QUrl_FromAce(domain);
+		return CQt.QUrl_FromAce(libqt_string(domain));
 	}
 	
-	public static libqt_string ToAce(libqt_string domain)
+	public static libqt_string ToAce(String domain)
 	{
-		return CQt.QUrl_ToAce(domain);
+		return CQt.QUrl_ToAce(libqt_string(domain));
 	}
 	
 	public static libqt_string[] IdnWhitelist()
@@ -334,44 +339,44 @@ public class QUrl
 		return CQt.QUrl_IdnWhitelist();
 	}
 	
-	public static libqt_string[] ToStringList(void[] uris)
+	public static libqt_string[] ToStringList(IQUrl[] uris)
 	{
-		return CQt.QUrl_ToStringList(uris);
+		return CQt.QUrl_ToStringList(null);
 	}
 	
-	public static void[] FromStringList(libqt_string[] uris)
+	public static void[] FromStringList(String[] uris)
 	{
-		return CQt.QUrl_FromStringList(uris);
+		return CQt.QUrl_FromStringList(null);
 	}
 	
-	public static void SetIdnWhitelist(libqt_string[] idnWhitelist)
+	public static void SetIdnWhitelist(String[] idnWhitelist)
 	{
-		CQt.QUrl_SetIdnWhitelist(idnWhitelist);
+		CQt.QUrl_SetIdnWhitelist(null);
 	}
 	
-	public void SetUrl2(libqt_string url, int64 mode)
+	public void SetUrl2(String url, int64 mode)
 	{
-		CQt.QUrl_SetUrl2(this.nativePtr, url, mode);
+		CQt.QUrl_SetUrl2(this.nativePtr, libqt_string(url), mode);
 	}
 	
-	public static void FromEncoded2(libqt_string url, int64 mode)
+	public static void FromEncoded2(String url, int64 mode)
 	{
-		CQt.QUrl_FromEncoded2(url, mode);
+		CQt.QUrl_FromEncoded2(libqt_string(url), mode);
 	}
 	
-	public static void FromUserInput2(libqt_string userInput, libqt_string workingDirectory)
+	public static void FromUserInput2(String userInput, String workingDirectory)
 	{
-		CQt.QUrl_FromUserInput2(userInput, workingDirectory);
+		CQt.QUrl_FromUserInput2(libqt_string(userInput), libqt_string(workingDirectory));
 	}
 	
-	public static void FromUserInput3(libqt_string userInput, libqt_string workingDirectory, int64 options)
+	public static void FromUserInput3(String userInput, String workingDirectory, int64 options)
 	{
-		CQt.QUrl_FromUserInput3(userInput, workingDirectory, options);
+		CQt.QUrl_FromUserInput3(libqt_string(userInput), libqt_string(workingDirectory), options);
 	}
 	
-	public void SetAuthority2(libqt_string authority, int64 mode)
+	public void SetAuthority2(String authority, int64 mode)
 	{
-		CQt.QUrl_SetAuthority2(this.nativePtr, authority, mode);
+		CQt.QUrl_SetAuthority2(this.nativePtr, libqt_string(authority), mode);
 	}
 	
 	public libqt_string Authority1(int64 options)
@@ -379,9 +384,9 @@ public class QUrl
 		return CQt.QUrl_Authority1(this.nativePtr, options);
 	}
 	
-	public void SetUserInfo2(libqt_string userInfo, int64 mode)
+	public void SetUserInfo2(String userInfo, int64 mode)
 	{
-		CQt.QUrl_SetUserInfo2(this.nativePtr, userInfo, mode);
+		CQt.QUrl_SetUserInfo2(this.nativePtr, libqt_string(userInfo), mode);
 	}
 	
 	public libqt_string UserInfo1(int64 options)
@@ -389,9 +394,9 @@ public class QUrl
 		return CQt.QUrl_UserInfo1(this.nativePtr, options);
 	}
 	
-	public void SetUserName2(libqt_string userName, int64 mode)
+	public void SetUserName2(String userName, int64 mode)
 	{
-		CQt.QUrl_SetUserName2(this.nativePtr, userName, mode);
+		CQt.QUrl_SetUserName2(this.nativePtr, libqt_string(userName), mode);
 	}
 	
 	public libqt_string UserName1(int64 options)
@@ -399,9 +404,9 @@ public class QUrl
 		return CQt.QUrl_UserName1(this.nativePtr, options);
 	}
 	
-	public void SetPassword2(libqt_string password, int64 mode)
+	public void SetPassword2(String password, int64 mode)
 	{
-		CQt.QUrl_SetPassword2(this.nativePtr, password, mode);
+		CQt.QUrl_SetPassword2(this.nativePtr, libqt_string(password), mode);
 	}
 	
 	public libqt_string Password1(int64 param1)
@@ -409,9 +414,9 @@ public class QUrl
 		return CQt.QUrl_Password1(this.nativePtr, param1);
 	}
 	
-	public void SetHost2(libqt_string host, int64 mode)
+	public void SetHost2(String host, int64 mode)
 	{
-		CQt.QUrl_SetHost2(this.nativePtr, host, mode);
+		CQt.QUrl_SetHost2(this.nativePtr, libqt_string(host), mode);
 	}
 	
 	public libqt_string Host1(int64 param1)
@@ -424,9 +429,9 @@ public class QUrl
 		return CQt.QUrl_Port1(this.nativePtr, defaultPort);
 	}
 	
-	public void SetPath2(libqt_string path, int64 mode)
+	public void SetPath2(String path, int64 mode)
 	{
-		CQt.QUrl_SetPath2(this.nativePtr, path, mode);
+		CQt.QUrl_SetPath2(this.nativePtr, libqt_string(path), mode);
 	}
 	
 	public libqt_string Path1(int64 options)
@@ -439,9 +444,9 @@ public class QUrl
 		return CQt.QUrl_FileName1(this.nativePtr, options);
 	}
 	
-	public void SetQuery2(libqt_string query, int64 mode)
+	public void SetQuery2(String query, int64 mode)
 	{
-		CQt.QUrl_SetQuery2(this.nativePtr, query, mode);
+		CQt.QUrl_SetQuery2(this.nativePtr, libqt_string(query), mode);
 	}
 	
 	public libqt_string Query1(int64 param1)
@@ -454,34 +459,34 @@ public class QUrl
 		return CQt.QUrl_Fragment1(this.nativePtr, options);
 	}
 	
-	public void SetFragment2(libqt_string fragment, int64 mode)
+	public void SetFragment2(String fragment, int64 mode)
 	{
-		CQt.QUrl_SetFragment2(this.nativePtr, fragment, mode);
+		CQt.QUrl_SetFragment2(this.nativePtr, libqt_string(fragment), mode);
 	}
 	
-	public static libqt_string ToPercentEncoding2(libqt_string param1, libqt_string exclude)
+	public static libqt_string ToPercentEncoding2(String param1, String exclude)
 	{
-		return CQt.QUrl_ToPercentEncoding2(param1, exclude);
+		return CQt.QUrl_ToPercentEncoding2(libqt_string(param1), libqt_string(exclude));
 	}
 	
-	public static libqt_string ToPercentEncoding3(libqt_string param1, libqt_string exclude, libqt_string include)
+	public static libqt_string ToPercentEncoding3(String param1, String exclude, String include)
 	{
-		return CQt.QUrl_ToPercentEncoding3(param1, exclude, include);
+		return CQt.QUrl_ToPercentEncoding3(libqt_string(param1), libqt_string(exclude), libqt_string(include));
 	}
 	
-	public static libqt_string FromAce2(libqt_string domain, int64 options)
+	public static libqt_string FromAce2(String domain, int64 options)
 	{
-		return CQt.QUrl_FromAce2(domain, options);
+		return CQt.QUrl_FromAce2(libqt_string(domain), options);
 	}
 	
-	public static libqt_string ToAce2(libqt_string domain, int64 options)
+	public static libqt_string ToAce2(String domain, int64 options)
 	{
-		return CQt.QUrl_ToAce2(domain, options);
+		return CQt.QUrl_ToAce2(libqt_string(domain), options);
 	}
 	
-	public static void[] FromStringList2(libqt_string[] uris, int64 mode)
+	public static void[] FromStringList2(String[] uris, int64 mode)
 	{
-		return CQt.QUrl_FromStringList2(uris, mode);
+		return CQt.QUrl_FromStringList2(null, mode);
 	}
 	
 }

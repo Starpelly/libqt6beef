@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QWaitCondition
+public interface IQWaitCondition
+{
+	void* NativePtr { get; }
+}
+public class QWaitCondition : IQWaitCondition
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,24 +21,24 @@ public class QWaitCondition
 		CQt.QWaitCondition_Delete(this.nativePtr);
 	}
 	
-	public bool Wait(void* lockedMutex)
+	public bool Wait(IQMutex lockedMutex)
 	{
-		return CQt.QWaitCondition_Wait(this.nativePtr, lockedMutex);
+		return CQt.QWaitCondition_Wait(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr);
 	}
 	
-	public bool Wait2(void* lockedMutex, c_ulong time)
+	public bool Wait2(IQMutex lockedMutex, c_ulong time)
 	{
-		return CQt.QWaitCondition_Wait2(this.nativePtr, lockedMutex, time);
+		return CQt.QWaitCondition_Wait2(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr, time);
 	}
 	
-	public bool WaitWithLockedReadWriteLock(void* lockedReadWriteLock)
+	public bool WaitWithLockedReadWriteLock(IQReadWriteLock lockedReadWriteLock)
 	{
-		return CQt.QWaitCondition_WaitWithLockedReadWriteLock(this.nativePtr, lockedReadWriteLock);
+		return CQt.QWaitCondition_WaitWithLockedReadWriteLock(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr);
 	}
 	
-	public bool Wait3(void* lockedReadWriteLock, c_ulong time)
+	public bool Wait3(IQReadWriteLock lockedReadWriteLock, c_ulong time)
 	{
-		return CQt.QWaitCondition_Wait3(this.nativePtr, lockedReadWriteLock, time);
+		return CQt.QWaitCondition_Wait3(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr, time);
 	}
 	
 	public void WakeOne()
@@ -56,14 +61,14 @@ public class QWaitCondition
 		CQt.QWaitCondition_NotifyAll(this.nativePtr);
 	}
 	
-	public bool Wait22(void* lockedMutex, void deadline)
+	public bool Wait22(IQMutex lockedMutex, IQDeadlineTimer deadline)
 	{
-		return CQt.QWaitCondition_Wait22(this.nativePtr, lockedMutex, deadline);
+		return CQt.QWaitCondition_Wait22(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr, (deadline == default) ? default : (void)deadline.NativePtr);
 	}
 	
-	public bool Wait23(void* lockedReadWriteLock, void deadline)
+	public bool Wait23(IQReadWriteLock lockedReadWriteLock, IQDeadlineTimer deadline)
 	{
-		return CQt.QWaitCondition_Wait23(this.nativePtr, lockedReadWriteLock, deadline);
+		return CQt.QWaitCondition_Wait23(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr, (deadline == default) ? default : (void)deadline.NativePtr);
 	}
 	
 }

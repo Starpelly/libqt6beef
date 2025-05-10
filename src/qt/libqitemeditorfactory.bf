@@ -2,18 +2,23 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QItemEditorCreatorBase
+public interface IQItemEditorCreatorBase
+{
+	void* NativePtr { get; }
+}
+public class QItemEditorCreatorBase : IQItemEditorCreatorBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
 		CQt.QItemEditorCreatorBase_Delete(this.nativePtr);
 	}
 	
-	public virtual void* CreateWidget(void* parent)
+	public virtual void* CreateWidget(IQWidget parent)
 	{
-		return CQt.QItemEditorCreatorBase_CreateWidget(this.nativePtr, parent);
+		return CQt.QItemEditorCreatorBase_CreateWidget(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public virtual libqt_string ValuePropertyName()
@@ -21,9 +26,9 @@ public class QItemEditorCreatorBase
 		return CQt.QItemEditorCreatorBase_ValuePropertyName(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQItemEditorCreatorBase param1)
 	{
-		CQt.QItemEditorCreatorBase_OperatorAssign(this.nativePtr, param1);
+		CQt.QItemEditorCreatorBase_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -39,9 +44,14 @@ extension CQt
 	[LinkName("QItemEditorCreatorBase_Delete")]
 	public static extern void QItemEditorCreatorBase_Delete(void* self);
 }
-public class QItemEditorFactory
+public interface IQItemEditorFactory
+{
+	void* NativePtr { get; }
+}
+public class QItemEditorFactory : IQItemEditorFactory
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -53,9 +63,9 @@ public class QItemEditorFactory
 		CQt.QItemEditorFactory_Delete(this.nativePtr);
 	}
 	
-	public virtual void* CreateEditor(int32 userType, void* parent)
+	public virtual void* CreateEditor(int32 userType, IQWidget parent)
 	{
-		return CQt.QItemEditorFactory_CreateEditor(this.nativePtr, userType, parent);
+		return CQt.QItemEditorFactory_CreateEditor(this.nativePtr, userType, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public virtual libqt_string ValuePropertyName(int32 userType)
@@ -63,9 +73,9 @@ public class QItemEditorFactory
 		return CQt.QItemEditorFactory_ValuePropertyName(this.nativePtr, userType);
 	}
 	
-	public void RegisterEditor(int32 userType, void* creator)
+	public void RegisterEditor(int32 userType, IQItemEditorCreatorBase creator)
 	{
-		CQt.QItemEditorFactory_RegisterEditor(this.nativePtr, userType, creator);
+		CQt.QItemEditorFactory_RegisterEditor(this.nativePtr, userType, (creator == null) ? null : (void*)creator.NativePtr);
 	}
 	
 	public static void* DefaultFactory()
@@ -73,9 +83,9 @@ public class QItemEditorFactory
 		return CQt.QItemEditorFactory_DefaultFactory();
 	}
 	
-	public static void SetDefaultFactory(void* factory)
+	public static void SetDefaultFactory(IQItemEditorFactory factory)
 	{
-		CQt.QItemEditorFactory_SetDefaultFactory(factory);
+		CQt.QItemEditorFactory_SetDefaultFactory((factory == null) ? null : (void*)factory.NativePtr);
 	}
 	
 }

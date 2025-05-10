@@ -24,9 +24,14 @@ public enum QPageLayout__Mode
 	StandardMode = 0,
 	FullPageMode = 1,
 }
-public class QPageLayout
+public interface IQPageLayout
+{
+	void* NativePtr { get; }
+}
+public class QPageLayout : IQPageLayout
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -38,19 +43,19 @@ public class QPageLayout
 		CQt.QPageLayout_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQPageLayout other)
 	{
-		CQt.QPageLayout_OperatorAssign(this.nativePtr, other);
+		CQt.QPageLayout_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPageLayout other)
 	{
-		CQt.QPageLayout_Swap(this.nativePtr, other);
+		CQt.QPageLayout_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool IsEquivalentTo(void* other)
+	public bool IsEquivalentTo(IQPageLayout other)
 	{
-		return CQt.QPageLayout_IsEquivalentTo(this.nativePtr, other);
+		return CQt.QPageLayout_IsEquivalentTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -68,9 +73,9 @@ public class QPageLayout
 		return CQt.QPageLayout_Mode(this.nativePtr);
 	}
 	
-	public void SetPageSize(void* pageSize)
+	public void SetPageSize(IQPageSize pageSize)
 	{
-		CQt.QPageLayout_SetPageSize(this.nativePtr, pageSize);
+		CQt.QPageLayout_SetPageSize(this.nativePtr, (pageSize == default) ? default : (void*)pageSize.NativePtr);
 	}
 	
 	public void PageSize()
@@ -98,9 +103,9 @@ public class QPageLayout
 		return CQt.QPageLayout_Units(this.nativePtr);
 	}
 	
-	public bool SetMargins(void* margins)
+	public bool SetMargins(IQMarginsF margins)
 	{
-		return CQt.QPageLayout_SetMargins(this.nativePtr, margins);
+		return CQt.QPageLayout_SetMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public bool SetLeftMargin(double leftMargin)
@@ -143,9 +148,9 @@ public class QPageLayout
 		CQt.QPageLayout_MarginsPixels(this.nativePtr, resolution);
 	}
 	
-	public void SetMinimumMargins(void* minMargins)
+	public void SetMinimumMargins(IQMarginsF minMargins)
 	{
-		CQt.QPageLayout_SetMinimumMargins(this.nativePtr, minMargins);
+		CQt.QPageLayout_SetMinimumMargins(this.nativePtr, (minMargins == default) ? default : (void*)minMargins.NativePtr);
 	}
 	
 	public void MinimumMargins()
@@ -198,9 +203,9 @@ public class QPageLayout
 		CQt.QPageLayout_PaintRectPixels(this.nativePtr, resolution);
 	}
 	
-	public void SetPageSize2(void* pageSize, void* minMargins)
+	public void SetPageSize2(IQPageSize pageSize, IQMarginsF minMargins)
 	{
-		CQt.QPageLayout_SetPageSize2(this.nativePtr, pageSize, minMargins);
+		CQt.QPageLayout_SetPageSize2(this.nativePtr, (pageSize == default) ? default : (void*)pageSize.NativePtr, (minMargins == default) ? default : (void*)minMargins.NativePtr);
 	}
 	
 }

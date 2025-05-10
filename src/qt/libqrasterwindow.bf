@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QRasterWindow
+public interface IQRasterWindow
+{
+	void* NativePtr { get; }
+}
+public class QRasterWindow : IQRasterWindow, IQPaintDeviceWindow
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QRasterWindow
 		return CQt.QRasterWindow_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QRasterWindow_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QRasterWindow
 		return CQt.QRasterWindow_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QRasterWindow_Tr(s);
 	}
@@ -41,29 +46,29 @@ public class QRasterWindow
 		return CQt.QRasterWindow_Metric(this.nativePtr, metric);
 	}
 	
-	public virtual void* Redirected(void* param1)
+	public virtual void* Redirected(IQPoint param1)
 	{
-		return CQt.QRasterWindow_Redirected(this.nativePtr, param1);
+		return CQt.QRasterWindow_Redirected(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QRasterWindow_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QRasterWindow_Tr3(s, c, n);
 	}
 	
-	public void Update(void* rect)
+	public void Update(IQRect rect)
 	{
-		CQt.QPaintDeviceWindow_Update(this.nativePtr, rect);
+		CQt.QPaintDeviceWindow_Update(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void UpdateWithRegion(void* region)
+	public void UpdateWithRegion(IQRegion region)
 	{
-		CQt.QPaintDeviceWindow_UpdateWithRegion(this.nativePtr, region);
+		CQt.QPaintDeviceWindow_UpdateWithRegion(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
 	}
 	
 	public void Update2()
@@ -111,9 +116,9 @@ public class QRasterWindow
 		return CQt.QWindow_Parent(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQWindow parent)
 	{
-		CQt.QWindow_SetParent(this.nativePtr, parent);
+		CQt.QWindow_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public bool IsTopLevel()
@@ -136,9 +141,9 @@ public class QRasterWindow
 		CQt.QWindow_SetModality(this.nativePtr, modality);
 	}
 	
-	public void SetFormat(void* format)
+	public void SetFormat(IQSurfaceFormat format)
 	{
-		CQt.QWindow_SetFormat(this.nativePtr, format);
+		CQt.QWindow_SetFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public virtual void Format()
@@ -186,9 +191,9 @@ public class QRasterWindow
 		return CQt.QWindow_Opacity(this.nativePtr);
 	}
 	
-	public void SetMask(void* region)
+	public void SetMask(IQRegion region)
 	{
-		CQt.QWindow_SetMask(this.nativePtr, region);
+		CQt.QWindow_SetMask(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
 	}
 	
 	public void Mask()
@@ -236,9 +241,9 @@ public class QRasterWindow
 		CQt.QWindow_SetWindowStates(this.nativePtr, states);
 	}
 	
-	public void SetTransientParent(void* parent)
+	public void SetTransientParent(IQWindow parent)
 	{
-		CQt.QWindow_SetTransientParent(this.nativePtr, parent);
+		CQt.QWindow_SetTransientParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public void* TransientParent()
@@ -246,9 +251,9 @@ public class QRasterWindow
 		return CQt.QWindow_TransientParent(this.nativePtr);
 	}
 	
-	public bool IsAncestorOf(void* child)
+	public bool IsAncestorOf(IQWindow child)
 	{
-		return CQt.QWindow_IsAncestorOf(this.nativePtr, child);
+		return CQt.QWindow_IsAncestorOf(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public bool IsExposed()
@@ -296,24 +301,24 @@ public class QRasterWindow
 		CQt.QWindow_SizeIncrement(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* size)
+	public void SetMinimumSize(IQSize size)
 	{
-		CQt.QWindow_SetMinimumSize(this.nativePtr, size);
+		CQt.QWindow_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
-	public void SetMaximumSize(void* size)
+	public void SetMaximumSize(IQSize size)
 	{
-		CQt.QWindow_SetMaximumSize(this.nativePtr, size);
+		CQt.QWindow_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
-	public void SetBaseSize(void* size)
+	public void SetBaseSize(IQSize size)
 	{
-		CQt.QWindow_SetBaseSize(this.nativePtr, size);
+		CQt.QWindow_SetBaseSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
-	public void SetSizeIncrement(void* size)
+	public void SetSizeIncrement(IQSize size)
 	{
-		CQt.QWindow_SetSizeIncrement(this.nativePtr, size);
+		CQt.QWindow_SetSizeIncrement(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void Geometry()
@@ -336,9 +341,9 @@ public class QRasterWindow
 		CQt.QWindow_FramePosition(this.nativePtr);
 	}
 	
-	public void SetFramePosition(void* point)
+	public void SetFramePosition(IQPoint point)
 	{
-		CQt.QWindow_SetFramePosition(this.nativePtr, point);
+		CQt.QWindow_SetFramePosition(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
 	public int32 Width()
@@ -371,9 +376,9 @@ public class QRasterWindow
 		CQt.QWindow_Position(this.nativePtr);
 	}
 	
-	public void SetPosition(void* pt)
+	public void SetPosition(IQPoint pt)
 	{
-		CQt.QWindow_SetPosition(this.nativePtr, pt);
+		CQt.QWindow_SetPosition(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
 	public void SetPosition2(int32 posx, int32 posy)
@@ -381,9 +386,9 @@ public class QRasterWindow
 		CQt.QWindow_SetPosition2(this.nativePtr, posx, posy);
 	}
 	
-	public void Resize(void* newSize)
+	public void Resize(IQSize newSize)
 	{
-		CQt.QWindow_Resize(this.nativePtr, newSize);
+		CQt.QWindow_Resize(this.nativePtr, (newSize == default) ? default : (void*)newSize.NativePtr);
 	}
 	
 	public void Resize2(int32 w, int32 h)
@@ -391,9 +396,9 @@ public class QRasterWindow
 		CQt.QWindow_Resize2(this.nativePtr, w, h);
 	}
 	
-	public void SetFilePath(libqt_string filePath)
+	public void SetFilePath(String filePath)
 	{
-		CQt.QWindow_SetFilePath(this.nativePtr, filePath);
+		CQt.QWindow_SetFilePath(this.nativePtr, libqt_string(filePath));
 	}
 	
 	public libqt_string FilePath()
@@ -401,9 +406,9 @@ public class QRasterWindow
 		return CQt.QWindow_FilePath(this.nativePtr);
 	}
 	
-	public void SetIcon(void* icon)
+	public void SetIcon(IQIcon icon)
 	{
-		CQt.QWindow_SetIcon(this.nativePtr, icon);
+		CQt.QWindow_SetIcon(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr);
 	}
 	
 	public void Icon()
@@ -431,9 +436,9 @@ public class QRasterWindow
 		return CQt.QWindow_Screen(this.nativePtr);
 	}
 	
-	public void SetScreen(void* screen)
+	public void SetScreen(IQScreen screen)
 	{
-		CQt.QWindow_SetScreen(this.nativePtr, screen);
+		CQt.QWindow_SetScreen(this.nativePtr, (screen == null) ? null : (void*)screen.NativePtr);
 	}
 	
 	public virtual void* AccessibleRoot()
@@ -446,24 +451,24 @@ public class QRasterWindow
 		return CQt.QWindow_FocusObject(this.nativePtr);
 	}
 	
-	public void MapToGlobal(void* pos)
+	public void MapToGlobal(IQPointF pos)
 	{
-		CQt.QWindow_MapToGlobal(this.nativePtr, pos);
+		CQt.QWindow_MapToGlobal(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
-	public void MapFromGlobal(void* pos)
+	public void MapFromGlobal(IQPointF pos)
 	{
-		CQt.QWindow_MapFromGlobal(this.nativePtr, pos);
+		CQt.QWindow_MapFromGlobal(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
-	public void MapToGlobalWithPos(void* pos)
+	public void MapToGlobalWithPos(IQPoint pos)
 	{
-		CQt.QWindow_MapToGlobalWithPos(this.nativePtr, pos);
+		CQt.QWindow_MapToGlobalWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
-	public void MapFromGlobalWithPos(void* pos)
+	public void MapFromGlobalWithPos(IQPoint pos)
 	{
-		CQt.QWindow_MapFromGlobalWithPos(this.nativePtr, pos);
+		CQt.QWindow_MapFromGlobalWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void Cursor()
@@ -471,9 +476,9 @@ public class QRasterWindow
 		CQt.QWindow_Cursor(this.nativePtr);
 	}
 	
-	public void SetCursor(void* cursor)
+	public void SetCursor(IQCursor cursor)
 	{
-		CQt.QWindow_SetCursor(this.nativePtr, cursor);
+		CQt.QWindow_SetCursor(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
 	}
 	
 	public void UnsetCursor()
@@ -551,9 +556,9 @@ public class QRasterWindow
 		return CQt.QWindow_StartSystemMove(this.nativePtr);
 	}
 	
-	public void SetTitle(libqt_string title)
+	public void SetTitle(String title)
 	{
-		CQt.QWindow_SetTitle(this.nativePtr, title);
+		CQt.QWindow_SetTitle(this.nativePtr, libqt_string(title));
 	}
 	
 	public void SetX(int32 arg)
@@ -581,9 +586,9 @@ public class QRasterWindow
 		CQt.QWindow_SetGeometry(this.nativePtr, posx, posy, w, h);
 	}
 	
-	public void SetGeometryWithRect(void* rect)
+	public void SetGeometryWithRect(IQRect rect)
 	{
-		CQt.QWindow_SetGeometryWithRect(this.nativePtr, rect);
+		CQt.QWindow_SetGeometryWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void SetMinimumWidth(int32 w)
@@ -626,14 +631,14 @@ public class QRasterWindow
 		CQt.QWindow_SetFlag2(this.nativePtr, param1, on);
 	}
 	
-	public bool IsAncestorOf2(void* child, int64 mode)
+	public bool IsAncestorOf2(IQWindow child, int64 mode)
 	{
-		return CQt.QWindow_IsAncestorOf2(this.nativePtr, child, mode);
+		return CQt.QWindow_IsAncestorOf2(this.nativePtr, (child == null) ? null : (void*)child.NativePtr, mode);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -641,9 +646,9 @@ public class QRasterWindow
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -676,9 +681,9 @@ public class QRasterWindow
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -696,34 +701,34 @@ public class QRasterWindow
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -736,12 +741,12 @@ public class QRasterWindow
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -761,7 +766,7 @@ public class QRasterWindow
 		return CQt.QObject_BindingStorage2(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -776,14 +781,14 @@ public class QRasterWindow
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 	public int64 SurfaceClass()
@@ -871,19 +876,19 @@ extension CQt
 	[LinkName("QRasterWindow_MetaObject")]
 	public static extern void* QRasterWindow_MetaObject(void* c_this);
 	[LinkName("QRasterWindow_Metacast")]
-	public static extern void* QRasterWindow_Metacast(void* c_this, char8[] param1);
+	public static extern void* QRasterWindow_Metacast(void* c_this, char8* param1);
 	[LinkName("QRasterWindow_Metacall")]
-	public static extern int32 QRasterWindow_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QRasterWindow_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QRasterWindow_Tr")]
-	public static extern libqt_string QRasterWindow_Tr(char8[] s);
+	public static extern libqt_string QRasterWindow_Tr(char8* s);
 	[LinkName("QRasterWindow_Metric")]
 	public static extern int32 QRasterWindow_Metric(void* c_this, int64 metric);
 	[LinkName("QRasterWindow_Redirected")]
 	public static extern void* QRasterWindow_Redirected(void* c_this, void* param1);
 	[LinkName("QRasterWindow_Tr2")]
-	public static extern libqt_string QRasterWindow_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QRasterWindow_Tr2(char8* s, char8* c);
 	[LinkName("QRasterWindow_Tr3")]
-	public static extern libqt_string QRasterWindow_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QRasterWindow_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QRasterWindow_Delete")]
 	public static extern void QRasterWindow_Delete(void* self);

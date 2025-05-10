@@ -36,13 +36,18 @@ public enum QScrollEvent__ScrollState
 	ScrollUpdated = 1,
 	ScrollFinished = 2,
 }
-public class QInputEvent
+public interface IQInputEvent
+{
+	void* NativePtr { get; }
+}
+public class QInputEvent : IQInputEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* m_dev)
+	public this(int64 typeVal, IQInputDevice m_dev)
 	{
-		this.nativePtr = CQt.QInputEvent_new(typeVal, m_dev);
+		this.nativePtr = CQt.QInputEvent_new(typeVal, (m_dev == null) ? null : (void*)m_dev.NativePtr);
 	}
 	
 	public ~this()
@@ -165,13 +170,18 @@ extension CQt
 	[LinkName("QInputEvent_Delete")]
 	public static extern void QInputEvent_Delete(void* self);
 }
-public class QPointerEvent
+public interface IQPointerEvent
+{
+	void* NativePtr { get; }
+}
+public class QPointerEvent : IQPointerEvent, IQInputEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* dev)
+	public this(int64 typeVal, IQPointingDevice dev)
 	{
-		this.nativePtr = CQt.QPointerEvent_new(typeVal, dev);
+		this.nativePtr = CQt.QPointerEvent_new(typeVal, (dev == null) ? null : (void*)dev.NativePtr);
 	}
 	
 	public ~this()
@@ -249,29 +259,29 @@ public class QPointerEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -400,9 +410,14 @@ extension CQt
 	[LinkName("QPointerEvent_Delete")]
 	public static extern void QPointerEvent_Delete(void* self);
 }
-public class QSinglePointEvent
+public interface IQSinglePointEvent
+{
+	void* NativePtr { get; }
+}
+public class QSinglePointEvent : IQSinglePointEvent, IQPointerEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -454,9 +469,9 @@ public class QSinglePointEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public virtual void* Clone()
@@ -514,29 +529,29 @@ public class QSinglePointEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -643,13 +658,18 @@ extension CQt
 	[LinkName("QSinglePointEvent_Delete")]
 	public static extern void QSinglePointEvent_Delete(void* self);
 }
-public class QEnterEvent
+public interface IQEnterEvent
+{
+	void* NativePtr { get; }
+}
+public class QEnterEvent : IQEnterEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* localPos, void* scenePos, void* globalPos)
+	public this(IQPointF localPos, IQPointF scenePos, IQPointF globalPos)
 	{
-		this.nativePtr = CQt.QEnterEvent_new(localPos, scenePos, globalPos);
+		this.nativePtr = CQt.QEnterEvent_new((localPos == default) ? default : (void*)localPos.NativePtr, (scenePos == default) ? default : (void*)scenePos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr);
 	}
 	
 	public ~this()
@@ -752,9 +772,9 @@ public class QEnterEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -807,29 +827,29 @@ public class QEnterEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -938,13 +958,18 @@ extension CQt
 	[LinkName("QEnterEvent_Delete")]
 	public static extern void QEnterEvent_Delete(void* self);
 }
-public class QMouseEvent
+public interface IQMouseEvent
+{
+	void* NativePtr { get; }
+}
+public class QMouseEvent : IQMouseEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* localPos, int64 button, int64 buttons, int64 modifiers)
+	public this(int64 typeVal, IQPointF localPos, int64 button, int64 buttons, int64 modifiers)
 	{
-		this.nativePtr = CQt.QMouseEvent_new(typeVal, localPos, button, buttons, modifiers);
+		this.nativePtr = CQt.QMouseEvent_new(typeVal, (localPos == default) ? default : (void*)localPos.NativePtr, button, buttons, modifiers);
 	}
 	
 	public ~this()
@@ -1057,9 +1082,9 @@ public class QMouseEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -1112,29 +1137,29 @@ public class QMouseEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -1259,13 +1284,18 @@ extension CQt
 	[LinkName("QMouseEvent_Delete")]
 	public static extern void QMouseEvent_Delete(void* self);
 }
-public class QHoverEvent
+public interface IQHoverEvent
+{
+	void* NativePtr { get; }
+}
+public class QHoverEvent : IQHoverEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* scenePos, void* globalPos, void* oldPos)
+	public this(int64 typeVal, IQPointF scenePos, IQPointF globalPos, IQPointF oldPos)
 	{
-		this.nativePtr = CQt.QHoverEvent_new(typeVal, scenePos, globalPos, oldPos);
+		this.nativePtr = CQt.QHoverEvent_new(typeVal, (scenePos == default) ? default : (void*)scenePos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr, (oldPos == default) ? default : (void*)oldPos.NativePtr);
 	}
 	
 	public ~this()
@@ -1343,9 +1373,9 @@ public class QHoverEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -1398,29 +1428,29 @@ public class QHoverEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -1529,13 +1559,18 @@ extension CQt
 	[LinkName("QHoverEvent_Delete")]
 	public static extern void QHoverEvent_Delete(void* self);
 }
-public class QWheelEvent
+public interface IQWheelEvent
+{
+	void* NativePtr { get; }
+}
+public class QWheelEvent : IQWheelEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* pos, void* globalPos, void pixelDelta, void angleDelta, int64 buttons, int64 modifiers, int64 phase, bool inverted)
+	public this(IQPointF pos, IQPointF globalPos, IQPoint pixelDelta, IQPoint angleDelta, int64 buttons, int64 modifiers, int64 phase, bool inverted)
 	{
-		this.nativePtr = CQt.QWheelEvent_new(pos, globalPos, pixelDelta, angleDelta, buttons, modifiers, phase, inverted);
+		this.nativePtr = CQt.QWheelEvent_new((pos == default) ? default : (void*)pos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr, (pixelDelta == default) ? default : (void)pixelDelta.NativePtr, (angleDelta == default) ? default : (void)angleDelta.NativePtr, buttons, modifiers, phase, inverted);
 	}
 	
 	public ~this()
@@ -1628,9 +1663,9 @@ public class QWheelEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -1683,29 +1718,29 @@ public class QWheelEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -1818,13 +1853,18 @@ extension CQt
 	[LinkName("QWheelEvent_Delete")]
 	public static extern void QWheelEvent_Delete(void* self);
 }
-public class QTabletEvent
+public interface IQTabletEvent
+{
+	void* NativePtr { get; }
+}
+public class QTabletEvent : IQTabletEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 t, void* device, void* pos, void* globalPos, double pressure, float xTilt, float yTilt, float tangentialPressure, double rotation, float z, int64 keyState, int64 button, int64 buttons)
+	public this(int64 t, IQPointingDevice device, IQPointF pos, IQPointF globalPos, double pressure, float xTilt, float yTilt, float tangentialPressure, double rotation, float z, int64 keyState, int64 button, int64 buttons)
 	{
-		this.nativePtr = CQt.QTabletEvent_new(t, device, pos, globalPos, pressure, xTilt, yTilt, tangentialPressure, rotation, z, keyState, button, buttons);
+		this.nativePtr = CQt.QTabletEvent_new(t, (device == null) ? null : (void*)device.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr, pressure, xTilt, yTilt, tangentialPressure, rotation, z, keyState, button, buttons);
 	}
 	
 	public ~this()
@@ -1967,9 +2007,9 @@ public class QTabletEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -2022,29 +2062,29 @@ public class QTabletEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -2167,13 +2207,18 @@ extension CQt
 	[LinkName("QTabletEvent_Delete")]
 	public static extern void QTabletEvent_Delete(void* self);
 }
-public class QNativeGestureEvent
+public interface IQNativeGestureEvent
+{
+	void* NativePtr { get; }
+}
+public class QNativeGestureEvent : IQNativeGestureEvent, IQSinglePointEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* dev, void* localPos, void* scenePos, void* globalPos, double value, uint64 sequenceId, uint64 intArgument)
+	public this(int64 typeVal, IQPointingDevice dev, IQPointF localPos, IQPointF scenePos, IQPointF globalPos, double value, uint64 sequenceId, uint64 intArgument)
 	{
-		this.nativePtr = CQt.QNativeGestureEvent_new(typeVal, dev, localPos, scenePos, globalPos, value, sequenceId, intArgument);
+		this.nativePtr = CQt.QNativeGestureEvent_new(typeVal, (dev == null) ? null : (void*)dev.NativePtr, (localPos == default) ? default : (void*)localPos.NativePtr, (scenePos == default) ? default : (void*)scenePos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr, value, sequenceId, intArgument);
 	}
 	
 	public ~this()
@@ -2276,9 +2321,9 @@ public class QNativeGestureEvent
 		return CQt.QSinglePointEvent_ExclusivePointGrabber(this.nativePtr);
 	}
 	
-	public void SetExclusivePointGrabber(void* exclusiveGrabber)
+	public void SetExclusivePointGrabber(IQObject exclusiveGrabber)
 	{
-		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, exclusiveGrabber);
+		CQt.QSinglePointEvent_SetExclusivePointGrabber(this.nativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
 	public void* PointingDevice()
@@ -2331,29 +2376,29 @@ public class QNativeGestureEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -2464,9 +2509,14 @@ extension CQt
 	[LinkName("QNativeGestureEvent_Delete")]
 	public static extern void QNativeGestureEvent_Delete(void* self);
 }
-public class QKeyEvent
+public interface IQKeyEvent
+{
+	void* NativePtr { get; }
+}
+public class QKeyEvent : IQKeyEvent, IQInputEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 typeVal, int32 key, int64 modifiers)
 	{
@@ -2660,9 +2710,14 @@ extension CQt
 	[LinkName("QKeyEvent_Delete")]
 	public static extern void QKeyEvent_Delete(void* self);
 }
-public class QFocusEvent
+public interface IQFocusEvent
+{
+	void* NativePtr { get; }
+}
+public class QFocusEvent : IQFocusEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 typeVal)
 	{
@@ -2768,13 +2823,18 @@ extension CQt
 	[LinkName("QFocusEvent_Delete")]
 	public static extern void QFocusEvent_Delete(void* self);
 }
-public class QPaintEvent
+public interface IQPaintEvent
+{
+	void* NativePtr { get; }
+}
+public class QPaintEvent : IQPaintEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* paintRegion)
+	public this(IQRegion paintRegion)
 	{
-		this.nativePtr = CQt.QPaintEvent_new(paintRegion);
+		this.nativePtr = CQt.QPaintEvent_new((paintRegion == default) ? default : (void*)paintRegion.NativePtr);
 	}
 	
 	public ~this()
@@ -2869,13 +2929,18 @@ extension CQt
 	[LinkName("QPaintEvent_Delete")]
 	public static extern void QPaintEvent_Delete(void* self);
 }
-public class QMoveEvent
+public interface IQMoveEvent
+{
+	void* NativePtr { get; }
+}
+public class QMoveEvent : IQMoveEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* pos, void* oldPos)
+	public this(IQPoint pos, IQPoint oldPos)
 	{
-		this.nativePtr = CQt.QMoveEvent_new(pos, oldPos);
+		this.nativePtr = CQt.QMoveEvent_new((pos == default) ? default : (void*)pos.NativePtr, (oldPos == default) ? default : (void*)oldPos.NativePtr);
 	}
 	
 	public ~this()
@@ -2968,13 +3033,18 @@ extension CQt
 	[LinkName("QMoveEvent_Delete")]
 	public static extern void QMoveEvent_Delete(void* self);
 }
-public class QExposeEvent
+public interface IQExposeEvent
+{
+	void* NativePtr { get; }
+}
+public class QExposeEvent : IQExposeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* m_region)
+	public this(IQRegion m_region)
 	{
-		this.nativePtr = CQt.QExposeEvent_new(m_region);
+		this.nativePtr = CQt.QExposeEvent_new((m_region == default) ? default : (void*)m_region.NativePtr);
 	}
 	
 	public ~this()
@@ -3060,9 +3130,14 @@ extension CQt
 	[LinkName("QExposeEvent_Delete")]
 	public static extern void QExposeEvent_Delete(void* self);
 }
-public class QPlatformSurfaceEvent
+public interface IQPlatformSurfaceEvent
+{
+	void* NativePtr { get; }
+}
+public class QPlatformSurfaceEvent : IQPlatformSurfaceEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 surfaceEventType)
 	{
@@ -3152,13 +3227,18 @@ extension CQt
 	[LinkName("QPlatformSurfaceEvent_Delete")]
 	public static extern void QPlatformSurfaceEvent_Delete(void* self);
 }
-public class QResizeEvent
+public interface IQResizeEvent
+{
+	void* NativePtr { get; }
+}
+public class QResizeEvent : IQResizeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* size, void* oldSize)
+	public this(IQSize size, IQSize oldSize)
 	{
-		this.nativePtr = CQt.QResizeEvent_new(size, oldSize);
+		this.nativePtr = CQt.QResizeEvent_new((size == default) ? default : (void*)size.NativePtr, (oldSize == default) ? default : (void*)oldSize.NativePtr);
 	}
 	
 	public ~this()
@@ -3251,9 +3331,14 @@ extension CQt
 	[LinkName("QResizeEvent_Delete")]
 	public static extern void QResizeEvent_Delete(void* self);
 }
-public class QCloseEvent
+public interface IQCloseEvent
+{
+	void* NativePtr { get; }
+}
+public class QCloseEvent : IQCloseEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3336,9 +3421,14 @@ extension CQt
 	[LinkName("QCloseEvent_Delete")]
 	public static extern void QCloseEvent_Delete(void* self);
 }
-public class QIconDragEvent
+public interface IQIconDragEvent
+{
+	void* NativePtr { get; }
+}
+public class QIconDragEvent : IQIconDragEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3421,9 +3511,14 @@ extension CQt
 	[LinkName("QIconDragEvent_Delete")]
 	public static extern void QIconDragEvent_Delete(void* self);
 }
-public class QShowEvent
+public interface IQShowEvent
+{
+	void* NativePtr { get; }
+}
+public class QShowEvent : IQShowEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3506,9 +3601,14 @@ extension CQt
 	[LinkName("QShowEvent_Delete")]
 	public static extern void QShowEvent_Delete(void* self);
 }
-public class QHideEvent
+public interface IQHideEvent
+{
+	void* NativePtr { get; }
+}
+public class QHideEvent : IQHideEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3591,13 +3691,18 @@ extension CQt
 	[LinkName("QHideEvent_Delete")]
 	public static extern void QHideEvent_Delete(void* self);
 }
-public class QContextMenuEvent
+public interface IQContextMenuEvent
+{
+	void* NativePtr { get; }
+}
+public class QContextMenuEvent : IQContextMenuEvent, IQInputEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 reason, void* pos, void* globalPos)
+	public this(int64 reason, IQPoint pos, IQPoint globalPos)
 	{
-		this.nativePtr = CQt.QContextMenuEvent_new(reason, pos, globalPos);
+		this.nativePtr = CQt.QContextMenuEvent_new(reason, (pos == default) ? default : (void*)pos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr);
 	}
 	
 	public ~this()
@@ -3759,9 +3864,14 @@ extension CQt
 	[LinkName("QContextMenuEvent_Delete")]
 	public static extern void QContextMenuEvent_Delete(void* self);
 }
-public class QInputMethodEvent
+public interface IQInputMethodEvent
+{
+	void* NativePtr { get; }
+}
+public class QInputMethodEvent : IQInputMethodEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3778,12 +3888,12 @@ public class QInputMethodEvent
 		return CQt.QInputMethodEvent_Clone(this.nativePtr);
 	}
 	
-	public void SetCommitString(libqt_string commitString)
+	public void SetCommitString(String commitString)
 	{
-		CQt.QInputMethodEvent_SetCommitString(this.nativePtr, commitString);
+		CQt.QInputMethodEvent_SetCommitString(this.nativePtr, libqt_string(commitString));
 	}
 	
-	public QInputMethodEvent__Attribute[] Attributes()
+	public void[] Attributes()
 	{
 		return CQt.QInputMethodEvent_Attributes(this.nativePtr);
 	}
@@ -3808,14 +3918,14 @@ public class QInputMethodEvent
 		return CQt.QInputMethodEvent_ReplacementLength(this.nativePtr);
 	}
 	
-	public void SetCommitString2(libqt_string commitString, int32 replaceFrom)
+	public void SetCommitString2(String commitString, int32 replaceFrom)
 	{
-		CQt.QInputMethodEvent_SetCommitString2(this.nativePtr, commitString, replaceFrom);
+		CQt.QInputMethodEvent_SetCommitString2(this.nativePtr, libqt_string(commitString), replaceFrom);
 	}
 	
-	public void SetCommitString3(libqt_string commitString, int32 replaceFrom, int32 replaceLength)
+	public void SetCommitString3(String commitString, int32 replaceFrom, int32 replaceLength)
 	{
-		CQt.QInputMethodEvent_SetCommitString3(this.nativePtr, commitString, replaceFrom, replaceLength);
+		CQt.QInputMethodEvent_SetCommitString3(this.nativePtr, libqt_string(commitString), replaceFrom, replaceLength);
 	}
 	
 	public int64 Type()
@@ -3879,13 +3989,13 @@ extension CQt
 	[LinkName("QInputMethodEvent_new")]
 	public static extern void* QInputMethodEvent_new();
 	[LinkName("QInputMethodEvent_new2")]
-	public static extern void* QInputMethodEvent_new2(libqt_string preeditText, QInputMethodEvent__Attribute[] attributes);
+	public static extern void* QInputMethodEvent_new2(libqt_string preeditText, void[] attributes);
 	[LinkName("QInputMethodEvent_Clone")]
 	public static extern void* QInputMethodEvent_Clone(void* c_this);
 	[LinkName("QInputMethodEvent_SetCommitString")]
 	public static extern void QInputMethodEvent_SetCommitString(void* c_this, libqt_string commitString);
 	[LinkName("QInputMethodEvent_Attributes")]
-	public static extern QInputMethodEvent__Attribute[] QInputMethodEvent_Attributes(void* c_this);
+	public static extern void[] QInputMethodEvent_Attributes(void* c_this);
 	[LinkName("QInputMethodEvent_PreeditString")]
 	public static extern libqt_string QInputMethodEvent_PreeditString(void* c_this);
 	[LinkName("QInputMethodEvent_CommitString")]
@@ -3902,9 +4012,14 @@ extension CQt
 	[LinkName("QInputMethodEvent_Delete")]
 	public static extern void QInputMethodEvent_Delete(void* self);
 }
-public class QInputMethodQueryEvent
+public interface IQInputMethodQueryEvent
+{
+	void* NativePtr { get; }
+}
+public class QInputMethodQueryEvent : IQInputMethodQueryEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 queries)
 	{
@@ -3926,9 +4041,9 @@ public class QInputMethodQueryEvent
 		return CQt.QInputMethodQueryEvent_Queries(this.nativePtr);
 	}
 	
-	public void SetValue(int64 query, void* value)
+	public void SetValue(int64 query, IQVariant value)
 	{
-		CQt.QInputMethodQueryEvent_SetValue(this.nativePtr, query, value);
+		CQt.QInputMethodQueryEvent_SetValue(this.nativePtr, query, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void Value(int64 query)
@@ -4008,13 +4123,18 @@ extension CQt
 	[LinkName("QInputMethodQueryEvent_Delete")]
 	public static extern void QInputMethodQueryEvent_Delete(void* self);
 }
-public class QDropEvent
+public interface IQDropEvent
+{
+	void* NativePtr { get; }
+}
+public class QDropEvent : IQDropEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* pos, int64 actions, void* data, int64 buttons, int64 modifiers)
+	public this(IQPointF pos, int64 actions, IQMimeData data, int64 buttons, int64 modifiers)
 	{
-		this.nativePtr = CQt.QDropEvent_new(pos, actions, data, buttons, modifiers);
+		this.nativePtr = CQt.QDropEvent_new((pos == default) ? default : (void*)pos.NativePtr, actions, (data == null) ? null : (void*)data.NativePtr, buttons, modifiers);
 	}
 	
 	public ~this()
@@ -4193,13 +4313,18 @@ extension CQt
 	[LinkName("QDropEvent_Delete")]
 	public static extern void QDropEvent_Delete(void* self);
 }
-public class QDragMoveEvent
+public interface IQDragMoveEvent
+{
+	void* NativePtr { get; }
+}
+public class QDragMoveEvent : IQDragMoveEvent, IQDropEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* pos, int64 actions, void* data, int64 buttons, int64 modifiers)
+	public this(IQPoint pos, int64 actions, IQMimeData data, int64 buttons, int64 modifiers)
 	{
-		this.nativePtr = CQt.QDragMoveEvent_new(pos, actions, data, buttons, modifiers);
+		this.nativePtr = CQt.QDragMoveEvent_new((pos == default) ? default : (void*)pos.NativePtr, actions, (data == null) ? null : (void*)data.NativePtr, buttons, modifiers);
 	}
 	
 	public ~this()
@@ -4227,14 +4352,14 @@ public class QDragMoveEvent
 		CQt.QDragMoveEvent_Ignore(this.nativePtr);
 	}
 	
-	public void AcceptWithQRect(void* r)
+	public void AcceptWithQRect(IQRect r)
 	{
-		CQt.QDragMoveEvent_AcceptWithQRect(this.nativePtr, r);
+		CQt.QDragMoveEvent_AcceptWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void IgnoreWithQRect(void* r)
+	public void IgnoreWithQRect(IQRect r)
 	{
-		CQt.QDragMoveEvent_IgnoreWithQRect(this.nativePtr, r);
+		CQt.QDragMoveEvent_IgnoreWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
 	public void Pos()
@@ -4375,13 +4500,18 @@ extension CQt
 	[LinkName("QDragMoveEvent_Delete")]
 	public static extern void QDragMoveEvent_Delete(void* self);
 }
-public class QDragEnterEvent
+public interface IQDragEnterEvent
+{
+	void* NativePtr { get; }
+}
+public class QDragEnterEvent : IQDragEnterEvent, IQDragMoveEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* pos, int64 actions, void* data, int64 buttons, int64 modifiers)
+	public this(IQPoint pos, int64 actions, IQMimeData data, int64 buttons, int64 modifiers)
 	{
-		this.nativePtr = CQt.QDragEnterEvent_new(pos, actions, data, buttons, modifiers);
+		this.nativePtr = CQt.QDragEnterEvent_new((pos == default) ? default : (void*)pos.NativePtr, actions, (data == null) ? null : (void*)data.NativePtr, buttons, modifiers);
 	}
 	
 	public ~this()
@@ -4409,14 +4539,14 @@ public class QDragEnterEvent
 		CQt.QDragMoveEvent_Ignore(this.nativePtr);
 	}
 	
-	public void AcceptWithQRect(void* r)
+	public void AcceptWithQRect(IQRect r)
 	{
-		CQt.QDragMoveEvent_AcceptWithQRect(this.nativePtr, r);
+		CQt.QDragMoveEvent_AcceptWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void IgnoreWithQRect(void* r)
+	public void IgnoreWithQRect(IQRect r)
 	{
-		CQt.QDragMoveEvent_IgnoreWithQRect(this.nativePtr, r);
+		CQt.QDragMoveEvent_IgnoreWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
 	public void Pos()
@@ -4545,9 +4675,14 @@ extension CQt
 	[LinkName("QDragEnterEvent_Delete")]
 	public static extern void QDragEnterEvent_Delete(void* self);
 }
-public class QDragLeaveEvent
+public interface IQDragLeaveEvent
+{
+	void* NativePtr { get; }
+}
+public class QDragLeaveEvent : IQDragLeaveEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -4630,13 +4765,18 @@ extension CQt
 	[LinkName("QDragLeaveEvent_Delete")]
 	public static extern void QDragLeaveEvent_Delete(void* self);
 }
-public class QHelpEvent
+public interface IQHelpEvent
+{
+	void* NativePtr { get; }
+}
+public class QHelpEvent : IQHelpEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* pos, void* globalPos)
+	public this(int64 typeVal, IQPoint pos, IQPoint globalPos)
 	{
-		this.nativePtr = CQt.QHelpEvent_new(typeVal, pos, globalPos);
+		this.nativePtr = CQt.QHelpEvent_new(typeVal, (pos == default) ? default : (void*)pos.NativePtr, (globalPos == default) ? default : (void*)globalPos.NativePtr);
 	}
 	
 	public ~this()
@@ -4757,13 +4897,18 @@ extension CQt
 	[LinkName("QHelpEvent_Delete")]
 	public static extern void QHelpEvent_Delete(void* self);
 }
-public class QStatusTipEvent
+public interface IQStatusTipEvent
+{
+	void* NativePtr { get; }
+}
+public class QStatusTipEvent : IQStatusTipEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string tip)
+	public this(String tip)
 	{
-		this.nativePtr = CQt.QStatusTipEvent_new(tip);
+		this.nativePtr = CQt.QStatusTipEvent_new(libqt_string(tip));
 	}
 	
 	public ~this()
@@ -4849,13 +4994,18 @@ extension CQt
 	[LinkName("QStatusTipEvent_Delete")]
 	public static extern void QStatusTipEvent_Delete(void* self);
 }
-public class QWhatsThisClickedEvent
+public interface IQWhatsThisClickedEvent
+{
+	void* NativePtr { get; }
+}
+public class QWhatsThisClickedEvent : IQWhatsThisClickedEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string href)
+	public this(String href)
 	{
-		this.nativePtr = CQt.QWhatsThisClickedEvent_new(href);
+		this.nativePtr = CQt.QWhatsThisClickedEvent_new(libqt_string(href));
 	}
 	
 	public ~this()
@@ -4941,13 +5091,18 @@ extension CQt
 	[LinkName("QWhatsThisClickedEvent_Delete")]
 	public static extern void QWhatsThisClickedEvent_Delete(void* self);
 }
-public class QActionEvent
+public interface IQActionEvent
+{
+	void* NativePtr { get; }
+}
+public class QActionEvent : IQActionEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int32 typeVal, void* action)
+	public this(int32 typeVal, IQAction action)
 	{
-		this.nativePtr = CQt.QActionEvent_new(typeVal, action);
+		this.nativePtr = CQt.QActionEvent_new(typeVal, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
 	public ~this()
@@ -5042,13 +5197,18 @@ extension CQt
 	[LinkName("QActionEvent_Delete")]
 	public static extern void QActionEvent_Delete(void* self);
 }
-public class QFileOpenEvent
+public interface IQFileOpenEvent
+{
+	void* NativePtr { get; }
+}
+public class QFileOpenEvent : IQFileOpenEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string file)
+	public this(String file)
 	{
-		this.nativePtr = CQt.QFileOpenEvent_new(file);
+		this.nativePtr = CQt.QFileOpenEvent_new(libqt_string(file));
 	}
 	
 	public ~this()
@@ -5071,9 +5231,9 @@ public class QFileOpenEvent
 		CQt.QFileOpenEvent_Url(this.nativePtr);
 	}
 	
-	public bool OpenFile(void* file, int64 flags)
+	public bool OpenFile(IQFile file, int64 flags)
 	{
-		return CQt.QFileOpenEvent_OpenFile(this.nativePtr, file, flags);
+		return CQt.QFileOpenEvent_OpenFile(this.nativePtr, (file == default) ? default : (void*)file.NativePtr, flags);
 	}
 	
 	public int64 Type()
@@ -5150,9 +5310,14 @@ extension CQt
 	[LinkName("QFileOpenEvent_Delete")]
 	public static extern void QFileOpenEvent_Delete(void* self);
 }
-public class QToolBarChangeEvent
+public interface IQToolBarChangeEvent
+{
+	void* NativePtr { get; }
+}
+public class QToolBarChangeEvent : IQToolBarChangeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(bool t)
 	{
@@ -5242,13 +5407,18 @@ extension CQt
 	[LinkName("QToolBarChangeEvent_Delete")]
 	public static extern void QToolBarChangeEvent_Delete(void* self);
 }
-public class QShortcutEvent
+public interface IQShortcutEvent
+{
+	void* NativePtr { get; }
+}
+public class QShortcutEvent : IQShortcutEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* key, int32 id)
+	public this(IQKeySequence key, int32 id)
 	{
-		this.nativePtr = CQt.QShortcutEvent_new(key, id);
+		this.nativePtr = CQt.QShortcutEvent_new((key == default) ? default : (void*)key.NativePtr, id);
 	}
 	
 	public ~this()
@@ -5350,9 +5520,14 @@ extension CQt
 	[LinkName("QShortcutEvent_Delete")]
 	public static extern void QShortcutEvent_Delete(void* self);
 }
-public class QWindowStateChangeEvent
+public interface IQWindowStateChangeEvent
+{
+	void* NativePtr { get; }
+}
+public class QWindowStateChangeEvent : IQWindowStateChangeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 oldState)
 	{
@@ -5451,9 +5626,14 @@ extension CQt
 	[LinkName("QWindowStateChangeEvent_Delete")]
 	public static extern void QWindowStateChangeEvent_Delete(void* self);
 }
-public class QTouchEvent
+public interface IQTouchEvent
+{
+	void* NativePtr { get; }
+}
+public class QTouchEvent : IQTouchEvent, IQPointerEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 eventType)
 	{
@@ -5550,29 +5730,29 @@ public class QTouchEvent
 		CQt.QPointerEvent_SetAccepted(this.nativePtr, accepted);
 	}
 	
-	public void* ExclusiveGrabber(void* point)
+	public void* ExclusiveGrabber(IQEventPoint point)
 	{
-		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, point);
+		return CQt.QPointerEvent_ExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void SetExclusiveGrabber(void* point, void* exclusiveGrabber)
+	public void SetExclusiveGrabber(IQEventPoint point, IQObject exclusiveGrabber)
 	{
-		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, point, exclusiveGrabber);
+		CQt.QPointerEvent_SetExclusiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (exclusiveGrabber == null) ? null : (void*)exclusiveGrabber.NativePtr);
 	}
 	
-	public void ClearPassiveGrabbers(void* point)
+	public void ClearPassiveGrabbers(IQEventPoint point)
 	{
-		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, point);
+		CQt.QPointerEvent_ClearPassiveGrabbers(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public bool AddPassiveGrabber(void* point, void* grabber)
+	public bool AddPassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_AddPassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
-	public bool RemovePassiveGrabber(void* point, void* grabber)
+	public bool RemovePassiveGrabber(IQEventPoint point, IQObject grabber)
 	{
-		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, point, grabber);
+		return CQt.QPointerEvent_RemovePassiveGrabber(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (grabber == null) ? null : (void*)grabber.NativePtr);
 	}
 	
 	public void* Device()
@@ -5683,13 +5863,18 @@ extension CQt
 	[LinkName("QTouchEvent_Delete")]
 	public static extern void QTouchEvent_Delete(void* self);
 }
-public class QScrollPrepareEvent
+public interface IQScrollPrepareEvent
+{
+	void* NativePtr { get; }
+}
+public class QScrollPrepareEvent : IQScrollPrepareEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* startPos)
+	public this(IQPointF startPos)
 	{
-		this.nativePtr = CQt.QScrollPrepareEvent_new(startPos);
+		this.nativePtr = CQt.QScrollPrepareEvent_new((startPos == default) ? default : (void*)startPos.NativePtr);
 	}
 	
 	public ~this()
@@ -5722,19 +5907,19 @@ public class QScrollPrepareEvent
 		CQt.QScrollPrepareEvent_ContentPos(this.nativePtr);
 	}
 	
-	public void SetViewportSize(void* size)
+	public void SetViewportSize(IQSizeF size)
 	{
-		CQt.QScrollPrepareEvent_SetViewportSize(this.nativePtr, size);
+		CQt.QScrollPrepareEvent_SetViewportSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
-	public void SetContentPosRange(void* rect)
+	public void SetContentPosRange(IQRectF rect)
 	{
-		CQt.QScrollPrepareEvent_SetContentPosRange(this.nativePtr, rect);
+		CQt.QScrollPrepareEvent_SetContentPosRange(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void SetContentPos(void* pos)
+	public void SetContentPos(IQPointF pos)
 	{
-		CQt.QScrollPrepareEvent_SetContentPos(this.nativePtr, pos);
+		CQt.QScrollPrepareEvent_SetContentPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Type()
@@ -5817,13 +6002,18 @@ extension CQt
 	[LinkName("QScrollPrepareEvent_Delete")]
 	public static extern void QScrollPrepareEvent_Delete(void* self);
 }
-public class QScrollEvent
+public interface IQScrollEvent
+{
+	void* NativePtr { get; }
+}
+public class QScrollEvent : IQScrollEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* contentPos, void* overshoot, int64 scrollState)
+	public this(IQPointF contentPos, IQPointF overshoot, int64 scrollState)
 	{
-		this.nativePtr = CQt.QScrollEvent_new(contentPos, overshoot, scrollState);
+		this.nativePtr = CQt.QScrollEvent_new((contentPos == default) ? default : (void*)contentPos.NativePtr, (overshoot == default) ? default : (void*)overshoot.NativePtr, scrollState);
 	}
 	
 	public ~this()
@@ -5923,13 +6113,18 @@ extension CQt
 	[LinkName("QScrollEvent_Delete")]
 	public static extern void QScrollEvent_Delete(void* self);
 }
-public class QScreenOrientationChangeEvent
+public interface IQScreenOrientationChangeEvent
+{
+	void* NativePtr { get; }
+}
+public class QScreenOrientationChangeEvent : IQScreenOrientationChangeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* screen, int64 orientation)
+	public this(IQScreen screen, int64 orientation)
 	{
-		this.nativePtr = CQt.QScreenOrientationChangeEvent_new(screen, orientation);
+		this.nativePtr = CQt.QScreenOrientationChangeEvent_new((screen == null) ? null : (void*)screen.NativePtr, orientation);
 	}
 	
 	public ~this()
@@ -6022,9 +6217,14 @@ extension CQt
 	[LinkName("QScreenOrientationChangeEvent_Delete")]
 	public static extern void QScreenOrientationChangeEvent_Delete(void* self);
 }
-public class QApplicationStateChangeEvent
+public interface IQApplicationStateChangeEvent
+{
+	void* NativePtr { get; }
+}
+public class QApplicationStateChangeEvent : IQApplicationStateChangeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 state)
 	{
@@ -6114,13 +6314,18 @@ extension CQt
 	[LinkName("QApplicationStateChangeEvent_Delete")]
 	public static extern void QApplicationStateChangeEvent_Delete(void* self);
 }
-public class QInputMethodEvent__Attribute
+public interface IQInputMethodEvent__Attribute
+{
+	void* NativePtr { get; }
+}
+public class QInputMethodEvent__Attribute : IQInputMethodEvent__Attribute
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typ, int32 s, int32 l, void val)
+	public this(int64 typ, int32 s, int32 l, IQVariant val)
 	{
-		this.nativePtr = CQt.QInputMethodEvent__Attribute_new(typ, s, l, val);
+		this.nativePtr = CQt.QInputMethodEvent__Attribute_new(typ, s, l, (val == default) ? default : (void)val.NativePtr);
 	}
 	
 	public ~this()
@@ -6128,9 +6333,9 @@ public class QInputMethodEvent__Attribute
 		CQt.QInputMethodEvent__Attribute_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QInputMethodEvent__Attribute* param1)
+	public void OperatorAssign(QInputMethodEvent__Attribute param1)
 	{
-		CQt.QInputMethodEvent__Attribute_OperatorAssign(this.nativePtr, param1);
+		CQt.QInputMethodEvent__Attribute_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -6141,9 +6346,9 @@ extension CQt
 	[LinkName("QInputMethodEvent__Attribute_new2")]
 	public static extern void* QInputMethodEvent__Attribute_new2(int64 typ, int32 s, int32 l);
 	[LinkName("QInputMethodEvent__Attribute_new3")]
-	public static extern void* QInputMethodEvent__Attribute_new3(QInputMethodEvent__Attribute* param1);
+	public static extern void* QInputMethodEvent__Attribute_new3(void* param1);
 	[LinkName("QInputMethodEvent__Attribute_OperatorAssign")]
-	public static extern void QInputMethodEvent__Attribute_OperatorAssign(void* c_this, QInputMethodEvent__Attribute* param1);
+	public static extern void QInputMethodEvent__Attribute_OperatorAssign(void* c_this, void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QInputMethodEvent__Attribute_Delete")]
 	public static extern void QInputMethodEvent__Attribute_Delete(void* self);

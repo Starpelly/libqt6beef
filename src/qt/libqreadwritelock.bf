@@ -8,9 +8,14 @@ public enum QReadWriteLock__RecursionMode
 	NonRecursive = 0,
 	Recursive = 1,
 }
-public class QReadWriteLock
+public interface IQReadWriteLock
+{
+	void* NativePtr { get; }
+}
+public class QReadWriteLock : IQReadWriteLock
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -82,13 +87,18 @@ extension CQt
 	[LinkName("QReadWriteLock_Delete")]
 	public static extern void QReadWriteLock_Delete(void* self);
 }
-public class QReadLocker
+public interface IQReadLocker
+{
+	void* NativePtr { get; }
+}
+public class QReadLocker : IQReadLocker
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* readWriteLock)
+	public this(IQReadWriteLock readWriteLock)
 	{
-		this.nativePtr = CQt.QReadLocker_new(readWriteLock);
+		this.nativePtr = CQt.QReadLocker_new((readWriteLock == null) ? null : (void*)readWriteLock.NativePtr);
 	}
 	
 	public ~this()
@@ -126,13 +136,18 @@ extension CQt
 	[LinkName("QReadLocker_Delete")]
 	public static extern void QReadLocker_Delete(void* self);
 }
-public class QWriteLocker
+public interface IQWriteLocker
+{
+	void* NativePtr { get; }
+}
+public class QWriteLocker : IQWriteLocker
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* readWriteLock)
+	public this(IQReadWriteLock readWriteLock)
 	{
-		this.nativePtr = CQt.QWriteLocker_new(readWriteLock);
+		this.nativePtr = CQt.QWriteLocker_new((readWriteLock == null) ? null : (void*)readWriteLock.NativePtr);
 	}
 	
 	public ~this()

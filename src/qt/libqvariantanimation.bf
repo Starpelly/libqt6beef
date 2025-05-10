@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QVariantAnimation
+public interface IQVariantAnimation
+{
+	void* NativePtr { get; }
+}
+public class QVariantAnimation : IQVariantAnimation, IQAbstractAnimation
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QVariantAnimation
 		return CQt.QVariantAnimation_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QVariantAnimation_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QVariantAnimation
 		return CQt.QVariantAnimation_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QVariantAnimation_Tr(s);
 	}
@@ -41,9 +46,9 @@ public class QVariantAnimation
 		CQt.QVariantAnimation_StartValue(this.nativePtr);
 	}
 	
-	public void SetStartValue(void* value)
+	public void SetStartValue(IQVariant value)
 	{
-		CQt.QVariantAnimation_SetStartValue(this.nativePtr, value);
+		CQt.QVariantAnimation_SetStartValue(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void EndValue()
@@ -51,9 +56,9 @@ public class QVariantAnimation
 		CQt.QVariantAnimation_EndValue(this.nativePtr);
 	}
 	
-	public void SetEndValue(void* value)
+	public void SetEndValue(IQVariant value)
 	{
-		CQt.QVariantAnimation_SetEndValue(this.nativePtr, value);
+		CQt.QVariantAnimation_SetEndValue(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void KeyValueAt(double step)
@@ -61,9 +66,9 @@ public class QVariantAnimation
 		CQt.QVariantAnimation_KeyValueAt(this.nativePtr, step);
 	}
 	
-	public void SetKeyValueAt(double step, void* value)
+	public void SetKeyValueAt(double step, IQVariant value)
 	{
-		CQt.QVariantAnimation_SetKeyValueAt(this.nativePtr, step, value);
+		CQt.QVariantAnimation_SetKeyValueAt(this.nativePtr, step, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void*[] KeyValues()
@@ -73,7 +78,7 @@ public class QVariantAnimation
 	
 	public void SetKeyValues(void*[] values)
 	{
-		CQt.QVariantAnimation_SetKeyValues(this.nativePtr, values);
+		CQt.QVariantAnimation_SetKeyValues(this.nativePtr, null);
 	}
 	
 	public void CurrentValue()
@@ -96,14 +101,14 @@ public class QVariantAnimation
 		CQt.QVariantAnimation_EasingCurve(this.nativePtr);
 	}
 	
-	public void SetEasingCurve(void* easing)
+	public void SetEasingCurve(IQEasingCurve easing)
 	{
-		CQt.QVariantAnimation_SetEasingCurve(this.nativePtr, easing);
+		CQt.QVariantAnimation_SetEasingCurve(this.nativePtr, (easing == default) ? default : (void*)easing.NativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QVariantAnimation_Event(this.nativePtr, event);
+		return CQt.QVariantAnimation_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public virtual void UpdateCurrentTime(int32 param1)
@@ -116,22 +121,22 @@ public class QVariantAnimation
 		CQt.QVariantAnimation_UpdateState(this.nativePtr, newState, oldState);
 	}
 	
-	public virtual void UpdateCurrentValue(void* value)
+	public virtual void UpdateCurrentValue(IQVariant value)
 	{
-		CQt.QVariantAnimation_UpdateCurrentValue(this.nativePtr, value);
+		CQt.QVariantAnimation_UpdateCurrentValue(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public virtual void Interpolated(void* from, void* to, double progress)
+	public virtual void Interpolated(IQVariant from, IQVariant to, double progress)
 	{
-		CQt.QVariantAnimation_Interpolated(this.nativePtr, from, to, progress);
+		CQt.QVariantAnimation_Interpolated(this.nativePtr, (from == default) ? default : (void*)from.NativePtr, (to == default) ? default : (void*)to.NativePtr, progress);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QVariantAnimation_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QVariantAnimation_Tr3(s, c, n);
 	}
@@ -221,9 +226,9 @@ public class QVariantAnimation
 		CQt.QAbstractAnimation_Start1(this.nativePtr, policy);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -231,9 +236,9 @@ public class QVariantAnimation
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -266,9 +271,9 @@ public class QVariantAnimation
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -286,39 +291,39 @@ public class QVariantAnimation
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -331,12 +336,12 @@ public class QVariantAnimation
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -361,7 +366,7 @@ public class QVariantAnimation
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -376,14 +381,14 @@ public class QVariantAnimation
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -396,11 +401,11 @@ extension CQt
 	[LinkName("QVariantAnimation_MetaObject")]
 	public static extern void* QVariantAnimation_MetaObject(void* c_this);
 	[LinkName("QVariantAnimation_Metacast")]
-	public static extern void* QVariantAnimation_Metacast(void* c_this, char8[] param1);
+	public static extern void* QVariantAnimation_Metacast(void* c_this, char8* param1);
 	[LinkName("QVariantAnimation_Metacall")]
-	public static extern int32 QVariantAnimation_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QVariantAnimation_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QVariantAnimation_Tr")]
-	public static extern libqt_string QVariantAnimation_Tr(char8[] s);
+	public static extern libqt_string QVariantAnimation_Tr(char8* s);
 	[LinkName("QVariantAnimation_StartValue")]
 	public static extern void QVariantAnimation_StartValue(void* c_this);
 	[LinkName("QVariantAnimation_SetStartValue")]
@@ -440,9 +445,9 @@ extension CQt
 	[LinkName("QVariantAnimation_Interpolated")]
 	public static extern void QVariantAnimation_Interpolated(void* c_this, void* from, void* to, double progress);
 	[LinkName("QVariantAnimation_Tr2")]
-	public static extern libqt_string QVariantAnimation_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QVariantAnimation_Tr2(char8* s, char8* c);
 	[LinkName("QVariantAnimation_Tr3")]
-	public static extern libqt_string QVariantAnimation_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QVariantAnimation_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QVariantAnimation_Delete")]
 	public static extern void QVariantAnimation_Delete(void* self);

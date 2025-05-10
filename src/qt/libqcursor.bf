@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QCursor
+public interface IQCursor
+{
+	void* NativePtr { get; }
+}
+public class QCursor : IQCursor
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QCursor
 		CQt.QCursor_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* cursor)
+	public void OperatorAssign(IQCursor cursor)
 	{
-		CQt.QCursor_OperatorAssign(this.nativePtr, cursor);
+		CQt.QCursor_OperatorAssign(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCursor other)
 	{
-		CQt.QCursor_Swap(this.nativePtr, other);
+		CQt.QCursor_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -76,9 +81,9 @@ public class QCursor
 		CQt.QCursor_Pos();
 	}
 	
-	public static void PosWithScreen(void* screen)
+	public static void PosWithScreen(IQScreen screen)
 	{
-		CQt.QCursor_PosWithScreen(screen);
+		CQt.QCursor_PosWithScreen((screen == null) ? null : (void*)screen.NativePtr);
 	}
 	
 	public static void SetPos(int32 x, int32 y)
@@ -86,19 +91,19 @@ public class QCursor
 		CQt.QCursor_SetPos(x, y);
 	}
 	
-	public static void SetPos2(void* screen, int32 x, int32 y)
+	public static void SetPos2(IQScreen screen, int32 x, int32 y)
 	{
-		CQt.QCursor_SetPos2(screen, x, y);
+		CQt.QCursor_SetPos2((screen == null) ? null : (void*)screen.NativePtr, x, y);
 	}
 	
-	public static void SetPosWithQPoint(void* p)
+	public static void SetPosWithQPoint(IQPoint p)
 	{
-		CQt.QCursor_SetPosWithQPoint(p);
+		CQt.QCursor_SetPosWithQPoint((p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public static void SetPos3(void* screen, void* p)
+	public static void SetPos3(IQScreen screen, IQPoint p)
 	{
-		CQt.QCursor_SetPos3(screen, p);
+		CQt.QCursor_SetPos3((screen == null) ? null : (void*)screen.NativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 }

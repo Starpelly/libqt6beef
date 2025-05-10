@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFactoryInterface
+public interface IQFactoryInterface
+{
+	void* NativePtr { get; }
+}
+public class QFactoryInterface : IQFactoryInterface
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{

@@ -8,9 +8,14 @@ public enum QStaticText__PerformanceHint
 	ModerateCaching = 0,
 	AggressiveCaching = 1,
 }
-public class QStaticText
+public interface IQStaticText
+{
+	void* NativePtr { get; }
+}
+public class QStaticText : IQStaticText
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -22,19 +27,19 @@ public class QStaticText
 		CQt.QStaticText_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQStaticText param1)
 	{
-		CQt.QStaticText_OperatorAssign(this.nativePtr, param1);
+		CQt.QStaticText_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQStaticText other)
 	{
-		CQt.QStaticText_Swap(this.nativePtr, other);
+		CQt.QStaticText_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetText(libqt_string text)
+	public void SetText(String text)
 	{
-		CQt.QStaticText_SetText(this.nativePtr, text);
+		CQt.QStaticText_SetText(this.nativePtr, libqt_string(text));
 	}
 	
 	public libqt_string Text()
@@ -62,9 +67,9 @@ public class QStaticText
 		return CQt.QStaticText_TextWidth(this.nativePtr);
 	}
 	
-	public void SetTextOption(void* textOption)
+	public void SetTextOption(IQTextOption textOption)
 	{
-		CQt.QStaticText_SetTextOption(this.nativePtr, textOption);
+		CQt.QStaticText_SetTextOption(this.nativePtr, (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
 	public void TextOption()
@@ -92,24 +97,24 @@ public class QStaticText
 		return CQt.QStaticText_PerformanceHint(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* param1)
+	public bool OperatorEqual(IQStaticText param1)
 	{
-		return CQt.QStaticText_OperatorEqual(this.nativePtr, param1);
+		return CQt.QStaticText_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* param1)
+	public bool OperatorNotEqual(IQStaticText param1)
 	{
-		return CQt.QStaticText_OperatorNotEqual(this.nativePtr, param1);
+		return CQt.QStaticText_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Prepare1(void* matrix)
+	public void Prepare1(IQTransform matrix)
 	{
-		CQt.QStaticText_Prepare1(this.nativePtr, matrix);
+		CQt.QStaticText_Prepare1(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
 	}
 	
-	public void Prepare2(void* matrix, void* font)
+	public void Prepare2(IQTransform matrix, IQFont font)
 	{
-		CQt.QStaticText_Prepare2(this.nativePtr, matrix, font);
+		CQt.QStaticText_Prepare2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 }

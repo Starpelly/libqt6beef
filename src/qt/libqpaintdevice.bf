@@ -18,9 +18,14 @@ public enum QPaintDevice__PaintDeviceMetric
 	PdmDevicePixelRatio = 11,
 	PdmDevicePixelRatioScaled = 12,
 }
-public class QPaintDevice
+public interface IQPaintDevice
+{
+	void* NativePtr { get; }
+}
+public class QPaintDevice : IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{

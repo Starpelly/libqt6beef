@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QJsonObject
+public interface IQJsonObject
+{
+	void* NativePtr { get; }
+}
+public class QJsonObject : IQJsonObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QJsonObject
 		CQt.QJsonObject_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQJsonObject other)
 	{
-		CQt.QJsonObject_OperatorAssign(this.nativePtr, other);
+		CQt.QJsonObject_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQJsonObject other)
 	{
-		CQt.QJsonObject_Swap(this.nativePtr, other);
+		CQt.QJsonObject_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public static void FromVariantMap(void* mapVal)
@@ -71,99 +76,99 @@ public class QJsonObject
 		return CQt.QJsonObject_IsEmpty(this.nativePtr);
 	}
 	
-	public void Value(libqt_string key)
+	public void Value(String key)
 	{
-		CQt.QJsonObject_Value(this.nativePtr, key);
+		CQt.QJsonObject_Value(this.nativePtr, libqt_string(key));
 	}
 	
-	public void OperatorSubscript(libqt_string key)
+	public void OperatorSubscript(String key)
 	{
-		CQt.QJsonObject_OperatorSubscript(this.nativePtr, key);
+		CQt.QJsonObject_OperatorSubscript(this.nativePtr, libqt_string(key));
 	}
 	
-	public void OperatorSubscriptWithKey(libqt_string key)
+	public void OperatorSubscriptWithKey(String key)
 	{
-		CQt.QJsonObject_OperatorSubscriptWithKey(this.nativePtr, key);
+		CQt.QJsonObject_OperatorSubscriptWithKey(this.nativePtr, libqt_string(key));
 	}
 	
-	public void Remove(libqt_string key)
+	public void Remove(String key)
 	{
-		CQt.QJsonObject_Remove(this.nativePtr, key);
+		CQt.QJsonObject_Remove(this.nativePtr, libqt_string(key));
 	}
 	
-	public void Take(libqt_string key)
+	public void Take(String key)
 	{
-		CQt.QJsonObject_Take(this.nativePtr, key);
+		CQt.QJsonObject_Take(this.nativePtr, libqt_string(key));
 	}
 	
-	public bool Contains(libqt_string key)
+	public bool Contains(String key)
 	{
-		return CQt.QJsonObject_Contains(this.nativePtr, key);
+		return CQt.QJsonObject_Contains(this.nativePtr, libqt_string(key));
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQJsonObject other)
 	{
-		return CQt.QJsonObject_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonObject_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQJsonObject other)
 	{
-		return CQt.QJsonObject_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonObject_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QJsonObject__iterator Begin()
+	public void Begin()
 	{
-		return CQt.QJsonObject_Begin(this.nativePtr);
+		CQt.QJsonObject_Begin(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator Begin2()
+	public void Begin2()
 	{
-		return CQt.QJsonObject_Begin2(this.nativePtr);
+		CQt.QJsonObject_Begin2(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator ConstBegin()
+	public void ConstBegin()
 	{
-		return CQt.QJsonObject_ConstBegin(this.nativePtr);
+		CQt.QJsonObject_ConstBegin(this.nativePtr);
 	}
 	
-	public QJsonObject__iterator End()
+	public void End()
 	{
-		return CQt.QJsonObject_End(this.nativePtr);
+		CQt.QJsonObject_End(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator End2()
+	public void End2()
 	{
-		return CQt.QJsonObject_End2(this.nativePtr);
+		CQt.QJsonObject_End2(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator ConstEnd()
+	public void ConstEnd()
 	{
-		return CQt.QJsonObject_ConstEnd(this.nativePtr);
+		CQt.QJsonObject_ConstEnd(this.nativePtr);
 	}
 	
-	public QJsonObject__iterator Erase(QJsonObject__iterator it)
+	public void Erase(QJsonObject__iterator it)
 	{
-		return CQt.QJsonObject_Erase(this.nativePtr, it);
+		CQt.QJsonObject_Erase(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
 	}
 	
-	public QJsonObject__iterator Find(libqt_string key)
+	public void Find(String key)
 	{
-		return CQt.QJsonObject_Find(this.nativePtr, key);
+		CQt.QJsonObject_Find(this.nativePtr, libqt_string(key));
 	}
 	
-	public QJsonObject__const_iterator FindWithKey(libqt_string key)
+	public void FindWithKey(String key)
 	{
-		return CQt.QJsonObject_FindWithKey(this.nativePtr, key);
+		CQt.QJsonObject_FindWithKey(this.nativePtr, libqt_string(key));
 	}
 	
-	public QJsonObject__const_iterator ConstFind(libqt_string key)
+	public void ConstFind(String key)
 	{
-		return CQt.QJsonObject_ConstFind(this.nativePtr, key);
+		CQt.QJsonObject_ConstFind(this.nativePtr, libqt_string(key));
 	}
 	
-	public QJsonObject__iterator Insert(libqt_string key, void* value)
+	public void Insert(String key, IQJsonValue value)
 	{
-		return CQt.QJsonObject_Insert(this.nativePtr, key, value);
+		CQt.QJsonObject_Insert(this.nativePtr, libqt_string(key), (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public bool Empty()
@@ -217,40 +222,45 @@ extension CQt
 	[LinkName("QJsonObject_OperatorNotEqual")]
 	public static extern bool QJsonObject_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QJsonObject_Begin")]
-	public static extern QJsonObject__iterator QJsonObject_Begin(void* c_this);
+	public static extern void QJsonObject_Begin(void* c_this);
 	[LinkName("QJsonObject_Begin2")]
-	public static extern QJsonObject__const_iterator QJsonObject_Begin2(void* c_this);
+	public static extern void QJsonObject_Begin2(void* c_this);
 	[LinkName("QJsonObject_ConstBegin")]
-	public static extern QJsonObject__const_iterator QJsonObject_ConstBegin(void* c_this);
+	public static extern void QJsonObject_ConstBegin(void* c_this);
 	[LinkName("QJsonObject_End")]
-	public static extern QJsonObject__iterator QJsonObject_End(void* c_this);
+	public static extern void QJsonObject_End(void* c_this);
 	[LinkName("QJsonObject_End2")]
-	public static extern QJsonObject__const_iterator QJsonObject_End2(void* c_this);
+	public static extern void QJsonObject_End2(void* c_this);
 	[LinkName("QJsonObject_ConstEnd")]
-	public static extern QJsonObject__const_iterator QJsonObject_ConstEnd(void* c_this);
+	public static extern void QJsonObject_ConstEnd(void* c_this);
 	[LinkName("QJsonObject_Erase")]
-	public static extern QJsonObject__iterator QJsonObject_Erase(void* c_this, QJsonObject__iterator it);
+	public static extern void QJsonObject_Erase(void* c_this, void it);
 	[LinkName("QJsonObject_Find")]
-	public static extern QJsonObject__iterator QJsonObject_Find(void* c_this, libqt_string key);
+	public static extern void QJsonObject_Find(void* c_this, libqt_string key);
 	[LinkName("QJsonObject_FindWithKey")]
-	public static extern QJsonObject__const_iterator QJsonObject_FindWithKey(void* c_this, libqt_string key);
+	public static extern void QJsonObject_FindWithKey(void* c_this, libqt_string key);
 	[LinkName("QJsonObject_ConstFind")]
-	public static extern QJsonObject__const_iterator QJsonObject_ConstFind(void* c_this, libqt_string key);
+	public static extern void QJsonObject_ConstFind(void* c_this, libqt_string key);
 	[LinkName("QJsonObject_Insert")]
-	public static extern QJsonObject__iterator QJsonObject_Insert(void* c_this, libqt_string key, void* value);
+	public static extern void QJsonObject_Insert(void* c_this, libqt_string key, void* value);
 	[LinkName("QJsonObject_Empty")]
 	public static extern bool QJsonObject_Empty(void* c_this);
 	/// Delete this object from C++ memory
 	[LinkName("QJsonObject_Delete")]
 	public static extern void QJsonObject_Delete(void* self);
 }
-public class QJsonObject__iterator
+public interface IQJsonObject__iterator
+{
+	void* NativePtr { get; }
+}
+public class QJsonObject__iterator : IQJsonObject__iterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QJsonObject__iterator* other)
+	public this(QJsonObject__iterator other)
 	{
-		this.nativePtr = CQt.QJsonObject__iterator_new(other);
+		this.nativePtr = CQt.QJsonObject__iterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -258,9 +268,9 @@ public class QJsonObject__iterator
 		CQt.QJsonObject__iterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QJsonObject__iterator* other)
+	public void OperatorAssign(QJsonObject__iterator other)
 	{
-		CQt.QJsonObject__iterator_OperatorAssign(this.nativePtr, other);
+		CQt.QJsonObject__iterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -293,124 +303,124 @@ public class QJsonObject__iterator
 		CQt.QJsonObject__iterator_OperatorSubscript(this.nativePtr, j);
 	}
 	
-	public bool OperatorEqual(QJsonObject__iterator* other)
+	public bool OperatorEqual(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QJsonObject__iterator* other)
+	public bool OperatorNotEqual(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(QJsonObject__iterator* other)
+	public bool OperatorLesser(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesser(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QJsonObject__iterator* other)
+	public bool OperatorLesserOrEqual(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserOrEqual(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QJsonObject__iterator* other)
+	public bool OperatorGreater(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreater(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QJsonObject__iterator* other)
+	public bool OperatorGreaterOrEqual(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterOrEqual(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QJsonObject__iterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QJsonObject__iterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QJsonObject__iterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QJsonObject__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QJsonObject__iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QJsonObject__iterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QJsonObject__iterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QJsonObject__iterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QJsonObject__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QJsonObject__iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
-	public QJsonObject__iterator OperatorPlus(int32 j)
+	public void OperatorPlus(int32 j)
 	{
-		return CQt.QJsonObject__iterator_OperatorPlus(this.nativePtr, j);
+		CQt.QJsonObject__iterator_OperatorPlus(this.nativePtr, j);
 	}
 	
-	public QJsonObject__iterator OperatorMinus(int32 j)
+	public void OperatorMinus(int32 j)
 	{
-		return CQt.QJsonObject__iterator_OperatorMinus(this.nativePtr, j);
+		CQt.QJsonObject__iterator_OperatorMinus(this.nativePtr, j);
 	}
 	
-	public QJsonObject__iterator* OperatorPlusAssign(int32 j)
+	public void* OperatorPlusAssign(int32 j)
 	{
 		return CQt.QJsonObject__iterator_OperatorPlusAssign(this.nativePtr, j);
 	}
 	
-	public QJsonObject__iterator* OperatorMinusAssign(int32 j)
+	public void* OperatorMinusAssign(int32 j)
 	{
 		return CQt.QJsonObject__iterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
 	public int32 OperatorMinusWithQJsonObjectiterator(QJsonObject__iterator j)
 	{
-		return CQt.QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(this.nativePtr, j);
+		return CQt.QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
 	}
 	
-	public bool OperatorEqualWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorEqualWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorNotEqualWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorNotEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorLesserWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserOrEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorGreaterWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QJsonObject__const_iterator* other)
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QJsonObject__iterator_new")]
-	public static extern void* QJsonObject__iterator_new(QJsonObject__iterator* other);
+	public static extern void* QJsonObject__iterator_new(void* other);
 	[LinkName("QJsonObject__iterator_new2")]
 	public static extern void* QJsonObject__iterator_new2();
 	[LinkName("QJsonObject__iterator_new3")]
 	public static extern void* QJsonObject__iterator_new3(void* obj, int32 index);
 	[LinkName("QJsonObject__iterator_new4")]
-	public static extern void* QJsonObject__iterator_new4(QJsonObject__iterator* other);
+	public static extern void* QJsonObject__iterator_new4(void* other);
 	[LinkName("QJsonObject__iterator_OperatorAssign")]
-	public static extern void QJsonObject__iterator_OperatorAssign(void* c_this, QJsonObject__iterator* other);
+	public static extern void QJsonObject__iterator_OperatorAssign(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_Key")]
 	public static extern libqt_string QJsonObject__iterator_Key(void* c_this);
 	[LinkName("QJsonObject__iterator_Value")]
@@ -424,58 +434,63 @@ extension CQt
 	[LinkName("QJsonObject__iterator_OperatorSubscript")]
 	public static extern void QJsonObject__iterator_OperatorSubscript(void* c_this, int32 j);
 	[LinkName("QJsonObject__iterator_OperatorEqual")]
-	public static extern bool QJsonObject__iterator_OperatorEqual(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorNotEqual")]
-	public static extern bool QJsonObject__iterator_OperatorNotEqual(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorLesser")]
-	public static extern bool QJsonObject__iterator_OperatorLesser(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorLesser(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorLesserOrEqual")]
-	public static extern bool QJsonObject__iterator_OperatorLesserOrEqual(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorLesserOrEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorGreater")]
-	public static extern bool QJsonObject__iterator_OperatorGreater(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorGreater(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorGreaterOrEqual")]
-	public static extern bool QJsonObject__iterator_OperatorGreaterOrEqual(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorGreaterOrEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorPlusPlus")]
-	public static extern QJsonObject__iterator* QJsonObject__iterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QJsonObject__iterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QJsonObject__iterator_OperatorPlusPlusWithInt")]
-	public static extern QJsonObject__iterator QJsonObject__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QJsonObject__iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QJsonObject__iterator_OperatorMinusMinus")]
-	public static extern QJsonObject__iterator* QJsonObject__iterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QJsonObject__iterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QJsonObject__iterator_OperatorMinusMinusWithInt")]
-	public static extern QJsonObject__iterator QJsonObject__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QJsonObject__iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	[LinkName("QJsonObject__iterator_OperatorPlus")]
-	public static extern QJsonObject__iterator QJsonObject__iterator_OperatorPlus(void* c_this, int32 j);
+	public static extern void QJsonObject__iterator_OperatorPlus(void* c_this, int32 j);
 	[LinkName("QJsonObject__iterator_OperatorMinus")]
-	public static extern QJsonObject__iterator QJsonObject__iterator_OperatorMinus(void* c_this, int32 j);
+	public static extern void QJsonObject__iterator_OperatorMinus(void* c_this, int32 j);
 	[LinkName("QJsonObject__iterator_OperatorPlusAssign")]
-	public static extern QJsonObject__iterator* QJsonObject__iterator_OperatorPlusAssign(void* c_this, int32 j);
+	public static extern void* QJsonObject__iterator_OperatorPlusAssign(void* c_this, int32 j);
 	[LinkName("QJsonObject__iterator_OperatorMinusAssign")]
-	public static extern QJsonObject__iterator* QJsonObject__iterator_OperatorMinusAssign(void* c_this, int32 j);
+	public static extern void* QJsonObject__iterator_OperatorMinusAssign(void* c_this, int32 j);
 	[LinkName("QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator")]
-	public static extern int32 QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(void* c_this, QJsonObject__iterator j);
+	public static extern int32 QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(void* c_this, void j);
 	[LinkName("QJsonObject__iterator_OperatorEqualWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorEqualWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorNotEqualWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorNotEqualWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorNotEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorLesserWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorLesserWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorLesserWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorLesserOrEqualWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorLesserOrEqualWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorLesserOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorGreaterWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorGreaterWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorGreaterWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__iterator_OperatorGreaterOrEqualWithOther")]
-	public static extern bool QJsonObject__iterator_OperatorGreaterOrEqualWithOther(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__iterator_OperatorGreaterOrEqualWithOther(void* c_this, void* other);
 	/// Delete this object from C++ memory
 	[LinkName("QJsonObject__iterator_Delete")]
 	public static extern void QJsonObject__iterator_Delete(void* self);
 }
-public class QJsonObject__const_iterator
+public interface IQJsonObject__const_iterator
+{
+	void* NativePtr { get; }
+}
+public class QJsonObject__const_iterator : IQJsonObject__const_iterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QJsonObject__const_iterator* other)
+	public this(QJsonObject__const_iterator other)
 	{
-		this.nativePtr = CQt.QJsonObject__const_iterator_new(other);
+		this.nativePtr = CQt.QJsonObject__const_iterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -483,9 +498,9 @@ public class QJsonObject__const_iterator
 		CQt.QJsonObject__const_iterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QJsonObject__const_iterator* other)
+	public void OperatorAssign(QJsonObject__const_iterator other)
 	{
-		CQt.QJsonObject__const_iterator_OperatorAssign(this.nativePtr, other);
+		CQt.QJsonObject__const_iterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -513,126 +528,126 @@ public class QJsonObject__const_iterator
 		CQt.QJsonObject__const_iterator_OperatorSubscript(this.nativePtr, j);
 	}
 	
-	public bool OperatorEqual(QJsonObject__const_iterator* other)
+	public bool OperatorEqual(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QJsonObject__const_iterator* other)
+	public bool OperatorNotEqual(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(QJsonObject__const_iterator* other)
+	public bool OperatorLesser(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesser(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QJsonObject__const_iterator* other)
+	public bool OperatorLesserOrEqual(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqual(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QJsonObject__const_iterator* other)
+	public bool OperatorGreater(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreater(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QJsonObject__const_iterator* other)
+	public bool OperatorGreaterOrEqual(QJsonObject__const_iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqual(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QJsonObject__const_iterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QJsonObject__const_iterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QJsonObject__const_iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QJsonObject__const_iterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QJsonObject__const_iterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QJsonObject__const_iterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QJsonObject__const_iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
-	public QJsonObject__const_iterator OperatorPlus(int32 j)
+	public void OperatorPlus(int32 j)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorPlus(this.nativePtr, j);
+		CQt.QJsonObject__const_iterator_OperatorPlus(this.nativePtr, j);
 	}
 	
-	public QJsonObject__const_iterator OperatorMinus(int32 j)
+	public void OperatorMinus(int32 j)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorMinus(this.nativePtr, j);
+		CQt.QJsonObject__const_iterator_OperatorMinus(this.nativePtr, j);
 	}
 	
-	public QJsonObject__const_iterator* OperatorPlusAssign(int32 j)
+	public void* OperatorPlusAssign(int32 j)
 	{
 		return CQt.QJsonObject__const_iterator_OperatorPlusAssign(this.nativePtr, j);
 	}
 	
-	public QJsonObject__const_iterator* OperatorMinusAssign(int32 j)
+	public void* OperatorMinusAssign(int32 j)
 	{
 		return CQt.QJsonObject__const_iterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
 	public int32 OperatorMinusWithQJsonObjectconstIterator(QJsonObject__const_iterator j)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(this.nativePtr, j);
+		return CQt.QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
 	}
 	
-	public bool OperatorEqualWithOther(QJsonObject__iterator* other)
+	public bool OperatorEqualWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithOther(QJsonObject__iterator* other)
+	public bool OperatorNotEqualWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorNotEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QJsonObject__iterator* other)
+	public bool OperatorLesserWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QJsonObject__iterator* other)
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QJsonObject__iterator* other)
+	public bool OperatorGreaterWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QJsonObject__iterator* other)
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__iterator other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, other);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QJsonObject__const_iterator_new")]
-	public static extern void* QJsonObject__const_iterator_new(QJsonObject__const_iterator* other);
+	public static extern void* QJsonObject__const_iterator_new(void* other);
 	[LinkName("QJsonObject__const_iterator_new2")]
 	public static extern void* QJsonObject__const_iterator_new2();
 	[LinkName("QJsonObject__const_iterator_new3")]
 	public static extern void* QJsonObject__const_iterator_new3(void* obj, int32 index);
 	[LinkName("QJsonObject__const_iterator_new4")]
-	public static extern void* QJsonObject__const_iterator_new4(QJsonObject__iterator* other);
+	public static extern void* QJsonObject__const_iterator_new4(void* other);
 	[LinkName("QJsonObject__const_iterator_new5")]
-	public static extern void* QJsonObject__const_iterator_new5(QJsonObject__const_iterator* other);
+	public static extern void* QJsonObject__const_iterator_new5(void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorAssign")]
-	public static extern void QJsonObject__const_iterator_OperatorAssign(void* c_this, QJsonObject__const_iterator* other);
+	public static extern void QJsonObject__const_iterator_OperatorAssign(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_Key")]
 	public static extern libqt_string QJsonObject__const_iterator_Key(void* c_this);
 	[LinkName("QJsonObject__const_iterator_Value")]
@@ -644,47 +659,47 @@ extension CQt
 	[LinkName("QJsonObject__const_iterator_OperatorSubscript")]
 	public static extern void QJsonObject__const_iterator_OperatorSubscript(void* c_this, int32 j);
 	[LinkName("QJsonObject__const_iterator_OperatorEqual")]
-	public static extern bool QJsonObject__const_iterator_OperatorEqual(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorNotEqual")]
-	public static extern bool QJsonObject__const_iterator_OperatorNotEqual(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorLesser")]
-	public static extern bool QJsonObject__const_iterator_OperatorLesser(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorLesser(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorLesserOrEqual")]
-	public static extern bool QJsonObject__const_iterator_OperatorLesserOrEqual(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorLesserOrEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorGreater")]
-	public static extern bool QJsonObject__const_iterator_OperatorGreater(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorGreater(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorGreaterOrEqual")]
-	public static extern bool QJsonObject__const_iterator_OperatorGreaterOrEqual(void* c_this, QJsonObject__const_iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorGreaterOrEqual(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorPlusPlus")]
-	public static extern QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QJsonObject__const_iterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QJsonObject__const_iterator_OperatorPlusPlusWithInt")]
-	public static extern QJsonObject__const_iterator QJsonObject__const_iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QJsonObject__const_iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QJsonObject__const_iterator_OperatorMinusMinus")]
-	public static extern QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QJsonObject__const_iterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QJsonObject__const_iterator_OperatorMinusMinusWithInt")]
-	public static extern QJsonObject__const_iterator QJsonObject__const_iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QJsonObject__const_iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	[LinkName("QJsonObject__const_iterator_OperatorPlus")]
-	public static extern QJsonObject__const_iterator QJsonObject__const_iterator_OperatorPlus(void* c_this, int32 j);
+	public static extern void QJsonObject__const_iterator_OperatorPlus(void* c_this, int32 j);
 	[LinkName("QJsonObject__const_iterator_OperatorMinus")]
-	public static extern QJsonObject__const_iterator QJsonObject__const_iterator_OperatorMinus(void* c_this, int32 j);
+	public static extern void QJsonObject__const_iterator_OperatorMinus(void* c_this, int32 j);
 	[LinkName("QJsonObject__const_iterator_OperatorPlusAssign")]
-	public static extern QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorPlusAssign(void* c_this, int32 j);
+	public static extern void* QJsonObject__const_iterator_OperatorPlusAssign(void* c_this, int32 j);
 	[LinkName("QJsonObject__const_iterator_OperatorMinusAssign")]
-	public static extern QJsonObject__const_iterator* QJsonObject__const_iterator_OperatorMinusAssign(void* c_this, int32 j);
+	public static extern void* QJsonObject__const_iterator_OperatorMinusAssign(void* c_this, int32 j);
 	[LinkName("QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator")]
-	public static extern int32 QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(void* c_this, QJsonObject__const_iterator j);
+	public static extern int32 QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(void* c_this, void j);
 	[LinkName("QJsonObject__const_iterator_OperatorEqualWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorEqualWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorNotEqualWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorNotEqualWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorNotEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorLesserWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorLesserWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorLesserWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorLesserOrEqualWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorGreaterWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorGreaterWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorGreaterWithOther(void* c_this, void* other);
 	[LinkName("QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther")]
-	public static extern bool QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(void* c_this, QJsonObject__iterator* other);
+	public static extern bool QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(void* c_this, void* other);
 	/// Delete this object from C++ memory
 	[LinkName("QJsonObject__const_iterator_Delete")]
 	public static extern void QJsonObject__const_iterator_Delete(void* self);

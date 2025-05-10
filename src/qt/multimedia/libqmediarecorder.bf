@@ -35,9 +35,14 @@ public enum QMediaRecorder__Error
 	OutOfSpaceError = 3,
 	LocationNotWritable = 4,
 }
-public class QMediaRecorder
+public interface IQMediaRecorder
+{
+	void* NativePtr { get; }
+}
+public class QMediaRecorder : IQMediaRecorder, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -54,7 +59,7 @@ public class QMediaRecorder
 		return CQt.QMediaRecorder_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QMediaRecorder_Metacast(this.nativePtr, param1);
 	}
@@ -64,7 +69,7 @@ public class QMediaRecorder
 		return CQt.QMediaRecorder_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QMediaRecorder_Tr(s);
 	}
@@ -79,9 +84,9 @@ public class QMediaRecorder
 		CQt.QMediaRecorder_OutputLocation(this.nativePtr);
 	}
 	
-	public void SetOutputLocation(void* location)
+	public void SetOutputLocation(IQUrl location)
 	{
-		CQt.QMediaRecorder_SetOutputLocation(this.nativePtr, location);
+		CQt.QMediaRecorder_SetOutputLocation(this.nativePtr, (location == default) ? default : (void*)location.NativePtr);
 	}
 	
 	public void ActualLocation()
@@ -114,9 +119,9 @@ public class QMediaRecorder
 		CQt.QMediaRecorder_MediaFormat(this.nativePtr);
 	}
 	
-	public void SetMediaFormat(void* format)
+	public void SetMediaFormat(IQMediaFormat format)
 	{
-		CQt.QMediaRecorder_SetMediaFormat(this.nativePtr, format);
+		CQt.QMediaRecorder_SetMediaFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public int64 EncodingMode()
@@ -144,9 +149,9 @@ public class QMediaRecorder
 		CQt.QMediaRecorder_VideoResolution(this.nativePtr);
 	}
 	
-	public void SetVideoResolution(void* videoResolution)
+	public void SetVideoResolution(IQSize videoResolution)
 	{
-		CQt.QMediaRecorder_SetVideoResolution(this.nativePtr, videoResolution);
+		CQt.QMediaRecorder_SetVideoResolution(this.nativePtr, (videoResolution == default) ? default : (void*)videoResolution.NativePtr);
 	}
 	
 	public void SetVideoResolution2(int32 width, int32 height)
@@ -209,14 +214,14 @@ public class QMediaRecorder
 		CQt.QMediaRecorder_MetaData(this.nativePtr);
 	}
 	
-	public void SetMetaData(void* metaData)
+	public void SetMetaData(IQMediaMetaData metaData)
 	{
-		CQt.QMediaRecorder_SetMetaData(this.nativePtr, metaData);
+		CQt.QMediaRecorder_SetMetaData(this.nativePtr, (metaData == default) ? default : (void*)metaData.NativePtr);
 	}
 	
-	public void AddMetaData(void* metaData)
+	public void AddMetaData(IQMediaMetaData metaData)
 	{
-		CQt.QMediaRecorder_AddMetaData(this.nativePtr, metaData);
+		CQt.QMediaRecorder_AddMetaData(this.nativePtr, (metaData == default) ? default : (void*)metaData.NativePtr);
 	}
 	
 	public void* CaptureSession()
@@ -239,24 +244,24 @@ public class QMediaRecorder
 		CQt.QMediaRecorder_Stop(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QMediaRecorder_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QMediaRecorder_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -264,9 +269,9 @@ public class QMediaRecorder
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -299,9 +304,9 @@ public class QMediaRecorder
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -319,39 +324,39 @@ public class QMediaRecorder
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -364,12 +369,12 @@ public class QMediaRecorder
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -394,7 +399,7 @@ public class QMediaRecorder
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -409,14 +414,14 @@ public class QMediaRecorder
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -429,11 +434,11 @@ extension CQt
 	[LinkName("QMediaRecorder_MetaObject")]
 	public static extern void* QMediaRecorder_MetaObject(void* c_this);
 	[LinkName("QMediaRecorder_Metacast")]
-	public static extern void* QMediaRecorder_Metacast(void* c_this, char8[] param1);
+	public static extern void* QMediaRecorder_Metacast(void* c_this, char8* param1);
 	[LinkName("QMediaRecorder_Metacall")]
-	public static extern int32 QMediaRecorder_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QMediaRecorder_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QMediaRecorder_Tr")]
-	public static extern libqt_string QMediaRecorder_Tr(char8[] s);
+	public static extern libqt_string QMediaRecorder_Tr(char8* s);
 	[LinkName("QMediaRecorder_IsAvailable")]
 	public static extern bool QMediaRecorder_IsAvailable(void* c_this);
 	[LinkName("QMediaRecorder_OutputLocation")]
@@ -535,9 +540,9 @@ extension CQt
 	[LinkName("QMediaRecorder_Connect_AudioSampleRateChanged")]
 	public static extern void QMediaRecorder_Connect_AudioSampleRateChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaRecorder_Tr2")]
-	public static extern libqt_string QMediaRecorder_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QMediaRecorder_Tr2(char8* s, char8* c);
 	[LinkName("QMediaRecorder_Tr3")]
-	public static extern libqt_string QMediaRecorder_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QMediaRecorder_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QMediaRecorder_Delete")]
 	public static extern void QMediaRecorder_Delete(void* self);

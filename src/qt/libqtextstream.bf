@@ -34,9 +34,14 @@ public enum QTextStream__NumberFlag
 	UppercaseBase = 8,
 	UppercaseDigits = 16,
 }
-public class QTextStream
+public interface IQTextStream
+{
+	void* NativePtr { get; }
+}
+public class QTextStream : IQTextStream, IQIODeviceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -78,9 +83,9 @@ public class QTextStream
 		return CQt.QTextStream_GenerateByteOrderMark(this.nativePtr);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QTextStream_SetLocale(this.nativePtr, locale);
+		CQt.QTextStream_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -88,9 +93,9 @@ public class QTextStream
 		CQt.QTextStream_Locale(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QTextStream_SetDevice(this.nativePtr, device);
+		CQt.QTextStream_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -173,9 +178,9 @@ public class QTextStream
 		return CQt.QTextStream_FieldAlignment(this.nativePtr);
 	}
 	
-	public void SetPadChar(void ch)
+	public void SetPadChar(IQChar ch)
 	{
-		CQt.QTextStream_SetPadChar(this.nativePtr, ch);
+		CQt.QTextStream_SetPadChar(this.nativePtr, (ch == default) ? default : (void)ch.NativePtr);
 	}
 	
 	public void PadChar()
@@ -233,9 +238,9 @@ public class QTextStream
 		return CQt.QTextStream_RealNumberPrecision(this.nativePtr);
 	}
 	
-	public void* OperatorShiftRight(void* ch)
+	public void* OperatorShiftRight(IQChar ch)
 	{
-		return CQt.QTextStream_OperatorShiftRight(this.nativePtr, ch);
+		return CQt.QTextStream_OperatorShiftRight(this.nativePtr, (ch == default) ? default : (void*)ch.NativePtr);
 	}
 	
 	public void* OperatorShiftRightWithCh(int8* ch)
@@ -293,24 +298,24 @@ public class QTextStream
 		return CQt.QTextStream_OperatorShiftRightWithDouble(this.nativePtr, f);
 	}
 	
-	public void* OperatorShiftRightWithQString(libqt_string s)
+	public void* OperatorShiftRightWithQString(String s)
 	{
-		return CQt.QTextStream_OperatorShiftRightWithQString(this.nativePtr, s);
+		return CQt.QTextStream_OperatorShiftRightWithQString(this.nativePtr, libqt_string(s));
 	}
 	
-	public void* OperatorShiftRightWithArray(libqt_string array)
+	public void* OperatorShiftRightWithArray(String array)
 	{
-		return CQt.QTextStream_OperatorShiftRightWithArray(this.nativePtr, array);
+		return CQt.QTextStream_OperatorShiftRightWithArray(this.nativePtr, libqt_string(array));
 	}
 	
-	public void* OperatorShiftRightWithChar(char8[] c)
+	public void* OperatorShiftRightWithChar(char8* c)
 	{
 		return CQt.QTextStream_OperatorShiftRightWithChar(this.nativePtr, c);
 	}
 	
-	public void* OperatorShiftLeft(void ch)
+	public void* OperatorShiftLeft(IQChar ch)
 	{
-		return CQt.QTextStream_OperatorShiftLeft(this.nativePtr, ch);
+		return CQt.QTextStream_OperatorShiftLeft(this.nativePtr, (ch == default) ? default : (void)ch.NativePtr);
 	}
 	
 	public void* OperatorShiftLeftWithCh(int8 ch)
@@ -368,17 +373,17 @@ public class QTextStream
 		return CQt.QTextStream_OperatorShiftLeftWithDouble(this.nativePtr, f);
 	}
 	
-	public void* OperatorShiftLeftWithQString(libqt_string s)
+	public void* OperatorShiftLeftWithQString(String s)
 	{
-		return CQt.QTextStream_OperatorShiftLeftWithQString(this.nativePtr, s);
+		return CQt.QTextStream_OperatorShiftLeftWithQString(this.nativePtr, libqt_string(s));
 	}
 	
-	public void* OperatorShiftLeftWithArray(libqt_string array)
+	public void* OperatorShiftLeftWithArray(String array)
 	{
-		return CQt.QTextStream_OperatorShiftLeftWithArray(this.nativePtr, array);
+		return CQt.QTextStream_OperatorShiftLeftWithArray(this.nativePtr, libqt_string(array));
 	}
 	
-	public void* OperatorShiftLeftWithChar(char8[] c)
+	public void* OperatorShiftLeftWithChar(char8* c)
 	{
 		return CQt.QTextStream_OperatorShiftLeftWithChar(this.nativePtr, c);
 	}
@@ -507,7 +512,7 @@ extension CQt
 	[LinkName("QTextStream_OperatorShiftRightWithArray")]
 	public static extern void* QTextStream_OperatorShiftRightWithArray(void* c_this, libqt_string array);
 	[LinkName("QTextStream_OperatorShiftRightWithChar")]
-	public static extern void* QTextStream_OperatorShiftRightWithChar(void* c_this, char8[] c);
+	public static extern void* QTextStream_OperatorShiftRightWithChar(void* c_this, char8* c);
 	[LinkName("QTextStream_OperatorShiftLeft")]
 	public static extern void* QTextStream_OperatorShiftLeft(void* c_this, void ch);
 	[LinkName("QTextStream_OperatorShiftLeftWithCh")]
@@ -537,7 +542,7 @@ extension CQt
 	[LinkName("QTextStream_OperatorShiftLeftWithArray")]
 	public static extern void* QTextStream_OperatorShiftLeftWithArray(void* c_this, libqt_string array);
 	[LinkName("QTextStream_OperatorShiftLeftWithChar")]
-	public static extern void* QTextStream_OperatorShiftLeftWithChar(void* c_this, char8[] c);
+	public static extern void* QTextStream_OperatorShiftLeftWithChar(void* c_this, char8* c);
 	[LinkName("QTextStream_OperatorShiftLeftWithPtr")]
 	public static extern void* QTextStream_OperatorShiftLeftWithPtr(void* c_this, void* ptr);
 	[LinkName("QTextStream_ReadLine1")]

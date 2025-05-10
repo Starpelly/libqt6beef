@@ -15,9 +15,14 @@ public enum QDoubleValidator__Notation
 	StandardNotation = 0,
 	ScientificNotation = 1,
 }
-public class QValidator
+public interface IQValidator
+{
+	void* NativePtr { get; }
+}
+public class QValidator : IQValidator, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -34,7 +39,7 @@ public class QValidator
 		return CQt.QValidator_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QValidator_Metacast(this.nativePtr, param1);
 	}
@@ -44,14 +49,14 @@ public class QValidator
 		return CQt.QValidator_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QValidator_Tr(s);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QValidator_SetLocale(this.nativePtr, locale);
+		CQt.QValidator_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -59,34 +64,34 @@ public class QValidator
 		CQt.QValidator_Locale(this.nativePtr);
 	}
 	
-	public virtual int64 Validate(libqt_string param1, int32* param2)
+	public virtual int64 Validate(String param1, int32* param2)
 	{
-		return CQt.QValidator_Validate(this.nativePtr, param1, param2);
+		return CQt.QValidator_Validate(this.nativePtr, libqt_string(param1), param2);
 	}
 	
-	public virtual void Fixup(libqt_string param1)
+	public virtual void Fixup(String param1)
 	{
-		CQt.QValidator_Fixup(this.nativePtr, param1);
+		CQt.QValidator_Fixup(this.nativePtr, libqt_string(param1));
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QValidator_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QValidator_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -94,9 +99,9 @@ public class QValidator
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -129,9 +134,9 @@ public class QValidator
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -149,39 +154,39 @@ public class QValidator
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -194,12 +199,12 @@ public class QValidator
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -224,7 +229,7 @@ public class QValidator
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -239,14 +244,14 @@ public class QValidator
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -259,11 +264,11 @@ extension CQt
 	[LinkName("QValidator_MetaObject")]
 	public static extern void* QValidator_MetaObject(void* c_this);
 	[LinkName("QValidator_Metacast")]
-	public static extern void* QValidator_Metacast(void* c_this, char8[] param1);
+	public static extern void* QValidator_Metacast(void* c_this, char8* param1);
 	[LinkName("QValidator_Metacall")]
-	public static extern int32 QValidator_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QValidator_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QValidator_Tr")]
-	public static extern libqt_string QValidator_Tr(char8[] s);
+	public static extern libqt_string QValidator_Tr(char8* s);
 	[LinkName("QValidator_SetLocale")]
 	public static extern void QValidator_SetLocale(void* c_this, void* locale);
 	[LinkName("QValidator_Locale")]
@@ -275,16 +280,21 @@ extension CQt
 	[LinkName("QValidator_Connect_Changed")]
 	public static extern void QValidator_Connect_Changed(void* c_this, c_intptr slot);
 	[LinkName("QValidator_Tr2")]
-	public static extern libqt_string QValidator_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QValidator_Tr2(char8* s, char8* c);
 	[LinkName("QValidator_Tr3")]
-	public static extern libqt_string QValidator_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QValidator_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QValidator_Delete")]
 	public static extern void QValidator_Delete(void* self);
 }
-public class QIntValidator
+public interface IQIntValidator
+{
+	void* NativePtr { get; }
+}
+public class QIntValidator : IQIntValidator, IQValidator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -301,7 +311,7 @@ public class QIntValidator
 		return CQt.QIntValidator_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QIntValidator_Metacast(this.nativePtr, param1);
 	}
@@ -311,19 +321,19 @@ public class QIntValidator
 		return CQt.QIntValidator_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QIntValidator_Tr(s);
 	}
 	
-	public virtual int64 Validate(libqt_string param1, int32* param2)
+	public virtual int64 Validate(String param1, int32* param2)
 	{
-		return CQt.QIntValidator_Validate(this.nativePtr, param1, param2);
+		return CQt.QIntValidator_Validate(this.nativePtr, libqt_string(param1), param2);
 	}
 	
-	public virtual void Fixup(libqt_string input)
+	public virtual void Fixup(String input)
 	{
-		CQt.QIntValidator_Fixup(this.nativePtr, input);
+		CQt.QIntValidator_Fixup(this.nativePtr, libqt_string(input));
 	}
 	
 	public void SetBottom(int32 bottom)
@@ -351,19 +361,19 @@ public class QIntValidator
 		return CQt.QIntValidator_Top(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QIntValidator_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QIntValidator_Tr3(s, c, n);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QValidator_SetLocale(this.nativePtr, locale);
+		CQt.QValidator_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -371,14 +381,14 @@ public class QIntValidator
 		CQt.QValidator_Locale(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -386,9 +396,9 @@ public class QIntValidator
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -421,9 +431,9 @@ public class QIntValidator
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -441,39 +451,39 @@ public class QIntValidator
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -486,12 +496,12 @@ public class QIntValidator
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -516,7 +526,7 @@ public class QIntValidator
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -531,14 +541,14 @@ public class QIntValidator
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -555,11 +565,11 @@ extension CQt
 	[LinkName("QIntValidator_MetaObject")]
 	public static extern void* QIntValidator_MetaObject(void* c_this);
 	[LinkName("QIntValidator_Metacast")]
-	public static extern void* QIntValidator_Metacast(void* c_this, char8[] param1);
+	public static extern void* QIntValidator_Metacast(void* c_this, char8* param1);
 	[LinkName("QIntValidator_Metacall")]
-	public static extern int32 QIntValidator_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QIntValidator_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QIntValidator_Tr")]
-	public static extern libqt_string QIntValidator_Tr(char8[] s);
+	public static extern libqt_string QIntValidator_Tr(char8* s);
 	[LinkName("QIntValidator_Validate")]
 	public static extern int64 QIntValidator_Validate(void* c_this, libqt_string param1, int32* param2);
 	[LinkName("QIntValidator_Fixup")]
@@ -579,16 +589,21 @@ extension CQt
 	[LinkName("QIntValidator_Connect_TopChanged")]
 	public static extern void QIntValidator_Connect_TopChanged(void* c_this, c_intptr slot);
 	[LinkName("QIntValidator_Tr2")]
-	public static extern libqt_string QIntValidator_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QIntValidator_Tr2(char8* s, char8* c);
 	[LinkName("QIntValidator_Tr3")]
-	public static extern libqt_string QIntValidator_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QIntValidator_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QIntValidator_Delete")]
 	public static extern void QIntValidator_Delete(void* self);
 }
-public class QDoubleValidator
+public interface IQDoubleValidator
+{
+	void* NativePtr { get; }
+}
+public class QDoubleValidator : IQDoubleValidator, IQValidator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -605,7 +620,7 @@ public class QDoubleValidator
 		return CQt.QDoubleValidator_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QDoubleValidator_Metacast(this.nativePtr, param1);
 	}
@@ -615,19 +630,19 @@ public class QDoubleValidator
 		return CQt.QDoubleValidator_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QDoubleValidator_Tr(s);
 	}
 	
-	public virtual int64 Validate(libqt_string param1, int32* param2)
+	public virtual int64 Validate(String param1, int32* param2)
 	{
-		return CQt.QDoubleValidator_Validate(this.nativePtr, param1, param2);
+		return CQt.QDoubleValidator_Validate(this.nativePtr, libqt_string(param1), param2);
 	}
 	
-	public virtual void Fixup(libqt_string input)
+	public virtual void Fixup(String input)
 	{
-		CQt.QDoubleValidator_Fixup(this.nativePtr, input);
+		CQt.QDoubleValidator_Fixup(this.nativePtr, libqt_string(input));
 	}
 	
 	public void SetRange(double bottom, double top, int32 decimals)
@@ -680,19 +695,19 @@ public class QDoubleValidator
 		return CQt.QDoubleValidator_Notation(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QDoubleValidator_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QDoubleValidator_Tr3(s, c, n);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QValidator_SetLocale(this.nativePtr, locale);
+		CQt.QValidator_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -700,14 +715,14 @@ public class QDoubleValidator
 		CQt.QValidator_Locale(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -715,9 +730,9 @@ public class QDoubleValidator
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -750,9 +765,9 @@ public class QDoubleValidator
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -770,39 +785,39 @@ public class QDoubleValidator
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -815,12 +830,12 @@ public class QDoubleValidator
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -845,7 +860,7 @@ public class QDoubleValidator
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -860,14 +875,14 @@ public class QDoubleValidator
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -884,11 +899,11 @@ extension CQt
 	[LinkName("QDoubleValidator_MetaObject")]
 	public static extern void* QDoubleValidator_MetaObject(void* c_this);
 	[LinkName("QDoubleValidator_Metacast")]
-	public static extern void* QDoubleValidator_Metacast(void* c_this, char8[] param1);
+	public static extern void* QDoubleValidator_Metacast(void* c_this, char8* param1);
 	[LinkName("QDoubleValidator_Metacall")]
-	public static extern int32 QDoubleValidator_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QDoubleValidator_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QDoubleValidator_Tr")]
-	public static extern libqt_string QDoubleValidator_Tr(char8[] s);
+	public static extern libqt_string QDoubleValidator_Tr(char8* s);
 	[LinkName("QDoubleValidator_Validate")]
 	public static extern int64 QDoubleValidator_Validate(void* c_this, libqt_string param1, int32* param2);
 	[LinkName("QDoubleValidator_Fixup")]
@@ -922,16 +937,21 @@ extension CQt
 	[LinkName("QDoubleValidator_Connect_NotationChanged")]
 	public static extern void QDoubleValidator_Connect_NotationChanged(void* c_this, c_intptr slot);
 	[LinkName("QDoubleValidator_Tr2")]
-	public static extern libqt_string QDoubleValidator_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QDoubleValidator_Tr2(char8* s, char8* c);
 	[LinkName("QDoubleValidator_Tr3")]
-	public static extern libqt_string QDoubleValidator_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QDoubleValidator_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QDoubleValidator_Delete")]
 	public static extern void QDoubleValidator_Delete(void* self);
 }
-public class QRegularExpressionValidator
+public interface IQRegularExpressionValidator
+{
+	void* NativePtr { get; }
+}
+public class QRegularExpressionValidator : IQRegularExpressionValidator, IQValidator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -948,7 +968,7 @@ public class QRegularExpressionValidator
 		return CQt.QRegularExpressionValidator_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QRegularExpressionValidator_Metacast(this.nativePtr, param1);
 	}
@@ -958,14 +978,14 @@ public class QRegularExpressionValidator
 		return CQt.QRegularExpressionValidator_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QRegularExpressionValidator_Tr(s);
 	}
 	
-	public virtual int64 Validate(libqt_string input, int32* pos)
+	public virtual int64 Validate(String input, int32* pos)
 	{
-		return CQt.QRegularExpressionValidator_Validate(this.nativePtr, input, pos);
+		return CQt.QRegularExpressionValidator_Validate(this.nativePtr, libqt_string(input), pos);
 	}
 	
 	public void RegularExpression()
@@ -973,24 +993,24 @@ public class QRegularExpressionValidator
 		CQt.QRegularExpressionValidator_RegularExpression(this.nativePtr);
 	}
 	
-	public void SetRegularExpression(void* re)
+	public void SetRegularExpression(IQRegularExpression re)
 	{
-		CQt.QRegularExpressionValidator_SetRegularExpression(this.nativePtr, re);
+		CQt.QRegularExpressionValidator_SetRegularExpression(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QRegularExpressionValidator_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QRegularExpressionValidator_Tr3(s, c, n);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QValidator_SetLocale(this.nativePtr, locale);
+		CQt.QValidator_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -998,19 +1018,19 @@ public class QRegularExpressionValidator
 		CQt.QValidator_Locale(this.nativePtr);
 	}
 	
-	public virtual void Fixup(libqt_string param1)
+	public virtual void Fixup(String param1)
 	{
-		CQt.QValidator_Fixup(this.nativePtr, param1);
+		CQt.QValidator_Fixup(this.nativePtr, libqt_string(param1));
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1018,9 +1038,9 @@ public class QRegularExpressionValidator
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -1053,9 +1073,9 @@ public class QRegularExpressionValidator
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1073,39 +1093,39 @@ public class QRegularExpressionValidator
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1118,12 +1138,12 @@ public class QRegularExpressionValidator
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -1148,7 +1168,7 @@ public class QRegularExpressionValidator
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -1163,14 +1183,14 @@ public class QRegularExpressionValidator
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -1187,11 +1207,11 @@ extension CQt
 	[LinkName("QRegularExpressionValidator_MetaObject")]
 	public static extern void* QRegularExpressionValidator_MetaObject(void* c_this);
 	[LinkName("QRegularExpressionValidator_Metacast")]
-	public static extern void* QRegularExpressionValidator_Metacast(void* c_this, char8[] param1);
+	public static extern void* QRegularExpressionValidator_Metacast(void* c_this, char8* param1);
 	[LinkName("QRegularExpressionValidator_Metacall")]
-	public static extern int32 QRegularExpressionValidator_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QRegularExpressionValidator_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QRegularExpressionValidator_Tr")]
-	public static extern libqt_string QRegularExpressionValidator_Tr(char8[] s);
+	public static extern libqt_string QRegularExpressionValidator_Tr(char8* s);
 	[LinkName("QRegularExpressionValidator_Validate")]
 	public static extern int64 QRegularExpressionValidator_Validate(void* c_this, libqt_string input, int32* pos);
 	[LinkName("QRegularExpressionValidator_RegularExpression")]
@@ -1201,9 +1221,9 @@ extension CQt
 	[LinkName("QRegularExpressionValidator_Connect_RegularExpressionChanged")]
 	public static extern void QRegularExpressionValidator_Connect_RegularExpressionChanged(void* c_this, c_intptr slot);
 	[LinkName("QRegularExpressionValidator_Tr2")]
-	public static extern libqt_string QRegularExpressionValidator_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QRegularExpressionValidator_Tr2(char8* s, char8* c);
 	[LinkName("QRegularExpressionValidator_Tr3")]
-	public static extern libqt_string QRegularExpressionValidator_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QRegularExpressionValidator_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QRegularExpressionValidator_Delete")]
 	public static extern void QRegularExpressionValidator_Delete(void* self);

@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QByteArrayView
+public interface IQByteArrayView
+{
+	void* NativePtr { get; }
+}
+public class QByteArrayView : IQByteArrayView
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQByteArrayView other)
 	{
-		this.nativePtr = CQt.QByteArrayView_new(other);
+		this.nativePtr = CQt.QByteArrayView_new((other == default) ? default : (char8*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -26,12 +31,12 @@ public class QByteArrayView
 		return CQt.QByteArrayView_Size(this.nativePtr);
 	}
 	
-	public char8[] Data()
+	public char8* Data()
 	{
 		return CQt.QByteArrayView_Data(this.nativePtr);
 	}
 	
-	public char8[] ConstData()
+	public char8* ConstData()
 	{
 		return CQt.QByteArrayView_ConstData(this.nativePtr);
 	}
@@ -46,29 +51,29 @@ public class QByteArrayView
 		return CQt.QByteArrayView_At(this.nativePtr, n);
 	}
 	
-	public void First(int32 n)
+	public char8* First(int32 n)
 	{
-		CQt.QByteArrayView_First(this.nativePtr, n);
+		return CQt.QByteArrayView_First(this.nativePtr, n);
 	}
 	
-	public void Last(int32 n)
+	public char8* Last(int32 n)
 	{
-		CQt.QByteArrayView_Last(this.nativePtr, n);
+		return CQt.QByteArrayView_Last(this.nativePtr, n);
 	}
 	
-	public void Sliced(int32 pos)
+	public char8* Sliced(int32 pos)
 	{
-		CQt.QByteArrayView_Sliced(this.nativePtr, pos);
+		return CQt.QByteArrayView_Sliced(this.nativePtr, pos);
 	}
 	
-	public void Sliced2(int32 pos, int32 n)
+	public char8* Sliced2(int32 pos, int32 n)
 	{
-		CQt.QByteArrayView_Sliced2(this.nativePtr, pos, n);
+		return CQt.QByteArrayView_Sliced2(this.nativePtr, pos, n);
 	}
 	
-	public void Chopped(int32 lenVal)
+	public char8* Chopped(int32 lenVal)
 	{
-		CQt.QByteArrayView_Chopped(this.nativePtr, lenVal);
+		return CQt.QByteArrayView_Chopped(this.nativePtr, lenVal);
 	}
 	
 	public void Truncate(int32 n)
@@ -81,9 +86,9 @@ public class QByteArrayView
 		CQt.QByteArrayView_Chop(this.nativePtr, n);
 	}
 	
-	public void Trimmed()
+	public char8* Trimmed()
 	{
-		CQt.QByteArrayView_Trimmed(this.nativePtr);
+		return CQt.QByteArrayView_Trimmed(this.nativePtr);
 	}
 	
 	public int16 ToShort()
@@ -136,9 +141,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_ToDouble(this.nativePtr);
 	}
 	
-	public bool StartsWith(void other)
+	public bool StartsWith(IQByteArrayView other)
 	{
-		return CQt.QByteArrayView_StartsWith(this.nativePtr, other);
+		return CQt.QByteArrayView_StartsWith(this.nativePtr, (other == default) ? default : (char8*)other.NativePtr);
 	}
 	
 	public bool StartsWithWithChar(int8 c)
@@ -146,9 +151,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_StartsWithWithChar(this.nativePtr, c);
 	}
 	
-	public bool EndsWith(void other)
+	public bool EndsWith(IQByteArrayView other)
 	{
-		return CQt.QByteArrayView_EndsWith(this.nativePtr, other);
+		return CQt.QByteArrayView_EndsWith(this.nativePtr, (other == default) ? default : (char8*)other.NativePtr);
 	}
 	
 	public bool EndsWithWithChar(int8 c)
@@ -156,9 +161,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_EndsWithWithChar(this.nativePtr, c);
 	}
 	
-	public int32 IndexOf(void a)
+	public int32 IndexOf(IQByteArrayView a)
 	{
-		return CQt.QByteArrayView_IndexOf(this.nativePtr, a);
+		return CQt.QByteArrayView_IndexOf(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
 	}
 	
 	public int32 IndexOfWithCh(int8 ch)
@@ -166,9 +171,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_IndexOfWithCh(this.nativePtr, ch);
 	}
 	
-	public bool Contains(void a)
+	public bool Contains(IQByteArrayView a)
 	{
-		return CQt.QByteArrayView_Contains(this.nativePtr, a);
+		return CQt.QByteArrayView_Contains(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
 	}
 	
 	public bool ContainsWithChar(int8 c)
@@ -176,14 +181,14 @@ public class QByteArrayView
 		return CQt.QByteArrayView_ContainsWithChar(this.nativePtr, c);
 	}
 	
-	public int32 LastIndexOf(void a)
+	public int32 LastIndexOf(IQByteArrayView a)
 	{
-		return CQt.QByteArrayView_LastIndexOf(this.nativePtr, a);
+		return CQt.QByteArrayView_LastIndexOf(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
 	}
 	
-	public int32 LastIndexOf2(void a, int32 from)
+	public int32 LastIndexOf2(IQByteArrayView a, int32 from)
 	{
-		return CQt.QByteArrayView_LastIndexOf2(this.nativePtr, a, from);
+		return CQt.QByteArrayView_LastIndexOf2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, from);
 	}
 	
 	public int32 LastIndexOfWithCh(int8 ch)
@@ -191,9 +196,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_LastIndexOfWithCh(this.nativePtr, ch);
 	}
 	
-	public int32 Count(void a)
+	public int32 Count(IQByteArrayView a)
 	{
-		return CQt.QByteArrayView_Count(this.nativePtr, a);
+		return CQt.QByteArrayView_Count(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
 	}
 	
 	public int32 CountWithCh(int8 ch)
@@ -201,9 +206,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_CountWithCh(this.nativePtr, ch);
 	}
 	
-	public int32 Compare(void a)
+	public int32 Compare(IQByteArrayView a)
 	{
-		return CQt.QByteArrayView_Compare(this.nativePtr, a);
+		return CQt.QByteArrayView_Compare(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
 	}
 	
 	public bool IsValidUtf8()
@@ -211,22 +216,22 @@ public class QByteArrayView
 		return CQt.QByteArrayView_IsValidUtf8(this.nativePtr);
 	}
 	
-	public char8[] Begin()
+	public char8* Begin()
 	{
 		return CQt.QByteArrayView_Begin(this.nativePtr);
 	}
 	
-	public char8[] End()
+	public char8* End()
 	{
 		return CQt.QByteArrayView_End(this.nativePtr);
 	}
 	
-	public char8[] Cbegin()
+	public char8* Cbegin()
 	{
 		return CQt.QByteArrayView_Cbegin(this.nativePtr);
 	}
 	
-	public char8[] Cend()
+	public char8* Cend()
 	{
 		return CQt.QByteArrayView_Cend(this.nativePtr);
 	}
@@ -361,9 +366,9 @@ public class QByteArrayView
 		return CQt.QByteArrayView_ToDouble1(this.nativePtr, ok);
 	}
 	
-	public int32 IndexOf2(void a, int32 from)
+	public int32 IndexOf2(IQByteArrayView a, int32 from)
 	{
-		return CQt.QByteArrayView_IndexOf2(this.nativePtr, a, from);
+		return CQt.QByteArrayView_IndexOf2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, from);
 	}
 	
 	public int32 IndexOf22(int8 ch, int32 from)
@@ -376,50 +381,50 @@ public class QByteArrayView
 		return CQt.QByteArrayView_LastIndexOf22(this.nativePtr, ch, from);
 	}
 	
-	public int32 Compare2(void a, int64 cs)
+	public int32 Compare2(IQByteArrayView a, int64 cs)
 	{
-		return CQt.QByteArrayView_Compare2(this.nativePtr, a, cs);
+		return CQt.QByteArrayView_Compare2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, cs);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QByteArrayView_new")]
-	public static extern void* QByteArrayView_new(void* other);
+	public static extern void* QByteArrayView_new(char8* other);
 	[LinkName("QByteArrayView_new2")]
-	public static extern void* QByteArrayView_new2(void* other);
+	public static extern void* QByteArrayView_new2(char8* other);
 	[LinkName("QByteArrayView_new3")]
 	public static extern void* QByteArrayView_new3();
 	[LinkName("QByteArrayView_new4")]
-	public static extern void* QByteArrayView_new4(void* param1);
+	public static extern void* QByteArrayView_new4(char8* param1);
 	[LinkName("QByteArrayView_ToByteArray")]
 	public static extern libqt_string QByteArrayView_ToByteArray(void* c_this);
 	[LinkName("QByteArrayView_Size")]
 	public static extern int32 QByteArrayView_Size(void* c_this);
 	[LinkName("QByteArrayView_Data")]
-	public static extern char8[] QByteArrayView_Data(void* c_this);
+	public static extern char8* QByteArrayView_Data(void* c_this);
 	[LinkName("QByteArrayView_ConstData")]
-	public static extern char8[] QByteArrayView_ConstData(void* c_this);
+	public static extern char8* QByteArrayView_ConstData(void* c_this);
 	[LinkName("QByteArrayView_OperatorSubscript")]
 	public static extern int8 QByteArrayView_OperatorSubscript(void* c_this, int32 n);
 	[LinkName("QByteArrayView_At")]
 	public static extern int8 QByteArrayView_At(void* c_this, int32 n);
 	[LinkName("QByteArrayView_First")]
-	public static extern void QByteArrayView_First(void* c_this, int32 n);
+	public static extern char8* QByteArrayView_First(void* c_this, int32 n);
 	[LinkName("QByteArrayView_Last")]
-	public static extern void QByteArrayView_Last(void* c_this, int32 n);
+	public static extern char8* QByteArrayView_Last(void* c_this, int32 n);
 	[LinkName("QByteArrayView_Sliced")]
-	public static extern void QByteArrayView_Sliced(void* c_this, int32 pos);
+	public static extern char8* QByteArrayView_Sliced(void* c_this, int32 pos);
 	[LinkName("QByteArrayView_Sliced2")]
-	public static extern void QByteArrayView_Sliced2(void* c_this, int32 pos, int32 n);
+	public static extern char8* QByteArrayView_Sliced2(void* c_this, int32 pos, int32 n);
 	[LinkName("QByteArrayView_Chopped")]
-	public static extern void QByteArrayView_Chopped(void* c_this, int32 lenVal);
+	public static extern char8* QByteArrayView_Chopped(void* c_this, int32 lenVal);
 	[LinkName("QByteArrayView_Truncate")]
 	public static extern void QByteArrayView_Truncate(void* c_this, int32 n);
 	[LinkName("QByteArrayView_Chop")]
 	public static extern void QByteArrayView_Chop(void* c_this, int32 n);
 	[LinkName("QByteArrayView_Trimmed")]
-	public static extern void QByteArrayView_Trimmed(void* c_this);
+	public static extern char8* QByteArrayView_Trimmed(void* c_this);
 	[LinkName("QByteArrayView_ToShort")]
 	public static extern int16 QByteArrayView_ToShort(void* c_this);
 	[LinkName("QByteArrayView_ToUShort")]
@@ -441,43 +446,43 @@ extension CQt
 	[LinkName("QByteArrayView_ToDouble")]
 	public static extern double QByteArrayView_ToDouble(void* c_this);
 	[LinkName("QByteArrayView_StartsWith")]
-	public static extern bool QByteArrayView_StartsWith(void* c_this, void other);
+	public static extern bool QByteArrayView_StartsWith(void* c_this, char8* other);
 	[LinkName("QByteArrayView_StartsWithWithChar")]
 	public static extern bool QByteArrayView_StartsWithWithChar(void* c_this, int8 c);
 	[LinkName("QByteArrayView_EndsWith")]
-	public static extern bool QByteArrayView_EndsWith(void* c_this, void other);
+	public static extern bool QByteArrayView_EndsWith(void* c_this, char8* other);
 	[LinkName("QByteArrayView_EndsWithWithChar")]
 	public static extern bool QByteArrayView_EndsWithWithChar(void* c_this, int8 c);
 	[LinkName("QByteArrayView_IndexOf")]
-	public static extern int32 QByteArrayView_IndexOf(void* c_this, void a);
+	public static extern int32 QByteArrayView_IndexOf(void* c_this, char8* a);
 	[LinkName("QByteArrayView_IndexOfWithCh")]
 	public static extern int32 QByteArrayView_IndexOfWithCh(void* c_this, int8 ch);
 	[LinkName("QByteArrayView_Contains")]
-	public static extern bool QByteArrayView_Contains(void* c_this, void a);
+	public static extern bool QByteArrayView_Contains(void* c_this, char8* a);
 	[LinkName("QByteArrayView_ContainsWithChar")]
 	public static extern bool QByteArrayView_ContainsWithChar(void* c_this, int8 c);
 	[LinkName("QByteArrayView_LastIndexOf")]
-	public static extern int32 QByteArrayView_LastIndexOf(void* c_this, void a);
+	public static extern int32 QByteArrayView_LastIndexOf(void* c_this, char8* a);
 	[LinkName("QByteArrayView_LastIndexOf2")]
-	public static extern int32 QByteArrayView_LastIndexOf2(void* c_this, void a, int32 from);
+	public static extern int32 QByteArrayView_LastIndexOf2(void* c_this, char8* a, int32 from);
 	[LinkName("QByteArrayView_LastIndexOfWithCh")]
 	public static extern int32 QByteArrayView_LastIndexOfWithCh(void* c_this, int8 ch);
 	[LinkName("QByteArrayView_Count")]
-	public static extern int32 QByteArrayView_Count(void* c_this, void a);
+	public static extern int32 QByteArrayView_Count(void* c_this, char8* a);
 	[LinkName("QByteArrayView_CountWithCh")]
 	public static extern int32 QByteArrayView_CountWithCh(void* c_this, int8 ch);
 	[LinkName("QByteArrayView_Compare")]
-	public static extern int32 QByteArrayView_Compare(void* c_this, void a);
+	public static extern int32 QByteArrayView_Compare(void* c_this, char8* a);
 	[LinkName("QByteArrayView_IsValidUtf8")]
 	public static extern bool QByteArrayView_IsValidUtf8(void* c_this);
 	[LinkName("QByteArrayView_Begin")]
-	public static extern char8[] QByteArrayView_Begin(void* c_this);
+	public static extern char8* QByteArrayView_Begin(void* c_this);
 	[LinkName("QByteArrayView_End")]
-	public static extern char8[] QByteArrayView_End(void* c_this);
+	public static extern char8* QByteArrayView_End(void* c_this);
 	[LinkName("QByteArrayView_Cbegin")]
-	public static extern char8[] QByteArrayView_Cbegin(void* c_this);
+	public static extern char8* QByteArrayView_Cbegin(void* c_this);
 	[LinkName("QByteArrayView_Cend")]
-	public static extern char8[] QByteArrayView_Cend(void* c_this);
+	public static extern char8* QByteArrayView_Cend(void* c_this);
 	[LinkName("QByteArrayView_Empty")]
 	public static extern bool QByteArrayView_Empty(void* c_this);
 	[LinkName("QByteArrayView_Front")]
@@ -531,13 +536,13 @@ extension CQt
 	[LinkName("QByteArrayView_ToDouble1")]
 	public static extern double QByteArrayView_ToDouble1(void* c_this, bool* ok);
 	[LinkName("QByteArrayView_IndexOf2")]
-	public static extern int32 QByteArrayView_IndexOf2(void* c_this, void a, int32 from);
+	public static extern int32 QByteArrayView_IndexOf2(void* c_this, char8* a, int32 from);
 	[LinkName("QByteArrayView_IndexOf22")]
 	public static extern int32 QByteArrayView_IndexOf22(void* c_this, int8 ch, int32 from);
 	[LinkName("QByteArrayView_LastIndexOf22")]
 	public static extern int32 QByteArrayView_LastIndexOf22(void* c_this, int8 ch, int32 from);
 	[LinkName("QByteArrayView_Compare2")]
-	public static extern int32 QByteArrayView_Compare2(void* c_this, void a, int64 cs);
+	public static extern int32 QByteArrayView_Compare2(void* c_this, char8* a, int64 cs);
 	/// Delete this object from C++ memory
 	[LinkName("QByteArrayView_Delete")]
 	public static extern void QByteArrayView_Delete(void* self);

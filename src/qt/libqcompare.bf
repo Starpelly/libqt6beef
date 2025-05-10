@@ -15,13 +15,18 @@ public enum QtPrivate__Uncomparable
 {
 	Unordered = -127,
 }
-public class QPartialOrdering
+public interface IQPartialOrdering
+{
+	void* NativePtr { get; }
+}
+public class QPartialOrdering : IQPartialOrdering
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPartialOrdering other)
 	{
-		this.nativePtr = CQt.QPartialOrdering_new(other);
+		this.nativePtr = CQt.QPartialOrdering_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{

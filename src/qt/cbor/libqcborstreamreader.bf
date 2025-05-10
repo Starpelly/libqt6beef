@@ -28,9 +28,14 @@ public enum QCborStreamReader__StringResultCode
 	Ok = 1,
 	Error = -1,
 }
-public class QCborStreamReader
+public interface IQCborStreamReader
+{
+	void* NativePtr { get; }
+}
+public class QCborStreamReader : IQCborStreamReader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -42,9 +47,9 @@ public class QCborStreamReader
 		CQt.QCborStreamReader_Delete(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QCborStreamReader_SetDevice(this.nativePtr, device);
+		CQt.QCborStreamReader_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -52,12 +57,12 @@ public class QCborStreamReader
 		return CQt.QCborStreamReader_Device(this.nativePtr);
 	}
 	
-	public void AddData(libqt_string data)
+	public void AddData(String data)
 	{
-		CQt.QCborStreamReader_AddData(this.nativePtr, data);
+		CQt.QCborStreamReader_AddData(this.nativePtr, libqt_string(data));
 	}
 	
-	public void AddData2(char8[] data, int32 lenVal)
+	public void AddData2(char8* data, int32 lenVal)
 	{
 		CQt.QCborStreamReader_AddData2(this.nativePtr, data, lenVal);
 	}
@@ -298,7 +303,7 @@ extension CQt
 	[LinkName("QCborStreamReader_new")]
 	public static extern void* QCborStreamReader_new();
 	[LinkName("QCborStreamReader_new2")]
-	public static extern void* QCborStreamReader_new2(char8[] data, int32 lenVal);
+	public static extern void* QCborStreamReader_new2(char8* data, int32 lenVal);
 	[LinkName("QCborStreamReader_new3")]
 	public static extern void* QCborStreamReader_new3(uint8* data, int32 lenVal);
 	[LinkName("QCborStreamReader_new4")]
@@ -312,7 +317,7 @@ extension CQt
 	[LinkName("QCborStreamReader_AddData")]
 	public static extern void QCborStreamReader_AddData(void* c_this, libqt_string data);
 	[LinkName("QCborStreamReader_AddData2")]
-	public static extern void QCborStreamReader_AddData2(void* c_this, char8[] data, int32 lenVal);
+	public static extern void QCborStreamReader_AddData2(void* c_this, char8* data, int32 lenVal);
 	[LinkName("QCborStreamReader_AddData3")]
 	public static extern void QCborStreamReader_AddData3(void* c_this, uint8* data, int32 lenVal);
 	[LinkName("QCborStreamReader_Reparse")]

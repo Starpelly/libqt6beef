@@ -19,13 +19,18 @@ public enum QDrawBorderPixmap__DrawingHint
 	OpaqueFrame = 495,
 	OpaqueAll = 511,
 }
-public class QTileRules
+public interface IQTileRules
+{
+	void* NativePtr { get; }
+}
+public class QTileRules : IQTileRules
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTileRules other)
 	{
-		this.nativePtr = CQt.QTileRules_new(other);
+		this.nativePtr = CQt.QTileRules_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{

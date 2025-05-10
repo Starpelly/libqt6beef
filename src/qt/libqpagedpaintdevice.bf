@@ -9,9 +9,14 @@ public enum QPagedPaintDevice__PdfVersion
 	PdfVersion_A1b = 1,
 	PdfVersion_1_6 = 2,
 }
-public class QPagedPaintDevice
+public interface IQPagedPaintDevice
+{
+	void* NativePtr { get; }
+}
+public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -23,14 +28,14 @@ public class QPagedPaintDevice
 		return CQt.QPagedPaintDevice_NewPage(this.nativePtr);
 	}
 	
-	public virtual bool SetPageLayout(void* pageLayout)
+	public virtual bool SetPageLayout(IQPageLayout pageLayout)
 	{
-		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, pageLayout);
+		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, (pageLayout == default) ? default : (void*)pageLayout.NativePtr);
 	}
 	
-	public virtual bool SetPageSize(void* pageSize)
+	public virtual bool SetPageSize(IQPageSize pageSize)
 	{
-		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, pageSize);
+		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, (pageSize == default) ? default : (void*)pageSize.NativePtr);
 	}
 	
 	public virtual bool SetPageOrientation(int64 orientation)
@@ -38,9 +43,9 @@ public class QPagedPaintDevice
 		return CQt.QPagedPaintDevice_SetPageOrientation(this.nativePtr, orientation);
 	}
 	
-	public virtual bool SetPageMargins(void* margins, int64 units)
+	public virtual bool SetPageMargins(IQMarginsF margins, int64 units)
 	{
-		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, margins, units);
+		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr, units);
 	}
 	
 	public void PageLayout()
@@ -48,9 +53,9 @@ public class QPagedPaintDevice
 		CQt.QPagedPaintDevice_PageLayout(this.nativePtr);
 	}
 	
-	public virtual void SetPageRanges(void* ranges)
+	public virtual void SetPageRanges(IQPageRanges ranges)
 	{
-		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, ranges);
+		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, (ranges == default) ? default : (void*)ranges.NativePtr);
 	}
 	
 	public void PageRanges()

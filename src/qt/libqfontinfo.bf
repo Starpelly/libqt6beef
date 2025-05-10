@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFontInfo
+public interface IQFontInfo
+{
+	void* NativePtr { get; }
+}
+public class QFontInfo : IQFontInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* param1)
+	public this(IQFont param1)
 	{
-		this.nativePtr = CQt.QFontInfo_new(param1);
+		this.nativePtr = CQt.QFontInfo_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -16,14 +21,14 @@ public class QFontInfo
 		CQt.QFontInfo_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQFontInfo param1)
 	{
-		CQt.QFontInfo_OperatorAssign(this.nativePtr, param1);
+		CQt.QFontInfo_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFontInfo other)
 	{
-		CQt.QFontInfo_Swap(this.nativePtr, other);
+		CQt.QFontInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string Family()

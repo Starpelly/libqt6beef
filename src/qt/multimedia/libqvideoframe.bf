@@ -29,9 +29,14 @@ public enum QVideoFrame__PaintOptions__PaintFlag
 {
 	DontDrawSubtitles = 1,
 }
-public class QVideoFrame
+public interface IQVideoFrame
+{
+	void* NativePtr { get; }
+}
+public class QVideoFrame : IQVideoFrame
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -43,24 +48,24 @@ public class QVideoFrame
 		CQt.QVideoFrame_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQVideoFrame other)
 	{
-		CQt.QVideoFrame_Swap(this.nativePtr, other);
+		CQt.QVideoFrame_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQVideoFrame other)
 	{
-		CQt.QVideoFrame_OperatorAssign(this.nativePtr, other);
+		CQt.QVideoFrame_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQVideoFrame other)
 	{
-		return CQt.QVideoFrame_OperatorEqual(this.nativePtr, other);
+		return CQt.QVideoFrame_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQVideoFrame other)
 	{
-		return CQt.QVideoFrame_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QVideoFrame_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -203,14 +208,14 @@ public class QVideoFrame
 		return CQt.QVideoFrame_SubtitleText(this.nativePtr);
 	}
 	
-	public void SetSubtitleText(libqt_string text)
+	public void SetSubtitleText(String text)
 	{
-		CQt.QVideoFrame_SetSubtitleText(this.nativePtr, text);
+		CQt.QVideoFrame_SetSubtitleText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void Paint(void* painter, void* rect, QVideoFrame__PaintOptions* options)
+	public void Paint(IQPainter painter, IQRectF rect, QVideoFrame__PaintOptions options)
 	{
-		CQt.QVideoFrame_Paint(this.nativePtr, painter, rect, options);
+		CQt.QVideoFrame_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, (options == default) ? default : (void*)options.NativePtr);
 	}
 	
 }
@@ -289,18 +294,23 @@ extension CQt
 	[LinkName("QVideoFrame_SetSubtitleText")]
 	public static extern void QVideoFrame_SetSubtitleText(void* c_this, libqt_string text);
 	[LinkName("QVideoFrame_Paint")]
-	public static extern void QVideoFrame_Paint(void* c_this, void* painter, void* rect, QVideoFrame__PaintOptions* options);
+	public static extern void QVideoFrame_Paint(void* c_this, void* painter, void* rect, void* options);
 	/// Delete this object from C++ memory
 	[LinkName("QVideoFrame_Delete")]
 	public static extern void QVideoFrame_Delete(void* self);
 }
-public class QVideoFrame__PaintOptions
+public interface IQVideoFrame__PaintOptions
+{
+	void* NativePtr { get; }
+}
+public class QVideoFrame__PaintOptions : IQVideoFrame__PaintOptions
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QVideoFrame__PaintOptions* other)
+	public this(QVideoFrame__PaintOptions other)
 	{
-		this.nativePtr = CQt.QVideoFrame__PaintOptions_new(other);
+		this.nativePtr = CQt.QVideoFrame__PaintOptions_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -310,9 +320,9 @@ public class QVideoFrame__PaintOptions
 extension CQt
 {
 	[LinkName("QVideoFrame__PaintOptions_new")]
-	public static extern void* QVideoFrame__PaintOptions_new(QVideoFrame__PaintOptions* other);
+	public static extern void* QVideoFrame__PaintOptions_new(void* other);
 	[LinkName("QVideoFrame__PaintOptions_new2")]
-	public static extern void* QVideoFrame__PaintOptions_new2(QVideoFrame__PaintOptions* other);
+	public static extern void* QVideoFrame__PaintOptions_new2(void* other);
 	/// Delete this object from C++ memory
 	[LinkName("QVideoFrame__PaintOptions_Delete")]
 	public static extern void QVideoFrame__PaintOptions_Delete(void* self);

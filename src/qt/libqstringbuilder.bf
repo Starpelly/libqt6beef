@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAbstractConcatenable
+public interface IQAbstractConcatenable
+{
+	void* NativePtr { get; }
+}
+public class QAbstractConcatenable : IQAbstractConcatenable
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQAbstractConcatenable other)
 	{
-		this.nativePtr = CQt.QAbstractConcatenable_new(other);
+		this.nativePtr = CQt.QAbstractConcatenable_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{

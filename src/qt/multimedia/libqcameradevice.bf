@@ -9,9 +9,14 @@ public enum QCameraDevice__Position
 	BackFace = 1,
 	FrontFace = 2,
 }
-public class QCameraFormat
+public interface IQCameraFormat
+{
+	void* NativePtr { get; }
+}
+public class QCameraFormat : IQCameraFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -23,9 +28,9 @@ public class QCameraFormat
 		CQt.QCameraFormat_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCameraFormat other)
 	{
-		CQt.QCameraFormat_OperatorAssign(this.nativePtr, other);
+		CQt.QCameraFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int64 PixelFormat()
@@ -53,14 +58,14 @@ public class QCameraFormat
 		return CQt.QCameraFormat_IsNull(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCameraFormat other)
 	{
-		return CQt.QCameraFormat_OperatorEqual(this.nativePtr, other);
+		return CQt.QCameraFormat_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCameraFormat other)
 	{
-		return CQt.QCameraFormat_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCameraFormat_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -90,9 +95,14 @@ extension CQt
 	[LinkName("QCameraFormat_Delete")]
 	public static extern void QCameraFormat_Delete(void* self);
 }
-public class QCameraDevice
+public interface IQCameraDevice
+{
+	void* NativePtr { get; }
+}
+public class QCameraDevice : IQCameraDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -104,19 +114,19 @@ public class QCameraDevice
 		CQt.QCameraDevice_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCameraDevice other)
 	{
-		CQt.QCameraDevice_OperatorAssign(this.nativePtr, other);
+		CQt.QCameraDevice_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCameraDevice other)
 	{
-		return CQt.QCameraDevice_OperatorEqual(this.nativePtr, other);
+		return CQt.QCameraDevice_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCameraDevice other)
 	{
-		return CQt.QCameraDevice_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCameraDevice_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()

@@ -25,13 +25,18 @@ public enum QPropertyObserverBase__ObserverTag
 	ObserverIsPlaceholder = 2,
 	ObserverIsAlias = 3,
 }
-public class QPropertyBindingSourceLocation
+public interface IQPropertyBindingSourceLocation
+{
+	void* NativePtr { get; }
+}
+public class QPropertyBindingSourceLocation : IQPropertyBindingSourceLocation
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPropertyBindingSourceLocation other)
 	{
-		this.nativePtr = CQt.QPropertyBindingSourceLocation_new(other);
+		this.nativePtr = CQt.QPropertyBindingSourceLocation_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -52,9 +57,14 @@ extension CQt
 	[LinkName("QPropertyBindingSourceLocation_Delete")]
 	public static extern void QPropertyBindingSourceLocation_Delete(void* self);
 }
-public class QPropertyBindingError
+public interface IQPropertyBindingError
+{
+	void* NativePtr { get; }
+}
+public class QPropertyBindingError : IQPropertyBindingError
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -66,9 +76,9 @@ public class QPropertyBindingError
 		CQt.QPropertyBindingError_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQPropertyBindingError other)
 	{
-		CQt.QPropertyBindingError_OperatorAssign(this.nativePtr, other);
+		CQt.QPropertyBindingError_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool HasError()
@@ -109,9 +119,14 @@ extension CQt
 	[LinkName("QPropertyBindingError_Delete")]
 	public static extern void QPropertyBindingError_Delete(void* self);
 }
-public class QUntypedPropertyBinding
+public interface IQUntypedPropertyBinding
+{
+	void* NativePtr { get; }
+}
+public class QUntypedPropertyBinding : IQUntypedPropertyBinding
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -123,9 +138,9 @@ public class QUntypedPropertyBinding
 		CQt.QUntypedPropertyBinding_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQUntypedPropertyBinding other)
 	{
-		CQt.QUntypedPropertyBinding_OperatorAssign(this.nativePtr, other);
+		CQt.QUntypedPropertyBinding_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -162,9 +177,14 @@ extension CQt
 	[LinkName("QUntypedPropertyBinding_Delete")]
 	public static extern void QUntypedPropertyBinding_Delete(void* self);
 }
-public class QPropertyObserverBase
+public interface IQPropertyObserverBase
+{
+	void* NativePtr { get; }
+}
+public class QPropertyObserverBase : IQPropertyObserverBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -185,9 +205,14 @@ extension CQt
 	[LinkName("QPropertyObserverBase_Delete")]
 	public static extern void QPropertyObserverBase_Delete(void* self);
 }
-public class QPropertyObserver
+public interface IQPropertyObserver
+{
+	void* NativePtr { get; }
+}
+public class QPropertyObserver : IQPropertyObserver, IQPropertyObserverBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -206,9 +231,14 @@ extension CQt
 	[LinkName("QPropertyObserver_Delete")]
 	public static extern void QPropertyObserver_Delete(void* self);
 }
-public class QPropertyNotifier
+public interface IQPropertyNotifier
+{
+	void* NativePtr { get; }
+}
+public class QPropertyNotifier : IQPropertyNotifier, IQPropertyObserver
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -227,13 +257,18 @@ extension CQt
 	[LinkName("QPropertyNotifier_Delete")]
 	public static extern void QPropertyNotifier_Delete(void* self);
 }
-public class QUntypedBindable
+public interface IQUntypedBindable
+{
+	void* NativePtr { get; }
+}
+public class QUntypedBindable : IQUntypedBindable
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQUntypedBindable other)
 	{
-		this.nativePtr = CQt.QUntypedBindable_new(other);
+		this.nativePtr = CQt.QUntypedBindable_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -266,9 +301,9 @@ public class QUntypedBindable
 		CQt.QUntypedBindable_TakeBinding(this.nativePtr);
 	}
 	
-	public void Observe(void* observer)
+	public void Observe(IQPropertyObserver observer)
 	{
-		CQt.QUntypedBindable_Observe(this.nativePtr, observer);
+		CQt.QUntypedBindable_Observe(this.nativePtr, (observer == null) ? null : (void*)observer.NativePtr);
 	}
 	
 	public void Binding()
@@ -276,9 +311,9 @@ public class QUntypedBindable
 		CQt.QUntypedBindable_Binding(this.nativePtr);
 	}
 	
-	public bool SetBinding(void* binding)
+	public bool SetBinding(IQUntypedPropertyBinding binding)
 	{
-		return CQt.QUntypedBindable_SetBinding(this.nativePtr, binding);
+		return CQt.QUntypedBindable_SetBinding(this.nativePtr, (binding == default) ? default : (void*)binding.NativePtr);
 	}
 	
 	public bool HasBinding()
@@ -291,9 +326,9 @@ public class QUntypedBindable
 		CQt.QUntypedBindable_MetaType(this.nativePtr);
 	}
 	
-	public void MakeBinding1(void* location)
+	public void MakeBinding1(IQPropertyBindingSourceLocation location)
 	{
-		CQt.QUntypedBindable_MakeBinding1(this.nativePtr, location);
+		CQt.QUntypedBindable_MakeBinding1(this.nativePtr, (location == default) ? default : (void*)location.NativePtr);
 	}
 	
 }

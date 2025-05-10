@@ -24,9 +24,14 @@ public enum QGraphicsBlurEffect__BlurHint
 	QualityHint = 1,
 	AnimationHint = 2,
 }
-public class QGraphicsEffect
+public interface IQGraphicsEffect
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsEffect : IQGraphicsEffect, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -43,7 +48,7 @@ public class QGraphicsEffect
 		return CQt.QGraphicsEffect_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsEffect_Metacast(this.nativePtr, param1);
 	}
@@ -53,14 +58,14 @@ public class QGraphicsEffect
 		return CQt.QGraphicsEffect_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsEffect_Tr(s);
 	}
 	
-	public virtual void BoundingRectFor(void* sourceRect)
+	public virtual void BoundingRectFor(IQRectF sourceRect)
 	{
-		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, sourceRect);
+		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, (sourceRect == default) ? default : (void*)sourceRect.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -83,9 +88,9 @@ public class QGraphicsEffect
 		CQt.QGraphicsEffect_Update(this.nativePtr);
 	}
 	
-	public virtual void Draw(void* painter)
+	public virtual void Draw(IQPainter painter)
 	{
-		CQt.QGraphicsEffect_Draw(this.nativePtr, painter);
+		CQt.QGraphicsEffect_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public virtual void SourceChanged(int64 flags)
@@ -108,9 +113,9 @@ public class QGraphicsEffect
 		CQt.QGraphicsEffect_SourceBoundingRect(this.nativePtr);
 	}
 	
-	public void DrawSource(void* painter)
+	public void DrawSource(IQPainter painter)
 	{
-		CQt.QGraphicsEffect_DrawSource(this.nativePtr, painter);
+		CQt.QGraphicsEffect_DrawSource(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public void SourcePixmap()
@@ -118,12 +123,12 @@ public class QGraphicsEffect
 		CQt.QGraphicsEffect_SourcePixmap(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsEffect_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsEffect_Tr3(s, c, n);
 	}
@@ -138,24 +143,24 @@ public class QGraphicsEffect
 		CQt.QGraphicsEffect_SourcePixmap1(this.nativePtr, system);
 	}
 	
-	public void SourcePixmap2(int64 system, void* offset)
+	public void SourcePixmap2(int64 system, IQPoint offset)
 	{
-		CQt.QGraphicsEffect_SourcePixmap2(this.nativePtr, system, offset);
+		CQt.QGraphicsEffect_SourcePixmap2(this.nativePtr, system, (offset == null) ? null : (void*)offset.NativePtr);
 	}
 	
-	public void SourcePixmap3(int64 system, void* offset, int64 mode)
+	public void SourcePixmap3(int64 system, IQPoint offset, int64 mode)
 	{
-		CQt.QGraphicsEffect_SourcePixmap3(this.nativePtr, system, offset, mode);
+		CQt.QGraphicsEffect_SourcePixmap3(this.nativePtr, system, (offset == null) ? null : (void*)offset.NativePtr, mode);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -163,9 +168,9 @@ public class QGraphicsEffect
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -198,9 +203,9 @@ public class QGraphicsEffect
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -218,39 +223,39 @@ public class QGraphicsEffect
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -263,12 +268,12 @@ public class QGraphicsEffect
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -293,7 +298,7 @@ public class QGraphicsEffect
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -308,14 +313,14 @@ public class QGraphicsEffect
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -328,11 +333,11 @@ extension CQt
 	[LinkName("QGraphicsEffect_MetaObject")]
 	public static extern void* QGraphicsEffect_MetaObject(void* c_this);
 	[LinkName("QGraphicsEffect_Metacast")]
-	public static extern void* QGraphicsEffect_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsEffect_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsEffect_Metacall")]
-	public static extern int32 QGraphicsEffect_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsEffect_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsEffect_Tr")]
-	public static extern libqt_string QGraphicsEffect_Tr(char8[] s);
+	public static extern libqt_string QGraphicsEffect_Tr(char8* s);
 	[LinkName("QGraphicsEffect_BoundingRectFor")]
 	public static extern void QGraphicsEffect_BoundingRectFor(void* c_this, void* sourceRect);
 	[LinkName("QGraphicsEffect_BoundingRect")]
@@ -360,9 +365,9 @@ extension CQt
 	[LinkName("QGraphicsEffect_SourcePixmap")]
 	public static extern void QGraphicsEffect_SourcePixmap(void* c_this);
 	[LinkName("QGraphicsEffect_Tr2")]
-	public static extern libqt_string QGraphicsEffect_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsEffect_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsEffect_Tr3")]
-	public static extern libqt_string QGraphicsEffect_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsEffect_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QGraphicsEffect_SourceBoundingRect1")]
 	public static extern void QGraphicsEffect_SourceBoundingRect1(void* c_this, int64 system);
 	[LinkName("QGraphicsEffect_SourcePixmap1")]
@@ -375,9 +380,14 @@ extension CQt
 	[LinkName("QGraphicsEffect_Delete")]
 	public static extern void QGraphicsEffect_Delete(void* self);
 }
-public class QGraphicsColorizeEffect
+public interface IQGraphicsColorizeEffect
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsColorizeEffect : IQGraphicsColorizeEffect, IQGraphicsEffect
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -394,7 +404,7 @@ public class QGraphicsColorizeEffect
 		return CQt.QGraphicsColorizeEffect_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsColorizeEffect_Metacast(this.nativePtr, param1);
 	}
@@ -404,7 +414,7 @@ public class QGraphicsColorizeEffect
 		return CQt.QGraphicsColorizeEffect_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsColorizeEffect_Tr(s);
 	}
@@ -419,9 +429,9 @@ public class QGraphicsColorizeEffect
 		return CQt.QGraphicsColorizeEffect_Strength(this.nativePtr);
 	}
 	
-	public void SetColor(void* c)
+	public void SetColor(IQColor c)
 	{
-		CQt.QGraphicsColorizeEffect_SetColor(this.nativePtr, c);
+		CQt.QGraphicsColorizeEffect_SetColor(this.nativePtr, (c == default) ? default : (void*)c.NativePtr);
 	}
 	
 	public void SetStrength(double strength)
@@ -429,24 +439,24 @@ public class QGraphicsColorizeEffect
 		CQt.QGraphicsColorizeEffect_SetStrength(this.nativePtr, strength);
 	}
 	
-	public virtual void Draw(void* painter)
+	public virtual void Draw(IQPainter painter)
 	{
-		CQt.QGraphicsColorizeEffect_Draw(this.nativePtr, painter);
+		CQt.QGraphicsColorizeEffect_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsColorizeEffect_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsColorizeEffect_Tr3(s, c, n);
 	}
 	
-	public virtual void BoundingRectFor(void* sourceRect)
+	public virtual void BoundingRectFor(IQRectF sourceRect)
 	{
-		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, sourceRect);
+		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, (sourceRect == default) ? default : (void*)sourceRect.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -469,14 +479,14 @@ public class QGraphicsColorizeEffect
 		CQt.QGraphicsEffect_Update(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -484,9 +494,9 @@ public class QGraphicsColorizeEffect
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -519,9 +529,9 @@ public class QGraphicsColorizeEffect
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -539,39 +549,39 @@ public class QGraphicsColorizeEffect
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -584,12 +594,12 @@ public class QGraphicsColorizeEffect
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -614,7 +624,7 @@ public class QGraphicsColorizeEffect
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -629,14 +639,14 @@ public class QGraphicsColorizeEffect
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -649,11 +659,11 @@ extension CQt
 	[LinkName("QGraphicsColorizeEffect_MetaObject")]
 	public static extern void* QGraphicsColorizeEffect_MetaObject(void* c_this);
 	[LinkName("QGraphicsColorizeEffect_Metacast")]
-	public static extern void* QGraphicsColorizeEffect_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsColorizeEffect_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsColorizeEffect_Metacall")]
-	public static extern int32 QGraphicsColorizeEffect_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsColorizeEffect_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsColorizeEffect_Tr")]
-	public static extern libqt_string QGraphicsColorizeEffect_Tr(char8[] s);
+	public static extern libqt_string QGraphicsColorizeEffect_Tr(char8* s);
 	[LinkName("QGraphicsColorizeEffect_Color")]
 	public static extern void QGraphicsColorizeEffect_Color(void* c_this);
 	[LinkName("QGraphicsColorizeEffect_Strength")]
@@ -669,16 +679,21 @@ extension CQt
 	[LinkName("QGraphicsColorizeEffect_Draw")]
 	public static extern void QGraphicsColorizeEffect_Draw(void* c_this, void* painter);
 	[LinkName("QGraphicsColorizeEffect_Tr2")]
-	public static extern libqt_string QGraphicsColorizeEffect_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsColorizeEffect_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsColorizeEffect_Tr3")]
-	public static extern libqt_string QGraphicsColorizeEffect_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsColorizeEffect_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsColorizeEffect_Delete")]
 	public static extern void QGraphicsColorizeEffect_Delete(void* self);
 }
-public class QGraphicsBlurEffect
+public interface IQGraphicsBlurEffect
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsBlurEffect : IQGraphicsBlurEffect, IQGraphicsEffect
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -695,7 +710,7 @@ public class QGraphicsBlurEffect
 		return CQt.QGraphicsBlurEffect_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsBlurEffect_Metacast(this.nativePtr, param1);
 	}
@@ -705,14 +720,14 @@ public class QGraphicsBlurEffect
 		return CQt.QGraphicsBlurEffect_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsBlurEffect_Tr(s);
 	}
 	
-	public virtual void BoundingRectFor(void* rect)
+	public virtual void BoundingRectFor(IQRectF rect)
 	{
-		CQt.QGraphicsBlurEffect_BoundingRectFor(this.nativePtr, rect);
+		CQt.QGraphicsBlurEffect_BoundingRectFor(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public double BlurRadius()
@@ -735,17 +750,17 @@ public class QGraphicsBlurEffect
 		CQt.QGraphicsBlurEffect_SetBlurHints(this.nativePtr, hints);
 	}
 	
-	public virtual void Draw(void* painter)
+	public virtual void Draw(IQPainter painter)
 	{
-		CQt.QGraphicsBlurEffect_Draw(this.nativePtr, painter);
+		CQt.QGraphicsBlurEffect_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsBlurEffect_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsBlurEffect_Tr3(s, c, n);
 	}
@@ -770,14 +785,14 @@ public class QGraphicsBlurEffect
 		CQt.QGraphicsEffect_Update(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -785,9 +800,9 @@ public class QGraphicsBlurEffect
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -820,9 +835,9 @@ public class QGraphicsBlurEffect
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -840,39 +855,39 @@ public class QGraphicsBlurEffect
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -885,12 +900,12 @@ public class QGraphicsBlurEffect
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -915,7 +930,7 @@ public class QGraphicsBlurEffect
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -930,14 +945,14 @@ public class QGraphicsBlurEffect
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -950,11 +965,11 @@ extension CQt
 	[LinkName("QGraphicsBlurEffect_MetaObject")]
 	public static extern void* QGraphicsBlurEffect_MetaObject(void* c_this);
 	[LinkName("QGraphicsBlurEffect_Metacast")]
-	public static extern void* QGraphicsBlurEffect_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsBlurEffect_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsBlurEffect_Metacall")]
-	public static extern int32 QGraphicsBlurEffect_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsBlurEffect_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsBlurEffect_Tr")]
-	public static extern libqt_string QGraphicsBlurEffect_Tr(char8[] s);
+	public static extern libqt_string QGraphicsBlurEffect_Tr(char8* s);
 	[LinkName("QGraphicsBlurEffect_BoundingRectFor")]
 	public static extern void QGraphicsBlurEffect_BoundingRectFor(void* c_this, void* rect);
 	[LinkName("QGraphicsBlurEffect_BlurRadius")]
@@ -972,16 +987,21 @@ extension CQt
 	[LinkName("QGraphicsBlurEffect_Draw")]
 	public static extern void QGraphicsBlurEffect_Draw(void* c_this, void* painter);
 	[LinkName("QGraphicsBlurEffect_Tr2")]
-	public static extern libqt_string QGraphicsBlurEffect_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsBlurEffect_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsBlurEffect_Tr3")]
-	public static extern libqt_string QGraphicsBlurEffect_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsBlurEffect_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsBlurEffect_Delete")]
 	public static extern void QGraphicsBlurEffect_Delete(void* self);
 }
-public class QGraphicsDropShadowEffect
+public interface IQGraphicsDropShadowEffect
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsDropShadowEffect : IQGraphicsDropShadowEffect, IQGraphicsEffect
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -998,7 +1018,7 @@ public class QGraphicsDropShadowEffect
 		return CQt.QGraphicsDropShadowEffect_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsDropShadowEffect_Metacast(this.nativePtr, param1);
 	}
@@ -1008,14 +1028,14 @@ public class QGraphicsDropShadowEffect
 		return CQt.QGraphicsDropShadowEffect_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsDropShadowEffect_Tr(s);
 	}
 	
-	public virtual void BoundingRectFor(void* rect)
+	public virtual void BoundingRectFor(IQRectF rect)
 	{
-		CQt.QGraphicsDropShadowEffect_BoundingRectFor(this.nativePtr, rect);
+		CQt.QGraphicsDropShadowEffect_BoundingRectFor(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void Offset()
@@ -1043,9 +1063,9 @@ public class QGraphicsDropShadowEffect
 		CQt.QGraphicsDropShadowEffect_Color(this.nativePtr);
 	}
 	
-	public void SetOffset(void* ofs)
+	public void SetOffset(IQPointF ofs)
 	{
-		CQt.QGraphicsDropShadowEffect_SetOffset(this.nativePtr, ofs);
+		CQt.QGraphicsDropShadowEffect_SetOffset(this.nativePtr, (ofs == default) ? default : (void*)ofs.NativePtr);
 	}
 	
 	public void SetOffset2(double dx, double dy)
@@ -1073,22 +1093,22 @@ public class QGraphicsDropShadowEffect
 		CQt.QGraphicsDropShadowEffect_SetBlurRadius(this.nativePtr, blurRadius);
 	}
 	
-	public void SetColor(void* color)
+	public void SetColor(IQColor color)
 	{
-		CQt.QGraphicsDropShadowEffect_SetColor(this.nativePtr, color);
+		CQt.QGraphicsDropShadowEffect_SetColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
-	public virtual void Draw(void* painter)
+	public virtual void Draw(IQPainter painter)
 	{
-		CQt.QGraphicsDropShadowEffect_Draw(this.nativePtr, painter);
+		CQt.QGraphicsDropShadowEffect_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsDropShadowEffect_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsDropShadowEffect_Tr3(s, c, n);
 	}
@@ -1113,14 +1133,14 @@ public class QGraphicsDropShadowEffect
 		CQt.QGraphicsEffect_Update(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1128,9 +1148,9 @@ public class QGraphicsDropShadowEffect
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -1163,9 +1183,9 @@ public class QGraphicsDropShadowEffect
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1183,39 +1203,39 @@ public class QGraphicsDropShadowEffect
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1228,12 +1248,12 @@ public class QGraphicsDropShadowEffect
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -1258,7 +1278,7 @@ public class QGraphicsDropShadowEffect
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -1273,14 +1293,14 @@ public class QGraphicsDropShadowEffect
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -1293,11 +1313,11 @@ extension CQt
 	[LinkName("QGraphicsDropShadowEffect_MetaObject")]
 	public static extern void* QGraphicsDropShadowEffect_MetaObject(void* c_this);
 	[LinkName("QGraphicsDropShadowEffect_Metacast")]
-	public static extern void* QGraphicsDropShadowEffect_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsDropShadowEffect_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsDropShadowEffect_Metacall")]
-	public static extern int32 QGraphicsDropShadowEffect_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsDropShadowEffect_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsDropShadowEffect_Tr")]
-	public static extern libqt_string QGraphicsDropShadowEffect_Tr(char8[] s);
+	public static extern libqt_string QGraphicsDropShadowEffect_Tr(char8* s);
 	[LinkName("QGraphicsDropShadowEffect_BoundingRectFor")]
 	public static extern void QGraphicsDropShadowEffect_BoundingRectFor(void* c_this, void* rect);
 	[LinkName("QGraphicsDropShadowEffect_Offset")]
@@ -1333,16 +1353,21 @@ extension CQt
 	[LinkName("QGraphicsDropShadowEffect_Draw")]
 	public static extern void QGraphicsDropShadowEffect_Draw(void* c_this, void* painter);
 	[LinkName("QGraphicsDropShadowEffect_Tr2")]
-	public static extern libqt_string QGraphicsDropShadowEffect_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsDropShadowEffect_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsDropShadowEffect_Tr3")]
-	public static extern libqt_string QGraphicsDropShadowEffect_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsDropShadowEffect_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsDropShadowEffect_Delete")]
 	public static extern void QGraphicsDropShadowEffect_Delete(void* self);
 }
-public class QGraphicsOpacityEffect
+public interface IQGraphicsOpacityEffect
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsOpacityEffect : IQGraphicsOpacityEffect, IQGraphicsEffect
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1359,7 +1384,7 @@ public class QGraphicsOpacityEffect
 		return CQt.QGraphicsOpacityEffect_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsOpacityEffect_Metacast(this.nativePtr, param1);
 	}
@@ -1369,7 +1394,7 @@ public class QGraphicsOpacityEffect
 		return CQt.QGraphicsOpacityEffect_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsOpacityEffect_Tr(s);
 	}
@@ -1389,29 +1414,29 @@ public class QGraphicsOpacityEffect
 		CQt.QGraphicsOpacityEffect_SetOpacity(this.nativePtr, opacity);
 	}
 	
-	public void SetOpacityMask(void* mask)
+	public void SetOpacityMask(IQBrush mask)
 	{
-		CQt.QGraphicsOpacityEffect_SetOpacityMask(this.nativePtr, mask);
+		CQt.QGraphicsOpacityEffect_SetOpacityMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
-	public virtual void Draw(void* painter)
+	public virtual void Draw(IQPainter painter)
 	{
-		CQt.QGraphicsOpacityEffect_Draw(this.nativePtr, painter);
+		CQt.QGraphicsOpacityEffect_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsOpacityEffect_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsOpacityEffect_Tr3(s, c, n);
 	}
 	
-	public virtual void BoundingRectFor(void* sourceRect)
+	public virtual void BoundingRectFor(IQRectF sourceRect)
 	{
-		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, sourceRect);
+		CQt.QGraphicsEffect_BoundingRectFor(this.nativePtr, (sourceRect == default) ? default : (void*)sourceRect.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -1434,14 +1459,14 @@ public class QGraphicsOpacityEffect
 		CQt.QGraphicsEffect_Update(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1449,9 +1474,9 @@ public class QGraphicsOpacityEffect
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -1484,9 +1509,9 @@ public class QGraphicsOpacityEffect
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1504,39 +1529,39 @@ public class QGraphicsOpacityEffect
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1549,12 +1574,12 @@ public class QGraphicsOpacityEffect
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -1579,7 +1604,7 @@ public class QGraphicsOpacityEffect
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -1594,14 +1619,14 @@ public class QGraphicsOpacityEffect
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -1614,11 +1639,11 @@ extension CQt
 	[LinkName("QGraphicsOpacityEffect_MetaObject")]
 	public static extern void* QGraphicsOpacityEffect_MetaObject(void* c_this);
 	[LinkName("QGraphicsOpacityEffect_Metacast")]
-	public static extern void* QGraphicsOpacityEffect_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsOpacityEffect_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsOpacityEffect_Metacall")]
-	public static extern int32 QGraphicsOpacityEffect_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsOpacityEffect_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsOpacityEffect_Tr")]
-	public static extern libqt_string QGraphicsOpacityEffect_Tr(char8[] s);
+	public static extern libqt_string QGraphicsOpacityEffect_Tr(char8* s);
 	[LinkName("QGraphicsOpacityEffect_Opacity")]
 	public static extern double QGraphicsOpacityEffect_Opacity(void* c_this);
 	[LinkName("QGraphicsOpacityEffect_OpacityMask")]
@@ -1634,9 +1659,9 @@ extension CQt
 	[LinkName("QGraphicsOpacityEffect_Draw")]
 	public static extern void QGraphicsOpacityEffect_Draw(void* c_this, void* painter);
 	[LinkName("QGraphicsOpacityEffect_Tr2")]
-	public static extern libqt_string QGraphicsOpacityEffect_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsOpacityEffect_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsOpacityEffect_Tr3")]
-	public static extern libqt_string QGraphicsOpacityEffect_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsOpacityEffect_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsOpacityEffect_Delete")]
 	public static extern void QGraphicsOpacityEffect_Delete(void* self);

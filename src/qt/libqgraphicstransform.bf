@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QGraphicsTransform
+public interface IQGraphicsTransform
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsTransform : IQGraphicsTransform, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QGraphicsTransform
 		return CQt.QGraphicsTransform_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsTransform_Metacast(this.nativePtr, param1);
 	}
@@ -31,14 +36,14 @@ public class QGraphicsTransform
 		return CQt.QGraphicsTransform_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsTransform_Tr(s);
 	}
 	
-	public virtual void ApplyTo(void* matrix)
+	public virtual void ApplyTo(IQMatrix4x4 matrix)
 	{
-		CQt.QGraphicsTransform_ApplyTo(this.nativePtr, matrix);
+		CQt.QGraphicsTransform_ApplyTo(this.nativePtr, (matrix == null) ? null : (void*)matrix.NativePtr);
 	}
 	
 	public void Update()
@@ -46,24 +51,24 @@ public class QGraphicsTransform
 		CQt.QGraphicsTransform_Update(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsTransform_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsTransform_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -71,9 +76,9 @@ public class QGraphicsTransform
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -106,9 +111,9 @@ public class QGraphicsTransform
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -126,39 +131,39 @@ public class QGraphicsTransform
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -171,12 +176,12 @@ public class QGraphicsTransform
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -201,7 +206,7 @@ public class QGraphicsTransform
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -216,14 +221,14 @@ public class QGraphicsTransform
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -236,26 +241,31 @@ extension CQt
 	[LinkName("QGraphicsTransform_MetaObject")]
 	public static extern void* QGraphicsTransform_MetaObject(void* c_this);
 	[LinkName("QGraphicsTransform_Metacast")]
-	public static extern void* QGraphicsTransform_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsTransform_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsTransform_Metacall")]
-	public static extern int32 QGraphicsTransform_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsTransform_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsTransform_Tr")]
-	public static extern libqt_string QGraphicsTransform_Tr(char8[] s);
+	public static extern libqt_string QGraphicsTransform_Tr(char8* s);
 	[LinkName("QGraphicsTransform_ApplyTo")]
 	public static extern void QGraphicsTransform_ApplyTo(void* c_this, void* matrix);
 	[LinkName("QGraphicsTransform_Update")]
 	public static extern void QGraphicsTransform_Update(void* c_this);
 	[LinkName("QGraphicsTransform_Tr2")]
-	public static extern libqt_string QGraphicsTransform_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsTransform_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsTransform_Tr3")]
-	public static extern libqt_string QGraphicsTransform_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsTransform_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsTransform_Delete")]
 	public static extern void QGraphicsTransform_Delete(void* self);
 }
-public class QGraphicsScale
+public interface IQGraphicsScale
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsScale : IQGraphicsScale, IQGraphicsTransform
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -272,7 +282,7 @@ public class QGraphicsScale
 		return CQt.QGraphicsScale_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsScale_Metacast(this.nativePtr, param1);
 	}
@@ -282,7 +292,7 @@ public class QGraphicsScale
 		return CQt.QGraphicsScale_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsScale_Tr(s);
 	}
@@ -292,9 +302,9 @@ public class QGraphicsScale
 		CQt.QGraphicsScale_Origin(this.nativePtr);
 	}
 	
-	public void SetOrigin(void* point)
+	public void SetOrigin(IQVector3D point)
 	{
-		CQt.QGraphicsScale_SetOrigin(this.nativePtr, point);
+		CQt.QGraphicsScale_SetOrigin(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
 	public double XScale()
@@ -327,29 +337,29 @@ public class QGraphicsScale
 		CQt.QGraphicsScale_SetZScale(this.nativePtr, zScale);
 	}
 	
-	public virtual void ApplyTo(void* matrix)
+	public virtual void ApplyTo(IQMatrix4x4 matrix)
 	{
-		CQt.QGraphicsScale_ApplyTo(this.nativePtr, matrix);
+		CQt.QGraphicsScale_ApplyTo(this.nativePtr, (matrix == null) ? null : (void*)matrix.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsScale_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsScale_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -357,9 +367,9 @@ public class QGraphicsScale
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -392,9 +402,9 @@ public class QGraphicsScale
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -412,39 +422,39 @@ public class QGraphicsScale
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -457,12 +467,12 @@ public class QGraphicsScale
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -487,7 +497,7 @@ public class QGraphicsScale
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -502,14 +512,14 @@ public class QGraphicsScale
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -522,11 +532,11 @@ extension CQt
 	[LinkName("QGraphicsScale_MetaObject")]
 	public static extern void* QGraphicsScale_MetaObject(void* c_this);
 	[LinkName("QGraphicsScale_Metacast")]
-	public static extern void* QGraphicsScale_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsScale_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsScale_Metacall")]
-	public static extern int32 QGraphicsScale_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsScale_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsScale_Tr")]
-	public static extern libqt_string QGraphicsScale_Tr(char8[] s);
+	public static extern libqt_string QGraphicsScale_Tr(char8* s);
 	[LinkName("QGraphicsScale_Origin")]
 	public static extern void QGraphicsScale_Origin(void* c_this);
 	[LinkName("QGraphicsScale_SetOrigin")]
@@ -556,16 +566,21 @@ extension CQt
 	[LinkName("QGraphicsScale_Connect_ScaleChanged")]
 	public static extern void QGraphicsScale_Connect_ScaleChanged(void* c_this, c_intptr slot);
 	[LinkName("QGraphicsScale_Tr2")]
-	public static extern libqt_string QGraphicsScale_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsScale_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsScale_Tr3")]
-	public static extern libqt_string QGraphicsScale_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsScale_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsScale_Delete")]
 	public static extern void QGraphicsScale_Delete(void* self);
 }
-public class QGraphicsRotation
+public interface IQGraphicsRotation
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsRotation : IQGraphicsRotation, IQGraphicsTransform
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -582,7 +597,7 @@ public class QGraphicsRotation
 		return CQt.QGraphicsRotation_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsRotation_Metacast(this.nativePtr, param1);
 	}
@@ -592,7 +607,7 @@ public class QGraphicsRotation
 		return CQt.QGraphicsRotation_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsRotation_Tr(s);
 	}
@@ -602,9 +617,9 @@ public class QGraphicsRotation
 		CQt.QGraphicsRotation_Origin(this.nativePtr);
 	}
 	
-	public void SetOrigin(void* point)
+	public void SetOrigin(IQVector3D point)
 	{
-		CQt.QGraphicsRotation_SetOrigin(this.nativePtr, point);
+		CQt.QGraphicsRotation_SetOrigin(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
 	public double Angle()
@@ -622,9 +637,9 @@ public class QGraphicsRotation
 		CQt.QGraphicsRotation_Axis(this.nativePtr);
 	}
 	
-	public void SetAxis(void* axis)
+	public void SetAxis(IQVector3D axis)
 	{
-		CQt.QGraphicsRotation_SetAxis(this.nativePtr, axis);
+		CQt.QGraphicsRotation_SetAxis(this.nativePtr, (axis == default) ? default : (void*)axis.NativePtr);
 	}
 	
 	public void SetAxisWithAxis(int64 axis)
@@ -632,29 +647,29 @@ public class QGraphicsRotation
 		CQt.QGraphicsRotation_SetAxisWithAxis(this.nativePtr, axis);
 	}
 	
-	public virtual void ApplyTo(void* matrix)
+	public virtual void ApplyTo(IQMatrix4x4 matrix)
 	{
-		CQt.QGraphicsRotation_ApplyTo(this.nativePtr, matrix);
+		CQt.QGraphicsRotation_ApplyTo(this.nativePtr, (matrix == null) ? null : (void*)matrix.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsRotation_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsRotation_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -662,9 +677,9 @@ public class QGraphicsRotation
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -697,9 +712,9 @@ public class QGraphicsRotation
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -717,39 +732,39 @@ public class QGraphicsRotation
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -762,12 +777,12 @@ public class QGraphicsRotation
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -792,7 +807,7 @@ public class QGraphicsRotation
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -807,14 +822,14 @@ public class QGraphicsRotation
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -827,11 +842,11 @@ extension CQt
 	[LinkName("QGraphicsRotation_MetaObject")]
 	public static extern void* QGraphicsRotation_MetaObject(void* c_this);
 	[LinkName("QGraphicsRotation_Metacast")]
-	public static extern void* QGraphicsRotation_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsRotation_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsRotation_Metacall")]
-	public static extern int32 QGraphicsRotation_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsRotation_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsRotation_Tr")]
-	public static extern libqt_string QGraphicsRotation_Tr(char8[] s);
+	public static extern libqt_string QGraphicsRotation_Tr(char8* s);
 	[LinkName("QGraphicsRotation_Origin")]
 	public static extern void QGraphicsRotation_Origin(void* c_this);
 	[LinkName("QGraphicsRotation_SetOrigin")]
@@ -855,9 +870,9 @@ extension CQt
 	[LinkName("QGraphicsRotation_Connect_AxisChanged")]
 	public static extern void QGraphicsRotation_Connect_AxisChanged(void* c_this, c_intptr slot);
 	[LinkName("QGraphicsRotation_Tr2")]
-	public static extern libqt_string QGraphicsRotation_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsRotation_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsRotation_Tr3")]
-	public static extern libqt_string QGraphicsRotation_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsRotation_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsRotation_Delete")]
 	public static extern void QGraphicsRotation_Delete(void* self);

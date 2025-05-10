@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QStorageInfo
+public interface IQStorageInfo
+{
+	void* NativePtr { get; }
+}
+public class QStorageInfo : IQStorageInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,19 +21,19 @@ public class QStorageInfo
 		CQt.QStorageInfo_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStorageInfo other)
 	{
-		CQt.QStorageInfo_OperatorAssign(this.nativePtr, other);
+		CQt.QStorageInfo_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQStorageInfo other)
 	{
-		CQt.QStorageInfo_Swap(this.nativePtr, other);
+		CQt.QStorageInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetPath(libqt_string path)
+	public void SetPath(String path)
 	{
-		CQt.QStorageInfo_SetPath(this.nativePtr, path);
+		CQt.QStorageInfo_SetPath(this.nativePtr, libqt_string(path));
 	}
 	
 	public libqt_string RootPath()

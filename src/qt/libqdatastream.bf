@@ -64,9 +64,14 @@ public enum QDataStream__FloatingPointPrecision
 	SinglePrecision = 0,
 	DoublePrecision = 1,
 }
-public class QDataStream
+public interface IQDataStream
+{
+	void* NativePtr { get; }
+}
+public class QDataStream : IQDataStream, IQIODeviceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -83,9 +88,9 @@ public class QDataStream
 		return CQt.QDataStream_Device(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QDataStream_SetDevice(this.nativePtr, device);
+		CQt.QDataStream_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public bool AtEnd()
@@ -198,7 +203,7 @@ public class QDataStream
 		CQt.QDataStream_OperatorShiftRightWithDouble(this.nativePtr, f);
 	}
 	
-	public void OperatorShiftRightWithStr(char8[] str)
+	public void OperatorShiftRightWithStr(char8* str)
 	{
 		CQt.QDataStream_OperatorShiftRightWithStr(this.nativePtr, str);
 	}
@@ -263,27 +268,27 @@ public class QDataStream
 		CQt.QDataStream_OperatorShiftLeftWithDouble(this.nativePtr, f);
 	}
 	
-	public void OperatorShiftLeftWithStr(char8[] str)
+	public void OperatorShiftLeftWithStr(char8* str)
 	{
 		CQt.QDataStream_OperatorShiftLeftWithStr(this.nativePtr, str);
 	}
 	
-	public void* ReadBytes(char8[] param1, uint32* lenVal)
+	public void* ReadBytes(char8* param1, uint32* lenVal)
 	{
 		return CQt.QDataStream_ReadBytes(this.nativePtr, param1, lenVal);
 	}
 	
-	public int32 ReadRawData(char8[] param1, int32 lenVal)
+	public int32 ReadRawData(char8* param1, int32 lenVal)
 	{
 		return CQt.QDataStream_ReadRawData(this.nativePtr, param1, lenVal);
 	}
 	
-	public void WriteBytes(char8[] param1, uint32 lenVal)
+	public void WriteBytes(char8* param1, uint32 lenVal)
 	{
 		CQt.QDataStream_WriteBytes(this.nativePtr, param1, lenVal);
 	}
 	
-	public int32 WriteRawData(char8[] param1, int32 lenVal)
+	public int32 WriteRawData(char8* param1, int32 lenVal)
 	{
 		return CQt.QDataStream_WriteRawData(this.nativePtr, param1, lenVal);
 	}
@@ -376,7 +381,7 @@ extension CQt
 	[LinkName("QDataStream_OperatorShiftRightWithDouble")]
 	public static extern void QDataStream_OperatorShiftRightWithDouble(void* c_this, double* f);
 	[LinkName("QDataStream_OperatorShiftRightWithStr")]
-	public static extern void QDataStream_OperatorShiftRightWithStr(void* c_this, char8[] str);
+	public static extern void QDataStream_OperatorShiftRightWithStr(void* c_this, char8* str);
 	[LinkName("QDataStream_OperatorShiftLeft")]
 	public static extern void QDataStream_OperatorShiftLeft(void* c_this, int8 i);
 	[LinkName("QDataStream_OperatorShiftLeftWithQint8")]
@@ -402,15 +407,15 @@ extension CQt
 	[LinkName("QDataStream_OperatorShiftLeftWithDouble")]
 	public static extern void QDataStream_OperatorShiftLeftWithDouble(void* c_this, double f);
 	[LinkName("QDataStream_OperatorShiftLeftWithStr")]
-	public static extern void QDataStream_OperatorShiftLeftWithStr(void* c_this, char8[] str);
+	public static extern void QDataStream_OperatorShiftLeftWithStr(void* c_this, char8* str);
 	[LinkName("QDataStream_ReadBytes")]
-	public static extern void* QDataStream_ReadBytes(void* c_this, char8[] param1, uint32* lenVal);
+	public static extern void* QDataStream_ReadBytes(void* c_this, char8* param1, uint32* lenVal);
 	[LinkName("QDataStream_ReadRawData")]
-	public static extern int32 QDataStream_ReadRawData(void* c_this, char8[] param1, int32 lenVal);
+	public static extern int32 QDataStream_ReadRawData(void* c_this, char8* param1, int32 lenVal);
 	[LinkName("QDataStream_WriteBytes")]
-	public static extern void QDataStream_WriteBytes(void* c_this, char8[] param1, uint32 lenVal);
+	public static extern void QDataStream_WriteBytes(void* c_this, char8* param1, uint32 lenVal);
 	[LinkName("QDataStream_WriteRawData")]
-	public static extern int32 QDataStream_WriteRawData(void* c_this, char8[] param1, int32 lenVal);
+	public static extern int32 QDataStream_WriteRawData(void* c_this, char8* param1, int32 lenVal);
 	[LinkName("QDataStream_SkipRawData")]
 	public static extern int32 QDataStream_SkipRawData(void* c_this, int32 lenVal);
 	[LinkName("QDataStream_StartTransaction")]

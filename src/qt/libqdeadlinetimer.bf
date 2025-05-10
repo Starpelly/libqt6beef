@@ -7,13 +7,18 @@ public enum QDeadlineTimer__ForeverConstant
 {
 	Forever = 0,
 }
-public class QDeadlineTimer
+public interface IQDeadlineTimer
+{
+	void* NativePtr { get; }
+}
+public class QDeadlineTimer : IQDeadlineTimer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQDeadlineTimer other)
 	{
-		this.nativePtr = CQt.QDeadlineTimer_new(other);
+		this.nativePtr = CQt.QDeadlineTimer_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -21,9 +26,9 @@ public class QDeadlineTimer
 		CQt.QDeadlineTimer_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQDeadlineTimer other)
 	{
-		CQt.QDeadlineTimer_Swap(this.nativePtr, other);
+		CQt.QDeadlineTimer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsForever()
@@ -86,9 +91,9 @@ public class QDeadlineTimer
 		CQt.QDeadlineTimer_SetPreciseDeadline(this.nativePtr, secs);
 	}
 	
-	public static void AddNSecs(void dt, int64 nsecs)
+	public static void AddNSecs(IQDeadlineTimer dt, int64 nsecs)
 	{
-		CQt.QDeadlineTimer_AddNSecs(dt, nsecs);
+		CQt.QDeadlineTimer_AddNSecs((dt == default) ? default : (void)dt.NativePtr, nsecs);
 	}
 	
 	public static void Current()
@@ -106,9 +111,9 @@ public class QDeadlineTimer
 		return CQt.QDeadlineTimer_OperatorMinusAssign(this.nativePtr, msecs);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQDeadlineTimer param1)
 	{
-		CQt.QDeadlineTimer_OperatorAssign(this.nativePtr, param1);
+		CQt.QDeadlineTimer_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void SetRemainingTime2(int64 msecs, int64 typeVal)

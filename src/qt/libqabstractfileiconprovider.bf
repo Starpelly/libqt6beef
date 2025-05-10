@@ -18,9 +18,14 @@ public enum QAbstractFileIconProvider__Option
 {
 	DontUseCustomDirectoryIcons = 1,
 }
-public class QAbstractFileIconProvider
+public interface IQAbstractFileIconProvider
+{
+	void* NativePtr { get; }
+}
+public class QAbstractFileIconProvider : IQAbstractFileIconProvider
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -37,14 +42,14 @@ public class QAbstractFileIconProvider
 		CQt.QAbstractFileIconProvider_Icon(this.nativePtr, param1);
 	}
 	
-	public virtual void IconWithQFileInfo(void* param1)
+	public virtual void IconWithQFileInfo(IQFileInfo param1)
 	{
-		CQt.QAbstractFileIconProvider_IconWithQFileInfo(this.nativePtr, param1);
+		CQt.QAbstractFileIconProvider_IconWithQFileInfo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public virtual libqt_string Type(void* param1)
+	public virtual libqt_string Type(IQFileInfo param1)
 	{
-		return CQt.QAbstractFileIconProvider_Type(this.nativePtr, param1);
+		return CQt.QAbstractFileIconProvider_Type(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public virtual void SetOptions(int64 options)

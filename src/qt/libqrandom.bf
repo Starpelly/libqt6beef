@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QRandomGenerator
+public interface IQRandomGenerator
+{
+	void* NativePtr { get; }
+}
+public class QRandomGenerator : IQRandomGenerator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QRandomGenerator
 		CQt.QRandomGenerator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQRandomGenerator other)
 	{
-		CQt.QRandomGenerator_OperatorAssign(this.nativePtr, other);
+		CQt.QRandomGenerator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public uint32 Generate()
@@ -222,9 +227,14 @@ extension CQt
 	[LinkName("QRandomGenerator_Delete")]
 	public static extern void QRandomGenerator_Delete(void* self);
 }
-public class QRandomGenerator64
+public interface IQRandomGenerator64
+{
+	void* NativePtr { get; }
+}
+public class QRandomGenerator64 : IQRandomGenerator64, IQRandomGenerator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -276,9 +286,9 @@ public class QRandomGenerator64
 		CQt.QRandomGenerator64_SecurelySeeded();
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQRandomGenerator64 param1)
 	{
-		CQt.QRandomGenerator64_OperatorAssign(this.nativePtr, param1);
+		CQt.QRandomGenerator64_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public uint64 Generate64()

@@ -20,9 +20,14 @@ public enum QTextBoundaryFinder__BoundaryReason
 	MandatoryBreak = 128,
 	SoftHyphen = 256,
 }
-public class QTextBoundaryFinder
+public interface IQTextBoundaryFinder
+{
+	void* NativePtr { get; }
+}
+public class QTextBoundaryFinder : IQTextBoundaryFinder
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -34,9 +39,9 @@ public class QTextBoundaryFinder
 		CQt.QTextBoundaryFinder_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQTextBoundaryFinder other)
 	{
-		CQt.QTextBoundaryFinder_OperatorAssign(this.nativePtr, other);
+		CQt.QTextBoundaryFinder_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()

@@ -21,9 +21,14 @@ public enum QFutureInterfaceBase__CancelMode
 	CancelOnly = 0,
 	CancelAndFinish = 1,
 }
-public class QFutureInterfaceBase
+public interface IQFutureInterfaceBase
+{
+	void* NativePtr { get; }
+}
+public class QFutureInterfaceBase : IQFutureInterfaceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -35,9 +40,9 @@ public class QFutureInterfaceBase
 		CQt.QFutureInterfaceBase_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQFutureInterfaceBase other)
 	{
-		CQt.QFutureInterfaceBase_OperatorAssign(this.nativePtr, other);
+		CQt.QFutureInterfaceBase_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ReportStarted()
@@ -60,14 +65,14 @@ public class QFutureInterfaceBase
 		CQt.QFutureInterfaceBase_ReportResultsReady(this.nativePtr, beginIndex, endIndex);
 	}
 	
-	public void SetRunnable(void* runnable)
+	public void SetRunnable(IQRunnable runnable)
 	{
-		CQt.QFutureInterfaceBase_SetRunnable(this.nativePtr, runnable);
+		CQt.QFutureInterfaceBase_SetRunnable(this.nativePtr, (runnable == null) ? null : (void*)runnable.NativePtr);
 	}
 	
-	public void SetThreadPool(void* pool)
+	public void SetThreadPool(IQThreadPool pool)
 	{
-		CQt.QFutureInterfaceBase_SetThreadPool(this.nativePtr, pool);
+		CQt.QFutureInterfaceBase_SetThreadPool(this.nativePtr, (pool == null) ? null : (void*)pool.NativePtr);
 	}
 	
 	public void* ThreadPool()
@@ -110,9 +115,9 @@ public class QFutureInterfaceBase
 		return CQt.QFutureInterfaceBase_ProgressValue(this.nativePtr);
 	}
 	
-	public void SetProgressValueAndText(int32 progressValue, libqt_string progressText)
+	public void SetProgressValueAndText(int32 progressValue, String progressText)
 	{
-		CQt.QFutureInterfaceBase_SetProgressValueAndText(this.nativePtr, progressValue, progressText);
+		CQt.QFutureInterfaceBase_SetProgressValueAndText(this.nativePtr, progressValue, libqt_string(progressText));
 	}
 	
 	public libqt_string ProgressText()
@@ -270,19 +275,19 @@ public class QFutureInterfaceBase
 		return CQt.QFutureInterfaceBase_HasException(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQFutureInterfaceBase other)
 	{
-		return CQt.QFutureInterfaceBase_OperatorEqual(this.nativePtr, other);
+		return CQt.QFutureInterfaceBase_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQFutureInterfaceBase other)
 	{
-		return CQt.QFutureInterfaceBase_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QFutureInterfaceBase_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFutureInterfaceBase other)
 	{
-		CQt.QFutureInterfaceBase_Swap(this.nativePtr, other);
+		CQt.QFutureInterfaceBase_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsChainCanceled()

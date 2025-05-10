@@ -28,9 +28,14 @@ public enum QtPrivate__QContainerImplHelper__CutResult
 	Full = 2,
 	Subset = 3,
 }
-public class QArrayData
+public interface IQArrayData
+{
+	void* NativePtr { get; }
+}
+public class QArrayData : IQArrayData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -72,14 +77,14 @@ public class QArrayData
 		return CQt.QArrayData_DetachCapacity(this.nativePtr, newSize);
 	}
 	
-	public static void* ReallocateUnaligned(void* data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option)
+	public static void* ReallocateUnaligned(IQArrayData data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option)
 	{
-		return CQt.QArrayData_ReallocateUnaligned(data, dataPointer, objectSize, newCapacity, option);
+		return CQt.QArrayData_ReallocateUnaligned((data == null) ? null : (void*)data.NativePtr, dataPointer, objectSize, newCapacity, option);
 	}
 	
-	public static void Deallocate(void* data, int32 objectSize, int32 alignment)
+	public static void Deallocate(IQArrayData data, int32 objectSize, int32 alignment)
 	{
-		CQt.QArrayData_Deallocate(data, objectSize, alignment);
+		CQt.QArrayData_Deallocate((data == null) ? null : (void*)data.NativePtr, objectSize, alignment);
 	}
 	
 }

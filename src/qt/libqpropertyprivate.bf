@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QUntypedPropertyData
+public interface IQUntypedPropertyData
+{
+	void* NativePtr { get; }
+}
+public class QUntypedPropertyData : IQUntypedPropertyData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQUntypedPropertyData other)
 	{
-		this.nativePtr = CQt.QUntypedPropertyData_new(other);
+		this.nativePtr = CQt.QUntypedPropertyData_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -25,9 +30,14 @@ extension CQt
 	[LinkName("QUntypedPropertyData_Delete")]
 	public static extern void QUntypedPropertyData_Delete(void* self);
 }
-public class QPropertyProxyBindingData
+public interface IQPropertyProxyBindingData
+{
+	void* NativePtr { get; }
+}
+public class QPropertyProxyBindingData : IQPropertyProxyBindingData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 }
 extension CQt
 {

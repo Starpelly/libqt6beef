@@ -18,13 +18,18 @@ public enum QCalendar__System
 	Last = 11,
 	User = -1,
 }
-public class QCalendar
+public interface IQCalendar
+{
+	void* NativePtr { get; }
+}
+public class QCalendar : IQCalendar
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQCalendar other)
 	{
-		this.nativePtr = CQt.QCalendar_new(other);
+		this.nativePtr = CQt.QCalendar_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -117,39 +122,39 @@ public class QCalendar
 		CQt.QCalendar_DateFromParts(this.nativePtr, year, month, day);
 	}
 	
-	public void DateFromPartsWithParts(QCalendar__YearMonthDay* parts)
+	public void DateFromPartsWithParts(QCalendar__YearMonthDay parts)
 	{
-		CQt.QCalendar_DateFromPartsWithParts(this.nativePtr, parts);
+		CQt.QCalendar_DateFromPartsWithParts(this.nativePtr, (parts == default) ? default : (void*)parts.NativePtr);
 	}
 	
-	public QCalendar__YearMonthDay PartsFromDate(void date)
+	public void PartsFromDate(IQDate date)
 	{
-		return CQt.QCalendar_PartsFromDate(this.nativePtr, date);
+		CQt.QCalendar_PartsFromDate(this.nativePtr, (date == default) ? default : (void)date.NativePtr);
 	}
 	
-	public int32 DayOfWeek(void date)
+	public int32 DayOfWeek(IQDate date)
 	{
-		return CQt.QCalendar_DayOfWeek(this.nativePtr, date);
+		return CQt.QCalendar_DayOfWeek(this.nativePtr, (date == default) ? default : (void)date.NativePtr);
 	}
 	
-	public libqt_string MonthName(void* locale, int32 month)
+	public libqt_string MonthName(IQLocale locale, int32 month)
 	{
-		return CQt.QCalendar_MonthName(this.nativePtr, locale, month);
+		return CQt.QCalendar_MonthName(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month);
 	}
 	
-	public libqt_string StandaloneMonthName(void* locale, int32 month)
+	public libqt_string StandaloneMonthName(IQLocale locale, int32 month)
 	{
-		return CQt.QCalendar_StandaloneMonthName(this.nativePtr, locale, month);
+		return CQt.QCalendar_StandaloneMonthName(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month);
 	}
 	
-	public libqt_string WeekDayName(void* locale, int32 day)
+	public libqt_string WeekDayName(IQLocale locale, int32 day)
 	{
-		return CQt.QCalendar_WeekDayName(this.nativePtr, locale, day);
+		return CQt.QCalendar_WeekDayName(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, day);
 	}
 	
-	public libqt_string StandaloneWeekDayName(void* locale, int32 day)
+	public libqt_string StandaloneWeekDayName(IQLocale locale, int32 day)
 	{
-		return CQt.QCalendar_StandaloneWeekDayName(this.nativePtr, locale, day);
+		return CQt.QCalendar_StandaloneWeekDayName(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, day);
 	}
 	
 	public static libqt_string[] AvailableCalendars()
@@ -162,34 +167,34 @@ public class QCalendar
 		return CQt.QCalendar_DaysInMonth2(this.nativePtr, month, year);
 	}
 	
-	public libqt_string MonthName3(void* locale, int32 month, int32 year)
+	public libqt_string MonthName3(IQLocale locale, int32 month, int32 year)
 	{
-		return CQt.QCalendar_MonthName3(this.nativePtr, locale, month, year);
+		return CQt.QCalendar_MonthName3(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month, year);
 	}
 	
-	public libqt_string MonthName4(void* locale, int32 month, int32 year, int64 format)
+	public libqt_string MonthName4(IQLocale locale, int32 month, int32 year, int64 format)
 	{
-		return CQt.QCalendar_MonthName4(this.nativePtr, locale, month, year, format);
+		return CQt.QCalendar_MonthName4(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month, year, format);
 	}
 	
-	public libqt_string StandaloneMonthName3(void* locale, int32 month, int32 year)
+	public libqt_string StandaloneMonthName3(IQLocale locale, int32 month, int32 year)
 	{
-		return CQt.QCalendar_StandaloneMonthName3(this.nativePtr, locale, month, year);
+		return CQt.QCalendar_StandaloneMonthName3(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month, year);
 	}
 	
-	public libqt_string StandaloneMonthName4(void* locale, int32 month, int32 year, int64 format)
+	public libqt_string StandaloneMonthName4(IQLocale locale, int32 month, int32 year, int64 format)
 	{
-		return CQt.QCalendar_StandaloneMonthName4(this.nativePtr, locale, month, year, format);
+		return CQt.QCalendar_StandaloneMonthName4(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, month, year, format);
 	}
 	
-	public libqt_string WeekDayName3(void* locale, int32 day, int64 format)
+	public libqt_string WeekDayName3(IQLocale locale, int32 day, int64 format)
 	{
-		return CQt.QCalendar_WeekDayName3(this.nativePtr, locale, day, format);
+		return CQt.QCalendar_WeekDayName3(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, day, format);
 	}
 	
-	public libqt_string StandaloneWeekDayName3(void* locale, int32 day, int64 format)
+	public libqt_string StandaloneWeekDayName3(IQLocale locale, int32 day, int64 format)
 	{
-		return CQt.QCalendar_StandaloneWeekDayName3(this.nativePtr, locale, day, format);
+		return CQt.QCalendar_StandaloneWeekDayName3(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr, day, format);
 	}
 	
 }
@@ -204,9 +209,9 @@ extension CQt
 	[LinkName("QCalendar_new4")]
 	public static extern void* QCalendar_new4(int64 system);
 	[LinkName("QCalendar_new5")]
-	public static extern void* QCalendar_new5(void name);
+	public static extern void* QCalendar_new5(char8* name);
 	[LinkName("QCalendar_new6")]
-	public static extern void* QCalendar_new6(QCalendar__SystemId id);
+	public static extern void* QCalendar_new6(void id);
 	[LinkName("QCalendar_IsValid")]
 	public static extern bool QCalendar_IsValid(void* c_this);
 	[LinkName("QCalendar_DaysInMonth")]
@@ -242,9 +247,9 @@ extension CQt
 	[LinkName("QCalendar_DateFromParts")]
 	public static extern void QCalendar_DateFromParts(void* c_this, int32 year, int32 month, int32 day);
 	[LinkName("QCalendar_DateFromPartsWithParts")]
-	public static extern void QCalendar_DateFromPartsWithParts(void* c_this, QCalendar__YearMonthDay* parts);
+	public static extern void QCalendar_DateFromPartsWithParts(void* c_this, void* parts);
 	[LinkName("QCalendar_PartsFromDate")]
-	public static extern QCalendar__YearMonthDay QCalendar_PartsFromDate(void* c_this, void date);
+	public static extern void QCalendar_PartsFromDate(void* c_this, void date);
 	[LinkName("QCalendar_DayOfWeek")]
 	public static extern int32 QCalendar_DayOfWeek(void* c_this, void date);
 	[LinkName("QCalendar_MonthName")]
@@ -275,13 +280,18 @@ extension CQt
 	[LinkName("QCalendar_Delete")]
 	public static extern void QCalendar_Delete(void* self);
 }
-public class QCalendar__YearMonthDay
+public interface IQCalendar__YearMonthDay
+{
+	void* NativePtr { get; }
+}
+public class QCalendar__YearMonthDay : IQCalendar__YearMonthDay
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QCalendar__YearMonthDay* other)
+	public this(QCalendar__YearMonthDay other)
 	{
-		this.nativePtr = CQt.QCalendar__YearMonthDay_new(other);
+		this.nativePtr = CQt.QCalendar__YearMonthDay_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -298,9 +308,9 @@ public class QCalendar__YearMonthDay
 extension CQt
 {
 	[LinkName("QCalendar__YearMonthDay_new")]
-	public static extern void* QCalendar__YearMonthDay_new(QCalendar__YearMonthDay* other);
+	public static extern void* QCalendar__YearMonthDay_new(void* other);
 	[LinkName("QCalendar__YearMonthDay_new2")]
-	public static extern void* QCalendar__YearMonthDay_new2(QCalendar__YearMonthDay* other);
+	public static extern void* QCalendar__YearMonthDay_new2(void* other);
 	[LinkName("QCalendar__YearMonthDay_new3")]
 	public static extern void* QCalendar__YearMonthDay_new3();
 	[LinkName("QCalendar__YearMonthDay_new4")]
@@ -315,13 +325,18 @@ extension CQt
 	[LinkName("QCalendar__YearMonthDay_Delete")]
 	public static extern void QCalendar__YearMonthDay_Delete(void* self);
 }
-public class QCalendar__SystemId
+public interface IQCalendar__SystemId
+{
+	void* NativePtr { get; }
+}
+public class QCalendar__SystemId : IQCalendar__SystemId
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QCalendar__SystemId* other)
+	public this(QCalendar__SystemId other)
 	{
-		this.nativePtr = CQt.QCalendar__SystemId_new(other);
+		this.nativePtr = CQt.QCalendar__SystemId_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -343,9 +358,9 @@ public class QCalendar__SystemId
 extension CQt
 {
 	[LinkName("QCalendar__SystemId_new")]
-	public static extern void* QCalendar__SystemId_new(QCalendar__SystemId* other);
+	public static extern void* QCalendar__SystemId_new(void* other);
 	[LinkName("QCalendar__SystemId_new2")]
-	public static extern void* QCalendar__SystemId_new2(QCalendar__SystemId* other);
+	public static extern void* QCalendar__SystemId_new2(void* other);
 	[LinkName("QCalendar__SystemId_new3")]
 	public static extern void* QCalendar__SystemId_new3();
 	[LinkName("QCalendar__SystemId_Index")]

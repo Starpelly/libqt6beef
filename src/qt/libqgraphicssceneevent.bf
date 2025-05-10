@@ -9,9 +9,14 @@ public enum QGraphicsSceneContextMenuEvent__Reason
 	Keyboard = 1,
 	Other = 2,
 }
-public class QGraphicsSceneEvent
+public interface IQGraphicsSceneEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneEvent : IQGraphicsSceneEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 typeVal)
 	{
@@ -28,9 +33,9 @@ public class QGraphicsSceneEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -120,9 +125,14 @@ extension CQt
 	[LinkName("QGraphicsSceneEvent_Delete")]
 	public static extern void QGraphicsSceneEvent_Delete(void* self);
 }
-public class QGraphicsSceneMouseEvent
+public interface IQGraphicsSceneMouseEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneMouseEvent : IQGraphicsSceneMouseEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -139,9 +149,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_Pos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScenePos()
@@ -149,9 +159,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -159,9 +169,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ButtonDownPos(int64 button)
@@ -169,9 +179,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_ButtonDownPos(this.nativePtr, button);
 	}
 	
-	public void SetButtonDownPos(int64 button, void* pos)
+	public void SetButtonDownPos(int64 button, IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetButtonDownPos(this.nativePtr, button, pos);
+		CQt.QGraphicsSceneMouseEvent_SetButtonDownPos(this.nativePtr, button, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ButtonDownScenePos(int64 button)
@@ -179,9 +189,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_ButtonDownScenePos(this.nativePtr, button);
 	}
 	
-	public void SetButtonDownScenePos(int64 button, void* pos)
+	public void SetButtonDownScenePos(int64 button, IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetButtonDownScenePos(this.nativePtr, button, pos);
+		CQt.QGraphicsSceneMouseEvent_SetButtonDownScenePos(this.nativePtr, button, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ButtonDownScreenPos(int64 button)
@@ -189,9 +199,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_ButtonDownScreenPos(this.nativePtr, button);
 	}
 	
-	public void SetButtonDownScreenPos(int64 button, void* pos)
+	public void SetButtonDownScreenPos(int64 button, IQPoint pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetButtonDownScreenPos(this.nativePtr, button, pos);
+		CQt.QGraphicsSceneMouseEvent_SetButtonDownScreenPos(this.nativePtr, button, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastPos()
@@ -199,9 +209,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_LastPos(this.nativePtr);
 	}
 	
-	public void SetLastPos(void* pos)
+	public void SetLastPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetLastPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetLastPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastScenePos()
@@ -209,9 +219,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_LastScenePos(this.nativePtr);
 	}
 	
-	public void SetLastScenePos(void* pos)
+	public void SetLastScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetLastScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetLastScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastScreenPos()
@@ -219,9 +229,9 @@ public class QGraphicsSceneMouseEvent
 		CQt.QGraphicsSceneMouseEvent_LastScreenPos(this.nativePtr);
 	}
 	
-	public void SetLastScreenPos(void* pos)
+	public void SetLastScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneMouseEvent_SetLastScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMouseEvent_SetLastScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Buttons()
@@ -279,9 +289,9 @@ public class QGraphicsSceneMouseEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -421,9 +431,14 @@ extension CQt
 	[LinkName("QGraphicsSceneMouseEvent_Delete")]
 	public static extern void QGraphicsSceneMouseEvent_Delete(void* self);
 }
-public class QGraphicsSceneWheelEvent
+public interface IQGraphicsSceneWheelEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneWheelEvent : IQGraphicsSceneWheelEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -440,9 +455,9 @@ public class QGraphicsSceneWheelEvent
 		CQt.QGraphicsSceneWheelEvent_Pos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneWheelEvent_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneWheelEvent_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScenePos()
@@ -450,9 +465,9 @@ public class QGraphicsSceneWheelEvent
 		CQt.QGraphicsSceneWheelEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneWheelEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneWheelEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -460,9 +475,9 @@ public class QGraphicsSceneWheelEvent
 		CQt.QGraphicsSceneWheelEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneWheelEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneWheelEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Buttons()
@@ -520,9 +535,9 @@ public class QGraphicsSceneWheelEvent
 		CQt.QGraphicsSceneWheelEvent_PixelDelta(this.nativePtr);
 	}
 	
-	public void SetPixelDelta(void delta)
+	public void SetPixelDelta(IQPoint delta)
 	{
-		CQt.QGraphicsSceneWheelEvent_SetPixelDelta(this.nativePtr, delta);
+		CQt.QGraphicsSceneWheelEvent_SetPixelDelta(this.nativePtr, (delta == default) ? default : (void)delta.NativePtr);
 	}
 	
 	public bool IsInverted()
@@ -540,9 +555,9 @@ public class QGraphicsSceneWheelEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -666,9 +681,14 @@ extension CQt
 	[LinkName("QGraphicsSceneWheelEvent_Delete")]
 	public static extern void QGraphicsSceneWheelEvent_Delete(void* self);
 }
-public class QGraphicsSceneContextMenuEvent
+public interface IQGraphicsSceneContextMenuEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneContextMenuEvent : IQGraphicsSceneContextMenuEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -685,9 +705,9 @@ public class QGraphicsSceneContextMenuEvent
 		CQt.QGraphicsSceneContextMenuEvent_Pos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneContextMenuEvent_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneContextMenuEvent_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScenePos()
@@ -695,9 +715,9 @@ public class QGraphicsSceneContextMenuEvent
 		CQt.QGraphicsSceneContextMenuEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneContextMenuEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneContextMenuEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -705,9 +725,9 @@ public class QGraphicsSceneContextMenuEvent
 		CQt.QGraphicsSceneContextMenuEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneContextMenuEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneContextMenuEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Modifiers()
@@ -735,9 +755,9 @@ public class QGraphicsSceneContextMenuEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -841,9 +861,14 @@ extension CQt
 	[LinkName("QGraphicsSceneContextMenuEvent_Delete")]
 	public static extern void QGraphicsSceneContextMenuEvent_Delete(void* self);
 }
-public class QGraphicsSceneHoverEvent
+public interface IQGraphicsSceneHoverEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneHoverEvent : IQGraphicsSceneHoverEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -860,9 +885,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_Pos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScenePos()
@@ -870,9 +895,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -880,9 +905,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastPos()
@@ -890,9 +915,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_LastPos(this.nativePtr);
 	}
 	
-	public void SetLastPos(void* pos)
+	public void SetLastPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetLastPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetLastPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastScenePos()
@@ -900,9 +925,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_LastScenePos(this.nativePtr);
 	}
 	
-	public void SetLastScenePos(void* pos)
+	public void SetLastScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetLastScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetLastScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void LastScreenPos()
@@ -910,9 +935,9 @@ public class QGraphicsSceneHoverEvent
 		CQt.QGraphicsSceneHoverEvent_LastScreenPos(this.nativePtr);
 	}
 	
-	public void SetLastScreenPos(void* pos)
+	public void SetLastScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneHoverEvent_SetLastScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHoverEvent_SetLastScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Modifiers()
@@ -930,9 +955,9 @@ public class QGraphicsSceneHoverEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -1044,9 +1069,14 @@ extension CQt
 	[LinkName("QGraphicsSceneHoverEvent_Delete")]
 	public static extern void QGraphicsSceneHoverEvent_Delete(void* self);
 }
-public class QGraphicsSceneHelpEvent
+public interface IQGraphicsSceneHelpEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneHelpEvent : IQGraphicsSceneHelpEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1063,9 +1093,9 @@ public class QGraphicsSceneHelpEvent
 		CQt.QGraphicsSceneHelpEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneHelpEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHelpEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -1073,9 +1103,9 @@ public class QGraphicsSceneHelpEvent
 		CQt.QGraphicsSceneHelpEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneHelpEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneHelpEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void* Widget()
@@ -1083,9 +1113,9 @@ public class QGraphicsSceneHelpEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -1177,9 +1207,14 @@ extension CQt
 	[LinkName("QGraphicsSceneHelpEvent_Delete")]
 	public static extern void QGraphicsSceneHelpEvent_Delete(void* self);
 }
-public class QGraphicsSceneDragDropEvent
+public interface IQGraphicsSceneDragDropEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneDragDropEvent : IQGraphicsSceneDragDropEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1196,9 +1231,9 @@ public class QGraphicsSceneDragDropEvent
 		CQt.QGraphicsSceneDragDropEvent_Pos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneDragDropEvent_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneDragDropEvent_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScenePos()
@@ -1206,9 +1241,9 @@ public class QGraphicsSceneDragDropEvent
 		CQt.QGraphicsSceneDragDropEvent_ScenePos(this.nativePtr);
 	}
 	
-	public void SetScenePos(void* pos)
+	public void SetScenePos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneDragDropEvent_SetScenePos(this.nativePtr, pos);
+		CQt.QGraphicsSceneDragDropEvent_SetScenePos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void ScreenPos()
@@ -1216,9 +1251,9 @@ public class QGraphicsSceneDragDropEvent
 		CQt.QGraphicsSceneDragDropEvent_ScreenPos(this.nativePtr);
 	}
 	
-	public void SetScreenPos(void* pos)
+	public void SetScreenPos(IQPoint pos)
 	{
-		CQt.QGraphicsSceneDragDropEvent_SetScreenPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneDragDropEvent_SetScreenPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public int64 Buttons()
@@ -1281,9 +1316,9 @@ public class QGraphicsSceneDragDropEvent
 		return CQt.QGraphicsSceneDragDropEvent_Source(this.nativePtr);
 	}
 	
-	public void SetSource(void* source)
+	public void SetSource(IQWidget source)
 	{
-		CQt.QGraphicsSceneDragDropEvent_SetSource(this.nativePtr, source);
+		CQt.QGraphicsSceneDragDropEvent_SetSource(this.nativePtr, (source == null) ? null : (void*)source.NativePtr);
 	}
 	
 	public void* MimeData()
@@ -1291,9 +1326,9 @@ public class QGraphicsSceneDragDropEvent
 		return CQt.QGraphicsSceneDragDropEvent_MimeData(this.nativePtr);
 	}
 	
-	public void SetMimeData(void* data)
+	public void SetMimeData(IQMimeData data)
 	{
-		CQt.QGraphicsSceneDragDropEvent_SetMimeData(this.nativePtr, data);
+		CQt.QGraphicsSceneDragDropEvent_SetMimeData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 	public void* Widget()
@@ -1301,9 +1336,9 @@ public class QGraphicsSceneDragDropEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -1429,9 +1464,14 @@ extension CQt
 	[LinkName("QGraphicsSceneDragDropEvent_Delete")]
 	public static extern void QGraphicsSceneDragDropEvent_Delete(void* self);
 }
-public class QGraphicsSceneResizeEvent
+public interface IQGraphicsSceneResizeEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneResizeEvent : IQGraphicsSceneResizeEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1448,9 +1488,9 @@ public class QGraphicsSceneResizeEvent
 		CQt.QGraphicsSceneResizeEvent_OldSize(this.nativePtr);
 	}
 	
-	public void SetOldSize(void* size)
+	public void SetOldSize(IQSizeF size)
 	{
-		CQt.QGraphicsSceneResizeEvent_SetOldSize(this.nativePtr, size);
+		CQt.QGraphicsSceneResizeEvent_SetOldSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void NewSize()
@@ -1458,9 +1498,9 @@ public class QGraphicsSceneResizeEvent
 		CQt.QGraphicsSceneResizeEvent_NewSize(this.nativePtr);
 	}
 	
-	public void SetNewSize(void* size)
+	public void SetNewSize(IQSizeF size)
 	{
-		CQt.QGraphicsSceneResizeEvent_SetNewSize(this.nativePtr, size);
+		CQt.QGraphicsSceneResizeEvent_SetNewSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void* Widget()
@@ -1468,9 +1508,9 @@ public class QGraphicsSceneResizeEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()
@@ -1560,9 +1600,14 @@ extension CQt
 	[LinkName("QGraphicsSceneResizeEvent_Delete")]
 	public static extern void QGraphicsSceneResizeEvent_Delete(void* self);
 }
-public class QGraphicsSceneMoveEvent
+public interface IQGraphicsSceneMoveEvent
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSceneMoveEvent : IQGraphicsSceneMoveEvent, IQGraphicsSceneEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1579,9 +1624,9 @@ public class QGraphicsSceneMoveEvent
 		CQt.QGraphicsSceneMoveEvent_OldPos(this.nativePtr);
 	}
 	
-	public void SetOldPos(void* pos)
+	public void SetOldPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMoveEvent_SetOldPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMoveEvent_SetOldPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void NewPos()
@@ -1589,9 +1634,9 @@ public class QGraphicsSceneMoveEvent
 		CQt.QGraphicsSceneMoveEvent_NewPos(this.nativePtr);
 	}
 	
-	public void SetNewPos(void* pos)
+	public void SetNewPos(IQPointF pos)
 	{
-		CQt.QGraphicsSceneMoveEvent_SetNewPos(this.nativePtr, pos);
+		CQt.QGraphicsSceneMoveEvent_SetNewPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void* Widget()
@@ -1599,9 +1644,9 @@ public class QGraphicsSceneMoveEvent
 		return CQt.QGraphicsSceneEvent_Widget(this.nativePtr);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, widget);
+		CQt.QGraphicsSceneEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public uint64 Timestamp()

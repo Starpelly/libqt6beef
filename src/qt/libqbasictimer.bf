@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QBasicTimer
+public interface IQBasicTimer
+{
+	void* NativePtr { get; }
+}
+public class QBasicTimer : IQBasicTimer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QBasicTimer
 		CQt.QBasicTimer_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQBasicTimer other)
 	{
-		CQt.QBasicTimer_Swap(this.nativePtr, other);
+		CQt.QBasicTimer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsActive()
@@ -31,14 +36,14 @@ public class QBasicTimer
 		return CQt.QBasicTimer_TimerId(this.nativePtr);
 	}
 	
-	public void Start(int32 msec, void* obj)
+	public void Start(int32 msec, IQObject obj)
 	{
-		CQt.QBasicTimer_Start(this.nativePtr, msec, obj);
+		CQt.QBasicTimer_Start(this.nativePtr, msec, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public void Start2(int32 msec, int64 timerType, void* obj)
+	public void Start2(int32 msec, int64 timerType, IQObject obj)
 	{
-		CQt.QBasicTimer_Start2(this.nativePtr, msec, timerType, obj);
+		CQt.QBasicTimer_Start2(this.nativePtr, msec, timerType, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
 	public void Stop()

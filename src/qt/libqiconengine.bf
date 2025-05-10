@@ -8,9 +8,14 @@ public enum QIconEngine__IconEngineHook
 	IsNullHook = 3,
 	ScaledPixmapHook = 4,
 }
-public class QIconEngine
+public interface IQIconEngine
+{
+	void* NativePtr { get; }
+}
+public class QIconEngine : IQIconEngine
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -22,29 +27,29 @@ public class QIconEngine
 		CQt.QIconEngine_Delete(this.nativePtr);
 	}
 	
-	public virtual void Paint(void* painter, void* rect, int64 mode, int64 state)
+	public virtual void Paint(IQPainter painter, IQRect rect, int64 mode, int64 state)
 	{
-		CQt.QIconEngine_Paint(this.nativePtr, painter, rect, mode, state);
+		CQt.QIconEngine_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, mode, state);
 	}
 	
-	public virtual void ActualSize(void* size, int64 mode, int64 state)
+	public virtual void ActualSize(IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIconEngine_ActualSize(this.nativePtr, size, mode, state);
+		CQt.QIconEngine_ActualSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
 	}
 	
-	public virtual void Pixmap(void* size, int64 mode, int64 state)
+	public virtual void Pixmap(IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIconEngine_Pixmap(this.nativePtr, size, mode, state);
+		CQt.QIconEngine_Pixmap(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
 	}
 	
-	public virtual void AddPixmap(void* pixmap, int64 mode, int64 state)
+	public virtual void AddPixmap(IQPixmap pixmap, int64 mode, int64 state)
 	{
-		CQt.QIconEngine_AddPixmap(this.nativePtr, pixmap, mode, state);
+		CQt.QIconEngine_AddPixmap(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr, mode, state);
 	}
 	
-	public virtual void AddFile(libqt_string fileName, void* size, int64 mode, int64 state)
+	public virtual void AddFile(String fileName, IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIconEngine_AddFile(this.nativePtr, fileName, size, mode, state);
+		CQt.QIconEngine_AddFile(this.nativePtr, libqt_string(fileName), (size == default) ? default : (void*)size.NativePtr, mode, state);
 	}
 	
 	public virtual libqt_string Key()
@@ -57,14 +62,14 @@ public class QIconEngine
 		return CQt.QIconEngine_Clone(this.nativePtr);
 	}
 	
-	public virtual bool Read(void* _in)
+	public virtual bool Read(IQDataStream _in)
 	{
-		return CQt.QIconEngine_Read(this.nativePtr, _in);
+		return CQt.QIconEngine_Read(this.nativePtr, (_in == default) ? default : (void*)_in.NativePtr);
 	}
 	
-	public virtual bool Write(void* _out)
+	public virtual bool Write(IQDataStream _out)
 	{
-		return CQt.QIconEngine_Write(this.nativePtr, _out);
+		return CQt.QIconEngine_Write(this.nativePtr, (_out == default) ? default : (void*)_out.NativePtr);
 	}
 	
 	public virtual void[] AvailableSizes(int64 mode, int64 state)
@@ -82,9 +87,9 @@ public class QIconEngine
 		return CQt.QIconEngine_IsNull(this.nativePtr);
 	}
 	
-	public virtual void ScaledPixmap(void* size, int64 mode, int64 state, double scale)
+	public virtual void ScaledPixmap(IQSize size, int64 mode, int64 state, double scale)
 	{
-		CQt.QIconEngine_ScaledPixmap(this.nativePtr, size, mode, state, scale);
+		CQt.QIconEngine_ScaledPixmap(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state, scale);
 	}
 	
 	public virtual void VirtualHook(int32 id, void* data)
@@ -129,13 +134,18 @@ extension CQt
 	[LinkName("QIconEngine_Delete")]
 	public static extern void QIconEngine_Delete(void* self);
 }
-public class QIconEngine__ScaledPixmapArgument
+public interface IQIconEngine__ScaledPixmapArgument
+{
+	void* NativePtr { get; }
+}
+public class QIconEngine__ScaledPixmapArgument : IQIconEngine__ScaledPixmapArgument
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QIconEngine__ScaledPixmapArgument* param1)
+	public this(QIconEngine__ScaledPixmapArgument param1)
 	{
-		this.nativePtr = CQt.QIconEngine__ScaledPixmapArgument_new(param1);
+		this.nativePtr = CQt.QIconEngine__ScaledPixmapArgument_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -143,18 +153,18 @@ public class QIconEngine__ScaledPixmapArgument
 		CQt.QIconEngine__ScaledPixmapArgument_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QIconEngine__ScaledPixmapArgument* param1)
+	public void OperatorAssign(QIconEngine__ScaledPixmapArgument param1)
 	{
-		CQt.QIconEngine__ScaledPixmapArgument_OperatorAssign(this.nativePtr, param1);
+		CQt.QIconEngine__ScaledPixmapArgument_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QIconEngine__ScaledPixmapArgument_new")]
-	public static extern void* QIconEngine__ScaledPixmapArgument_new(QIconEngine__ScaledPixmapArgument* param1);
+	public static extern void* QIconEngine__ScaledPixmapArgument_new(void* param1);
 	[LinkName("QIconEngine__ScaledPixmapArgument_OperatorAssign")]
-	public static extern void QIconEngine__ScaledPixmapArgument_OperatorAssign(void* c_this, QIconEngine__ScaledPixmapArgument* param1);
+	public static extern void QIconEngine__ScaledPixmapArgument_OperatorAssign(void* c_this, void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QIconEngine__ScaledPixmapArgument_Delete")]
 	public static extern void QIconEngine__ScaledPixmapArgument_Delete(void* self);

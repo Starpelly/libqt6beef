@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QCollatorSortKey
+public interface IQCollatorSortKey
+{
+	void* NativePtr { get; }
+}
+public class QCollatorSortKey : IQCollatorSortKey
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQCollatorSortKey other)
 	{
-		this.nativePtr = CQt.QCollatorSortKey_new(other);
+		this.nativePtr = CQt.QCollatorSortKey_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -16,19 +21,19 @@ public class QCollatorSortKey
 		CQt.QCollatorSortKey_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCollatorSortKey other)
 	{
-		CQt.QCollatorSortKey_OperatorAssign(this.nativePtr, other);
+		CQt.QCollatorSortKey_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCollatorSortKey other)
 	{
-		CQt.QCollatorSortKey_Swap(this.nativePtr, other);
+		CQt.QCollatorSortKey_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public int32 Compare(void* key)
+	public int32 Compare(IQCollatorSortKey key)
 	{
-		return CQt.QCollatorSortKey_Compare(this.nativePtr, key);
+		return CQt.QCollatorSortKey_Compare(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 }
@@ -46,9 +51,14 @@ extension CQt
 	[LinkName("QCollatorSortKey_Delete")]
 	public static extern void QCollatorSortKey_Delete(void* self);
 }
-public class QCollator
+public interface IQCollator
+{
+	void* NativePtr { get; }
+}
+public class QCollator : IQCollator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -60,19 +70,19 @@ public class QCollator
 		CQt.QCollator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQCollator param1)
 	{
-		CQt.QCollator_OperatorAssign(this.nativePtr, param1);
+		CQt.QCollator_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCollator other)
 	{
-		CQt.QCollator_Swap(this.nativePtr, other);
+		CQt.QCollator_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QCollator_SetLocale(this.nativePtr, locale);
+		CQt.QCollator_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -110,24 +120,24 @@ public class QCollator
 		return CQt.QCollator_IgnorePunctuation(this.nativePtr);
 	}
 	
-	public int32 Compare(libqt_string s1, libqt_string s2)
+	public int32 Compare(String s1, String s2)
 	{
-		return CQt.QCollator_Compare(this.nativePtr, s1, s2);
+		return CQt.QCollator_Compare(this.nativePtr, libqt_string(s1), libqt_string(s2));
 	}
 	
-	public int32 Compare2(void* s1, int32 len1, void* s2, int32 len2)
+	public int32 Compare2(IQChar s1, int32 len1, IQChar s2, int32 len2)
 	{
-		return CQt.QCollator_Compare2(this.nativePtr, s1, len1, s2, len2);
+		return CQt.QCollator_Compare2(this.nativePtr, (s1 == null) ? null : (void*)s1.NativePtr, len1, (s2 == null) ? null : (void*)s2.NativePtr, len2);
 	}
 	
-	public bool OperatorCall(libqt_string s1, libqt_string s2)
+	public bool OperatorCall(String s1, String s2)
 	{
-		return CQt.QCollator_OperatorCall(this.nativePtr, s1, s2);
+		return CQt.QCollator_OperatorCall(this.nativePtr, libqt_string(s1), libqt_string(s2));
 	}
 	
-	public void SortKey(libqt_string stringVal)
+	public void SortKey(String stringVal)
 	{
-		CQt.QCollator_SortKey(this.nativePtr, stringVal);
+		CQt.QCollator_SortKey(this.nativePtr, libqt_string(stringVal));
 	}
 	
 }

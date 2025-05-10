@@ -10,9 +10,14 @@ public enum QPainterPath__ElementType
 	CurveToElement = 2,
 	CurveToDataElement = 3,
 }
-public class QPainterPath
+public interface IQPainterPath
+{
+	void* NativePtr { get; }
+}
+public class QPainterPath : IQPainterPath
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -24,14 +29,14 @@ public class QPainterPath
 		CQt.QPainterPath_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorAssign(this.nativePtr, other);
+		CQt.QPainterPath_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPainterPath other)
 	{
-		CQt.QPainterPath_Swap(this.nativePtr, other);
+		CQt.QPainterPath_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void Clear()
@@ -54,9 +59,9 @@ public class QPainterPath
 		CQt.QPainterPath_CloseSubpath(this.nativePtr);
 	}
 	
-	public void MoveTo(void* p)
+	public void MoveTo(IQPointF p)
 	{
-		CQt.QPainterPath_MoveTo(this.nativePtr, p);
+		CQt.QPainterPath_MoveTo(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void MoveTo2(double x, double y)
@@ -64,9 +69,9 @@ public class QPainterPath
 		CQt.QPainterPath_MoveTo2(this.nativePtr, x, y);
 	}
 	
-	public void LineTo(void* p)
+	public void LineTo(IQPointF p)
 	{
-		CQt.QPainterPath_LineTo(this.nativePtr, p);
+		CQt.QPainterPath_LineTo(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void LineTo2(double x, double y)
@@ -74,9 +79,9 @@ public class QPainterPath
 		CQt.QPainterPath_LineTo2(this.nativePtr, x, y);
 	}
 	
-	public void ArcMoveTo(void* rect, double angle)
+	public void ArcMoveTo(IQRectF rect, double angle)
 	{
-		CQt.QPainterPath_ArcMoveTo(this.nativePtr, rect, angle);
+		CQt.QPainterPath_ArcMoveTo(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, angle);
 	}
 	
 	public void ArcMoveTo2(double x, double y, double w, double h, double angle)
@@ -84,9 +89,9 @@ public class QPainterPath
 		CQt.QPainterPath_ArcMoveTo2(this.nativePtr, x, y, w, h, angle);
 	}
 	
-	public void ArcTo(void* rect, double startAngle, double arcLength)
+	public void ArcTo(IQRectF rect, double startAngle, double arcLength)
 	{
-		CQt.QPainterPath_ArcTo(this.nativePtr, rect, startAngle, arcLength);
+		CQt.QPainterPath_ArcTo(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, startAngle, arcLength);
 	}
 	
 	public void ArcTo2(double x, double y, double w, double h, double startAngle, double arcLength)
@@ -94,9 +99,9 @@ public class QPainterPath
 		CQt.QPainterPath_ArcTo2(this.nativePtr, x, y, w, h, startAngle, arcLength);
 	}
 	
-	public void CubicTo(void* ctrlPt1, void* ctrlPt2, void* endPt)
+	public void CubicTo(IQPointF ctrlPt1, IQPointF ctrlPt2, IQPointF endPt)
 	{
-		CQt.QPainterPath_CubicTo(this.nativePtr, ctrlPt1, ctrlPt2, endPt);
+		CQt.QPainterPath_CubicTo(this.nativePtr, (ctrlPt1 == default) ? default : (void*)ctrlPt1.NativePtr, (ctrlPt2 == default) ? default : (void*)ctrlPt2.NativePtr, (endPt == default) ? default : (void*)endPt.NativePtr);
 	}
 	
 	public void CubicTo2(double ctrlPt1x, double ctrlPt1y, double ctrlPt2x, double ctrlPt2y, double endPtx, double endPty)
@@ -104,9 +109,9 @@ public class QPainterPath
 		CQt.QPainterPath_CubicTo2(this.nativePtr, ctrlPt1x, ctrlPt1y, ctrlPt2x, ctrlPt2y, endPtx, endPty);
 	}
 	
-	public void QuadTo(void* ctrlPt, void* endPt)
+	public void QuadTo(IQPointF ctrlPt, IQPointF endPt)
 	{
-		CQt.QPainterPath_QuadTo(this.nativePtr, ctrlPt, endPt);
+		CQt.QPainterPath_QuadTo(this.nativePtr, (ctrlPt == default) ? default : (void*)ctrlPt.NativePtr, (endPt == default) ? default : (void*)endPt.NativePtr);
 	}
 	
 	public void QuadTo2(double ctrlPtx, double ctrlPty, double endPtx, double endPty)
@@ -119,9 +124,9 @@ public class QPainterPath
 		CQt.QPainterPath_CurrentPosition(this.nativePtr);
 	}
 	
-	public void AddRect(void* rect)
+	public void AddRect(IQRectF rect)
 	{
-		CQt.QPainterPath_AddRect(this.nativePtr, rect);
+		CQt.QPainterPath_AddRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void AddRect2(double x, double y, double w, double h)
@@ -129,9 +134,9 @@ public class QPainterPath
 		CQt.QPainterPath_AddRect2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void AddEllipse(void* rect)
+	public void AddEllipse(IQRectF rect)
 	{
-		CQt.QPainterPath_AddEllipse(this.nativePtr, rect);
+		CQt.QPainterPath_AddEllipse(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void AddEllipse2(double x, double y, double w, double h)
@@ -139,34 +144,34 @@ public class QPainterPath
 		CQt.QPainterPath_AddEllipse2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void AddEllipse3(void* center, double rx, double ry)
+	public void AddEllipse3(IQPointF center, double rx, double ry)
 	{
-		CQt.QPainterPath_AddEllipse3(this.nativePtr, center, rx, ry);
+		CQt.QPainterPath_AddEllipse3(this.nativePtr, (center == default) ? default : (void*)center.NativePtr, rx, ry);
 	}
 	
-	public void AddText(void* point, void* f, libqt_string text)
+	public void AddText(IQPointF point, IQFont f, String text)
 	{
-		CQt.QPainterPath_AddText(this.nativePtr, point, f, text);
+		CQt.QPainterPath_AddText(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (f == default) ? default : (void*)f.NativePtr, libqt_string(text));
 	}
 	
-	public void AddText2(double x, double y, void* f, libqt_string text)
+	public void AddText2(double x, double y, IQFont f, String text)
 	{
-		CQt.QPainterPath_AddText2(this.nativePtr, x, y, f, text);
+		CQt.QPainterPath_AddText2(this.nativePtr, x, y, (f == default) ? default : (void*)f.NativePtr, libqt_string(text));
 	}
 	
-	public void AddPath(void* path)
+	public void AddPath(IQPainterPath path)
 	{
-		CQt.QPainterPath_AddPath(this.nativePtr, path);
+		CQt.QPainterPath_AddPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void AddRegion(void* region)
+	public void AddRegion(IQRegion region)
 	{
-		CQt.QPainterPath_AddRegion(this.nativePtr, region);
+		CQt.QPainterPath_AddRegion(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
 	}
 	
-	public void AddRoundedRect(void* rect, double xRadius, double yRadius)
+	public void AddRoundedRect(IQRectF rect, double xRadius, double yRadius)
 	{
-		CQt.QPainterPath_AddRoundedRect(this.nativePtr, rect, xRadius, yRadius);
+		CQt.QPainterPath_AddRoundedRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xRadius, yRadius);
 	}
 	
 	public void AddRoundedRect2(double x, double y, double w, double h, double xRadius, double yRadius)
@@ -174,24 +179,24 @@ public class QPainterPath
 		CQt.QPainterPath_AddRoundedRect2(this.nativePtr, x, y, w, h, xRadius, yRadius);
 	}
 	
-	public void ConnectPath(void* path)
+	public void ConnectPath(IQPainterPath path)
 	{
-		CQt.QPainterPath_ConnectPath(this.nativePtr, path);
+		CQt.QPainterPath_ConnectPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public bool Contains(void* pt)
+	public bool Contains(IQPointF pt)
 	{
-		return CQt.QPainterPath_Contains(this.nativePtr, pt);
+		return CQt.QPainterPath_Contains(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
-	public bool ContainsWithRect(void* rect)
+	public bool ContainsWithRect(IQRectF rect)
 	{
-		return CQt.QPainterPath_ContainsWithRect(this.nativePtr, rect);
+		return CQt.QPainterPath_ContainsWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public bool Intersects(void* rect)
+	public bool Intersects(IQRectF rect)
 	{
-		return CQt.QPainterPath_Intersects(this.nativePtr, rect);
+		return CQt.QPainterPath_Intersects(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void Translate(double dx, double dy)
@@ -199,9 +204,9 @@ public class QPainterPath
 		CQt.QPainterPath_Translate(this.nativePtr, dx, dy);
 	}
 	
-	public void TranslateWithOffset(void* offset)
+	public void TranslateWithOffset(IQPointF offset)
 	{
-		CQt.QPainterPath_TranslateWithOffset(this.nativePtr, offset);
+		CQt.QPainterPath_TranslateWithOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
 	}
 	
 	public void Translated(double dx, double dy)
@@ -209,9 +214,9 @@ public class QPainterPath
 		CQt.QPainterPath_Translated(this.nativePtr, dx, dy);
 	}
 	
-	public void TranslatedWithOffset(void* offset)
+	public void TranslatedWithOffset(IQPointF offset)
 	{
-		CQt.QPainterPath_TranslatedWithOffset(this.nativePtr, offset);
+		CQt.QPainterPath_TranslatedWithOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -249,9 +254,9 @@ public class QPainterPath
 		return CQt.QPainterPath_ElementCount(this.nativePtr);
 	}
 	
-	public QPainterPath__Element ElementAt(int32 i)
+	public void ElementAt(int32 i)
 	{
-		return CQt.QPainterPath_ElementAt(this.nativePtr, i);
+		CQt.QPainterPath_ElementAt(this.nativePtr, i);
 	}
 	
 	public void SetElementPositionAt(int32 i, double x, double y)
@@ -284,29 +289,29 @@ public class QPainterPath
 		return CQt.QPainterPath_SlopeAtPercent(this.nativePtr, t);
 	}
 	
-	public bool IntersectsWithQPainterPath(void* p)
+	public bool IntersectsWithQPainterPath(IQPainterPath p)
 	{
-		return CQt.QPainterPath_IntersectsWithQPainterPath(this.nativePtr, p);
+		return CQt.QPainterPath_IntersectsWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public bool ContainsWithQPainterPath(void* p)
+	public bool ContainsWithQPainterPath(IQPainterPath p)
 	{
-		return CQt.QPainterPath_ContainsWithQPainterPath(this.nativePtr, p);
+		return CQt.QPainterPath_ContainsWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void United(void* r)
+	public void United(IQPainterPath r)
 	{
-		CQt.QPainterPath_United(this.nativePtr, r);
+		CQt.QPainterPath_United(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void Intersected(void* r)
+	public void Intersected(IQPainterPath r)
 	{
-		CQt.QPainterPath_Intersected(this.nativePtr, r);
+		CQt.QPainterPath_Intersected(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void Subtracted(void* r)
+	public void Subtracted(IQPainterPath r)
 	{
-		CQt.QPainterPath_Subtracted(this.nativePtr, r);
+		CQt.QPainterPath_Subtracted(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
 	public void Simplified()
@@ -314,59 +319,59 @@ public class QPainterPath
 		CQt.QPainterPath_Simplified(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorEqual(this.nativePtr, other);
+		return CQt.QPainterPath_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QPainterPath_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorBitwiseAnd(void* other)
+	public void OperatorBitwiseAnd(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseAnd(this.nativePtr, other);
+		CQt.QPainterPath_OperatorBitwiseAnd(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorBitwiseOr(void* other)
+	public void OperatorBitwiseOr(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseOr(this.nativePtr, other);
+		CQt.QPainterPath_OperatorBitwiseOr(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorPlus(void* other)
+	public void OperatorPlus(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorPlus(this.nativePtr, other);
+		CQt.QPainterPath_OperatorPlus(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorMinus(void* other)
+	public void OperatorMinus(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorMinus(this.nativePtr, other);
+		CQt.QPainterPath_OperatorMinus(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorBitwiseAndAssign(void* other)
+	public void OperatorBitwiseAndAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseAndAssign(this.nativePtr, other);
+		CQt.QPainterPath_OperatorBitwiseAndAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorBitwiseOrAssign(void* other)
+	public void OperatorBitwiseOrAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseOrAssign(this.nativePtr, other);
+		CQt.QPainterPath_OperatorBitwiseOrAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void* other)
+	public void* OperatorPlusAssign(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorPlusAssign(this.nativePtr, other);
+		return CQt.QPainterPath_OperatorPlusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* other)
+	public void* OperatorMinusAssign(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorMinusAssign(this.nativePtr, other);
+		return CQt.QPainterPath_OperatorMinusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void AddRoundedRect4(void* rect, double xRadius, double yRadius, int64 mode)
+	public void AddRoundedRect4(IQRectF rect, double xRadius, double yRadius, int64 mode)
 	{
-		CQt.QPainterPath_AddRoundedRect4(this.nativePtr, rect, xRadius, yRadius, mode);
+		CQt.QPainterPath_AddRoundedRect4(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xRadius, yRadius, mode);
 	}
 	
 	public void AddRoundedRect7(double x, double y, double w, double h, double xRadius, double yRadius, int64 mode)
@@ -474,7 +479,7 @@ extension CQt
 	[LinkName("QPainterPath_ElementCount")]
 	public static extern int32 QPainterPath_ElementCount(void* c_this);
 	[LinkName("QPainterPath_ElementAt")]
-	public static extern QPainterPath__Element QPainterPath_ElementAt(void* c_this, int32 i);
+	public static extern void QPainterPath_ElementAt(void* c_this, int32 i);
 	[LinkName("QPainterPath_SetElementPositionAt")]
 	public static extern void QPainterPath_SetElementPositionAt(void* c_this, int32 i, double x, double y);
 	[LinkName("QPainterPath_Length")]
@@ -527,9 +532,14 @@ extension CQt
 	[LinkName("QPainterPath_Delete")]
 	public static extern void QPainterPath_Delete(void* self);
 }
-public class QPainterPathStroker
+public interface IQPainterPathStroker
+{
+	void* NativePtr { get; }
+}
+public class QPainterPathStroker : IQPainterPathStroker
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -598,7 +608,7 @@ public class QPainterPathStroker
 	
 	public void SetDashPatternWithDashPattern(double[] dashPattern)
 	{
-		CQt.QPainterPathStroker_SetDashPatternWithDashPattern(this.nativePtr, dashPattern);
+		CQt.QPainterPathStroker_SetDashPatternWithDashPattern(this.nativePtr, null);
 	}
 	
 	public double[] DashPattern()
@@ -616,9 +626,9 @@ public class QPainterPathStroker
 		return CQt.QPainterPathStroker_DashOffset(this.nativePtr);
 	}
 	
-	public void CreateStroke(void* path)
+	public void CreateStroke(IQPainterPath path)
 	{
-		CQt.QPainterPathStroker_CreateStroke(this.nativePtr, path);
+		CQt.QPainterPathStroker_CreateStroke(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
 }
@@ -664,9 +674,14 @@ extension CQt
 	[LinkName("QPainterPathStroker_Delete")]
 	public static extern void QPainterPathStroker_Delete(void* self);
 }
-public class QPainterPath__Element
+public interface IQPainterPath__Element
+{
+	void* NativePtr { get; }
+}
+public class QPainterPath__Element : IQPainterPath__Element
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -693,14 +708,14 @@ public class QPainterPath__Element
 		CQt.QPainterPath__Element_ToQPointF(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QPainterPath__Element* e)
+	public bool OperatorEqual(QPainterPath__Element e)
 	{
-		return CQt.QPainterPath__Element_OperatorEqual(this.nativePtr, e);
+		return CQt.QPainterPath__Element_OperatorEqual(this.nativePtr, (e == default) ? default : (void*)e.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QPainterPath__Element* e)
+	public bool OperatorNotEqual(QPainterPath__Element e)
 	{
-		return CQt.QPainterPath__Element_OperatorNotEqual(this.nativePtr, e);
+		return CQt.QPainterPath__Element_OperatorNotEqual(this.nativePtr, (e == default) ? default : (void*)e.NativePtr);
 	}
 	
 }
@@ -715,9 +730,9 @@ extension CQt
 	[LinkName("QPainterPath__Element_ToQPointF")]
 	public static extern void QPainterPath__Element_ToQPointF(void* c_this);
 	[LinkName("QPainterPath__Element_OperatorEqual")]
-	public static extern bool QPainterPath__Element_OperatorEqual(void* c_this, QPainterPath__Element* e);
+	public static extern bool QPainterPath__Element_OperatorEqual(void* c_this, void* e);
 	[LinkName("QPainterPath__Element_OperatorNotEqual")]
-	public static extern bool QPainterPath__Element_OperatorNotEqual(void* c_this, QPainterPath__Element* e);
+	public static extern bool QPainterPath__Element_OperatorNotEqual(void* c_this, void* e);
 	/// Delete this object from C++ memory
 	[LinkName("QPainterPath__Element_Delete")]
 	public static extern void QPainterPath__Element_Delete(void* self);

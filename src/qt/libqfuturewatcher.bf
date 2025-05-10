@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFutureWatcherBase
+public interface IQFutureWatcherBase
+{
+	void* NativePtr { get; }
+}
+public class QFutureWatcherBase : IQFutureWatcherBase, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -16,7 +21,7 @@ public class QFutureWatcherBase
 		return CQt.QFutureWatcherBase_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QFutureWatcherBase_Metacast(this.nativePtr, param1);
 	}
@@ -26,7 +31,7 @@ public class QFutureWatcherBase
 		return CQt.QFutureWatcherBase_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QFutureWatcherBase_Tr(s);
 	}
@@ -96,9 +101,9 @@ public class QFutureWatcherBase
 		CQt.QFutureWatcherBase_SetPendingResultsLimit(this.nativePtr, limit);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QFutureWatcherBase_Event(this.nativePtr, event);
+		return CQt.QFutureWatcherBase_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public void Cancel()
@@ -141,19 +146,19 @@ public class QFutureWatcherBase
 		CQt.QFutureWatcherBase_TogglePaused(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QFutureWatcherBase_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QFutureWatcherBase_Tr3(s, c, n);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -161,9 +166,9 @@ public class QFutureWatcherBase
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -196,9 +201,9 @@ public class QFutureWatcherBase
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -216,39 +221,39 @@ public class QFutureWatcherBase
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -261,12 +266,12 @@ public class QFutureWatcherBase
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -291,7 +296,7 @@ public class QFutureWatcherBase
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -306,14 +311,14 @@ public class QFutureWatcherBase
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -322,11 +327,11 @@ extension CQt
 	[LinkName("QFutureWatcherBase_MetaObject")]
 	public static extern void* QFutureWatcherBase_MetaObject(void* c_this);
 	[LinkName("QFutureWatcherBase_Metacast")]
-	public static extern void* QFutureWatcherBase_Metacast(void* c_this, char8[] param1);
+	public static extern void* QFutureWatcherBase_Metacast(void* c_this, char8* param1);
 	[LinkName("QFutureWatcherBase_Metacall")]
-	public static extern int32 QFutureWatcherBase_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QFutureWatcherBase_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QFutureWatcherBase_Tr")]
-	public static extern libqt_string QFutureWatcherBase_Tr(char8[] s);
+	public static extern libqt_string QFutureWatcherBase_Tr(char8* s);
 	[LinkName("QFutureWatcherBase_ProgressValue")]
 	public static extern int32 QFutureWatcherBase_ProgressValue(void* c_this);
 	[LinkName("QFutureWatcherBase_ProgressMinimum")]
@@ -404,9 +409,9 @@ extension CQt
 	[LinkName("QFutureWatcherBase_DisconnectOutputInterface")]
 	public static extern void QFutureWatcherBase_DisconnectOutputInterface(void* c_this);
 	[LinkName("QFutureWatcherBase_Tr2")]
-	public static extern libqt_string QFutureWatcherBase_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QFutureWatcherBase_Tr2(char8* s, char8* c);
 	[LinkName("QFutureWatcherBase_Tr3")]
-	public static extern libqt_string QFutureWatcherBase_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QFutureWatcherBase_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QFutureWatcherBase_DisconnectOutputInterface1")]
 	public static extern void QFutureWatcherBase_DisconnectOutputInterface1(void* c_this, bool pendingAssignment);
 	/// Delete this object from C++ memory

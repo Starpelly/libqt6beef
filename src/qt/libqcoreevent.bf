@@ -179,9 +179,14 @@ public enum QEvent__Type
 	User = 1000,
 	MaxUser = 65535,
 }
-public class QEvent
+public interface IQEvent
+{
+	void* NativePtr { get; }
+}
+public class QEvent : IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 typeVal)
 	{
@@ -286,9 +291,14 @@ extension CQt
 	[LinkName("QEvent_Delete")]
 	public static extern void QEvent_Delete(void* self);
 }
-public class QTimerEvent
+public interface IQTimerEvent
+{
+	void* NativePtr { get; }
+}
+public class QTimerEvent : IQTimerEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int32 timerId)
 	{
@@ -378,13 +388,18 @@ extension CQt
 	[LinkName("QTimerEvent_Delete")]
 	public static extern void QTimerEvent_Delete(void* self);
 }
-public class QChildEvent
+public interface IQChildEvent
+{
+	void* NativePtr { get; }
+}
+public class QChildEvent : IQChildEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, void* child)
+	public this(int64 typeVal, IQObject child)
 	{
-		this.nativePtr = CQt.QChildEvent_new(typeVal, child);
+		this.nativePtr = CQt.QChildEvent_new(typeVal, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public ~this()
@@ -491,13 +506,18 @@ extension CQt
 	[LinkName("QChildEvent_Delete")]
 	public static extern void QChildEvent_Delete(void* self);
 }
-public class QDynamicPropertyChangeEvent
+public interface IQDynamicPropertyChangeEvent
+{
+	void* NativePtr { get; }
+}
+public class QDynamicPropertyChangeEvent : IQDynamicPropertyChangeEvent, IQEvent
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string name)
+	public this(String name)
 	{
-		this.nativePtr = CQt.QDynamicPropertyChangeEvent_new(name);
+		this.nativePtr = CQt.QDynamicPropertyChangeEvent_new(libqt_string(name));
 	}
 	
 	public ~this()

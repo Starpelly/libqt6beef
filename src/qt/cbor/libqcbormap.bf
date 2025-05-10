@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QCborMap
+public interface IQCborMap
+{
+	void* NativePtr { get; }
+}
+public class QCborMap : IQCborMap
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QCborMap
 		CQt.QCborMap_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCborMap other)
 	{
-		CQt.QCborMap_OperatorAssign(this.nativePtr, other);
+		CQt.QCborMap_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCborMap other)
 	{
-		CQt.QCborMap_Swap(this.nativePtr, other);
+		CQt.QCborMap_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToCborValue()
@@ -56,14 +61,14 @@ public class QCborMap
 		CQt.QCborMap_Value(this.nativePtr, key);
 	}
 	
-	public void Value2(libqt_string key)
+	public void Value2(String key)
 	{
-		CQt.QCborMap_Value2(this.nativePtr, key);
+		CQt.QCborMap_Value2(this.nativePtr, libqt_string(key));
 	}
 	
-	public void Value3(void* key)
+	public void Value3(IQCborValue key)
 	{
-		CQt.QCborMap_Value3(this.nativePtr, key);
+		CQt.QCborMap_Value3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void OperatorSubscript(int64 key)
@@ -71,14 +76,14 @@ public class QCborMap
 		CQt.QCborMap_OperatorSubscript(this.nativePtr, key);
 	}
 	
-	public void OperatorSubscript2(libqt_string key)
+	public void OperatorSubscript2(String key)
 	{
-		CQt.QCborMap_OperatorSubscript2(this.nativePtr, key);
+		CQt.QCborMap_OperatorSubscript2(this.nativePtr, libqt_string(key));
 	}
 	
-	public void OperatorSubscript3(void* key)
+	public void OperatorSubscript3(IQCborValue key)
 	{
-		CQt.QCborMap_OperatorSubscript3(this.nativePtr, key);
+		CQt.QCborMap_OperatorSubscript3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void OperatorSubscript4(int64 key)
@@ -86,14 +91,14 @@ public class QCborMap
 		CQt.QCborMap_OperatorSubscript4(this.nativePtr, key);
 	}
 	
-	public void OperatorSubscript6(libqt_string key)
+	public void OperatorSubscript6(String key)
 	{
-		CQt.QCborMap_OperatorSubscript6(this.nativePtr, key);
+		CQt.QCborMap_OperatorSubscript6(this.nativePtr, libqt_string(key));
 	}
 	
-	public void OperatorSubscript7(void* key)
+	public void OperatorSubscript7(IQCborValue key)
 	{
-		CQt.QCborMap_OperatorSubscript7(this.nativePtr, key);
+		CQt.QCborMap_OperatorSubscript7(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void Take(int64 key)
@@ -101,14 +106,14 @@ public class QCborMap
 		CQt.QCborMap_Take(this.nativePtr, key);
 	}
 	
-	public void Take2(libqt_string key)
+	public void Take2(String key)
 	{
-		CQt.QCborMap_Take2(this.nativePtr, key);
+		CQt.QCborMap_Take2(this.nativePtr, libqt_string(key));
 	}
 	
-	public void Take3(void* key)
+	public void Take3(IQCborValue key)
 	{
-		CQt.QCborMap_Take3(this.nativePtr, key);
+		CQt.QCborMap_Take3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void Remove(int64 key)
@@ -116,14 +121,14 @@ public class QCborMap
 		CQt.QCborMap_Remove(this.nativePtr, key);
 	}
 	
-	public void Remove2(libqt_string key)
+	public void Remove2(String key)
 	{
-		CQt.QCborMap_Remove2(this.nativePtr, key);
+		CQt.QCborMap_Remove2(this.nativePtr, libqt_string(key));
 	}
 	
-	public void Remove3(void* key)
+	public void Remove3(IQCborValue key)
 	{
-		CQt.QCborMap_Remove3(this.nativePtr, key);
+		CQt.QCborMap_Remove3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public bool Contains(int64 key)
@@ -131,94 +136,94 @@ public class QCborMap
 		return CQt.QCborMap_Contains(this.nativePtr, key);
 	}
 	
-	public bool Contains2(libqt_string key)
+	public bool Contains2(String key)
 	{
-		return CQt.QCborMap_Contains2(this.nativePtr, key);
+		return CQt.QCborMap_Contains2(this.nativePtr, libqt_string(key));
 	}
 	
-	public bool Contains3(void* key)
+	public bool Contains3(IQCborValue key)
 	{
-		return CQt.QCborMap_Contains3(this.nativePtr, key);
+		return CQt.QCborMap_Contains3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
-	public int32 Compare(void* other)
+	public int32 Compare(IQCborMap other)
 	{
-		return CQt.QCborMap_Compare(this.nativePtr, other);
+		return CQt.QCborMap_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCborMap other)
 	{
-		return CQt.QCborMap_OperatorEqual(this.nativePtr, other);
+		return CQt.QCborMap_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCborMap other)
 	{
-		return CQt.QCborMap_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCborMap_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* other)
+	public bool OperatorLesser(IQCborMap other)
 	{
-		return CQt.QCborMap_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborMap_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QCborMap__Iterator Begin()
+	public void Begin()
 	{
-		return CQt.QCborMap_Begin(this.nativePtr);
+		CQt.QCborMap_Begin(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator ConstBegin()
+	public void ConstBegin()
 	{
-		return CQt.QCborMap_ConstBegin(this.nativePtr);
+		CQt.QCborMap_ConstBegin(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator Begin2()
+	public void Begin2()
 	{
-		return CQt.QCborMap_Begin2(this.nativePtr);
+		CQt.QCborMap_Begin2(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator Cbegin()
+	public void Cbegin()
 	{
-		return CQt.QCborMap_Cbegin(this.nativePtr);
+		CQt.QCborMap_Cbegin(this.nativePtr);
 	}
 	
-	public QCborMap__Iterator End()
+	public void End()
 	{
-		return CQt.QCborMap_End(this.nativePtr);
+		CQt.QCborMap_End(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator ConstEnd()
+	public void ConstEnd()
 	{
-		return CQt.QCborMap_ConstEnd(this.nativePtr);
+		CQt.QCborMap_ConstEnd(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator End2()
+	public void End2()
 	{
-		return CQt.QCborMap_End2(this.nativePtr);
+		CQt.QCborMap_End2(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator Cend()
+	public void Cend()
 	{
-		return CQt.QCborMap_Cend(this.nativePtr);
+		CQt.QCborMap_Cend(this.nativePtr);
 	}
 	
-	public QCborMap__Iterator Erase(QCborMap__Iterator it)
+	public void Erase(QCborMap__Iterator it)
 	{
-		return CQt.QCborMap_Erase(this.nativePtr, it);
+		CQt.QCborMap_Erase(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
 	}
 	
-	public QCborMap__Iterator EraseWithIt(QCborMap__ConstIterator it)
+	public void EraseWithIt(QCborMap__ConstIterator it)
 	{
-		return CQt.QCborMap_EraseWithIt(this.nativePtr, it);
+		CQt.QCborMap_EraseWithIt(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
 	}
 	
 	public void Extract(QCborMap__Iterator it)
 	{
-		CQt.QCborMap_Extract(this.nativePtr, it);
+		CQt.QCborMap_Extract(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
 	}
 	
 	public void ExtractWithIt(QCborMap__ConstIterator it)
 	{
-		CQt.QCborMap_ExtractWithIt(this.nativePtr, it);
+		CQt.QCborMap_ExtractWithIt(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
 	}
 	
 	public bool Empty()
@@ -226,69 +231,69 @@ public class QCborMap
 		return CQt.QCborMap_Empty(this.nativePtr);
 	}
 	
-	public QCborMap__Iterator Find(int64 key)
+	public void Find(int64 key)
 	{
-		return CQt.QCborMap_Find(this.nativePtr, key);
+		CQt.QCborMap_Find(this.nativePtr, key);
 	}
 	
-	public QCborMap__Iterator Find2(libqt_string key)
+	public void Find2(String key)
 	{
-		return CQt.QCborMap_Find2(this.nativePtr, key);
+		CQt.QCborMap_Find2(this.nativePtr, libqt_string(key));
 	}
 	
-	public QCborMap__Iterator Find3(void* key)
+	public void Find3(IQCborValue key)
 	{
-		return CQt.QCborMap_Find3(this.nativePtr, key);
+		CQt.QCborMap_Find3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
-	public QCborMap__ConstIterator ConstFind(int64 key)
+	public void ConstFind(int64 key)
 	{
-		return CQt.QCborMap_ConstFind(this.nativePtr, key);
+		CQt.QCborMap_ConstFind(this.nativePtr, key);
 	}
 	
-	public QCborMap__ConstIterator ConstFind2(libqt_string key)
+	public void ConstFind2(String key)
 	{
-		return CQt.QCborMap_ConstFind2(this.nativePtr, key);
+		CQt.QCborMap_ConstFind2(this.nativePtr, libqt_string(key));
 	}
 	
-	public QCborMap__ConstIterator ConstFind3(void* key)
+	public void ConstFind3(IQCborValue key)
 	{
-		return CQt.QCborMap_ConstFind3(this.nativePtr, key);
+		CQt.QCborMap_ConstFind3(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
-	public QCborMap__ConstIterator Find4(int64 key)
+	public void Find4(int64 key)
 	{
-		return CQt.QCborMap_Find4(this.nativePtr, key);
+		CQt.QCborMap_Find4(this.nativePtr, key);
 	}
 	
-	public QCborMap__ConstIterator Find6(libqt_string key)
+	public void Find6(String key)
 	{
-		return CQt.QCborMap_Find6(this.nativePtr, key);
+		CQt.QCborMap_Find6(this.nativePtr, libqt_string(key));
 	}
 	
-	public QCborMap__ConstIterator Find7(void* key)
+	public void Find7(IQCborValue key)
 	{
-		return CQt.QCborMap_Find7(this.nativePtr, key);
+		CQt.QCborMap_Find7(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
-	public QCborMap__Iterator Insert(int64 key, void* value_)
+	public void Insert(int64 key, IQCborValue value_)
 	{
-		return CQt.QCborMap_Insert(this.nativePtr, key, value_);
+		CQt.QCborMap_Insert(this.nativePtr, key, (value_ == default) ? default : (void*)value_.NativePtr);
 	}
 	
-	public QCborMap__Iterator Insert3(libqt_string key, void* value_)
+	public void Insert3(String key, IQCborValue value_)
 	{
-		return CQt.QCborMap_Insert3(this.nativePtr, key, value_);
+		CQt.QCborMap_Insert3(this.nativePtr, libqt_string(key), (value_ == default) ? default : (void*)value_.NativePtr);
 	}
 	
-	public QCborMap__Iterator Insert4(void* key, void* value_)
+	public void Insert4(IQCborValue key, IQCborValue value_)
 	{
-		return CQt.QCborMap_Insert4(this.nativePtr, key, value_);
+		CQt.QCborMap_Insert4(this.nativePtr, (key == default) ? default : (void*)key.NativePtr, (value_ == default) ? default : (void*)value_.NativePtr);
 	}
 	
-	public QCborMap__Iterator InsertWithQCborMapvalueType(void* v)
+	public void InsertWithQCborMapvalueType(void* v)
 	{
-		return CQt.QCborMap_InsertWithQCborMapvalueType(this.nativePtr, v);
+		CQt.QCborMap_InsertWithQCborMapvalueType(this.nativePtr, v);
 	}
 	
 	public static void FromVariantMap(void* mapVal)
@@ -301,9 +306,9 @@ public class QCborMap
 		CQt.QCborMap_FromVariantHash(hash);
 	}
 	
-	public static void FromJsonObject(void* o)
+	public static void FromJsonObject(IQJsonObject o)
 	{
-		CQt.QCborMap_FromJsonObject(o);
+		CQt.QCborMap_FromJsonObject((o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public void* ToVariantMap()
@@ -387,57 +392,57 @@ extension CQt
 	[LinkName("QCborMap_OperatorLesser")]
 	public static extern bool QCborMap_OperatorLesser(void* c_this, void* other);
 	[LinkName("QCborMap_Begin")]
-	public static extern QCborMap__Iterator QCborMap_Begin(void* c_this);
+	public static extern void QCborMap_Begin(void* c_this);
 	[LinkName("QCborMap_ConstBegin")]
-	public static extern QCborMap__ConstIterator QCborMap_ConstBegin(void* c_this);
+	public static extern void QCborMap_ConstBegin(void* c_this);
 	[LinkName("QCborMap_Begin2")]
-	public static extern QCborMap__ConstIterator QCborMap_Begin2(void* c_this);
+	public static extern void QCborMap_Begin2(void* c_this);
 	[LinkName("QCborMap_Cbegin")]
-	public static extern QCborMap__ConstIterator QCborMap_Cbegin(void* c_this);
+	public static extern void QCborMap_Cbegin(void* c_this);
 	[LinkName("QCborMap_End")]
-	public static extern QCborMap__Iterator QCborMap_End(void* c_this);
+	public static extern void QCborMap_End(void* c_this);
 	[LinkName("QCborMap_ConstEnd")]
-	public static extern QCborMap__ConstIterator QCborMap_ConstEnd(void* c_this);
+	public static extern void QCborMap_ConstEnd(void* c_this);
 	[LinkName("QCborMap_End2")]
-	public static extern QCborMap__ConstIterator QCborMap_End2(void* c_this);
+	public static extern void QCborMap_End2(void* c_this);
 	[LinkName("QCborMap_Cend")]
-	public static extern QCborMap__ConstIterator QCborMap_Cend(void* c_this);
+	public static extern void QCborMap_Cend(void* c_this);
 	[LinkName("QCborMap_Erase")]
-	public static extern QCborMap__Iterator QCborMap_Erase(void* c_this, QCborMap__Iterator it);
+	public static extern void QCborMap_Erase(void* c_this, void it);
 	[LinkName("QCborMap_EraseWithIt")]
-	public static extern QCborMap__Iterator QCborMap_EraseWithIt(void* c_this, QCborMap__ConstIterator it);
+	public static extern void QCborMap_EraseWithIt(void* c_this, void it);
 	[LinkName("QCborMap_Extract")]
-	public static extern void QCborMap_Extract(void* c_this, QCborMap__Iterator it);
+	public static extern void QCborMap_Extract(void* c_this, void it);
 	[LinkName("QCborMap_ExtractWithIt")]
-	public static extern void QCborMap_ExtractWithIt(void* c_this, QCborMap__ConstIterator it);
+	public static extern void QCborMap_ExtractWithIt(void* c_this, void it);
 	[LinkName("QCborMap_Empty")]
 	public static extern bool QCborMap_Empty(void* c_this);
 	[LinkName("QCborMap_Find")]
-	public static extern QCborMap__Iterator QCborMap_Find(void* c_this, int64 key);
+	public static extern void QCborMap_Find(void* c_this, int64 key);
 	[LinkName("QCborMap_Find2")]
-	public static extern QCborMap__Iterator QCborMap_Find2(void* c_this, libqt_string key);
+	public static extern void QCborMap_Find2(void* c_this, libqt_string key);
 	[LinkName("QCborMap_Find3")]
-	public static extern QCborMap__Iterator QCborMap_Find3(void* c_this, void* key);
+	public static extern void QCborMap_Find3(void* c_this, void* key);
 	[LinkName("QCborMap_ConstFind")]
-	public static extern QCborMap__ConstIterator QCborMap_ConstFind(void* c_this, int64 key);
+	public static extern void QCborMap_ConstFind(void* c_this, int64 key);
 	[LinkName("QCborMap_ConstFind2")]
-	public static extern QCborMap__ConstIterator QCborMap_ConstFind2(void* c_this, libqt_string key);
+	public static extern void QCborMap_ConstFind2(void* c_this, libqt_string key);
 	[LinkName("QCborMap_ConstFind3")]
-	public static extern QCborMap__ConstIterator QCborMap_ConstFind3(void* c_this, void* key);
+	public static extern void QCborMap_ConstFind3(void* c_this, void* key);
 	[LinkName("QCborMap_Find4")]
-	public static extern QCborMap__ConstIterator QCborMap_Find4(void* c_this, int64 key);
+	public static extern void QCborMap_Find4(void* c_this, int64 key);
 	[LinkName("QCborMap_Find6")]
-	public static extern QCborMap__ConstIterator QCborMap_Find6(void* c_this, libqt_string key);
+	public static extern void QCborMap_Find6(void* c_this, libqt_string key);
 	[LinkName("QCborMap_Find7")]
-	public static extern QCborMap__ConstIterator QCborMap_Find7(void* c_this, void* key);
+	public static extern void QCborMap_Find7(void* c_this, void* key);
 	[LinkName("QCborMap_Insert")]
-	public static extern QCborMap__Iterator QCborMap_Insert(void* c_this, int64 key, void* value_);
+	public static extern void QCborMap_Insert(void* c_this, int64 key, void* value_);
 	[LinkName("QCborMap_Insert3")]
-	public static extern QCborMap__Iterator QCborMap_Insert3(void* c_this, libqt_string key, void* value_);
+	public static extern void QCborMap_Insert3(void* c_this, libqt_string key, void* value_);
 	[LinkName("QCborMap_Insert4")]
-	public static extern QCborMap__Iterator QCborMap_Insert4(void* c_this, void* key, void* value_);
+	public static extern void QCborMap_Insert4(void* c_this, void* key, void* value_);
 	[LinkName("QCborMap_InsertWithQCborMapvalueType")]
-	public static extern QCborMap__Iterator QCborMap_InsertWithQCborMapvalueType(void* c_this, void* v);
+	public static extern void QCborMap_InsertWithQCborMapvalueType(void* c_this, void* v);
 	[LinkName("QCborMap_FromVariantMap")]
 	public static extern void QCborMap_FromVariantMap(void* mapVal);
 	[LinkName("QCborMap_FromVariantHash")]
@@ -454,13 +459,18 @@ extension CQt
 	[LinkName("QCborMap_Delete")]
 	public static extern void QCborMap_Delete(void* self);
 }
-public class QCborMap__Iterator
+public interface IQCborMap__Iterator
+{
+	void* NativePtr { get; }
+}
+public class QCborMap__Iterator : IQCborMap__Iterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QCborMap__Iterator* other)
+	public this(QCborMap__Iterator other)
 	{
-		this.nativePtr = CQt.QCborMap__Iterator_new(other);
+		this.nativePtr = CQt.QCborMap__Iterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -468,9 +478,9 @@ public class QCborMap__Iterator
 		CQt.QCborMap__Iterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QCborMap__Iterator* other)
+	public void OperatorAssign(QCborMap__Iterator other)
 	{
-		CQt.QCborMap__Iterator_OperatorAssign(this.nativePtr, other);
+		CQt.QCborMap__Iterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* OperatorMultiply()
@@ -503,122 +513,122 @@ public class QCborMap__Iterator
 		CQt.QCborMap__Iterator_Value(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QCborMap__Iterator* o)
+	public bool OperatorEqual(QCborMap__Iterator o)
 	{
-		return CQt.QCborMap__Iterator_OperatorEqual(this.nativePtr, o);
+		return CQt.QCborMap__Iterator_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QCborMap__Iterator* o)
+	public bool OperatorNotEqual(QCborMap__Iterator o)
 	{
-		return CQt.QCborMap__Iterator_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QCborMap__Iterator_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesser(QCborMap__Iterator* other)
+	public bool OperatorLesser(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QCborMap__Iterator* other)
+	public bool OperatorLesserOrEqual(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorLesserOrEqual(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QCborMap__Iterator* other)
+	public bool OperatorGreater(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorGreater(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QCborMap__Iterator* other)
+	public bool OperatorGreaterOrEqual(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorGreaterOrEqual(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqualWithQCborMapConstIterator(QCborMap__ConstIterator* o)
+	public bool OperatorEqualWithQCborMapConstIterator(QCborMap__ConstIterator o)
 	{
-		return CQt.QCborMap__Iterator_OperatorEqualWithQCborMapConstIterator(this.nativePtr, o);
+		return CQt.QCborMap__Iterator_OperatorEqualWithQCborMapConstIterator(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithQCborMapConstIterator(QCborMap__ConstIterator* o)
+	public bool OperatorNotEqualWithQCborMapConstIterator(QCborMap__ConstIterator o)
 	{
-		return CQt.QCborMap__Iterator_OperatorNotEqualWithQCborMapConstIterator(this.nativePtr, o);
+		return CQt.QCborMap__Iterator_OperatorNotEqualWithQCborMapConstIterator(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorLesserWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorLesserWithOther(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorLesserOrEqualWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorLesserOrEqualWithOther(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorGreaterWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorGreaterWithOther(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorGreaterOrEqualWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__Iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, other);
+		return CQt.QCborMap__Iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QCborMap__Iterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QCborMap__Iterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QCborMap__Iterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QCborMap__Iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QCborMap__Iterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QCborMap__Iterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QCborMap__Iterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QCborMap__Iterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QCborMap__Iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QCborMap__Iterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
-	public QCborMap__Iterator* OperatorPlusAssign(int32 j)
+	public void* OperatorPlusAssign(int32 j)
 	{
 		return CQt.QCborMap__Iterator_OperatorPlusAssign(this.nativePtr, j);
 	}
 	
-	public QCborMap__Iterator* OperatorMinusAssign(int32 j)
+	public void* OperatorMinusAssign(int32 j)
 	{
 		return CQt.QCborMap__Iterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
-	public QCborMap__Iterator OperatorPlus(int32 j)
+	public void OperatorPlus(int32 j)
 	{
-		return CQt.QCborMap__Iterator_OperatorPlus(this.nativePtr, j);
+		CQt.QCborMap__Iterator_OperatorPlus(this.nativePtr, j);
 	}
 	
-	public QCborMap__Iterator OperatorMinus(int32 j)
+	public void OperatorMinus(int32 j)
 	{
-		return CQt.QCborMap__Iterator_OperatorMinus(this.nativePtr, j);
+		CQt.QCborMap__Iterator_OperatorMinus(this.nativePtr, j);
 	}
 	
 	public int32 OperatorMinusWithQCborMapIterator(QCborMap__Iterator j)
 	{
-		return CQt.QCborMap__Iterator_OperatorMinusWithQCborMapIterator(this.nativePtr, j);
+		return CQt.QCborMap__Iterator_OperatorMinusWithQCborMapIterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QCborMap__Iterator_new")]
-	public static extern void* QCborMap__Iterator_new(QCborMap__Iterator* other);
+	public static extern void* QCborMap__Iterator_new(void* other);
 	[LinkName("QCborMap__Iterator_new2")]
 	public static extern void* QCborMap__Iterator_new2();
 	[LinkName("QCborMap__Iterator_new3")]
-	public static extern void* QCborMap__Iterator_new3(QCborMap__Iterator* param1);
+	public static extern void* QCborMap__Iterator_new3(void* param1);
 	[LinkName("QCborMap__Iterator_OperatorAssign")]
-	public static extern void QCborMap__Iterator_OperatorAssign(void* c_this, QCborMap__Iterator* other);
+	public static extern void QCborMap__Iterator_OperatorAssign(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorMultiply")]
 	public static extern void* QCborMap__Iterator_OperatorMultiply(void* c_this);
 	[LinkName("QCborMap__Iterator_OperatorSubscript")]
@@ -632,58 +642,63 @@ extension CQt
 	[LinkName("QCborMap__Iterator_Value")]
 	public static extern void QCborMap__Iterator_Value(void* c_this);
 	[LinkName("QCborMap__Iterator_OperatorEqual")]
-	public static extern bool QCborMap__Iterator_OperatorEqual(void* c_this, QCborMap__Iterator* o);
+	public static extern bool QCborMap__Iterator_OperatorEqual(void* c_this, void* o);
 	[LinkName("QCborMap__Iterator_OperatorNotEqual")]
-	public static extern bool QCborMap__Iterator_OperatorNotEqual(void* c_this, QCborMap__Iterator* o);
+	public static extern bool QCborMap__Iterator_OperatorNotEqual(void* c_this, void* o);
 	[LinkName("QCborMap__Iterator_OperatorLesser")]
-	public static extern bool QCborMap__Iterator_OperatorLesser(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__Iterator_OperatorLesser(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorLesserOrEqual")]
-	public static extern bool QCborMap__Iterator_OperatorLesserOrEqual(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__Iterator_OperatorLesserOrEqual(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorGreater")]
-	public static extern bool QCborMap__Iterator_OperatorGreater(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__Iterator_OperatorGreater(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorGreaterOrEqual")]
-	public static extern bool QCborMap__Iterator_OperatorGreaterOrEqual(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__Iterator_OperatorGreaterOrEqual(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorEqualWithQCborMapConstIterator")]
-	public static extern bool QCborMap__Iterator_OperatorEqualWithQCborMapConstIterator(void* c_this, QCborMap__ConstIterator* o);
+	public static extern bool QCborMap__Iterator_OperatorEqualWithQCborMapConstIterator(void* c_this, void* o);
 	[LinkName("QCborMap__Iterator_OperatorNotEqualWithQCborMapConstIterator")]
-	public static extern bool QCborMap__Iterator_OperatorNotEqualWithQCborMapConstIterator(void* c_this, QCborMap__ConstIterator* o);
+	public static extern bool QCborMap__Iterator_OperatorNotEqualWithQCborMapConstIterator(void* c_this, void* o);
 	[LinkName("QCborMap__Iterator_OperatorLesserWithOther")]
-	public static extern bool QCborMap__Iterator_OperatorLesserWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__Iterator_OperatorLesserWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorLesserOrEqualWithOther")]
-	public static extern bool QCborMap__Iterator_OperatorLesserOrEqualWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__Iterator_OperatorLesserOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorGreaterWithOther")]
-	public static extern bool QCborMap__Iterator_OperatorGreaterWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__Iterator_OperatorGreaterWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorGreaterOrEqualWithOther")]
-	public static extern bool QCborMap__Iterator_OperatorGreaterOrEqualWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__Iterator_OperatorGreaterOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__Iterator_OperatorPlusPlus")]
-	public static extern QCborMap__Iterator* QCborMap__Iterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QCborMap__Iterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QCborMap__Iterator_OperatorPlusPlusWithInt")]
-	public static extern QCborMap__Iterator QCborMap__Iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QCborMap__Iterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QCborMap__Iterator_OperatorMinusMinus")]
-	public static extern QCborMap__Iterator* QCborMap__Iterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QCborMap__Iterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QCborMap__Iterator_OperatorMinusMinusWithInt")]
-	public static extern QCborMap__Iterator QCborMap__Iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QCborMap__Iterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	[LinkName("QCborMap__Iterator_OperatorPlusAssign")]
-	public static extern QCborMap__Iterator* QCborMap__Iterator_OperatorPlusAssign(void* c_this, int32 j);
+	public static extern void* QCborMap__Iterator_OperatorPlusAssign(void* c_this, int32 j);
 	[LinkName("QCborMap__Iterator_OperatorMinusAssign")]
-	public static extern QCborMap__Iterator* QCborMap__Iterator_OperatorMinusAssign(void* c_this, int32 j);
+	public static extern void* QCborMap__Iterator_OperatorMinusAssign(void* c_this, int32 j);
 	[LinkName("QCborMap__Iterator_OperatorPlus")]
-	public static extern QCborMap__Iterator QCborMap__Iterator_OperatorPlus(void* c_this, int32 j);
+	public static extern void QCborMap__Iterator_OperatorPlus(void* c_this, int32 j);
 	[LinkName("QCborMap__Iterator_OperatorMinus")]
-	public static extern QCborMap__Iterator QCborMap__Iterator_OperatorMinus(void* c_this, int32 j);
+	public static extern void QCborMap__Iterator_OperatorMinus(void* c_this, int32 j);
 	[LinkName("QCborMap__Iterator_OperatorMinusWithQCborMapIterator")]
-	public static extern int32 QCborMap__Iterator_OperatorMinusWithQCborMapIterator(void* c_this, QCborMap__Iterator j);
+	public static extern int32 QCborMap__Iterator_OperatorMinusWithQCborMapIterator(void* c_this, void j);
 	/// Delete this object from C++ memory
 	[LinkName("QCborMap__Iterator_Delete")]
 	public static extern void QCborMap__Iterator_Delete(void* self);
 }
-public class QCborMap__ConstIterator
+public interface IQCborMap__ConstIterator
+{
+	void* NativePtr { get; }
+}
+public class QCborMap__ConstIterator : IQCborMap__ConstIterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QCborMap__ConstIterator* other)
+	public this(QCborMap__ConstIterator other)
 	{
-		this.nativePtr = CQt.QCborMap__ConstIterator_new(other);
+		this.nativePtr = CQt.QCborMap__ConstIterator_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -691,9 +706,9 @@ public class QCborMap__ConstIterator
 		CQt.QCborMap__ConstIterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QCborMap__ConstIterator* other)
+	public void OperatorAssign(QCborMap__ConstIterator other)
 	{
-		CQt.QCborMap__ConstIterator_OperatorAssign(this.nativePtr, other);
+		CQt.QCborMap__ConstIterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* OperatorMultiply()
@@ -721,122 +736,122 @@ public class QCborMap__ConstIterator
 		CQt.QCborMap__ConstIterator_Value(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QCborMap__Iterator* o)
+	public bool OperatorEqual(QCborMap__Iterator o)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorEqual(this.nativePtr, o);
+		return CQt.QCborMap__ConstIterator_OperatorEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QCborMap__Iterator* o)
+	public bool OperatorNotEqual(QCborMap__Iterator o)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorNotEqual(this.nativePtr, o);
+		return CQt.QCborMap__ConstIterator_OperatorNotEqual(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesser(QCborMap__Iterator* other)
+	public bool OperatorLesser(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QCborMap__Iterator* other)
+	public bool OperatorLesserOrEqual(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorLesserOrEqual(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QCborMap__Iterator* other)
+	public bool OperatorGreater(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorGreater(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QCborMap__Iterator* other)
+	public bool OperatorGreaterOrEqual(QCborMap__Iterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorGreaterOrEqual(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqualWithQCborMapConstIterator(QCborMap__ConstIterator* o)
+	public bool OperatorEqualWithQCborMapConstIterator(QCborMap__ConstIterator o)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorEqualWithQCborMapConstIterator(this.nativePtr, o);
+		return CQt.QCborMap__ConstIterator_OperatorEqualWithQCborMapConstIterator(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithQCborMapConstIterator(QCborMap__ConstIterator* o)
+	public bool OperatorNotEqualWithQCborMapConstIterator(QCborMap__ConstIterator o)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorNotEqualWithQCborMapConstIterator(this.nativePtr, o);
+		return CQt.QCborMap__ConstIterator_OperatorNotEqualWithQCborMapConstIterator(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorLesserWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorLesserWithOther(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorLesserOrEqualWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorLesserOrEqualWithOther(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorGreaterWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorGreaterWithOther(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QCborMap__ConstIterator* other)
+	public bool OperatorGreaterOrEqualWithOther(QCborMap__ConstIterator other)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorGreaterOrEqualWithOther(this.nativePtr, other);
+		return CQt.QCborMap__ConstIterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public QCborMap__ConstIterator* OperatorPlusPlus()
+	public void* OperatorPlusPlus()
 	{
 		return CQt.QCborMap__ConstIterator_OperatorPlusPlus(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator OperatorPlusPlusWithInt(int32 param1)
+	public void OperatorPlusPlusWithInt(int32 param1)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+		CQt.QCborMap__ConstIterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
 	}
 	
-	public QCborMap__ConstIterator* OperatorMinusMinus()
+	public void* OperatorMinusMinus()
 	{
 		return CQt.QCborMap__ConstIterator_OperatorMinusMinus(this.nativePtr);
 	}
 	
-	public QCborMap__ConstIterator OperatorMinusMinusWithInt(int32 param1)
+	public void OperatorMinusMinusWithInt(int32 param1)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+		CQt.QCborMap__ConstIterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
 	}
 	
-	public QCborMap__ConstIterator* OperatorPlusAssign(int32 j)
+	public void* OperatorPlusAssign(int32 j)
 	{
 		return CQt.QCborMap__ConstIterator_OperatorPlusAssign(this.nativePtr, j);
 	}
 	
-	public QCborMap__ConstIterator* OperatorMinusAssign(int32 j)
+	public void* OperatorMinusAssign(int32 j)
 	{
 		return CQt.QCborMap__ConstIterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
-	public QCborMap__ConstIterator OperatorPlus(int32 j)
+	public void OperatorPlus(int32 j)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorPlus(this.nativePtr, j);
+		CQt.QCborMap__ConstIterator_OperatorPlus(this.nativePtr, j);
 	}
 	
-	public QCborMap__ConstIterator OperatorMinus(int32 j)
+	public void OperatorMinus(int32 j)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorMinus(this.nativePtr, j);
+		CQt.QCborMap__ConstIterator_OperatorMinus(this.nativePtr, j);
 	}
 	
 	public int32 OperatorMinusWithQCborMapConstIterator(QCborMap__ConstIterator j)
 	{
-		return CQt.QCborMap__ConstIterator_OperatorMinusWithQCborMapConstIterator(this.nativePtr, j);
+		return CQt.QCborMap__ConstIterator_OperatorMinusWithQCborMapConstIterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QCborMap__ConstIterator_new")]
-	public static extern void* QCborMap__ConstIterator_new(QCborMap__ConstIterator* other);
+	public static extern void* QCborMap__ConstIterator_new(void* other);
 	[LinkName("QCborMap__ConstIterator_new2")]
 	public static extern void* QCborMap__ConstIterator_new2();
 	[LinkName("QCborMap__ConstIterator_new3")]
-	public static extern void* QCborMap__ConstIterator_new3(QCborMap__ConstIterator* param1);
+	public static extern void* QCborMap__ConstIterator_new3(void* param1);
 	[LinkName("QCborMap__ConstIterator_OperatorAssign")]
-	public static extern void QCborMap__ConstIterator_OperatorAssign(void* c_this, QCborMap__ConstIterator* other);
+	public static extern void QCborMap__ConstIterator_OperatorAssign(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorMultiply")]
 	public static extern void* QCborMap__ConstIterator_OperatorMultiply(void* c_this);
 	[LinkName("QCborMap__ConstIterator_OperatorSubscript")]
@@ -848,47 +863,47 @@ extension CQt
 	[LinkName("QCborMap__ConstIterator_Value")]
 	public static extern void QCborMap__ConstIterator_Value(void* c_this);
 	[LinkName("QCborMap__ConstIterator_OperatorEqual")]
-	public static extern bool QCborMap__ConstIterator_OperatorEqual(void* c_this, QCborMap__Iterator* o);
+	public static extern bool QCborMap__ConstIterator_OperatorEqual(void* c_this, void* o);
 	[LinkName("QCborMap__ConstIterator_OperatorNotEqual")]
-	public static extern bool QCborMap__ConstIterator_OperatorNotEqual(void* c_this, QCborMap__Iterator* o);
+	public static extern bool QCborMap__ConstIterator_OperatorNotEqual(void* c_this, void* o);
 	[LinkName("QCborMap__ConstIterator_OperatorLesser")]
-	public static extern bool QCborMap__ConstIterator_OperatorLesser(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorLesser(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorLesserOrEqual")]
-	public static extern bool QCborMap__ConstIterator_OperatorLesserOrEqual(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorLesserOrEqual(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorGreater")]
-	public static extern bool QCborMap__ConstIterator_OperatorGreater(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorGreater(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorGreaterOrEqual")]
-	public static extern bool QCborMap__ConstIterator_OperatorGreaterOrEqual(void* c_this, QCborMap__Iterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorGreaterOrEqual(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorEqualWithQCborMapConstIterator")]
-	public static extern bool QCborMap__ConstIterator_OperatorEqualWithQCborMapConstIterator(void* c_this, QCborMap__ConstIterator* o);
+	public static extern bool QCborMap__ConstIterator_OperatorEqualWithQCborMapConstIterator(void* c_this, void* o);
 	[LinkName("QCborMap__ConstIterator_OperatorNotEqualWithQCborMapConstIterator")]
-	public static extern bool QCborMap__ConstIterator_OperatorNotEqualWithQCborMapConstIterator(void* c_this, QCborMap__ConstIterator* o);
+	public static extern bool QCborMap__ConstIterator_OperatorNotEqualWithQCborMapConstIterator(void* c_this, void* o);
 	[LinkName("QCborMap__ConstIterator_OperatorLesserWithOther")]
-	public static extern bool QCborMap__ConstIterator_OperatorLesserWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorLesserWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorLesserOrEqualWithOther")]
-	public static extern bool QCborMap__ConstIterator_OperatorLesserOrEqualWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorLesserOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorGreaterWithOther")]
-	public static extern bool QCborMap__ConstIterator_OperatorGreaterWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorGreaterWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorGreaterOrEqualWithOther")]
-	public static extern bool QCborMap__ConstIterator_OperatorGreaterOrEqualWithOther(void* c_this, QCborMap__ConstIterator* other);
+	public static extern bool QCborMap__ConstIterator_OperatorGreaterOrEqualWithOther(void* c_this, void* other);
 	[LinkName("QCborMap__ConstIterator_OperatorPlusPlus")]
-	public static extern QCborMap__ConstIterator* QCborMap__ConstIterator_OperatorPlusPlus(void* c_this);
+	public static extern void* QCborMap__ConstIterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QCborMap__ConstIterator_OperatorPlusPlusWithInt")]
-	public static extern QCborMap__ConstIterator QCborMap__ConstIterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
+	public static extern void QCborMap__ConstIterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QCborMap__ConstIterator_OperatorMinusMinus")]
-	public static extern QCborMap__ConstIterator* QCborMap__ConstIterator_OperatorMinusMinus(void* c_this);
+	public static extern void* QCborMap__ConstIterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QCborMap__ConstIterator_OperatorMinusMinusWithInt")]
-	public static extern QCborMap__ConstIterator QCborMap__ConstIterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
+	public static extern void QCborMap__ConstIterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	[LinkName("QCborMap__ConstIterator_OperatorPlusAssign")]
-	public static extern QCborMap__ConstIterator* QCborMap__ConstIterator_OperatorPlusAssign(void* c_this, int32 j);
+	public static extern void* QCborMap__ConstIterator_OperatorPlusAssign(void* c_this, int32 j);
 	[LinkName("QCborMap__ConstIterator_OperatorMinusAssign")]
-	public static extern QCborMap__ConstIterator* QCborMap__ConstIterator_OperatorMinusAssign(void* c_this, int32 j);
+	public static extern void* QCborMap__ConstIterator_OperatorMinusAssign(void* c_this, int32 j);
 	[LinkName("QCborMap__ConstIterator_OperatorPlus")]
-	public static extern QCborMap__ConstIterator QCborMap__ConstIterator_OperatorPlus(void* c_this, int32 j);
+	public static extern void QCborMap__ConstIterator_OperatorPlus(void* c_this, int32 j);
 	[LinkName("QCborMap__ConstIterator_OperatorMinus")]
-	public static extern QCborMap__ConstIterator QCborMap__ConstIterator_OperatorMinus(void* c_this, int32 j);
+	public static extern void QCborMap__ConstIterator_OperatorMinus(void* c_this, int32 j);
 	[LinkName("QCborMap__ConstIterator_OperatorMinusWithQCborMapConstIterator")]
-	public static extern int32 QCborMap__ConstIterator_OperatorMinusWithQCborMapConstIterator(void* c_this, QCborMap__ConstIterator j);
+	public static extern int32 QCborMap__ConstIterator_OperatorMinusWithQCborMapConstIterator(void* c_this, void j);
 	/// Delete this object from C++ memory
 	[LinkName("QCborMap__ConstIterator_Delete")]
 	public static extern void QCborMap__ConstIterator_Delete(void* self);

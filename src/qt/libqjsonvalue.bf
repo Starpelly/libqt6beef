@@ -13,9 +13,14 @@ public enum QJsonValue__Type
 	Object = 5,
 	Undefined = 128,
 }
-public class QJsonValue
+public interface IQJsonValue
+{
+	void* NativePtr { get; }
+}
+public class QJsonValue : IQJsonValue
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -27,19 +32,19 @@ public class QJsonValue
 		CQt.QJsonValue_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQJsonValue other)
 	{
-		CQt.QJsonValue_OperatorAssign(this.nativePtr, other);
+		CQt.QJsonValue_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQJsonValue other)
 	{
-		CQt.QJsonValue_Swap(this.nativePtr, other);
+		CQt.QJsonValue_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public static void FromVariant(void* variant)
+	public static void FromVariant(IQVariant variant)
 	{
-		CQt.QJsonValue_FromVariant(variant);
+		CQt.QJsonValue_FromVariant((variant == default) ? default : (void*)variant.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -112,9 +117,9 @@ public class QJsonValue
 		return CQt.QJsonValue_ToString(this.nativePtr);
 	}
 	
-	public libqt_string ToStringWithDefaultValue(libqt_string defaultValue)
+	public libqt_string ToStringWithDefaultValue(String defaultValue)
 	{
-		return CQt.QJsonValue_ToStringWithDefaultValue(this.nativePtr, defaultValue);
+		return CQt.QJsonValue_ToStringWithDefaultValue(this.nativePtr, libqt_string(defaultValue));
 	}
 	
 	public void ToArray()
@@ -122,9 +127,9 @@ public class QJsonValue
 		CQt.QJsonValue_ToArray(this.nativePtr);
 	}
 	
-	public void ToArrayWithDefaultValue(void* defaultValue)
+	public void ToArrayWithDefaultValue(IQJsonArray defaultValue)
 	{
-		CQt.QJsonValue_ToArrayWithDefaultValue(this.nativePtr, defaultValue);
+		CQt.QJsonValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public void ToObject()
@@ -132,14 +137,14 @@ public class QJsonValue
 		CQt.QJsonValue_ToObject(this.nativePtr);
 	}
 	
-	public void ToObjectWithDefaultValue(void* defaultValue)
+	public void ToObjectWithDefaultValue(IQJsonObject defaultValue)
 	{
-		CQt.QJsonValue_ToObjectWithDefaultValue(this.nativePtr, defaultValue);
+		CQt.QJsonValue_ToObjectWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void OperatorSubscript(libqt_string key)
+	public void OperatorSubscript(String key)
 	{
-		CQt.QJsonValue_OperatorSubscript(this.nativePtr, key);
+		CQt.QJsonValue_OperatorSubscript(this.nativePtr, libqt_string(key));
 	}
 	
 	public void OperatorSubscriptWithQsizetype(int32 i)
@@ -147,14 +152,14 @@ public class QJsonValue
 		CQt.QJsonValue_OperatorSubscriptWithQsizetype(this.nativePtr, i);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValue_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonValue_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValue_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonValue_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -193,7 +198,7 @@ extension CQt
 	[LinkName("QJsonValue_new6")]
 	public static extern void* QJsonValue_new6(libqt_string s);
 	[LinkName("QJsonValue_new7")]
-	public static extern void* QJsonValue_new7(char8[] s);
+	public static extern void* QJsonValue_new7(char8* s);
 	[LinkName("QJsonValue_new8")]
 	public static extern void* QJsonValue_new8(void* a);
 	[LinkName("QJsonValue_new9")]
@@ -266,13 +271,18 @@ extension CQt
 	[LinkName("QJsonValue_Delete")]
 	public static extern void QJsonValue_Delete(void* self);
 }
-public class QJsonValueConstRef
+public interface IQJsonValueConstRef
+{
+	void* NativePtr { get; }
+}
+public class QJsonValueConstRef : IQJsonValueConstRef
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQJsonValueConstRef other)
 	{
-		this.nativePtr = CQt.QJsonValueConstRef_new(other);
+		this.nativePtr = CQt.QJsonValueConstRef_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -370,14 +380,14 @@ public class QJsonValueConstRef
 		CQt.QJsonValueConstRef_OperatorSubscriptWithQsizetype(this.nativePtr, i);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueConstRef_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonValueConstRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueConstRef_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonValueConstRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -400,9 +410,9 @@ public class QJsonValueConstRef
 		return CQt.QJsonValueConstRef_ToDouble1(this.nativePtr, defaultValue);
 	}
 	
-	public libqt_string ToString1(libqt_string defaultValue)
+	public libqt_string ToString1(String defaultValue)
 	{
-		return CQt.QJsonValueConstRef_ToString1(this.nativePtr, defaultValue);
+		return CQt.QJsonValueConstRef_ToString1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
 }
@@ -466,13 +476,18 @@ extension CQt
 	[LinkName("QJsonValueConstRef_Delete")]
 	public static extern void QJsonValueConstRef_Delete(void* self);
 }
-public class QJsonValueRef
+public interface IQJsonValueRef
+{
+	void* NativePtr { get; }
+}
+public class QJsonValueRef : IQJsonValueRef, IQJsonValueConstRef
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQJsonValueRef other)
 	{
-		this.nativePtr = CQt.QJsonValueRef_new(other);
+		this.nativePtr = CQt.QJsonValueRef_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -480,14 +495,14 @@ public class QJsonValueRef
 		CQt.QJsonValueRef_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* val)
+	public void OperatorAssign(IQJsonValue val)
 	{
-		CQt.QJsonValueRef_OperatorAssign(this.nativePtr, val);
+		CQt.QJsonValueRef_OperatorAssign(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
 	}
 	
-	public void OperatorAssignWithVal(void* val)
+	public void OperatorAssignWithVal(IQJsonValueRef val)
 	{
-		CQt.QJsonValueRef_OperatorAssignWithVal(this.nativePtr, val);
+		CQt.QJsonValueRef_OperatorAssignWithVal(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
 	}
 	
 	public void ToQJsonValue()
@@ -580,14 +595,14 @@ public class QJsonValueRef
 		CQt.QJsonValueRef_OperatorSubscriptWithQsizetype(this.nativePtr, i);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueRef_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonValueRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueRef_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonValueRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -610,9 +625,9 @@ public class QJsonValueRef
 		return CQt.QJsonValueRef_ToDouble1(this.nativePtr, defaultValue);
 	}
 	
-	public libqt_string ToString1(libqt_string defaultValue)
+	public libqt_string ToString1(String defaultValue)
 	{
-		return CQt.QJsonValueRef_ToString1(this.nativePtr, defaultValue);
+		return CQt.QJsonValueRef_ToString1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
 }

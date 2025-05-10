@@ -89,7 +89,7 @@ func pkgConfigCflags(packageName string) string {
 
 func generate(packageName string, srcDirs []string, allowHeaderFn func(string) bool, clangBin, cflagsCombined, outDir, includePath string, matcher ClangMatcher, headerList *[]string, zigIncs map[string]string, qtstructdefs map[string]struct{}) {
 
-	writeCPP := true
+	writeCPP := false
 	writeBeef := true
 
 	var includeFiles []string

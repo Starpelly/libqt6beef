@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QVLABaseBase
+public interface IQVLABaseBase
+{
+	void* NativePtr { get; }
+}
+public class QVLABaseBase : IQVLABaseBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public int32 Capacity()
 	{

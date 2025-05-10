@@ -42,13 +42,18 @@ public enum QDir__SortFlag
 	Type = 128,
 	NoSort = -1,
 }
-public class QDir
+public interface IQDir
+{
+	void* NativePtr { get; }
+}
+public class QDir : IQDir
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* param1)
+	public this(IQDir param1)
 	{
-		this.nativePtr = CQt.QDir_new(param1);
+		this.nativePtr = CQt.QDir_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -56,19 +61,19 @@ public class QDir
 		CQt.QDir_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQDir param1)
 	{
-		CQt.QDir_OperatorAssign(this.nativePtr, param1);
+		CQt.QDir_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQDir other)
 	{
-		CQt.QDir_Swap(this.nativePtr, other);
+		CQt.QDir_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetPath(libqt_string path)
+	public void SetPath(String path)
 	{
-		CQt.QDir_SetPath(this.nativePtr, path);
+		CQt.QDir_SetPath(this.nativePtr, libqt_string(path));
 	}
 	
 	public libqt_string Path()
@@ -86,19 +91,19 @@ public class QDir
 		return CQt.QDir_CanonicalPath(this.nativePtr);
 	}
 	
-	public static void SetSearchPaths(libqt_string prefix, libqt_string[] searchPaths)
+	public static void SetSearchPaths(String prefix, String[] searchPaths)
 	{
-		CQt.QDir_SetSearchPaths(prefix, searchPaths);
+		CQt.QDir_SetSearchPaths(libqt_string(prefix), null);
 	}
 	
-	public static void AddSearchPath(libqt_string prefix, libqt_string path)
+	public static void AddSearchPath(String prefix, String path)
 	{
-		CQt.QDir_AddSearchPath(prefix, path);
+		CQt.QDir_AddSearchPath(libqt_string(prefix), libqt_string(path));
 	}
 	
-	public static libqt_string[] SearchPaths(libqt_string prefix)
+	public static libqt_string[] SearchPaths(String prefix)
 	{
-		return CQt.QDir_SearchPaths(prefix);
+		return CQt.QDir_SearchPaths(libqt_string(prefix));
 	}
 	
 	public libqt_string DirName()
@@ -106,34 +111,34 @@ public class QDir
 		return CQt.QDir_DirName(this.nativePtr);
 	}
 	
-	public libqt_string FilePath(libqt_string fileName)
+	public libqt_string FilePath(String fileName)
 	{
-		return CQt.QDir_FilePath(this.nativePtr, fileName);
+		return CQt.QDir_FilePath(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public libqt_string AbsoluteFilePath(libqt_string fileName)
+	public libqt_string AbsoluteFilePath(String fileName)
 	{
-		return CQt.QDir_AbsoluteFilePath(this.nativePtr, fileName);
+		return CQt.QDir_AbsoluteFilePath(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public libqt_string RelativeFilePath(libqt_string fileName)
+	public libqt_string RelativeFilePath(String fileName)
 	{
-		return CQt.QDir_RelativeFilePath(this.nativePtr, fileName);
+		return CQt.QDir_RelativeFilePath(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public static libqt_string ToNativeSeparators(libqt_string pathName)
+	public static libqt_string ToNativeSeparators(String pathName)
 	{
-		return CQt.QDir_ToNativeSeparators(pathName);
+		return CQt.QDir_ToNativeSeparators(libqt_string(pathName));
 	}
 	
-	public static libqt_string FromNativeSeparators(libqt_string pathName)
+	public static libqt_string FromNativeSeparators(String pathName)
 	{
-		return CQt.QDir_FromNativeSeparators(pathName);
+		return CQt.QDir_FromNativeSeparators(libqt_string(pathName));
 	}
 	
-	public bool Cd(libqt_string dirName)
+	public bool Cd(String dirName)
 	{
-		return CQt.QDir_Cd(this.nativePtr, dirName);
+		return CQt.QDir_Cd(this.nativePtr, libqt_string(dirName));
 	}
 	
 	public bool CdUp()
@@ -146,9 +151,9 @@ public class QDir
 		return CQt.QDir_NameFilters(this.nativePtr);
 	}
 	
-	public void SetNameFilters(libqt_string[] nameFilters)
+	public void SetNameFilters(String[] nameFilters)
 	{
-		CQt.QDir_SetNameFilters(this.nativePtr, nameFilters);
+		CQt.QDir_SetNameFilters(this.nativePtr, null);
 	}
 	
 	public int64 Filter()
@@ -186,9 +191,9 @@ public class QDir
 		return CQt.QDir_OperatorSubscript(this.nativePtr, param1);
 	}
 	
-	public static libqt_string[] NameFiltersFromString(libqt_string nameFilter)
+	public static libqt_string[] NameFiltersFromString(String nameFilter)
 	{
-		return CQt.QDir_NameFiltersFromString(nameFilter);
+		return CQt.QDir_NameFiltersFromString(libqt_string(nameFilter));
 	}
 	
 	public libqt_string[] EntryList()
@@ -196,9 +201,9 @@ public class QDir
 		return CQt.QDir_EntryList(this.nativePtr);
 	}
 	
-	public libqt_string[] EntryListWithNameFilters(libqt_string[] nameFilters)
+	public libqt_string[] EntryListWithNameFilters(String[] nameFilters)
 	{
-		return CQt.QDir_EntryListWithNameFilters(this.nativePtr, nameFilters);
+		return CQt.QDir_EntryListWithNameFilters(this.nativePtr, null);
 	}
 	
 	public void[] EntryInfoList()
@@ -206,34 +211,34 @@ public class QDir
 		return CQt.QDir_EntryInfoList(this.nativePtr);
 	}
 	
-	public void[] EntryInfoListWithNameFilters(libqt_string[] nameFilters)
+	public void[] EntryInfoListWithNameFilters(String[] nameFilters)
 	{
-		return CQt.QDir_EntryInfoListWithNameFilters(this.nativePtr, nameFilters);
+		return CQt.QDir_EntryInfoListWithNameFilters(this.nativePtr, null);
 	}
 	
-	public bool Mkdir(libqt_string dirName)
+	public bool Mkdir(String dirName)
 	{
-		return CQt.QDir_Mkdir(this.nativePtr, dirName);
+		return CQt.QDir_Mkdir(this.nativePtr, libqt_string(dirName));
 	}
 	
-	public bool Mkdir2(libqt_string dirName, int64 permissions)
+	public bool Mkdir2(String dirName, int64 permissions)
 	{
-		return CQt.QDir_Mkdir2(this.nativePtr, dirName, permissions);
+		return CQt.QDir_Mkdir2(this.nativePtr, libqt_string(dirName), permissions);
 	}
 	
-	public bool Rmdir(libqt_string dirName)
+	public bool Rmdir(String dirName)
 	{
-		return CQt.QDir_Rmdir(this.nativePtr, dirName);
+		return CQt.QDir_Rmdir(this.nativePtr, libqt_string(dirName));
 	}
 	
-	public bool Mkpath(libqt_string dirPath)
+	public bool Mkpath(String dirPath)
 	{
-		return CQt.QDir_Mkpath(this.nativePtr, dirPath);
+		return CQt.QDir_Mkpath(this.nativePtr, libqt_string(dirPath));
 	}
 	
-	public bool Rmpath(libqt_string dirPath)
+	public bool Rmpath(String dirPath)
 	{
-		return CQt.QDir_Rmpath(this.nativePtr, dirPath);
+		return CQt.QDir_Rmpath(this.nativePtr, libqt_string(dirPath));
 	}
 	
 	public bool RemoveRecursively()
@@ -256,14 +261,14 @@ public class QDir
 		return CQt.QDir_IsRoot(this.nativePtr);
 	}
 	
-	public static bool IsRelativePath(libqt_string path)
+	public static bool IsRelativePath(String path)
 	{
-		return CQt.QDir_IsRelativePath(path);
+		return CQt.QDir_IsRelativePath(libqt_string(path));
 	}
 	
-	public static bool IsAbsolutePath(libqt_string path)
+	public static bool IsAbsolutePath(String path)
 	{
-		return CQt.QDir_IsAbsolutePath(path);
+		return CQt.QDir_IsAbsolutePath(libqt_string(path));
 	}
 	
 	public bool IsRelative()
@@ -281,29 +286,29 @@ public class QDir
 		return CQt.QDir_MakeAbsolute(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* dir)
+	public bool OperatorEqual(IQDir dir)
 	{
-		return CQt.QDir_OperatorEqual(this.nativePtr, dir);
+		return CQt.QDir_OperatorEqual(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* dir)
+	public bool OperatorNotEqual(IQDir dir)
 	{
-		return CQt.QDir_OperatorNotEqual(this.nativePtr, dir);
+		return CQt.QDir_OperatorNotEqual(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr);
 	}
 	
-	public bool Remove(libqt_string fileName)
+	public bool Remove(String fileName)
 	{
-		return CQt.QDir_Remove(this.nativePtr, fileName);
+		return CQt.QDir_Remove(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool Rename(libqt_string oldName, libqt_string newName)
+	public bool Rename(String oldName, String newName)
 	{
-		return CQt.QDir_Rename(this.nativePtr, oldName, newName);
+		return CQt.QDir_Rename(this.nativePtr, libqt_string(oldName), libqt_string(newName));
 	}
 	
-	public bool ExistsWithName(libqt_string name)
+	public bool ExistsWithName(String name)
 	{
-		return CQt.QDir_ExistsWithName(this.nativePtr, name);
+		return CQt.QDir_ExistsWithName(this.nativePtr, libqt_string(name));
 	}
 	
 	public static void[] Drives()
@@ -321,9 +326,9 @@ public class QDir
 		CQt.QDir_Separator();
 	}
 	
-	public static bool SetCurrent(libqt_string path)
+	public static bool SetCurrent(String path)
 	{
-		return CQt.QDir_SetCurrent(path);
+		return CQt.QDir_SetCurrent(libqt_string(path));
 	}
 	
 	public static void Current()
@@ -366,19 +371,19 @@ public class QDir
 		return CQt.QDir_TempPath();
 	}
 	
-	public static bool Match(libqt_string[] filters, libqt_string fileName)
+	public static bool Match(String[] filters, String fileName)
 	{
-		return CQt.QDir_Match(filters, fileName);
+		return CQt.QDir_Match(null, libqt_string(fileName));
 	}
 	
-	public static bool Match2(libqt_string filter, libqt_string fileName)
+	public static bool Match2(String filter, String fileName)
 	{
-		return CQt.QDir_Match2(filter, fileName);
+		return CQt.QDir_Match2(libqt_string(filter), libqt_string(fileName));
 	}
 	
-	public static libqt_string CleanPath(libqt_string path)
+	public static libqt_string CleanPath(String path)
 	{
-		return CQt.QDir_CleanPath(path);
+		return CQt.QDir_CleanPath(libqt_string(path));
 	}
 	
 	public void Refresh()
@@ -401,14 +406,14 @@ public class QDir
 		return CQt.QDir_EntryList2(this.nativePtr, filters, sort);
 	}
 	
-	public libqt_string[] EntryList22(libqt_string[] nameFilters, int64 filters)
+	public libqt_string[] EntryList22(String[] nameFilters, int64 filters)
 	{
-		return CQt.QDir_EntryList22(this.nativePtr, nameFilters, filters);
+		return CQt.QDir_EntryList22(this.nativePtr, null, filters);
 	}
 	
-	public libqt_string[] EntryList3(libqt_string[] nameFilters, int64 filters, int64 sort)
+	public libqt_string[] EntryList3(String[] nameFilters, int64 filters, int64 sort)
 	{
-		return CQt.QDir_EntryList3(this.nativePtr, nameFilters, filters, sort);
+		return CQt.QDir_EntryList3(this.nativePtr, null, filters, sort);
 	}
 	
 	public void[] EntryInfoList1(int64 filters)
@@ -421,14 +426,14 @@ public class QDir
 		return CQt.QDir_EntryInfoList2(this.nativePtr, filters, sort);
 	}
 	
-	public void[] EntryInfoList22(libqt_string[] nameFilters, int64 filters)
+	public void[] EntryInfoList22(String[] nameFilters, int64 filters)
 	{
-		return CQt.QDir_EntryInfoList22(this.nativePtr, nameFilters, filters);
+		return CQt.QDir_EntryInfoList22(this.nativePtr, null, filters);
 	}
 	
-	public void[] EntryInfoList3(libqt_string[] nameFilters, int64 filters, int64 sort)
+	public void[] EntryInfoList3(String[] nameFilters, int64 filters, int64 sort)
 	{
-		return CQt.QDir_EntryInfoList3(this.nativePtr, nameFilters, filters, sort);
+		return CQt.QDir_EntryInfoList3(this.nativePtr, null, filters, sort);
 	}
 	
 }

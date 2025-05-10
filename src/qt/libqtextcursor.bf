@@ -45,9 +45,14 @@ public enum QTextCursor__SelectionType
 	BlockUnderCursor = 2,
 	Document = 3,
 }
-public class QTextCursor
+public interface IQTextCursor
+{
+	void* NativePtr { get; }
+}
+public class QTextCursor : IQTextCursor
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -59,14 +64,14 @@ public class QTextCursor
 		CQt.QTextCursor_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQTextCursor other)
 	{
-		CQt.QTextCursor_OperatorAssign(this.nativePtr, other);
+		CQt.QTextCursor_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextCursor other)
 	{
-		CQt.QTextCursor_Swap(this.nativePtr, other);
+		CQt.QTextCursor_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -94,14 +99,14 @@ public class QTextCursor
 		return CQt.QTextCursor_Anchor(this.nativePtr);
 	}
 	
-	public void InsertText(libqt_string text)
+	public void InsertText(String text)
 	{
-		CQt.QTextCursor_InsertText(this.nativePtr, text);
+		CQt.QTextCursor_InsertText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void InsertText2(libqt_string text, void* format)
+	public void InsertText2(String text, IQTextCharFormat format)
 	{
-		CQt.QTextCursor_InsertText2(this.nativePtr, text, format);
+		CQt.QTextCursor_InsertText2(this.nativePtr, libqt_string(text), (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public bool MovePosition(int64 op)
@@ -209,14 +214,14 @@ public class QTextCursor
 		CQt.QTextCursor_CharFormat(this.nativePtr);
 	}
 	
-	public void SetCharFormat(void* format)
+	public void SetCharFormat(IQTextCharFormat format)
 	{
-		CQt.QTextCursor_SetCharFormat(this.nativePtr, format);
+		CQt.QTextCursor_SetCharFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void MergeCharFormat(void* modifier)
+	public void MergeCharFormat(IQTextCharFormat modifier)
 	{
-		CQt.QTextCursor_MergeCharFormat(this.nativePtr, modifier);
+		CQt.QTextCursor_MergeCharFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
 	}
 	
 	public void BlockFormat()
@@ -224,14 +229,14 @@ public class QTextCursor
 		CQt.QTextCursor_BlockFormat(this.nativePtr);
 	}
 	
-	public void SetBlockFormat(void* format)
+	public void SetBlockFormat(IQTextBlockFormat format)
 	{
-		CQt.QTextCursor_SetBlockFormat(this.nativePtr, format);
+		CQt.QTextCursor_SetBlockFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void MergeBlockFormat(void* modifier)
+	public void MergeBlockFormat(IQTextBlockFormat modifier)
 	{
-		CQt.QTextCursor_MergeBlockFormat(this.nativePtr, modifier);
+		CQt.QTextCursor_MergeBlockFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
 	}
 	
 	public void BlockCharFormat()
@@ -239,14 +244,14 @@ public class QTextCursor
 		CQt.QTextCursor_BlockCharFormat(this.nativePtr);
 	}
 	
-	public void SetBlockCharFormat(void* format)
+	public void SetBlockCharFormat(IQTextCharFormat format)
 	{
-		CQt.QTextCursor_SetBlockCharFormat(this.nativePtr, format);
+		CQt.QTextCursor_SetBlockCharFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void MergeBlockCharFormat(void* modifier)
+	public void MergeBlockCharFormat(IQTextCharFormat modifier)
 	{
-		CQt.QTextCursor_MergeBlockCharFormat(this.nativePtr, modifier);
+		CQt.QTextCursor_MergeBlockCharFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
 	}
 	
 	public bool AtBlockStart()
@@ -274,19 +279,19 @@ public class QTextCursor
 		CQt.QTextCursor_InsertBlock(this.nativePtr);
 	}
 	
-	public void InsertBlockWithFormat(void* format)
+	public void InsertBlockWithFormat(IQTextBlockFormat format)
 	{
-		CQt.QTextCursor_InsertBlockWithFormat(this.nativePtr, format);
+		CQt.QTextCursor_InsertBlockWithFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void InsertBlock2(void* format, void* charFormat)
+	public void InsertBlock2(IQTextBlockFormat format, IQTextCharFormat charFormat)
 	{
-		CQt.QTextCursor_InsertBlock2(this.nativePtr, format, charFormat);
+		CQt.QTextCursor_InsertBlock2(this.nativePtr, (format == default) ? default : (void*)format.NativePtr, (charFormat == default) ? default : (void*)charFormat.NativePtr);
 	}
 	
-	public void* InsertList(void* format)
+	public void* InsertList(IQTextListFormat format)
 	{
-		return CQt.QTextCursor_InsertList(this.nativePtr, format);
+		return CQt.QTextCursor_InsertList(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void* InsertListWithStyle(int64 style)
@@ -294,9 +299,9 @@ public class QTextCursor
 		return CQt.QTextCursor_InsertListWithStyle(this.nativePtr, style);
 	}
 	
-	public void* CreateList(void* format)
+	public void* CreateList(IQTextListFormat format)
 	{
-		return CQt.QTextCursor_CreateList(this.nativePtr, format);
+		return CQt.QTextCursor_CreateList(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void* CreateListWithStyle(int64 style)
@@ -309,9 +314,9 @@ public class QTextCursor
 		return CQt.QTextCursor_CurrentList(this.nativePtr);
 	}
 	
-	public void* InsertTable(int32 rows, int32 cols, void* format)
+	public void* InsertTable(int32 rows, int32 cols, IQTextTableFormat format)
 	{
-		return CQt.QTextCursor_InsertTable(this.nativePtr, rows, cols, format);
+		return CQt.QTextCursor_InsertTable(this.nativePtr, rows, cols, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void* InsertTable2(int32 rows, int32 cols)
@@ -324,9 +329,9 @@ public class QTextCursor
 		return CQt.QTextCursor_CurrentTable(this.nativePtr);
 	}
 	
-	public void* InsertFrame(void* format)
+	public void* InsertFrame(IQTextFrameFormat format)
 	{
-		return CQt.QTextCursor_InsertFrame(this.nativePtr, format);
+		return CQt.QTextCursor_InsertFrame(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void* CurrentFrame()
@@ -334,39 +339,39 @@ public class QTextCursor
 		return CQt.QTextCursor_CurrentFrame(this.nativePtr);
 	}
 	
-	public void InsertFragment(void* fragment)
+	public void InsertFragment(IQTextDocumentFragment fragment)
 	{
-		CQt.QTextCursor_InsertFragment(this.nativePtr, fragment);
+		CQt.QTextCursor_InsertFragment(this.nativePtr, (fragment == default) ? default : (void*)fragment.NativePtr);
 	}
 	
-	public void InsertHtml(libqt_string html)
+	public void InsertHtml(String html)
 	{
-		CQt.QTextCursor_InsertHtml(this.nativePtr, html);
+		CQt.QTextCursor_InsertHtml(this.nativePtr, libqt_string(html));
 	}
 	
-	public void InsertMarkdown(libqt_string markdown)
+	public void InsertMarkdown(String markdown)
 	{
-		CQt.QTextCursor_InsertMarkdown(this.nativePtr, markdown);
+		CQt.QTextCursor_InsertMarkdown(this.nativePtr, libqt_string(markdown));
 	}
 	
-	public void InsertImage(void* format, int64 alignment)
+	public void InsertImage(IQTextImageFormat format, int64 alignment)
 	{
-		CQt.QTextCursor_InsertImage(this.nativePtr, format, alignment);
+		CQt.QTextCursor_InsertImage(this.nativePtr, (format == default) ? default : (void*)format.NativePtr, alignment);
 	}
 	
-	public void InsertImageWithFormat(void* format)
+	public void InsertImageWithFormat(IQTextImageFormat format)
 	{
-		CQt.QTextCursor_InsertImageWithFormat(this.nativePtr, format);
+		CQt.QTextCursor_InsertImageWithFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void InsertImageWithName(libqt_string name)
+	public void InsertImageWithName(String name)
 	{
-		CQt.QTextCursor_InsertImageWithName(this.nativePtr, name);
+		CQt.QTextCursor_InsertImageWithName(this.nativePtr, libqt_string(name));
 	}
 	
-	public void InsertImageWithImage(void* image)
+	public void InsertImageWithImage(IQImage image)
 	{
-		CQt.QTextCursor_InsertImageWithImage(this.nativePtr, image);
+		CQt.QTextCursor_InsertImageWithImage(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
 	}
 	
 	public void BeginEditBlock()
@@ -384,39 +389,39 @@ public class QTextCursor
 		CQt.QTextCursor_EndEditBlock(this.nativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* rhs)
+	public bool OperatorLesser(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorLesser(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorLesser(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(void* rhs)
+	public bool OperatorLesserOrEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorLesserOrEqual(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorLesserOrEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(void* rhs)
+	public bool OperatorGreaterOrEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorGreaterOrEqual(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorGreaterOrEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorGreater(void* rhs)
+	public bool OperatorGreater(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorGreater(this.nativePtr, rhs);
+		return CQt.QTextCursor_OperatorGreater(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool IsCopyOf(void* other)
+	public bool IsCopyOf(IQTextCursor other)
 	{
-		return CQt.QTextCursor_IsCopyOf(this.nativePtr, other);
+		return CQt.QTextCursor_IsCopyOf(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int32 BlockNumber()
@@ -449,14 +454,14 @@ public class QTextCursor
 		return CQt.QTextCursor_MovePosition3(this.nativePtr, op, param2, n);
 	}
 	
-	public void InsertMarkdown2(libqt_string markdown, int64 features)
+	public void InsertMarkdown2(String markdown, int64 features)
 	{
-		CQt.QTextCursor_InsertMarkdown2(this.nativePtr, markdown, features);
+		CQt.QTextCursor_InsertMarkdown2(this.nativePtr, libqt_string(markdown), features);
 	}
 	
-	public void InsertImage2(void* image, libqt_string name)
+	public void InsertImage2(IQImage image, String name)
 	{
-		CQt.QTextCursor_InsertImage2(this.nativePtr, image, name);
+		CQt.QTextCursor_InsertImage2(this.nativePtr, (image == default) ? default : (void*)image.NativePtr, libqt_string(name));
 	}
 	
 }

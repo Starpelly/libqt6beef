@@ -10,13 +10,18 @@ public enum QElapsedTimer__ClockType
 	MachAbsoluteTime = 2,
 	PerformanceCounter = 3,
 }
-public class QElapsedTimer
+public interface IQElapsedTimer
+{
+	void* NativePtr { get; }
+}
+public class QElapsedTimer : IQElapsedTimer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQElapsedTimer other)
 	{
-		this.nativePtr = CQt.QElapsedTimer_new(other);
+		this.nativePtr = CQt.QElapsedTimer_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -74,14 +79,14 @@ public class QElapsedTimer
 		return CQt.QElapsedTimer_MsecsSinceReference(this.nativePtr);
 	}
 	
-	public int64 MsecsTo(void* other)
+	public int64 MsecsTo(IQElapsedTimer other)
 	{
-		return CQt.QElapsedTimer_MsecsTo(this.nativePtr, other);
+		return CQt.QElapsedTimer_MsecsTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public int64 SecsTo(void* other)
+	public int64 SecsTo(IQElapsedTimer other)
 	{
-		return CQt.QElapsedTimer_SecsTo(this.nativePtr, other);
+		return CQt.QElapsedTimer_SecsTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }

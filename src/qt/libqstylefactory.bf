@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QStyleFactory
+public interface IQStyleFactory
+{
+	void* NativePtr { get; }
+}
+public class QStyleFactory : IQStyleFactory
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQStyleFactory other)
 	{
-		this.nativePtr = CQt.QStyleFactory_new(other);
+		this.nativePtr = CQt.QStyleFactory_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -21,9 +26,9 @@ public class QStyleFactory
 		return CQt.QStyleFactory_Keys();
 	}
 	
-	public static void* Create(libqt_string param1)
+	public static void* Create(String param1)
 	{
-		return CQt.QStyleFactory_Create(param1);
+		return CQt.QStyleFactory_Create(libqt_string(param1));
 	}
 	
 }

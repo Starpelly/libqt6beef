@@ -148,9 +148,14 @@ public enum QPageSize__SizeMatchPolicy
 	FuzzyOrientationMatch = 1,
 	ExactMatch = 2,
 }
-public class QPageSize
+public interface IQPageSize
+{
+	void* NativePtr { get; }
+}
+public class QPageSize : IQPageSize
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -162,19 +167,19 @@ public class QPageSize
 		CQt.QPageSize_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQPageSize other)
 	{
-		CQt.QPageSize_OperatorAssign(this.nativePtr, other);
+		CQt.QPageSize_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPageSize other)
 	{
-		CQt.QPageSize_Swap(this.nativePtr, other);
+		CQt.QPageSize_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool IsEquivalentTo(void* other)
+	public bool IsEquivalentTo(IQPageSize other)
 	{
-		return CQt.QPageSize_IsEquivalentTo(this.nativePtr, other);
+		return CQt.QPageSize_IsEquivalentTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -252,14 +257,14 @@ public class QPageSize
 		return CQt.QPageSize_NameWithPageSizeId(pageSizeId);
 	}
 	
-	public static int64 IdWithPointSize(void* pointSize)
+	public static int64 IdWithPointSize(IQSize pointSize)
 	{
-		return CQt.QPageSize_IdWithPointSize(pointSize);
+		return CQt.QPageSize_IdWithPointSize((pointSize == default) ? default : (void*)pointSize.NativePtr);
 	}
 	
-	public static int64 Id2(void* size, int64 units)
+	public static int64 Id2(IQSizeF size, int64 units)
 	{
-		return CQt.QPageSize_Id2(size, units);
+		return CQt.QPageSize_Id2((size == default) ? default : (void*)size.NativePtr, units);
 	}
 	
 	public static int64 IdWithWindowsId(int32 windowsId)
@@ -297,14 +302,14 @@ public class QPageSize
 		CQt.QPageSize_SizePixels2(pageSizeId, resolution);
 	}
 	
-	public static int64 Id22(void* pointSize, int64 matchPolicy)
+	public static int64 Id22(IQSize pointSize, int64 matchPolicy)
 	{
-		return CQt.QPageSize_Id22(pointSize, matchPolicy);
+		return CQt.QPageSize_Id22((pointSize == default) ? default : (void*)pointSize.NativePtr, matchPolicy);
 	}
 	
-	public static int64 Id3(void* size, int64 units, int64 matchPolicy)
+	public static int64 Id3(IQSizeF size, int64 units, int64 matchPolicy)
 	{
-		return CQt.QPageSize_Id3(size, units, matchPolicy);
+		return CQt.QPageSize_Id3((size == default) ? default : (void*)size.NativePtr, units, matchPolicy);
 	}
 	
 }

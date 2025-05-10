@@ -33,9 +33,14 @@ public enum QXmlStreamReader__Error
 	NotWellFormedError = 3,
 	PrematureEndOfDocumentError = 4,
 }
-public class QXmlStreamAttribute
+public interface IQXmlStreamAttribute
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamAttribute : IQXmlStreamAttribute
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -52,19 +57,19 @@ public class QXmlStreamAttribute
 		return CQt.QXmlStreamAttribute_IsDefault(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQXmlStreamAttribute other)
 	{
-		return CQt.QXmlStreamAttribute_OperatorEqual(this.nativePtr, other);
+		return CQt.QXmlStreamAttribute_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQXmlStreamAttribute other)
 	{
-		return CQt.QXmlStreamAttribute_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QXmlStreamAttribute_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQXmlStreamAttribute param1)
 	{
-		CQt.QXmlStreamAttribute_OperatorAssign(this.nativePtr, param1);
+		CQt.QXmlStreamAttribute_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -90,9 +95,14 @@ extension CQt
 	[LinkName("QXmlStreamAttribute_Delete")]
 	public static extern void QXmlStreamAttribute_Delete(void* self);
 }
-public class QXmlStreamNamespaceDeclaration
+public interface IQXmlStreamNamespaceDeclaration
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamNamespaceDeclaration : IQXmlStreamNamespaceDeclaration
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -104,14 +114,14 @@ public class QXmlStreamNamespaceDeclaration
 		CQt.QXmlStreamNamespaceDeclaration_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQXmlStreamNamespaceDeclaration other)
 	{
-		return CQt.QXmlStreamNamespaceDeclaration_OperatorEqual(this.nativePtr, other);
+		return CQt.QXmlStreamNamespaceDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQXmlStreamNamespaceDeclaration other)
 	{
-		return CQt.QXmlStreamNamespaceDeclaration_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QXmlStreamNamespaceDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -129,9 +139,14 @@ extension CQt
 	[LinkName("QXmlStreamNamespaceDeclaration_Delete")]
 	public static extern void QXmlStreamNamespaceDeclaration_Delete(void* self);
 }
-public class QXmlStreamNotationDeclaration
+public interface IQXmlStreamNotationDeclaration
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamNotationDeclaration : IQXmlStreamNotationDeclaration
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -143,14 +158,14 @@ public class QXmlStreamNotationDeclaration
 		CQt.QXmlStreamNotationDeclaration_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQXmlStreamNotationDeclaration other)
 	{
-		return CQt.QXmlStreamNotationDeclaration_OperatorEqual(this.nativePtr, other);
+		return CQt.QXmlStreamNotationDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQXmlStreamNotationDeclaration other)
 	{
-		return CQt.QXmlStreamNotationDeclaration_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QXmlStreamNotationDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -166,9 +181,14 @@ extension CQt
 	[LinkName("QXmlStreamNotationDeclaration_Delete")]
 	public static extern void QXmlStreamNotationDeclaration_Delete(void* self);
 }
-public class QXmlStreamEntityDeclaration
+public interface IQXmlStreamEntityDeclaration
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamEntityDeclaration : IQXmlStreamEntityDeclaration
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -180,14 +200,14 @@ public class QXmlStreamEntityDeclaration
 		CQt.QXmlStreamEntityDeclaration_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQXmlStreamEntityDeclaration other)
 	{
-		return CQt.QXmlStreamEntityDeclaration_OperatorEqual(this.nativePtr, other);
+		return CQt.QXmlStreamEntityDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQXmlStreamEntityDeclaration other)
 	{
-		return CQt.QXmlStreamEntityDeclaration_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QXmlStreamEntityDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -203,23 +223,28 @@ extension CQt
 	[LinkName("QXmlStreamEntityDeclaration_Delete")]
 	public static extern void QXmlStreamEntityDeclaration_Delete(void* self);
 }
-public class QXmlStreamEntityResolver
+public interface IQXmlStreamEntityResolver
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamEntityResolver : IQXmlStreamEntityResolver
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
 		CQt.QXmlStreamEntityResolver_Delete(this.nativePtr);
 	}
 	
-	public virtual libqt_string ResolveEntity(libqt_string publicId, libqt_string systemId)
+	public virtual libqt_string ResolveEntity(String publicId, String systemId)
 	{
-		return CQt.QXmlStreamEntityResolver_ResolveEntity(this.nativePtr, publicId, systemId);
+		return CQt.QXmlStreamEntityResolver_ResolveEntity(this.nativePtr, libqt_string(publicId), libqt_string(systemId));
 	}
 	
-	public virtual libqt_string ResolveUndeclaredEntity(libqt_string name)
+	public virtual libqt_string ResolveUndeclaredEntity(String name)
 	{
-		return CQt.QXmlStreamEntityResolver_ResolveUndeclaredEntity(this.nativePtr, name);
+		return CQt.QXmlStreamEntityResolver_ResolveUndeclaredEntity(this.nativePtr, libqt_string(name));
 	}
 	
 }
@@ -233,9 +258,14 @@ extension CQt
 	[LinkName("QXmlStreamEntityResolver_Delete")]
 	public static extern void QXmlStreamEntityResolver_Delete(void* self);
 }
-public class QXmlStreamReader
+public interface IQXmlStreamReader
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamReader : IQXmlStreamReader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -247,9 +277,9 @@ public class QXmlStreamReader
 		CQt.QXmlStreamReader_Delete(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QXmlStreamReader_SetDevice(this.nativePtr, device);
+		CQt.QXmlStreamReader_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -257,17 +287,17 @@ public class QXmlStreamReader
 		return CQt.QXmlStreamReader_Device(this.nativePtr);
 	}
 	
-	public void AddData(libqt_string data)
+	public void AddData(String data)
 	{
-		CQt.QXmlStreamReader_AddData(this.nativePtr, data);
+		CQt.QXmlStreamReader_AddData(this.nativePtr, libqt_string(data));
 	}
 	
-	public void AddDataWithData(libqt_string data)
+	public void AddDataWithData(String data)
 	{
-		CQt.QXmlStreamReader_AddDataWithData(this.nativePtr, data);
+		CQt.QXmlStreamReader_AddDataWithData(this.nativePtr, libqt_string(data));
 	}
 	
-	public void AddData2(char8[] data)
+	public void AddData2(char8* data)
 	{
 		CQt.QXmlStreamReader_AddData2(this.nativePtr, data);
 	}
@@ -402,14 +432,14 @@ public class QXmlStreamReader
 		return CQt.QXmlStreamReader_NamespaceDeclarations(this.nativePtr);
 	}
 	
-	public void AddExtraNamespaceDeclaration(void* extraNamespaceDeclaraction)
+	public void AddExtraNamespaceDeclaration(IQXmlStreamNamespaceDeclaration extraNamespaceDeclaraction)
 	{
-		CQt.QXmlStreamReader_AddExtraNamespaceDeclaration(this.nativePtr, extraNamespaceDeclaraction);
+		CQt.QXmlStreamReader_AddExtraNamespaceDeclaration(this.nativePtr, (extraNamespaceDeclaraction == default) ? default : (void*)extraNamespaceDeclaraction.NativePtr);
 	}
 	
-	public void AddExtraNamespaceDeclarations(void[] extraNamespaceDeclaractions)
+	public void AddExtraNamespaceDeclarations(IQXmlStreamNamespaceDeclaration[] extraNamespaceDeclaractions)
 	{
-		CQt.QXmlStreamReader_AddExtraNamespaceDeclarations(this.nativePtr, extraNamespaceDeclaractions);
+		CQt.QXmlStreamReader_AddExtraNamespaceDeclarations(this.nativePtr, null);
 	}
 	
 	public void[] NotationDeclarations()
@@ -452,9 +482,9 @@ public class QXmlStreamReader
 		return CQt.QXmlStreamReader_HasError(this.nativePtr);
 	}
 	
-	public void SetEntityResolver(void* resolver)
+	public void SetEntityResolver(IQXmlStreamEntityResolver resolver)
 	{
-		CQt.QXmlStreamReader_SetEntityResolver(this.nativePtr, resolver);
+		CQt.QXmlStreamReader_SetEntityResolver(this.nativePtr, (resolver == null) ? null : (void*)resolver.NativePtr);
 	}
 	
 	public void* EntityResolver()
@@ -467,9 +497,9 @@ public class QXmlStreamReader
 		return CQt.QXmlStreamReader_ReadElementText1(this.nativePtr, behaviour);
 	}
 	
-	public void RaiseError1(libqt_string message)
+	public void RaiseError1(String message)
 	{
-		CQt.QXmlStreamReader_RaiseError1(this.nativePtr, message);
+		CQt.QXmlStreamReader_RaiseError1(this.nativePtr, libqt_string(message));
 	}
 	
 }
@@ -484,7 +514,7 @@ extension CQt
 	[LinkName("QXmlStreamReader_new4")]
 	public static extern void* QXmlStreamReader_new4(libqt_string data);
 	[LinkName("QXmlStreamReader_new5")]
-	public static extern void* QXmlStreamReader_new5(char8[] data);
+	public static extern void* QXmlStreamReader_new5(char8* data);
 	[LinkName("QXmlStreamReader_SetDevice")]
 	public static extern void QXmlStreamReader_SetDevice(void* c_this, void* device);
 	[LinkName("QXmlStreamReader_Device")]
@@ -494,7 +524,7 @@ extension CQt
 	[LinkName("QXmlStreamReader_AddDataWithData")]
 	public static extern void QXmlStreamReader_AddDataWithData(void* c_this, libqt_string data);
 	[LinkName("QXmlStreamReader_AddData2")]
-	public static extern void QXmlStreamReader_AddData2(void* c_this, char8[] data);
+	public static extern void QXmlStreamReader_AddData2(void* c_this, char8* data);
 	[LinkName("QXmlStreamReader_Clear")]
 	public static extern void QXmlStreamReader_Clear(void* c_this);
 	[LinkName("QXmlStreamReader_AtEnd")]
@@ -579,9 +609,14 @@ extension CQt
 	[LinkName("QXmlStreamReader_Delete")]
 	public static extern void QXmlStreamReader_Delete(void* self);
 }
-public class QXmlStreamWriter
+public interface IQXmlStreamWriter
+{
+	void* NativePtr { get; }
+}
+public class QXmlStreamWriter : IQXmlStreamWriter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -593,9 +628,9 @@ public class QXmlStreamWriter
 		CQt.QXmlStreamWriter_Delete(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QXmlStreamWriter_SetDevice(this.nativePtr, device);
+		CQt.QXmlStreamWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -623,59 +658,59 @@ public class QXmlStreamWriter
 		return CQt.QXmlStreamWriter_AutoFormattingIndent(this.nativePtr);
 	}
 	
-	public void WriteAttribute(libqt_string qualifiedName, libqt_string value)
+	public void WriteAttribute(String qualifiedName, String value)
 	{
-		CQt.QXmlStreamWriter_WriteAttribute(this.nativePtr, qualifiedName, value);
+		CQt.QXmlStreamWriter_WriteAttribute(this.nativePtr, libqt_string(qualifiedName), libqt_string(value));
 	}
 	
-	public void WriteAttribute2(libqt_string namespaceUri, libqt_string name, libqt_string value)
+	public void WriteAttribute2(String namespaceUri, String name, String value)
 	{
-		CQt.QXmlStreamWriter_WriteAttribute2(this.nativePtr, namespaceUri, name, value);
+		CQt.QXmlStreamWriter_WriteAttribute2(this.nativePtr, libqt_string(namespaceUri), libqt_string(name), libqt_string(value));
 	}
 	
-	public void WriteAttributeWithAttribute(void* attribute)
+	public void WriteAttributeWithAttribute(IQXmlStreamAttribute attribute)
 	{
-		CQt.QXmlStreamWriter_WriteAttributeWithAttribute(this.nativePtr, attribute);
+		CQt.QXmlStreamWriter_WriteAttributeWithAttribute(this.nativePtr, (attribute == default) ? default : (void*)attribute.NativePtr);
 	}
 	
-	public void WriteCDATA(libqt_string text)
+	public void WriteCDATA(String text)
 	{
-		CQt.QXmlStreamWriter_WriteCDATA(this.nativePtr, text);
+		CQt.QXmlStreamWriter_WriteCDATA(this.nativePtr, libqt_string(text));
 	}
 	
-	public void WriteCharacters(libqt_string text)
+	public void WriteCharacters(String text)
 	{
-		CQt.QXmlStreamWriter_WriteCharacters(this.nativePtr, text);
+		CQt.QXmlStreamWriter_WriteCharacters(this.nativePtr, libqt_string(text));
 	}
 	
-	public void WriteComment(libqt_string text)
+	public void WriteComment(String text)
 	{
-		CQt.QXmlStreamWriter_WriteComment(this.nativePtr, text);
+		CQt.QXmlStreamWriter_WriteComment(this.nativePtr, libqt_string(text));
 	}
 	
-	public void WriteDTD(libqt_string dtd)
+	public void WriteDTD(String dtd)
 	{
-		CQt.QXmlStreamWriter_WriteDTD(this.nativePtr, dtd);
+		CQt.QXmlStreamWriter_WriteDTD(this.nativePtr, libqt_string(dtd));
 	}
 	
-	public void WriteEmptyElement(libqt_string qualifiedName)
+	public void WriteEmptyElement(String qualifiedName)
 	{
-		CQt.QXmlStreamWriter_WriteEmptyElement(this.nativePtr, qualifiedName);
+		CQt.QXmlStreamWriter_WriteEmptyElement(this.nativePtr, libqt_string(qualifiedName));
 	}
 	
-	public void WriteEmptyElement2(libqt_string namespaceUri, libqt_string name)
+	public void WriteEmptyElement2(String namespaceUri, String name)
 	{
-		CQt.QXmlStreamWriter_WriteEmptyElement2(this.nativePtr, namespaceUri, name);
+		CQt.QXmlStreamWriter_WriteEmptyElement2(this.nativePtr, libqt_string(namespaceUri), libqt_string(name));
 	}
 	
-	public void WriteTextElement(libqt_string qualifiedName, libqt_string text)
+	public void WriteTextElement(String qualifiedName, String text)
 	{
-		CQt.QXmlStreamWriter_WriteTextElement(this.nativePtr, qualifiedName, text);
+		CQt.QXmlStreamWriter_WriteTextElement(this.nativePtr, libqt_string(qualifiedName), libqt_string(text));
 	}
 	
-	public void WriteTextElement2(libqt_string namespaceUri, libqt_string name, libqt_string text)
+	public void WriteTextElement2(String namespaceUri, String name, String text)
 	{
-		CQt.QXmlStreamWriter_WriteTextElement2(this.nativePtr, namespaceUri, name, text);
+		CQt.QXmlStreamWriter_WriteTextElement2(this.nativePtr, libqt_string(namespaceUri), libqt_string(name), libqt_string(text));
 	}
 	
 	public void WriteEndDocument()
@@ -688,24 +723,24 @@ public class QXmlStreamWriter
 		CQt.QXmlStreamWriter_WriteEndElement(this.nativePtr);
 	}
 	
-	public void WriteEntityReference(libqt_string name)
+	public void WriteEntityReference(String name)
 	{
-		CQt.QXmlStreamWriter_WriteEntityReference(this.nativePtr, name);
+		CQt.QXmlStreamWriter_WriteEntityReference(this.nativePtr, libqt_string(name));
 	}
 	
-	public void WriteNamespace(libqt_string namespaceUri)
+	public void WriteNamespace(String namespaceUri)
 	{
-		CQt.QXmlStreamWriter_WriteNamespace(this.nativePtr, namespaceUri);
+		CQt.QXmlStreamWriter_WriteNamespace(this.nativePtr, libqt_string(namespaceUri));
 	}
 	
-	public void WriteDefaultNamespace(libqt_string namespaceUri)
+	public void WriteDefaultNamespace(String namespaceUri)
 	{
-		CQt.QXmlStreamWriter_WriteDefaultNamespace(this.nativePtr, namespaceUri);
+		CQt.QXmlStreamWriter_WriteDefaultNamespace(this.nativePtr, libqt_string(namespaceUri));
 	}
 	
-	public void WriteProcessingInstruction(libqt_string target)
+	public void WriteProcessingInstruction(String target)
 	{
-		CQt.QXmlStreamWriter_WriteProcessingInstruction(this.nativePtr, target);
+		CQt.QXmlStreamWriter_WriteProcessingInstruction(this.nativePtr, libqt_string(target));
 	}
 	
 	public void WriteStartDocument()
@@ -713,29 +748,29 @@ public class QXmlStreamWriter
 		CQt.QXmlStreamWriter_WriteStartDocument(this.nativePtr);
 	}
 	
-	public void WriteStartDocumentWithVersion(libqt_string version)
+	public void WriteStartDocumentWithVersion(String version)
 	{
-		CQt.QXmlStreamWriter_WriteStartDocumentWithVersion(this.nativePtr, version);
+		CQt.QXmlStreamWriter_WriteStartDocumentWithVersion(this.nativePtr, libqt_string(version));
 	}
 	
-	public void WriteStartDocument2(libqt_string version, bool standalone)
+	public void WriteStartDocument2(String version, bool standalone)
 	{
-		CQt.QXmlStreamWriter_WriteStartDocument2(this.nativePtr, version, standalone);
+		CQt.QXmlStreamWriter_WriteStartDocument2(this.nativePtr, libqt_string(version), standalone);
 	}
 	
-	public void WriteStartElement(libqt_string qualifiedName)
+	public void WriteStartElement(String qualifiedName)
 	{
-		CQt.QXmlStreamWriter_WriteStartElement(this.nativePtr, qualifiedName);
+		CQt.QXmlStreamWriter_WriteStartElement(this.nativePtr, libqt_string(qualifiedName));
 	}
 	
-	public void WriteStartElement2(libqt_string namespaceUri, libqt_string name)
+	public void WriteStartElement2(String namespaceUri, String name)
 	{
-		CQt.QXmlStreamWriter_WriteStartElement2(this.nativePtr, namespaceUri, name);
+		CQt.QXmlStreamWriter_WriteStartElement2(this.nativePtr, libqt_string(namespaceUri), libqt_string(name));
 	}
 	
-	public void WriteCurrentToken(void* reader)
+	public void WriteCurrentToken(IQXmlStreamReader reader)
 	{
-		CQt.QXmlStreamWriter_WriteCurrentToken(this.nativePtr, reader);
+		CQt.QXmlStreamWriter_WriteCurrentToken(this.nativePtr, (reader == default) ? default : (void*)reader.NativePtr);
 	}
 	
 	public bool HasError()
@@ -743,14 +778,14 @@ public class QXmlStreamWriter
 		return CQt.QXmlStreamWriter_HasError(this.nativePtr);
 	}
 	
-	public void WriteNamespace2(libqt_string namespaceUri, libqt_string prefix)
+	public void WriteNamespace2(String namespaceUri, String prefix)
 	{
-		CQt.QXmlStreamWriter_WriteNamespace2(this.nativePtr, namespaceUri, prefix);
+		CQt.QXmlStreamWriter_WriteNamespace2(this.nativePtr, libqt_string(namespaceUri), libqt_string(prefix));
 	}
 	
-	public void WriteProcessingInstruction2(libqt_string target, libqt_string data)
+	public void WriteProcessingInstruction2(String target, String data)
 	{
-		CQt.QXmlStreamWriter_WriteProcessingInstruction2(this.nativePtr, target, data);
+		CQt.QXmlStreamWriter_WriteProcessingInstruction2(this.nativePtr, libqt_string(target), libqt_string(data));
 	}
 	
 }

@@ -29,13 +29,18 @@ public enum QUuid__StringFormat
 	WithoutBraces = 1,
 	Id128 = 3,
 }
-public class QUuid
+public interface IQUuid
+{
+	void* NativePtr { get; }
+}
+public class QUuid : IQUuid
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQUuid other)
 	{
-		this.nativePtr = CQt.QUuid_new(other);
+		this.nativePtr = CQt.QUuid_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -43,9 +48,9 @@ public class QUuid
 		CQt.QUuid_Delete(this.nativePtr);
 	}
 	
-	public static void FromString(void stringVal)
+	public static void FromString(IQAnyStringView stringVal)
 	{
-		CQt.QUuid_FromString(stringVal);
+		CQt.QUuid_FromString((stringVal == default) ? default : (char8*)stringVal.NativePtr);
 	}
 	
 	public libqt_string ToString()
@@ -63,9 +68,9 @@ public class QUuid
 		return CQt.QUuid_ToRfc4122(this.nativePtr);
 	}
 	
-	public static void FromRfc4122(void param1)
+	public static void FromRfc4122(IQByteArrayView param1)
 	{
-		CQt.QUuid_FromRfc4122(param1);
+		CQt.QUuid_FromRfc4122((param1 == default) ? default : (char8*)param1.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -73,24 +78,24 @@ public class QUuid
 		return CQt.QUuid_IsNull(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* orig)
+	public bool OperatorEqual(IQUuid orig)
 	{
-		return CQt.QUuid_OperatorEqual(this.nativePtr, orig);
+		return CQt.QUuid_OperatorEqual(this.nativePtr, (orig == default) ? default : (void*)orig.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* orig)
+	public bool OperatorNotEqual(IQUuid orig)
 	{
-		return CQt.QUuid_OperatorNotEqual(this.nativePtr, orig);
+		return CQt.QUuid_OperatorNotEqual(this.nativePtr, (orig == default) ? default : (void*)orig.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* other)
+	public bool OperatorLesser(IQUuid other)
 	{
-		return CQt.QUuid_OperatorLesser(this.nativePtr, other);
+		return CQt.QUuid_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreater(void* other)
+	public bool OperatorGreater(IQUuid other)
 	{
-		return CQt.QUuid_OperatorGreater(this.nativePtr, other);
+		return CQt.QUuid_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public static void CreateUuid()
@@ -98,24 +103,24 @@ public class QUuid
 		CQt.QUuid_CreateUuid();
 	}
 	
-	public static void CreateUuidV3(void* ns, libqt_string baseData)
+	public static void CreateUuidV3(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV3(ns, baseData);
+		CQt.QUuid_CreateUuidV3((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
 	}
 	
-	public static void CreateUuidV5(void* ns, libqt_string baseData)
+	public static void CreateUuidV5(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV5(ns, baseData);
+		CQt.QUuid_CreateUuidV5((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
 	}
 	
-	public static void CreateUuidV32(void* ns, libqt_string baseData)
+	public static void CreateUuidV32(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV32(ns, baseData);
+		CQt.QUuid_CreateUuidV32((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
 	}
 	
-	public static void CreateUuidV52(void* ns, libqt_string baseData)
+	public static void CreateUuidV52(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV52(ns, baseData);
+		CQt.QUuid_CreateUuidV52((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
 	}
 	
 	public int64 Variant()
@@ -150,11 +155,11 @@ extension CQt
 	[LinkName("QUuid_new4")]
 	public static extern void* QUuid_new4(uint32 l, uint16 w1, uint16 w2, uint8 b1, uint8 b2, uint8 b3, uint8 b4, uint8 b5, uint8 b6, uint8 b7, uint8 b8);
 	[LinkName("QUuid_new5")]
-	public static extern void* QUuid_new5(void stringVal);
+	public static extern void* QUuid_new5(char8* stringVal);
 	[LinkName("QUuid_new6")]
 	public static extern void* QUuid_new6(void* param1);
 	[LinkName("QUuid_FromString")]
-	public static extern void QUuid_FromString(void stringVal);
+	public static extern void QUuid_FromString(char8* stringVal);
 	[LinkName("QUuid_ToString")]
 	public static extern libqt_string QUuid_ToString(void* c_this);
 	[LinkName("QUuid_ToByteArray")]
@@ -162,7 +167,7 @@ extension CQt
 	[LinkName("QUuid_ToRfc4122")]
 	public static extern libqt_string QUuid_ToRfc4122(void* c_this);
 	[LinkName("QUuid_FromRfc4122")]
-	public static extern void QUuid_FromRfc4122(void param1);
+	public static extern void QUuid_FromRfc4122(char8* param1);
 	[LinkName("QUuid_IsNull")]
 	public static extern bool QUuid_IsNull(void* c_this);
 	[LinkName("QUuid_OperatorEqual")]

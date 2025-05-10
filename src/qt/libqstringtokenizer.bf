@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QStringTokenizerBaseBase
+public interface IQStringTokenizerBaseBase
+{
+	void* NativePtr { get; }
+}
+public class QStringTokenizerBaseBase : IQStringTokenizerBaseBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQStringTokenizerBaseBase other)
 	{
-		this.nativePtr = CQt.QStringTokenizerBaseBase_new(other);
+		this.nativePtr = CQt.QStringTokenizerBaseBase_new((other == default) ? default : (void*)other.NativePtr);
 	}
 }
 extension CQt

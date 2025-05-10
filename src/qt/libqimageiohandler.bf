@@ -44,9 +44,14 @@ public enum QImageIOPlugin__Capability
 	CanWrite = 2,
 	CanReadIncremental = 4,
 }
-public class QImageIOHandler
+public interface IQImageIOHandler
+{
+	void* NativePtr { get; }
+}
+public class QImageIOHandler : IQImageIOHandler
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -58,9 +63,9 @@ public class QImageIOHandler
 		CQt.QImageIOHandler_Delete(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QImageIOHandler_SetDevice(this.nativePtr, device);
+		CQt.QImageIOHandler_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -68,14 +73,14 @@ public class QImageIOHandler
 		return CQt.QImageIOHandler_Device(this.nativePtr);
 	}
 	
-	public void SetFormat(libqt_string format)
+	public void SetFormat(String format)
 	{
-		CQt.QImageIOHandler_SetFormat(this.nativePtr, format);
+		CQt.QImageIOHandler_SetFormat(this.nativePtr, libqt_string(format));
 	}
 	
-	public void SetFormatWithFormat(libqt_string format)
+	public void SetFormatWithFormat(String format)
 	{
-		CQt.QImageIOHandler_SetFormatWithFormat(this.nativePtr, format);
+		CQt.QImageIOHandler_SetFormatWithFormat(this.nativePtr, libqt_string(format));
 	}
 	
 	public libqt_string Format()
@@ -88,14 +93,14 @@ public class QImageIOHandler
 		return CQt.QImageIOHandler_CanRead(this.nativePtr);
 	}
 	
-	public virtual bool Read(void* image)
+	public virtual bool Read(IQImage image)
 	{
-		return CQt.QImageIOHandler_Read(this.nativePtr, image);
+		return CQt.QImageIOHandler_Read(this.nativePtr, (image == null) ? null : (void*)image.NativePtr);
 	}
 	
-	public virtual bool Write(void* image)
+	public virtual bool Write(IQImage image)
 	{
-		return CQt.QImageIOHandler_Write(this.nativePtr, image);
+		return CQt.QImageIOHandler_Write(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
 	}
 	
 	public virtual void Option(int64 option)
@@ -103,9 +108,9 @@ public class QImageIOHandler
 		CQt.QImageIOHandler_Option(this.nativePtr, option);
 	}
 	
-	public virtual void SetOption(int64 option, void* value)
+	public virtual void SetOption(int64 option, IQVariant value)
 	{
-		CQt.QImageIOHandler_SetOption(this.nativePtr, option, value);
+		CQt.QImageIOHandler_SetOption(this.nativePtr, option, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public virtual bool SupportsOption(int64 option)
@@ -148,9 +153,9 @@ public class QImageIOHandler
 		CQt.QImageIOHandler_CurrentImageRect(this.nativePtr);
 	}
 	
-	public static bool AllocateImage(void size, int64 format, void* image)
+	public static bool AllocateImage(IQSize size, int64 format, IQImage image)
 	{
-		return CQt.QImageIOHandler_AllocateImage(size, format, image);
+		return CQt.QImageIOHandler_AllocateImage((size == default) ? default : (void)size.NativePtr, format, (image == null) ? null : (void*)image.NativePtr);
 	}
 	
 }
@@ -200,9 +205,14 @@ extension CQt
 	[LinkName("QImageIOHandler_Delete")]
 	public static extern void QImageIOHandler_Delete(void* self);
 }
-public class QImageIOPlugin
+public interface IQImageIOPlugin
+{
+	void* NativePtr { get; }
+}
+public class QImageIOPlugin : IQImageIOPlugin, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -219,7 +229,7 @@ public class QImageIOPlugin
 		return CQt.QImageIOPlugin_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QImageIOPlugin_Metacast(this.nativePtr, param1);
 	}
@@ -229,39 +239,39 @@ public class QImageIOPlugin
 		return CQt.QImageIOPlugin_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QImageIOPlugin_Tr(s);
 	}
 	
-	public virtual int64 Capabilities(void* device, libqt_string format)
+	public virtual int64 Capabilities(IQIODevice device, String format)
 	{
-		return CQt.QImageIOPlugin_Capabilities(this.nativePtr, device, format);
+		return CQt.QImageIOPlugin_Capabilities(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, libqt_string(format));
 	}
 	
-	public virtual void* Create(void* device, libqt_string format)
+	public virtual void* Create(IQIODevice device, String format)
 	{
-		return CQt.QImageIOPlugin_Create(this.nativePtr, device, format);
+		return CQt.QImageIOPlugin_Create(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, libqt_string(format));
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QImageIOPlugin_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QImageIOPlugin_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -269,9 +279,9 @@ public class QImageIOPlugin
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -304,9 +314,9 @@ public class QImageIOPlugin
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -324,39 +334,39 @@ public class QImageIOPlugin
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -369,12 +379,12 @@ public class QImageIOPlugin
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -399,7 +409,7 @@ public class QImageIOPlugin
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -414,14 +424,14 @@ public class QImageIOPlugin
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -434,19 +444,19 @@ extension CQt
 	[LinkName("QImageIOPlugin_MetaObject")]
 	public static extern void* QImageIOPlugin_MetaObject(void* c_this);
 	[LinkName("QImageIOPlugin_Metacast")]
-	public static extern void* QImageIOPlugin_Metacast(void* c_this, char8[] param1);
+	public static extern void* QImageIOPlugin_Metacast(void* c_this, char8* param1);
 	[LinkName("QImageIOPlugin_Metacall")]
-	public static extern int32 QImageIOPlugin_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QImageIOPlugin_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QImageIOPlugin_Tr")]
-	public static extern libqt_string QImageIOPlugin_Tr(char8[] s);
+	public static extern libqt_string QImageIOPlugin_Tr(char8* s);
 	[LinkName("QImageIOPlugin_Capabilities")]
 	public static extern int64 QImageIOPlugin_Capabilities(void* c_this, void* device, libqt_string format);
 	[LinkName("QImageIOPlugin_Create")]
 	public static extern void* QImageIOPlugin_Create(void* c_this, void* device, libqt_string format);
 	[LinkName("QImageIOPlugin_Tr2")]
-	public static extern libqt_string QImageIOPlugin_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QImageIOPlugin_Tr2(char8* s, char8* c);
 	[LinkName("QImageIOPlugin_Tr3")]
-	public static extern libqt_string QImageIOPlugin_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QImageIOPlugin_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QImageIOPlugin_Delete")]
 	public static extern void QImageIOPlugin_Delete(void* self);

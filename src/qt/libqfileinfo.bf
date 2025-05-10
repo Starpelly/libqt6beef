@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFileInfo
+public interface IQFileInfo
+{
+	void* NativePtr { get; }
+}
+public class QFileInfo : IQFileInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,39 +21,39 @@ public class QFileInfo
 		CQt.QFileInfo_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* fileinfo)
+	public void OperatorAssign(IQFileInfo fileinfo)
 	{
-		CQt.QFileInfo_OperatorAssign(this.nativePtr, fileinfo);
+		CQt.QFileInfo_OperatorAssign(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFileInfo other)
 	{
-		CQt.QFileInfo_Swap(this.nativePtr, other);
+		CQt.QFileInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* fileinfo)
+	public bool OperatorEqual(IQFileInfo fileinfo)
 	{
-		return CQt.QFileInfo_OperatorEqual(this.nativePtr, fileinfo);
+		return CQt.QFileInfo_OperatorEqual(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* fileinfo)
+	public bool OperatorNotEqual(IQFileInfo fileinfo)
 	{
-		return CQt.QFileInfo_OperatorNotEqual(this.nativePtr, fileinfo);
+		return CQt.QFileInfo_OperatorNotEqual(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
 	}
 	
-	public void SetFile(libqt_string file)
+	public void SetFile(String file)
 	{
-		CQt.QFileInfo_SetFile(this.nativePtr, file);
+		CQt.QFileInfo_SetFile(this.nativePtr, libqt_string(file));
 	}
 	
-	public void SetFileWithFile(void* file)
+	public void SetFileWithFile(IQFileDevice file)
 	{
-		CQt.QFileInfo_SetFileWithFile(this.nativePtr, file);
+		CQt.QFileInfo_SetFileWithFile(this.nativePtr, (file == default) ? default : (void*)file.NativePtr);
 	}
 	
-	public void SetFile2(void* dir, libqt_string file)
+	public void SetFile2(IQDir dir, String file)
 	{
-		CQt.QFileInfo_SetFile2(this.nativePtr, dir, file);
+		CQt.QFileInfo_SetFile2(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr, libqt_string(file));
 	}
 	
 	public bool Exists()
@@ -56,9 +61,9 @@ public class QFileInfo
 		return CQt.QFileInfo_Exists(this.nativePtr);
 	}
 	
-	public static bool ExistsWithFile(libqt_string file)
+	public static bool ExistsWithFile(String file)
 	{
-		return CQt.QFileInfo_ExistsWithFile(file);
+		return CQt.QFileInfo_ExistsWithFile(libqt_string(file));
 	}
 	
 	public void Refresh()

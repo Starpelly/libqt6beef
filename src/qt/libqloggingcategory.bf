@@ -2,11 +2,16 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QLoggingCategory
+public interface IQLoggingCategory
+{
+	void* NativePtr { get; }
+}
+public class QLoggingCategory : IQLoggingCategory
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(char8[] category)
+	public this(char8* category)
 	{
 		this.nativePtr = CQt.QLoggingCategory_new(category);
 	}
@@ -36,7 +41,7 @@ public class QLoggingCategory
 		return CQt.QLoggingCategory_IsCriticalEnabled(this.nativePtr);
 	}
 	
-	public char8[] CategoryName()
+	public char8* CategoryName()
 	{
 		return CQt.QLoggingCategory_CategoryName(this.nativePtr);
 	}
@@ -56,16 +61,16 @@ public class QLoggingCategory
 		return CQt.QLoggingCategory_DefaultCategory();
 	}
 	
-	public static void SetFilterRules(libqt_string rules)
+	public static void SetFilterRules(String rules)
 	{
-		CQt.QLoggingCategory_SetFilterRules(rules);
+		CQt.QLoggingCategory_SetFilterRules(libqt_string(rules));
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QLoggingCategory_new")]
-	public static extern void* QLoggingCategory_new(char8[] category);
+	public static extern void* QLoggingCategory_new(char8* category);
 	[LinkName("QLoggingCategory_IsDebugEnabled")]
 	public static extern bool QLoggingCategory_IsDebugEnabled(void* c_this);
 	[LinkName("QLoggingCategory_IsInfoEnabled")]
@@ -75,7 +80,7 @@ extension CQt
 	[LinkName("QLoggingCategory_IsCriticalEnabled")]
 	public static extern bool QLoggingCategory_IsCriticalEnabled(void* c_this);
 	[LinkName("QLoggingCategory_CategoryName")]
-	public static extern char8[] QLoggingCategory_CategoryName(void* c_this);
+	public static extern char8* QLoggingCategory_CategoryName(void* c_this);
 	[LinkName("QLoggingCategory_OperatorCall")]
 	public static extern void* QLoggingCategory_OperatorCall(void* c_this);
 	[LinkName("QLoggingCategory_OperatorCall2")]

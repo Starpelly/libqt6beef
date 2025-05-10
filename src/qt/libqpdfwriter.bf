@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPdfWriter
+public interface IQPdfWriter
+{
+	void* NativePtr { get; }
+}
+public class QPdfWriter : IQPdfWriter, IQObject, IQPagedPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string filename)
+	public this(String filename)
 	{
-		this.nativePtr = CQt.QPdfWriter_new(filename);
+		this.nativePtr = CQt.QPdfWriter_new(libqt_string(filename));
 	}
 	
 	public ~this()
@@ -21,7 +26,7 @@ public class QPdfWriter
 		return CQt.QPdfWriter_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QPdfWriter_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QPdfWriter
 		return CQt.QPdfWriter_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QPdfWriter_Tr(s);
 	}
@@ -51,9 +56,9 @@ public class QPdfWriter
 		return CQt.QPdfWriter_Title(this.nativePtr);
 	}
 	
-	public void SetTitle(libqt_string title)
+	public void SetTitle(String title)
 	{
-		CQt.QPdfWriter_SetTitle(this.nativePtr, title);
+		CQt.QPdfWriter_SetTitle(this.nativePtr, libqt_string(title));
 	}
 	
 	public libqt_string Creator()
@@ -61,9 +66,9 @@ public class QPdfWriter
 		return CQt.QPdfWriter_Creator(this.nativePtr);
 	}
 	
-	public void SetCreator(libqt_string creator)
+	public void SetCreator(String creator)
 	{
-		CQt.QPdfWriter_SetCreator(this.nativePtr, creator);
+		CQt.QPdfWriter_SetCreator(this.nativePtr, libqt_string(creator));
 	}
 	
 	public virtual bool NewPage()
@@ -81,9 +86,9 @@ public class QPdfWriter
 		return CQt.QPdfWriter_Resolution(this.nativePtr);
 	}
 	
-	public void SetDocumentXmpMetadata(libqt_string xmpMetadata)
+	public void SetDocumentXmpMetadata(String xmpMetadata)
 	{
-		CQt.QPdfWriter_SetDocumentXmpMetadata(this.nativePtr, xmpMetadata);
+		CQt.QPdfWriter_SetDocumentXmpMetadata(this.nativePtr, libqt_string(xmpMetadata));
 	}
 	
 	public libqt_string DocumentXmpMetadata()
@@ -91,9 +96,9 @@ public class QPdfWriter
 		return CQt.QPdfWriter_DocumentXmpMetadata(this.nativePtr);
 	}
 	
-	public void AddFileAttachment(libqt_string fileName, libqt_string data)
+	public void AddFileAttachment(String fileName, String data)
 	{
-		CQt.QPdfWriter_AddFileAttachment(this.nativePtr, fileName, data);
+		CQt.QPdfWriter_AddFileAttachment(this.nativePtr, libqt_string(fileName), libqt_string(data));
 	}
 	
 	public virtual void* PaintEngine()
@@ -106,29 +111,29 @@ public class QPdfWriter
 		return CQt.QPdfWriter_Metric(this.nativePtr, id);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QPdfWriter_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QPdfWriter_Tr3(s, c, n);
 	}
 	
-	public void AddFileAttachment3(libqt_string fileName, libqt_string data, libqt_string mimeType)
+	public void AddFileAttachment3(String fileName, String data, String mimeType)
 	{
-		CQt.QPdfWriter_AddFileAttachment3(this.nativePtr, fileName, data, mimeType);
+		CQt.QPdfWriter_AddFileAttachment3(this.nativePtr, libqt_string(fileName), libqt_string(data), libqt_string(mimeType));
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -136,9 +141,9 @@ public class QPdfWriter
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -171,9 +176,9 @@ public class QPdfWriter
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -191,39 +196,39 @@ public class QPdfWriter
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -236,12 +241,12 @@ public class QPdfWriter
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -266,7 +271,7 @@ public class QPdfWriter
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -281,24 +286,24 @@ public class QPdfWriter
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
-	public virtual bool SetPageLayout(void* pageLayout)
+	public virtual bool SetPageLayout(IQPageLayout pageLayout)
 	{
-		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, pageLayout);
+		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, (pageLayout == default) ? default : (void*)pageLayout.NativePtr);
 	}
 	
-	public virtual bool SetPageSize(void* pageSize)
+	public virtual bool SetPageSize(IQPageSize pageSize)
 	{
-		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, pageSize);
+		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, (pageSize == default) ? default : (void*)pageSize.NativePtr);
 	}
 	
 	public virtual bool SetPageOrientation(int64 orientation)
@@ -306,9 +311,9 @@ public class QPdfWriter
 		return CQt.QPagedPaintDevice_SetPageOrientation(this.nativePtr, orientation);
 	}
 	
-	public virtual bool SetPageMargins(void* margins, int64 units)
+	public virtual bool SetPageMargins(IQMarginsF margins, int64 units)
 	{
-		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, margins, units);
+		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr, units);
 	}
 	
 	public void PageLayout()
@@ -316,9 +321,9 @@ public class QPdfWriter
 		CQt.QPagedPaintDevice_PageLayout(this.nativePtr);
 	}
 	
-	public virtual void SetPageRanges(void* ranges)
+	public virtual void SetPageRanges(IQPageRanges ranges)
 	{
-		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, ranges);
+		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, (ranges == default) ? default : (void*)ranges.NativePtr);
 	}
 	
 	public void PageRanges()
@@ -411,11 +416,11 @@ extension CQt
 	[LinkName("QPdfWriter_MetaObject")]
 	public static extern void* QPdfWriter_MetaObject(void* c_this);
 	[LinkName("QPdfWriter_Metacast")]
-	public static extern void* QPdfWriter_Metacast(void* c_this, char8[] param1);
+	public static extern void* QPdfWriter_Metacast(void* c_this, char8* param1);
 	[LinkName("QPdfWriter_Metacall")]
-	public static extern int32 QPdfWriter_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QPdfWriter_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QPdfWriter_Tr")]
-	public static extern libqt_string QPdfWriter_Tr(char8[] s);
+	public static extern libqt_string QPdfWriter_Tr(char8* s);
 	[LinkName("QPdfWriter_SetPdfVersion")]
 	public static extern void QPdfWriter_SetPdfVersion(void* c_this, int64 version);
 	[LinkName("QPdfWriter_PdfVersion")]
@@ -445,9 +450,9 @@ extension CQt
 	[LinkName("QPdfWriter_Metric")]
 	public static extern int32 QPdfWriter_Metric(void* c_this, int64 id);
 	[LinkName("QPdfWriter_Tr2")]
-	public static extern libqt_string QPdfWriter_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QPdfWriter_Tr2(char8* s, char8* c);
 	[LinkName("QPdfWriter_Tr3")]
-	public static extern libqt_string QPdfWriter_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QPdfWriter_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QPdfWriter_AddFileAttachment3")]
 	public static extern void QPdfWriter_AddFileAttachment3(void* c_this, libqt_string fileName, libqt_string data, libqt_string mimeType);
 	/// Delete this object from C++ memory

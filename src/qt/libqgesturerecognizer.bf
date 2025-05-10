@@ -14,9 +14,14 @@ public enum QGestureRecognizer__ResultFlag
 	ConsumeEventHint = 256,
 	ResultHint_Mask = 65280,
 }
-public class QGestureRecognizer
+public interface IQGestureRecognizer
+{
+	void* NativePtr { get; }
+}
+public class QGestureRecognizer : IQGestureRecognizer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -28,24 +33,24 @@ public class QGestureRecognizer
 		CQt.QGestureRecognizer_Delete(this.nativePtr);
 	}
 	
-	public virtual void* Create(void* target)
+	public virtual void* Create(IQObject target)
 	{
-		return CQt.QGestureRecognizer_Create(this.nativePtr, target);
+		return CQt.QGestureRecognizer_Create(this.nativePtr, (target == null) ? null : (void*)target.NativePtr);
 	}
 	
-	public virtual int64 Recognize(void* state, void* watched, void* event)
+	public virtual int64 Recognize(IQGesture state, IQObject watched, IQEvent event)
 	{
-		return CQt.QGestureRecognizer_Recognize(this.nativePtr, state, watched, event);
+		return CQt.QGestureRecognizer_Recognize(this.nativePtr, (state == null) ? null : (void*)state.NativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void Reset(void* state)
+	public virtual void Reset(IQGesture state)
 	{
-		CQt.QGestureRecognizer_Reset(this.nativePtr, state);
+		CQt.QGestureRecognizer_Reset(this.nativePtr, (state == null) ? null : (void*)state.NativePtr);
 	}
 	
-	public static int64 RegisterRecognizer(void* recognizer)
+	public static int64 RegisterRecognizer(IQGestureRecognizer recognizer)
 	{
-		return CQt.QGestureRecognizer_RegisterRecognizer(recognizer);
+		return CQt.QGestureRecognizer_RegisterRecognizer((recognizer == null) ? null : (void*)recognizer.NativePtr);
 	}
 	
 	public static void UnregisterRecognizer(int64 typeVal)
@@ -53,9 +58,9 @@ public class QGestureRecognizer
 		CQt.QGestureRecognizer_UnregisterRecognizer(typeVal);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQGestureRecognizer param1)
 	{
-		CQt.QGestureRecognizer_OperatorAssign(this.nativePtr, param1);
+		CQt.QGestureRecognizer_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }

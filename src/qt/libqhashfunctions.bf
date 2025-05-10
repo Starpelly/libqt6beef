@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QHashSeed
+public interface IQHashSeed
+{
+	void* NativePtr { get; }
+}
+public class QHashSeed : IQHashSeed
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQHashSeed other)
 	{
-		this.nativePtr = CQt.QHashSeed_new(other);
+		this.nativePtr = CQt.QHashSeed_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

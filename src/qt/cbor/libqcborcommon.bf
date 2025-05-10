@@ -56,9 +56,14 @@ public enum QCborError__Code
 	UnsupportedType = 1026,
 	NoError = 0,
 }
-public class QCborError
+public interface IQCborError
+{
+	void* NativePtr { get; }
+}
+public class QCborError : IQCborError
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{

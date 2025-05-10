@@ -26,16 +26,26 @@ public enum QStringConverter__Encoding
 	System = 8,
 	LastEncoding = 8,
 }
-public class QStringConverterBase
+public interface IQStringConverterBase
+{
+	void* NativePtr { get; }
+}
+public class QStringConverterBase : IQStringConverterBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 }
 extension CQt
 {
 }
-public class QStringConverter
+public interface IQStringConverter
+{
+	void* NativePtr { get; }
+}
+public class QStringConverter : IQStringConverter, IQStringConverterBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public bool IsValid()
 	{
@@ -52,12 +62,12 @@ public class QStringConverter
 		return CQt.QStringConverter_HasError(this.nativePtr);
 	}
 	
-	public char8[] Name()
+	public char8* Name()
 	{
 		return CQt.QStringConverter_Name(this.nativePtr);
 	}
 	
-	public static char8[] NameForEncoding(int64 e)
+	public static char8* NameForEncoding(int64 e)
 	{
 		return CQt.QStringConverter_NameForEncoding(e);
 	}
@@ -72,13 +82,18 @@ extension CQt
 	[LinkName("QStringConverter_HasError")]
 	public static extern bool QStringConverter_HasError(void* c_this);
 	[LinkName("QStringConverter_Name")]
-	public static extern char8[] QStringConverter_Name(void* c_this);
+	public static extern char8* QStringConverter_Name(void* c_this);
 	[LinkName("QStringConverter_NameForEncoding")]
-	public static extern char8[] QStringConverter_NameForEncoding(int64 e);
+	public static extern char8* QStringConverter_NameForEncoding(int64 e);
 }
-public class QStringConverterBase__State
+public interface IQStringConverterBase__State
+{
+	void* NativePtr { get; }
+}
+public class QStringConverterBase__State : IQStringConverterBase__State
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{

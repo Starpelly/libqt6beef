@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFileIconProvider
+public interface IQFileIconProvider
+{
+	void* NativePtr { get; }
+}
+public class QFileIconProvider : IQFileIconProvider, IQAbstractFileIconProvider
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,19 +26,19 @@ public class QFileIconProvider
 		CQt.QFileIconProvider_Icon(this.nativePtr, typeVal);
 	}
 	
-	public virtual void IconWithInfo(void* info)
+	public virtual void IconWithInfo(IQFileInfo info)
 	{
-		CQt.QFileIconProvider_IconWithInfo(this.nativePtr, info);
+		CQt.QFileIconProvider_IconWithInfo(this.nativePtr, (info == default) ? default : (void*)info.NativePtr);
 	}
 	
-	public virtual void IconWithQFileInfo(void* param1)
+	public virtual void IconWithQFileInfo(IQFileInfo param1)
 	{
-		CQt.QAbstractFileIconProvider_IconWithQFileInfo(this.nativePtr, param1);
+		CQt.QAbstractFileIconProvider_IconWithQFileInfo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public virtual libqt_string Type(void* param1)
+	public virtual libqt_string Type(IQFileInfo param1)
 	{
-		return CQt.QAbstractFileIconProvider_Type(this.nativePtr, param1);
+		return CQt.QAbstractFileIconProvider_Type(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public virtual void SetOptions(int64 options)

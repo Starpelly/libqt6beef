@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPen
+public interface IQPen
+{
+	void* NativePtr { get; }
+}
+public class QPen : IQPen
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QPen
 		CQt.QPen_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* pen)
+	public void OperatorAssign(IQPen pen)
 	{
-		CQt.QPen_OperatorAssign(this.nativePtr, pen);
+		CQt.QPen_OperatorAssign(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPen other)
 	{
-		CQt.QPen_Swap(this.nativePtr, other);
+		CQt.QPen_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int64 Style()
@@ -43,7 +48,7 @@ public class QPen
 	
 	public void SetDashPattern(double[] pattern)
 	{
-		CQt.QPen_SetDashPattern(this.nativePtr, pattern);
+		CQt.QPen_SetDashPattern(this.nativePtr, null);
 	}
 	
 	public double DashOffset()
@@ -91,9 +96,9 @@ public class QPen
 		CQt.QPen_Color(this.nativePtr);
 	}
 	
-	public void SetColor(void* color)
+	public void SetColor(IQColor color)
 	{
-		CQt.QPen_SetColor(this.nativePtr, color);
+		CQt.QPen_SetColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void Brush()
@@ -101,9 +106,9 @@ public class QPen
 		CQt.QPen_Brush(this.nativePtr);
 	}
 	
-	public void SetBrush(void* brush)
+	public void SetBrush(IQBrush brush)
 	{
-		CQt.QPen_SetBrush(this.nativePtr, brush);
+		CQt.QPen_SetBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public bool IsSolid()
@@ -141,14 +146,14 @@ public class QPen
 		CQt.QPen_SetCosmetic(this.nativePtr, cosmetic);
 	}
 	
-	public bool OperatorEqual(void* p)
+	public bool OperatorEqual(IQPen p)
 	{
-		return CQt.QPen_OperatorEqual(this.nativePtr, p);
+		return CQt.QPen_OperatorEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* p)
+	public bool OperatorNotEqual(IQPen p)
 	{
-		return CQt.QPen_OperatorNotEqual(this.nativePtr, p);
+		return CQt.QPen_OperatorNotEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void ToQVariant()

@@ -67,9 +67,14 @@ public enum QMediaFormat__ResolveFlags
 	NoFlags = 0,
 	RequiresVideo = 1,
 }
-public class QMediaFormat
+public interface IQMediaFormat
+{
+	void* NativePtr { get; }
+}
+public class QMediaFormat : IQMediaFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -81,14 +86,14 @@ public class QMediaFormat
 		CQt.QMediaFormat_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQMediaFormat other)
 	{
-		CQt.QMediaFormat_OperatorAssign(this.nativePtr, other);
+		CQt.QMediaFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQMediaFormat other)
 	{
-		CQt.QMediaFormat_Swap(this.nativePtr, other);
+		CQt.QMediaFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int64 FileFormat()
@@ -176,14 +181,14 @@ public class QMediaFormat
 		return CQt.QMediaFormat_VideoCodecDescription(codec);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQMediaFormat other)
 	{
-		return CQt.QMediaFormat_OperatorEqual(this.nativePtr, other);
+		return CQt.QMediaFormat_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQMediaFormat other)
 	{
-		return CQt.QMediaFormat_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QMediaFormat_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ResolveForEncoding(int64 flags)

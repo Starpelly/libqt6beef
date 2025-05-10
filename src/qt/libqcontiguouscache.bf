@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QContiguousCacheData
+public interface IQContiguousCacheData
+{
+	void* NativePtr { get; }
+}
+public class QContiguousCacheData : IQContiguousCacheData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -16,9 +21,9 @@ public class QContiguousCacheData
 		return CQt.QContiguousCacheData_AllocateData(size, alignment);
 	}
 	
-	public static void FreeData(void* data)
+	public static void FreeData(IQContiguousCacheData data)
 	{
-		CQt.QContiguousCacheData_FreeData(data);
+		CQt.QContiguousCacheData_FreeData((data == null) ? null : (void*)data.NativePtr);
 	}
 	
 }

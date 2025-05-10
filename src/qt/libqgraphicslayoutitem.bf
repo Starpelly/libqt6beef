@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QGraphicsLayoutItem
+public interface IQGraphicsLayoutItem
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_Delete(this.nativePtr);
 	}
 	
-	public void SetSizePolicy(void* policy)
+	public void SetSizePolicy(IQSizePolicy policy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, policy);
+		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default) ? default : (void*)policy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
@@ -31,9 +36,9 @@ public class QGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_SizePolicy(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* size)
+	public void SetMinimumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMinimumSize2(double w, double h)
@@ -66,9 +71,9 @@ public class QGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_MinimumHeight(this.nativePtr);
 	}
 	
-	public void SetPreferredSize(void* size)
+	public void SetPreferredSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetPreferredSize2(double w, double h)
@@ -101,9 +106,9 @@ public class QGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_PreferredHeight(this.nativePtr);
 	}
 	
-	public void SetMaximumSize(void* size)
+	public void SetMaximumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMaximumSize2(double w, double h)
@@ -136,9 +141,9 @@ public class QGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_MaximumHeight(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* rect)
+	public virtual void SetGeometry(IQRectF rect)
 	{
-		CQt.QGraphicsLayoutItem_SetGeometry(this.nativePtr, rect);
+		CQt.QGraphicsLayoutItem_SetGeometry(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void Geometry()
@@ -176,9 +181,9 @@ public class QGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_ParentLayoutItem(this.nativePtr);
 	}
 	
-	public void SetParentLayoutItem(void* parent)
+	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
 	{
-		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, parent);
+		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public bool IsLayout()
@@ -196,9 +201,9 @@ public class QGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_OwnedByLayout(this.nativePtr);
 	}
 	
-	public void SetGraphicsItem(void* item)
+	public void SetGraphicsItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsLayoutItem_SetGraphicsItem(this.nativePtr, item);
+		CQt.QGraphicsLayoutItem_SetGraphicsItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void SetOwnedByLayout(bool ownedByLayout)
@@ -206,9 +211,9 @@ public class QGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_SetOwnedByLayout(this.nativePtr, ownedByLayout);
 	}
 	
-	public virtual void SizeHint(int64 which, void* constraint)
+	public virtual void SizeHint(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_SizeHint(this.nativePtr, which, constraint);
+		CQt.QGraphicsLayoutItem_SizeHint(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
 	public void SetSizePolicy3(int64 hPolicy, int64 vPolicy, int64 controlType)
@@ -216,9 +221,9 @@ public class QGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, hPolicy, vPolicy, controlType);
 	}
 	
-	public void EffectiveSizeHint2(int64 which, void* constraint)
+	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, constraint);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
 }

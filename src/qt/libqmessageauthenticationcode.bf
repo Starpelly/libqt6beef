@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QMessageAuthenticationCode
+public interface IQMessageAuthenticationCode
+{
+	void* NativePtr { get; }
+}
+public class QMessageAuthenticationCode : IQMessageAuthenticationCode
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int64 method)
 	{
@@ -21,24 +26,24 @@ public class QMessageAuthenticationCode
 		CQt.QMessageAuthenticationCode_Reset(this.nativePtr);
 	}
 	
-	public void SetKey(libqt_string key)
+	public void SetKey(String key)
 	{
-		CQt.QMessageAuthenticationCode_SetKey(this.nativePtr, key);
+		CQt.QMessageAuthenticationCode_SetKey(this.nativePtr, libqt_string(key));
 	}
 	
-	public void AddData(char8[] data, int32 length)
+	public void AddData(char8* data, int32 length)
 	{
 		CQt.QMessageAuthenticationCode_AddData(this.nativePtr, data, length);
 	}
 	
-	public void AddDataWithData(libqt_string data)
+	public void AddDataWithData(String data)
 	{
-		CQt.QMessageAuthenticationCode_AddDataWithData(this.nativePtr, data);
+		CQt.QMessageAuthenticationCode_AddDataWithData(this.nativePtr, libqt_string(data));
 	}
 	
-	public bool AddDataWithDevice(void* device)
+	public bool AddDataWithDevice(IQIODevice device)
 	{
-		return CQt.QMessageAuthenticationCode_AddDataWithDevice(this.nativePtr, device);
+		return CQt.QMessageAuthenticationCode_AddDataWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public libqt_string Result()
@@ -46,9 +51,9 @@ public class QMessageAuthenticationCode
 		return CQt.QMessageAuthenticationCode_Result(this.nativePtr);
 	}
 	
-	public static libqt_string Hash(libqt_string message, libqt_string key, int64 method)
+	public static libqt_string Hash(String message, String key, int64 method)
 	{
-		return CQt.QMessageAuthenticationCode_Hash(message, key, method);
+		return CQt.QMessageAuthenticationCode_Hash(libqt_string(message), libqt_string(key), method);
 	}
 	
 }
@@ -63,7 +68,7 @@ extension CQt
 	[LinkName("QMessageAuthenticationCode_SetKey")]
 	public static extern void QMessageAuthenticationCode_SetKey(void* c_this, libqt_string key);
 	[LinkName("QMessageAuthenticationCode_AddData")]
-	public static extern void QMessageAuthenticationCode_AddData(void* c_this, char8[] data, int32 length);
+	public static extern void QMessageAuthenticationCode_AddData(void* c_this, char8* data, int32 length);
 	[LinkName("QMessageAuthenticationCode_AddDataWithData")]
 	public static extern void QMessageAuthenticationCode_AddDataWithData(void* c_this, libqt_string data);
 	[LinkName("QMessageAuthenticationCode_AddDataWithDevice")]

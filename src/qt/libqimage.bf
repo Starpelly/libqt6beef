@@ -49,9 +49,14 @@ public enum QImage__Format
 	Format_RGBA32FPx4_Premultiplied = 35,
 	NImageFormats = 36,
 }
-public class QImage
+public interface IQImage
+{
+	void* NativePtr { get; }
+}
+public class QImage : IQImage, IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -63,14 +68,14 @@ public class QImage
 		CQt.QImage_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQImage param1)
 	{
-		CQt.QImage_OperatorAssign(this.nativePtr, param1);
+		CQt.QImage_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQImage other)
 	{
-		CQt.QImage_Swap(this.nativePtr, other);
+		CQt.QImage_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -83,14 +88,14 @@ public class QImage
 		return CQt.QImage_DevType(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* param1)
+	public bool OperatorEqual(IQImage param1)
 	{
-		return CQt.QImage_OperatorEqual(this.nativePtr, param1);
+		return CQt.QImage_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* param1)
+	public bool OperatorNotEqual(IQImage param1)
 	{
-		return CQt.QImage_OperatorNotEqual(this.nativePtr, param1);
+		return CQt.QImage_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -130,7 +135,7 @@ public class QImage
 	
 	public void ConvertToFormat2(int64 f, uint32[] colorTable)
 	{
-		CQt.QImage_ConvertToFormat2(this.nativePtr, f, colorTable);
+		CQt.QImage_ConvertToFormat2(this.nativePtr, f, null);
 	}
 	
 	public bool ReinterpretAsFormat(int64 f)
@@ -253,9 +258,9 @@ public class QImage
 		return CQt.QImage_Valid(this.nativePtr, x, y);
 	}
 	
-	public bool ValidWithPt(void* pt)
+	public bool ValidWithPt(IQPoint pt)
 	{
-		return CQt.QImage_ValidWithPt(this.nativePtr, pt);
+		return CQt.QImage_ValidWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
 	public int32 PixelIndex(int32 x, int32 y)
@@ -263,9 +268,9 @@ public class QImage
 		return CQt.QImage_PixelIndex(this.nativePtr, x, y);
 	}
 	
-	public int32 PixelIndexWithPt(void* pt)
+	public int32 PixelIndexWithPt(IQPoint pt)
 	{
-		return CQt.QImage_PixelIndexWithPt(this.nativePtr, pt);
+		return CQt.QImage_PixelIndexWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
 	public uint32 Pixel(int32 x, int32 y)
@@ -273,9 +278,9 @@ public class QImage
 		return CQt.QImage_Pixel(this.nativePtr, x, y);
 	}
 	
-	public uint32 PixelWithPt(void* pt)
+	public uint32 PixelWithPt(IQPoint pt)
 	{
-		return CQt.QImage_PixelWithPt(this.nativePtr, pt);
+		return CQt.QImage_PixelWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
 	public void SetPixel(int32 x, int32 y, uint32 index_or_rgb)
@@ -283,9 +288,9 @@ public class QImage
 		CQt.QImage_SetPixel(this.nativePtr, x, y, index_or_rgb);
 	}
 	
-	public void SetPixel2(void* pt, uint32 index_or_rgb)
+	public void SetPixel2(IQPoint pt, uint32 index_or_rgb)
 	{
-		CQt.QImage_SetPixel2(this.nativePtr, pt, index_or_rgb);
+		CQt.QImage_SetPixel2(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr, index_or_rgb);
 	}
 	
 	public void PixelColor(int32 x, int32 y)
@@ -293,19 +298,19 @@ public class QImage
 		CQt.QImage_PixelColor(this.nativePtr, x, y);
 	}
 	
-	public void PixelColorWithPt(void* pt)
+	public void PixelColorWithPt(IQPoint pt)
 	{
-		CQt.QImage_PixelColorWithPt(this.nativePtr, pt);
+		CQt.QImage_PixelColorWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
 	}
 	
-	public void SetPixelColor(int32 x, int32 y, void* c)
+	public void SetPixelColor(int32 x, int32 y, IQColor c)
 	{
-		CQt.QImage_SetPixelColor(this.nativePtr, x, y, c);
+		CQt.QImage_SetPixelColor(this.nativePtr, x, y, (c == default) ? default : (void*)c.NativePtr);
 	}
 	
-	public void SetPixelColor2(void* pt, void* c)
+	public void SetPixelColor2(IQPoint pt, IQColor c)
 	{
-		CQt.QImage_SetPixelColor2(this.nativePtr, pt, c);
+		CQt.QImage_SetPixelColor2(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr, (c == default) ? default : (void*)c.NativePtr);
 	}
 	
 	public uint32[] ColorTable()
@@ -315,7 +320,7 @@ public class QImage
 	
 	public void SetColorTable(uint32[] colors)
 	{
-		CQt.QImage_SetColorTable(this.nativePtr, colors);
+		CQt.QImage_SetColorTable(this.nativePtr, null);
 	}
 	
 	public double DevicePixelRatio()
@@ -338,9 +343,9 @@ public class QImage
 		CQt.QImage_Fill(this.nativePtr, pixel);
 	}
 	
-	public void FillWithColor(void* color)
+	public void FillWithColor(IQColor color)
 	{
-		CQt.QImage_FillWithColor(this.nativePtr, color);
+		CQt.QImage_FillWithColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void Fill2(int64 color)
@@ -353,9 +358,9 @@ public class QImage
 		return CQt.QImage_HasAlphaChannel(this.nativePtr);
 	}
 	
-	public void SetAlphaChannel(void* alphaChannel)
+	public void SetAlphaChannel(IQImage alphaChannel)
 	{
-		CQt.QImage_SetAlphaChannel(this.nativePtr, alphaChannel);
+		CQt.QImage_SetAlphaChannel(this.nativePtr, (alphaChannel == default) ? default : (void*)alphaChannel.NativePtr);
 	}
 	
 	public void CreateAlphaMask()
@@ -378,9 +383,9 @@ public class QImage
 		CQt.QImage_Scaled(this.nativePtr, w, h);
 	}
 	
-	public void ScaledWithQSize(void* s)
+	public void ScaledWithQSize(IQSize s)
 	{
-		CQt.QImage_ScaledWithQSize(this.nativePtr, s);
+		CQt.QImage_ScaledWithQSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
 	public void ScaledToWidth(int32 w)
@@ -393,14 +398,14 @@ public class QImage
 		CQt.QImage_ScaledToHeight(this.nativePtr, h);
 	}
 	
-	public void Transformed(void* matrix)
+	public void Transformed(IQTransform matrix)
 	{
-		CQt.QImage_Transformed(this.nativePtr, matrix);
+		CQt.QImage_Transformed(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
 	}
 	
-	public static void TrueMatrix(void* param1, int32 w, int32 h)
+	public static void TrueMatrix(IQTransform param1, int32 w, int32 h)
 	{
-		CQt.QImage_TrueMatrix(param1, w, h);
+		CQt.QImage_TrueMatrix((param1 == default) ? default : (void*)param1.NativePtr, w, h);
 	}
 	
 	public void Mirrored()
@@ -433,44 +438,44 @@ public class QImage
 		CQt.QImage_ColorSpace(this.nativePtr);
 	}
 	
-	public void ConvertedToColorSpace(void* param1)
+	public void ConvertedToColorSpace(IQColorSpace param1)
 	{
-		CQt.QImage_ConvertedToColorSpace(this.nativePtr, param1);
+		CQt.QImage_ConvertedToColorSpace(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void ConvertToColorSpace(void* param1)
+	public void ConvertToColorSpace(IQColorSpace param1)
 	{
-		CQt.QImage_ConvertToColorSpace(this.nativePtr, param1);
+		CQt.QImage_ConvertToColorSpace(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void SetColorSpace(void* colorSpace)
+	public void SetColorSpace(IQColorSpace colorSpace)
 	{
-		CQt.QImage_SetColorSpace(this.nativePtr, colorSpace);
+		CQt.QImage_SetColorSpace(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
 	}
 	
-	public void ColorTransformed(void* transform)
+	public void ColorTransformed(IQColorTransform transform)
 	{
-		CQt.QImage_ColorTransformed(this.nativePtr, transform);
+		CQt.QImage_ColorTransformed(this.nativePtr, (transform == default) ? default : (void*)transform.NativePtr);
 	}
 	
-	public void ApplyColorTransform(void* transform)
+	public void ApplyColorTransform(IQColorTransform transform)
 	{
-		CQt.QImage_ApplyColorTransform(this.nativePtr, transform);
+		CQt.QImage_ApplyColorTransform(this.nativePtr, (transform == default) ? default : (void*)transform.NativePtr);
 	}
 	
-	public bool Load(void* device, char8[] format)
+	public bool Load(IQIODevice device, char8* format)
 	{
-		return CQt.QImage_Load(this.nativePtr, device, format);
+		return CQt.QImage_Load(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
 	}
 	
-	public bool LoadWithFileName(libqt_string fileName)
+	public bool LoadWithFileName(String fileName)
 	{
-		return CQt.QImage_LoadWithFileName(this.nativePtr, fileName);
+		return CQt.QImage_LoadWithFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool LoadFromData(void data)
+	public bool LoadFromData(IQByteArrayView data)
 	{
-		return CQt.QImage_LoadFromData(this.nativePtr, data);
+		return CQt.QImage_LoadFromData(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr);
 	}
 	
 	public bool LoadFromData2(uint8* buf, int32 lenVal)
@@ -478,24 +483,24 @@ public class QImage
 		return CQt.QImage_LoadFromData2(this.nativePtr, buf, lenVal);
 	}
 	
-	public bool LoadFromDataWithData(libqt_string data)
+	public bool LoadFromDataWithData(String data)
 	{
-		return CQt.QImage_LoadFromDataWithData(this.nativePtr, data);
+		return CQt.QImage_LoadFromDataWithData(this.nativePtr, libqt_string(data));
 	}
 	
-	public bool Save(libqt_string fileName)
+	public bool Save(String fileName)
 	{
-		return CQt.QImage_Save(this.nativePtr, fileName);
+		return CQt.QImage_Save(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool SaveWithDevice(void* device)
+	public bool SaveWithDevice(IQIODevice device)
 	{
-		return CQt.QImage_SaveWithDevice(this.nativePtr, device);
+		return CQt.QImage_SaveWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
-	public static void FromData(void data)
+	public static void FromData(IQByteArrayView data)
 	{
-		CQt.QImage_FromData(data);
+		CQt.QImage_FromData((data == default) ? default : (char8*)data.NativePtr);
 	}
 	
 	public static void FromData2(uint8* data, int32 size)
@@ -503,9 +508,9 @@ public class QImage
 		CQt.QImage_FromData2(data, size);
 	}
 	
-	public static void FromDataWithData(libqt_string data)
+	public static void FromDataWithData(String data)
 	{
-		CQt.QImage_FromDataWithData(data);
+		CQt.QImage_FromDataWithData(libqt_string(data));
 	}
 	
 	public int64 CacheKey()
@@ -543,9 +548,9 @@ public class QImage
 		CQt.QImage_Offset(this.nativePtr);
 	}
 	
-	public void SetOffset(void* offset)
+	public void SetOffset(IQPoint offset)
 	{
-		CQt.QImage_SetOffset(this.nativePtr, offset);
+		CQt.QImage_SetOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
 	}
 	
 	public libqt_string[] TextKeys()
@@ -558,9 +563,9 @@ public class QImage
 		return CQt.QImage_Text(this.nativePtr);
 	}
 	
-	public void SetText(libqt_string key, libqt_string value)
+	public void SetText(String key, String value)
 	{
-		CQt.QImage_SetText(this.nativePtr, key, value);
+		CQt.QImage_SetText(this.nativePtr, libqt_string(key), libqt_string(value));
 	}
 	
 	public void PixelFormat()
@@ -573,9 +578,9 @@ public class QImage
 		CQt.QImage_ToPixelFormat(format);
 	}
 	
-	public static int64 ToImageFormat(void format)
+	public static int64 ToImageFormat(IQPixelFormat format)
 	{
-		return CQt.QImage_ToImageFormat(format);
+		return CQt.QImage_ToImageFormat((format == default) ? default : (void)format.NativePtr);
 	}
 	
 	public virtual int32 Metric(int64 metric)
@@ -623,9 +628,9 @@ public class QImage
 		CQt.QImage_DetachMetadata(this.nativePtr);
 	}
 	
-	public void Copy1(void* rect)
+	public void Copy1(IQRect rect)
 	{
-		CQt.QImage_Copy1(this.nativePtr, rect);
+		CQt.QImage_Copy1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void ConvertToFormat22(int64 f, int64 flags)
@@ -635,7 +640,7 @@ public class QImage
 	
 	public void ConvertToFormat3(int64 f, uint32[] colorTable, int64 flags)
 	{
-		CQt.QImage_ConvertToFormat3(this.nativePtr, f, colorTable, flags);
+		CQt.QImage_ConvertToFormat3(this.nativePtr, f, null, flags);
 	}
 	
 	public void ConvertedTo2(int64 f, int64 flags)
@@ -673,14 +678,14 @@ public class QImage
 		CQt.QImage_Scaled4(this.nativePtr, w, h, aspectMode, mode);
 	}
 	
-	public void Scaled2(void* s, int64 aspectMode)
+	public void Scaled2(IQSize s, int64 aspectMode)
 	{
-		CQt.QImage_Scaled2(this.nativePtr, s, aspectMode);
+		CQt.QImage_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode);
 	}
 	
-	public void Scaled32(void* s, int64 aspectMode, int64 mode)
+	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
 	{
-		CQt.QImage_Scaled32(this.nativePtr, s, aspectMode, mode);
+		CQt.QImage_Scaled32(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode, mode);
 	}
 	
 	public void ScaledToWidth2(int32 w, int64 mode)
@@ -693,9 +698,9 @@ public class QImage
 		CQt.QImage_ScaledToHeight2(this.nativePtr, h, mode);
 	}
 	
-	public void Transformed2(void* matrix, int64 mode)
+	public void Transformed2(IQTransform matrix, int64 mode)
 	{
-		CQt.QImage_Transformed2(this.nativePtr, matrix, mode);
+		CQt.QImage_Transformed2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, mode);
 	}
 	
 	public void Mirrored1(bool horizontally)
@@ -723,64 +728,64 @@ public class QImage
 		CQt.QImage_InvertPixels1(this.nativePtr, param1);
 	}
 	
-	public bool Load2(libqt_string fileName, char8[] format)
+	public bool Load2(String fileName, char8* format)
 	{
-		return CQt.QImage_Load2(this.nativePtr, fileName, format);
+		return CQt.QImage_Load2(this.nativePtr, libqt_string(fileName), format);
 	}
 	
-	public bool LoadFromData22(void data, char8[] format)
+	public bool LoadFromData22(IQByteArrayView data, char8* format)
 	{
-		return CQt.QImage_LoadFromData22(this.nativePtr, data, format);
+		return CQt.QImage_LoadFromData22(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr, format);
 	}
 	
-	public bool LoadFromData3(uint8* buf, int32 lenVal, char8[] format)
+	public bool LoadFromData3(uint8* buf, int32 lenVal, char8* format)
 	{
 		return CQt.QImage_LoadFromData3(this.nativePtr, buf, lenVal, format);
 	}
 	
-	public bool LoadFromData23(libqt_string data, char8[] format)
+	public bool LoadFromData23(String data, char8* format)
 	{
-		return CQt.QImage_LoadFromData23(this.nativePtr, data, format);
+		return CQt.QImage_LoadFromData23(this.nativePtr, libqt_string(data), format);
 	}
 	
-	public bool Save2(libqt_string fileName, char8[] format)
+	public bool Save2(String fileName, char8* format)
 	{
-		return CQt.QImage_Save2(this.nativePtr, fileName, format);
+		return CQt.QImage_Save2(this.nativePtr, libqt_string(fileName), format);
 	}
 	
-	public bool Save3(libqt_string fileName, char8[] format, int32 quality)
+	public bool Save3(String fileName, char8* format, int32 quality)
 	{
-		return CQt.QImage_Save3(this.nativePtr, fileName, format, quality);
+		return CQt.QImage_Save3(this.nativePtr, libqt_string(fileName), format, quality);
 	}
 	
-	public bool Save22(void* device, char8[] format)
+	public bool Save22(IQIODevice device, char8* format)
 	{
-		return CQt.QImage_Save22(this.nativePtr, device, format);
+		return CQt.QImage_Save22(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
 	}
 	
-	public bool Save32(void* device, char8[] format, int32 quality)
+	public bool Save32(IQIODevice device, char8* format, int32 quality)
 	{
-		return CQt.QImage_Save32(this.nativePtr, device, format, quality);
+		return CQt.QImage_Save32(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format, quality);
 	}
 	
-	public static void FromData22(void data, char8[] format)
+	public static void FromData22(IQByteArrayView data, char8* format)
 	{
-		CQt.QImage_FromData22(data, format);
+		CQt.QImage_FromData22((data == default) ? default : (char8*)data.NativePtr, format);
 	}
 	
-	public static void FromData3(uint8* data, int32 size, char8[] format)
+	public static void FromData3(uint8* data, int32 size, char8* format)
 	{
 		CQt.QImage_FromData3(data, size, format);
 	}
 	
-	public static void FromData23(libqt_string data, char8[] format)
+	public static void FromData23(String data, char8* format)
 	{
-		CQt.QImage_FromData23(data, format);
+		CQt.QImage_FromData23(libqt_string(data), format);
 	}
 	
-	public libqt_string Text1(libqt_string key)
+	public libqt_string Text1(String key)
 	{
-		return CQt.QImage_Text1(this.nativePtr, key);
+		return CQt.QImage_Text1(this.nativePtr, libqt_string(key));
 	}
 	
 	public void DetachMetadata1(bool invalidateCache)
@@ -855,7 +860,7 @@ extension CQt
 	[LinkName("QImage_new9")]
 	public static extern void* QImage_new9(void* param1);
 	[LinkName("QImage_new10")]
-	public static extern void* QImage_new10(libqt_string fileName, char8[] format);
+	public static extern void* QImage_new10(libqt_string fileName, char8* format);
 	[LinkName("QImage_OperatorAssign")]
 	public static extern void QImage_OperatorAssign(void* c_this, void* param1);
 	[LinkName("QImage_Swap")]
@@ -1015,11 +1020,11 @@ extension CQt
 	[LinkName("QImage_ApplyColorTransform")]
 	public static extern void QImage_ApplyColorTransform(void* c_this, void* transform);
 	[LinkName("QImage_Load")]
-	public static extern bool QImage_Load(void* c_this, void* device, char8[] format);
+	public static extern bool QImage_Load(void* c_this, void* device, char8* format);
 	[LinkName("QImage_LoadWithFileName")]
 	public static extern bool QImage_LoadWithFileName(void* c_this, libqt_string fileName);
 	[LinkName("QImage_LoadFromData")]
-	public static extern bool QImage_LoadFromData(void* c_this, void data);
+	public static extern bool QImage_LoadFromData(void* c_this, char8* data);
 	[LinkName("QImage_LoadFromData2")]
 	public static extern bool QImage_LoadFromData2(void* c_this, uint8* buf, int32 lenVal);
 	[LinkName("QImage_LoadFromDataWithData")]
@@ -1029,7 +1034,7 @@ extension CQt
 	[LinkName("QImage_SaveWithDevice")]
 	public static extern bool QImage_SaveWithDevice(void* c_this, void* device);
 	[LinkName("QImage_FromData")]
-	public static extern void QImage_FromData(void data);
+	public static extern void QImage_FromData(char8* data);
 	[LinkName("QImage_FromData2")]
 	public static extern void QImage_FromData2(uint8* data, int32 size);
 	[LinkName("QImage_FromDataWithData")]
@@ -1121,27 +1126,27 @@ extension CQt
 	[LinkName("QImage_InvertPixels1")]
 	public static extern void QImage_InvertPixels1(void* c_this, int64 param1);
 	[LinkName("QImage_Load2")]
-	public static extern bool QImage_Load2(void* c_this, libqt_string fileName, char8[] format);
+	public static extern bool QImage_Load2(void* c_this, libqt_string fileName, char8* format);
 	[LinkName("QImage_LoadFromData22")]
-	public static extern bool QImage_LoadFromData22(void* c_this, void data, char8[] format);
+	public static extern bool QImage_LoadFromData22(void* c_this, char8* data, char8* format);
 	[LinkName("QImage_LoadFromData3")]
-	public static extern bool QImage_LoadFromData3(void* c_this, uint8* buf, int32 lenVal, char8[] format);
+	public static extern bool QImage_LoadFromData3(void* c_this, uint8* buf, int32 lenVal, char8* format);
 	[LinkName("QImage_LoadFromData23")]
-	public static extern bool QImage_LoadFromData23(void* c_this, libqt_string data, char8[] format);
+	public static extern bool QImage_LoadFromData23(void* c_this, libqt_string data, char8* format);
 	[LinkName("QImage_Save2")]
-	public static extern bool QImage_Save2(void* c_this, libqt_string fileName, char8[] format);
+	public static extern bool QImage_Save2(void* c_this, libqt_string fileName, char8* format);
 	[LinkName("QImage_Save3")]
-	public static extern bool QImage_Save3(void* c_this, libqt_string fileName, char8[] format, int32 quality);
+	public static extern bool QImage_Save3(void* c_this, libqt_string fileName, char8* format, int32 quality);
 	[LinkName("QImage_Save22")]
-	public static extern bool QImage_Save22(void* c_this, void* device, char8[] format);
+	public static extern bool QImage_Save22(void* c_this, void* device, char8* format);
 	[LinkName("QImage_Save32")]
-	public static extern bool QImage_Save32(void* c_this, void* device, char8[] format, int32 quality);
+	public static extern bool QImage_Save32(void* c_this, void* device, char8* format, int32 quality);
 	[LinkName("QImage_FromData22")]
-	public static extern void QImage_FromData22(void data, char8[] format);
+	public static extern void QImage_FromData22(char8* data, char8* format);
 	[LinkName("QImage_FromData3")]
-	public static extern void QImage_FromData3(uint8* data, int32 size, char8[] format);
+	public static extern void QImage_FromData3(uint8* data, int32 size, char8* format);
 	[LinkName("QImage_FromData23")]
-	public static extern void QImage_FromData23(libqt_string data, char8[] format);
+	public static extern void QImage_FromData23(libqt_string data, char8* format);
 	[LinkName("QImage_Text1")]
 	public static extern libqt_string QImage_Text1(void* c_this, libqt_string key);
 	[LinkName("QImage_DetachMetadata1")]

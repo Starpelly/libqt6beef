@@ -9,13 +9,18 @@ public enum QDebug__VerbosityLevel
 	DefaultVerbosity = 2,
 	MaximumVerbosity = 7,
 }
-public class QDebug
+public interface IQDebug
+{
+	void* NativePtr { get; }
+}
+public class QDebug : IQDebug, IQIODeviceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* device)
+	public this(IQIODevice device)
 	{
-		this.nativePtr = CQt.QDebug_new(device);
+		this.nativePtr = CQt.QDebug_new((device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public ~this()
@@ -23,14 +28,14 @@ public class QDebug
 		CQt.QDebug_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQDebug other)
 	{
-		CQt.QDebug_OperatorAssign(this.nativePtr, other);
+		CQt.QDebug_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQDebug other)
 	{
-		CQt.QDebug_Swap(this.nativePtr, other);
+		CQt.QDebug_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* ResetFormat()
@@ -93,9 +98,9 @@ public class QDebug
 		return CQt.QDebug_MaybeQuote(this.nativePtr);
 	}
 	
-	public void* OperatorShiftLeft(void t)
+	public void* OperatorShiftLeft(IQChar t)
 	{
-		return CQt.QDebug_OperatorShiftLeft(this.nativePtr, t);
+		return CQt.QDebug_OperatorShiftLeft(this.nativePtr, (t == default) ? default : (void)t.NativePtr);
 	}
 	
 	public void* OperatorShiftLeftWithBool(bool t)
@@ -158,24 +163,24 @@ public class QDebug
 		return CQt.QDebug_OperatorShiftLeftWithDouble(this.nativePtr, t);
 	}
 	
-	public void* OperatorShiftLeft2(char8[] t)
+	public void* OperatorShiftLeft2(char8* t)
 	{
 		return CQt.QDebug_OperatorShiftLeft2(this.nativePtr, t);
 	}
 	
-	public void* OperatorShiftLeftWithQString(libqt_string t)
+	public void* OperatorShiftLeftWithQString(String t)
 	{
-		return CQt.QDebug_OperatorShiftLeftWithQString(this.nativePtr, t);
+		return CQt.QDebug_OperatorShiftLeftWithQString(this.nativePtr, libqt_string(t));
 	}
 	
-	public void* OperatorShiftLeftWithQByteArray(libqt_string t)
+	public void* OperatorShiftLeftWithQByteArray(String t)
 	{
-		return CQt.QDebug_OperatorShiftLeftWithQByteArray(this.nativePtr, t);
+		return CQt.QDebug_OperatorShiftLeftWithQByteArray(this.nativePtr, libqt_string(t));
 	}
 	
-	public void* OperatorShiftLeftWithQByteArrayView(void t)
+	public void* OperatorShiftLeftWithQByteArrayView(IQByteArrayView t)
 	{
-		return CQt.QDebug_OperatorShiftLeftWithQByteArrayView(this.nativePtr, t);
+		return CQt.QDebug_OperatorShiftLeftWithQByteArrayView(this.nativePtr, (t == default) ? default : (char8*)t.NativePtr);
 	}
 	
 	public void* OperatorShiftLeftWithVoid(void* t)
@@ -250,13 +255,13 @@ extension CQt
 	[LinkName("QDebug_OperatorShiftLeftWithDouble")]
 	public static extern void* QDebug_OperatorShiftLeftWithDouble(void* c_this, double t);
 	[LinkName("QDebug_OperatorShiftLeft2")]
-	public static extern void* QDebug_OperatorShiftLeft2(void* c_this, char8[] t);
+	public static extern void* QDebug_OperatorShiftLeft2(void* c_this, char8* t);
 	[LinkName("QDebug_OperatorShiftLeftWithQString")]
 	public static extern void* QDebug_OperatorShiftLeftWithQString(void* c_this, libqt_string t);
 	[LinkName("QDebug_OperatorShiftLeftWithQByteArray")]
 	public static extern void* QDebug_OperatorShiftLeftWithQByteArray(void* c_this, libqt_string t);
 	[LinkName("QDebug_OperatorShiftLeftWithQByteArrayView")]
-	public static extern void* QDebug_OperatorShiftLeftWithQByteArrayView(void* c_this, void t);
+	public static extern void* QDebug_OperatorShiftLeftWithQByteArrayView(void* c_this, char8* t);
 	[LinkName("QDebug_OperatorShiftLeftWithVoid")]
 	public static extern void* QDebug_OperatorShiftLeftWithVoid(void* c_this, void* t);
 	[LinkName("QDebug_MaybeQuote1")]
@@ -265,13 +270,18 @@ extension CQt
 	[LinkName("QDebug_Delete")]
 	public static extern void QDebug_Delete(void* self);
 }
-public class QDebugStateSaver
+public interface IQDebugStateSaver
+{
+	void* NativePtr { get; }
+}
+public class QDebugStateSaver : IQDebugStateSaver
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* dbg)
+	public this(IQDebug dbg)
 	{
-		this.nativePtr = CQt.QDebugStateSaver_new(dbg);
+		this.nativePtr = CQt.QDebugStateSaver_new((dbg == default) ? default : (void*)dbg.NativePtr);
 	}
 	public ~this()
 	{
@@ -286,13 +296,18 @@ extension CQt
 	[LinkName("QDebugStateSaver_Delete")]
 	public static extern void QDebugStateSaver_Delete(void* self);
 }
-public class QNoDebug
+public interface IQNoDebug
+{
+	void* NativePtr { get; }
+}
+public class QNoDebug : IQNoDebug
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQNoDebug other)
 	{
-		this.nativePtr = CQt.QNoDebug_new(other);
+		this.nativePtr = CQt.QNoDebug_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

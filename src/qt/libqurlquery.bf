@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QUrlQuery
+public interface IQUrlQuery
+{
+	void* NativePtr { get; }
+}
+public class QUrlQuery : IQUrlQuery
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,24 +21,24 @@ public class QUrlQuery
 		CQt.QUrlQuery_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQUrlQuery other)
 	{
-		CQt.QUrlQuery_OperatorAssign(this.nativePtr, other);
+		CQt.QUrlQuery_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQUrlQuery other)
 	{
-		return CQt.QUrlQuery_OperatorEqual(this.nativePtr, other);
+		return CQt.QUrlQuery_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQUrlQuery other)
 	{
-		return CQt.QUrlQuery_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QUrlQuery_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQUrlQuery other)
 	{
-		CQt.QUrlQuery_Swap(this.nativePtr, other);
+		CQt.QUrlQuery_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -56,9 +61,9 @@ public class QUrlQuery
 		return CQt.QUrlQuery_Query(this.nativePtr);
 	}
 	
-	public void SetQuery(libqt_string queryString)
+	public void SetQuery(String queryString)
 	{
-		CQt.QUrlQuery_SetQuery(this.nativePtr, queryString);
+		CQt.QUrlQuery_SetQuery(this.nativePtr, libqt_string(queryString));
 	}
 	
 	public libqt_string ToString()
@@ -66,9 +71,9 @@ public class QUrlQuery
 		return CQt.QUrlQuery_ToString(this.nativePtr);
 	}
 	
-	public void SetQueryDelimiters(void valueDelimiter, void pairDelimiter)
+	public void SetQueryDelimiters(IQChar valueDelimiter, IQChar pairDelimiter)
 	{
-		CQt.QUrlQuery_SetQueryDelimiters(this.nativePtr, valueDelimiter, pairDelimiter);
+		CQt.QUrlQuery_SetQueryDelimiters(this.nativePtr, (valueDelimiter == default) ? default : (void)valueDelimiter.NativePtr, (pairDelimiter == default) ? default : (void)pairDelimiter.NativePtr);
 	}
 	
 	public void QueryValueDelimiter()
@@ -83,7 +88,7 @@ public class QUrlQuery
 	
 	public void SetQueryItems(void*[] query)
 	{
-		CQt.QUrlQuery_SetQueryItems(this.nativePtr, query);
+		CQt.QUrlQuery_SetQueryItems(this.nativePtr, null);
 	}
 	
 	public void*[] QueryItems()
@@ -91,34 +96,34 @@ public class QUrlQuery
 		return CQt.QUrlQuery_QueryItems(this.nativePtr);
 	}
 	
-	public bool HasQueryItem(libqt_string key)
+	public bool HasQueryItem(String key)
 	{
-		return CQt.QUrlQuery_HasQueryItem(this.nativePtr, key);
+		return CQt.QUrlQuery_HasQueryItem(this.nativePtr, libqt_string(key));
 	}
 	
-	public void AddQueryItem(libqt_string key, libqt_string value)
+	public void AddQueryItem(String key, String value)
 	{
-		CQt.QUrlQuery_AddQueryItem(this.nativePtr, key, value);
+		CQt.QUrlQuery_AddQueryItem(this.nativePtr, libqt_string(key), libqt_string(value));
 	}
 	
-	public void RemoveQueryItem(libqt_string key)
+	public void RemoveQueryItem(String key)
 	{
-		CQt.QUrlQuery_RemoveQueryItem(this.nativePtr, key);
+		CQt.QUrlQuery_RemoveQueryItem(this.nativePtr, libqt_string(key));
 	}
 	
-	public libqt_string QueryItemValue(libqt_string key)
+	public libqt_string QueryItemValue(String key)
 	{
-		return CQt.QUrlQuery_QueryItemValue(this.nativePtr, key);
+		return CQt.QUrlQuery_QueryItemValue(this.nativePtr, libqt_string(key));
 	}
 	
-	public libqt_string[] AllQueryItemValues(libqt_string key)
+	public libqt_string[] AllQueryItemValues(String key)
 	{
-		return CQt.QUrlQuery_AllQueryItemValues(this.nativePtr, key);
+		return CQt.QUrlQuery_AllQueryItemValues(this.nativePtr, libqt_string(key));
 	}
 	
-	public void RemoveAllQueryItems(libqt_string key)
+	public void RemoveAllQueryItems(String key)
 	{
-		CQt.QUrlQuery_RemoveAllQueryItems(this.nativePtr, key);
+		CQt.QUrlQuery_RemoveAllQueryItems(this.nativePtr, libqt_string(key));
 	}
 	
 	public libqt_string Query1(int64 encoding)
@@ -136,14 +141,14 @@ public class QUrlQuery
 		return CQt.QUrlQuery_QueryItems1(this.nativePtr, encoding);
 	}
 	
-	public libqt_string QueryItemValue2(libqt_string key, int64 encoding)
+	public libqt_string QueryItemValue2(String key, int64 encoding)
 	{
-		return CQt.QUrlQuery_QueryItemValue2(this.nativePtr, key, encoding);
+		return CQt.QUrlQuery_QueryItemValue2(this.nativePtr, libqt_string(key), encoding);
 	}
 	
-	public libqt_string[] AllQueryItemValues2(libqt_string key, int64 encoding)
+	public libqt_string[] AllQueryItemValues2(String key, int64 encoding)
 	{
-		return CQt.QUrlQuery_AllQueryItemValues2(this.nativePtr, key, encoding);
+		return CQt.QUrlQuery_AllQueryItemValues2(this.nativePtr, libqt_string(key), encoding);
 	}
 	
 }

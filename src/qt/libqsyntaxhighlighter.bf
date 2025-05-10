@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QSyntaxHighlighter
+public interface IQSyntaxHighlighter
+{
+	void* NativePtr { get; }
+}
+public class QSyntaxHighlighter : IQSyntaxHighlighter, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* parent)
+	public this(IQObject parent)
 	{
-		this.nativePtr = CQt.QSyntaxHighlighter_new(parent);
+		this.nativePtr = CQt.QSyntaxHighlighter_new((parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public ~this()
@@ -21,7 +26,7 @@ public class QSyntaxHighlighter
 		return CQt.QSyntaxHighlighter_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QSyntaxHighlighter_Metacast(this.nativePtr, param1);
 	}
@@ -31,14 +36,14 @@ public class QSyntaxHighlighter
 		return CQt.QSyntaxHighlighter_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QSyntaxHighlighter_Tr(s);
 	}
 	
-	public void SetDocument(void* doc)
+	public void SetDocument(IQTextDocument doc)
 	{
-		CQt.QSyntaxHighlighter_SetDocument(this.nativePtr, doc);
+		CQt.QSyntaxHighlighter_SetDocument(this.nativePtr, (doc == null) ? null : (void*)doc.NativePtr);
 	}
 	
 	public void* Document()
@@ -51,29 +56,29 @@ public class QSyntaxHighlighter
 		CQt.QSyntaxHighlighter_Rehighlight(this.nativePtr);
 	}
 	
-	public void RehighlightBlock(void* block)
+	public void RehighlightBlock(IQTextBlock block)
 	{
-		CQt.QSyntaxHighlighter_RehighlightBlock(this.nativePtr, block);
+		CQt.QSyntaxHighlighter_RehighlightBlock(this.nativePtr, (block == default) ? default : (void*)block.NativePtr);
 	}
 	
-	public virtual void HighlightBlock(libqt_string text)
+	public virtual void HighlightBlock(String text)
 	{
-		CQt.QSyntaxHighlighter_HighlightBlock(this.nativePtr, text);
+		CQt.QSyntaxHighlighter_HighlightBlock(this.nativePtr, libqt_string(text));
 	}
 	
-	public void SetFormat(int32 start, int32 count, void* format)
+	public void SetFormat(int32 start, int32 count, IQTextCharFormat format)
 	{
-		CQt.QSyntaxHighlighter_SetFormat(this.nativePtr, start, count, format);
+		CQt.QSyntaxHighlighter_SetFormat(this.nativePtr, start, count, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public void SetFormat2(int32 start, int32 count, void* color)
+	public void SetFormat2(int32 start, int32 count, IQColor color)
 	{
-		CQt.QSyntaxHighlighter_SetFormat2(this.nativePtr, start, count, color);
+		CQt.QSyntaxHighlighter_SetFormat2(this.nativePtr, start, count, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
-	public void SetFormat3(int32 start, int32 count, void* font)
+	public void SetFormat3(int32 start, int32 count, IQFont font)
 	{
-		CQt.QSyntaxHighlighter_SetFormat3(this.nativePtr, start, count, font);
+		CQt.QSyntaxHighlighter_SetFormat3(this.nativePtr, start, count, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void Format(int32 pos)
@@ -96,9 +101,9 @@ public class QSyntaxHighlighter
 		CQt.QSyntaxHighlighter_SetCurrentBlockState(this.nativePtr, newState);
 	}
 	
-	public void SetCurrentBlockUserData(void* data)
+	public void SetCurrentBlockUserData(IQTextBlockUserData data)
 	{
-		CQt.QSyntaxHighlighter_SetCurrentBlockUserData(this.nativePtr, data);
+		CQt.QSyntaxHighlighter_SetCurrentBlockUserData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 	public void* CurrentBlockUserData()
@@ -111,24 +116,24 @@ public class QSyntaxHighlighter
 		CQt.QSyntaxHighlighter_CurrentBlock(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QSyntaxHighlighter_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QSyntaxHighlighter_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -136,9 +141,9 @@ public class QSyntaxHighlighter
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -171,9 +176,9 @@ public class QSyntaxHighlighter
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -191,39 +196,39 @@ public class QSyntaxHighlighter
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -236,12 +241,12 @@ public class QSyntaxHighlighter
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -266,7 +271,7 @@ public class QSyntaxHighlighter
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -281,14 +286,14 @@ public class QSyntaxHighlighter
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -301,11 +306,11 @@ extension CQt
 	[LinkName("QSyntaxHighlighter_MetaObject")]
 	public static extern void* QSyntaxHighlighter_MetaObject(void* c_this);
 	[LinkName("QSyntaxHighlighter_Metacast")]
-	public static extern void* QSyntaxHighlighter_Metacast(void* c_this, char8[] param1);
+	public static extern void* QSyntaxHighlighter_Metacast(void* c_this, char8* param1);
 	[LinkName("QSyntaxHighlighter_Metacall")]
-	public static extern int32 QSyntaxHighlighter_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QSyntaxHighlighter_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QSyntaxHighlighter_Tr")]
-	public static extern libqt_string QSyntaxHighlighter_Tr(char8[] s);
+	public static extern libqt_string QSyntaxHighlighter_Tr(char8* s);
 	[LinkName("QSyntaxHighlighter_SetDocument")]
 	public static extern void QSyntaxHighlighter_SetDocument(void* c_this, void* doc);
 	[LinkName("QSyntaxHighlighter_Document")]
@@ -337,9 +342,9 @@ extension CQt
 	[LinkName("QSyntaxHighlighter_CurrentBlock")]
 	public static extern void QSyntaxHighlighter_CurrentBlock(void* c_this);
 	[LinkName("QSyntaxHighlighter_Tr2")]
-	public static extern libqt_string QSyntaxHighlighter_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QSyntaxHighlighter_Tr2(char8* s, char8* c);
 	[LinkName("QSyntaxHighlighter_Tr3")]
-	public static extern libqt_string QSyntaxHighlighter_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QSyntaxHighlighter_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QSyntaxHighlighter_Delete")]
 	public static extern void QSyntaxHighlighter_Delete(void* self);

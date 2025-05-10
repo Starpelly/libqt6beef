@@ -9,13 +9,18 @@ public enum QColormap__Mode
 	Indexed = 1,
 	Gray = 2,
 }
-public class QColormap
+public interface IQColormap
+{
+	void* NativePtr { get; }
+}
+public class QColormap : IQColormap
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* colormap)
+	public this(IQColormap colormap)
 	{
-		this.nativePtr = CQt.QColormap_new(colormap);
+		this.nativePtr = CQt.QColormap_new((colormap == default) ? default : (void*)colormap.NativePtr);
 	}
 	
 	public ~this()
@@ -38,9 +43,9 @@ public class QColormap
 		CQt.QColormap_Instance();
 	}
 	
-	public void OperatorAssign(void* colormap)
+	public void OperatorAssign(IQColormap colormap)
 	{
-		CQt.QColormap_OperatorAssign(this.nativePtr, colormap);
+		CQt.QColormap_OperatorAssign(this.nativePtr, (colormap == default) ? default : (void*)colormap.NativePtr);
 	}
 	
 	public int64 Mode()
@@ -58,9 +63,9 @@ public class QColormap
 		return CQt.QColormap_Size(this.nativePtr);
 	}
 	
-	public uint32 Pixel(void* color)
+	public uint32 Pixel(IQColor color)
 	{
-		return CQt.QColormap_Pixel(this.nativePtr, color);
+		return CQt.QColormap_Pixel(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void ColorAt(uint32 pixel)

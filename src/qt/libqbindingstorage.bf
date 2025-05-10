@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QBindingStatus
+public interface IQBindingStatus
+{
+	void* NativePtr { get; }
+}
+public class QBindingStatus : IQBindingStatus
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQBindingStatus other)
 	{
-		this.nativePtr = CQt.QBindingStatus_new(other);
+		this.nativePtr = CQt.QBindingStatus_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -25,9 +30,14 @@ extension CQt
 	[LinkName("QBindingStatus_Delete")]
 	public static extern void QBindingStatus_Delete(void* self);
 }
-public class QBindingStorage
+public interface IQBindingStorage
+{
+	void* NativePtr { get; }
+}
+public class QBindingStorage : IQBindingStorage
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -49,9 +59,9 @@ public class QBindingStorage
 		return CQt.QBindingStorage_IsValid(this.nativePtr);
 	}
 	
-	public void RegisterDependency(void* data)
+	public void RegisterDependency(IQUntypedPropertyData data)
 	{
-		CQt.QBindingStorage_RegisterDependency(this.nativePtr, data);
+		CQt.QBindingStorage_RegisterDependency(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 }

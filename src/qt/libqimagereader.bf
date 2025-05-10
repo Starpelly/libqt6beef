@@ -11,9 +11,14 @@ public enum QImageReader__ImageReaderError
 	UnsupportedFormatError = 3,
 	InvalidDataError = 4,
 }
-public class QImageReader
+public interface IQImageReader
+{
+	void* NativePtr { get; }
+}
+public class QImageReader : IQImageReader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -25,14 +30,14 @@ public class QImageReader
 		CQt.QImageReader_Delete(this.nativePtr);
 	}
 	
-	public static libqt_string Tr(char8[] sourceText)
+	public static libqt_string Tr(char8* sourceText)
 	{
 		return CQt.QImageReader_Tr(sourceText);
 	}
 	
-	public void SetFormat(libqt_string format)
+	public void SetFormat(String format)
 	{
-		CQt.QImageReader_SetFormat(this.nativePtr, format);
+		CQt.QImageReader_SetFormat(this.nativePtr, libqt_string(format));
 	}
 	
 	public libqt_string Format()
@@ -60,9 +65,9 @@ public class QImageReader
 		return CQt.QImageReader_DecideFormatFromContent(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QImageReader_SetDevice(this.nativePtr, device);
+		CQt.QImageReader_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -70,9 +75,9 @@ public class QImageReader
 		return CQt.QImageReader_Device(this.nativePtr);
 	}
 	
-	public void SetFileName(libqt_string fileName)
+	public void SetFileName(String fileName)
 	{
-		CQt.QImageReader_SetFileName(this.nativePtr, fileName);
+		CQt.QImageReader_SetFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public libqt_string FileName()
@@ -95,14 +100,14 @@ public class QImageReader
 		return CQt.QImageReader_TextKeys(this.nativePtr);
 	}
 	
-	public libqt_string Text(libqt_string key)
+	public libqt_string Text(String key)
 	{
-		return CQt.QImageReader_Text(this.nativePtr, key);
+		return CQt.QImageReader_Text(this.nativePtr, libqt_string(key));
 	}
 	
-	public void SetClipRect(void* rect)
+	public void SetClipRect(IQRect rect)
 	{
-		CQt.QImageReader_SetClipRect(this.nativePtr, rect);
+		CQt.QImageReader_SetClipRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void ClipRect()
@@ -110,9 +115,9 @@ public class QImageReader
 		CQt.QImageReader_ClipRect(this.nativePtr);
 	}
 	
-	public void SetScaledSize(void* size)
+	public void SetScaledSize(IQSize size)
 	{
-		CQt.QImageReader_SetScaledSize(this.nativePtr, size);
+		CQt.QImageReader_SetScaledSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void ScaledSize()
@@ -130,9 +135,9 @@ public class QImageReader
 		return CQt.QImageReader_Quality(this.nativePtr);
 	}
 	
-	public void SetScaledClipRect(void* rect)
+	public void SetScaledClipRect(IQRect rect)
 	{
-		CQt.QImageReader_SetScaledClipRect(this.nativePtr, rect);
+		CQt.QImageReader_SetScaledClipRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void ScaledClipRect()
@@ -140,9 +145,9 @@ public class QImageReader
 		CQt.QImageReader_ScaledClipRect(this.nativePtr);
 	}
 	
-	public void SetBackgroundColor(void* color)
+	public void SetBackgroundColor(IQColor color)
 	{
-		CQt.QImageReader_SetBackgroundColor(this.nativePtr, color);
+		CQt.QImageReader_SetBackgroundColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void BackgroundColor()
@@ -190,9 +195,9 @@ public class QImageReader
 		CQt.QImageReader_Read(this.nativePtr);
 	}
 	
-	public bool ReadWithImage(void* image)
+	public bool ReadWithImage(IQImage image)
 	{
-		return CQt.QImageReader_ReadWithImage(this.nativePtr, image);
+		return CQt.QImageReader_ReadWithImage(this.nativePtr, (image == null) ? null : (void*)image.NativePtr);
 	}
 	
 	public bool JumpToNextImage()
@@ -245,14 +250,14 @@ public class QImageReader
 		return CQt.QImageReader_SupportsOption(this.nativePtr, option);
 	}
 	
-	public static libqt_string ImageFormatWithFileName(libqt_string fileName)
+	public static libqt_string ImageFormatWithFileName(String fileName)
 	{
-		return CQt.QImageReader_ImageFormatWithFileName(fileName);
+		return CQt.QImageReader_ImageFormatWithFileName(libqt_string(fileName));
 	}
 	
-	public static libqt_string ImageFormatWithDevice(void* device)
+	public static libqt_string ImageFormatWithDevice(IQIODevice device)
 	{
-		return CQt.QImageReader_ImageFormatWithDevice(device);
+		return CQt.QImageReader_ImageFormatWithDevice((device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public static libqt_string[] SupportedImageFormats()
@@ -265,9 +270,9 @@ public class QImageReader
 		return CQt.QImageReader_SupportedMimeTypes();
 	}
 	
-	public static libqt_string[] ImageFormatsForMimeType(libqt_string mimeType)
+	public static libqt_string[] ImageFormatsForMimeType(String mimeType)
 	{
-		return CQt.QImageReader_ImageFormatsForMimeType(mimeType);
+		return CQt.QImageReader_ImageFormatsForMimeType(libqt_string(mimeType));
 	}
 	
 	public static int32 AllocationLimit()
@@ -280,12 +285,12 @@ public class QImageReader
 		CQt.QImageReader_SetAllocationLimit(mbLimit);
 	}
 	
-	public static libqt_string Tr2(char8[] sourceText, char8[] disambiguation)
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
 	{
 		return CQt.QImageReader_Tr2(sourceText, disambiguation);
 	}
 	
-	public static libqt_string Tr3(char8[] sourceText, char8[] disambiguation, int32 n)
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QImageReader_Tr3(sourceText, disambiguation, n);
 	}
@@ -304,7 +309,7 @@ extension CQt
 	[LinkName("QImageReader_new5")]
 	public static extern void* QImageReader_new5(libqt_string fileName, libqt_string format);
 	[LinkName("QImageReader_Tr")]
-	public static extern libqt_string QImageReader_Tr(char8[] sourceText);
+	public static extern libqt_string QImageReader_Tr(char8* sourceText);
 	[LinkName("QImageReader_SetFormat")]
 	public static extern void QImageReader_SetFormat(void* c_this, libqt_string format);
 	[LinkName("QImageReader_Format")]
@@ -406,9 +411,9 @@ extension CQt
 	[LinkName("QImageReader_SetAllocationLimit")]
 	public static extern void QImageReader_SetAllocationLimit(int32 mbLimit);
 	[LinkName("QImageReader_Tr2")]
-	public static extern libqt_string QImageReader_Tr2(char8[] sourceText, char8[] disambiguation);
+	public static extern libqt_string QImageReader_Tr2(char8* sourceText, char8* disambiguation);
 	[LinkName("QImageReader_Tr3")]
-	public static extern libqt_string QImageReader_Tr3(char8[] sourceText, char8[] disambiguation, int32 n);
+	public static extern libqt_string QImageReader_Tr3(char8* sourceText, char8* disambiguation, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QImageReader_Delete")]
 	public static extern void QImageReader_Delete(void* self);

@@ -116,13 +116,18 @@ public enum QMetaType__TypeFlag
 	IsQmlList = 4096,
 	IsConst = 8192,
 }
-public class QMetaType
+public interface IQMetaType
+{
+	void* NativePtr { get; }
+}
+public class QMetaType : IQMetaType
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaType other)
 	{
-		this.nativePtr = CQt.QMetaType_new(other);
+		this.nativePtr = CQt.QMetaType_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -130,22 +135,22 @@ public class QMetaType
 		CQt.QMetaType_Delete(this.nativePtr);
 	}
 	
-	public static void RegisterNormalizedTypedef(libqt_string normalizedTypeName, void typeVal)
+	public static void RegisterNormalizedTypedef(String normalizedTypeName, IQMetaType typeVal)
 	{
-		CQt.QMetaType_RegisterNormalizedTypedef(normalizedTypeName, typeVal);
+		CQt.QMetaType_RegisterNormalizedTypedef(libqt_string(normalizedTypeName), (typeVal == default) ? default : (void)typeVal.NativePtr);
 	}
 	
-	public static int32 Type(char8[] typeName)
+	public static int32 Type(char8* typeName)
 	{
 		return CQt.QMetaType_Type(typeName);
 	}
 	
-	public static int32 TypeWithTypeName(libqt_string typeName)
+	public static int32 TypeWithTypeName(String typeName)
 	{
-		return CQt.QMetaType_TypeWithTypeName(typeName);
+		return CQt.QMetaType_TypeWithTypeName(libqt_string(typeName));
 	}
 	
-	public static char8[] TypeName(int32 typeVal)
+	public static char8* TypeName(int32 typeVal)
 	{
 		return CQt.QMetaType_TypeName(typeVal);
 	}
@@ -225,7 +230,7 @@ public class QMetaType
 		return CQt.QMetaType_MetaObject(this.nativePtr);
 	}
 	
-	public char8[] Name()
+	public char8* Name()
 	{
 		return CQt.QMetaType_Name(this.nativePtr);
 	}
@@ -270,14 +275,14 @@ public class QMetaType
 		return CQt.QMetaType_IsOrdered(this.nativePtr);
 	}
 	
-	public bool Save(void* stream, void* data)
+	public bool Save(IQDataStream stream, void* data)
 	{
-		return CQt.QMetaType_Save(this.nativePtr, stream, data);
+		return CQt.QMetaType_Save(this.nativePtr, (stream == default) ? default : (void*)stream.NativePtr, data);
 	}
 	
-	public bool Load(void* stream, void* data)
+	public bool Load(IQDataStream stream, void* data)
 	{
-		return CQt.QMetaType_Load(this.nativePtr, stream, data);
+		return CQt.QMetaType_Load(this.nativePtr, (stream == default) ? default : (void*)stream.NativePtr, data);
 	}
 	
 	public bool HasRegisteredDataStreamOperators()
@@ -285,24 +290,24 @@ public class QMetaType
 		return CQt.QMetaType_HasRegisteredDataStreamOperators(this.nativePtr);
 	}
 	
-	public static bool Save2(void* stream, int32 typeVal, void* data)
+	public static bool Save2(IQDataStream stream, int32 typeVal, void* data)
 	{
-		return CQt.QMetaType_Save2(stream, typeVal, data);
+		return CQt.QMetaType_Save2((stream == default) ? default : (void*)stream.NativePtr, typeVal, data);
 	}
 	
-	public static bool Load2(void* stream, int32 typeVal, void* data)
+	public static bool Load2(IQDataStream stream, int32 typeVal, void* data)
 	{
-		return CQt.QMetaType_Load2(stream, typeVal, data);
+		return CQt.QMetaType_Load2((stream == default) ? default : (void*)stream.NativePtr, typeVal, data);
 	}
 	
-	public static void FromName(void name)
+	public static void FromName(IQByteArrayView name)
 	{
-		CQt.QMetaType_FromName(name);
+		CQt.QMetaType_FromName((name == default) ? default : (char8*)name.NativePtr);
 	}
 	
-	public bool DebugStream(void* dbg, void* rhs)
+	public bool DebugStream(IQDebug dbg, void* rhs)
 	{
-		return CQt.QMetaType_DebugStream(this.nativePtr, dbg, rhs);
+		return CQt.QMetaType_DebugStream(this.nativePtr, (dbg == default) ? default : (void*)dbg.NativePtr, rhs);
 	}
 	
 	public bool HasRegisteredDebugStreamOperator()
@@ -310,9 +315,9 @@ public class QMetaType
 		return CQt.QMetaType_HasRegisteredDebugStreamOperator(this.nativePtr);
 	}
 	
-	public static bool DebugStream2(void* dbg, void* rhs, int32 typeId)
+	public static bool DebugStream2(IQDebug dbg, void* rhs, int32 typeId)
 	{
-		return CQt.QMetaType_DebugStream2(dbg, rhs, typeId);
+		return CQt.QMetaType_DebugStream2((dbg == default) ? default : (void*)dbg.NativePtr, rhs, typeId);
 	}
 	
 	public static bool HasRegisteredDebugStreamOperatorWithTypeId(int32 typeId)
@@ -320,24 +325,24 @@ public class QMetaType
 		return CQt.QMetaType_HasRegisteredDebugStreamOperatorWithTypeId(typeId);
 	}
 	
-	public static bool Convert(void fromType, void* from, void toType, void* to)
+	public static bool Convert(IQMetaType fromType, void* from, IQMetaType toType, void* to)
 	{
-		return CQt.QMetaType_Convert(fromType, from, toType, to);
+		return CQt.QMetaType_Convert((fromType == default) ? default : (void)fromType.NativePtr, from, (toType == default) ? default : (void)toType.NativePtr, to);
 	}
 	
-	public static bool CanConvert(void fromType, void toType)
+	public static bool CanConvert(IQMetaType fromType, IQMetaType toType)
 	{
-		return CQt.QMetaType_CanConvert(fromType, toType);
+		return CQt.QMetaType_CanConvert((fromType == default) ? default : (void)fromType.NativePtr, (toType == default) ? default : (void)toType.NativePtr);
 	}
 	
-	public static bool View(void fromType, void* from, void toType, void* to)
+	public static bool View(IQMetaType fromType, void* from, IQMetaType toType, void* to)
 	{
-		return CQt.QMetaType_View(fromType, from, toType, to);
+		return CQt.QMetaType_View((fromType == default) ? default : (void)fromType.NativePtr, from, (toType == default) ? default : (void)toType.NativePtr, to);
 	}
 	
-	public static bool CanView(void fromType, void toType)
+	public static bool CanView(IQMetaType fromType, IQMetaType toType)
 	{
-		return CQt.QMetaType_CanView(fromType, toType);
+		return CQt.QMetaType_CanView((fromType == default) ? default : (void)fromType.NativePtr, (toType == default) ? default : (void)toType.NativePtr);
 	}
 	
 	public static bool Convert2(void* from, int32 fromTypeId, void* to, int32 toTypeId)
@@ -355,29 +360,29 @@ public class QMetaType
 		return CQt.QMetaType_Equals2(lhs, rhs, typeId, result);
 	}
 	
-	public static bool HasRegisteredConverterFunction(void fromType, void toType)
+	public static bool HasRegisteredConverterFunction(IQMetaType fromType, IQMetaType toType)
 	{
-		return CQt.QMetaType_HasRegisteredConverterFunction(fromType, toType);
+		return CQt.QMetaType_HasRegisteredConverterFunction((fromType == default) ? default : (void)fromType.NativePtr, (toType == default) ? default : (void)toType.NativePtr);
 	}
 	
-	public static bool HasRegisteredMutableViewFunction(void fromType, void toType)
+	public static bool HasRegisteredMutableViewFunction(IQMetaType fromType, IQMetaType toType)
 	{
-		return CQt.QMetaType_HasRegisteredMutableViewFunction(fromType, toType);
+		return CQt.QMetaType_HasRegisteredMutableViewFunction((fromType == default) ? default : (void)fromType.NativePtr, (toType == default) ? default : (void)toType.NativePtr);
 	}
 	
-	public static void UnregisterConverterFunction(void from, void to)
+	public static void UnregisterConverterFunction(IQMetaType from, IQMetaType to)
 	{
-		CQt.QMetaType_UnregisterConverterFunction(from, to);
+		CQt.QMetaType_UnregisterConverterFunction((from == default) ? default : (void)from.NativePtr, (to == default) ? default : (void)to.NativePtr);
 	}
 	
-	public static void UnregisterMutableViewFunction(void from, void to)
+	public static void UnregisterMutableViewFunction(IQMetaType from, IQMetaType to)
 	{
-		CQt.QMetaType_UnregisterMutableViewFunction(from, to);
+		CQt.QMetaType_UnregisterMutableViewFunction((from == default) ? default : (void)from.NativePtr, (to == default) ? default : (void)to.NativePtr);
 	}
 	
-	public static void UnregisterMetaType(void typeVal)
+	public static void UnregisterMetaType(IQMetaType typeVal)
 	{
-		CQt.QMetaType_UnregisterMetaType(typeVal);
+		CQt.QMetaType_UnregisterMetaType((typeVal == default) ? default : (void)typeVal.NativePtr);
 	}
 	
 	public static void* Create22(int32 typeVal, void* copyVal)
@@ -416,11 +421,11 @@ extension CQt
 	[LinkName("QMetaType_RegisterNormalizedTypedef")]
 	public static extern void QMetaType_RegisterNormalizedTypedef(libqt_string normalizedTypeName, void typeVal);
 	[LinkName("QMetaType_Type")]
-	public static extern int32 QMetaType_Type(char8[] typeName);
+	public static extern int32 QMetaType_Type(char8* typeName);
 	[LinkName("QMetaType_TypeWithTypeName")]
 	public static extern int32 QMetaType_TypeWithTypeName(libqt_string typeName);
 	[LinkName("QMetaType_TypeName")]
-	public static extern char8[] QMetaType_TypeName(int32 typeVal);
+	public static extern char8* QMetaType_TypeName(int32 typeVal);
 	[LinkName("QMetaType_SizeOf")]
 	public static extern int32 QMetaType_SizeOf(int32 typeVal);
 	[LinkName("QMetaType_TypeFlags")]
@@ -452,7 +457,7 @@ extension CQt
 	[LinkName("QMetaType_MetaObject")]
 	public static extern void* QMetaType_MetaObject(void* c_this);
 	[LinkName("QMetaType_Name")]
-	public static extern char8[] QMetaType_Name(void* c_this);
+	public static extern char8* QMetaType_Name(void* c_this);
 	[LinkName("QMetaType_Create2")]
 	public static extern void* QMetaType_Create2(void* c_this);
 	[LinkName("QMetaType_DestroyWithData")]
@@ -480,7 +485,7 @@ extension CQt
 	[LinkName("QMetaType_Load2")]
 	public static extern bool QMetaType_Load2(void* stream, int32 typeVal, void* data);
 	[LinkName("QMetaType_FromName")]
-	public static extern void QMetaType_FromName(void name);
+	public static extern void QMetaType_FromName(char8* name);
 	[LinkName("QMetaType_DebugStream")]
 	public static extern bool QMetaType_DebugStream(void* c_this, void* dbg, void* rhs);
 	[LinkName("QMetaType_HasRegisteredDebugStreamOperator")]

@@ -21,13 +21,18 @@ public enum QLibraryInfo__LibraryPath
 	TestsPath = 12,
 	SettingsPath = 100,
 }
-public class QLibraryInfo
+public interface IQLibraryInfo
+{
+	void* NativePtr { get; }
+}
+public class QLibraryInfo : IQLibraryInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQLibraryInfo other)
 	{
-		this.nativePtr = CQt.QLibraryInfo_new(other);
+		this.nativePtr = CQt.QLibraryInfo_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -35,7 +40,7 @@ public class QLibraryInfo
 		CQt.QLibraryInfo_Delete(this.nativePtr);
 	}
 	
-	public static char8[] Build()
+	public static char8* Build()
 	{
 		return CQt.QLibraryInfo_Build();
 	}
@@ -60,9 +65,9 @@ public class QLibraryInfo
 		return CQt.QLibraryInfo_Location(location);
 	}
 	
-	public static libqt_string[] PlatformPluginArguments(libqt_string platformName)
+	public static libqt_string[] PlatformPluginArguments(String platformName)
 	{
-		return CQt.QLibraryInfo_PlatformPluginArguments(platformName);
+		return CQt.QLibraryInfo_PlatformPluginArguments(libqt_string(platformName));
 	}
 	
 }
@@ -73,7 +78,7 @@ extension CQt
 	[LinkName("QLibraryInfo_new2")]
 	public static extern void* QLibraryInfo_new2(void* other);
 	[LinkName("QLibraryInfo_Build")]
-	public static extern char8[] QLibraryInfo_Build();
+	public static extern char8* QLibraryInfo_Build();
 	[LinkName("QLibraryInfo_IsDebugBuild")]
 	public static extern bool QLibraryInfo_IsDebugBuild();
 	[LinkName("QLibraryInfo_Version")]

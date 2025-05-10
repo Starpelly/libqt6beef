@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPicture
+public interface IQPicture
+{
+	void* NativePtr { get; }
+}
+public class QPicture : IQPicture, IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -31,39 +36,39 @@ public class QPicture
 		return CQt.QPicture_Size(this.nativePtr);
 	}
 	
-	public char8[] Data()
+	public char8* Data()
 	{
 		return CQt.QPicture_Data(this.nativePtr);
 	}
 	
-	public virtual void SetData(char8[] data, uint32 size)
+	public virtual void SetData(char8* data, uint32 size)
 	{
 		CQt.QPicture_SetData(this.nativePtr, data, size);
 	}
 	
-	public bool Play(void* p)
+	public bool Play(IQPainter p)
 	{
-		return CQt.QPicture_Play(this.nativePtr, p);
+		return CQt.QPicture_Play(this.nativePtr, (p == null) ? null : (void*)p.NativePtr);
 	}
 	
-	public bool Load(void* dev)
+	public bool Load(IQIODevice dev)
 	{
-		return CQt.QPicture_Load(this.nativePtr, dev);
+		return CQt.QPicture_Load(this.nativePtr, (dev == null) ? null : (void*)dev.NativePtr);
 	}
 	
-	public bool LoadWithFileName(libqt_string fileName)
+	public bool LoadWithFileName(String fileName)
 	{
-		return CQt.QPicture_LoadWithFileName(this.nativePtr, fileName);
+		return CQt.QPicture_LoadWithFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool Save(void* dev)
+	public bool Save(IQIODevice dev)
 	{
-		return CQt.QPicture_Save(this.nativePtr, dev);
+		return CQt.QPicture_Save(this.nativePtr, (dev == null) ? null : (void*)dev.NativePtr);
 	}
 	
-	public bool SaveWithFileName(libqt_string fileName)
+	public bool SaveWithFileName(String fileName)
 	{
-		return CQt.QPicture_SaveWithFileName(this.nativePtr, fileName);
+		return CQt.QPicture_SaveWithFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public void BoundingRect()
@@ -71,19 +76,19 @@ public class QPicture
 		CQt.QPicture_BoundingRect(this.nativePtr);
 	}
 	
-	public void SetBoundingRect(void* r)
+	public void SetBoundingRect(IQRect r)
 	{
-		CQt.QPicture_SetBoundingRect(this.nativePtr, r);
+		CQt.QPicture_SetBoundingRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void OperatorAssign(void* p)
+	public void OperatorAssign(IQPicture p)
 	{
-		CQt.QPicture_OperatorAssign(this.nativePtr, p);
+		CQt.QPicture_OperatorAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPicture other)
 	{
-		CQt.QPicture_Swap(this.nativePtr, other);
+		CQt.QPicture_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void Detach()
@@ -192,9 +197,9 @@ extension CQt
 	[LinkName("QPicture_Size")]
 	public static extern uint32 QPicture_Size(void* c_this);
 	[LinkName("QPicture_Data")]
-	public static extern char8[] QPicture_Data(void* c_this);
+	public static extern char8* QPicture_Data(void* c_this);
 	[LinkName("QPicture_SetData")]
-	public static extern void QPicture_SetData(void* c_this, char8[] data, uint32 size);
+	public static extern void QPicture_SetData(void* c_this, char8* data, uint32 size);
 	[LinkName("QPicture_Play")]
 	public static extern bool QPicture_Play(void* c_this, void* p);
 	[LinkName("QPicture_Load")]

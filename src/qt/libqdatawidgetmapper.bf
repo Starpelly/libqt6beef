@@ -8,9 +8,14 @@ public enum QDataWidgetMapper__SubmitPolicy
 	AutoSubmit = 0,
 	ManualSubmit = 1,
 }
-public class QDataWidgetMapper
+public interface IQDataWidgetMapper
+{
+	void* NativePtr { get; }
+}
+public class QDataWidgetMapper : IQDataWidgetMapper, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -27,7 +32,7 @@ public class QDataWidgetMapper
 		return CQt.QDataWidgetMapper_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QDataWidgetMapper_Metacast(this.nativePtr, param1);
 	}
@@ -37,14 +42,14 @@ public class QDataWidgetMapper
 		return CQt.QDataWidgetMapper_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QDataWidgetMapper_Tr(s);
 	}
 	
-	public void SetModel(void* model)
+	public void SetModel(IQAbstractItemModel model)
 	{
-		CQt.QDataWidgetMapper_SetModel(this.nativePtr, model);
+		CQt.QDataWidgetMapper_SetModel(this.nativePtr, (model == null) ? null : (void*)model.NativePtr);
 	}
 	
 	public void* Model()
@@ -52,9 +57,9 @@ public class QDataWidgetMapper
 		return CQt.QDataWidgetMapper_Model(this.nativePtr);
 	}
 	
-	public void SetItemDelegate(void* _delegate)
+	public void SetItemDelegate(IQAbstractItemDelegate _delegate)
 	{
-		CQt.QDataWidgetMapper_SetItemDelegate(this.nativePtr, _delegate);
+		CQt.QDataWidgetMapper_SetItemDelegate(this.nativePtr, (_delegate == null) ? null : (void*)_delegate.NativePtr);
 	}
 	
 	public void* ItemDelegate()
@@ -62,9 +67,9 @@ public class QDataWidgetMapper
 		return CQt.QDataWidgetMapper_ItemDelegate(this.nativePtr);
 	}
 	
-	public void SetRootIndex(void* index)
+	public void SetRootIndex(IQModelIndex index)
 	{
-		CQt.QDataWidgetMapper_SetRootIndex(this.nativePtr, index);
+		CQt.QDataWidgetMapper_SetRootIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void RootIndex()
@@ -92,29 +97,29 @@ public class QDataWidgetMapper
 		return CQt.QDataWidgetMapper_SubmitPolicy(this.nativePtr);
 	}
 	
-	public void AddMapping(void* widget, int32 section)
+	public void AddMapping(IQWidget widget, int32 section)
 	{
-		CQt.QDataWidgetMapper_AddMapping(this.nativePtr, widget, section);
+		CQt.QDataWidgetMapper_AddMapping(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr, section);
 	}
 	
-	public void AddMapping2(void* widget, int32 section, libqt_string propertyName)
+	public void AddMapping2(IQWidget widget, int32 section, String propertyName)
 	{
-		CQt.QDataWidgetMapper_AddMapping2(this.nativePtr, widget, section, propertyName);
+		CQt.QDataWidgetMapper_AddMapping2(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr, section, libqt_string(propertyName));
 	}
 	
-	public void RemoveMapping(void* widget)
+	public void RemoveMapping(IQWidget widget)
 	{
-		CQt.QDataWidgetMapper_RemoveMapping(this.nativePtr, widget);
+		CQt.QDataWidgetMapper_RemoveMapping(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public int32 MappedSection(void* widget)
+	public int32 MappedSection(IQWidget widget)
 	{
-		return CQt.QDataWidgetMapper_MappedSection(this.nativePtr, widget);
+		return CQt.QDataWidgetMapper_MappedSection(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public libqt_string MappedPropertyName(void* widget)
+	public libqt_string MappedPropertyName(IQWidget widget)
 	{
-		return CQt.QDataWidgetMapper_MappedPropertyName(this.nativePtr, widget);
+		return CQt.QDataWidgetMapper_MappedPropertyName(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public void* MappedWidgetAt(int32 section)
@@ -167,29 +172,29 @@ public class QDataWidgetMapper
 		CQt.QDataWidgetMapper_SetCurrentIndex(this.nativePtr, index);
 	}
 	
-	public void SetCurrentModelIndex(void* index)
+	public void SetCurrentModelIndex(IQModelIndex index)
 	{
-		CQt.QDataWidgetMapper_SetCurrentModelIndex(this.nativePtr, index);
+		CQt.QDataWidgetMapper_SetCurrentModelIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QDataWidgetMapper_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QDataWidgetMapper_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -197,9 +202,9 @@ public class QDataWidgetMapper
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -232,9 +237,9 @@ public class QDataWidgetMapper
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -252,39 +257,39 @@ public class QDataWidgetMapper
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -297,12 +302,12 @@ public class QDataWidgetMapper
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -327,7 +332,7 @@ public class QDataWidgetMapper
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -342,14 +347,14 @@ public class QDataWidgetMapper
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -362,11 +367,11 @@ extension CQt
 	[LinkName("QDataWidgetMapper_MetaObject")]
 	public static extern void* QDataWidgetMapper_MetaObject(void* c_this);
 	[LinkName("QDataWidgetMapper_Metacast")]
-	public static extern void* QDataWidgetMapper_Metacast(void* c_this, char8[] param1);
+	public static extern void* QDataWidgetMapper_Metacast(void* c_this, char8* param1);
 	[LinkName("QDataWidgetMapper_Metacall")]
-	public static extern int32 QDataWidgetMapper_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QDataWidgetMapper_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QDataWidgetMapper_Tr")]
-	public static extern libqt_string QDataWidgetMapper_Tr(char8[] s);
+	public static extern libqt_string QDataWidgetMapper_Tr(char8* s);
 	[LinkName("QDataWidgetMapper_SetModel")]
 	public static extern void QDataWidgetMapper_SetModel(void* c_this, void* model);
 	[LinkName("QDataWidgetMapper_Model")]
@@ -422,9 +427,9 @@ extension CQt
 	[LinkName("QDataWidgetMapper_Connect_CurrentIndexChanged")]
 	public static extern void QDataWidgetMapper_Connect_CurrentIndexChanged(void* c_this, c_intptr slot);
 	[LinkName("QDataWidgetMapper_Tr2")]
-	public static extern libqt_string QDataWidgetMapper_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QDataWidgetMapper_Tr2(char8* s, char8* c);
 	[LinkName("QDataWidgetMapper_Tr3")]
-	public static extern libqt_string QDataWidgetMapper_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QDataWidgetMapper_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QDataWidgetMapper_Delete")]
 	public static extern void QDataWidgetMapper_Delete(void* self);

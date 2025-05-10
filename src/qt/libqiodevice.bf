@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QIODevice
+public interface IQIODevice
+{
+	void* NativePtr { get; }
+}
+public class QIODevice : IQIODevice, IQObject, IQIODeviceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QIODevice
 		return CQt.QIODevice_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QIODevice_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QIODevice
 		return CQt.QIODevice_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QIODevice_Tr(s);
 	}
@@ -146,7 +151,7 @@ public class QIODevice
 		return CQt.QIODevice_BytesToWrite(this.nativePtr);
 	}
 	
-	public int64 Read(char8[] data, int64 maxlen)
+	public int64 Read(char8* data, int64 maxlen)
 	{
 		return CQt.QIODevice_Read(this.nativePtr, data, maxlen);
 	}
@@ -161,7 +166,7 @@ public class QIODevice
 		return CQt.QIODevice_ReadAll(this.nativePtr);
 	}
 	
-	public int64 ReadLine(char8[] data, int64 maxlen)
+	public int64 ReadLine(char8* data, int64 maxlen)
 	{
 		return CQt.QIODevice_ReadLine(this.nativePtr, data, maxlen);
 	}
@@ -196,22 +201,22 @@ public class QIODevice
 		return CQt.QIODevice_IsTransactionStarted(this.nativePtr);
 	}
 	
-	public int64 Write(char8[] data, int64 lenVal)
+	public int64 Write(char8* data, int64 lenVal)
 	{
 		return CQt.QIODevice_Write(this.nativePtr, data, lenVal);
 	}
 	
-	public int64 WriteWithData(char8[] data)
+	public int64 WriteWithData(char8* data)
 	{
 		return CQt.QIODevice_WriteWithData(this.nativePtr, data);
 	}
 	
-	public int64 Write2(libqt_string data)
+	public int64 Write2(String data)
 	{
-		return CQt.QIODevice_Write2(this.nativePtr, data);
+		return CQt.QIODevice_Write2(this.nativePtr, libqt_string(data));
 	}
 	
-	public int64 Peek(char8[] data, int64 maxlen)
+	public int64 Peek(char8* data, int64 maxlen)
 	{
 		return CQt.QIODevice_Peek(this.nativePtr, data, maxlen);
 	}
@@ -246,7 +251,7 @@ public class QIODevice
 		return CQt.QIODevice_PutChar(this.nativePtr, c);
 	}
 	
-	public bool GetChar(char8[] c)
+	public bool GetChar(char8* c)
 	{
 		return CQt.QIODevice_GetChar(this.nativePtr, c);
 	}
@@ -256,12 +261,12 @@ public class QIODevice
 		return CQt.QIODevice_ErrorString(this.nativePtr);
 	}
 	
-	public virtual int64 ReadData(char8[] data, int64 maxlen)
+	public virtual int64 ReadData(char8* data, int64 maxlen)
 	{
 		return CQt.QIODevice_ReadData(this.nativePtr, data, maxlen);
 	}
 	
-	public virtual int64 ReadLineData(char8[] data, int64 maxlen)
+	public virtual int64 ReadLineData(char8* data, int64 maxlen)
 	{
 		return CQt.QIODevice_ReadLineData(this.nativePtr, data, maxlen);
 	}
@@ -271,7 +276,7 @@ public class QIODevice
 		return CQt.QIODevice_SkipData(this.nativePtr, maxSize);
 	}
 	
-	public virtual int64 WriteData(char8[] data, int64 lenVal)
+	public virtual int64 WriteData(char8* data, int64 lenVal)
 	{
 		return CQt.QIODevice_WriteData(this.nativePtr, data, lenVal);
 	}
@@ -281,17 +286,17 @@ public class QIODevice
 		CQt.QIODevice_SetOpenMode(this.nativePtr, openMode);
 	}
 	
-	public void SetErrorString(libqt_string errorString)
+	public void SetErrorString(String errorString)
 	{
-		CQt.QIODevice_SetErrorString(this.nativePtr, errorString);
+		CQt.QIODevice_SetErrorString(this.nativePtr, libqt_string(errorString));
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QIODevice_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QIODevice_Tr3(s, c, n);
 	}
@@ -301,14 +306,14 @@ public class QIODevice
 		return CQt.QIODevice_ReadLine1(this.nativePtr, maxlen);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -316,9 +321,9 @@ public class QIODevice
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -351,9 +356,9 @@ public class QIODevice
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -371,39 +376,39 @@ public class QIODevice
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -416,12 +421,12 @@ public class QIODevice
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -446,7 +451,7 @@ public class QIODevice
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -461,14 +466,14 @@ public class QIODevice
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -481,11 +486,11 @@ extension CQt
 	[LinkName("QIODevice_MetaObject")]
 	public static extern void* QIODevice_MetaObject(void* c_this);
 	[LinkName("QIODevice_Metacast")]
-	public static extern void* QIODevice_Metacast(void* c_this, char8[] param1);
+	public static extern void* QIODevice_Metacast(void* c_this, char8* param1);
 	[LinkName("QIODevice_Metacall")]
-	public static extern int32 QIODevice_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QIODevice_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QIODevice_Tr")]
-	public static extern libqt_string QIODevice_Tr(char8[] s);
+	public static extern libqt_string QIODevice_Tr(char8* s);
 	[LinkName("QIODevice_OpenMode")]
 	public static extern int64 QIODevice_OpenMode(void* c_this);
 	[LinkName("QIODevice_SetTextModeEnabled")]
@@ -531,13 +536,13 @@ extension CQt
 	[LinkName("QIODevice_BytesToWrite")]
 	public static extern int64 QIODevice_BytesToWrite(void* c_this);
 	[LinkName("QIODevice_Read")]
-	public static extern int64 QIODevice_Read(void* c_this, char8[] data, int64 maxlen);
+	public static extern int64 QIODevice_Read(void* c_this, char8* data, int64 maxlen);
 	[LinkName("QIODevice_ReadWithMaxlen")]
 	public static extern libqt_string QIODevice_ReadWithMaxlen(void* c_this, int64 maxlen);
 	[LinkName("QIODevice_ReadAll")]
 	public static extern libqt_string QIODevice_ReadAll(void* c_this);
 	[LinkName("QIODevice_ReadLine")]
-	public static extern int64 QIODevice_ReadLine(void* c_this, char8[] data, int64 maxlen);
+	public static extern int64 QIODevice_ReadLine(void* c_this, char8* data, int64 maxlen);
 	[LinkName("QIODevice_ReadLine2")]
 	public static extern libqt_string QIODevice_ReadLine2(void* c_this);
 	[LinkName("QIODevice_CanReadLine")]
@@ -551,13 +556,13 @@ extension CQt
 	[LinkName("QIODevice_IsTransactionStarted")]
 	public static extern bool QIODevice_IsTransactionStarted(void* c_this);
 	[LinkName("QIODevice_Write")]
-	public static extern int64 QIODevice_Write(void* c_this, char8[] data, int64 lenVal);
+	public static extern int64 QIODevice_Write(void* c_this, char8* data, int64 lenVal);
 	[LinkName("QIODevice_WriteWithData")]
-	public static extern int64 QIODevice_WriteWithData(void* c_this, char8[] data);
+	public static extern int64 QIODevice_WriteWithData(void* c_this, char8* data);
 	[LinkName("QIODevice_Write2")]
 	public static extern int64 QIODevice_Write2(void* c_this, libqt_string data);
 	[LinkName("QIODevice_Peek")]
-	public static extern int64 QIODevice_Peek(void* c_this, char8[] data, int64 maxlen);
+	public static extern int64 QIODevice_Peek(void* c_this, char8* data, int64 maxlen);
 	[LinkName("QIODevice_PeekWithMaxlen")]
 	public static extern libqt_string QIODevice_PeekWithMaxlen(void* c_this, int64 maxlen);
 	[LinkName("QIODevice_Skip")]
@@ -571,7 +576,7 @@ extension CQt
 	[LinkName("QIODevice_PutChar")]
 	public static extern bool QIODevice_PutChar(void* c_this, int8 c);
 	[LinkName("QIODevice_GetChar")]
-	public static extern bool QIODevice_GetChar(void* c_this, char8[] c);
+	public static extern bool QIODevice_GetChar(void* c_this, char8* c);
 	[LinkName("QIODevice_ErrorString")]
 	public static extern libqt_string QIODevice_ErrorString(void* c_this);
 	[LinkName("QIODevice_Connect_ReadyRead")]
@@ -587,21 +592,21 @@ extension CQt
 	[LinkName("QIODevice_Connect_ReadChannelFinished")]
 	public static extern void QIODevice_Connect_ReadChannelFinished(void* c_this, c_intptr slot);
 	[LinkName("QIODevice_ReadData")]
-	public static extern int64 QIODevice_ReadData(void* c_this, char8[] data, int64 maxlen);
+	public static extern int64 QIODevice_ReadData(void* c_this, char8* data, int64 maxlen);
 	[LinkName("QIODevice_ReadLineData")]
-	public static extern int64 QIODevice_ReadLineData(void* c_this, char8[] data, int64 maxlen);
+	public static extern int64 QIODevice_ReadLineData(void* c_this, char8* data, int64 maxlen);
 	[LinkName("QIODevice_SkipData")]
 	public static extern int64 QIODevice_SkipData(void* c_this, int64 maxSize);
 	[LinkName("QIODevice_WriteData")]
-	public static extern int64 QIODevice_WriteData(void* c_this, char8[] data, int64 lenVal);
+	public static extern int64 QIODevice_WriteData(void* c_this, char8* data, int64 lenVal);
 	[LinkName("QIODevice_SetOpenMode")]
 	public static extern void QIODevice_SetOpenMode(void* c_this, int64 openMode);
 	[LinkName("QIODevice_SetErrorString")]
 	public static extern void QIODevice_SetErrorString(void* c_this, libqt_string errorString);
 	[LinkName("QIODevice_Tr2")]
-	public static extern libqt_string QIODevice_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QIODevice_Tr2(char8* s, char8* c);
 	[LinkName("QIODevice_Tr3")]
-	public static extern libqt_string QIODevice_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QIODevice_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QIODevice_ReadLine1")]
 	public static extern libqt_string QIODevice_ReadLine1(void* c_this, int64 maxlen);
 	/// Delete this object from C++ memory

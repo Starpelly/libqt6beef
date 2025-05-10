@@ -40,9 +40,14 @@ public enum QSurfaceFormat__ColorSpace
 	DefaultColorSpace = 0,
 	sRGBColorSpace = 1,
 }
-public class QSurfaceFormat
+public interface IQSurfaceFormat
+{
+	void* NativePtr { get; }
+}
+public class QSurfaceFormat : IQSurfaceFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -54,9 +59,9 @@ public class QSurfaceFormat
 		CQt.QSurfaceFormat_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQSurfaceFormat other)
 	{
-		CQt.QSurfaceFormat_OperatorAssign(this.nativePtr, other);
+		CQt.QSurfaceFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void SetDepthBufferSize(int32 size)
@@ -239,9 +244,9 @@ public class QSurfaceFormat
 		return CQt.QSurfaceFormat_ColorSpace(this.nativePtr);
 	}
 	
-	public void SetColorSpace(void* colorSpace)
+	public void SetColorSpace(IQColorSpace colorSpace)
 	{
-		CQt.QSurfaceFormat_SetColorSpace(this.nativePtr, colorSpace);
+		CQt.QSurfaceFormat_SetColorSpace(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
 	}
 	
 	public void SetColorSpaceWithColorSpace(int64 colorSpace)
@@ -249,9 +254,9 @@ public class QSurfaceFormat
 		CQt.QSurfaceFormat_SetColorSpaceWithColorSpace(this.nativePtr, colorSpace);
 	}
 	
-	public static void SetDefaultFormat(void* format)
+	public static void SetDefaultFormat(IQSurfaceFormat format)
 	{
-		CQt.QSurfaceFormat_SetDefaultFormat(format);
+		CQt.QSurfaceFormat_SetDefaultFormat((format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public static void DefaultFormat()

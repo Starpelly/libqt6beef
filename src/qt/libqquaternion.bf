@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QQuaternion
+public interface IQQuaternion
+{
+	void* NativePtr { get; }
+}
+public class QQuaternion : IQQuaternion
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQQuaternion other)
 	{
-		this.nativePtr = CQt.QQuaternion_new(other);
+		this.nativePtr = CQt.QQuaternion_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -31,9 +36,9 @@ public class QQuaternion
 		CQt.QQuaternion_Vector(this.nativePtr);
 	}
 	
-	public void SetVector(void* vector)
+	public void SetVector(IQVector3D vector)
 	{
-		CQt.QQuaternion_SetVector(this.nativePtr, vector);
+		CQt.QQuaternion_SetVector(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
 	public void SetVector2(float x, float y, float z)
@@ -81,9 +86,9 @@ public class QQuaternion
 		CQt.QQuaternion_SetScalar(this.nativePtr, scalar);
 	}
 	
-	public static float DotProduct(void* q1, void* q2)
+	public static float DotProduct(IQQuaternion q1, IQQuaternion q2)
 	{
-		return CQt.QQuaternion_DotProduct(q1, q2);
+		return CQt.QQuaternion_DotProduct((q1 == default) ? default : (void*)q1.NativePtr, (q2 == default) ? default : (void*)q2.NativePtr);
 	}
 	
 	public float Length()
@@ -116,19 +121,19 @@ public class QQuaternion
 		CQt.QQuaternion_Conjugated(this.nativePtr);
 	}
 	
-	public void RotatedVector(void* vector)
+	public void RotatedVector(IQVector3D vector)
 	{
-		CQt.QQuaternion_RotatedVector(this.nativePtr, vector);
+		CQt.QQuaternion_RotatedVector(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void* quaternion)
+	public void* OperatorPlusAssign(IQQuaternion quaternion)
 	{
-		return CQt.QQuaternion_OperatorPlusAssign(this.nativePtr, quaternion);
+		return CQt.QQuaternion_OperatorPlusAssign(this.nativePtr, (quaternion == default) ? default : (void*)quaternion.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* quaternion)
+	public void* OperatorMinusAssign(IQQuaternion quaternion)
 	{
-		return CQt.QQuaternion_OperatorMinusAssign(this.nativePtr, quaternion);
+		return CQt.QQuaternion_OperatorMinusAssign(this.nativePtr, (quaternion == default) ? default : (void*)quaternion.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -136,9 +141,9 @@ public class QQuaternion
 		return CQt.QQuaternion_OperatorMultiplyAssign(this.nativePtr, factor);
 	}
 	
-	public void* OperatorMultiplyAssignWithQuaternion(void* quaternion)
+	public void* OperatorMultiplyAssignWithQuaternion(IQQuaternion quaternion)
 	{
-		return CQt.QQuaternion_OperatorMultiplyAssignWithQuaternion(this.nativePtr, quaternion);
+		return CQt.QQuaternion_OperatorMultiplyAssignWithQuaternion(this.nativePtr, (quaternion == default) ? default : (void*)quaternion.NativePtr);
 	}
 	
 	public void* OperatorDivideAssign(float divisor)
@@ -156,14 +161,14 @@ public class QQuaternion
 		CQt.QQuaternion_ToQVariant(this.nativePtr);
 	}
 	
-	public void GetAxisAndAngle(void* axis, float* angle)
+	public void GetAxisAndAngle(IQVector3D axis, float* angle)
 	{
-		CQt.QQuaternion_GetAxisAndAngle(this.nativePtr, axis, angle);
+		CQt.QQuaternion_GetAxisAndAngle(this.nativePtr, (axis == null) ? null : (void*)axis.NativePtr, angle);
 	}
 	
-	public static void FromAxisAndAngle(void* axis, float angle)
+	public static void FromAxisAndAngle(IQVector3D axis, float angle)
 	{
-		CQt.QQuaternion_FromAxisAndAngle(axis, angle);
+		CQt.QQuaternion_FromAxisAndAngle((axis == default) ? default : (void*)axis.NativePtr, angle);
 	}
 	
 	public void GetAxisAndAngle2(float* x, float* y, float* z, float* angle)
@@ -181,9 +186,9 @@ public class QQuaternion
 		CQt.QQuaternion_ToEulerAngles(this.nativePtr);
 	}
 	
-	public static void FromEulerAngles(void* eulerAngles)
+	public static void FromEulerAngles(IQVector3D eulerAngles)
 	{
-		CQt.QQuaternion_FromEulerAngles(eulerAngles);
+		CQt.QQuaternion_FromEulerAngles((eulerAngles == default) ? default : (void*)eulerAngles.NativePtr);
 	}
 	
 	public void GetEulerAngles(float* pitch, float* yaw, float* roll)
@@ -196,34 +201,34 @@ public class QQuaternion
 		CQt.QQuaternion_FromEulerAngles2(pitch, yaw, roll);
 	}
 	
-	public void GetAxes(void* xAxis, void* yAxis, void* zAxis)
+	public void GetAxes(IQVector3D xAxis, IQVector3D yAxis, IQVector3D zAxis)
 	{
-		CQt.QQuaternion_GetAxes(this.nativePtr, xAxis, yAxis, zAxis);
+		CQt.QQuaternion_GetAxes(this.nativePtr, (xAxis == null) ? null : (void*)xAxis.NativePtr, (yAxis == null) ? null : (void*)yAxis.NativePtr, (zAxis == null) ? null : (void*)zAxis.NativePtr);
 	}
 	
-	public static void FromAxes(void* xAxis, void* yAxis, void* zAxis)
+	public static void FromAxes(IQVector3D xAxis, IQVector3D yAxis, IQVector3D zAxis)
 	{
-		CQt.QQuaternion_FromAxes(xAxis, yAxis, zAxis);
+		CQt.QQuaternion_FromAxes((xAxis == default) ? default : (void*)xAxis.NativePtr, (yAxis == default) ? default : (void*)yAxis.NativePtr, (zAxis == default) ? default : (void*)zAxis.NativePtr);
 	}
 	
-	public static void FromDirection(void* direction, void* up)
+	public static void FromDirection(IQVector3D direction, IQVector3D up)
 	{
-		CQt.QQuaternion_FromDirection(direction, up);
+		CQt.QQuaternion_FromDirection((direction == default) ? default : (void*)direction.NativePtr, (up == default) ? default : (void*)up.NativePtr);
 	}
 	
-	public static void RotationTo(void* from, void* to)
+	public static void RotationTo(IQVector3D from, IQVector3D to)
 	{
-		CQt.QQuaternion_RotationTo(from, to);
+		CQt.QQuaternion_RotationTo((from == default) ? default : (void*)from.NativePtr, (to == default) ? default : (void*)to.NativePtr);
 	}
 	
-	public static void Slerp(void* q1, void* q2, float t)
+	public static void Slerp(IQQuaternion q1, IQQuaternion q2, float t)
 	{
-		CQt.QQuaternion_Slerp(q1, q2, t);
+		CQt.QQuaternion_Slerp((q1 == default) ? default : (void*)q1.NativePtr, (q2 == default) ? default : (void*)q2.NativePtr, t);
 	}
 	
-	public static void Nlerp(void* q1, void* q2, float t)
+	public static void Nlerp(IQQuaternion q1, IQQuaternion q2, float t)
 	{
-		CQt.QQuaternion_Nlerp(q1, q2, t);
+		CQt.QQuaternion_Nlerp((q1 == default) ? default : (void*)q1.NativePtr, (q2 == default) ? default : (void*)q2.NativePtr, t);
 	}
 	
 }

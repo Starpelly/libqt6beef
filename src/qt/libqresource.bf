@@ -9,9 +9,14 @@ public enum QResource__Compression
 	ZlibCompression = 1,
 	ZstdCompression = 2,
 }
-public class QResource
+public interface IQResource
+{
+	void* NativePtr { get; }
+}
+public class QResource : IQResource
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -23,9 +28,9 @@ public class QResource
 		CQt.QResource_Delete(this.nativePtr);
 	}
 	
-	public void SetFileName(libqt_string file)
+	public void SetFileName(String file)
 	{
-		CQt.QResource_SetFileName(this.nativePtr, file);
+		CQt.QResource_SetFileName(this.nativePtr, libqt_string(file));
 	}
 	
 	public libqt_string FileName()
@@ -38,9 +43,9 @@ public class QResource
 		return CQt.QResource_AbsoluteFilePath(this.nativePtr);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QResource_SetLocale(this.nativePtr, locale);
+		CQt.QResource_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -83,14 +88,14 @@ public class QResource
 		CQt.QResource_LastModified(this.nativePtr);
 	}
 	
-	public static bool RegisterResource(libqt_string rccFilename)
+	public static bool RegisterResource(String rccFilename)
 	{
-		return CQt.QResource_RegisterResource(rccFilename);
+		return CQt.QResource_RegisterResource(libqt_string(rccFilename));
 	}
 	
-	public static bool UnregisterResource(libqt_string rccFilename)
+	public static bool UnregisterResource(String rccFilename)
 	{
-		return CQt.QResource_UnregisterResource(rccFilename);
+		return CQt.QResource_UnregisterResource(libqt_string(rccFilename));
 	}
 	
 	public static bool RegisterResourceWithRccData(uint8* rccData)
@@ -103,24 +108,24 @@ public class QResource
 		return CQt.QResource_UnregisterResourceWithRccData(rccData);
 	}
 	
-	public static bool RegisterResource2(libqt_string rccFilename, libqt_string resourceRoot)
+	public static bool RegisterResource2(String rccFilename, String resourceRoot)
 	{
-		return CQt.QResource_RegisterResource2(rccFilename, resourceRoot);
+		return CQt.QResource_RegisterResource2(libqt_string(rccFilename), libqt_string(resourceRoot));
 	}
 	
-	public static bool UnregisterResource2(libqt_string rccFilename, libqt_string resourceRoot)
+	public static bool UnregisterResource2(String rccFilename, String resourceRoot)
 	{
-		return CQt.QResource_UnregisterResource2(rccFilename, resourceRoot);
+		return CQt.QResource_UnregisterResource2(libqt_string(rccFilename), libqt_string(resourceRoot));
 	}
 	
-	public static bool RegisterResource22(uint8* rccData, libqt_string resourceRoot)
+	public static bool RegisterResource22(uint8* rccData, String resourceRoot)
 	{
-		return CQt.QResource_RegisterResource22(rccData, resourceRoot);
+		return CQt.QResource_RegisterResource22(rccData, libqt_string(resourceRoot));
 	}
 	
-	public static bool UnregisterResource22(uint8* rccData, libqt_string resourceRoot)
+	public static bool UnregisterResource22(uint8* rccData, String resourceRoot)
 	{
-		return CQt.QResource_UnregisterResource22(rccData, resourceRoot);
+		return CQt.QResource_UnregisterResource22(rccData, libqt_string(resourceRoot));
 	}
 	
 }

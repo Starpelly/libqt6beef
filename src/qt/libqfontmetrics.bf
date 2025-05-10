@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QFontMetrics
+public interface IQFontMetrics
+{
+	void* NativePtr { get; }
+}
+public class QFontMetrics : IQFontMetrics
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* param1)
+	public this(IQFont param1)
 	{
-		this.nativePtr = CQt.QFontMetrics_new(param1);
+		this.nativePtr = CQt.QFontMetrics_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -16,14 +21,14 @@ public class QFontMetrics
 		CQt.QFontMetrics_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQFontMetrics param1)
 	{
-		CQt.QFontMetrics_OperatorAssign(this.nativePtr, param1);
+		CQt.QFontMetrics_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFontMetrics other)
 	{
-		CQt.QFontMetrics_Swap(this.nativePtr, other);
+		CQt.QFontMetrics_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int32 Ascent()
@@ -81,9 +86,9 @@ public class QFontMetrics
 		return CQt.QFontMetrics_AverageCharWidth(this.nativePtr);
 	}
 	
-	public bool InFont(void param1)
+	public bool InFont(IQChar param1)
 	{
-		return CQt.QFontMetrics_InFont(this.nativePtr, param1);
+		return CQt.QFontMetrics_InFont(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
 	public bool InFontUcs4(uint32 ucs4)
@@ -91,74 +96,74 @@ public class QFontMetrics
 		return CQt.QFontMetrics_InFontUcs4(this.nativePtr, ucs4);
 	}
 	
-	public int32 LeftBearing(void param1)
+	public int32 LeftBearing(IQChar param1)
 	{
-		return CQt.QFontMetrics_LeftBearing(this.nativePtr, param1);
+		return CQt.QFontMetrics_LeftBearing(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public int32 RightBearing(void param1)
+	public int32 RightBearing(IQChar param1)
 	{
-		return CQt.QFontMetrics_RightBearing(this.nativePtr, param1);
+		return CQt.QFontMetrics_RightBearing(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public int32 HorizontalAdvance(libqt_string param1)
+	public int32 HorizontalAdvance(String param1)
 	{
-		return CQt.QFontMetrics_HorizontalAdvance(this.nativePtr, param1);
+		return CQt.QFontMetrics_HorizontalAdvance(this.nativePtr, libqt_string(param1));
 	}
 	
-	public int32 HorizontalAdvance2(libqt_string param1, void* textOption)
+	public int32 HorizontalAdvance2(String param1, IQTextOption textOption)
 	{
-		return CQt.QFontMetrics_HorizontalAdvance2(this.nativePtr, param1, textOption);
+		return CQt.QFontMetrics_HorizontalAdvance2(this.nativePtr, libqt_string(param1), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public int32 HorizontalAdvanceWithQChar(void param1)
+	public int32 HorizontalAdvanceWithQChar(IQChar param1)
 	{
-		return CQt.QFontMetrics_HorizontalAdvanceWithQChar(this.nativePtr, param1);
+		return CQt.QFontMetrics_HorizontalAdvanceWithQChar(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public void BoundingRect(void param1)
+	public void BoundingRect(IQChar param1)
 	{
-		CQt.QFontMetrics_BoundingRect(this.nativePtr, param1);
+		CQt.QFontMetrics_BoundingRect(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public void BoundingRectWithText(libqt_string text)
+	public void BoundingRectWithText(String text)
 	{
-		CQt.QFontMetrics_BoundingRectWithText(this.nativePtr, text);
+		CQt.QFontMetrics_BoundingRectWithText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void BoundingRect2(libqt_string text, void* textOption)
+	public void BoundingRect2(String text, IQTextOption textOption)
 	{
-		CQt.QFontMetrics_BoundingRect2(this.nativePtr, text, textOption);
+		CQt.QFontMetrics_BoundingRect2(this.nativePtr, libqt_string(text), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public void BoundingRect3(void* r, int32 flags, libqt_string text)
+	public void BoundingRect3(IQRect r, int32 flags, String text)
 	{
-		CQt.QFontMetrics_BoundingRect3(this.nativePtr, r, flags, text);
+		CQt.QFontMetrics_BoundingRect3(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(text));
 	}
 	
-	public void BoundingRect4(int32 x, int32 y, int32 w, int32 h, int32 flags, libqt_string text)
+	public void BoundingRect4(int32 x, int32 y, int32 w, int32 h, int32 flags, String text)
 	{
-		CQt.QFontMetrics_BoundingRect4(this.nativePtr, x, y, w, h, flags, text);
+		CQt.QFontMetrics_BoundingRect4(this.nativePtr, x, y, w, h, flags, libqt_string(text));
 	}
 	
-	public void Size(int32 flags, libqt_string str)
+	public void Size(int32 flags, String str)
 	{
-		CQt.QFontMetrics_Size(this.nativePtr, flags, str);
+		CQt.QFontMetrics_Size(this.nativePtr, flags, libqt_string(str));
 	}
 	
-	public void TightBoundingRect(libqt_string text)
+	public void TightBoundingRect(String text)
 	{
-		CQt.QFontMetrics_TightBoundingRect(this.nativePtr, text);
+		CQt.QFontMetrics_TightBoundingRect(this.nativePtr, libqt_string(text));
 	}
 	
-	public void TightBoundingRect2(libqt_string text, void* textOption)
+	public void TightBoundingRect2(String text, IQTextOption textOption)
 	{
-		CQt.QFontMetrics_TightBoundingRect2(this.nativePtr, text, textOption);
+		CQt.QFontMetrics_TightBoundingRect2(this.nativePtr, libqt_string(text), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public libqt_string ElidedText(libqt_string text, int64 mode, int32 width)
+	public libqt_string ElidedText(String text, int64 mode, int32 width)
 	{
-		return CQt.QFontMetrics_ElidedText(this.nativePtr, text, mode, width);
+		return CQt.QFontMetrics_ElidedText(this.nativePtr, libqt_string(text), mode, width);
 	}
 	
 	public int32 UnderlinePos()
@@ -186,54 +191,54 @@ public class QFontMetrics
 		return CQt.QFontMetrics_FontDpi(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQFontMetrics other)
 	{
-		return CQt.QFontMetrics_OperatorEqual(this.nativePtr, other);
+		return CQt.QFontMetrics_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQFontMetrics other)
 	{
-		return CQt.QFontMetrics_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QFontMetrics_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public int32 HorizontalAdvance22(libqt_string param1, int32 lenVal)
+	public int32 HorizontalAdvance22(String param1, int32 lenVal)
 	{
-		return CQt.QFontMetrics_HorizontalAdvance22(this.nativePtr, param1, lenVal);
+		return CQt.QFontMetrics_HorizontalAdvance22(this.nativePtr, libqt_string(param1), lenVal);
 	}
 	
-	public void BoundingRect42(void* r, int32 flags, libqt_string text, int32 tabstops)
+	public void BoundingRect42(IQRect r, int32 flags, String text, int32 tabstops)
 	{
-		CQt.QFontMetrics_BoundingRect42(this.nativePtr, r, flags, text, tabstops);
+		CQt.QFontMetrics_BoundingRect42(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(text), tabstops);
 	}
 	
-	public void BoundingRect5(void* r, int32 flags, libqt_string text, int32 tabstops, int32* tabarray)
+	public void BoundingRect5(IQRect r, int32 flags, String text, int32 tabstops, int32* tabarray)
 	{
-		CQt.QFontMetrics_BoundingRect5(this.nativePtr, r, flags, text, tabstops, tabarray);
+		CQt.QFontMetrics_BoundingRect5(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(text), tabstops, tabarray);
 	}
 	
-	public void BoundingRect7(int32 x, int32 y, int32 w, int32 h, int32 flags, libqt_string text, int32 tabstops)
+	public void BoundingRect7(int32 x, int32 y, int32 w, int32 h, int32 flags, String text, int32 tabstops)
 	{
-		CQt.QFontMetrics_BoundingRect7(this.nativePtr, x, y, w, h, flags, text, tabstops);
+		CQt.QFontMetrics_BoundingRect7(this.nativePtr, x, y, w, h, flags, libqt_string(text), tabstops);
 	}
 	
-	public void BoundingRect8(int32 x, int32 y, int32 w, int32 h, int32 flags, libqt_string text, int32 tabstops, int32* tabarray)
+	public void BoundingRect8(int32 x, int32 y, int32 w, int32 h, int32 flags, String text, int32 tabstops, int32* tabarray)
 	{
-		CQt.QFontMetrics_BoundingRect8(this.nativePtr, x, y, w, h, flags, text, tabstops, tabarray);
+		CQt.QFontMetrics_BoundingRect8(this.nativePtr, x, y, w, h, flags, libqt_string(text), tabstops, tabarray);
 	}
 	
-	public void Size3(int32 flags, libqt_string str, int32 tabstops)
+	public void Size3(int32 flags, String str, int32 tabstops)
 	{
-		CQt.QFontMetrics_Size3(this.nativePtr, flags, str, tabstops);
+		CQt.QFontMetrics_Size3(this.nativePtr, flags, libqt_string(str), tabstops);
 	}
 	
-	public void Size4(int32 flags, libqt_string str, int32 tabstops, int32* tabarray)
+	public void Size4(int32 flags, String str, int32 tabstops, int32* tabarray)
 	{
-		CQt.QFontMetrics_Size4(this.nativePtr, flags, str, tabstops, tabarray);
+		CQt.QFontMetrics_Size4(this.nativePtr, flags, libqt_string(str), tabstops, tabarray);
 	}
 	
-	public libqt_string ElidedText4(libqt_string text, int64 mode, int32 width, int32 flags)
+	public libqt_string ElidedText4(String text, int64 mode, int32 width, int32 flags)
 	{
-		return CQt.QFontMetrics_ElidedText4(this.nativePtr, text, mode, width, flags);
+		return CQt.QFontMetrics_ElidedText4(this.nativePtr, libqt_string(text), mode, width, flags);
 	}
 	
 }
@@ -337,13 +342,18 @@ extension CQt
 	[LinkName("QFontMetrics_Delete")]
 	public static extern void QFontMetrics_Delete(void* self);
 }
-public class QFontMetricsF
+public interface IQFontMetricsF
+{
+	void* NativePtr { get; }
+}
+public class QFontMetricsF : IQFontMetricsF
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* font)
+	public this(IQFont font)
 	{
-		this.nativePtr = CQt.QFontMetricsF_new(font);
+		this.nativePtr = CQt.QFontMetricsF_new((font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public ~this()
@@ -351,19 +361,19 @@ public class QFontMetricsF
 		CQt.QFontMetricsF_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQFontMetricsF param1)
 	{
-		CQt.QFontMetricsF_OperatorAssign(this.nativePtr, param1);
+		CQt.QFontMetricsF_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void OperatorAssignWithQFontMetrics(void* param1)
+	public void OperatorAssignWithQFontMetrics(IQFontMetrics param1)
 	{
-		CQt.QFontMetricsF_OperatorAssignWithQFontMetrics(this.nativePtr, param1);
+		CQt.QFontMetricsF_OperatorAssignWithQFontMetrics(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFontMetricsF other)
 	{
-		CQt.QFontMetricsF_Swap(this.nativePtr, other);
+		CQt.QFontMetricsF_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public double Ascent()
@@ -421,9 +431,9 @@ public class QFontMetricsF
 		return CQt.QFontMetricsF_AverageCharWidth(this.nativePtr);
 	}
 	
-	public bool InFont(void param1)
+	public bool InFont(IQChar param1)
 	{
-		return CQt.QFontMetricsF_InFont(this.nativePtr, param1);
+		return CQt.QFontMetricsF_InFont(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
 	public bool InFontUcs4(uint32 ucs4)
@@ -431,69 +441,69 @@ public class QFontMetricsF
 		return CQt.QFontMetricsF_InFontUcs4(this.nativePtr, ucs4);
 	}
 	
-	public double LeftBearing(void param1)
+	public double LeftBearing(IQChar param1)
 	{
-		return CQt.QFontMetricsF_LeftBearing(this.nativePtr, param1);
+		return CQt.QFontMetricsF_LeftBearing(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public double RightBearing(void param1)
+	public double RightBearing(IQChar param1)
 	{
-		return CQt.QFontMetricsF_RightBearing(this.nativePtr, param1);
+		return CQt.QFontMetricsF_RightBearing(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public double HorizontalAdvance(libqt_string stringVal)
+	public double HorizontalAdvance(String stringVal)
 	{
-		return CQt.QFontMetricsF_HorizontalAdvance(this.nativePtr, stringVal);
+		return CQt.QFontMetricsF_HorizontalAdvance(this.nativePtr, libqt_string(stringVal));
 	}
 	
-	public double HorizontalAdvanceWithQChar(void param1)
+	public double HorizontalAdvanceWithQChar(IQChar param1)
 	{
-		return CQt.QFontMetricsF_HorizontalAdvanceWithQChar(this.nativePtr, param1);
+		return CQt.QFontMetricsF_HorizontalAdvanceWithQChar(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public double HorizontalAdvance2(libqt_string stringVal, void* textOption)
+	public double HorizontalAdvance2(String stringVal, IQTextOption textOption)
 	{
-		return CQt.QFontMetricsF_HorizontalAdvance2(this.nativePtr, stringVal, textOption);
+		return CQt.QFontMetricsF_HorizontalAdvance2(this.nativePtr, libqt_string(stringVal), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public void BoundingRect(libqt_string stringVal)
+	public void BoundingRect(String stringVal)
 	{
-		CQt.QFontMetricsF_BoundingRect(this.nativePtr, stringVal);
+		CQt.QFontMetricsF_BoundingRect(this.nativePtr, libqt_string(stringVal));
 	}
 	
-	public void BoundingRect2(libqt_string text, void* textOption)
+	public void BoundingRect2(String text, IQTextOption textOption)
 	{
-		CQt.QFontMetricsF_BoundingRect2(this.nativePtr, text, textOption);
+		CQt.QFontMetricsF_BoundingRect2(this.nativePtr, libqt_string(text), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public void BoundingRectWithQChar(void param1)
+	public void BoundingRectWithQChar(IQChar param1)
 	{
-		CQt.QFontMetricsF_BoundingRectWithQChar(this.nativePtr, param1);
+		CQt.QFontMetricsF_BoundingRectWithQChar(this.nativePtr, (param1 == default) ? default : (void)param1.NativePtr);
 	}
 	
-	public void BoundingRect3(void* r, int32 flags, libqt_string stringVal)
+	public void BoundingRect3(IQRectF r, int32 flags, String stringVal)
 	{
-		CQt.QFontMetricsF_BoundingRect3(this.nativePtr, r, flags, stringVal);
+		CQt.QFontMetricsF_BoundingRect3(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(stringVal));
 	}
 	
-	public void Size(int32 flags, libqt_string str)
+	public void Size(int32 flags, String str)
 	{
-		CQt.QFontMetricsF_Size(this.nativePtr, flags, str);
+		CQt.QFontMetricsF_Size(this.nativePtr, flags, libqt_string(str));
 	}
 	
-	public void TightBoundingRect(libqt_string text)
+	public void TightBoundingRect(String text)
 	{
-		CQt.QFontMetricsF_TightBoundingRect(this.nativePtr, text);
+		CQt.QFontMetricsF_TightBoundingRect(this.nativePtr, libqt_string(text));
 	}
 	
-	public void TightBoundingRect2(libqt_string text, void* textOption)
+	public void TightBoundingRect2(String text, IQTextOption textOption)
 	{
-		CQt.QFontMetricsF_TightBoundingRect2(this.nativePtr, text, textOption);
+		CQt.QFontMetricsF_TightBoundingRect2(this.nativePtr, libqt_string(text), (textOption == default) ? default : (void*)textOption.NativePtr);
 	}
 	
-	public libqt_string ElidedText(libqt_string text, int64 mode, double width)
+	public libqt_string ElidedText(String text, int64 mode, double width)
 	{
-		return CQt.QFontMetricsF_ElidedText(this.nativePtr, text, mode, width);
+		return CQt.QFontMetricsF_ElidedText(this.nativePtr, libqt_string(text), mode, width);
 	}
 	
 	public double UnderlinePos()
@@ -521,44 +531,44 @@ public class QFontMetricsF
 		return CQt.QFontMetricsF_FontDpi(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQFontMetricsF other)
 	{
-		return CQt.QFontMetricsF_OperatorEqual(this.nativePtr, other);
+		return CQt.QFontMetricsF_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQFontMetricsF other)
 	{
-		return CQt.QFontMetricsF_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QFontMetricsF_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public double HorizontalAdvance22(libqt_string stringVal, int32 length)
+	public double HorizontalAdvance22(String stringVal, int32 length)
 	{
-		return CQt.QFontMetricsF_HorizontalAdvance22(this.nativePtr, stringVal, length);
+		return CQt.QFontMetricsF_HorizontalAdvance22(this.nativePtr, libqt_string(stringVal), length);
 	}
 	
-	public void BoundingRect4(void* r, int32 flags, libqt_string stringVal, int32 tabstops)
+	public void BoundingRect4(IQRectF r, int32 flags, String stringVal, int32 tabstops)
 	{
-		CQt.QFontMetricsF_BoundingRect4(this.nativePtr, r, flags, stringVal, tabstops);
+		CQt.QFontMetricsF_BoundingRect4(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(stringVal), tabstops);
 	}
 	
-	public void BoundingRect5(void* r, int32 flags, libqt_string stringVal, int32 tabstops, int32* tabarray)
+	public void BoundingRect5(IQRectF r, int32 flags, String stringVal, int32 tabstops, int32* tabarray)
 	{
-		CQt.QFontMetricsF_BoundingRect5(this.nativePtr, r, flags, stringVal, tabstops, tabarray);
+		CQt.QFontMetricsF_BoundingRect5(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, libqt_string(stringVal), tabstops, tabarray);
 	}
 	
-	public void Size3(int32 flags, libqt_string str, int32 tabstops)
+	public void Size3(int32 flags, String str, int32 tabstops)
 	{
-		CQt.QFontMetricsF_Size3(this.nativePtr, flags, str, tabstops);
+		CQt.QFontMetricsF_Size3(this.nativePtr, flags, libqt_string(str), tabstops);
 	}
 	
-	public void Size4(int32 flags, libqt_string str, int32 tabstops, int32* tabarray)
+	public void Size4(int32 flags, String str, int32 tabstops, int32* tabarray)
 	{
-		CQt.QFontMetricsF_Size4(this.nativePtr, flags, str, tabstops, tabarray);
+		CQt.QFontMetricsF_Size4(this.nativePtr, flags, libqt_string(str), tabstops, tabarray);
 	}
 	
-	public libqt_string ElidedText4(libqt_string text, int64 mode, double width, int32 flags)
+	public libqt_string ElidedText4(String text, int64 mode, double width, int32 flags)
 	{
-		return CQt.QFontMetricsF_ElidedText4(this.nativePtr, text, mode, width, flags);
+		return CQt.QFontMetricsF_ElidedText4(this.nativePtr, libqt_string(text), mode, width, flags);
 	}
 	
 }

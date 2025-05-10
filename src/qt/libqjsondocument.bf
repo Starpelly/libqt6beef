@@ -27,13 +27,18 @@ public enum QJsonDocument__JsonFormat
 	Indented = 0,
 	Compact = 1,
 }
-public class QJsonParseError
+public interface IQJsonParseError
+{
+	void* NativePtr { get; }
+}
+public class QJsonParseError : IQJsonParseError
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQJsonParseError other)
 	{
-		this.nativePtr = CQt.QJsonParseError_new(other);
+		this.nativePtr = CQt.QJsonParseError_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -59,9 +64,14 @@ extension CQt
 	[LinkName("QJsonParseError_Delete")]
 	public static extern void QJsonParseError_Delete(void* self);
 }
-public class QJsonDocument
+public interface IQJsonDocument
+{
+	void* NativePtr { get; }
+}
+public class QJsonDocument : IQJsonDocument
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -73,19 +83,19 @@ public class QJsonDocument
 		CQt.QJsonDocument_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQJsonDocument other)
 	{
-		CQt.QJsonDocument_OperatorAssign(this.nativePtr, other);
+		CQt.QJsonDocument_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQJsonDocument other)
 	{
-		CQt.QJsonDocument_Swap(this.nativePtr, other);
+		CQt.QJsonDocument_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public static void FromVariant(void* variant)
+	public static void FromVariant(IQVariant variant)
 	{
-		CQt.QJsonDocument_FromVariant(variant);
+		CQt.QJsonDocument_FromVariant((variant == default) ? default : (void*)variant.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -93,9 +103,9 @@ public class QJsonDocument
 		CQt.QJsonDocument_ToVariant(this.nativePtr);
 	}
 	
-	public static void FromJson(libqt_string json)
+	public static void FromJson(String json)
 	{
-		CQt.QJsonDocument_FromJson(json);
+		CQt.QJsonDocument_FromJson(libqt_string(json));
 	}
 	
 	public libqt_string ToJson()
@@ -128,19 +138,19 @@ public class QJsonDocument
 		CQt.QJsonDocument_Array(this.nativePtr);
 	}
 	
-	public void SetObject(void* object)
+	public void SetObject(IQJsonObject object)
 	{
-		CQt.QJsonDocument_SetObject(this.nativePtr, object);
+		CQt.QJsonDocument_SetObject(this.nativePtr, (object == default) ? default : (void*)object.NativePtr);
 	}
 	
-	public void SetArray(void* array)
+	public void SetArray(IQJsonArray array)
 	{
-		CQt.QJsonDocument_SetArray(this.nativePtr, array);
+		CQt.QJsonDocument_SetArray(this.nativePtr, (array == default) ? default : (void*)array.NativePtr);
 	}
 	
-	public void OperatorSubscript(libqt_string key)
+	public void OperatorSubscript(String key)
 	{
-		CQt.QJsonDocument_OperatorSubscript(this.nativePtr, key);
+		CQt.QJsonDocument_OperatorSubscript(this.nativePtr, libqt_string(key));
 	}
 	
 	public void OperatorSubscriptWithQsizetype(int32 i)
@@ -148,14 +158,14 @@ public class QJsonDocument
 		CQt.QJsonDocument_OperatorSubscriptWithQsizetype(this.nativePtr, i);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQJsonDocument other)
 	{
-		return CQt.QJsonDocument_OperatorEqual(this.nativePtr, other);
+		return CQt.QJsonDocument_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQJsonDocument other)
 	{
-		return CQt.QJsonDocument_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QJsonDocument_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -163,9 +173,9 @@ public class QJsonDocument
 		return CQt.QJsonDocument_IsNull(this.nativePtr);
 	}
 	
-	public static void FromJson2(libqt_string json, void* errorVal)
+	public static void FromJson2(String json, IQJsonParseError errorVal)
 	{
-		CQt.QJsonDocument_FromJson2(json, errorVal);
+		CQt.QJsonDocument_FromJson2(libqt_string(json), (errorVal == null) ? null : (void*)errorVal.NativePtr);
 	}
 	
 	public libqt_string ToJson1(int64 format)

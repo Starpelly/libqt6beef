@@ -4,8 +4,42 @@ using Qt;
 
 namespace Sandbox;
 
+class TestWindow : QMainWindow
+{
+	QMenuBar m_menubar ~ delete _;
+	QPushButton m_button ~ delete _;
+
+	public this(IQWidget parent) : base(parent)
+	{
+		Resize(1280, 720);
+
+		m_menubar = new QMenuBar(this);
+		m_menubar.AddActionWithText("File");
+		m_menubar.AddActionWithText("Edit");
+		m_menubar.AddActionWithText("View");
+		m_menubar.AddActionWithText("Build");
+		m_menubar.AddActionWithText("Debug");
+		m_menubar.AddActionWithText("Test");
+		m_menubar.AddActionWithText("Window");
+		m_menubar.AddActionWithText("Help");
+
+		SetMenuBar(m_menubar);
+
+		m_button = new QPushButton(this);
+		m_button.SetText("Hello!");
+
+		m_button.SetGeometry(32, 32, 64, 32);
+	}
+
+	public void Init()
+	{
+		// QMessageBox.AboutQt(this);
+	}
+}
+
 class Program
 {
+	/*
 	static int buttonClickCount = 0;
 
 	public static void OnButtonCallback(QAbstractButton* self)
@@ -13,51 +47,21 @@ class Program
 		buttonClickCount++;
 		QAbstractButton.QAbstractButton_SetText(self, .(scope $"Clicked {buttonClickCount} times"));
 	}
+	*/
 
 	public static int Main(String[] args)
 	{
 		int32 argc = (int32)args.Count;
 
-		QApplication.QApplication_new(&argc, null);
-		
-		QApplication.QApplication_SetStyle(QStyleFactory.QStyleFactory_Create(.("fusion")));
+		scope QApplication(&argc, null);
 
-		/*
+		// QApplication.SetStyle(QStyleFactory.Create("fusion"));
+		Qt.CQt.QApplication_SetStyle(Qt.CQt.QStyleFactory_Create(.("windowsvista")));
 
-		let widget = QWidget.QWidget_new(null);
+		let mainwindow = scope TestWindow(null);
+		mainwindow.Show();
+		mainwindow.Init();
 
-		let button = QPushButton.QPushButton_new(widget);
-		QWidget.QWidget_SetFixedWidth(button, 320);
-		QAbstractButton.QAbstractButton_SetText(button, .("Click me! Hello from Beef!"));
-
-		QWidget.QWidget_Show(widget);
-		*/
-
-		let mainwindow = QMainWindow.QMainWindow_new(null);
-
-		let menubar = QMenuBar.QMenuBar_new(mainwindow);
-
-		let file = QMenuBar.QMenuBar_AddMenuWithTitle(menubar, .("File"));
-		QMenu.QMenu_AddMenuWithTitle(file, .("Quit"));
-
-		QMenuBar.QMenuBar_AddMenuWithTitle(menubar, .("Edit"));
-		QMenuBar.QMenuBar_AddMenuWithTitle(menubar, .("View"));
-		QMenuBar.QMenuBar_AddMenuWithTitle(menubar, .("Tools"));
-		QMenuBar.QMenuBar_AddMenuWithTitle(menubar, .("Help"));
-		QMainWindow.QMainWindow_SetMenuBar(mainwindow, menubar);
-
-		let button = QPushButton.QPushButton_new(mainwindow);
-		QWidget.QWidget_Move(button, 8, 64);
-		QWidget.QWidget_SetFixedWidth(button, 320);
-		QAbstractButton.QAbstractButton_SetText(button, .("Click me!"));
-
-
-		function void(QAbstractButton*) clicked = => OnButtonCallback;
-		QAbstractButton.QAbstractButton_Connect_Pressed(button, (c_intptr)(void*)clicked);
-
-		QMainWindow.QWidget_Resize(mainwindow, 600, 400);
-		QMainWindow.QWidget_Show(mainwindow);
-
-		return QApplication.QApplication_Exec();
+		return QApplication.Exec();
 	}
 }

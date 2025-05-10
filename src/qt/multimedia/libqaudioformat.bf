@@ -55,13 +55,18 @@ public enum QAudioFormat__ChannelConfig
 	ChannelConfigSurround7Dot0 = 3182,
 	ChannelConfigSurround7Dot1 = 3198,
 }
-public class QAudioFormat
+public interface IQAudioFormat
+{
+	void* NativePtr { get; }
+}
+public class QAudioFormat : IQAudioFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQAudioFormat other)
 	{
-		this.nativePtr = CQt.QAudioFormat_new(other);
+		this.nativePtr = CQt.QAudioFormat_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

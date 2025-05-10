@@ -42,9 +42,14 @@ public enum QScrollerProperties__ScrollMetric
 	FrameRate = 19,
 	ScrollMetricCount = 20,
 }
-public class QScrollerProperties
+public interface IQScrollerProperties
+{
+	void* NativePtr { get; }
+}
+public class QScrollerProperties : IQScrollerProperties
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -56,24 +61,24 @@ public class QScrollerProperties
 		CQt.QScrollerProperties_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* sp)
+	public void OperatorAssign(IQScrollerProperties sp)
 	{
-		CQt.QScrollerProperties_OperatorAssign(this.nativePtr, sp);
+		CQt.QScrollerProperties_OperatorAssign(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* sp)
+	public bool OperatorEqual(IQScrollerProperties sp)
 	{
-		return CQt.QScrollerProperties_OperatorEqual(this.nativePtr, sp);
+		return CQt.QScrollerProperties_OperatorEqual(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* sp)
+	public bool OperatorNotEqual(IQScrollerProperties sp)
 	{
-		return CQt.QScrollerProperties_OperatorNotEqual(this.nativePtr, sp);
+		return CQt.QScrollerProperties_OperatorNotEqual(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
 	}
 	
-	public static void SetDefaultScrollerProperties(void* sp)
+	public static void SetDefaultScrollerProperties(IQScrollerProperties sp)
 	{
-		CQt.QScrollerProperties_SetDefaultScrollerProperties(sp);
+		CQt.QScrollerProperties_SetDefaultScrollerProperties((sp == default) ? default : (void*)sp.NativePtr);
 	}
 	
 	public static void UnsetDefaultScrollerProperties()
@@ -86,9 +91,9 @@ public class QScrollerProperties
 		CQt.QScrollerProperties_ScrollMetric(this.nativePtr, metric);
 	}
 	
-	public void SetScrollMetric(int64 metric, void* value)
+	public void SetScrollMetric(int64 metric, IQVariant value)
 	{
-		CQt.QScrollerProperties_SetScrollMetric(this.nativePtr, metric, value);
+		CQt.QScrollerProperties_SetScrollMetric(this.nativePtr, metric, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 }

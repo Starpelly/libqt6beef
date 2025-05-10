@@ -7,11 +7,16 @@ public enum QCoreApplication__
 {
 	ApplicationFlags = 394242,
 }
-public class QCoreApplication
+public interface IQCoreApplication
+{
+	void* NativePtr { get; }
+}
+public class QCoreApplication : IQCoreApplication, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int32* argc, char8[] argv)
+	public this(int32* argc, char8* argv)
 	{
 		this.nativePtr = CQt.QCoreApplication_new(argc, argv);
 	}
@@ -26,7 +31,7 @@ public class QCoreApplication
 		return CQt.QCoreApplication_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QCoreApplication_Metacast(this.nativePtr, param1);
 	}
@@ -36,7 +41,7 @@ public class QCoreApplication
 		return CQt.QCoreApplication_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QCoreApplication_Tr(s);
 	}
@@ -56,9 +61,9 @@ public class QCoreApplication
 		return CQt.QCoreApplication_TestAttribute(attribute);
 	}
 	
-	public static void SetOrganizationDomain(libqt_string orgDomain)
+	public static void SetOrganizationDomain(String orgDomain)
 	{
-		CQt.QCoreApplication_SetOrganizationDomain(orgDomain);
+		CQt.QCoreApplication_SetOrganizationDomain(libqt_string(orgDomain));
 	}
 	
 	public static libqt_string OrganizationDomain()
@@ -66,9 +71,9 @@ public class QCoreApplication
 		return CQt.QCoreApplication_OrganizationDomain();
 	}
 	
-	public static void SetOrganizationName(libqt_string orgName)
+	public static void SetOrganizationName(String orgName)
 	{
-		CQt.QCoreApplication_SetOrganizationName(orgName);
+		CQt.QCoreApplication_SetOrganizationName(libqt_string(orgName));
 	}
 	
 	public static libqt_string OrganizationName()
@@ -76,9 +81,9 @@ public class QCoreApplication
 		return CQt.QCoreApplication_OrganizationName();
 	}
 	
-	public static void SetApplicationName(libqt_string application)
+	public static void SetApplicationName(String application)
 	{
-		CQt.QCoreApplication_SetApplicationName(application);
+		CQt.QCoreApplication_SetApplicationName(libqt_string(application));
 	}
 	
 	public static libqt_string ApplicationName()
@@ -86,9 +91,9 @@ public class QCoreApplication
 		return CQt.QCoreApplication_ApplicationName();
 	}
 	
-	public static void SetApplicationVersion(libqt_string version)
+	public static void SetApplicationVersion(String version)
 	{
-		CQt.QCoreApplication_SetApplicationVersion(version);
+		CQt.QCoreApplication_SetApplicationVersion(libqt_string(version));
 	}
 	
 	public static libqt_string ApplicationVersion()
@@ -126,14 +131,14 @@ public class QCoreApplication
 		CQt.QCoreApplication_ProcessEvents2(flags, maxtime);
 	}
 	
-	public static bool SendEvent(void* receiver, void* event)
+	public static bool SendEvent(IQObject receiver, IQEvent event)
 	{
-		return CQt.QCoreApplication_SendEvent(receiver, event);
+		return CQt.QCoreApplication_SendEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public static void PostEvent(void* receiver, void* event)
+	public static void PostEvent(IQObject receiver, IQEvent event)
 	{
-		CQt.QCoreApplication_PostEvent(receiver, event);
+		CQt.QCoreApplication_PostEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public static void SendPostedEvents()
@@ -141,9 +146,9 @@ public class QCoreApplication
 		CQt.QCoreApplication_SendPostedEvents();
 	}
 	
-	public static void RemovePostedEvents(void* receiver)
+	public static void RemovePostedEvents(IQObject receiver)
 	{
-		CQt.QCoreApplication_RemovePostedEvents(receiver);
+		CQt.QCoreApplication_RemovePostedEvents((receiver == null) ? null : (void*)receiver.NativePtr);
 	}
 	
 	public static void* EventDispatcher()
@@ -151,14 +156,14 @@ public class QCoreApplication
 		return CQt.QCoreApplication_EventDispatcher();
 	}
 	
-	public static void SetEventDispatcher(void* eventDispatcher)
+	public static void SetEventDispatcher(IQAbstractEventDispatcher eventDispatcher)
 	{
-		CQt.QCoreApplication_SetEventDispatcher(eventDispatcher);
+		CQt.QCoreApplication_SetEventDispatcher((eventDispatcher == null) ? null : (void*)eventDispatcher.NativePtr);
 	}
 	
-	public virtual bool Notify(void* param1, void* param2)
+	public virtual bool Notify(IQObject param1, IQEvent param2)
 	{
-		return CQt.QCoreApplication_Notify(this.nativePtr, param1, param2);
+		return CQt.QCoreApplication_Notify(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == null) ? null : (void*)param2.NativePtr);
 	}
 	
 	public static bool StartingUp()
@@ -186,9 +191,9 @@ public class QCoreApplication
 		return CQt.QCoreApplication_ApplicationPid();
 	}
 	
-	public static void SetLibraryPaths(libqt_string[] libraryPaths)
+	public static void SetLibraryPaths(String[] libraryPaths)
 	{
-		CQt.QCoreApplication_SetLibraryPaths(libraryPaths);
+		CQt.QCoreApplication_SetLibraryPaths(null);
 	}
 	
 	public static libqt_string[] LibraryPaths()
@@ -196,32 +201,32 @@ public class QCoreApplication
 		return CQt.QCoreApplication_LibraryPaths();
 	}
 	
-	public static void AddLibraryPath(libqt_string param1)
+	public static void AddLibraryPath(String param1)
 	{
-		CQt.QCoreApplication_AddLibraryPath(param1);
+		CQt.QCoreApplication_AddLibraryPath(libqt_string(param1));
 	}
 	
-	public static void RemoveLibraryPath(libqt_string param1)
+	public static void RemoveLibraryPath(String param1)
 	{
-		CQt.QCoreApplication_RemoveLibraryPath(param1);
+		CQt.QCoreApplication_RemoveLibraryPath(libqt_string(param1));
 	}
 	
-	public static bool InstallTranslator(void* messageFile)
+	public static bool InstallTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_InstallTranslator(messageFile);
+		return CQt.QCoreApplication_InstallTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
 	}
 	
-	public static bool RemoveTranslator(void* messageFile)
+	public static bool RemoveTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_RemoveTranslator(messageFile);
+		return CQt.QCoreApplication_RemoveTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
 	}
 	
-	public static libqt_string Translate(char8[] context, char8[] key)
+	public static libqt_string Translate(char8* context, char8* key)
 	{
 		return CQt.QCoreApplication_Translate(context, key);
 	}
 	
-	public void* ResolveInterface(char8[] name, int32 revision)
+	public void* ResolveInterface(char8* name, int32 revision)
 	{
 		return CQt.QCoreApplication_ResolveInterface(this.nativePtr, name, revision);
 	}
@@ -246,17 +251,17 @@ public class QCoreApplication
 		CQt.QCoreApplication_Exit();
 	}
 	
-	public virtual bool Event(void* param1)
+	public virtual bool Event(IQEvent param1)
 	{
-		return CQt.QCoreApplication_Event(this.nativePtr, param1);
+		return CQt.QCoreApplication_Event(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QCoreApplication_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QCoreApplication_Tr3(s, c, n);
 	}
@@ -271,32 +276,32 @@ public class QCoreApplication
 		CQt.QCoreApplication_ProcessEvents1(flags);
 	}
 	
-	public static void PostEvent3(void* receiver, void* event, int32 priority)
+	public static void PostEvent3(IQObject receiver, IQEvent event, int32 priority)
 	{
-		CQt.QCoreApplication_PostEvent3(receiver, event, priority);
+		CQt.QCoreApplication_PostEvent3((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr, priority);
 	}
 	
-	public static void SendPostedEvents1(void* receiver)
+	public static void SendPostedEvents1(IQObject receiver)
 	{
-		CQt.QCoreApplication_SendPostedEvents1(receiver);
+		CQt.QCoreApplication_SendPostedEvents1((receiver == null) ? null : (void*)receiver.NativePtr);
 	}
 	
-	public static void SendPostedEvents2(void* receiver, int32 event_type)
+	public static void SendPostedEvents2(IQObject receiver, int32 event_type)
 	{
-		CQt.QCoreApplication_SendPostedEvents2(receiver, event_type);
+		CQt.QCoreApplication_SendPostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, event_type);
 	}
 	
-	public static void RemovePostedEvents2(void* receiver, int32 eventType)
+	public static void RemovePostedEvents2(IQObject receiver, int32 eventType)
 	{
-		CQt.QCoreApplication_RemovePostedEvents2(receiver, eventType);
+		CQt.QCoreApplication_RemovePostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, eventType);
 	}
 	
-	public static libqt_string Translate3(char8[] context, char8[] key, char8[] disambiguation)
+	public static libqt_string Translate3(char8* context, char8* key, char8* disambiguation)
 	{
 		return CQt.QCoreApplication_Translate3(context, key, disambiguation);
 	}
 	
-	public static libqt_string Translate4(char8[] context, char8[] key, char8[] disambiguation, int32 n)
+	public static libqt_string Translate4(char8* context, char8* key, char8* disambiguation, int32 n)
 	{
 		return CQt.QCoreApplication_Translate4(context, key, disambiguation, n);
 	}
@@ -306,9 +311,9 @@ public class QCoreApplication
 		CQt.QCoreApplication_Exit1(retcode);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -316,9 +321,9 @@ public class QCoreApplication
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -351,9 +356,9 @@ public class QCoreApplication
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -371,39 +376,39 @@ public class QCoreApplication
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -416,12 +421,12 @@ public class QCoreApplication
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -446,7 +451,7 @@ public class QCoreApplication
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -461,31 +466,31 @@ public class QCoreApplication
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QCoreApplication_new")]
-	public static extern void* QCoreApplication_new(int32* argc, char8[] argv);
+	public static extern void* QCoreApplication_new(int32* argc, char8* argv);
 	[LinkName("QCoreApplication_new2")]
-	public static extern void* QCoreApplication_new2(int32* argc, char8[] argv, int32 param3);
+	public static extern void* QCoreApplication_new2(int32* argc, char8* argv, int32 param3);
 	[LinkName("QCoreApplication_MetaObject")]
 	public static extern void* QCoreApplication_MetaObject(void* c_this);
 	[LinkName("QCoreApplication_Metacast")]
-	public static extern void* QCoreApplication_Metacast(void* c_this, char8[] param1);
+	public static extern void* QCoreApplication_Metacast(void* c_this, char8* param1);
 	[LinkName("QCoreApplication_Metacall")]
-	public static extern int32 QCoreApplication_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QCoreApplication_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QCoreApplication_Tr")]
-	public static extern libqt_string QCoreApplication_Tr(char8[] s);
+	public static extern libqt_string QCoreApplication_Tr(char8* s);
 	[LinkName("QCoreApplication_Arguments")]
 	public static extern libqt_string[] QCoreApplication_Arguments();
 	[LinkName("QCoreApplication_SetAttribute")]
@@ -557,9 +562,9 @@ extension CQt
 	[LinkName("QCoreApplication_RemoveTranslator")]
 	public static extern bool QCoreApplication_RemoveTranslator(void* messageFile);
 	[LinkName("QCoreApplication_Translate")]
-	public static extern libqt_string QCoreApplication_Translate(char8[] context, char8[] key);
+	public static extern libqt_string QCoreApplication_Translate(char8* context, char8* key);
 	[LinkName("QCoreApplication_ResolveInterface")]
-	public static extern void* QCoreApplication_ResolveInterface(void* c_this, char8[] name, int32 revision);
+	public static extern void* QCoreApplication_ResolveInterface(void* c_this, char8* name, int32 revision);
 	[LinkName("QCoreApplication_Connect_InstallNativeEventFilter")]
 	public static extern void QCoreApplication_Connect_InstallNativeEventFilter(void* c_this, c_intptr slot);
 	[LinkName("QCoreApplication_Connect_RemoveNativeEventFilter")]
@@ -583,9 +588,9 @@ extension CQt
 	[LinkName("QCoreApplication_Event")]
 	public static extern bool QCoreApplication_Event(void* c_this, void* param1);
 	[LinkName("QCoreApplication_Tr2")]
-	public static extern libqt_string QCoreApplication_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QCoreApplication_Tr2(char8* s, char8* c);
 	[LinkName("QCoreApplication_Tr3")]
-	public static extern libqt_string QCoreApplication_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QCoreApplication_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QCoreApplication_SetAttribute2")]
 	public static extern void QCoreApplication_SetAttribute2(int64 attribute, bool on);
 	[LinkName("QCoreApplication_ProcessEvents1")]
@@ -599,9 +604,9 @@ extension CQt
 	[LinkName("QCoreApplication_RemovePostedEvents2")]
 	public static extern void QCoreApplication_RemovePostedEvents2(void* receiver, int32 eventType);
 	[LinkName("QCoreApplication_Translate3")]
-	public static extern libqt_string QCoreApplication_Translate3(char8[] context, char8[] key, char8[] disambiguation);
+	public static extern libqt_string QCoreApplication_Translate3(char8* context, char8* key, char8* disambiguation);
 	[LinkName("QCoreApplication_Translate4")]
-	public static extern libqt_string QCoreApplication_Translate4(char8[] context, char8[] key, char8[] disambiguation, int32 n);
+	public static extern libqt_string QCoreApplication_Translate4(char8* context, char8* key, char8* disambiguation, int32 n);
 	[LinkName("QCoreApplication_Exit1")]
 	public static extern void QCoreApplication_Exit1(int32 retcode);
 	/// Delete this object from C++ memory

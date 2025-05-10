@@ -55,9 +55,14 @@ public enum QEasingCurve__Type
 	Custom = 47,
 	NCurveTypes = 48,
 }
-public class QEasingCurve
+public interface IQEasingCurve
+{
+	void* NativePtr { get; }
+}
+public class QEasingCurve : IQEasingCurve
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -69,24 +74,24 @@ public class QEasingCurve
 		CQt.QEasingCurve_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQEasingCurve other)
 	{
-		CQt.QEasingCurve_OperatorAssign(this.nativePtr, other);
+		CQt.QEasingCurve_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQEasingCurve other)
 	{
-		CQt.QEasingCurve_Swap(this.nativePtr, other);
+		CQt.QEasingCurve_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQEasingCurve other)
 	{
-		return CQt.QEasingCurve_OperatorEqual(this.nativePtr, other);
+		return CQt.QEasingCurve_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQEasingCurve other)
 	{
-		return CQt.QEasingCurve_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QEasingCurve_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public double Amplitude()
@@ -119,14 +124,14 @@ public class QEasingCurve
 		CQt.QEasingCurve_SetOvershoot(this.nativePtr, overshoot);
 	}
 	
-	public void AddCubicBezierSegment(void* c1, void* c2, void* endPoint)
+	public void AddCubicBezierSegment(IQPointF c1, IQPointF c2, IQPointF endPoint)
 	{
-		CQt.QEasingCurve_AddCubicBezierSegment(this.nativePtr, c1, c2, endPoint);
+		CQt.QEasingCurve_AddCubicBezierSegment(this.nativePtr, (c1 == default) ? default : (void*)c1.NativePtr, (c2 == default) ? default : (void*)c2.NativePtr, (endPoint == default) ? default : (void*)endPoint.NativePtr);
 	}
 	
-	public void AddTCBSegment(void* nextPoint, double t, double c, double b)
+	public void AddTCBSegment(IQPointF nextPoint, double t, double c, double b)
 	{
-		CQt.QEasingCurve_AddTCBSegment(this.nativePtr, nextPoint, t, c, b);
+		CQt.QEasingCurve_AddTCBSegment(this.nativePtr, (nextPoint == default) ? default : (void*)nextPoint.NativePtr, t, c, b);
 	}
 	
 	public void[] ToCubicSpline()

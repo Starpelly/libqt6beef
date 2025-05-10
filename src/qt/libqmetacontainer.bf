@@ -25,13 +25,18 @@ public enum QtMetaContainerPrivate__QMetaContainerInterface__Position
 	AtEnd = 1,
 	Unspecified = 2,
 }
-public class QMetaContainer
+public interface IQMetaContainer
+{
+	void* NativePtr { get; }
+}
+public class QMetaContainer : IQMetaContainer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaContainer other)
 	{
-		this.nativePtr = CQt.QMetaContainer_new(other);
+		this.nativePtr = CQt.QMetaContainer_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -222,13 +227,18 @@ extension CQt
 	[LinkName("QMetaContainer_Delete")]
 	public static extern void QMetaContainer_Delete(void* self);
 }
-public class QMetaSequence
+public interface IQMetaSequence
+{
+	void* NativePtr { get; }
+}
+public class QMetaSequence : IQMetaSequence, IQMetaContainer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaSequence other)
 	{
-		this.nativePtr = CQt.QMetaSequence_new(other);
+		this.nativePtr = CQt.QMetaSequence_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -579,13 +589,18 @@ extension CQt
 	[LinkName("QMetaSequence_Delete")]
 	public static extern void QMetaSequence_Delete(void* self);
 }
-public class QMetaAssociation
+public interface IQMetaAssociation
+{
+	void* NativePtr { get; }
+}
+public class QMetaAssociation : IQMetaAssociation, IQMetaContainer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaAssociation other)
 	{
-		this.nativePtr = CQt.QMetaAssociation_new(other);
+		this.nativePtr = CQt.QMetaAssociation_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

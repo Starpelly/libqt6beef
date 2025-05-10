@@ -15,9 +15,14 @@ public enum QRawFont__LayoutFlag
 	KernedAdvances = 1,
 	UseDesignMetrics = 2,
 }
-public class QRawFont
+public interface IQRawFont
+{
+	void* NativePtr { get; }
+}
+public class QRawFont : IQRawFont
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -29,14 +34,14 @@ public class QRawFont
 		CQt.QRawFont_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQRawFont other)
 	{
-		CQt.QRawFont_OperatorAssign(this.nativePtr, other);
+		CQt.QRawFont_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQRawFont other)
 	{
-		CQt.QRawFont_Swap(this.nativePtr, other);
+		CQt.QRawFont_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -44,14 +49,14 @@ public class QRawFont
 		return CQt.QRawFont_IsValid(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQRawFont other)
 	{
-		return CQt.QRawFont_OperatorEqual(this.nativePtr, other);
+		return CQt.QRawFont_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQRawFont other)
 	{
-		return CQt.QRawFont_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QRawFont_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string FamilyName()
@@ -74,34 +79,34 @@ public class QRawFont
 		return CQt.QRawFont_Weight(this.nativePtr);
 	}
 	
-	public uint32[] GlyphIndexesForString(libqt_string text)
+	public uint32[] GlyphIndexesForString(String text)
 	{
-		return CQt.QRawFont_GlyphIndexesForString(this.nativePtr, text);
+		return CQt.QRawFont_GlyphIndexesForString(this.nativePtr, libqt_string(text));
 	}
 	
 	public void[] AdvancesForGlyphIndexes(uint32[] glyphIndexes)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes(this.nativePtr, glyphIndexes);
+		return CQt.QRawFont_AdvancesForGlyphIndexes(this.nativePtr, null);
 	}
 	
 	public void[] AdvancesForGlyphIndexes2(uint32[] glyphIndexes, int64 layoutFlags)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes2(this.nativePtr, glyphIndexes, layoutFlags);
+		return CQt.QRawFont_AdvancesForGlyphIndexes2(this.nativePtr, null, layoutFlags);
 	}
 	
-	public bool GlyphIndexesForChars(void* chars, int32 numChars, uint32* glyphIndexes, int32* numGlyphs)
+	public bool GlyphIndexesForChars(IQChar chars, int32 numChars, uint32* glyphIndexes, int32* numGlyphs)
 	{
-		return CQt.QRawFont_GlyphIndexesForChars(this.nativePtr, chars, numChars, glyphIndexes, numGlyphs);
+		return CQt.QRawFont_GlyphIndexesForChars(this.nativePtr, (chars == null) ? null : (void*)chars.NativePtr, numChars, glyphIndexes, numGlyphs);
 	}
 	
-	public bool AdvancesForGlyphIndexes3(uint32* glyphIndexes, void* advances, int32 numGlyphs)
+	public bool AdvancesForGlyphIndexes3(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes3(this.nativePtr, glyphIndexes, advances, numGlyphs);
+		return CQt.QRawFont_AdvancesForGlyphIndexes3(this.nativePtr, glyphIndexes, (advances == null) ? null : (void*)advances.NativePtr, numGlyphs);
 	}
 	
-	public bool AdvancesForGlyphIndexes4(uint32* glyphIndexes, void* advances, int32 numGlyphs, int64 layoutFlags)
+	public bool AdvancesForGlyphIndexes4(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs, int64 layoutFlags)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes4(this.nativePtr, glyphIndexes, advances, numGlyphs, layoutFlags);
+		return CQt.QRawFont_AdvancesForGlyphIndexes4(this.nativePtr, glyphIndexes, (advances == null) ? null : (void*)advances.NativePtr, numGlyphs, layoutFlags);
 	}
 	
 	public void AlphaMapForGlyph(uint32 glyphIndex)
@@ -184,14 +189,14 @@ public class QRawFont
 		return CQt.QRawFont_UnitsPerEm(this.nativePtr);
 	}
 	
-	public void LoadFromFile(libqt_string fileName, double pixelSize, int64 hintingPreference)
+	public void LoadFromFile(String fileName, double pixelSize, int64 hintingPreference)
 	{
-		CQt.QRawFont_LoadFromFile(this.nativePtr, fileName, pixelSize, hintingPreference);
+		CQt.QRawFont_LoadFromFile(this.nativePtr, libqt_string(fileName), pixelSize, hintingPreference);
 	}
 	
-	public void LoadFromData(libqt_string fontData, double pixelSize, int64 hintingPreference)
+	public void LoadFromData(String fontData, double pixelSize, int64 hintingPreference)
 	{
-		CQt.QRawFont_LoadFromData(this.nativePtr, fontData, pixelSize, hintingPreference);
+		CQt.QRawFont_LoadFromData(this.nativePtr, libqt_string(fontData), pixelSize, hintingPreference);
 	}
 	
 	public bool SupportsCharacter(uint32 ucs4)
@@ -199,9 +204,9 @@ public class QRawFont
 		return CQt.QRawFont_SupportsCharacter(this.nativePtr, ucs4);
 	}
 	
-	public bool SupportsCharacterWithCharacter(void character)
+	public bool SupportsCharacterWithCharacter(IQChar character)
 	{
-		return CQt.QRawFont_SupportsCharacterWithCharacter(this.nativePtr, character);
+		return CQt.QRawFont_SupportsCharacterWithCharacter(this.nativePtr, (character == default) ? default : (void)character.NativePtr);
 	}
 	
 	public int64[] SupportedWritingSystems()
@@ -209,14 +214,14 @@ public class QRawFont
 		return CQt.QRawFont_SupportedWritingSystems(this.nativePtr);
 	}
 	
-	public libqt_string FontTable(char8[] tagName)
+	public libqt_string FontTable(char8* tagName)
 	{
 		return CQt.QRawFont_FontTable(this.nativePtr, tagName);
 	}
 	
-	public static void FromFont(void* font)
+	public static void FromFont(IQFont font)
 	{
-		CQt.QRawFont_FromFont(font);
+		CQt.QRawFont_FromFont((font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void AlphaMapForGlyph2(uint32 glyphIndex, int64 antialiasingType)
@@ -224,14 +229,14 @@ public class QRawFont
 		CQt.QRawFont_AlphaMapForGlyph2(this.nativePtr, glyphIndex, antialiasingType);
 	}
 	
-	public void AlphaMapForGlyph3(uint32 glyphIndex, int64 antialiasingType, void* transform)
+	public void AlphaMapForGlyph3(uint32 glyphIndex, int64 antialiasingType, IQTransform transform)
 	{
-		CQt.QRawFont_AlphaMapForGlyph3(this.nativePtr, glyphIndex, antialiasingType, transform);
+		CQt.QRawFont_AlphaMapForGlyph3(this.nativePtr, glyphIndex, antialiasingType, (transform == default) ? default : (void*)transform.NativePtr);
 	}
 	
-	public static void FromFont2(void* font, int64 writingSystem)
+	public static void FromFont2(IQFont font, int64 writingSystem)
 	{
-		CQt.QRawFont_FromFont2(font, writingSystem);
+		CQt.QRawFont_FromFont2((font == default) ? default : (void*)font.NativePtr, writingSystem);
 	}
 	
 }
@@ -322,7 +327,7 @@ extension CQt
 	[LinkName("QRawFont_SupportedWritingSystems")]
 	public static extern int64[] QRawFont_SupportedWritingSystems(void* c_this);
 	[LinkName("QRawFont_FontTable")]
-	public static extern libqt_string QRawFont_FontTable(void* c_this, char8[] tagName);
+	public static extern libqt_string QRawFont_FontTable(void* c_this, char8* tagName);
 	[LinkName("QRawFont_FromFont")]
 	public static extern void QRawFont_FromFont(void* font);
 	[LinkName("QRawFont_AlphaMapForGlyph2")]

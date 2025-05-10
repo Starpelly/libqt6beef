@@ -19,13 +19,18 @@ public enum QSystemSemaphore__SystemSemaphoreError
 	OutOfResources = 5,
 	UnknownError = 6,
 }
-public class QSystemSemaphore
+public interface IQSystemSemaphore
+{
+	void* NativePtr { get; }
+}
+public class QSystemSemaphore : IQSystemSemaphore
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string key)
+	public this(String key)
 	{
-		this.nativePtr = CQt.QSystemSemaphore_new(key);
+		this.nativePtr = CQt.QSystemSemaphore_new(libqt_string(key));
 	}
 	
 	public ~this()
@@ -33,14 +38,14 @@ public class QSystemSemaphore
 		CQt.QSystemSemaphore_Delete(this.nativePtr);
 	}
 	
-	public static libqt_string Tr(char8[] sourceText)
+	public static libqt_string Tr(char8* sourceText)
 	{
 		return CQt.QSystemSemaphore_Tr(sourceText);
 	}
 	
-	public void SetKey(libqt_string key)
+	public void SetKey(String key)
 	{
-		CQt.QSystemSemaphore_SetKey(this.nativePtr, key);
+		CQt.QSystemSemaphore_SetKey(this.nativePtr, libqt_string(key));
 	}
 	
 	public libqt_string Key()
@@ -68,24 +73,24 @@ public class QSystemSemaphore
 		return CQt.QSystemSemaphore_ErrorString(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] sourceText, char8[] disambiguation)
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
 	{
 		return CQt.QSystemSemaphore_Tr2(sourceText, disambiguation);
 	}
 	
-	public static libqt_string Tr3(char8[] sourceText, char8[] disambiguation, int32 n)
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QSystemSemaphore_Tr3(sourceText, disambiguation, n);
 	}
 	
-	public void SetKey2(libqt_string key, int32 initialValue)
+	public void SetKey2(String key, int32 initialValue)
 	{
-		CQt.QSystemSemaphore_SetKey2(this.nativePtr, key, initialValue);
+		CQt.QSystemSemaphore_SetKey2(this.nativePtr, libqt_string(key), initialValue);
 	}
 	
-	public void SetKey3(libqt_string key, int32 initialValue, int64 mode)
+	public void SetKey3(String key, int32 initialValue, int64 mode)
 	{
-		CQt.QSystemSemaphore_SetKey3(this.nativePtr, key, initialValue, mode);
+		CQt.QSystemSemaphore_SetKey3(this.nativePtr, libqt_string(key), initialValue, mode);
 	}
 	
 	public bool Release1(int32 n)
@@ -103,7 +108,7 @@ extension CQt
 	[LinkName("QSystemSemaphore_new3")]
 	public static extern void* QSystemSemaphore_new3(libqt_string key, int32 initialValue, int64 mode);
 	[LinkName("QSystemSemaphore_Tr")]
-	public static extern libqt_string QSystemSemaphore_Tr(char8[] sourceText);
+	public static extern libqt_string QSystemSemaphore_Tr(char8* sourceText);
 	[LinkName("QSystemSemaphore_SetKey")]
 	public static extern void QSystemSemaphore_SetKey(void* c_this, libqt_string key);
 	[LinkName("QSystemSemaphore_Key")]
@@ -117,9 +122,9 @@ extension CQt
 	[LinkName("QSystemSemaphore_ErrorString")]
 	public static extern libqt_string QSystemSemaphore_ErrorString(void* c_this);
 	[LinkName("QSystemSemaphore_Tr2")]
-	public static extern libqt_string QSystemSemaphore_Tr2(char8[] sourceText, char8[] disambiguation);
+	public static extern libqt_string QSystemSemaphore_Tr2(char8* sourceText, char8* disambiguation);
 	[LinkName("QSystemSemaphore_Tr3")]
-	public static extern libqt_string QSystemSemaphore_Tr3(char8[] sourceText, char8[] disambiguation, int32 n);
+	public static extern libqt_string QSystemSemaphore_Tr3(char8* sourceText, char8* disambiguation, int32 n);
 	[LinkName("QSystemSemaphore_SetKey2")]
 	public static extern void QSystemSemaphore_SetKey2(void* c_this, libqt_string key, int32 initialValue);
 	[LinkName("QSystemSemaphore_SetKey3")]

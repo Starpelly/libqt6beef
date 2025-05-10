@@ -16,13 +16,18 @@ public enum QIODeviceBase__OpenModeFlag
 	NewOnly = 64,
 	ExistingOnly = 128,
 }
-public class QIODeviceBase
+public interface IQIODeviceBase
+{
+	void* NativePtr { get; }
+}
+public class QIODeviceBase : IQIODeviceBase
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQIODeviceBase other)
 	{
-		this.nativePtr = CQt.QIODeviceBase_new(other);
+		this.nativePtr = CQt.QIODeviceBase_new((other == default) ? default : (void*)other.NativePtr);
 	}
 }
 extension CQt

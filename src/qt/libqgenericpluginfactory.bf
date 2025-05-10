@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QGenericPluginFactory
+public interface IQGenericPluginFactory
+{
+	void* NativePtr { get; }
+}
+public class QGenericPluginFactory : IQGenericPluginFactory
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQGenericPluginFactory other)
 	{
-		this.nativePtr = CQt.QGenericPluginFactory_new(other);
+		this.nativePtr = CQt.QGenericPluginFactory_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -21,9 +26,9 @@ public class QGenericPluginFactory
 		return CQt.QGenericPluginFactory_Keys();
 	}
 	
-	public static void* Create(libqt_string param1, libqt_string param2)
+	public static void* Create(String param1, String param2)
 	{
-		return CQt.QGenericPluginFactory_Create(param1, param2);
+		return CQt.QGenericPluginFactory_Create(libqt_string(param1), libqt_string(param2));
 	}
 	
 }

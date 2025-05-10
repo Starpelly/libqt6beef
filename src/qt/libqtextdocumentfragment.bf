@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QTextDocumentFragment
+public interface IQTextDocumentFragment
+{
+	void* NativePtr { get; }
+}
+public class QTextDocumentFragment : IQTextDocumentFragment
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QTextDocumentFragment
 		CQt.QTextDocumentFragment_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextDocumentFragment rhs)
 	{
-		CQt.QTextDocumentFragment_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextDocumentFragment_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -46,19 +51,19 @@ public class QTextDocumentFragment
 		return CQt.QTextDocumentFragment_ToMarkdown(this.nativePtr);
 	}
 	
-	public static void FromPlainText(libqt_string plainText)
+	public static void FromPlainText(String plainText)
 	{
-		CQt.QTextDocumentFragment_FromPlainText(plainText);
+		CQt.QTextDocumentFragment_FromPlainText(libqt_string(plainText));
 	}
 	
-	public static void FromHtml(libqt_string html)
+	public static void FromHtml(String html)
 	{
-		CQt.QTextDocumentFragment_FromHtml(html);
+		CQt.QTextDocumentFragment_FromHtml(libqt_string(html));
 	}
 	
-	public static void FromMarkdown(libqt_string markdown)
+	public static void FromMarkdown(String markdown)
 	{
-		CQt.QTextDocumentFragment_FromMarkdown(markdown);
+		CQt.QTextDocumentFragment_FromMarkdown(libqt_string(markdown));
 	}
 	
 	public libqt_string ToMarkdown1(int64 features)
@@ -66,14 +71,14 @@ public class QTextDocumentFragment
 		return CQt.QTextDocumentFragment_ToMarkdown1(this.nativePtr, features);
 	}
 	
-	public static void FromHtml2(libqt_string html, void* resourceProvider)
+	public static void FromHtml2(String html, IQTextDocument resourceProvider)
 	{
-		CQt.QTextDocumentFragment_FromHtml2(html, resourceProvider);
+		CQt.QTextDocumentFragment_FromHtml2(libqt_string(html), (resourceProvider == null) ? null : (void*)resourceProvider.NativePtr);
 	}
 	
-	public static void FromMarkdown2(libqt_string markdown, int64 features)
+	public static void FromMarkdown2(String markdown, int64 features)
 	{
-		CQt.QTextDocumentFragment_FromMarkdown2(markdown, features);
+		CQt.QTextDocumentFragment_FromMarkdown2(libqt_string(markdown), features);
 	}
 	
 }

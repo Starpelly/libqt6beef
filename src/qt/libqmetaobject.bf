@@ -24,13 +24,18 @@ public enum QMetaMethod__Attributes
 	Cloned = 2,
 	Scriptable = 4,
 }
-public class QMetaMethod
+public interface IQMetaMethod
+{
+	void* NativePtr { get; }
+}
+public class QMetaMethod : IQMetaMethod
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaMethod other)
 	{
-		this.nativePtr = CQt.QMetaMethod_new(other);
+		this.nativePtr = CQt.QMetaMethod_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -48,7 +53,7 @@ public class QMetaMethod
 		return CQt.QMetaMethod_Name(this.nativePtr);
 	}
 	
-	public char8[] TypeName()
+	public char8* TypeName()
 	{
 		return CQt.QMetaMethod_TypeName(this.nativePtr);
 	}
@@ -98,7 +103,7 @@ public class QMetaMethod
 		return CQt.QMetaMethod_ParameterNames(this.nativePtr);
 	}
 	
-	public char8[] Tag()
+	public char8* Tag()
 	{
 		return CQt.QMetaMethod_Tag(this.nativePtr);
 	}
@@ -143,29 +148,29 @@ public class QMetaMethod
 		return CQt.QMetaMethod_EnclosingMetaObject(this.nativePtr);
 	}
 	
-	public bool Invoke(void* object, int64 connectionType, void returnValue)
+	public bool Invoke(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue)
 	{
-		return CQt.QMetaMethod_Invoke(this.nativePtr, object, connectionType, returnValue);
+		return CQt.QMetaMethod_Invoke(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr);
 	}
 	
-	public bool Invoke2(void* object, void returnValue)
+	public bool Invoke2(IQObject object, IQGenericReturnArgument returnValue)
 	{
-		return CQt.QMetaMethod_Invoke2(this.nativePtr, object, returnValue);
+		return CQt.QMetaMethod_Invoke2(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr);
 	}
 	
-	public bool Invoke3(void* object, int64 connectionType)
+	public bool Invoke3(IQObject object, int64 connectionType)
 	{
-		return CQt.QMetaMethod_Invoke3(this.nativePtr, object, connectionType);
+		return CQt.QMetaMethod_Invoke3(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType);
 	}
 	
-	public bool InvokeWithObject(void* object)
+	public bool InvokeWithObject(IQObject object)
 	{
-		return CQt.QMetaMethod_InvokeWithObject(this.nativePtr, object);
+		return CQt.QMetaMethod_InvokeWithObject(this.nativePtr, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
-	public bool InvokeOnGadget(void* gadget, void returnValue)
+	public bool InvokeOnGadget(void* gadget, IQGenericReturnArgument returnValue)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget(this.nativePtr, gadget, returnValue);
+		return CQt.QMetaMethod_InvokeOnGadget(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr);
 	}
 	
 	public bool InvokeOnGadgetWithGadget(void* gadget)
@@ -178,304 +183,304 @@ public class QMetaMethod
 		return CQt.QMetaMethod_IsValid(this.nativePtr);
 	}
 	
-	public bool Invoke4(void* object, int64 connectionType, void returnValue, void val0)
+	public bool Invoke4(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_Invoke4(this.nativePtr, object, connectionType, returnValue, val0);
+		return CQt.QMetaMethod_Invoke4(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool Invoke5(void* object, int64 connectionType, void returnValue, void val0, void val1)
+	public bool Invoke5(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_Invoke5(this.nativePtr, object, connectionType, returnValue, val0, val1);
+		return CQt.QMetaMethod_Invoke5(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool Invoke6(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2)
+	public bool Invoke6(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_Invoke6(this.nativePtr, object, connectionType, returnValue, val0, val1, val2);
+		return CQt.QMetaMethod_Invoke6(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool Invoke7(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3)
+	public bool Invoke7(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_Invoke7(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3);
+		return CQt.QMetaMethod_Invoke7(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool Invoke8(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4)
+	public bool Invoke8(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_Invoke8(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_Invoke8(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool Invoke9(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool Invoke9(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_Invoke9(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_Invoke9(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool Invoke10(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool Invoke10(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_Invoke10(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_Invoke10(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool Invoke11(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool Invoke11(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_Invoke11(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_Invoke11(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool Invoke12(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool Invoke12(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_Invoke12(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_Invoke12(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool Invoke13(void* object, int64 connectionType, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool Invoke13(IQObject object, int64 connectionType, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_Invoke13(this.nativePtr, object, connectionType, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_Invoke13(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
-	public bool Invoke32(void* object, void returnValue, void val0)
+	public bool Invoke32(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_Invoke32(this.nativePtr, object, returnValue, val0);
+		return CQt.QMetaMethod_Invoke32(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool Invoke42(void* object, void returnValue, void val0, void val1)
+	public bool Invoke42(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_Invoke42(this.nativePtr, object, returnValue, val0, val1);
+		return CQt.QMetaMethod_Invoke42(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool Invoke52(void* object, void returnValue, void val0, void val1, void val2)
+	public bool Invoke52(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_Invoke52(this.nativePtr, object, returnValue, val0, val1, val2);
+		return CQt.QMetaMethod_Invoke52(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool Invoke62(void* object, void returnValue, void val0, void val1, void val2, void val3)
+	public bool Invoke62(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_Invoke62(this.nativePtr, object, returnValue, val0, val1, val2, val3);
+		return CQt.QMetaMethod_Invoke62(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool Invoke72(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4)
+	public bool Invoke72(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_Invoke72(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_Invoke72(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool Invoke82(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool Invoke82(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_Invoke82(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_Invoke82(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool Invoke92(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool Invoke92(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_Invoke92(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_Invoke92(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool Invoke102(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool Invoke102(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_Invoke102(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_Invoke102(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool Invoke112(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool Invoke112(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_Invoke112(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_Invoke112(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool Invoke122(void* object, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool Invoke122(IQObject object, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_Invoke122(this.nativePtr, object, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_Invoke122(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
-	public bool Invoke33(void* object, int64 connectionType, void val0)
+	public bool Invoke33(IQObject object, int64 connectionType, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_Invoke33(this.nativePtr, object, connectionType, val0);
+		return CQt.QMetaMethod_Invoke33(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool Invoke43(void* object, int64 connectionType, void val0, void val1)
+	public bool Invoke43(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_Invoke43(this.nativePtr, object, connectionType, val0, val1);
+		return CQt.QMetaMethod_Invoke43(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool Invoke53(void* object, int64 connectionType, void val0, void val1, void val2)
+	public bool Invoke53(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_Invoke53(this.nativePtr, object, connectionType, val0, val1, val2);
+		return CQt.QMetaMethod_Invoke53(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool Invoke63(void* object, int64 connectionType, void val0, void val1, void val2, void val3)
+	public bool Invoke63(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_Invoke63(this.nativePtr, object, connectionType, val0, val1, val2, val3);
+		return CQt.QMetaMethod_Invoke63(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool Invoke73(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4)
+	public bool Invoke73(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_Invoke73(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_Invoke73(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool Invoke83(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool Invoke83(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_Invoke83(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_Invoke83(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool Invoke93(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool Invoke93(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_Invoke93(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_Invoke93(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool Invoke103(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool Invoke103(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_Invoke103(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_Invoke103(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool Invoke113(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool Invoke113(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_Invoke113(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_Invoke113(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool Invoke123(void* object, int64 connectionType, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool Invoke123(IQObject object, int64 connectionType, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_Invoke123(this.nativePtr, object, connectionType, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_Invoke123(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, connectionType, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
-	public bool Invoke22(void* object, void val0)
+	public bool Invoke22(IQObject object, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_Invoke22(this.nativePtr, object, val0);
+		return CQt.QMetaMethod_Invoke22(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool Invoke34(void* object, void val0, void val1)
+	public bool Invoke34(IQObject object, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_Invoke34(this.nativePtr, object, val0, val1);
+		return CQt.QMetaMethod_Invoke34(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool Invoke44(void* object, void val0, void val1, void val2)
+	public bool Invoke44(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_Invoke44(this.nativePtr, object, val0, val1, val2);
+		return CQt.QMetaMethod_Invoke44(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool Invoke54(void* object, void val0, void val1, void val2, void val3)
+	public bool Invoke54(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_Invoke54(this.nativePtr, object, val0, val1, val2, val3);
+		return CQt.QMetaMethod_Invoke54(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool Invoke64(void* object, void val0, void val1, void val2, void val3, void val4)
+	public bool Invoke64(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_Invoke64(this.nativePtr, object, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_Invoke64(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool Invoke74(void* object, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool Invoke74(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_Invoke74(this.nativePtr, object, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_Invoke74(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool Invoke84(void* object, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool Invoke84(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_Invoke84(this.nativePtr, object, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_Invoke84(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool Invoke94(void* object, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool Invoke94(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_Invoke94(this.nativePtr, object, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_Invoke94(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool Invoke104(void* object, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool Invoke104(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_Invoke104(this.nativePtr, object, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_Invoke104(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool Invoke114(void* object, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool Invoke114(IQObject object, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_Invoke114(this.nativePtr, object, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_Invoke114(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
-	public bool InvokeOnGadget3(void* gadget, void returnValue, void val0)
+	public bool InvokeOnGadget3(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget3(this.nativePtr, gadget, returnValue, val0);
+		return CQt.QMetaMethod_InvokeOnGadget3(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool InvokeOnGadget4(void* gadget, void returnValue, void val0, void val1)
+	public bool InvokeOnGadget4(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget4(this.nativePtr, gadget, returnValue, val0, val1);
+		return CQt.QMetaMethod_InvokeOnGadget4(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool InvokeOnGadget5(void* gadget, void returnValue, void val0, void val1, void val2)
+	public bool InvokeOnGadget5(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget5(this.nativePtr, gadget, returnValue, val0, val1, val2);
+		return CQt.QMetaMethod_InvokeOnGadget5(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool InvokeOnGadget6(void* gadget, void returnValue, void val0, void val1, void val2, void val3)
+	public bool InvokeOnGadget6(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget6(this.nativePtr, gadget, returnValue, val0, val1, val2, val3);
+		return CQt.QMetaMethod_InvokeOnGadget6(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool InvokeOnGadget7(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4)
+	public bool InvokeOnGadget7(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget7(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_InvokeOnGadget7(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool InvokeOnGadget8(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool InvokeOnGadget8(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget8(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_InvokeOnGadget8(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool InvokeOnGadget9(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool InvokeOnGadget9(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget9(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_InvokeOnGadget9(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool InvokeOnGadget10(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool InvokeOnGadget10(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget10(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_InvokeOnGadget10(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool InvokeOnGadget11(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool InvokeOnGadget11(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget11(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_InvokeOnGadget11(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool InvokeOnGadget12(void* gadget, void returnValue, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool InvokeOnGadget12(void* gadget, IQGenericReturnArgument returnValue, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget12(this.nativePtr, gadget, returnValue, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_InvokeOnGadget12(this.nativePtr, gadget, (returnValue == default) ? default : (void)returnValue.NativePtr, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
-	public bool InvokeOnGadget2(void* gadget, void val0)
+	public bool InvokeOnGadget2(void* gadget, IQGenericArgument val0)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget2(this.nativePtr, gadget, val0);
+		return CQt.QMetaMethod_InvokeOnGadget2(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr);
 	}
 	
-	public bool InvokeOnGadget32(void* gadget, void val0, void val1)
+	public bool InvokeOnGadget32(void* gadget, IQGenericArgument val0, IQGenericArgument val1)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget32(this.nativePtr, gadget, val0, val1);
+		return CQt.QMetaMethod_InvokeOnGadget32(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr);
 	}
 	
-	public bool InvokeOnGadget42(void* gadget, void val0, void val1, void val2)
+	public bool InvokeOnGadget42(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget42(this.nativePtr, gadget, val0, val1, val2);
+		return CQt.QMetaMethod_InvokeOnGadget42(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr);
 	}
 	
-	public bool InvokeOnGadget52(void* gadget, void val0, void val1, void val2, void val3)
+	public bool InvokeOnGadget52(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget52(this.nativePtr, gadget, val0, val1, val2, val3);
+		return CQt.QMetaMethod_InvokeOnGadget52(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr);
 	}
 	
-	public bool InvokeOnGadget62(void* gadget, void val0, void val1, void val2, void val3, void val4)
+	public bool InvokeOnGadget62(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget62(this.nativePtr, gadget, val0, val1, val2, val3, val4);
+		return CQt.QMetaMethod_InvokeOnGadget62(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr);
 	}
 	
-	public bool InvokeOnGadget72(void* gadget, void val0, void val1, void val2, void val3, void val4, void val5)
+	public bool InvokeOnGadget72(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget72(this.nativePtr, gadget, val0, val1, val2, val3, val4, val5);
+		return CQt.QMetaMethod_InvokeOnGadget72(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr);
 	}
 	
-	public bool InvokeOnGadget82(void* gadget, void val0, void val1, void val2, void val3, void val4, void val5, void val6)
+	public bool InvokeOnGadget82(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget82(this.nativePtr, gadget, val0, val1, val2, val3, val4, val5, val6);
+		return CQt.QMetaMethod_InvokeOnGadget82(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr);
 	}
 	
-	public bool InvokeOnGadget92(void* gadget, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7)
+	public bool InvokeOnGadget92(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget92(this.nativePtr, gadget, val0, val1, val2, val3, val4, val5, val6, val7);
+		return CQt.QMetaMethod_InvokeOnGadget92(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr);
 	}
 	
-	public bool InvokeOnGadget102(void* gadget, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8)
+	public bool InvokeOnGadget102(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget102(this.nativePtr, gadget, val0, val1, val2, val3, val4, val5, val6, val7, val8);
+		return CQt.QMetaMethod_InvokeOnGadget102(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr);
 	}
 	
-	public bool InvokeOnGadget112(void* gadget, void val0, void val1, void val2, void val3, void val4, void val5, void val6, void val7, void val8, void val9)
+	public bool InvokeOnGadget112(void* gadget, IQGenericArgument val0, IQGenericArgument val1, IQGenericArgument val2, IQGenericArgument val3, IQGenericArgument val4, IQGenericArgument val5, IQGenericArgument val6, IQGenericArgument val7, IQGenericArgument val8, IQGenericArgument val9)
 	{
-		return CQt.QMetaMethod_InvokeOnGadget112(this.nativePtr, gadget, val0, val1, val2, val3, val4, val5, val6, val7, val8, val9);
+		return CQt.QMetaMethod_InvokeOnGadget112(this.nativePtr, gadget, (val0 == default) ? default : (void)val0.NativePtr, (val1 == default) ? default : (void)val1.NativePtr, (val2 == default) ? default : (void)val2.NativePtr, (val3 == default) ? default : (void)val3.NativePtr, (val4 == default) ? default : (void)val4.NativePtr, (val5 == default) ? default : (void)val5.NativePtr, (val6 == default) ? default : (void)val6.NativePtr, (val7 == default) ? default : (void)val7.NativePtr, (val8 == default) ? default : (void)val8.NativePtr, (val9 == default) ? default : (void)val9.NativePtr);
 	}
 	
 }
@@ -494,7 +499,7 @@ extension CQt
 	[LinkName("QMetaMethod_Name")]
 	public static extern libqt_string QMetaMethod_Name(void* c_this);
 	[LinkName("QMetaMethod_TypeName")]
-	public static extern char8[] QMetaMethod_TypeName(void* c_this);
+	public static extern char8* QMetaMethod_TypeName(void* c_this);
 	[LinkName("QMetaMethod_ReturnType")]
 	public static extern int32 QMetaMethod_ReturnType(void* c_this);
 	[LinkName("QMetaMethod_ReturnMetaType")]
@@ -514,7 +519,7 @@ extension CQt
 	[LinkName("QMetaMethod_ParameterNames")]
 	public static extern libqt_string[] QMetaMethod_ParameterNames(void* c_this);
 	[LinkName("QMetaMethod_Tag")]
-	public static extern char8[] QMetaMethod_Tag(void* c_this);
+	public static extern char8* QMetaMethod_Tag(void* c_this);
 	[LinkName("QMetaMethod_Access")]
 	public static extern int64 QMetaMethod_Access(void* c_this);
 	[LinkName("QMetaMethod_MethodType")]
@@ -669,13 +674,18 @@ extension CQt
 	[LinkName("QMetaMethod_Delete")]
 	public static extern void QMetaMethod_Delete(void* self);
 }
-public class QMetaEnum
+public interface IQMetaEnum
+{
+	void* NativePtr { get; }
+}
+public class QMetaEnum : IQMetaEnum
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaEnum other)
 	{
-		this.nativePtr = CQt.QMetaEnum_new(other);
+		this.nativePtr = CQt.QMetaEnum_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -683,12 +693,12 @@ public class QMetaEnum
 		CQt.QMetaEnum_Delete(this.nativePtr);
 	}
 	
-	public char8[] Name()
+	public char8* Name()
 	{
 		return CQt.QMetaEnum_Name(this.nativePtr);
 	}
 	
-	public char8[] EnumName()
+	public char8* EnumName()
 	{
 		return CQt.QMetaEnum_EnumName(this.nativePtr);
 	}
@@ -708,7 +718,7 @@ public class QMetaEnum
 		return CQt.QMetaEnum_KeyCount(this.nativePtr);
 	}
 	
-	public char8[] Key(int32 index)
+	public char8* Key(int32 index)
 	{
 		return CQt.QMetaEnum_Key(this.nativePtr, index);
 	}
@@ -718,22 +728,22 @@ public class QMetaEnum
 		return CQt.QMetaEnum_Value(this.nativePtr, index);
 	}
 	
-	public char8[] Scope()
+	public char8* Scope()
 	{
 		return CQt.QMetaEnum_Scope(this.nativePtr);
 	}
 	
-	public int32 KeyToValue(char8[] key)
+	public int32 KeyToValue(char8* key)
 	{
 		return CQt.QMetaEnum_KeyToValue(this.nativePtr, key);
 	}
 	
-	public char8[] ValueToKey(int32 value)
+	public char8* ValueToKey(int32 value)
 	{
 		return CQt.QMetaEnum_ValueToKey(this.nativePtr, value);
 	}
 	
-	public int32 KeysToValue(char8[] keys)
+	public int32 KeysToValue(char8* keys)
 	{
 		return CQt.QMetaEnum_KeysToValue(this.nativePtr, keys);
 	}
@@ -753,12 +763,12 @@ public class QMetaEnum
 		return CQt.QMetaEnum_IsValid(this.nativePtr);
 	}
 	
-	public int32 KeyToValue2(char8[] key, bool* ok)
+	public int32 KeyToValue2(char8* key, bool* ok)
 	{
 		return CQt.QMetaEnum_KeyToValue2(this.nativePtr, key, ok);
 	}
 	
-	public int32 KeysToValue2(char8[] keys, bool* ok)
+	public int32 KeysToValue2(char8* keys, bool* ok)
 	{
 		return CQt.QMetaEnum_KeysToValue2(this.nativePtr, keys, ok);
 	}
@@ -775,9 +785,9 @@ extension CQt
 	[LinkName("QMetaEnum_new4")]
 	public static extern void* QMetaEnum_new4(void* param1);
 	[LinkName("QMetaEnum_Name")]
-	public static extern char8[] QMetaEnum_Name(void* c_this);
+	public static extern char8* QMetaEnum_Name(void* c_this);
 	[LinkName("QMetaEnum_EnumName")]
-	public static extern char8[] QMetaEnum_EnumName(void* c_this);
+	public static extern char8* QMetaEnum_EnumName(void* c_this);
 	[LinkName("QMetaEnum_IsFlag")]
 	public static extern bool QMetaEnum_IsFlag(void* c_this);
 	[LinkName("QMetaEnum_IsScoped")]
@@ -785,17 +795,17 @@ extension CQt
 	[LinkName("QMetaEnum_KeyCount")]
 	public static extern int32 QMetaEnum_KeyCount(void* c_this);
 	[LinkName("QMetaEnum_Key")]
-	public static extern char8[] QMetaEnum_Key(void* c_this, int32 index);
+	public static extern char8* QMetaEnum_Key(void* c_this, int32 index);
 	[LinkName("QMetaEnum_Value")]
 	public static extern int32 QMetaEnum_Value(void* c_this, int32 index);
 	[LinkName("QMetaEnum_Scope")]
-	public static extern char8[] QMetaEnum_Scope(void* c_this);
+	public static extern char8* QMetaEnum_Scope(void* c_this);
 	[LinkName("QMetaEnum_KeyToValue")]
-	public static extern int32 QMetaEnum_KeyToValue(void* c_this, char8[] key);
+	public static extern int32 QMetaEnum_KeyToValue(void* c_this, char8* key);
 	[LinkName("QMetaEnum_ValueToKey")]
-	public static extern char8[] QMetaEnum_ValueToKey(void* c_this, int32 value);
+	public static extern char8* QMetaEnum_ValueToKey(void* c_this, int32 value);
 	[LinkName("QMetaEnum_KeysToValue")]
-	public static extern int32 QMetaEnum_KeysToValue(void* c_this, char8[] keys);
+	public static extern int32 QMetaEnum_KeysToValue(void* c_this, char8* keys);
 	[LinkName("QMetaEnum_ValueToKeys")]
 	public static extern libqt_string QMetaEnum_ValueToKeys(void* c_this, int32 value);
 	[LinkName("QMetaEnum_EnclosingMetaObject")]
@@ -803,20 +813,25 @@ extension CQt
 	[LinkName("QMetaEnum_IsValid")]
 	public static extern bool QMetaEnum_IsValid(void* c_this);
 	[LinkName("QMetaEnum_KeyToValue2")]
-	public static extern int32 QMetaEnum_KeyToValue2(void* c_this, char8[] key, bool* ok);
+	public static extern int32 QMetaEnum_KeyToValue2(void* c_this, char8* key, bool* ok);
 	[LinkName("QMetaEnum_KeysToValue2")]
-	public static extern int32 QMetaEnum_KeysToValue2(void* c_this, char8[] keys, bool* ok);
+	public static extern int32 QMetaEnum_KeysToValue2(void* c_this, char8* keys, bool* ok);
 	/// Delete this object from C++ memory
 	[LinkName("QMetaEnum_Delete")]
 	public static extern void QMetaEnum_Delete(void* self);
 }
-public class QMetaProperty
+public interface IQMetaProperty
+{
+	void* NativePtr { get; }
+}
+public class QMetaProperty : IQMetaProperty
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaProperty other)
 	{
-		this.nativePtr = CQt.QMetaProperty_new(other);
+		this.nativePtr = CQt.QMetaProperty_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -824,12 +839,12 @@ public class QMetaProperty
 		CQt.QMetaProperty_Delete(this.nativePtr);
 	}
 	
-	public char8[] Name()
+	public char8* Name()
 	{
 		return CQt.QMetaProperty_Name(this.nativePtr);
 	}
 	
-	public char8[] TypeName()
+	public char8* TypeName()
 	{
 		return CQt.QMetaProperty_TypeName(this.nativePtr);
 	}
@@ -954,24 +969,24 @@ public class QMetaProperty
 		return CQt.QMetaProperty_Revision(this.nativePtr);
 	}
 	
-	public void Read(void* obj)
+	public void Read(IQObject obj)
 	{
-		CQt.QMetaProperty_Read(this.nativePtr, obj);
+		CQt.QMetaProperty_Read(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public bool Write(void* obj, void* value)
+	public bool Write(IQObject obj, IQVariant value)
 	{
-		return CQt.QMetaProperty_Write(this.nativePtr, obj, value);
+		return CQt.QMetaProperty_Write(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public bool Reset(void* obj)
+	public bool Reset(IQObject obj)
 	{
-		return CQt.QMetaProperty_Reset(this.nativePtr, obj);
+		return CQt.QMetaProperty_Reset(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public void Bindable(void* object)
+	public void Bindable(IQObject object)
 	{
-		CQt.QMetaProperty_Bindable(this.nativePtr, object);
+		CQt.QMetaProperty_Bindable(this.nativePtr, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
 	public void ReadOnGadget(void* gadget)
@@ -979,9 +994,9 @@ public class QMetaProperty
 		CQt.QMetaProperty_ReadOnGadget(this.nativePtr, gadget);
 	}
 	
-	public bool WriteOnGadget(void* gadget, void* value)
+	public bool WriteOnGadget(void* gadget, IQVariant value)
 	{
-		return CQt.QMetaProperty_WriteOnGadget(this.nativePtr, gadget, value);
+		return CQt.QMetaProperty_WriteOnGadget(this.nativePtr, gadget, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public bool ResetOnGadget(void* gadget)
@@ -1019,9 +1034,9 @@ extension CQt
 	[LinkName("QMetaProperty_new3")]
 	public static extern void* QMetaProperty_new3();
 	[LinkName("QMetaProperty_Name")]
-	public static extern char8[] QMetaProperty_Name(void* c_this);
+	public static extern char8* QMetaProperty_Name(void* c_this);
 	[LinkName("QMetaProperty_TypeName")]
-	public static extern char8[] QMetaProperty_TypeName(void* c_this);
+	public static extern char8* QMetaProperty_TypeName(void* c_this);
 	[LinkName("QMetaProperty_Type")]
 	public static extern int64 QMetaProperty_Type(void* c_this);
 	[LinkName("QMetaProperty_UserType")]
@@ -1096,13 +1111,18 @@ extension CQt
 	[LinkName("QMetaProperty_Delete")]
 	public static extern void QMetaProperty_Delete(void* self);
 }
-public class QMetaClassInfo
+public interface IQMetaClassInfo
+{
+	void* NativePtr { get; }
+}
+public class QMetaClassInfo : IQMetaClassInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMetaClassInfo other)
 	{
-		this.nativePtr = CQt.QMetaClassInfo_new(other);
+		this.nativePtr = CQt.QMetaClassInfo_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -1110,12 +1130,12 @@ public class QMetaClassInfo
 		CQt.QMetaClassInfo_Delete(this.nativePtr);
 	}
 	
-	public char8[] Name()
+	public char8* Name()
 	{
 		return CQt.QMetaClassInfo_Name(this.nativePtr);
 	}
 	
-	public char8[] Value()
+	public char8* Value()
 	{
 		return CQt.QMetaClassInfo_Value(this.nativePtr);
 	}
@@ -1135,9 +1155,9 @@ extension CQt
 	[LinkName("QMetaClassInfo_new3")]
 	public static extern void* QMetaClassInfo_new3();
 	[LinkName("QMetaClassInfo_Name")]
-	public static extern char8[] QMetaClassInfo_Name(void* c_this);
+	public static extern char8* QMetaClassInfo_Name(void* c_this);
 	[LinkName("QMetaClassInfo_Value")]
-	public static extern char8[] QMetaClassInfo_Value(void* c_this);
+	public static extern char8* QMetaClassInfo_Value(void* c_this);
 	[LinkName("QMetaClassInfo_EnclosingMetaObject")]
 	public static extern void* QMetaClassInfo_EnclosingMetaObject(void* c_this);
 	/// Delete this object from C++ memory

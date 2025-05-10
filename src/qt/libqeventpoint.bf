@@ -11,9 +11,14 @@ public enum QEventPoint__State
 	Updated = 2,
 	Released = 8,
 }
-public class QEventPoint
+public interface IQEventPoint
+{
+	void* NativePtr { get; }
+}
+public class QEventPoint : IQEventPoint
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -25,24 +30,24 @@ public class QEventPoint
 		CQt.QEventPoint_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQEventPoint other)
 	{
-		CQt.QEventPoint_OperatorAssign(this.nativePtr, other);
+		CQt.QEventPoint_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQEventPoint other)
 	{
-		return CQt.QEventPoint_OperatorEqual(this.nativePtr, other);
+		return CQt.QEventPoint_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQEventPoint other)
 	{
-		return CQt.QEventPoint_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QEventPoint_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQEventPoint other)
 	{
-		CQt.QEventPoint_Swap(this.nativePtr, other);
+		CQt.QEventPoint_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void Position()

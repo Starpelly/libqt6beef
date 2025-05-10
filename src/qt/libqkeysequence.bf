@@ -90,9 +90,14 @@ public enum QKeySequence__SequenceMatch
 	PartialMatch = 1,
 	ExactMatch = 2,
 }
-public class QKeySequence
+public interface IQKeySequence
+{
+	void* NativePtr { get; }
+}
+public class QKeySequence : IQKeySequence
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -119,29 +124,29 @@ public class QKeySequence
 		return CQt.QKeySequence_ToString(this.nativePtr);
 	}
 	
-	public static void FromString(libqt_string str)
+	public static void FromString(String str)
 	{
-		CQt.QKeySequence_FromString(str);
+		CQt.QKeySequence_FromString(libqt_string(str));
 	}
 	
-	public static void[] ListFromString(libqt_string str)
+	public static void[] ListFromString(String str)
 	{
-		return CQt.QKeySequence_ListFromString(str);
+		return CQt.QKeySequence_ListFromString(libqt_string(str));
 	}
 	
-	public static libqt_string ListToString(void[] list)
+	public static libqt_string ListToString(IQKeySequence[] list)
 	{
-		return CQt.QKeySequence_ListToString(list);
+		return CQt.QKeySequence_ListToString(null);
 	}
 	
-	public int64 Matches(void* seq)
+	public int64 Matches(IQKeySequence seq)
 	{
-		return CQt.QKeySequence_Matches(this.nativePtr, seq);
+		return CQt.QKeySequence_Matches(this.nativePtr, (seq == default) ? default : (void*)seq.NativePtr);
 	}
 	
-	public static void Mnemonic(libqt_string text)
+	public static void Mnemonic(String text)
 	{
-		CQt.QKeySequence_Mnemonic(text);
+		CQt.QKeySequence_Mnemonic(libqt_string(text));
 	}
 	
 	public static void[] KeyBindings(int64 key)
@@ -159,44 +164,44 @@ public class QKeySequence
 		CQt.QKeySequence_OperatorSubscript(this.nativePtr, i);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQKeySequence other)
 	{
-		CQt.QKeySequence_OperatorAssign(this.nativePtr, other);
+		CQt.QKeySequence_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQKeySequence other)
 	{
-		CQt.QKeySequence_Swap(this.nativePtr, other);
+		CQt.QKeySequence_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQKeySequence other)
 	{
-		return CQt.QKeySequence_OperatorEqual(this.nativePtr, other);
+		return CQt.QKeySequence_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQKeySequence other)
 	{
-		return CQt.QKeySequence_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QKeySequence_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* ks)
+	public bool OperatorLesser(IQKeySequence ks)
 	{
-		return CQt.QKeySequence_OperatorLesser(this.nativePtr, ks);
+		return CQt.QKeySequence_OperatorLesser(this.nativePtr, (ks == default) ? default : (void*)ks.NativePtr);
 	}
 	
-	public bool OperatorGreater(void* other)
+	public bool OperatorGreater(IQKeySequence other)
 	{
-		return CQt.QKeySequence_OperatorGreater(this.nativePtr, other);
+		return CQt.QKeySequence_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(void* other)
+	public bool OperatorLesserOrEqual(IQKeySequence other)
 	{
-		return CQt.QKeySequence_OperatorLesserOrEqual(this.nativePtr, other);
+		return CQt.QKeySequence_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(void* other)
+	public bool OperatorGreaterOrEqual(IQKeySequence other)
 	{
-		return CQt.QKeySequence_OperatorGreaterOrEqual(this.nativePtr, other);
+		return CQt.QKeySequence_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsDetached()
@@ -209,19 +214,19 @@ public class QKeySequence
 		return CQt.QKeySequence_ToString1(this.nativePtr, format);
 	}
 	
-	public static void FromString2(libqt_string str, int64 format)
+	public static void FromString2(String str, int64 format)
 	{
-		CQt.QKeySequence_FromString2(str, format);
+		CQt.QKeySequence_FromString2(libqt_string(str), format);
 	}
 	
-	public static void[] ListFromString2(libqt_string str, int64 format)
+	public static void[] ListFromString2(String str, int64 format)
 	{
-		return CQt.QKeySequence_ListFromString2(str, format);
+		return CQt.QKeySequence_ListFromString2(libqt_string(str), format);
 	}
 	
-	public static libqt_string ListToString2(void[] list, int64 format)
+	public static libqt_string ListToString2(IQKeySequence[] list, int64 format)
 	{
-		return CQt.QKeySequence_ListToString2(list, format);
+		return CQt.QKeySequence_ListToString2(null, format);
 	}
 	
 }

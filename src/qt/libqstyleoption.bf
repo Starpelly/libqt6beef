@@ -472,9 +472,14 @@ public enum QStyleHintReturnVariant__StyleOptionVersion
 {
 	Version = 1,
 }
-public class QStyleOption
+public interface IQStyleOption
+{
+	void* NativePtr { get; }
+}
+public class QStyleOption : IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -486,14 +491,14 @@ public class QStyleOption
 		CQt.QStyleOption_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -515,9 +520,14 @@ extension CQt
 	[LinkName("QStyleOption_Delete")]
 	public static extern void QStyleOption_Delete(void* self);
 }
-public class QStyleOptionFocusRect
+public interface IQStyleOptionFocusRect
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionFocusRect : IQStyleOptionFocusRect, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -529,14 +539,14 @@ public class QStyleOptionFocusRect
 		CQt.QStyleOptionFocusRect_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -550,9 +560,14 @@ extension CQt
 	[LinkName("QStyleOptionFocusRect_Delete")]
 	public static extern void QStyleOptionFocusRect_Delete(void* self);
 }
-public class QStyleOptionFrame
+public interface IQStyleOptionFrame
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionFrame : IQStyleOptionFrame, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -564,14 +579,14 @@ public class QStyleOptionFrame
 		CQt.QStyleOptionFrame_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -585,9 +600,14 @@ extension CQt
 	[LinkName("QStyleOptionFrame_Delete")]
 	public static extern void QStyleOptionFrame_Delete(void* self);
 }
-public class QStyleOptionTabWidgetFrame
+public interface IQStyleOptionTabWidgetFrame
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionTabWidgetFrame : IQStyleOptionTabWidgetFrame, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -599,14 +619,14 @@ public class QStyleOptionTabWidgetFrame
 		CQt.QStyleOptionTabWidgetFrame_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -620,9 +640,14 @@ extension CQt
 	[LinkName("QStyleOptionTabWidgetFrame_Delete")]
 	public static extern void QStyleOptionTabWidgetFrame_Delete(void* self);
 }
-public class QStyleOptionTabBarBase
+public interface IQStyleOptionTabBarBase
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionTabBarBase : IQStyleOptionTabBarBase, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -634,14 +659,14 @@ public class QStyleOptionTabBarBase
 		CQt.QStyleOptionTabBarBase_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -655,9 +680,14 @@ extension CQt
 	[LinkName("QStyleOptionTabBarBase_Delete")]
 	public static extern void QStyleOptionTabBarBase_Delete(void* self);
 }
-public class QStyleOptionHeader
+public interface IQStyleOptionHeader
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionHeader : IQStyleOptionHeader, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -669,14 +699,14 @@ public class QStyleOptionHeader
 		CQt.QStyleOptionHeader_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -690,9 +720,14 @@ extension CQt
 	[LinkName("QStyleOptionHeader_Delete")]
 	public static extern void QStyleOptionHeader_Delete(void* self);
 }
-public class QStyleOptionHeaderV2
+public interface IQStyleOptionHeaderV2
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionHeaderV2 : IQStyleOptionHeaderV2, IQStyleOptionHeader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -704,14 +739,14 @@ public class QStyleOptionHeaderV2
 		CQt.QStyleOptionHeaderV2_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -725,9 +760,14 @@ extension CQt
 	[LinkName("QStyleOptionHeaderV2_Delete")]
 	public static extern void QStyleOptionHeaderV2_Delete(void* self);
 }
-public class QStyleOptionButton
+public interface IQStyleOptionButton
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionButton : IQStyleOptionButton, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -739,14 +779,14 @@ public class QStyleOptionButton
 		CQt.QStyleOptionButton_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -760,9 +800,14 @@ extension CQt
 	[LinkName("QStyleOptionButton_Delete")]
 	public static extern void QStyleOptionButton_Delete(void* self);
 }
-public class QStyleOptionTab
+public interface IQStyleOptionTab
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionTab : IQStyleOptionTab, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -774,14 +819,14 @@ public class QStyleOptionTab
 		CQt.QStyleOptionTab_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -795,9 +840,14 @@ extension CQt
 	[LinkName("QStyleOptionTab_Delete")]
 	public static extern void QStyleOptionTab_Delete(void* self);
 }
-public class QStyleOptionToolBar
+public interface IQStyleOptionToolBar
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionToolBar : IQStyleOptionToolBar, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -809,14 +859,14 @@ public class QStyleOptionToolBar
 		CQt.QStyleOptionToolBar_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -830,9 +880,14 @@ extension CQt
 	[LinkName("QStyleOptionToolBar_Delete")]
 	public static extern void QStyleOptionToolBar_Delete(void* self);
 }
-public class QStyleOptionProgressBar
+public interface IQStyleOptionProgressBar
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionProgressBar : IQStyleOptionProgressBar, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -844,14 +899,14 @@ public class QStyleOptionProgressBar
 		CQt.QStyleOptionProgressBar_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -865,9 +920,14 @@ extension CQt
 	[LinkName("QStyleOptionProgressBar_Delete")]
 	public static extern void QStyleOptionProgressBar_Delete(void* self);
 }
-public class QStyleOptionMenuItem
+public interface IQStyleOptionMenuItem
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionMenuItem : IQStyleOptionMenuItem, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -879,14 +939,14 @@ public class QStyleOptionMenuItem
 		CQt.QStyleOptionMenuItem_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -900,9 +960,14 @@ extension CQt
 	[LinkName("QStyleOptionMenuItem_Delete")]
 	public static extern void QStyleOptionMenuItem_Delete(void* self);
 }
-public class QStyleOptionDockWidget
+public interface IQStyleOptionDockWidget
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionDockWidget : IQStyleOptionDockWidget, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -914,14 +979,14 @@ public class QStyleOptionDockWidget
 		CQt.QStyleOptionDockWidget_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -935,9 +1000,14 @@ extension CQt
 	[LinkName("QStyleOptionDockWidget_Delete")]
 	public static extern void QStyleOptionDockWidget_Delete(void* self);
 }
-public class QStyleOptionViewItem
+public interface IQStyleOptionViewItem
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionViewItem : IQStyleOptionViewItem, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -949,14 +1019,14 @@ public class QStyleOptionViewItem
 		CQt.QStyleOptionViewItem_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -970,9 +1040,14 @@ extension CQt
 	[LinkName("QStyleOptionViewItem_Delete")]
 	public static extern void QStyleOptionViewItem_Delete(void* self);
 }
-public class QStyleOptionToolBox
+public interface IQStyleOptionToolBox
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionToolBox : IQStyleOptionToolBox, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -984,14 +1059,14 @@ public class QStyleOptionToolBox
 		CQt.QStyleOptionToolBox_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1005,9 +1080,14 @@ extension CQt
 	[LinkName("QStyleOptionToolBox_Delete")]
 	public static extern void QStyleOptionToolBox_Delete(void* self);
 }
-public class QStyleOptionRubberBand
+public interface IQStyleOptionRubberBand
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionRubberBand : IQStyleOptionRubberBand, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1019,14 +1099,14 @@ public class QStyleOptionRubberBand
 		CQt.QStyleOptionRubberBand_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1040,9 +1120,14 @@ extension CQt
 	[LinkName("QStyleOptionRubberBand_Delete")]
 	public static extern void QStyleOptionRubberBand_Delete(void* self);
 }
-public class QStyleOptionComplex
+public interface IQStyleOptionComplex
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionComplex : IQStyleOptionComplex, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1054,14 +1139,14 @@ public class QStyleOptionComplex
 		CQt.QStyleOptionComplex_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1079,9 +1164,14 @@ extension CQt
 	[LinkName("QStyleOptionComplex_Delete")]
 	public static extern void QStyleOptionComplex_Delete(void* self);
 }
-public class QStyleOptionSlider
+public interface IQStyleOptionSlider
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionSlider : IQStyleOptionSlider, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1093,14 +1183,14 @@ public class QStyleOptionSlider
 		CQt.QStyleOptionSlider_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1114,9 +1204,14 @@ extension CQt
 	[LinkName("QStyleOptionSlider_Delete")]
 	public static extern void QStyleOptionSlider_Delete(void* self);
 }
-public class QStyleOptionSpinBox
+public interface IQStyleOptionSpinBox
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionSpinBox : IQStyleOptionSpinBox, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1128,14 +1223,14 @@ public class QStyleOptionSpinBox
 		CQt.QStyleOptionSpinBox_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1149,9 +1244,14 @@ extension CQt
 	[LinkName("QStyleOptionSpinBox_Delete")]
 	public static extern void QStyleOptionSpinBox_Delete(void* self);
 }
-public class QStyleOptionToolButton
+public interface IQStyleOptionToolButton
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionToolButton : IQStyleOptionToolButton, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1163,14 +1263,14 @@ public class QStyleOptionToolButton
 		CQt.QStyleOptionToolButton_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1184,9 +1284,14 @@ extension CQt
 	[LinkName("QStyleOptionToolButton_Delete")]
 	public static extern void QStyleOptionToolButton_Delete(void* self);
 }
-public class QStyleOptionComboBox
+public interface IQStyleOptionComboBox
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionComboBox : IQStyleOptionComboBox, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1198,14 +1303,14 @@ public class QStyleOptionComboBox
 		CQt.QStyleOptionComboBox_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1219,9 +1324,14 @@ extension CQt
 	[LinkName("QStyleOptionComboBox_Delete")]
 	public static extern void QStyleOptionComboBox_Delete(void* self);
 }
-public class QStyleOptionTitleBar
+public interface IQStyleOptionTitleBar
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionTitleBar : IQStyleOptionTitleBar, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1233,14 +1343,14 @@ public class QStyleOptionTitleBar
 		CQt.QStyleOptionTitleBar_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1254,9 +1364,14 @@ extension CQt
 	[LinkName("QStyleOptionTitleBar_Delete")]
 	public static extern void QStyleOptionTitleBar_Delete(void* self);
 }
-public class QStyleOptionGroupBox
+public interface IQStyleOptionGroupBox
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionGroupBox : IQStyleOptionGroupBox, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1268,14 +1383,14 @@ public class QStyleOptionGroupBox
 		CQt.QStyleOptionGroupBox_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1289,9 +1404,14 @@ extension CQt
 	[LinkName("QStyleOptionGroupBox_Delete")]
 	public static extern void QStyleOptionGroupBox_Delete(void* self);
 }
-public class QStyleOptionSizeGrip
+public interface IQStyleOptionSizeGrip
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionSizeGrip : IQStyleOptionSizeGrip, IQStyleOptionComplex
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1303,14 +1423,14 @@ public class QStyleOptionSizeGrip
 		CQt.QStyleOptionSizeGrip_Delete(this.nativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1324,9 +1444,14 @@ extension CQt
 	[LinkName("QStyleOptionSizeGrip_Delete")]
 	public static extern void QStyleOptionSizeGrip_Delete(void* self);
 }
-public class QStyleOptionGraphicsItem
+public interface IQStyleOptionGraphicsItem
+{
+	void* NativePtr { get; }
+}
+public class QStyleOptionGraphicsItem : IQStyleOptionGraphicsItem, IQStyleOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1338,19 +1463,19 @@ public class QStyleOptionGraphicsItem
 		CQt.QStyleOptionGraphicsItem_Delete(this.nativePtr);
 	}
 	
-	public static double LevelOfDetailFromTransform(void* worldTransform)
+	public static double LevelOfDetailFromTransform(IQTransform worldTransform)
 	{
-		return CQt.QStyleOptionGraphicsItem_LevelOfDetailFromTransform(worldTransform);
+		return CQt.QStyleOptionGraphicsItem_LevelOfDetailFromTransform((worldTransform == default) ? default : (void*)worldTransform.NativePtr);
 	}
 	
-	public void InitFrom(void* w)
+	public void InitFrom(IQWidget w)
 	{
-		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+		CQt.QStyleOption_InitFrom(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStyleOption other)
 	{
-		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -1366,9 +1491,14 @@ extension CQt
 	[LinkName("QStyleOptionGraphicsItem_Delete")]
 	public static extern void QStyleOptionGraphicsItem_Delete(void* self);
 }
-public class QStyleHintReturn
+public interface IQStyleHintReturn
+{
+	void* NativePtr { get; }
+}
+public class QStyleHintReturn : IQStyleHintReturn
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1380,9 +1510,9 @@ public class QStyleHintReturn
 		CQt.QStyleHintReturn_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQStyleHintReturn param1)
 	{
-		CQt.QStyleHintReturn_OperatorAssign(this.nativePtr, param1);
+		CQt.QStyleHintReturn_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -1402,9 +1532,14 @@ extension CQt
 	[LinkName("QStyleHintReturn_Delete")]
 	public static extern void QStyleHintReturn_Delete(void* self);
 }
-public class QStyleHintReturnMask
+public interface IQStyleHintReturnMask
+{
+	void* NativePtr { get; }
+}
+public class QStyleHintReturnMask : IQStyleHintReturnMask, IQStyleHintReturn
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1416,9 +1551,9 @@ public class QStyleHintReturnMask
 		CQt.QStyleHintReturnMask_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQStyleHintReturnMask param1)
 	{
-		CQt.QStyleHintReturnMask_OperatorAssign(this.nativePtr, param1);
+		CQt.QStyleHintReturnMask_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -1434,9 +1569,14 @@ extension CQt
 	[LinkName("QStyleHintReturnMask_Delete")]
 	public static extern void QStyleHintReturnMask_Delete(void* self);
 }
-public class QStyleHintReturnVariant
+public interface IQStyleHintReturnVariant
+{
+	void* NativePtr { get; }
+}
+public class QStyleHintReturnVariant : IQStyleHintReturnVariant, IQStyleHintReturn
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1448,9 +1588,9 @@ public class QStyleHintReturnVariant
 		CQt.QStyleHintReturnVariant_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQStyleHintReturnVariant param1)
 	{
-		CQt.QStyleHintReturnVariant_OperatorAssign(this.nativePtr, param1);
+		CQt.QStyleHintReturnVariant_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }

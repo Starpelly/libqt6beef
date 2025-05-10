@@ -39,9 +39,14 @@ public enum QPalette__ColorRole
 	PlaceholderText = 20,
 	NColorRoles = 21,
 }
-public class QPalette
+public interface IQPalette
+{
+	void* NativePtr { get; }
+}
+public class QPalette : IQPalette
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -53,14 +58,14 @@ public class QPalette
 		CQt.QPalette_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* palette)
+	public void OperatorAssign(IQPalette palette)
 	{
-		CQt.QPalette_OperatorAssign(this.nativePtr, palette);
+		CQt.QPalette_OperatorAssign(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPalette other)
 	{
-		CQt.QPalette_Swap(this.nativePtr, other);
+		CQt.QPalette_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -88,19 +93,19 @@ public class QPalette
 		return CQt.QPalette_Brush(this.nativePtr, cg, cr);
 	}
 	
-	public void SetColor(int64 cg, int64 cr, void* color)
+	public void SetColor(int64 cg, int64 cr, IQColor color)
 	{
-		CQt.QPalette_SetColor(this.nativePtr, cg, cr, color);
+		CQt.QPalette_SetColor(this.nativePtr, cg, cr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
-	public void SetColor2(int64 cr, void* color)
+	public void SetColor2(int64 cr, IQColor color)
 	{
-		CQt.QPalette_SetColor2(this.nativePtr, cr, color);
+		CQt.QPalette_SetColor2(this.nativePtr, cr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
-	public void SetBrush(int64 cr, void* brush)
+	public void SetBrush(int64 cr, IQBrush brush)
 	{
-		CQt.QPalette_SetBrush(this.nativePtr, cr, brush);
+		CQt.QPalette_SetBrush(this.nativePtr, cr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public bool IsBrushSet(int64 cg, int64 cr)
@@ -108,14 +113,14 @@ public class QPalette
 		return CQt.QPalette_IsBrushSet(this.nativePtr, cg, cr);
 	}
 	
-	public void SetBrush2(int64 cg, int64 cr, void* brush)
+	public void SetBrush2(int64 cg, int64 cr, IQBrush brush)
 	{
-		CQt.QPalette_SetBrush2(this.nativePtr, cg, cr, brush);
+		CQt.QPalette_SetBrush2(this.nativePtr, cg, cr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void SetColorGroup(int64 cr, void* windowText, void* button, void* light, void* dark, void* mid, void* text, void* bright_text, void* _base, void* window)
+	public void SetColorGroup(int64 cr, IQBrush windowText, IQBrush button, IQBrush light, IQBrush dark, IQBrush mid, IQBrush text, IQBrush bright_text, IQBrush _base, IQBrush window)
 	{
-		CQt.QPalette_SetColorGroup(this.nativePtr, cr, windowText, button, light, dark, mid, text, bright_text, _base, window);
+		CQt.QPalette_SetColorGroup(this.nativePtr, cr, (windowText == default) ? default : (void*)windowText.NativePtr, (button == default) ? default : (void*)button.NativePtr, (light == default) ? default : (void*)light.NativePtr, (dark == default) ? default : (void*)dark.NativePtr, (mid == default) ? default : (void*)mid.NativePtr, (text == default) ? default : (void*)text.NativePtr, (bright_text == default) ? default : (void*)bright_text.NativePtr, (_base == default) ? default : (void*)_base.NativePtr, (window == default) ? default : (void*)window.NativePtr);
 	}
 	
 	public bool IsEqual(int64 cr1, int64 cr2)
@@ -233,19 +238,19 @@ public class QPalette
 		return CQt.QPalette_PlaceholderText(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* p)
+	public bool OperatorEqual(IQPalette p)
 	{
-		return CQt.QPalette_OperatorEqual(this.nativePtr, p);
+		return CQt.QPalette_OperatorEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* p)
+	public bool OperatorNotEqual(IQPalette p)
 	{
-		return CQt.QPalette_OperatorNotEqual(this.nativePtr, p);
+		return CQt.QPalette_OperatorNotEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public bool IsCopyOf(void* p)
+	public bool IsCopyOf(IQPalette p)
 	{
-		return CQt.QPalette_IsCopyOf(this.nativePtr, p);
+		return CQt.QPalette_IsCopyOf(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public int64 CacheKey()
@@ -253,9 +258,9 @@ public class QPalette
 		return CQt.QPalette_CacheKey(this.nativePtr);
 	}
 	
-	public void Resolve(void* other)
+	public void Resolve(IQPalette other)
 	{
-		CQt.QPalette_Resolve(this.nativePtr, other);
+		CQt.QPalette_Resolve(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public uint64 ResolveMask()

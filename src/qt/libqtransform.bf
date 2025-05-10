@@ -12,13 +12,18 @@ public enum QTransform__TransformationType
 	TxShear = 8,
 	TxProject = 16,
 }
-public class QTransform
+public interface IQTransform
+{
+	void* NativePtr { get; }
+}
+public class QTransform : IQTransform
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTransform other)
 	{
-		this.nativePtr = CQt.QTransform_new(other);
+		this.nativePtr = CQt.QTransform_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -26,9 +31,9 @@ public class QTransform
 		CQt.QTransform_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQTransform param1)
 	{
-		CQt.QTransform_OperatorAssign(this.nativePtr, param1);
+		CQt.QTransform_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public bool IsAffine()
@@ -171,24 +176,24 @@ public class QTransform
 		return CQt.QTransform_RotateRadians(this.nativePtr, a);
 	}
 	
-	public bool OperatorEqual(void* param1)
+	public bool OperatorEqual(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorEqual(this.nativePtr, param1);
+		return CQt.QTransform_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* param1)
+	public bool OperatorNotEqual(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorNotEqual(this.nativePtr, param1);
+		return CQt.QTransform_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void* OperatorMultiplyAssign(void* param1)
+	public void* OperatorMultiplyAssign(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorMultiplyAssign(this.nativePtr, param1);
+		return CQt.QTransform_OperatorMultiplyAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void OperatorMultiply(void* o)
+	public void OperatorMultiply(IQTransform o)
 	{
-		CQt.QTransform_OperatorMultiply(this.nativePtr, o);
+		CQt.QTransform_OperatorMultiply(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -201,44 +206,44 @@ public class QTransform
 		CQt.QTransform_Reset(this.nativePtr);
 	}
 	
-	public void Map(void* p)
+	public void Map(IQPoint p)
 	{
-		CQt.QTransform_Map(this.nativePtr, p);
+		CQt.QTransform_Map(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void MapWithQPointF(void* p)
+	public void MapWithQPointF(IQPointF p)
 	{
-		CQt.QTransform_MapWithQPointF(this.nativePtr, p);
+		CQt.QTransform_MapWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void MapWithQLine(void* l)
+	public void MapWithQLine(IQLine l)
 	{
-		CQt.QTransform_MapWithQLine(this.nativePtr, l);
+		CQt.QTransform_MapWithQLine(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
 	}
 	
-	public void MapWithQLineF(void* l)
+	public void MapWithQLineF(IQLineF l)
 	{
-		CQt.QTransform_MapWithQLineF(this.nativePtr, l);
+		CQt.QTransform_MapWithQLineF(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
 	}
 	
-	public void MapWithQRegion(void* r)
+	public void MapWithQRegion(IQRegion r)
 	{
-		CQt.QTransform_MapWithQRegion(this.nativePtr, r);
+		CQt.QTransform_MapWithQRegion(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public void MapWithQPainterPath(void* p)
+	public void MapWithQPainterPath(IQPainterPath p)
 	{
-		CQt.QTransform_MapWithQPainterPath(this.nativePtr, p);
+		CQt.QTransform_MapWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void MapRect(void* param1)
+	public void MapRect(IQRect param1)
 	{
-		CQt.QTransform_MapRect(this.nativePtr, param1);
+		CQt.QTransform_MapRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapRectWithQRectF(void* param1)
+	public void MapRectWithQRectF(IQRectF param1)
 	{
-		CQt.QTransform_MapRectWithQRectF(this.nativePtr, param1);
+		CQt.QTransform_MapRectWithQRectF(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void Map2(int32 x, int32 y, int32* tx, int32* ty)

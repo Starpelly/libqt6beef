@@ -40,13 +40,18 @@ public enum QSizePolicy__ControlType
 	TabWidget = 8192,
 	ToolButton = 16384,
 }
-public class QSizePolicy
+public interface IQSizePolicy
+{
+	void* NativePtr { get; }
+}
+public class QSizePolicy : IQSizePolicy
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQSizePolicy other)
 	{
-		this.nativePtr = CQt.QSizePolicy_new(other);
+		this.nativePtr = CQt.QSizePolicy_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -109,14 +114,14 @@ public class QSizePolicy
 		return CQt.QSizePolicy_HasWidthForHeight(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* s)
+	public bool OperatorEqual(IQSizePolicy s)
 	{
-		return CQt.QSizePolicy_OperatorEqual(this.nativePtr, s);
+		return CQt.QSizePolicy_OperatorEqual(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* s)
+	public bool OperatorNotEqual(IQSizePolicy s)
 	{
-		return CQt.QSizePolicy_OperatorNotEqual(this.nativePtr, s);
+		return CQt.QSizePolicy_OperatorNotEqual(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
 	public void ToQVariant()

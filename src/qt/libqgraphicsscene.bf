@@ -16,9 +16,14 @@ public enum QGraphicsScene__SceneLayer
 	ForegroundLayer = 4,
 	AllLayers = 65535,
 }
-public class QGraphicsScene
+public interface IQGraphicsScene
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsScene : IQGraphicsScene, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -35,7 +40,7 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsScene_Metacast(this.nativePtr, param1);
 	}
@@ -45,7 +50,7 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsScene_Tr(s);
 	}
@@ -65,9 +70,9 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Height(this.nativePtr);
 	}
 	
-	public void SetSceneRect(void* rect)
+	public void SetSceneRect(IQRectF rect)
 	{
-		CQt.QGraphicsScene_SetSceneRect(this.nativePtr, rect);
+		CQt.QGraphicsScene_SetSceneRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void SetSceneRect2(double x, double y, double w, double h)
@@ -75,9 +80,9 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_SetSceneRect2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void Render(void* painter)
+	public void Render(IQPainter painter)
 	{
-		CQt.QGraphicsScene_Render(this.nativePtr, painter);
+		CQt.QGraphicsScene_Render(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public int64 ItemIndexMethod()
@@ -110,19 +115,19 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Items(this.nativePtr);
 	}
 	
-	public void*[] ItemsWithPos(void* pos)
+	public void*[] ItemsWithPos(IQPointF pos)
 	{
-		return CQt.QGraphicsScene_ItemsWithPos(this.nativePtr, pos);
+		return CQt.QGraphicsScene_ItemsWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
-	public void*[] ItemsWithRect(void* rect)
+	public void*[] ItemsWithRect(IQRectF rect)
 	{
-		return CQt.QGraphicsScene_ItemsWithRect(this.nativePtr, rect);
+		return CQt.QGraphicsScene_ItemsWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void*[] ItemsWithPath(void* path)
+	public void*[] ItemsWithPath(IQPainterPath path)
 	{
-		return CQt.QGraphicsScene_ItemsWithPath(this.nativePtr, path);
+		return CQt.QGraphicsScene_ItemsWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
 	public void*[] Items2(double x, double y, double w, double h, int64 mode, int64 order)
@@ -130,19 +135,19 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Items2(this.nativePtr, x, y, w, h, mode, order);
 	}
 	
-	public void*[] CollidingItems(void* item)
+	public void*[] CollidingItems(IQGraphicsItem item)
 	{
-		return CQt.QGraphicsScene_CollidingItems(this.nativePtr, item);
+		return CQt.QGraphicsScene_CollidingItems(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void* ItemAt(void* pos, void* deviceTransform)
+	public void* ItemAt(IQPointF pos, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_ItemAt(this.nativePtr, pos, deviceTransform);
+		return CQt.QGraphicsScene_ItemAt(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void* ItemAt2(double x, double y, void* deviceTransform)
+	public void* ItemAt2(double x, double y, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_ItemAt2(this.nativePtr, x, y, deviceTransform);
+		return CQt.QGraphicsScene_ItemAt2(this.nativePtr, x, y, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
 	public void*[] SelectedItems()
@@ -155,69 +160,69 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_SelectionArea(this.nativePtr);
 	}
 	
-	public void SetSelectionArea(void* path, void* deviceTransform)
+	public void SetSelectionArea(IQPainterPath path, IQTransform deviceTransform)
 	{
-		CQt.QGraphicsScene_SetSelectionArea(this.nativePtr, path, deviceTransform);
+		CQt.QGraphicsScene_SetSelectionArea(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void SetSelectionAreaWithPath(void* path)
+	public void SetSelectionAreaWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsScene_SetSelectionAreaWithPath(this.nativePtr, path);
+		CQt.QGraphicsScene_SetSelectionAreaWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void* CreateItemGroup(void*[] items)
+	public void* CreateItemGroup(IQGraphicsItem[] items)
 	{
-		return CQt.QGraphicsScene_CreateItemGroup(this.nativePtr, items);
+		return CQt.QGraphicsScene_CreateItemGroup(this.nativePtr, null);
 	}
 	
-	public void DestroyItemGroup(void* group)
+	public void DestroyItemGroup(IQGraphicsItemGroup group)
 	{
-		CQt.QGraphicsScene_DestroyItemGroup(this.nativePtr, group);
+		CQt.QGraphicsScene_DestroyItemGroup(this.nativePtr, (group == null) ? null : (void*)group.NativePtr);
 	}
 	
-	public void AddItem(void* item)
+	public void AddItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsScene_AddItem(this.nativePtr, item);
+		CQt.QGraphicsScene_AddItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void* AddEllipse(void* rect)
+	public void* AddEllipse(IQRectF rect)
 	{
-		return CQt.QGraphicsScene_AddEllipse(this.nativePtr, rect);
+		return CQt.QGraphicsScene_AddEllipse(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void* AddLine(void* line)
+	public void* AddLine(IQLineF line)
 	{
-		return CQt.QGraphicsScene_AddLine(this.nativePtr, line);
+		return CQt.QGraphicsScene_AddLine(this.nativePtr, (line == default) ? default : (void*)line.NativePtr);
 	}
 	
-	public void* AddPath(void* path)
+	public void* AddPath(IQPainterPath path)
 	{
-		return CQt.QGraphicsScene_AddPath(this.nativePtr, path);
+		return CQt.QGraphicsScene_AddPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void* AddPixmap(void* pixmap)
+	public void* AddPixmap(IQPixmap pixmap)
 	{
-		return CQt.QGraphicsScene_AddPixmap(this.nativePtr, pixmap);
+		return CQt.QGraphicsScene_AddPixmap(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr);
 	}
 	
-	public void* AddRect(void* rect)
+	public void* AddRect(IQRectF rect)
 	{
-		return CQt.QGraphicsScene_AddRect(this.nativePtr, rect);
+		return CQt.QGraphicsScene_AddRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void* AddText(libqt_string text)
+	public void* AddText(String text)
 	{
-		return CQt.QGraphicsScene_AddText(this.nativePtr, text);
+		return CQt.QGraphicsScene_AddText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void* AddSimpleText(libqt_string text)
+	public void* AddSimpleText(String text)
 	{
-		return CQt.QGraphicsScene_AddSimpleText(this.nativePtr, text);
+		return CQt.QGraphicsScene_AddSimpleText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void* AddWidget(void* widget)
+	public void* AddWidget(IQWidget widget)
 	{
-		return CQt.QGraphicsScene_AddWidget(this.nativePtr, widget);
+		return CQt.QGraphicsScene_AddWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public void* AddEllipse2(double x, double y, double w, double h)
@@ -235,9 +240,9 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_AddRect2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void RemoveItem(void* item)
+	public void RemoveItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsScene_RemoveItem(this.nativePtr, item);
+		CQt.QGraphicsScene_RemoveItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void* FocusItem()
@@ -245,9 +250,9 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_FocusItem(this.nativePtr);
 	}
 	
-	public void SetFocusItem(void* item)
+	public void SetFocusItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsScene_SetFocusItem(this.nativePtr, item);
+		CQt.QGraphicsScene_SetFocusItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public bool HasFocus()
@@ -285,9 +290,9 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_BackgroundBrush(this.nativePtr);
 	}
 	
-	public void SetBackgroundBrush(void* brush)
+	public void SetBackgroundBrush(IQBrush brush)
 	{
-		CQt.QGraphicsScene_SetBackgroundBrush(this.nativePtr, brush);
+		CQt.QGraphicsScene_SetBackgroundBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void ForegroundBrush()
@@ -295,9 +300,9 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_ForegroundBrush(this.nativePtr);
 	}
 	
-	public void SetForegroundBrush(void* brush)
+	public void SetForegroundBrush(IQBrush brush)
 	{
-		CQt.QGraphicsScene_SetForegroundBrush(this.nativePtr, brush);
+		CQt.QGraphicsScene_SetForegroundBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public virtual void InputMethodQuery(int64 query)
@@ -325,9 +330,9 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Style(this.nativePtr);
 	}
 	
-	public void SetStyle(void* style)
+	public void SetStyle(IQStyle style)
 	{
-		CQt.QGraphicsScene_SetStyle(this.nativePtr, style);
+		CQt.QGraphicsScene_SetStyle(this.nativePtr, (style == null) ? null : (void*)style.NativePtr);
 	}
 	
 	public void Font()
@@ -335,9 +340,9 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_Font(this.nativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QGraphicsScene_SetFont(this.nativePtr, font);
+		CQt.QGraphicsScene_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void Palette()
@@ -345,9 +350,9 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_Palette(this.nativePtr);
 	}
 	
-	public void SetPalette(void* palette)
+	public void SetPalette(IQPalette palette)
 	{
-		CQt.QGraphicsScene_SetPalette(this.nativePtr, palette);
+		CQt.QGraphicsScene_SetPalette(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
 	public bool IsActive()
@@ -360,9 +365,9 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_ActivePanel(this.nativePtr);
 	}
 	
-	public void SetActivePanel(void* item)
+	public void SetActivePanel(IQGraphicsItem item)
 	{
-		CQt.QGraphicsScene_SetActivePanel(this.nativePtr, item);
+		CQt.QGraphicsScene_SetActivePanel(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void* ActiveWindow()
@@ -370,14 +375,14 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_ActiveWindow(this.nativePtr);
 	}
 	
-	public void SetActiveWindow(void* widget)
+	public void SetActiveWindow(IQGraphicsWidget widget)
 	{
-		CQt.QGraphicsScene_SetActiveWindow(this.nativePtr, widget);
+		CQt.QGraphicsScene_SetActiveWindow(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public bool SendEvent(void* item, void* event)
+	public bool SendEvent(IQGraphicsItem item, IQEvent event)
 	{
-		return CQt.QGraphicsScene_SendEvent(this.nativePtr, item, event);
+		return CQt.QGraphicsScene_SendEvent(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public double MinimumRenderSize()
@@ -425,104 +430,104 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_Clear(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QGraphicsScene_Event(this.nativePtr, event);
+		return CQt.QGraphicsScene_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QGraphicsScene_EventFilter(this.nativePtr, watched, event);
+		return CQt.QGraphicsScene_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void ContextMenuEvent(void* event)
+	public virtual void ContextMenuEvent(IQGraphicsSceneContextMenuEvent event)
 	{
-		CQt.QGraphicsScene_ContextMenuEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_ContextMenuEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragEnterEvent(void* event)
+	public virtual void DragEnterEvent(IQGraphicsSceneDragDropEvent event)
 	{
-		CQt.QGraphicsScene_DragEnterEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_DragEnterEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragMoveEvent(void* event)
+	public virtual void DragMoveEvent(IQGraphicsSceneDragDropEvent event)
 	{
-		CQt.QGraphicsScene_DragMoveEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_DragMoveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragLeaveEvent(void* event)
+	public virtual void DragLeaveEvent(IQGraphicsSceneDragDropEvent event)
 	{
-		CQt.QGraphicsScene_DragLeaveEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_DragLeaveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DropEvent(void* event)
+	public virtual void DropEvent(IQGraphicsSceneDragDropEvent event)
 	{
-		CQt.QGraphicsScene_DropEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_DropEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void FocusInEvent(void* event)
+	public virtual void FocusInEvent(IQFocusEvent event)
 	{
-		CQt.QGraphicsScene_FocusInEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_FocusInEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void FocusOutEvent(void* event)
+	public virtual void FocusOutEvent(IQFocusEvent event)
 	{
-		CQt.QGraphicsScene_FocusOutEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_FocusOutEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void HelpEvent(void* event)
+	public virtual void HelpEvent(IQGraphicsSceneHelpEvent event)
 	{
-		CQt.QGraphicsScene_HelpEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_HelpEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void KeyPressEvent(void* event)
+	public virtual void KeyPressEvent(IQKeyEvent event)
 	{
-		CQt.QGraphicsScene_KeyPressEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_KeyPressEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void KeyReleaseEvent(void* event)
+	public virtual void KeyReleaseEvent(IQKeyEvent event)
 	{
-		CQt.QGraphicsScene_KeyReleaseEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_KeyReleaseEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MousePressEvent(void* event)
+	public virtual void MousePressEvent(IQGraphicsSceneMouseEvent event)
 	{
-		CQt.QGraphicsScene_MousePressEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_MousePressEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseMoveEvent(void* event)
+	public virtual void MouseMoveEvent(IQGraphicsSceneMouseEvent event)
 	{
-		CQt.QGraphicsScene_MouseMoveEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_MouseMoveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseReleaseEvent(void* event)
+	public virtual void MouseReleaseEvent(IQGraphicsSceneMouseEvent event)
 	{
-		CQt.QGraphicsScene_MouseReleaseEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_MouseReleaseEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseDoubleClickEvent(void* event)
+	public virtual void MouseDoubleClickEvent(IQGraphicsSceneMouseEvent event)
 	{
-		CQt.QGraphicsScene_MouseDoubleClickEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_MouseDoubleClickEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void WheelEvent(void* event)
+	public virtual void WheelEvent(IQGraphicsSceneWheelEvent event)
 	{
-		CQt.QGraphicsScene_WheelEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_WheelEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void InputMethodEvent(void* event)
+	public virtual void InputMethodEvent(IQInputMethodEvent event)
 	{
-		CQt.QGraphicsScene_InputMethodEvent(this.nativePtr, event);
+		CQt.QGraphicsScene_InputMethodEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DrawBackground(void* painter, void* rect)
+	public virtual void DrawBackground(IQPainter painter, IQRectF rect)
 	{
-		CQt.QGraphicsScene_DrawBackground(this.nativePtr, painter, rect);
+		CQt.QGraphicsScene_DrawBackground(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public virtual void DrawForeground(void* painter, void* rect)
+	public virtual void DrawForeground(IQPainter painter, IQRectF rect)
 	{
-		CQt.QGraphicsScene_DrawForeground(this.nativePtr, painter, rect);
+		CQt.QGraphicsScene_DrawForeground(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public virtual bool FocusNextPrevChild(bool next)
@@ -530,29 +535,29 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_FocusNextPrevChild(this.nativePtr, next);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsScene_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsScene_Tr3(s, c, n);
 	}
 	
-	public void Render2(void* painter, void* target)
+	public void Render2(IQPainter painter, IQRectF target)
 	{
-		CQt.QGraphicsScene_Render2(this.nativePtr, painter, target);
+		CQt.QGraphicsScene_Render2(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr);
 	}
 	
-	public void Render3(void* painter, void* target, void* source)
+	public void Render3(IQPainter painter, IQRectF target, IQRectF source)
 	{
-		CQt.QGraphicsScene_Render3(this.nativePtr, painter, target, source);
+		CQt.QGraphicsScene_Render3(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr, (source == default) ? default : (void*)source.NativePtr);
 	}
 	
-	public void Render4(void* painter, void* target, void* source, int64 aspectRatioMode)
+	public void Render4(IQPainter painter, IQRectF target, IQRectF source, int64 aspectRatioMode)
 	{
-		CQt.QGraphicsScene_Render4(this.nativePtr, painter, target, source, aspectRatioMode);
+		CQt.QGraphicsScene_Render4(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr, (source == default) ? default : (void*)source.NativePtr, aspectRatioMode);
 	}
 	
 	public void*[] Items1(int64 order)
@@ -560,154 +565,154 @@ public class QGraphicsScene
 		return CQt.QGraphicsScene_Items1(this.nativePtr, order);
 	}
 	
-	public void*[] Items22(void* pos, int64 mode)
+	public void*[] Items22(IQPointF pos, int64 mode)
 	{
-		return CQt.QGraphicsScene_Items22(this.nativePtr, pos, mode);
+		return CQt.QGraphicsScene_Items22(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr, mode);
 	}
 	
-	public void*[] Items3(void* pos, int64 mode, int64 order)
+	public void*[] Items3(IQPointF pos, int64 mode, int64 order)
 	{
-		return CQt.QGraphicsScene_Items3(this.nativePtr, pos, mode, order);
+		return CQt.QGraphicsScene_Items3(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr, mode, order);
 	}
 	
-	public void*[] Items4(void* pos, int64 mode, int64 order, void* deviceTransform)
+	public void*[] Items4(IQPointF pos, int64 mode, int64 order, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_Items4(this.nativePtr, pos, mode, order, deviceTransform);
+		return CQt.QGraphicsScene_Items4(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr, mode, order, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void*[] Items23(void* rect, int64 mode)
+	public void*[] Items23(IQRectF rect, int64 mode)
 	{
-		return CQt.QGraphicsScene_Items23(this.nativePtr, rect, mode);
+		return CQt.QGraphicsScene_Items23(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, mode);
 	}
 	
-	public void*[] Items32(void* rect, int64 mode, int64 order)
+	public void*[] Items32(IQRectF rect, int64 mode, int64 order)
 	{
-		return CQt.QGraphicsScene_Items32(this.nativePtr, rect, mode, order);
+		return CQt.QGraphicsScene_Items32(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, mode, order);
 	}
 	
-	public void*[] Items42(void* rect, int64 mode, int64 order, void* deviceTransform)
+	public void*[] Items42(IQRectF rect, int64 mode, int64 order, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_Items42(this.nativePtr, rect, mode, order, deviceTransform);
+		return CQt.QGraphicsScene_Items42(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, mode, order, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void*[] Items25(void* path, int64 mode)
+	public void*[] Items25(IQPainterPath path, int64 mode)
 	{
-		return CQt.QGraphicsScene_Items25(this.nativePtr, path, mode);
+		return CQt.QGraphicsScene_Items25(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, mode);
 	}
 	
-	public void*[] Items34(void* path, int64 mode, int64 order)
+	public void*[] Items34(IQPainterPath path, int64 mode, int64 order)
 	{
-		return CQt.QGraphicsScene_Items34(this.nativePtr, path, mode, order);
+		return CQt.QGraphicsScene_Items34(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, mode, order);
 	}
 	
-	public void*[] Items44(void* path, int64 mode, int64 order, void* deviceTransform)
+	public void*[] Items44(IQPainterPath path, int64 mode, int64 order, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_Items44(this.nativePtr, path, mode, order, deviceTransform);
+		return CQt.QGraphicsScene_Items44(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, mode, order, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void*[] Items7(double x, double y, double w, double h, int64 mode, int64 order, void* deviceTransform)
+	public void*[] Items7(double x, double y, double w, double h, int64 mode, int64 order, IQTransform deviceTransform)
 	{
-		return CQt.QGraphicsScene_Items7(this.nativePtr, x, y, w, h, mode, order, deviceTransform);
+		return CQt.QGraphicsScene_Items7(this.nativePtr, x, y, w, h, mode, order, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void*[] CollidingItems2(void* item, int64 mode)
+	public void*[] CollidingItems2(IQGraphicsItem item, int64 mode)
 	{
-		return CQt.QGraphicsScene_CollidingItems2(this.nativePtr, item, mode);
+		return CQt.QGraphicsScene_CollidingItems2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, mode);
 	}
 	
-	public void SetSelectionArea2(void* path, int64 selectionOperation)
+	public void SetSelectionArea2(IQPainterPath path, int64 selectionOperation)
 	{
-		CQt.QGraphicsScene_SetSelectionArea2(this.nativePtr, path, selectionOperation);
+		CQt.QGraphicsScene_SetSelectionArea2(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, selectionOperation);
 	}
 	
-	public void SetSelectionArea3(void* path, int64 selectionOperation, int64 mode)
+	public void SetSelectionArea3(IQPainterPath path, int64 selectionOperation, int64 mode)
 	{
-		CQt.QGraphicsScene_SetSelectionArea3(this.nativePtr, path, selectionOperation, mode);
+		CQt.QGraphicsScene_SetSelectionArea3(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, selectionOperation, mode);
 	}
 	
-	public void SetSelectionArea4(void* path, int64 selectionOperation, int64 mode, void* deviceTransform)
+	public void SetSelectionArea4(IQPainterPath path, int64 selectionOperation, int64 mode, IQTransform deviceTransform)
 	{
-		CQt.QGraphicsScene_SetSelectionArea4(this.nativePtr, path, selectionOperation, mode, deviceTransform);
+		CQt.QGraphicsScene_SetSelectionArea4(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, selectionOperation, mode, (deviceTransform == default) ? default : (void*)deviceTransform.NativePtr);
 	}
 	
-	public void* AddEllipse22(void* rect, void* pen)
+	public void* AddEllipse22(IQRectF rect, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddEllipse22(this.nativePtr, rect, pen);
+		return CQt.QGraphicsScene_AddEllipse22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddEllipse3(void* rect, void* pen, void* brush)
+	public void* AddEllipse3(IQRectF rect, IQPen pen, IQBrush brush)
 	{
-		return CQt.QGraphicsScene_AddEllipse3(this.nativePtr, rect, pen, brush);
+		return CQt.QGraphicsScene_AddEllipse3(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, (pen == default) ? default : (void*)pen.NativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void* AddLine22(void* line, void* pen)
+	public void* AddLine22(IQLineF line, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddLine22(this.nativePtr, line, pen);
+		return CQt.QGraphicsScene_AddLine22(this.nativePtr, (line == default) ? default : (void*)line.NativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddPath2(void* path, void* pen)
+	public void* AddPath2(IQPainterPath path, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddPath2(this.nativePtr, path, pen);
+		return CQt.QGraphicsScene_AddPath2(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddPath3(void* path, void* pen, void* brush)
+	public void* AddPath3(IQPainterPath path, IQPen pen, IQBrush brush)
 	{
-		return CQt.QGraphicsScene_AddPath3(this.nativePtr, path, pen, brush);
+		return CQt.QGraphicsScene_AddPath3(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, (pen == default) ? default : (void*)pen.NativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void* AddRect22(void* rect, void* pen)
+	public void* AddRect22(IQRectF rect, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddRect22(this.nativePtr, rect, pen);
+		return CQt.QGraphicsScene_AddRect22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddRect3(void* rect, void* pen, void* brush)
+	public void* AddRect3(IQRectF rect, IQPen pen, IQBrush brush)
 	{
-		return CQt.QGraphicsScene_AddRect3(this.nativePtr, rect, pen, brush);
+		return CQt.QGraphicsScene_AddRect3(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, (pen == default) ? default : (void*)pen.NativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void* AddText2(libqt_string text, void* font)
+	public void* AddText2(String text, IQFont font)
 	{
-		return CQt.QGraphicsScene_AddText2(this.nativePtr, text, font);
+		return CQt.QGraphicsScene_AddText2(this.nativePtr, libqt_string(text), (font == default) ? default : (void*)font.NativePtr);
 	}
 	
-	public void* AddSimpleText2(libqt_string text, void* font)
+	public void* AddSimpleText2(String text, IQFont font)
 	{
-		return CQt.QGraphicsScene_AddSimpleText2(this.nativePtr, text, font);
+		return CQt.QGraphicsScene_AddSimpleText2(this.nativePtr, libqt_string(text), (font == default) ? default : (void*)font.NativePtr);
 	}
 	
-	public void* AddWidget2(void* widget, int64 wFlags)
+	public void* AddWidget2(IQWidget widget, int64 wFlags)
 	{
-		return CQt.QGraphicsScene_AddWidget2(this.nativePtr, widget, wFlags);
+		return CQt.QGraphicsScene_AddWidget2(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr, wFlags);
 	}
 	
-	public void* AddEllipse5(double x, double y, double w, double h, void* pen)
+	public void* AddEllipse5(double x, double y, double w, double h, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddEllipse5(this.nativePtr, x, y, w, h, pen);
+		return CQt.QGraphicsScene_AddEllipse5(this.nativePtr, x, y, w, h, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddEllipse6(double x, double y, double w, double h, void* pen, void* brush)
+	public void* AddEllipse6(double x, double y, double w, double h, IQPen pen, IQBrush brush)
 	{
-		return CQt.QGraphicsScene_AddEllipse6(this.nativePtr, x, y, w, h, pen, brush);
+		return CQt.QGraphicsScene_AddEllipse6(this.nativePtr, x, y, w, h, (pen == default) ? default : (void*)pen.NativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void* AddLine5(double x1, double y1, double x2, double y2, void* pen)
+	public void* AddLine5(double x1, double y1, double x2, double y2, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddLine5(this.nativePtr, x1, y1, x2, y2, pen);
+		return CQt.QGraphicsScene_AddLine5(this.nativePtr, x1, y1, x2, y2, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddRect5(double x, double y, double w, double h, void* pen)
+	public void* AddRect5(double x, double y, double w, double h, IQPen pen)
 	{
-		return CQt.QGraphicsScene_AddRect5(this.nativePtr, x, y, w, h, pen);
+		return CQt.QGraphicsScene_AddRect5(this.nativePtr, x, y, w, h, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
-	public void* AddRect6(double x, double y, double w, double h, void* pen, void* brush)
+	public void* AddRect6(double x, double y, double w, double h, IQPen pen, IQBrush brush)
 	{
-		return CQt.QGraphicsScene_AddRect6(this.nativePtr, x, y, w, h, pen, brush);
+		return CQt.QGraphicsScene_AddRect6(this.nativePtr, x, y, w, h, (pen == default) ? default : (void*)pen.NativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void SetFocusItem2(void* item, int64 focusReason)
+	public void SetFocusItem2(IQGraphicsItem item, int64 focusReason)
 	{
-		CQt.QGraphicsScene_SetFocusItem2(this.nativePtr, item, focusReason);
+		CQt.QGraphicsScene_SetFocusItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, focusReason);
 	}
 	
 	public void SetFocus1(int64 focusReason)
@@ -720,19 +725,19 @@ public class QGraphicsScene
 		CQt.QGraphicsScene_Invalidate5(this.nativePtr, x, y, w, h, layers);
 	}
 	
-	public void Update1(void* rect)
+	public void Update1(IQRectF rect)
 	{
-		CQt.QGraphicsScene_Update1(this.nativePtr, rect);
+		CQt.QGraphicsScene_Update1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void Invalidate1(void* rect)
+	public void Invalidate1(IQRectF rect)
 	{
-		CQt.QGraphicsScene_Invalidate1(this.nativePtr, rect);
+		CQt.QGraphicsScene_Invalidate1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void Invalidate22(void* rect, int64 layers)
+	public void Invalidate22(IQRectF rect, int64 layers)
 	{
-		CQt.QGraphicsScene_Invalidate22(this.nativePtr, rect, layers);
+		CQt.QGraphicsScene_Invalidate22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, layers);
 	}
 	
 	public libqt_string ObjectName()
@@ -740,9 +745,9 @@ public class QGraphicsScene
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -775,9 +780,9 @@ public class QGraphicsScene
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -795,39 +800,39 @@ public class QGraphicsScene
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -840,12 +845,12 @@ public class QGraphicsScene
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -870,7 +875,7 @@ public class QGraphicsScene
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -885,14 +890,14 @@ public class QGraphicsScene
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -913,11 +918,11 @@ extension CQt
 	[LinkName("QGraphicsScene_MetaObject")]
 	public static extern void* QGraphicsScene_MetaObject(void* c_this);
 	[LinkName("QGraphicsScene_Metacast")]
-	public static extern void* QGraphicsScene_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsScene_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsScene_Metacall")]
-	public static extern int32 QGraphicsScene_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsScene_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsScene_Tr")]
-	public static extern libqt_string QGraphicsScene_Tr(char8[] s);
+	public static extern libqt_string QGraphicsScene_Tr(char8* s);
 	[LinkName("QGraphicsScene_SceneRect")]
 	public static extern void QGraphicsScene_SceneRect(void* c_this);
 	[LinkName("QGraphicsScene_Width")]
@@ -1119,9 +1124,9 @@ extension CQt
 	[LinkName("QGraphicsScene_Connect_FocusItemChanged")]
 	public static extern void QGraphicsScene_Connect_FocusItemChanged(void* c_this, c_intptr slot);
 	[LinkName("QGraphicsScene_Tr2")]
-	public static extern libqt_string QGraphicsScene_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsScene_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsScene_Tr3")]
-	public static extern libqt_string QGraphicsScene_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsScene_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QGraphicsScene_Render2")]
 	public static extern void QGraphicsScene_Render2(void* c_this, void* painter, void* target);
 	[LinkName("QGraphicsScene_Render3")]

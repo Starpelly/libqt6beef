@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QBitArray
+public interface IQBitArray
+{
+	void* NativePtr { get; }
+}
+public class QBitArray : IQBitArray
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QBitArray
 		CQt.QBitArray_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQBitArray other)
 	{
-		CQt.QBitArray_OperatorAssign(this.nativePtr, other);
+		CQt.QBitArray_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQBitArray other)
 	{
-		CQt.QBitArray_Swap(this.nativePtr, other);
+		CQt.QBitArray_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int32 Size()
@@ -111,29 +116,29 @@ public class QBitArray
 		return CQt.QBitArray_OperatorSubscriptWithQsizetype(this.nativePtr, i);
 	}
 	
-	public void OperatorBitwiseAndAssign(void* param1)
+	public void OperatorBitwiseAndAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseAndAssign(this.nativePtr, param1);
+		CQt.QBitArray_OperatorBitwiseAndAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void OperatorBitwiseOrAssign(void* param1)
+	public void OperatorBitwiseOrAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseOrAssign(this.nativePtr, param1);
+		CQt.QBitArray_OperatorBitwiseOrAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void OperatorBitwiseNotAssign(void* param1)
+	public void OperatorBitwiseNotAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseNotAssign(this.nativePtr, param1);
+		CQt.QBitArray_OperatorBitwiseNotAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQBitArray other)
 	{
-		return CQt.QBitArray_OperatorEqual(this.nativePtr, other);
+		return CQt.QBitArray_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQBitArray other)
 	{
-		return CQt.QBitArray_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QBitArray_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool Fill(bool val)
@@ -151,12 +156,12 @@ public class QBitArray
 		CQt.QBitArray_Truncate(this.nativePtr, pos);
 	}
 	
-	public char8[] Bits()
+	public char8* Bits()
 	{
 		return CQt.QBitArray_Bits(this.nativePtr);
 	}
 	
-	public static void FromBits(char8[] data, int32 lenVal)
+	public static void FromBits(char8* data, int32 lenVal)
 	{
 		CQt.QBitArray_FromBits(data, lenVal);
 	}
@@ -242,9 +247,9 @@ extension CQt
 	[LinkName("QBitArray_Truncate")]
 	public static extern void QBitArray_Truncate(void* c_this, int32 pos);
 	[LinkName("QBitArray_Bits")]
-	public static extern char8[] QBitArray_Bits(void* c_this);
+	public static extern char8* QBitArray_Bits(void* c_this);
 	[LinkName("QBitArray_FromBits")]
-	public static extern void QBitArray_FromBits(char8[] data, int32 lenVal);
+	public static extern void QBitArray_FromBits(char8* data, int32 lenVal);
 	[LinkName("QBitArray_ToUInt32")]
 	public static extern uint32 QBitArray_ToUInt32(void* c_this, int64 endianness);
 	[LinkName("QBitArray_Fill22")]
@@ -255,13 +260,18 @@ extension CQt
 	[LinkName("QBitArray_Delete")]
 	public static extern void QBitArray_Delete(void* self);
 }
-public class QBitRef
+public interface IQBitRef
+{
+	void* NativePtr { get; }
+}
+public class QBitRef : IQBitRef
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQBitRef other)
 	{
-		this.nativePtr = CQt.QBitRef_new(other);
+		this.nativePtr = CQt.QBitRef_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -279,9 +289,9 @@ public class QBitRef
 		return CQt.QBitRef_OperatorNot(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* val)
+	public void OperatorAssign(IQBitRef val)
 	{
-		CQt.QBitRef_OperatorAssign(this.nativePtr, val);
+		CQt.QBitRef_OperatorAssign(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
 	}
 	
 	public void OperatorAssignWithVal(bool val)

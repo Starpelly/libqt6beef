@@ -34,13 +34,18 @@ public enum QMediaMetaData__Key
 	Orientation = 26,
 	Resolution = 27,
 }
-public class QMediaMetaData
+public interface IQMediaMetaData
+{
+	void* NativePtr { get; }
+}
+public class QMediaMetaData : IQMediaMetaData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* param1)
+	public this(IQMediaMetaData param1)
 	{
-		this.nativePtr = CQt.QMediaMetaData_new(param1);
+		this.nativePtr = CQt.QMediaMetaData_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -53,9 +58,9 @@ public class QMediaMetaData
 		CQt.QMediaMetaData_Value(this.nativePtr, k);
 	}
 	
-	public void Insert(int64 k, void* value)
+	public void Insert(int64 k, IQVariant value)
 	{
-		CQt.QMediaMetaData_Insert(this.nativePtr, k, value);
+		CQt.QMediaMetaData_Insert(this.nativePtr, k, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void Remove(int64 k)

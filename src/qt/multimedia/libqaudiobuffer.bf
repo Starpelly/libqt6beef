@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAudioBuffer
+public interface IQAudioBuffer
+{
+	void* NativePtr { get; }
+}
+public class QAudioBuffer : IQAudioBuffer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QAudioBuffer
 		CQt.QAudioBuffer_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQAudioBuffer other)
 	{
-		CQt.QAudioBuffer_OperatorAssign(this.nativePtr, other);
+		CQt.QAudioBuffer_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQAudioBuffer other)
 	{
-		CQt.QAudioBuffer_Swap(this.nativePtr, other);
+		CQt.QAudioBuffer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()

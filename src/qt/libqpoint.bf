@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPoint
+public interface IQPoint
+{
+	void* NativePtr { get; }
+}
+public class QPoint : IQPoint
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPoint other)
 	{
-		this.nativePtr = CQt.QPoint_new(other);
+		this.nativePtr = CQt.QPoint_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -51,14 +56,14 @@ public class QPoint
 		CQt.QPoint_Transposed(this.nativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void* p)
+	public void* OperatorPlusAssign(IQPoint p)
 	{
-		return CQt.QPoint_OperatorPlusAssign(this.nativePtr, p);
+		return CQt.QPoint_OperatorPlusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* p)
+	public void* OperatorMinusAssign(IQPoint p)
 	{
-		return CQt.QPoint_OperatorMinusAssign(this.nativePtr, p);
+		return CQt.QPoint_OperatorMinusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -81,9 +86,9 @@ public class QPoint
 		return CQt.QPoint_OperatorDivideAssign(this.nativePtr, divisor);
 	}
 	
-	public static int32 DotProduct(void* p1, void* p2)
+	public static int32 DotProduct(IQPoint p1, IQPoint p2)
 	{
-		return CQt.QPoint_DotProduct(p1, p2);
+		return CQt.QPoint_DotProduct((p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
 	}
 	
 	public void ToPointF()
@@ -138,13 +143,18 @@ extension CQt
 	[LinkName("QPoint_Delete")]
 	public static extern void QPoint_Delete(void* self);
 }
-public class QPointF
+public interface IQPointF
+{
+	void* NativePtr { get; }
+}
+public class QPointF : IQPointF
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPointF other)
 	{
-		this.nativePtr = CQt.QPointF_new(other);
+		this.nativePtr = CQt.QPointF_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -187,14 +197,14 @@ public class QPointF
 		CQt.QPointF_Transposed(this.nativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void* p)
+	public void* OperatorPlusAssign(IQPointF p)
 	{
-		return CQt.QPointF_OperatorPlusAssign(this.nativePtr, p);
+		return CQt.QPointF_OperatorPlusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* p)
+	public void* OperatorMinusAssign(IQPointF p)
 	{
-		return CQt.QPointF_OperatorMinusAssign(this.nativePtr, p);
+		return CQt.QPointF_OperatorMinusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(double c)
@@ -207,9 +217,9 @@ public class QPointF
 		return CQt.QPointF_OperatorDivideAssign(this.nativePtr, c);
 	}
 	
-	public static double DotProduct(void* p1, void* p2)
+	public static double DotProduct(IQPointF p1, IQPointF p2)
 	{
-		return CQt.QPointF_DotProduct(p1, p2);
+		return CQt.QPointF_DotProduct((p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
 	}
 	
 	public void ToPoint()

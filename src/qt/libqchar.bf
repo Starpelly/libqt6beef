@@ -334,13 +334,18 @@ public enum QChar__UnicodeVersion
 	Unicode_13_0 = 23,
 	Unicode_14_0 = 24,
 }
-public class QLatin1Char
+public interface IQLatin1Char
+{
+	void* NativePtr { get; }
+}
+public class QLatin1Char : IQLatin1Char
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQLatin1Char other)
 	{
-		this.nativePtr = CQt.QLatin1Char_new(other);
+		this.nativePtr = CQt.QLatin1Char_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -370,13 +375,18 @@ extension CQt
 	[LinkName("QLatin1Char_Delete")]
 	public static extern void QLatin1Char_Delete(void* self);
 }
-public class QChar
+public interface IQChar
+{
+	void* NativePtr { get; }
+}
+public class QChar : IQChar
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQChar other)
 	{
-		this.nativePtr = CQt.QChar_new(other);
+		this.nativePtr = CQt.QChar_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

@@ -116,9 +116,14 @@ public enum QFont__ResolveProperties
 	FamiliesResolved = 131072,
 	AllPropertiesResolved = 262143,
 }
-public class QFont
+public interface IQFont
+{
+	void* NativePtr { get; }
+}
+public class QFont : IQFont
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -130,9 +135,9 @@ public class QFont
 		CQt.QFont_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQFont other)
 	{
-		CQt.QFont_Swap(this.nativePtr, other);
+		CQt.QFont_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string Family()
@@ -140,9 +145,9 @@ public class QFont
 		return CQt.QFont_Family(this.nativePtr);
 	}
 	
-	public void SetFamily(libqt_string family)
+	public void SetFamily(String family)
 	{
-		CQt.QFont_SetFamily(this.nativePtr, family);
+		CQt.QFont_SetFamily(this.nativePtr, libqt_string(family));
 	}
 	
 	public libqt_string[] Families()
@@ -150,9 +155,9 @@ public class QFont
 		return CQt.QFont_Families(this.nativePtr);
 	}
 	
-	public void SetFamilies(libqt_string[] families)
+	public void SetFamilies(String[] families)
 	{
-		CQt.QFont_SetFamilies(this.nativePtr, families);
+		CQt.QFont_SetFamilies(this.nativePtr, null);
 	}
 	
 	public libqt_string StyleName()
@@ -160,9 +165,9 @@ public class QFont
 		return CQt.QFont_StyleName(this.nativePtr);
 	}
 	
-	public void SetStyleName(libqt_string styleName)
+	public void SetStyleName(String styleName)
 	{
-		CQt.QFont_SetStyleName(this.nativePtr, styleName);
+		CQt.QFont_SetStyleName(this.nativePtr, libqt_string(styleName));
 	}
 	
 	public int32 PointSize()
@@ -365,24 +370,24 @@ public class QFont
 		return CQt.QFont_ExactMatch(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQFont param1)
 	{
-		CQt.QFont_OperatorAssign(this.nativePtr, param1);
+		CQt.QFont_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* param1)
+	public bool OperatorEqual(IQFont param1)
 	{
-		return CQt.QFont_OperatorEqual(this.nativePtr, param1);
+		return CQt.QFont_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* param1)
+	public bool OperatorNotEqual(IQFont param1)
 	{
-		return CQt.QFont_OperatorNotEqual(this.nativePtr, param1);
+		return CQt.QFont_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* param1)
+	public bool OperatorLesser(IQFont param1)
 	{
-		return CQt.QFont_OperatorLesser(this.nativePtr, param1);
+		return CQt.QFont_OperatorLesser(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -390,9 +395,9 @@ public class QFont
 		CQt.QFont_ToQVariant(this.nativePtr);
 	}
 	
-	public bool IsCopyOf(void* param1)
+	public bool IsCopyOf(IQFont param1)
 	{
-		return CQt.QFont_IsCopyOf(this.nativePtr, param1);
+		return CQt.QFont_IsCopyOf(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -405,19 +410,19 @@ public class QFont
 		return CQt.QFont_ToString(this.nativePtr);
 	}
 	
-	public bool FromString(libqt_string param1)
+	public bool FromString(String param1)
 	{
-		return CQt.QFont_FromString(this.nativePtr, param1);
+		return CQt.QFont_FromString(this.nativePtr, libqt_string(param1));
 	}
 	
-	public static libqt_string Substitute(libqt_string param1)
+	public static libqt_string Substitute(String param1)
 	{
-		return CQt.QFont_Substitute(param1);
+		return CQt.QFont_Substitute(libqt_string(param1));
 	}
 	
-	public static libqt_string[] Substitutes(libqt_string param1)
+	public static libqt_string[] Substitutes(String param1)
 	{
-		return CQt.QFont_Substitutes(param1);
+		return CQt.QFont_Substitutes(libqt_string(param1));
 	}
 	
 	public static libqt_string[] Substitutions()
@@ -425,19 +430,19 @@ public class QFont
 		return CQt.QFont_Substitutions();
 	}
 	
-	public static void InsertSubstitution(libqt_string param1, libqt_string param2)
+	public static void InsertSubstitution(String param1, String param2)
 	{
-		CQt.QFont_InsertSubstitution(param1, param2);
+		CQt.QFont_InsertSubstitution(libqt_string(param1), libqt_string(param2));
 	}
 	
-	public static void InsertSubstitutions(libqt_string param1, libqt_string[] param2)
+	public static void InsertSubstitutions(String param1, String[] param2)
 	{
-		CQt.QFont_InsertSubstitutions(param1, param2);
+		CQt.QFont_InsertSubstitutions(libqt_string(param1), null);
 	}
 	
-	public static void RemoveSubstitutions(libqt_string param1)
+	public static void RemoveSubstitutions(String param1)
 	{
-		CQt.QFont_RemoveSubstitutions(param1);
+		CQt.QFont_RemoveSubstitutions(libqt_string(param1));
 	}
 	
 	public static void Initialize()
@@ -460,9 +465,9 @@ public class QFont
 		return CQt.QFont_DefaultFamily(this.nativePtr);
 	}
 	
-	public void Resolve(void* param1)
+	public void Resolve(IQFont param1)
 	{
-		CQt.QFont_Resolve(this.nativePtr, param1);
+		CQt.QFont_Resolve(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public uint32 ResolveMask()

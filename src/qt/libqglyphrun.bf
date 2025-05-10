@@ -11,9 +11,14 @@ public enum QGlyphRun__GlyphRunFlag
 	RightToLeft = 8,
 	SplitLigature = 16,
 }
-public class QGlyphRun
+public interface IQGlyphRun
+{
+	void* NativePtr { get; }
+}
+public class QGlyphRun : IQGlyphRun
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -25,14 +30,14 @@ public class QGlyphRun
 		CQt.QGlyphRun_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQGlyphRun other)
 	{
-		CQt.QGlyphRun_OperatorAssign(this.nativePtr, other);
+		CQt.QGlyphRun_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQGlyphRun other)
 	{
-		CQt.QGlyphRun_Swap(this.nativePtr, other);
+		CQt.QGlyphRun_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void RawFont()
@@ -40,14 +45,14 @@ public class QGlyphRun
 		CQt.QGlyphRun_RawFont(this.nativePtr);
 	}
 	
-	public void SetRawFont(void* rawFont)
+	public void SetRawFont(IQRawFont rawFont)
 	{
-		CQt.QGlyphRun_SetRawFont(this.nativePtr, rawFont);
+		CQt.QGlyphRun_SetRawFont(this.nativePtr, (rawFont == default) ? default : (void*)rawFont.NativePtr);
 	}
 	
-	public void SetRawData(uint32* glyphIndexArray, void* glyphPositionArray, int32 size)
+	public void SetRawData(uint32* glyphIndexArray, IQPointF glyphPositionArray, int32 size)
 	{
-		CQt.QGlyphRun_SetRawData(this.nativePtr, glyphIndexArray, glyphPositionArray, size);
+		CQt.QGlyphRun_SetRawData(this.nativePtr, glyphIndexArray, (glyphPositionArray == null) ? null : (void*)glyphPositionArray.NativePtr, size);
 	}
 	
 	public uint32[] GlyphIndexes()
@@ -57,7 +62,7 @@ public class QGlyphRun
 	
 	public void SetGlyphIndexes(uint32[] glyphIndexes)
 	{
-		CQt.QGlyphRun_SetGlyphIndexes(this.nativePtr, glyphIndexes);
+		CQt.QGlyphRun_SetGlyphIndexes(this.nativePtr, null);
 	}
 	
 	public void[] Positions()
@@ -65,9 +70,9 @@ public class QGlyphRun
 		return CQt.QGlyphRun_Positions(this.nativePtr);
 	}
 	
-	public void SetPositions(void[] positions)
+	public void SetPositions(IQPointF[] positions)
 	{
-		CQt.QGlyphRun_SetPositions(this.nativePtr, positions);
+		CQt.QGlyphRun_SetPositions(this.nativePtr, null);
 	}
 	
 	public void Clear()
@@ -75,14 +80,14 @@ public class QGlyphRun
 		CQt.QGlyphRun_Clear(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQGlyphRun other)
 	{
-		return CQt.QGlyphRun_OperatorEqual(this.nativePtr, other);
+		return CQt.QGlyphRun_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQGlyphRun other)
 	{
-		return CQt.QGlyphRun_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QGlyphRun_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void SetOverline(bool overline)
@@ -140,9 +145,9 @@ public class QGlyphRun
 		return CQt.QGlyphRun_Flags(this.nativePtr);
 	}
 	
-	public void SetBoundingRect(void* boundingRect)
+	public void SetBoundingRect(IQRectF boundingRect)
 	{
-		CQt.QGlyphRun_SetBoundingRect(this.nativePtr, boundingRect);
+		CQt.QGlyphRun_SetBoundingRect(this.nativePtr, (boundingRect == default) ? default : (void*)boundingRect.NativePtr);
 	}
 	
 	public void BoundingRect()

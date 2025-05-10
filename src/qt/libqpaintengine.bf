@@ -84,13 +84,18 @@ public enum QPaintEngine__Type
 	User = 50,
 	MaxUser = 100,
 }
-public class QTextItem
+public interface IQTextItem
+{
+	void* NativePtr { get; }
+}
+public class QTextItem : IQTextItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTextItem other)
 	{
-		this.nativePtr = CQt.QTextItem_new(other);
+		this.nativePtr = CQt.QTextItem_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -151,9 +156,14 @@ extension CQt
 	[LinkName("QTextItem_Delete")]
 	public static extern void QTextItem_Delete(void* self);
 }
-public class QPaintEngine
+public interface IQPaintEngine
+{
+	void* NativePtr { get; }
+}
+public class QPaintEngine : IQPaintEngine
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -175,9 +185,9 @@ public class QPaintEngine
 		CQt.QPaintEngine_SetActive(this.nativePtr, newState);
 	}
 	
-	public virtual bool Begin(void* pdev)
+	public virtual bool Begin(IQPaintDevice pdev)
 	{
-		return CQt.QPaintEngine_Begin(this.nativePtr, pdev);
+		return CQt.QPaintEngine_Begin(this.nativePtr, (pdev == null) ? null : (void*)pdev.NativePtr);
 	}
 	
 	public virtual bool End()
@@ -185,89 +195,89 @@ public class QPaintEngine
 		return CQt.QPaintEngine_End(this.nativePtr);
 	}
 	
-	public virtual void UpdateState(void* state)
+	public virtual void UpdateState(IQPaintEngineState state)
 	{
-		CQt.QPaintEngine_UpdateState(this.nativePtr, state);
+		CQt.QPaintEngine_UpdateState(this.nativePtr, (state == default) ? default : (void*)state.NativePtr);
 	}
 	
-	public virtual void DrawRects(void* rects, int32 rectCount)
+	public virtual void DrawRects(IQRect rects, int32 rectCount)
 	{
-		CQt.QPaintEngine_DrawRects(this.nativePtr, rects, rectCount);
+		CQt.QPaintEngine_DrawRects(this.nativePtr, (rects == null) ? null : (void*)rects.NativePtr, rectCount);
 	}
 	
-	public virtual void DrawRects2(void* rects, int32 rectCount)
+	public virtual void DrawRects2(IQRectF rects, int32 rectCount)
 	{
-		CQt.QPaintEngine_DrawRects2(this.nativePtr, rects, rectCount);
+		CQt.QPaintEngine_DrawRects2(this.nativePtr, (rects == null) ? null : (void*)rects.NativePtr, rectCount);
 	}
 	
-	public virtual void DrawLines(void* lines, int32 lineCount)
+	public virtual void DrawLines(IQLine lines, int32 lineCount)
 	{
-		CQt.QPaintEngine_DrawLines(this.nativePtr, lines, lineCount);
+		CQt.QPaintEngine_DrawLines(this.nativePtr, (lines == null) ? null : (void*)lines.NativePtr, lineCount);
 	}
 	
-	public virtual void DrawLines2(void* lines, int32 lineCount)
+	public virtual void DrawLines2(IQLineF lines, int32 lineCount)
 	{
-		CQt.QPaintEngine_DrawLines2(this.nativePtr, lines, lineCount);
+		CQt.QPaintEngine_DrawLines2(this.nativePtr, (lines == null) ? null : (void*)lines.NativePtr, lineCount);
 	}
 	
-	public virtual void DrawEllipse(void* r)
+	public virtual void DrawEllipse(IQRectF r)
 	{
-		CQt.QPaintEngine_DrawEllipse(this.nativePtr, r);
+		CQt.QPaintEngine_DrawEllipse(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public virtual void DrawEllipseWithQRect(void* r)
+	public virtual void DrawEllipseWithQRect(IQRect r)
 	{
-		CQt.QPaintEngine_DrawEllipseWithQRect(this.nativePtr, r);
+		CQt.QPaintEngine_DrawEllipseWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
 	}
 	
-	public virtual void DrawPath(void* path)
+	public virtual void DrawPath(IQPainterPath path)
 	{
-		CQt.QPaintEngine_DrawPath(this.nativePtr, path);
+		CQt.QPaintEngine_DrawPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public virtual void DrawPoints(void* points, int32 pointCount)
+	public virtual void DrawPoints(IQPointF points, int32 pointCount)
 	{
-		CQt.QPaintEngine_DrawPoints(this.nativePtr, points, pointCount);
+		CQt.QPaintEngine_DrawPoints(this.nativePtr, (points == null) ? null : (void*)points.NativePtr, pointCount);
 	}
 	
-	public virtual void DrawPoints2(void* points, int32 pointCount)
+	public virtual void DrawPoints2(IQPoint points, int32 pointCount)
 	{
-		CQt.QPaintEngine_DrawPoints2(this.nativePtr, points, pointCount);
+		CQt.QPaintEngine_DrawPoints2(this.nativePtr, (points == null) ? null : (void*)points.NativePtr, pointCount);
 	}
 	
-	public virtual void DrawPolygon(void* points, int32 pointCount, int64 mode)
+	public virtual void DrawPolygon(IQPointF points, int32 pointCount, int64 mode)
 	{
-		CQt.QPaintEngine_DrawPolygon(this.nativePtr, points, pointCount, mode);
+		CQt.QPaintEngine_DrawPolygon(this.nativePtr, (points == null) ? null : (void*)points.NativePtr, pointCount, mode);
 	}
 	
-	public virtual void DrawPolygon2(void* points, int32 pointCount, int64 mode)
+	public virtual void DrawPolygon2(IQPoint points, int32 pointCount, int64 mode)
 	{
-		CQt.QPaintEngine_DrawPolygon2(this.nativePtr, points, pointCount, mode);
+		CQt.QPaintEngine_DrawPolygon2(this.nativePtr, (points == null) ? null : (void*)points.NativePtr, pointCount, mode);
 	}
 	
-	public virtual void DrawPixmap(void* r, void* pm, void* sr)
+	public virtual void DrawPixmap(IQRectF r, IQPixmap pm, IQRectF sr)
 	{
-		CQt.QPaintEngine_DrawPixmap(this.nativePtr, r, pm, sr);
+		CQt.QPaintEngine_DrawPixmap(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, (pm == default) ? default : (void*)pm.NativePtr, (sr == default) ? default : (void*)sr.NativePtr);
 	}
 	
-	public virtual void DrawTextItem(void* p, void* textItem)
+	public virtual void DrawTextItem(IQPointF p, IQTextItem textItem)
 	{
-		CQt.QPaintEngine_DrawTextItem(this.nativePtr, p, textItem);
+		CQt.QPaintEngine_DrawTextItem(this.nativePtr, (p == default) ? default : (void*)p.NativePtr, (textItem == default) ? default : (void*)textItem.NativePtr);
 	}
 	
-	public virtual void DrawTiledPixmap(void* r, void* pixmap, void* s)
+	public virtual void DrawTiledPixmap(IQRectF r, IQPixmap pixmap, IQPointF s)
 	{
-		CQt.QPaintEngine_DrawTiledPixmap(this.nativePtr, r, pixmap, s);
+		CQt.QPaintEngine_DrawTiledPixmap(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
-	public virtual void DrawImage(void* r, void* pm, void* sr, int64 flags)
+	public virtual void DrawImage(IQRectF r, IQImage pm, IQRectF sr, int64 flags)
 	{
-		CQt.QPaintEngine_DrawImage(this.nativePtr, r, pm, sr, flags);
+		CQt.QPaintEngine_DrawImage(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, (pm == default) ? default : (void*)pm.NativePtr, (sr == default) ? default : (void*)sr.NativePtr, flags);
 	}
 	
-	public void SetPaintDevice(void* device)
+	public void SetPaintDevice(IQPaintDevice device)
 	{
-		CQt.QPaintEngine_SetPaintDevice(this.nativePtr, device);
+		CQt.QPaintEngine_SetPaintDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* PaintDevice()
@@ -275,9 +285,9 @@ public class QPaintEngine
 		return CQt.QPaintEngine_PaintDevice(this.nativePtr);
 	}
 	
-	public void SetSystemClip(void* baseClip)
+	public void SetSystemClip(IQRegion baseClip)
 	{
-		CQt.QPaintEngine_SetSystemClip(this.nativePtr, baseClip);
+		CQt.QPaintEngine_SetSystemClip(this.nativePtr, (baseClip == default) ? default : (void*)baseClip.NativePtr);
 	}
 	
 	public void SystemClip()
@@ -285,9 +295,9 @@ public class QPaintEngine
 		CQt.QPaintEngine_SystemClip(this.nativePtr);
 	}
 	
-	public void SetSystemRect(void* rect)
+	public void SetSystemRect(IQRect rect)
 	{
-		CQt.QPaintEngine_SetSystemRect(this.nativePtr, rect);
+		CQt.QPaintEngine_SetSystemRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void SystemRect()
@@ -345,14 +355,14 @@ public class QPaintEngine
 		return CQt.QPaintEngine_IsExtended(this.nativePtr);
 	}
 	
-	public virtual void CreatePixmap(void size)
+	public virtual void CreatePixmap(IQSize size)
 	{
-		CQt.QPaintEngine_CreatePixmap(this.nativePtr, size);
+		CQt.QPaintEngine_CreatePixmap(this.nativePtr, (size == default) ? default : (void)size.NativePtr);
 	}
 	
-	public virtual void CreatePixmapFromImage(void image, int64 flags)
+	public virtual void CreatePixmapFromImage(IQImage image, int64 flags)
 	{
-		CQt.QPaintEngine_CreatePixmapFromImage(this.nativePtr, image, flags);
+		CQt.QPaintEngine_CreatePixmapFromImage(this.nativePtr, (image == default) ? default : (void)image.NativePtr, flags);
 	}
 	
 }
@@ -442,13 +452,18 @@ extension CQt
 	[LinkName("QPaintEngine_Delete")]
 	public static extern void QPaintEngine_Delete(void* self);
 }
-public class QPaintEngineState
+public interface IQPaintEngineState
+{
+	void* NativePtr { get; }
+}
+public class QPaintEngineState : IQPaintEngineState
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQPaintEngineState other)
 	{
-		this.nativePtr = CQt.QPaintEngineState_new(other);
+		this.nativePtr = CQt.QPaintEngineState_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

@@ -9,9 +9,14 @@ public enum QAudioDevice__Mode
 	Input = 1,
 	Output = 2,
 }
-public class QAudioDevice
+public interface IQAudioDevice
+{
+	void* NativePtr { get; }
+}
+public class QAudioDevice : IQAudioDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -23,24 +28,24 @@ public class QAudioDevice
 		CQt.QAudioDevice_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQAudioDevice other)
 	{
-		CQt.QAudioDevice_Swap(this.nativePtr, other);
+		CQt.QAudioDevice_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQAudioDevice other)
 	{
-		CQt.QAudioDevice_OperatorAssign(this.nativePtr, other);
+		CQt.QAudioDevice_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQAudioDevice other)
 	{
-		return CQt.QAudioDevice_OperatorEqual(this.nativePtr, other);
+		return CQt.QAudioDevice_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQAudioDevice other)
 	{
-		return CQt.QAudioDevice_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QAudioDevice_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -68,9 +73,9 @@ public class QAudioDevice
 		return CQt.QAudioDevice_Mode(this.nativePtr);
 	}
 	
-	public bool IsFormatSupported(void* format)
+	public bool IsFormatSupported(IQAudioFormat format)
 	{
-		return CQt.QAudioDevice_IsFormatSupported(this.nativePtr, format);
+		return CQt.QAudioDevice_IsFormatSupported(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public void PreferredFormat()

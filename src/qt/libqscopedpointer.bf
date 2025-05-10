@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QScopedPointerPodDeleter
+public interface IQScopedPointerPodDeleter
+{
+	void* NativePtr { get; }
+}
+public class QScopedPointerPodDeleter : IQScopedPointerPodDeleter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQScopedPointerPodDeleter other)
 	{
-		this.nativePtr = CQt.QScopedPointerPodDeleter_new(other);
+		this.nativePtr = CQt.QScopedPointerPodDeleter_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

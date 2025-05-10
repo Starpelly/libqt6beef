@@ -13,13 +13,18 @@ public enum QMatrix4x4__Flag
 	Perspective = 16,
 	General = 31,
 }
-public class QMatrix4x4
+public interface IQMatrix4x4
+{
+	void* NativePtr { get; }
+}
+public class QMatrix4x4 : IQMatrix4x4
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMatrix4x4 other)
 	{
-		this.nativePtr = CQt.QMatrix4x4_new(other);
+		this.nativePtr = CQt.QMatrix4x4_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -32,9 +37,9 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_Column(this.nativePtr, index);
 	}
 	
-	public void SetColumn(int32 index, void* value)
+	public void SetColumn(int32 index, IQVector4D value)
 	{
-		CQt.QMatrix4x4_SetColumn(this.nativePtr, index, value);
+		CQt.QMatrix4x4_SetColumn(this.nativePtr, index, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void Row(int32 index)
@@ -42,9 +47,9 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_Row(this.nativePtr, index);
 	}
 	
-	public void SetRow(int32 index, void* value)
+	public void SetRow(int32 index, IQVector4D value)
 	{
-		CQt.QMatrix4x4_SetRow(this.nativePtr, index, value);
+		CQt.QMatrix4x4_SetRow(this.nativePtr, index, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public bool IsAffine()
@@ -82,19 +87,19 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_Transposed(this.nativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void* other)
+	public void* OperatorPlusAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorPlusAssign(this.nativePtr, other);
+		return CQt.QMatrix4x4_OperatorPlusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* other)
+	public void* OperatorMinusAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorMinusAssign(this.nativePtr, other);
+		return CQt.QMatrix4x4_OperatorMinusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void* OperatorMultiplyAssign(void* other)
+	public void* OperatorMultiplyAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorMultiplyAssign(this.nativePtr, other);
+		return CQt.QMatrix4x4_OperatorMultiplyAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssignWithFactor(float factor)
@@ -107,29 +112,29 @@ public class QMatrix4x4
 		return CQt.QMatrix4x4_OperatorDivideAssign(this.nativePtr, divisor);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorEqual(this.nativePtr, other);
+		return CQt.QMatrix4x4_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QMatrix4x4_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Scale(void* vector)
+	public void Scale(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Scale(this.nativePtr, vector);
+		CQt.QMatrix4x4_Scale(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
-	public void Translate(void* vector)
+	public void Translate(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Translate(this.nativePtr, vector);
+		CQt.QMatrix4x4_Translate(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
-	public void Rotate(float angle, void* vector)
+	public void Rotate(float angle, IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Rotate(this.nativePtr, angle, vector);
+		CQt.QMatrix4x4_Rotate(this.nativePtr, angle, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
 	public void Scale2(float x, float y)
@@ -162,19 +167,19 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_Rotate2(this.nativePtr, angle, x, y);
 	}
 	
-	public void RotateWithQuaternion(void* quaternion)
+	public void RotateWithQuaternion(IQQuaternion quaternion)
 	{
-		CQt.QMatrix4x4_RotateWithQuaternion(this.nativePtr, quaternion);
+		CQt.QMatrix4x4_RotateWithQuaternion(this.nativePtr, (quaternion == default) ? default : (void*)quaternion.NativePtr);
 	}
 	
-	public void Ortho(void* rect)
+	public void Ortho(IQRect rect)
 	{
-		CQt.QMatrix4x4_Ortho(this.nativePtr, rect);
+		CQt.QMatrix4x4_Ortho(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void OrthoWithRect(void* rect)
+	public void OrthoWithRect(IQRectF rect)
 	{
-		CQt.QMatrix4x4_OrthoWithRect(this.nativePtr, rect);
+		CQt.QMatrix4x4_OrthoWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void Ortho2(float left, float right, float bottom, float top, float nearPlane, float farPlane)
@@ -192,14 +197,14 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_Perspective(this.nativePtr, verticalAngle, aspectRatio, nearPlane, farPlane);
 	}
 	
-	public void LookAt(void* eye, void* center, void* up)
+	public void LookAt(IQVector3D eye, IQVector3D center, IQVector3D up)
 	{
-		CQt.QMatrix4x4_LookAt(this.nativePtr, eye, center, up);
+		CQt.QMatrix4x4_LookAt(this.nativePtr, (eye == default) ? default : (void*)eye.NativePtr, (center == default) ? default : (void*)center.NativePtr, (up == default) ? default : (void*)up.NativePtr);
 	}
 	
-	public void Viewport(void* rect)
+	public void Viewport(IQRectF rect)
 	{
-		CQt.QMatrix4x4_Viewport(this.nativePtr, rect);
+		CQt.QMatrix4x4_Viewport(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void Viewport2(float left, float bottom, float width, float height)
@@ -227,39 +232,39 @@ public class QMatrix4x4
 		CQt.QMatrix4x4_ToTransformWithDistanceToPlane(this.nativePtr, distanceToPlane);
 	}
 	
-	public void Map(void* point)
+	public void Map(IQPoint point)
 	{
-		CQt.QMatrix4x4_Map(this.nativePtr, point);
+		CQt.QMatrix4x4_Map(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapWithPoint(void* point)
+	public void MapWithPoint(IQPointF point)
 	{
-		CQt.QMatrix4x4_MapWithPoint(this.nativePtr, point);
+		CQt.QMatrix4x4_MapWithPoint(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void Map2(void* point)
+	public void Map2(IQVector3D point)
 	{
-		CQt.QMatrix4x4_Map2(this.nativePtr, point);
+		CQt.QMatrix4x4_Map2(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapVector(void* vector)
+	public void MapVector(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_MapVector(this.nativePtr, vector);
+		CQt.QMatrix4x4_MapVector(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
 	}
 	
-	public void Map3(void* point)
+	public void Map3(IQVector4D point)
 	{
-		CQt.QMatrix4x4_Map3(this.nativePtr, point);
+		CQt.QMatrix4x4_Map3(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapRect(void* rect)
+	public void MapRect(IQRect rect)
 	{
-		CQt.QMatrix4x4_MapRect(this.nativePtr, rect);
+		CQt.QMatrix4x4_MapRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapRectWithRect(void* rect)
+	public void MapRectWithRect(IQRectF rect)
 	{
-		CQt.QMatrix4x4_MapRectWithRect(this.nativePtr, rect);
+		CQt.QMatrix4x4_MapRectWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public float* Data()

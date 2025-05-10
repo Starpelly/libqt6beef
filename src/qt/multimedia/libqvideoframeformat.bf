@@ -83,9 +83,14 @@ public enum QVideoFrameFormat__ColorRange
 	ColorRange_Video = 1,
 	ColorRange_Full = 2,
 }
-public class QVideoFrameFormat
+public interface IQVideoFrameFormat
+{
+	void* NativePtr { get; }
+}
+public class QVideoFrameFormat : IQVideoFrameFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -97,9 +102,9 @@ public class QVideoFrameFormat
 		CQt.QVideoFrameFormat_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQVideoFrameFormat other)
 	{
-		CQt.QVideoFrameFormat_Swap(this.nativePtr, other);
+		CQt.QVideoFrameFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void Detach()
@@ -107,19 +112,19 @@ public class QVideoFrameFormat
 		CQt.QVideoFrameFormat_Detach(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* format)
+	public void OperatorAssign(IQVideoFrameFormat format)
 	{
-		CQt.QVideoFrameFormat_OperatorAssign(this.nativePtr, format);
+		CQt.QVideoFrameFormat_OperatorAssign(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* format)
+	public bool OperatorEqual(IQVideoFrameFormat format)
 	{
-		return CQt.QVideoFrameFormat_OperatorEqual(this.nativePtr, format);
+		return CQt.QVideoFrameFormat_OperatorEqual(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* format)
+	public bool OperatorNotEqual(IQVideoFrameFormat format)
 	{
-		return CQt.QVideoFrameFormat_OperatorNotEqual(this.nativePtr, format);
+		return CQt.QVideoFrameFormat_OperatorNotEqual(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -137,9 +142,9 @@ public class QVideoFrameFormat
 		CQt.QVideoFrameFormat_FrameSize(this.nativePtr);
 	}
 	
-	public void SetFrameSize(void* size)
+	public void SetFrameSize(IQSize size)
 	{
-		CQt.QVideoFrameFormat_SetFrameSize(this.nativePtr, size);
+		CQt.QVideoFrameFormat_SetFrameSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetFrameSize2(int32 width, int32 height)
@@ -167,9 +172,9 @@ public class QVideoFrameFormat
 		CQt.QVideoFrameFormat_Viewport(this.nativePtr);
 	}
 	
-	public void SetViewport(void* viewport)
+	public void SetViewport(IQRect viewport)
 	{
-		CQt.QVideoFrameFormat_SetViewport(this.nativePtr, viewport);
+		CQt.QVideoFrameFormat_SetViewport(this.nativePtr, (viewport == default) ? default : (void*)viewport.NativePtr);
 	}
 	
 	public int64 ScanLineDirection()

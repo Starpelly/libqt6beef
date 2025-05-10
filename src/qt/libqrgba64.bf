@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QRgba64
+public interface IQRgba64
+{
+	void* NativePtr { get; }
+}
+public class QRgba64 : IQRgba64
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{

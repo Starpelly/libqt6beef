@@ -18,13 +18,18 @@ public enum QColor__NameFormat
 	HexRgb = 0,
 	HexArgb = 1,
 }
-public class QColor
+public interface IQColor
+{
+	void* NativePtr { get; }
+}
+public class QColor : IQColor
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQColor other)
 	{
-		this.nativePtr = CQt.QColor_new(other);
+		this.nativePtr = CQt.QColor_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -32,9 +37,9 @@ public class QColor
 		CQt.QColor_Delete(this.nativePtr);
 	}
 	
-	public static void FromString(void name)
+	public static void FromString(IQAnyStringView name)
 	{
-		CQt.QColor_FromString(name);
+		CQt.QColor_FromString((name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public void OperatorAssign(int64 color)
@@ -52,9 +57,9 @@ public class QColor
 		return CQt.QColor_Name(this.nativePtr);
 	}
 	
-	public void SetNamedColor(libqt_string name)
+	public void SetNamedColor(String name)
 	{
-		CQt.QColor_SetNamedColor(this.nativePtr, name);
+		CQt.QColor_SetNamedColor(this.nativePtr, libqt_string(name));
 	}
 	
 	public static libqt_string[] ColorNames()
@@ -172,9 +177,9 @@ public class QColor
 		CQt.QColor_Rgba64(this.nativePtr);
 	}
 	
-	public void SetRgba64(void rgba)
+	public void SetRgba64(IQRgba64 rgba)
 	{
-		CQt.QColor_SetRgba64(this.nativePtr, rgba);
+		CQt.QColor_SetRgba64(this.nativePtr, (rgba == default) ? default : (void)rgba.NativePtr);
 	}
 	
 	public uint32 Rgba()
@@ -432,9 +437,9 @@ public class QColor
 		CQt.QColor_FromRgba64(r, g, b);
 	}
 	
-	public static void FromRgba64WithRgba(void rgba)
+	public static void FromRgba64WithRgba(IQRgba64 rgba)
 	{
-		CQt.QColor_FromRgba64WithRgba(rgba);
+		CQt.QColor_FromRgba64WithRgba((rgba == default) ? default : (void)rgba.NativePtr);
 	}
 	
 	public static void FromHsv(int32 h, int32 s, int32 v)
@@ -477,14 +482,14 @@ public class QColor
 		CQt.QColor_Darker(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* c)
+	public bool OperatorEqual(IQColor c)
 	{
-		return CQt.QColor_OperatorEqual(this.nativePtr, c);
+		return CQt.QColor_OperatorEqual(this.nativePtr, (c == default) ? default : (void*)c.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* c)
+	public bool OperatorNotEqual(IQColor c)
 	{
-		return CQt.QColor_OperatorNotEqual(this.nativePtr, c);
+		return CQt.QColor_OperatorNotEqual(this.nativePtr, (c == default) ? default : (void*)c.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -492,14 +497,14 @@ public class QColor
 		CQt.QColor_ToQVariant(this.nativePtr);
 	}
 	
-	public static bool IsValidColor(libqt_string name)
+	public static bool IsValidColor(String name)
 	{
-		return CQt.QColor_IsValidColor(name);
+		return CQt.QColor_IsValidColor(libqt_string(name));
 	}
 	
-	public static bool IsValidColorName(void param1)
+	public static bool IsValidColorName(IQAnyStringView param1)
 	{
-		return CQt.QColor_IsValidColorName(param1);
+		return CQt.QColor_IsValidColorName((param1 == default) ? default : (char8*)param1.NativePtr);
 	}
 	
 	public libqt_string Name1(int64 format)
@@ -662,7 +667,7 @@ extension CQt
 	[LinkName("QColor_new8")]
 	public static extern void* QColor_new8(libqt_string name);
 	[LinkName("QColor_new9")]
-	public static extern void* QColor_new9(char8[] aname);
+	public static extern void* QColor_new9(char8* aname);
 	[LinkName("QColor_new10")]
 	public static extern void* QColor_new10(int64 spec);
 	[LinkName("QColor_new11")]
@@ -674,7 +679,7 @@ extension CQt
 	[LinkName("QColor_new14")]
 	public static extern void* QColor_new14(int64 spec, uint16 a1, uint16 a2, uint16 a3, uint16 a4, uint16 a5);
 	[LinkName("QColor_FromString")]
-	public static extern void QColor_FromString(void name);
+	public static extern void QColor_FromString(char8* name);
 	[LinkName("QColor_OperatorAssign")]
 	public static extern void QColor_OperatorAssign(void* c_this, int64 color);
 	[LinkName("QColor_IsValid")]
@@ -860,7 +865,7 @@ extension CQt
 	[LinkName("QColor_IsValidColor")]
 	public static extern bool QColor_IsValidColor(libqt_string name);
 	[LinkName("QColor_IsValidColorName")]
-	public static extern bool QColor_IsValidColorName(void param1);
+	public static extern bool QColor_IsValidColorName(char8* param1);
 	[LinkName("QColor_Name1")]
 	public static extern libqt_string QColor_Name1(void* c_this, int64 format);
 	[LinkName("QColor_GetRgb4")]

@@ -85,9 +85,174 @@ func (p CppParameter) parameterTypeBeef() string {
 	return tmp
 }
 
+func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
+	if p.Pointer && p.ParameterType == "char" {
+		return "char8*"
+	}
+
+	if p.ParameterType == "void" && p.Pointer {
+		return "void*"
+	}
+
+	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
+		return "libqt_string"
+	}
+
+	if p.ParameterType == "QAnyStringView" ||
+		p.ParameterType == "QByteArrayView" || p.ParameterType == "QStringView" {
+		return "char8*"
+	}
+
+	if p.ParameterType == "QByteArray" {
+		return "uint8[]"
+	}
+
+	if p.Pointer && p.ParameterType == "QByteArray" {
+		return "uint8[]"
+	}
+
+	if t, ok := p.QListOf(); ok {
+		return t.RenderTypeBeefCABI(bfs, isReturnType, fullEnumName) + "[]"
+	}
+
+	if t, ok := p.QSetOf(); ok {
+		UNUSED(t)
+		return "void*" // Unknown
+	}
+
+	if t1, t2, ok := p.QMapOf(); ok {
+		UNUSED(t1, t2)
+		return "void*" // Unknown
+		// return "map[" + t1.RenderTypeBeefCABI(gfs) + "]" + t2.RenderTypeGo(gfs)
+	}
+
+	if t1, t2, ok := p.QPairOf(); ok {
+
+		UNUSED(t1, t2)
+		return "void*" // Unknown
+
+		// Design QPair using capital-named members, in case it gets passed
+		// across packages
+		// return "struct { First " + t1.RenderTypeGo(gfs) + " ; Second " + t2.RenderTypeGo(gfs) + " }"
+	}
+
+	ret := ""
+	switch p.ParameterType {
+	case "void":
+		ret += "void"
+	case "bool", "volatile bool": // What the fuck could the volatile be for? I hope it works???
+		ret += "bool"
+	case "unsigned char", "uchar", "quint8":
+		ret += "uint8"
+	case "char", "qint8", "signed char":
+		ret += "int8" // Signed
+	case "short", "qint16", "int16_t":
+		ret += "int16"
+	case "ushort", "quint16", "unsigned short", "uint16_t":
+		ret += "uint16"
+	case "long":
+		ret += "c_long"
+	case "ulong", "unsigned long":
+		ret += "c_ulong"
+	case "unsigned int", "quint32", "uint":
+		ret += "uint32"
+	case "qint32", "int":
+		ret += "int32"
+	case "qlonglong", "qint64", "long long":
+		ret += "int64"
+	case "qulonglong", "quint64", "unsigned long long":
+		ret += "uint64"
+	case "float":
+		ret += "float"
+	case "double", "qreal":
+		ret += "double"
+	case "size_t": // size_t is unsigned
+		ret += "uint"
+	case "qsizetype", "QIntegerForSizeof<std::size_t>::Signed", "qptrdiff", "ptrdiff_t": // all signed
+		ret += "int32"
+	case "qintptr", "uintptr_t", "intptr_t", "quintptr", "QIntegerForSizeof<void *>::Unsigned", "QIntegerForSizeof<void *>::Signed":
+		ret += "c_uintptr"
+	default:
+		if ft, ok := p.QFlagsOf(); ok {
+			if fullEnumName {
+				UNUSED(ft)
+				ret += "pelly"
+			} else {
+				ret += "int64"
+			}
+		} else if enumInfo, ok := KnownEnums[p.ParameterType]; ok {
+			UNUSED(enumInfo)
+
+			enumName := cabiEnumName(p.ParameterType)
+			if enumName == "" {
+				enumName = cabiClassName(p.ParameterType)
+			}
+
+			if strings.Contains(p.ParameterType, "::") {
+				if fullEnumName {
+					// ret += strings.Replace(enumName, `::`, `.`, -1)
+					ret += enumName
+				} else {
+					ret += "int64"
+				}
+			}
+		} else if strings.Contains(p.ParameterType, `::`) {
+			// Inner class
+			// ret += cabiClassName(p.ParameterType)
+			ret += "void"
+		} else {
+			// Do not transform this type
+			// ret += p.ParameterType + ".Ptr"
+			ret += "void"
+		}
+	}
+
+	switch ret {
+	case "quint8":
+		ret = "uint8"
+	case "unsigned int", "quint32", "uint":
+		ret = "uint32"
+	case "int":
+		ret = "int32"
+	case "":
+		// ret = "BAD_VALUE!" // So the compiler catches it
+		ret = "void" // but for now becuase I'm lazy
+	}
+
+	if p.Pointer {
+		ret += strings.Repeat("*", p.PointerCount)
+	} else if p.ByRef {
+		ret += "*"
+	}
+
+	return ret
+}
+
+func (p CppParameter) RenderReturnTypeBeefCABI(bfs *bfFileState) string {
+	ret := p.RenderTypeBeefCABI(bfs, true, false)
+
+	if ret == "void" {
+		ret = "void"
+	}
+
+	if ret == "int" {
+		ret = "int32"
+	}
+
+	if ret == "quint8" {
+		ret = "int32"
+	}
+
+	if ret == "uint" {
+		ret = "uint32"
+	}
+
+	return ret
+}
+
 func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
 	if p.Pointer && p.ParameterType == "char" {
-		return "char8[]"
+		return "char8*"
 	}
 
 	/*
@@ -98,7 +263,7 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 	*/
 
 	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
-		return "libqt_string"
+		return "String"
 	}
 
 	if p.ParameterType == "QByteArray" {
@@ -121,7 +286,7 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 	if t1, t2, ok := p.QMapOf(); ok {
 		UNUSED(t1, t2)
 		return "void*" // Unknown
-		// return "map[" + t1.RenderTypeBeef(gfs) + "]" + t2.RenderTypeGo(gfs)
+		// return "map[" + t1.RenderTypeBeefCABI(gfs) + "]" + t2.RenderTypeGo(gfs)
 	}
 
 	if t1, t2, ok := p.QPairOf(); ok {
@@ -200,8 +365,12 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 		} else {
 			// Do not transform this type
 			// ret += p.ParameterType + ".Ptr"
-			ret += "void"
+			ret += "I" + p.ParameterType
 		}
+	}
+
+	if p.QtClassType() {
+		return ret
 	}
 
 	switch ret {
@@ -225,7 +394,7 @@ func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEn
 	return ret
 }
 
-func (p CppParameter) renderReturnTypeBeef(bfs *bfFileState) string {
+func (p CppParameter) RenderReturnTypeBeef(bfs *bfFileState) string {
 	ret := p.RenderTypeBeef(bfs, true, false)
 
 	if ret == "void" {
@@ -273,7 +442,7 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 
 			// Ordinary parameter
 			paramName := p.ParameterName
-			paramType := p.RenderTypeBeef(bfs, false, false)
+			paramType := p.RenderTypeBeefCABI(bfs, false, false)
 
 			if beefReservedWord(paramName) {
 				paramName = "_" + paramName
@@ -295,7 +464,7 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 
 			// Ordinary parameter
 			paramName := p.ParameterName
-			paramType := p.RenderTypeBeef(bfs, false, false)
+			paramType := p.RenderTypeBeefCABI(bfs, false, false)
 
 			if beefReservedWord(paramName) {
 				paramName = "_" + paramName
@@ -312,7 +481,30 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 	return strings.Join(tmp, ", ")
 }
 
-func (bfs *bfFileState) emitArgumentsBeef(m CppMethod) (forwarding string) {
+func (bfs *bfFileState) EmitParametersBeef(params []CppParameter, isSlot bool) string {
+	tmp := make([]string, 0, len(params))
+	// skipNext := false
+
+	for _, p := range params {
+		// Ordinary parameter
+		paramName := p.ParameterName
+		paramType := p.RenderTypeBeef(bfs, false, false)
+
+		if beefReservedWord(paramName) {
+			paramName = "_" + paramName
+		}
+
+		if isSlot {
+			tmp = append(tmp, paramType)
+		} else {
+			tmp = append(tmp, paramType+" "+paramName)
+		}
+	}
+
+	return strings.Join(tmp, ", ")
+}
+
+func (bfs *bfFileState) EmitArgumentsBeef(m CppMethod) (forwarding string) {
 	tmp := make([]string, 0, len(m.Parameters)+2)
 
 	if !m.IsStatic {
@@ -322,42 +514,44 @@ func (bfs *bfFileState) emitArgumentsBeef(m CppMethod) (forwarding string) {
 	for _, p := range m.Parameters {
 		// Ordinary parameter
 		paramName := p.ParameterName
+		cast := ""
 
-		if beefReservedWord(paramName) {
-			paramName = "_" + paramName
-		}
-
-		tmp = append(tmp, paramName)
-
-	}
-
-	return strings.Join(tmp, ", ")
-}
-
-func (bfs *bfFileState) emitParametersBeef(params []CppParameter, isSlot bool) string {
-	tmp := make([]string, 0, len(params))
-	skipNext := false
-
-	for i, p := range params {
-		if IsArgcArgv(params, i) {
-			skipNext = true
-			tmp = append(tmp, "argc: usize, argv: [*][*:0]uint8")
-		} else if skipNext {
-			// Skip this parameter, already handled
-			skipNext = false
+		if _, ok := p.QListOf(); ok {
+			tmp = append(tmp, "null")
 		} else {
-			// Ordinary parameter
-			paramName := p.ParameterName
-			paramType := p.RenderTypeBeef(bfs, false, false)
 
 			if beefReservedWord(paramName) {
 				paramName = "_" + paramName
 			}
 
-			if isSlot {
-				tmp = append(tmp, paramType)
+			beefType := p.RenderReturnTypeBeef(bfs)
+			beefAPIType := p.RenderReturnTypeBeefCABI(bfs)
+
+			if beefType == "String" {
+				tmp = append(tmp, "libqt_string("+paramName+")")
 			} else {
-				tmp = append(tmp, paramType+" "+paramName)
+				if p.QtClassType() && beefType != "void*" && beefType != "String" {
+					var defaultVal string
+					if p.Pointer {
+						defaultVal = "null"
+					} else {
+						defaultVal = "default"
+					}
+
+					cast += "(" + paramName + " == " + defaultVal + ")" + " ? " + defaultVal + " : "
+
+					paramName += ".NativePtr"
+
+					if beefType != "void" {
+						cast += "("
+						cast += beefAPIType
+						// cast += strings.Repeat("*", p.PointerCount)
+						cast += ")"
+					}
+				}
+
+				tmp = append(tmp, cast+paramName)
+
 			}
 		}
 	}
@@ -438,13 +632,18 @@ func beef_emitClassStruct(c *CppClass, ret *CodeBuilder, bfs *bfFileState) {
 					cMethodName := methodPrefixName + "_Connect_" + m.SafeMethodName()
 
 					ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-					ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(bfs) + " " + cMethodName + "(void* c_this, c_intptr slot);")
+					ret.WriteLine("public static extern " + m.ReturnType.RenderReturnTypeBeefCABI(bfs) + " " + cMethodName + "(void* c_this, c_intptr slot);")
 					// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
 				}
 			} else {
 
+				if cMethodName == "QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator" {
+					a := 0
+					UNUSED(a)
+				}
+
 				ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-				ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
+				ret.WriteLine("public static extern " + m.ReturnType.RenderReturnTypeBeefCABI(bfs) + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(m, false) + ");")
 
 			}
 		}
@@ -539,13 +738,52 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 		// previousMethods := map[string]struct{}{}
 		seenMethodVariants := map[string]bool{}
 
+		ret.WriteLine("public interface I" + cabiClassName(c.ClassName))
+		ret.WriteLine("{")
+		ret.IncreaseTab()
+		{
+			ret.WriteLine("void* NativePtr { get; }")
+		}
+		ret.DecreaseTab()
+		ret.WriteLine("}")
+
 		ret.WriteLine("public class " + cabiClassName(c.ClassName))
+
+		// Inheritance string
+		{
+			var inheritStr strings.Builder
+			var inheritCount int
+			{
+				for i, base := range c.DirectInherits {
+
+					if strings.HasPrefix(base, `QList<`) {
+
+						inheritStr.WriteString(" // Also inherits unprojectable " + base)
+
+					} else {
+						inheritStr.WriteString("I" + cabiClassName(base))
+						if i < len(c.DirectInherits)-1 {
+							inheritStr.WriteString(", ")
+						}
+						inheritCount++
+					}
+				}
+			}
+
+			ret.WriteString(" : " + "I" + cabiClassName(c.ClassName))
+			if inheritCount > 0 {
+				ret.WriteString(", ")
+			}
+			ret.WriteString(inheritStr.String())
+		}
+
 		ret.WriteLine("{")
 		ret.IncreaseTab()
 		{
 			// Ptr member variable
 			if true {
 				ret.WriteLine("protected void* nativePtr;")
+				ret.WriteLine("public void* NativePtr => nativePtr;")
 				if len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0 {
 					ret.WriteEmptyLine()
 				}
@@ -575,43 +813,12 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 					ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + ".Ptr*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
 				*/
 
-				ret.WriteLine("public this" + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ")")
+				ret.WriteLine("public this" + "(" + bfs.EmitParametersBeef(ctor.Parameters, false) + ")")
 				ret.WriteLine("{")
 				ret.IncreaseTab()
 				{
-					params := ctor.Parameters
-					tmp := make([]string, 0, len(params))
-					skipNext := false
-
-					for i, p := range params {
-						if IsArgcArgv(params, i) {
-							// Ordinary parameter
-							paramName := p.ParameterName
-
-							if beefReservedWord(paramName) {
-								paramName = "_" + paramName
-							}
-
-							tmp = append(tmp, paramName)
-						} else if skipNext {
-							// Skip this parameter, already handled
-							skipNext = false
-						} else {
-							// Ordinary parameter
-							paramName := p.ParameterName
-
-							if beefReservedWord(paramName) {
-								paramName = "_" + paramName
-							}
-
-							tmp = append(tmp, paramName)
-						}
-					}
-
-					args := strings.Join(tmp, ", ")
-
 					// ret.WriteLine("this.nativePtr = *Ptr." + beefCtorName(&c, i) + "(" + args + ");")
-					ret.WriteLine("this.nativePtr = CQt." + beefCtorName(&c, i) + "(" + args + ");")
+					ret.WriteLine("this.nativePtr = CQt." + beefCtorName(&c, i) + "(" + bfs.EmitArgumentsBeef(ctor) + ");")
 
 					// New function?
 					/*
@@ -720,15 +927,16 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 					}
 
 					// args
-					args := bfs.emitArgumentsBeef(m)
+					args := bfs.EmitArgumentsBeef(m)
+					returnType := m.ReturnType.RenderReturnTypeBeefCABI(&bfs)
 
-					ret.WriteLine("public " + staticStr + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + m.SafeMethodName() + "(" + bfs.emitParametersBeef(m.Parameters, false) + ")")
+					ret.WriteLine("public " + staticStr + returnType + " " + m.SafeMethodName() + "(" + bfs.EmitParametersBeef(m.Parameters, false) + ")")
 					ret.WriteLine("{")
 					ret.IncreaseTab()
 					{
 						ret.AppendNewLine()
 						ret.AppendTabs(ret.tabCount)
-						if m.ReturnType.renderReturnTypeBeef(&bfs) != "void" {
+						if returnType != "void" {
 							ret.WriteString("return ")
 						}
 						ret.WriteString("CQt." + cMethodName + "(" + args + ");")

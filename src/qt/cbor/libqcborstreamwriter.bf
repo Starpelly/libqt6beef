@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QCborStreamWriter
+public interface IQCborStreamWriter
+{
+	void* NativePtr { get; }
+}
+public class QCborStreamWriter : IQCborStreamWriter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* device)
+	public this(IQIODevice device)
 	{
-		this.nativePtr = CQt.QCborStreamWriter_new(device);
+		this.nativePtr = CQt.QCborStreamWriter_new((device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public ~this()
@@ -16,9 +21,9 @@ public class QCborStreamWriter
 		CQt.QCborStreamWriter_Delete(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QCborStreamWriter_SetDevice(this.nativePtr, device);
+		CQt.QCborStreamWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -41,9 +46,9 @@ public class QCborStreamWriter
 		CQt.QCborStreamWriter_AppendWithQCborNegativeInteger(this.nativePtr, n);
 	}
 	
-	public void AppendWithBa(libqt_string ba)
+	public void AppendWithBa(String ba)
 	{
-		CQt.QCborStreamWriter_AppendWithBa(this.nativePtr, ba);
+		CQt.QCborStreamWriter_AppendWithBa(this.nativePtr, libqt_string(ba));
 	}
 	
 	public void AppendWithTag(void tag)
@@ -71,12 +76,12 @@ public class QCborStreamWriter
 		CQt.QCborStreamWriter_AppendWithDouble(this.nativePtr, d);
 	}
 	
-	public void AppendByteString(char8[] data, int32 lenVal)
+	public void AppendByteString(char8* data, int32 lenVal)
 	{
 		CQt.QCborStreamWriter_AppendByteString(this.nativePtr, data, lenVal);
 	}
 	
-	public void AppendTextString(char8[] utf8, int32 lenVal)
+	public void AppendTextString(char8* utf8, int32 lenVal)
 	{
 		CQt.QCborStreamWriter_AppendTextString(this.nativePtr, utf8, lenVal);
 	}
@@ -106,7 +111,7 @@ public class QCborStreamWriter
 		CQt.QCborStreamWriter_AppendWithUint(this.nativePtr, u);
 	}
 	
-	public void Append4(char8[] str)
+	public void Append4(char8* str)
 	{
 		CQt.QCborStreamWriter_Append4(this.nativePtr, str);
 	}
@@ -141,7 +146,7 @@ public class QCborStreamWriter
 		return CQt.QCborStreamWriter_EndMap(this.nativePtr);
 	}
 	
-	public void Append22(char8[] str, int32 size)
+	public void Append22(char8* str, int32 size)
 	{
 		CQt.QCborStreamWriter_Append22(this.nativePtr, str, size);
 	}
@@ -174,9 +179,9 @@ extension CQt
 	[LinkName("QCborStreamWriter_AppendWithDouble")]
 	public static extern void QCborStreamWriter_AppendWithDouble(void* c_this, double d);
 	[LinkName("QCborStreamWriter_AppendByteString")]
-	public static extern void QCborStreamWriter_AppendByteString(void* c_this, char8[] data, int32 lenVal);
+	public static extern void QCborStreamWriter_AppendByteString(void* c_this, char8* data, int32 lenVal);
 	[LinkName("QCborStreamWriter_AppendTextString")]
-	public static extern void QCborStreamWriter_AppendTextString(void* c_this, char8[] utf8, int32 lenVal);
+	public static extern void QCborStreamWriter_AppendTextString(void* c_this, char8* utf8, int32 lenVal);
 	[LinkName("QCborStreamWriter_AppendWithBool")]
 	public static extern void QCborStreamWriter_AppendWithBool(void* c_this, bool b);
 	[LinkName("QCborStreamWriter_AppendNull")]
@@ -188,7 +193,7 @@ extension CQt
 	[LinkName("QCborStreamWriter_AppendWithUint")]
 	public static extern void QCborStreamWriter_AppendWithUint(void* c_this, uint32 u);
 	[LinkName("QCborStreamWriter_Append4")]
-	public static extern void QCborStreamWriter_Append4(void* c_this, char8[] str);
+	public static extern void QCborStreamWriter_Append4(void* c_this, char8* str);
 	[LinkName("QCborStreamWriter_StartArray")]
 	public static extern void QCborStreamWriter_StartArray(void* c_this);
 	[LinkName("QCborStreamWriter_StartArrayWithCount")]
@@ -202,7 +207,7 @@ extension CQt
 	[LinkName("QCborStreamWriter_EndMap")]
 	public static extern bool QCborStreamWriter_EndMap(void* c_this);
 	[LinkName("QCborStreamWriter_Append22")]
-	public static extern void QCborStreamWriter_Append22(void* c_this, char8[] str, int32 size);
+	public static extern void QCborStreamWriter_Append22(void* c_this, char8* str, int32 size);
 	/// Delete this object from C++ memory
 	[LinkName("QCborStreamWriter_Delete")]
 	public static extern void QCborStreamWriter_Delete(void* self);

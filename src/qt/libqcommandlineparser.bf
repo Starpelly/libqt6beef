@@ -14,9 +14,14 @@ public enum QCommandLineParser__OptionsAfterPositionalArgumentsMode
 	ParseAsOptions = 0,
 	ParseAsPositionalArguments = 1,
 }
-public class QCommandLineParser
+public interface IQCommandLineParser
+{
+	void* NativePtr { get; }
+}
+public class QCommandLineParser : IQCommandLineParser
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -28,7 +33,7 @@ public class QCommandLineParser
 		CQt.QCommandLineParser_Delete(this.nativePtr);
 	}
 	
-	public static libqt_string Tr(char8[] sourceText)
+	public static libqt_string Tr(char8* sourceText)
 	{
 		return CQt.QCommandLineParser_Tr(sourceText);
 	}
@@ -43,14 +48,14 @@ public class QCommandLineParser
 		CQt.QCommandLineParser_SetOptionsAfterPositionalArgumentsMode(this.nativePtr, mode);
 	}
 	
-	public bool AddOption(void* commandLineOption)
+	public bool AddOption(IQCommandLineOption commandLineOption)
 	{
-		return CQt.QCommandLineParser_AddOption(this.nativePtr, commandLineOption);
+		return CQt.QCommandLineParser_AddOption(this.nativePtr, (commandLineOption == default) ? default : (void*)commandLineOption.NativePtr);
 	}
 	
-	public bool AddOptions(void[] options)
+	public bool AddOptions(IQCommandLineOption[] options)
 	{
-		return CQt.QCommandLineParser_AddOptions(this.nativePtr, options);
+		return CQt.QCommandLineParser_AddOptions(this.nativePtr, null);
 	}
 	
 	public void AddVersionOption()
@@ -63,9 +68,9 @@ public class QCommandLineParser
 		CQt.QCommandLineParser_AddHelpOption(this.nativePtr);
 	}
 	
-	public void SetApplicationDescription(libqt_string description)
+	public void SetApplicationDescription(String description)
 	{
-		CQt.QCommandLineParser_SetApplicationDescription(this.nativePtr, description);
+		CQt.QCommandLineParser_SetApplicationDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public libqt_string ApplicationDescription()
@@ -73,9 +78,9 @@ public class QCommandLineParser
 		return CQt.QCommandLineParser_ApplicationDescription(this.nativePtr);
 	}
 	
-	public void AddPositionalArgument(libqt_string name, libqt_string description)
+	public void AddPositionalArgument(String name, String description)
 	{
-		CQt.QCommandLineParser_AddPositionalArgument(this.nativePtr, name, description);
+		CQt.QCommandLineParser_AddPositionalArgument(this.nativePtr, libqt_string(name), libqt_string(description));
 	}
 	
 	public void ClearPositionalArguments()
@@ -83,19 +88,19 @@ public class QCommandLineParser
 		CQt.QCommandLineParser_ClearPositionalArguments(this.nativePtr);
 	}
 	
-	public void Process(libqt_string[] arguments)
+	public void Process(String[] arguments)
 	{
-		CQt.QCommandLineParser_Process(this.nativePtr, arguments);
+		CQt.QCommandLineParser_Process(this.nativePtr, null);
 	}
 	
-	public void ProcessWithApp(void* app)
+	public void ProcessWithApp(IQCoreApplication app)
 	{
-		CQt.QCommandLineParser_ProcessWithApp(this.nativePtr, app);
+		CQt.QCommandLineParser_ProcessWithApp(this.nativePtr, (app == default) ? default : (void*)app.NativePtr);
 	}
 	
-	public bool Parse(libqt_string[] arguments)
+	public bool Parse(String[] arguments)
 	{
-		return CQt.QCommandLineParser_Parse(this.nativePtr, arguments);
+		return CQt.QCommandLineParser_Parse(this.nativePtr, null);
 	}
 	
 	public libqt_string ErrorText()
@@ -103,34 +108,34 @@ public class QCommandLineParser
 		return CQt.QCommandLineParser_ErrorText(this.nativePtr);
 	}
 	
-	public bool IsSet(libqt_string name)
+	public bool IsSet(String name)
 	{
-		return CQt.QCommandLineParser_IsSet(this.nativePtr, name);
+		return CQt.QCommandLineParser_IsSet(this.nativePtr, libqt_string(name));
 	}
 	
-	public libqt_string Value(libqt_string name)
+	public libqt_string Value(String name)
 	{
-		return CQt.QCommandLineParser_Value(this.nativePtr, name);
+		return CQt.QCommandLineParser_Value(this.nativePtr, libqt_string(name));
 	}
 	
-	public libqt_string[] Values(libqt_string name)
+	public libqt_string[] Values(String name)
 	{
-		return CQt.QCommandLineParser_Values(this.nativePtr, name);
+		return CQt.QCommandLineParser_Values(this.nativePtr, libqt_string(name));
 	}
 	
-	public bool IsSetWithOption(void* option)
+	public bool IsSetWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_IsSetWithOption(this.nativePtr, option);
+		return CQt.QCommandLineParser_IsSetWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
 	}
 	
-	public libqt_string ValueWithOption(void* option)
+	public libqt_string ValueWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_ValueWithOption(this.nativePtr, option);
+		return CQt.QCommandLineParser_ValueWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
 	}
 	
-	public libqt_string[] ValuesWithOption(void* option)
+	public libqt_string[] ValuesWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_ValuesWithOption(this.nativePtr, option);
+		return CQt.QCommandLineParser_ValuesWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
 	}
 	
 	public libqt_string[] PositionalArguments()
@@ -163,19 +168,19 @@ public class QCommandLineParser
 		return CQt.QCommandLineParser_HelpText(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] sourceText, char8[] disambiguation)
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
 	{
 		return CQt.QCommandLineParser_Tr2(sourceText, disambiguation);
 	}
 	
-	public static libqt_string Tr3(char8[] sourceText, char8[] disambiguation, int32 n)
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QCommandLineParser_Tr3(sourceText, disambiguation, n);
 	}
 	
-	public void AddPositionalArgument3(libqt_string name, libqt_string description, libqt_string syntax)
+	public void AddPositionalArgument3(String name, String description, String syntax)
 	{
-		CQt.QCommandLineParser_AddPositionalArgument3(this.nativePtr, name, description, syntax);
+		CQt.QCommandLineParser_AddPositionalArgument3(this.nativePtr, libqt_string(name), libqt_string(description), libqt_string(syntax));
 	}
 	
 	public void ShowHelp1(int32 exitCode)
@@ -189,7 +194,7 @@ extension CQt
 	[LinkName("QCommandLineParser_new")]
 	public static extern void* QCommandLineParser_new();
 	[LinkName("QCommandLineParser_Tr")]
-	public static extern libqt_string QCommandLineParser_Tr(char8[] sourceText);
+	public static extern libqt_string QCommandLineParser_Tr(char8* sourceText);
 	[LinkName("QCommandLineParser_SetSingleDashWordOptionMode")]
 	public static extern void QCommandLineParser_SetSingleDashWordOptionMode(void* c_this, int64 parsingMode);
 	[LinkName("QCommandLineParser_SetOptionsAfterPositionalArgumentsMode")]
@@ -243,9 +248,9 @@ extension CQt
 	[LinkName("QCommandLineParser_HelpText")]
 	public static extern libqt_string QCommandLineParser_HelpText(void* c_this);
 	[LinkName("QCommandLineParser_Tr2")]
-	public static extern libqt_string QCommandLineParser_Tr2(char8[] sourceText, char8[] disambiguation);
+	public static extern libqt_string QCommandLineParser_Tr2(char8* sourceText, char8* disambiguation);
 	[LinkName("QCommandLineParser_Tr3")]
-	public static extern libqt_string QCommandLineParser_Tr3(char8[] sourceText, char8[] disambiguation, int32 n);
+	public static extern libqt_string QCommandLineParser_Tr3(char8* sourceText, char8* disambiguation, int32 n);
 	[LinkName("QCommandLineParser_AddPositionalArgument3")]
 	public static extern void QCommandLineParser_AddPositionalArgument3(void* c_this, libqt_string name, libqt_string description, libqt_string syntax);
 	[LinkName("QCommandLineParser_ShowHelp1")]

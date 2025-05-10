@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QMargins
+public interface IQMargins
+{
+	void* NativePtr { get; }
+}
+public class QMargins : IQMargins
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMargins other)
 	{
-		this.nativePtr = CQt.QMargins_new(other);
+		this.nativePtr = CQt.QMargins_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -61,14 +66,14 @@ public class QMargins
 		CQt.QMargins_SetBottom(this.nativePtr, bottom);
 	}
 	
-	public void* OperatorPlusAssign(void* margins)
+	public void* OperatorPlusAssign(IQMargins margins)
 	{
-		return CQt.QMargins_OperatorPlusAssign(this.nativePtr, margins);
+		return CQt.QMargins_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* margins)
+	public void* OperatorMinusAssign(IQMargins margins)
 	{
-		return CQt.QMargins_OperatorMinusAssign(this.nativePtr, margins);
+		return CQt.QMargins_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssignWithInt(int32 param1)
@@ -159,13 +164,18 @@ extension CQt
 	[LinkName("QMargins_Delete")]
 	public static extern void QMargins_Delete(void* self);
 }
-public class QMarginsF
+public interface IQMarginsF
+{
+	void* NativePtr { get; }
+}
+public class QMarginsF : IQMarginsF
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQMarginsF other)
 	{
-		this.nativePtr = CQt.QMarginsF_new(other);
+		this.nativePtr = CQt.QMarginsF_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -218,14 +228,14 @@ public class QMarginsF
 		CQt.QMarginsF_SetBottom(this.nativePtr, abottom);
 	}
 	
-	public void* OperatorPlusAssign(void* margins)
+	public void* OperatorPlusAssign(IQMarginsF margins)
 	{
-		return CQt.QMarginsF_OperatorPlusAssign(this.nativePtr, margins);
+		return CQt.QMarginsF_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void* margins)
+	public void* OperatorMinusAssign(IQMarginsF margins)
 	{
-		return CQt.QMarginsF_OperatorMinusAssign(this.nativePtr, margins);
+		return CQt.QMarginsF_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssignWithAddend(double addend)

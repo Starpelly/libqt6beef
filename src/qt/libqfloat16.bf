@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class qfloat16
+public interface Iqfloat16
+{
+	void* NativePtr { get; }
+}
+public class qfloat16 : Iqfloat16
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{

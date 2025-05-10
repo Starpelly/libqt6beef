@@ -12,13 +12,18 @@ public enum QLayout__SizeConstraint
 	SetMaximumSize = 4,
 	SetMinAndMaxSize = 5,
 }
-public class QLayout
+public interface IQLayout
+{
+	void* NativePtr { get; }
+}
+public class QLayout : IQLayout, IQObject, IQLayoutItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* parent)
+	public this(IQWidget parent)
 	{
-		this.nativePtr = CQt.QLayout_new(parent);
+		this.nativePtr = CQt.QLayout_new((parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public ~this()
@@ -31,7 +36,7 @@ public class QLayout
 		return CQt.QLayout_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QLayout_Metacast(this.nativePtr, param1);
 	}
@@ -41,7 +46,7 @@ public class QLayout
 		return CQt.QLayout_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QLayout_Tr(s);
 	}
@@ -61,9 +66,9 @@ public class QLayout
 		CQt.QLayout_SetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
 	
-	public void SetContentsMarginsWithMargins(void* margins)
+	public void SetContentsMarginsWithMargins(IQMargins margins)
 	{
-		CQt.QLayout_SetContentsMarginsWithMargins(this.nativePtr, margins);
+		CQt.QLayout_SetContentsMarginsWithMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public void UnsetContentsMargins()
@@ -86,14 +91,14 @@ public class QLayout
 		CQt.QLayout_ContentsRect(this.nativePtr);
 	}
 	
-	public bool SetAlignment(void* w, int64 alignment)
+	public bool SetAlignment(IQWidget w, int64 alignment)
 	{
-		return CQt.QLayout_SetAlignment(this.nativePtr, w, alignment);
+		return CQt.QLayout_SetAlignment(this.nativePtr, (w == null) ? null : (void*)w.NativePtr, alignment);
 	}
 	
-	public bool SetAlignment2(void* l, int64 alignment)
+	public bool SetAlignment2(IQLayout l, int64 alignment)
 	{
-		return CQt.QLayout_SetAlignment2(this.nativePtr, l, alignment);
+		return CQt.QLayout_SetAlignment2(this.nativePtr, (l == null) ? null : (void*)l.NativePtr, alignment);
 	}
 	
 	public void SetSizeConstraint(int64 sizeConstraint)
@@ -106,9 +111,9 @@ public class QLayout
 		return CQt.QLayout_SizeConstraint(this.nativePtr);
 	}
 	
-	public void SetMenuBar(void* w)
+	public void SetMenuBar(IQWidget w)
 	{
-		CQt.QLayout_SetMenuBar(this.nativePtr, w);
+		CQt.QLayout_SetMenuBar(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
 	public void* MenuBar()
@@ -141,24 +146,24 @@ public class QLayout
 		CQt.QLayout_Update(this.nativePtr);
 	}
 	
-	public void AddWidget(void* w)
+	public void AddWidget(IQWidget w)
 	{
-		CQt.QLayout_AddWidget(this.nativePtr, w);
+		CQt.QLayout_AddWidget(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public virtual void AddItem(void* param1)
+	public virtual void AddItem(IQLayoutItem param1)
 	{
-		CQt.QLayout_AddItem(this.nativePtr, param1);
+		CQt.QLayout_AddItem(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public void RemoveWidget(void* w)
+	public void RemoveWidget(IQWidget w)
 	{
-		CQt.QLayout_RemoveWidget(this.nativePtr, w);
+		CQt.QLayout_RemoveWidget(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public void RemoveItem(void* param1)
+	public void RemoveItem(IQLayoutItem param1)
 	{
-		CQt.QLayout_RemoveItem(this.nativePtr, param1);
+		CQt.QLayout_RemoveItem(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public virtual int64 ExpandingDirections()
@@ -176,9 +181,9 @@ public class QLayout
 		CQt.QLayout_MaximumSize(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* geometry)
+	public virtual void SetGeometry(IQRect geometry)
 	{
-		CQt.QLayout_SetGeometry(this.nativePtr, geometry);
+		CQt.QLayout_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public virtual void* ItemAt(int32 index)
@@ -191,14 +196,14 @@ public class QLayout
 		return CQt.QLayout_TakeAt(this.nativePtr, index);
 	}
 	
-	public virtual int32 IndexOf(void* param1)
+	public virtual int32 IndexOf(IQWidget param1)
 	{
-		return CQt.QLayout_IndexOf(this.nativePtr, param1);
+		return CQt.QLayout_IndexOf(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public virtual int32 IndexOfWithQLayoutItem(void* param1)
+	public virtual int32 IndexOfWithQLayoutItem(IQLayoutItem param1)
 	{
-		return CQt.QLayout_IndexOfWithQLayoutItem(this.nativePtr, param1);
+		return CQt.QLayout_IndexOfWithQLayoutItem(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public virtual int32 Count()
@@ -216,9 +221,9 @@ public class QLayout
 		return CQt.QLayout_ControlTypes(this.nativePtr);
 	}
 	
-	public virtual void* ReplaceWidget(void* from, void* to, int64 options)
+	public virtual void* ReplaceWidget(IQWidget from, IQWidget to, int64 options)
 	{
-		return CQt.QLayout_ReplaceWidget(this.nativePtr, from, to, options);
+		return CQt.QLayout_ReplaceWidget(this.nativePtr, (from == null) ? null : (void*)from.NativePtr, (to == null) ? null : (void*)to.NativePtr, options);
 	}
 	
 	public int32 TotalMinimumHeightForWidth(int32 w)
@@ -261,59 +266,59 @@ public class QLayout
 		return CQt.QLayout_IsEnabled(this.nativePtr);
 	}
 	
-	public static void ClosestAcceptableSize(void* w, void* s)
+	public static void ClosestAcceptableSize(IQWidget w, IQSize s)
 	{
-		CQt.QLayout_ClosestAcceptableSize(w, s);
+		CQt.QLayout_ClosestAcceptableSize((w == null) ? null : (void*)w.NativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
-	public void WidgetEvent(void* param1)
+	public void WidgetEvent(IQEvent param1)
 	{
-		CQt.QLayout_WidgetEvent(this.nativePtr, param1);
+		CQt.QLayout_WidgetEvent(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public virtual void ChildEvent(void* e)
+	public virtual void ChildEvent(IQChildEvent e)
 	{
-		CQt.QLayout_ChildEvent(this.nativePtr, e);
+		CQt.QLayout_ChildEvent(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
-	public void AddChildLayout(void* l)
+	public void AddChildLayout(IQLayout l)
 	{
-		CQt.QLayout_AddChildLayout(this.nativePtr, l);
+		CQt.QLayout_AddChildLayout(this.nativePtr, (l == null) ? null : (void*)l.NativePtr);
 	}
 	
-	public void AddChildWidget(void* w)
+	public void AddChildWidget(IQWidget w)
 	{
-		CQt.QLayout_AddChildWidget(this.nativePtr, w);
+		CQt.QLayout_AddChildWidget(this.nativePtr, (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public bool AdoptLayout(void* layout)
+	public bool AdoptLayout(IQLayout layout)
 	{
-		return CQt.QLayout_AdoptLayout(this.nativePtr, layout);
+		return CQt.QLayout_AdoptLayout(this.nativePtr, (layout == null) ? null : (void*)layout.NativePtr);
 	}
 	
-	public void AlignmentRect(void* param1)
+	public void AlignmentRect(IQRect param1)
 	{
-		CQt.QLayout_AlignmentRect(this.nativePtr, param1);
+		CQt.QLayout_AlignmentRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QLayout_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QLayout_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -321,9 +326,9 @@ public class QLayout
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -356,9 +361,9 @@ public class QLayout
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -376,39 +381,39 @@ public class QLayout
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -421,12 +426,12 @@ public class QLayout
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -451,7 +456,7 @@ public class QLayout
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -466,14 +471,14 @@ public class QLayout
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 	public virtual void SizeHint()
@@ -521,11 +526,11 @@ extension CQt
 	[LinkName("QLayout_MetaObject")]
 	public static extern void* QLayout_MetaObject(void* c_this);
 	[LinkName("QLayout_Metacast")]
-	public static extern void* QLayout_Metacast(void* c_this, char8[] param1);
+	public static extern void* QLayout_Metacast(void* c_this, char8* param1);
 	[LinkName("QLayout_Metacall")]
-	public static extern int32 QLayout_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QLayout_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QLayout_Tr")]
-	public static extern libqt_string QLayout_Tr(char8[] s);
+	public static extern libqt_string QLayout_Tr(char8* s);
 	[LinkName("QLayout_Spacing")]
 	public static extern int32 QLayout_Spacing(void* c_this);
 	[LinkName("QLayout_SetSpacing")]
@@ -627,9 +632,9 @@ extension CQt
 	[LinkName("QLayout_AlignmentRect")]
 	public static extern void QLayout_AlignmentRect(void* c_this, void* param1);
 	[LinkName("QLayout_Tr2")]
-	public static extern libqt_string QLayout_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QLayout_Tr2(char8* s, char8* c);
 	[LinkName("QLayout_Tr3")]
-	public static extern libqt_string QLayout_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QLayout_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QLayout_Delete")]
 	public static extern void QLayout_Delete(void* self);

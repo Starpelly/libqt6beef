@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QLayoutItem
+public interface IQLayoutItem
+{
+	void* NativePtr { get; }
+}
+public class QLayoutItem : IQLayoutItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -36,9 +41,9 @@ public class QLayoutItem
 		return CQt.QLayoutItem_ExpandingDirections(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* geometry)
+	public virtual void SetGeometry(IQRect geometry)
 	{
-		CQt.QLayoutItem_SetGeometry(this.nativePtr, geometry);
+		CQt.QLayoutItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public virtual void Geometry()
@@ -101,9 +106,9 @@ public class QLayoutItem
 		return CQt.QLayoutItem_ControlTypes(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQLayoutItem param1)
 	{
-		CQt.QLayoutItem_OperatorAssign(this.nativePtr, param1);
+		CQt.QLayoutItem_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -155,9 +160,14 @@ extension CQt
 	[LinkName("QLayoutItem_Delete")]
 	public static extern void QLayoutItem_Delete(void* self);
 }
-public class QSpacerItem
+public interface IQSpacerItem
+{
+	void* NativePtr { get; }
+}
+public class QSpacerItem : IQSpacerItem, IQLayoutItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this(int32 w, int32 h)
 	{
@@ -199,9 +209,9 @@ public class QSpacerItem
 		return CQt.QSpacerItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* geometry)
+	public virtual void SetGeometry(IQRect geometry)
 	{
-		CQt.QSpacerItem_SetGeometry(this.nativePtr, geometry);
+		CQt.QSpacerItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public virtual void Geometry()
@@ -313,13 +323,18 @@ extension CQt
 	[LinkName("QSpacerItem_Delete")]
 	public static extern void QSpacerItem_Delete(void* self);
 }
-public class QWidgetItem
+public interface IQWidgetItem
+{
+	void* NativePtr { get; }
+}
+public class QWidgetItem : IQWidgetItem, IQLayoutItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* w)
+	public this(IQWidget w)
 	{
-		this.nativePtr = CQt.QWidgetItem_new(w);
+		this.nativePtr = CQt.QWidgetItem_new((w == null) ? null : (void*)w.NativePtr);
 	}
 	
 	public ~this()
@@ -352,9 +367,9 @@ public class QWidgetItem
 		return CQt.QWidgetItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* geometry)
+	public virtual void SetGeometry(IQRect geometry)
 	{
-		CQt.QWidgetItem_SetGeometry(this.nativePtr, geometry);
+		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public virtual void Geometry()
@@ -445,13 +460,18 @@ extension CQt
 	[LinkName("QWidgetItem_Delete")]
 	public static extern void QWidgetItem_Delete(void* self);
 }
-public class QWidgetItemV2
+public interface IQWidgetItemV2
+{
+	void* NativePtr { get; }
+}
+public class QWidgetItemV2 : IQWidgetItemV2, IQWidgetItem
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* widget)
+	public this(IQWidget widget)
 	{
-		this.nativePtr = CQt.QWidgetItemV2_new(widget);
+		this.nativePtr = CQt.QWidgetItemV2_new((widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public ~this()
@@ -489,9 +509,9 @@ public class QWidgetItemV2
 		return CQt.QWidgetItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(void* geometry)
+	public virtual void SetGeometry(IQRect geometry)
 	{
-		CQt.QWidgetItem_SetGeometry(this.nativePtr, geometry);
+		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public virtual void Geometry()

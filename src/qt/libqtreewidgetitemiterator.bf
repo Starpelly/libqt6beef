@@ -26,13 +26,18 @@ public enum QTreeWidgetItemIterator__IteratorFlag
 	NotEditable = 131072,
 	UserFlag = 16777216,
 }
-public class QTreeWidgetItemIterator
+public interface IQTreeWidgetItemIterator
+{
+	void* NativePtr { get; }
+}
+public class QTreeWidgetItemIterator : IQTreeWidgetItemIterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* it)
+	public this(IQTreeWidgetItemIterator it)
 	{
-		this.nativePtr = CQt.QTreeWidgetItemIterator_new(it);
+		this.nativePtr = CQt.QTreeWidgetItemIterator_new((it == default) ? default : (void*)it.NativePtr);
 	}
 	
 	public ~this()
@@ -40,9 +45,9 @@ public class QTreeWidgetItemIterator
 		CQt.QTreeWidgetItemIterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* it)
+	public void OperatorAssign(IQTreeWidgetItemIterator it)
 	{
-		CQt.QTreeWidgetItemIterator_OperatorAssign(this.nativePtr, it);
+		CQt.QTreeWidgetItemIterator_OperatorAssign(this.nativePtr, (it == default) ? default : (void*)it.NativePtr);
 	}
 	
 	public void* OperatorPlusPlus()

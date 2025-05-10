@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QGraphicsAnchor
+public interface IQGraphicsAnchor
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsAnchor : IQGraphicsAnchor, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -16,7 +21,7 @@ public class QGraphicsAnchor
 		return CQt.QGraphicsAnchor_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsAnchor_Metacast(this.nativePtr, param1);
 	}
@@ -26,7 +31,7 @@ public class QGraphicsAnchor
 		return CQt.QGraphicsAnchor_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsAnchor_Tr(s);
 	}
@@ -56,24 +61,24 @@ public class QGraphicsAnchor
 		return CQt.QGraphicsAnchor_SizePolicy(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsAnchor_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsAnchor_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -81,9 +86,9 @@ public class QGraphicsAnchor
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -116,9 +121,9 @@ public class QGraphicsAnchor
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -136,39 +141,39 @@ public class QGraphicsAnchor
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -181,12 +186,12 @@ public class QGraphicsAnchor
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -211,7 +216,7 @@ public class QGraphicsAnchor
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -226,14 +231,14 @@ public class QGraphicsAnchor
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -242,11 +247,11 @@ extension CQt
 	[LinkName("QGraphicsAnchor_MetaObject")]
 	public static extern void* QGraphicsAnchor_MetaObject(void* c_this);
 	[LinkName("QGraphicsAnchor_Metacast")]
-	public static extern void* QGraphicsAnchor_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsAnchor_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsAnchor_Metacall")]
-	public static extern int32 QGraphicsAnchor_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsAnchor_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsAnchor_Tr")]
-	public static extern libqt_string QGraphicsAnchor_Tr(char8[] s);
+	public static extern libqt_string QGraphicsAnchor_Tr(char8* s);
 	[LinkName("QGraphicsAnchor_SetSpacing")]
 	public static extern void QGraphicsAnchor_SetSpacing(void* c_this, double spacing);
 	[LinkName("QGraphicsAnchor_UnsetSpacing")]
@@ -258,16 +263,21 @@ extension CQt
 	[LinkName("QGraphicsAnchor_SizePolicy")]
 	public static extern int64 QGraphicsAnchor_SizePolicy(void* c_this);
 	[LinkName("QGraphicsAnchor_Tr2")]
-	public static extern libqt_string QGraphicsAnchor_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsAnchor_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsAnchor_Tr3")]
-	public static extern libqt_string QGraphicsAnchor_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsAnchor_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsAnchor_Delete")]
 	public static extern void QGraphicsAnchor_Delete(void* self);
 }
-public class QGraphicsAnchorLayout
+public interface IQGraphicsAnchorLayout
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsAnchorLayout : IQGraphicsAnchorLayout, IQGraphicsLayout
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -279,24 +289,24 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsAnchorLayout_Delete(this.nativePtr);
 	}
 	
-	public void* AddAnchor(void* firstItem, int64 firstEdge, void* secondItem, int64 secondEdge)
+	public void* AddAnchor(IQGraphicsLayoutItem firstItem, int64 firstEdge, IQGraphicsLayoutItem secondItem, int64 secondEdge)
 	{
-		return CQt.QGraphicsAnchorLayout_AddAnchor(this.nativePtr, firstItem, firstEdge, secondItem, secondEdge);
+		return CQt.QGraphicsAnchorLayout_AddAnchor(this.nativePtr, (firstItem == null) ? null : (void*)firstItem.NativePtr, firstEdge, (secondItem == null) ? null : (void*)secondItem.NativePtr, secondEdge);
 	}
 	
-	public void* Anchor(void* firstItem, int64 firstEdge, void* secondItem, int64 secondEdge)
+	public void* Anchor(IQGraphicsLayoutItem firstItem, int64 firstEdge, IQGraphicsLayoutItem secondItem, int64 secondEdge)
 	{
-		return CQt.QGraphicsAnchorLayout_Anchor(this.nativePtr, firstItem, firstEdge, secondItem, secondEdge);
+		return CQt.QGraphicsAnchorLayout_Anchor(this.nativePtr, (firstItem == null) ? null : (void*)firstItem.NativePtr, firstEdge, (secondItem == null) ? null : (void*)secondItem.NativePtr, secondEdge);
 	}
 	
-	public void AddCornerAnchors(void* firstItem, int64 firstCorner, void* secondItem, int64 secondCorner)
+	public void AddCornerAnchors(IQGraphicsLayoutItem firstItem, int64 firstCorner, IQGraphicsLayoutItem secondItem, int64 secondCorner)
 	{
-		CQt.QGraphicsAnchorLayout_AddCornerAnchors(this.nativePtr, firstItem, firstCorner, secondItem, secondCorner);
+		CQt.QGraphicsAnchorLayout_AddCornerAnchors(this.nativePtr, (firstItem == null) ? null : (void*)firstItem.NativePtr, firstCorner, (secondItem == null) ? null : (void*)secondItem.NativePtr, secondCorner);
 	}
 	
-	public void AddAnchors(void* firstItem, void* secondItem)
+	public void AddAnchors(IQGraphicsLayoutItem firstItem, IQGraphicsLayoutItem secondItem)
 	{
-		CQt.QGraphicsAnchorLayout_AddAnchors(this.nativePtr, firstItem, secondItem);
+		CQt.QGraphicsAnchorLayout_AddAnchors(this.nativePtr, (firstItem == null) ? null : (void*)firstItem.NativePtr, (secondItem == null) ? null : (void*)secondItem.NativePtr);
 	}
 	
 	public void SetHorizontalSpacing(double spacing)
@@ -329,9 +339,9 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsAnchorLayout_RemoveAt(this.nativePtr, index);
 	}
 	
-	public virtual void SetGeometry(void* rect)
+	public virtual void SetGeometry(IQRectF rect)
 	{
-		CQt.QGraphicsAnchorLayout_SetGeometry(this.nativePtr, rect);
+		CQt.QGraphicsAnchorLayout_SetGeometry(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public virtual int32 Count()
@@ -349,14 +359,14 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsAnchorLayout_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void SizeHint(int64 which, void* constraint)
+	public virtual void SizeHint(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsAnchorLayout_SizeHint(this.nativePtr, which, constraint);
+		CQt.QGraphicsAnchorLayout_SizeHint(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
-	public void AddAnchors3(void* firstItem, void* secondItem, int64 orientations)
+	public void AddAnchors3(IQGraphicsLayoutItem firstItem, IQGraphicsLayoutItem secondItem, int64 orientations)
 	{
-		CQt.QGraphicsAnchorLayout_AddAnchors3(this.nativePtr, firstItem, secondItem, orientations);
+		CQt.QGraphicsAnchorLayout_AddAnchors3(this.nativePtr, (firstItem == null) ? null : (void*)firstItem.NativePtr, (secondItem == null) ? null : (void*)secondItem.NativePtr, orientations);
 	}
 	
 	public void SetContentsMargins(double left, double top, double right, double bottom)
@@ -384,9 +394,9 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsLayout_UpdateGeometry(this.nativePtr);
 	}
 	
-	public virtual void WidgetEvent(void* e)
+	public virtual void WidgetEvent(IQEvent e)
 	{
-		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, e);
+		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
 	public static void SetInstantInvalidatePropagation(bool enable)
@@ -399,9 +409,9 @@ public class QGraphicsAnchorLayout
 		return CQt.QGraphicsLayout_InstantInvalidatePropagation();
 	}
 	
-	public void SetSizePolicy(void* policy)
+	public void SetSizePolicy(IQSizePolicy policy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, policy);
+		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default) ? default : (void*)policy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
@@ -414,9 +424,9 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsLayoutItem_SizePolicy(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* size)
+	public void SetMinimumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMinimumSize2(double w, double h)
@@ -449,9 +459,9 @@ public class QGraphicsAnchorLayout
 		return CQt.QGraphicsLayoutItem_MinimumHeight(this.nativePtr);
 	}
 	
-	public void SetPreferredSize(void* size)
+	public void SetPreferredSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetPreferredSize2(double w, double h)
@@ -484,9 +494,9 @@ public class QGraphicsAnchorLayout
 		return CQt.QGraphicsLayoutItem_PreferredHeight(this.nativePtr);
 	}
 	
-	public void SetMaximumSize(void* size)
+	public void SetMaximumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMaximumSize2(double w, double h)
@@ -544,9 +554,9 @@ public class QGraphicsAnchorLayout
 		return CQt.QGraphicsLayoutItem_ParentLayoutItem(this.nativePtr);
 	}
 	
-	public void SetParentLayoutItem(void* parent)
+	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
 	{
-		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, parent);
+		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public bool IsLayout()
@@ -569,9 +579,9 @@ public class QGraphicsAnchorLayout
 		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, hPolicy, vPolicy, controlType);
 	}
 	
-	public void EffectiveSizeHint2(int64 which, void* constraint)
+	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, constraint);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
 }

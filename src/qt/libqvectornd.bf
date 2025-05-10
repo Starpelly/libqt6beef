@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QVector2D
+public interface IQVector2D
+{
+	void* NativePtr { get; }
+}
+public class QVector2D : IQVector2D
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQVector2D other)
 	{
-		this.nativePtr = CQt.QVector2D_new(other);
+		this.nativePtr = CQt.QVector2D_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -66,24 +71,24 @@ public class QVector2D
 		CQt.QVector2D_Normalize(this.nativePtr);
 	}
 	
-	public float DistanceToPoint(void point)
+	public float DistanceToPoint(IQVector2D point)
 	{
-		return CQt.QVector2D_DistanceToPoint(this.nativePtr, point);
+		return CQt.QVector2D_DistanceToPoint(this.nativePtr, (point == default) ? default : (void)point.NativePtr);
 	}
 	
-	public float DistanceToLine(void point, void direction)
+	public float DistanceToLine(IQVector2D point, IQVector2D direction)
 	{
-		return CQt.QVector2D_DistanceToLine(this.nativePtr, point, direction);
+		return CQt.QVector2D_DistanceToLine(this.nativePtr, (point == default) ? default : (void)point.NativePtr, (direction == default) ? default : (void)direction.NativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void vector)
+	public void* OperatorPlusAssign(IQVector2D vector)
 	{
-		return CQt.QVector2D_OperatorPlusAssign(this.nativePtr, vector);
+		return CQt.QVector2D_OperatorPlusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void vector)
+	public void* OperatorMinusAssign(IQVector2D vector)
 	{
-		return CQt.QVector2D_OperatorMinusAssign(this.nativePtr, vector);
+		return CQt.QVector2D_OperatorMinusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -91,9 +96,9 @@ public class QVector2D
 		return CQt.QVector2D_OperatorMultiplyAssign(this.nativePtr, factor);
 	}
 	
-	public void* OperatorMultiplyAssignWithVector(void vector)
+	public void* OperatorMultiplyAssignWithVector(IQVector2D vector)
 	{
-		return CQt.QVector2D_OperatorMultiplyAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector2D_OperatorMultiplyAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorDivideAssign(float divisor)
@@ -101,14 +106,14 @@ public class QVector2D
 		return CQt.QVector2D_OperatorDivideAssign(this.nativePtr, divisor);
 	}
 	
-	public void* OperatorDivideAssignWithVector(void vector)
+	public void* OperatorDivideAssignWithVector(IQVector2D vector)
 	{
-		return CQt.QVector2D_OperatorDivideAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector2D_OperatorDivideAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public static float DotProduct(void v1, void v2)
+	public static float DotProduct(IQVector2D v1, IQVector2D v2)
 	{
-		return CQt.QVector2D_DotProduct(v1, v2);
+		return CQt.QVector2D_DotProduct((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr);
 	}
 	
 	public void ToVector3D()
@@ -211,13 +216,18 @@ extension CQt
 	[LinkName("QVector2D_Delete")]
 	public static extern void QVector2D_Delete(void* self);
 }
-public class QVector3D
+public interface IQVector3D
+{
+	void* NativePtr { get; }
+}
+public class QVector3D : IQVector3D
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQVector3D other)
 	{
-		this.nativePtr = CQt.QVector3D_new(other);
+		this.nativePtr = CQt.QVector3D_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -285,14 +295,14 @@ public class QVector3D
 		CQt.QVector3D_Normalize(this.nativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void vector)
+	public void* OperatorPlusAssign(IQVector3D vector)
 	{
-		return CQt.QVector3D_OperatorPlusAssign(this.nativePtr, vector);
+		return CQt.QVector3D_OperatorPlusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void vector)
+	public void* OperatorMinusAssign(IQVector3D vector)
 	{
-		return CQt.QVector3D_OperatorMinusAssign(this.nativePtr, vector);
+		return CQt.QVector3D_OperatorMinusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -300,9 +310,9 @@ public class QVector3D
 		return CQt.QVector3D_OperatorMultiplyAssign(this.nativePtr, factor);
 	}
 	
-	public void* OperatorMultiplyAssignWithVector(void vector)
+	public void* OperatorMultiplyAssignWithVector(IQVector3D vector)
 	{
-		return CQt.QVector3D_OperatorMultiplyAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector3D_OperatorMultiplyAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorDivideAssign(float divisor)
@@ -310,59 +320,59 @@ public class QVector3D
 		return CQt.QVector3D_OperatorDivideAssign(this.nativePtr, divisor);
 	}
 	
-	public void* OperatorDivideAssignWithVector(void vector)
+	public void* OperatorDivideAssignWithVector(IQVector3D vector)
 	{
-		return CQt.QVector3D_OperatorDivideAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector3D_OperatorDivideAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public static float DotProduct(void v1, void v2)
+	public static float DotProduct(IQVector3D v1, IQVector3D v2)
 	{
-		return CQt.QVector3D_DotProduct(v1, v2);
+		return CQt.QVector3D_DotProduct((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr);
 	}
 	
-	public static void CrossProduct(void v1, void v2)
+	public static void CrossProduct(IQVector3D v1, IQVector3D v2)
 	{
-		CQt.QVector3D_CrossProduct(v1, v2);
+		CQt.QVector3D_CrossProduct((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr);
 	}
 	
-	public static void Normal(void v1, void v2)
+	public static void Normal(IQVector3D v1, IQVector3D v2)
 	{
-		CQt.QVector3D_Normal(v1, v2);
+		CQt.QVector3D_Normal((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr);
 	}
 	
-	public static void Normal2(void v1, void v2, void v3)
+	public static void Normal2(IQVector3D v1, IQVector3D v2, IQVector3D v3)
 	{
-		CQt.QVector3D_Normal2(v1, v2, v3);
+		CQt.QVector3D_Normal2((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr, (v3 == default) ? default : (void)v3.NativePtr);
 	}
 	
-	public void Project(void* modelView, void* projection, void* viewport)
+	public void Project(IQMatrix4x4 modelView, IQMatrix4x4 projection, IQRect viewport)
 	{
-		CQt.QVector3D_Project(this.nativePtr, modelView, projection, viewport);
+		CQt.QVector3D_Project(this.nativePtr, (modelView == default) ? default : (void*)modelView.NativePtr, (projection == default) ? default : (void*)projection.NativePtr, (viewport == default) ? default : (void*)viewport.NativePtr);
 	}
 	
-	public void Unproject(void* modelView, void* projection, void* viewport)
+	public void Unproject(IQMatrix4x4 modelView, IQMatrix4x4 projection, IQRect viewport)
 	{
-		CQt.QVector3D_Unproject(this.nativePtr, modelView, projection, viewport);
+		CQt.QVector3D_Unproject(this.nativePtr, (modelView == default) ? default : (void*)modelView.NativePtr, (projection == default) ? default : (void*)projection.NativePtr, (viewport == default) ? default : (void*)viewport.NativePtr);
 	}
 	
-	public float DistanceToPoint(void point)
+	public float DistanceToPoint(IQVector3D point)
 	{
-		return CQt.QVector3D_DistanceToPoint(this.nativePtr, point);
+		return CQt.QVector3D_DistanceToPoint(this.nativePtr, (point == default) ? default : (void)point.NativePtr);
 	}
 	
-	public float DistanceToPlane(void plane, void normal)
+	public float DistanceToPlane(IQVector3D plane, IQVector3D normal)
 	{
-		return CQt.QVector3D_DistanceToPlane(this.nativePtr, plane, normal);
+		return CQt.QVector3D_DistanceToPlane(this.nativePtr, (plane == default) ? default : (void)plane.NativePtr, (normal == default) ? default : (void)normal.NativePtr);
 	}
 	
-	public float DistanceToPlane2(void plane1, void plane2, void plane3)
+	public float DistanceToPlane2(IQVector3D plane1, IQVector3D plane2, IQVector3D plane3)
 	{
-		return CQt.QVector3D_DistanceToPlane2(this.nativePtr, plane1, plane2, plane3);
+		return CQt.QVector3D_DistanceToPlane2(this.nativePtr, (plane1 == default) ? default : (void)plane1.NativePtr, (plane2 == default) ? default : (void)plane2.NativePtr, (plane3 == default) ? default : (void)plane3.NativePtr);
 	}
 	
-	public float DistanceToLine(void point, void direction)
+	public float DistanceToLine(IQVector3D point, IQVector3D direction)
 	{
-		return CQt.QVector3D_DistanceToLine(this.nativePtr, point, direction);
+		return CQt.QVector3D_DistanceToLine(this.nativePtr, (point == default) ? default : (void)point.NativePtr, (direction == default) ? default : (void)direction.NativePtr);
 	}
 	
 	public void ToVector2D()
@@ -485,13 +495,18 @@ extension CQt
 	[LinkName("QVector3D_Delete")]
 	public static extern void QVector3D_Delete(void* self);
 }
-public class QVector4D
+public interface IQVector4D
+{
+	void* NativePtr { get; }
+}
+public class QVector4D : IQVector4D
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQVector4D other)
 	{
-		this.nativePtr = CQt.QVector4D_new(other);
+		this.nativePtr = CQt.QVector4D_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -569,14 +584,14 @@ public class QVector4D
 		CQt.QVector4D_Normalize(this.nativePtr);
 	}
 	
-	public void* OperatorPlusAssign(void vector)
+	public void* OperatorPlusAssign(IQVector4D vector)
 	{
-		return CQt.QVector4D_OperatorPlusAssign(this.nativePtr, vector);
+		return CQt.QVector4D_OperatorPlusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public void* OperatorMinusAssign(void vector)
+	public void* OperatorMinusAssign(IQVector4D vector)
 	{
-		return CQt.QVector4D_OperatorMinusAssign(this.nativePtr, vector);
+		return CQt.QVector4D_OperatorMinusAssign(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -584,9 +599,9 @@ public class QVector4D
 		return CQt.QVector4D_OperatorMultiplyAssign(this.nativePtr, factor);
 	}
 	
-	public void* OperatorMultiplyAssignWithVector(void vector)
+	public void* OperatorMultiplyAssignWithVector(IQVector4D vector)
 	{
-		return CQt.QVector4D_OperatorMultiplyAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector4D_OperatorMultiplyAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
 	public void* OperatorDivideAssign(float divisor)
@@ -594,14 +609,14 @@ public class QVector4D
 		return CQt.QVector4D_OperatorDivideAssign(this.nativePtr, divisor);
 	}
 	
-	public void* OperatorDivideAssignWithVector(void vector)
+	public void* OperatorDivideAssignWithVector(IQVector4D vector)
 	{
-		return CQt.QVector4D_OperatorDivideAssignWithVector(this.nativePtr, vector);
+		return CQt.QVector4D_OperatorDivideAssignWithVector(this.nativePtr, (vector == default) ? default : (void)vector.NativePtr);
 	}
 	
-	public static float DotProduct(void v1, void v2)
+	public static float DotProduct(IQVector4D v1, IQVector4D v2)
 	{
-		return CQt.QVector4D_DotProduct(v1, v2);
+		return CQt.QVector4D_DotProduct((v1 == default) ? default : (void)v1.NativePtr, (v2 == default) ? default : (void)v2.NativePtr);
 	}
 	
 	public void ToVector2D()

@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPluginMetaData
+public interface IQPluginMetaData
+{
+	void* NativePtr { get; }
+}
+public class QPluginMetaData : IQPluginMetaData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -25,13 +30,18 @@ extension CQt
 	[LinkName("QPluginMetaData_Delete")]
 	public static extern void QPluginMetaData_Delete(void* self);
 }
-public class QStaticPlugin
+public interface IQStaticPlugin
+{
+	void* NativePtr { get; }
+}
+public class QStaticPlugin : IQStaticPlugin
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQStaticPlugin other)
 	{
-		this.nativePtr = CQt.QStaticPlugin_new(other);
+		this.nativePtr = CQt.QStaticPlugin_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -57,13 +67,18 @@ extension CQt
 	[LinkName("QStaticPlugin_Delete")]
 	public static extern void QStaticPlugin_Delete(void* self);
 }
-public class QPluginMetaData__Header
+public interface IQPluginMetaData__Header
+{
+	void* NativePtr { get; }
+}
+public class QPluginMetaData__Header : IQPluginMetaData__Header
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QPluginMetaData__Header* other)
+	public this(QPluginMetaData__Header other)
 	{
-		this.nativePtr = CQt.QPluginMetaData__Header_new(other);
+		this.nativePtr = CQt.QPluginMetaData__Header_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -73,22 +88,27 @@ public class QPluginMetaData__Header
 extension CQt
 {
 	[LinkName("QPluginMetaData__Header_new")]
-	public static extern void* QPluginMetaData__Header_new(QPluginMetaData__Header* other);
+	public static extern void* QPluginMetaData__Header_new(void* other);
 	[LinkName("QPluginMetaData__Header_new2")]
-	public static extern void* QPluginMetaData__Header_new2(QPluginMetaData__Header* other);
+	public static extern void* QPluginMetaData__Header_new2(void* other);
 	[LinkName("QPluginMetaData__Header_new3")]
-	public static extern void* QPluginMetaData__Header_new3(QPluginMetaData__Header* param1);
+	public static extern void* QPluginMetaData__Header_new3(void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QPluginMetaData__Header_Delete")]
 	public static extern void QPluginMetaData__Header_Delete(void* self);
 }
-public class QPluginMetaData__MagicHeader
+public interface IQPluginMetaData__MagicHeader
+{
+	void* NativePtr { get; }
+}
+public class QPluginMetaData__MagicHeader : IQPluginMetaData__MagicHeader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QPluginMetaData__MagicHeader* other)
+	public this(QPluginMetaData__MagicHeader other)
 	{
-		this.nativePtr = CQt.QPluginMetaData__MagicHeader_new(other);
+		this.nativePtr = CQt.QPluginMetaData__MagicHeader_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -98,22 +118,27 @@ public class QPluginMetaData__MagicHeader
 extension CQt
 {
 	[LinkName("QPluginMetaData__MagicHeader_new")]
-	public static extern void* QPluginMetaData__MagicHeader_new(QPluginMetaData__MagicHeader* other);
+	public static extern void* QPluginMetaData__MagicHeader_new(void* other);
 	[LinkName("QPluginMetaData__MagicHeader_new2")]
-	public static extern void* QPluginMetaData__MagicHeader_new2(QPluginMetaData__MagicHeader* other);
+	public static extern void* QPluginMetaData__MagicHeader_new2(void* other);
 	[LinkName("QPluginMetaData__MagicHeader_new3")]
 	public static extern void* QPluginMetaData__MagicHeader_new3();
 	/// Delete this object from C++ memory
 	[LinkName("QPluginMetaData__MagicHeader_Delete")]
 	public static extern void QPluginMetaData__MagicHeader_Delete(void* self);
 }
-public class QPluginMetaData__ElfNoteHeader
+public interface IQPluginMetaData__ElfNoteHeader
+{
+	void* NativePtr { get; }
+}
+public class QPluginMetaData__ElfNoteHeader : IQPluginMetaData__ElfNoteHeader
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QPluginMetaData__ElfNoteHeader* other)
+	public this(QPluginMetaData__ElfNoteHeader other)
 	{
-		this.nativePtr = CQt.QPluginMetaData__ElfNoteHeader_new(other);
+		this.nativePtr = CQt.QPluginMetaData__ElfNoteHeader_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -123,13 +148,13 @@ public class QPluginMetaData__ElfNoteHeader
 extension CQt
 {
 	[LinkName("QPluginMetaData__ElfNoteHeader_new")]
-	public static extern void* QPluginMetaData__ElfNoteHeader_new(QPluginMetaData__ElfNoteHeader* other);
+	public static extern void* QPluginMetaData__ElfNoteHeader_new(void* other);
 	[LinkName("QPluginMetaData__ElfNoteHeader_new2")]
-	public static extern void* QPluginMetaData__ElfNoteHeader_new2(QPluginMetaData__ElfNoteHeader* other);
+	public static extern void* QPluginMetaData__ElfNoteHeader_new2(void* other);
 	[LinkName("QPluginMetaData__ElfNoteHeader_new3")]
 	public static extern void* QPluginMetaData__ElfNoteHeader_new3(uint32 payloadSize);
 	[LinkName("QPluginMetaData__ElfNoteHeader_new4")]
-	public static extern void* QPluginMetaData__ElfNoteHeader_new4(QPluginMetaData__ElfNoteHeader* param1);
+	public static extern void* QPluginMetaData__ElfNoteHeader_new4(void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QPluginMetaData__ElfNoteHeader_Delete")]
 	public static extern void QPluginMetaData__ElfNoteHeader_Delete(void* self);

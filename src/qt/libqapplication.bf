@@ -2,11 +2,16 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QApplication
+public interface IQApplication
+{
+	void* NativePtr { get; }
+}
+public class QApplication : IQApplication, IQGuiApplication
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(int32* argc, char8[] argv)
+	public this(int32* argc, char8* argv)
 	{
 		this.nativePtr = CQt.QApplication_new(argc, argv);
 	}
@@ -21,7 +26,7 @@ public class QApplication
 		return CQt.QApplication_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QApplication_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QApplication
 		return CQt.QApplication_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QApplication_Tr(s);
 	}
@@ -41,29 +46,29 @@ public class QApplication
 		return CQt.QApplication_Style();
 	}
 	
-	public static void SetStyle(void* style)
+	public static void SetStyle(IQStyle style)
 	{
-		CQt.QApplication_SetStyle(style);
+		CQt.QApplication_SetStyle((style == null) ? null : (void*)style.NativePtr);
 	}
 	
-	public static void* SetStyleWithStyle(libqt_string style)
+	public static void* SetStyleWithStyle(String style)
 	{
-		return CQt.QApplication_SetStyleWithStyle(style);
+		return CQt.QApplication_SetStyleWithStyle(libqt_string(style));
 	}
 	
-	public static void Palette(void* param1)
+	public static void Palette(IQWidget param1)
 	{
-		CQt.QApplication_Palette(param1);
+		CQt.QApplication_Palette((param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static void PaletteWithClassName(char8[] className)
+	public static void PaletteWithClassName(char8* className)
 	{
 		CQt.QApplication_PaletteWithClassName(className);
 	}
 	
-	public static void SetPalette(void* param1)
+	public static void SetPalette(IQPalette param1)
 	{
-		CQt.QApplication_SetPalette(param1);
+		CQt.QApplication_SetPalette((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public static void Font()
@@ -71,19 +76,19 @@ public class QApplication
 		CQt.QApplication_Font();
 	}
 	
-	public static void FontWithQWidget(void* param1)
+	public static void FontWithQWidget(IQWidget param1)
 	{
-		CQt.QApplication_FontWithQWidget(param1);
+		CQt.QApplication_FontWithQWidget((param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static void FontWithClassName(char8[] className)
+	public static void FontWithClassName(char8* className)
 	{
 		CQt.QApplication_FontWithClassName(className);
 	}
 	
-	public static void SetFont(void* param1)
+	public static void SetFont(IQFont param1)
 	{
-		CQt.QApplication_SetFont(param1);
+		CQt.QApplication_SetFont((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public static void FontMetrics()
@@ -121,14 +126,14 @@ public class QApplication
 		return CQt.QApplication_ActiveWindow();
 	}
 	
-	public static void SetActiveWindow(void* act)
+	public static void SetActiveWindow(IQWidget act)
 	{
-		CQt.QApplication_SetActiveWindow(act);
+		CQt.QApplication_SetActiveWindow((act == null) ? null : (void*)act.NativePtr);
 	}
 	
-	public static void* WidgetAt(void* p)
+	public static void* WidgetAt(IQPoint p)
 	{
-		return CQt.QApplication_WidgetAt(p);
+		return CQt.QApplication_WidgetAt((p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public static void* WidgetAt2(int32 x, int32 y)
@@ -136,9 +141,9 @@ public class QApplication
 		return CQt.QApplication_WidgetAt2(x, y);
 	}
 	
-	public static void* TopLevelAt(void* p)
+	public static void* TopLevelAt(IQPoint p)
 	{
-		return CQt.QApplication_TopLevelAt(p);
+		return CQt.QApplication_TopLevelAt((p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public static void* TopLevelAt2(int32 x, int32 y)
@@ -151,9 +156,9 @@ public class QApplication
 		CQt.QApplication_Beep();
 	}
 	
-	public static void Alert(void* widget)
+	public static void Alert(IQWidget widget)
 	{
-		CQt.QApplication_Alert(widget);
+		CQt.QApplication_Alert((widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public static void SetCursorFlashTime(int32 cursorFlashTime)
@@ -231,12 +236,12 @@ public class QApplication
 		return CQt.QApplication_Exec();
 	}
 	
-	public virtual bool Notify(void* param1, void* param2)
+	public virtual bool Notify(IQObject param1, IQEvent param2)
 	{
-		return CQt.QApplication_Notify(this.nativePtr, param1, param2);
+		return CQt.QApplication_Notify(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == null) ? null : (void*)param2.NativePtr);
 	}
 	
-	public void* ResolveInterface(char8[] name, int32 revision)
+	public void* ResolveInterface(char8* name, int32 revision)
 	{
 		return CQt.QApplication_ResolveInterface(this.nativePtr, name, revision);
 	}
@@ -246,9 +251,9 @@ public class QApplication
 		return CQt.QApplication_StyleSheet(this.nativePtr);
 	}
 	
-	public void SetStyleSheet(libqt_string sheet)
+	public void SetStyleSheet(String sheet)
 	{
-		CQt.QApplication_SetStyleSheet(this.nativePtr, sheet);
+		CQt.QApplication_SetStyleSheet(this.nativePtr, libqt_string(sheet));
 	}
 	
 	public void SetAutoSipEnabled(bool enabled)
@@ -271,34 +276,34 @@ public class QApplication
 		CQt.QApplication_AboutQt();
 	}
 	
-	public virtual bool Event(void* param1)
+	public virtual bool Event(IQEvent param1)
 	{
-		return CQt.QApplication_Event(this.nativePtr, param1);
+		return CQt.QApplication_Event(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QApplication_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QApplication_Tr3(s, c, n);
 	}
 	
-	public static void SetPalette2(void* param1, char8[] className)
+	public static void SetPalette2(IQPalette param1, char8* className)
 	{
-		CQt.QApplication_SetPalette2(param1, className);
+		CQt.QApplication_SetPalette2((param1 == default) ? default : (void*)param1.NativePtr, className);
 	}
 	
-	public static void SetFont2(void* param1, char8[] className)
+	public static void SetFont2(IQFont param1, char8* className)
 	{
-		CQt.QApplication_SetFont2(param1, className);
+		CQt.QApplication_SetFont2((param1 == default) ? default : (void*)param1.NativePtr, className);
 	}
 	
-	public static void Alert2(void* widget, int32 duration)
+	public static void Alert2(IQWidget widget, int32 duration)
 	{
-		CQt.QApplication_Alert2(widget, duration);
+		CQt.QApplication_Alert2((widget == null) ? null : (void*)widget.NativePtr, duration);
 	}
 	
 	public static void SetEffectEnabled2(int64 param1, bool enable)
@@ -306,9 +311,9 @@ public class QApplication
 		CQt.QApplication_SetEffectEnabled2(param1, enable);
 	}
 	
-	public static void SetApplicationDisplayName(libqt_string name)
+	public static void SetApplicationDisplayName(String name)
 	{
-		CQt.QGuiApplication_SetApplicationDisplayName(name);
+		CQt.QGuiApplication_SetApplicationDisplayName(libqt_string(name));
 	}
 	
 	public static libqt_string ApplicationDisplayName()
@@ -316,9 +321,9 @@ public class QApplication
 		return CQt.QGuiApplication_ApplicationDisplayName();
 	}
 	
-	public static void SetDesktopFileName(libqt_string name)
+	public static void SetDesktopFileName(String name)
 	{
-		CQt.QGuiApplication_SetDesktopFileName(name);
+		CQt.QGuiApplication_SetDesktopFileName(libqt_string(name));
 	}
 	
 	public static libqt_string DesktopFileName()
@@ -336,9 +341,9 @@ public class QApplication
 		return CQt.QGuiApplication_TopLevelWindows();
 	}
 	
-	public static void SetWindowIcon(void* icon)
+	public static void SetWindowIcon(IQIcon icon)
 	{
-		CQt.QGuiApplication_SetWindowIcon(icon);
+		CQt.QGuiApplication_SetWindowIcon((icon == default) ? default : (void*)icon.NativePtr);
 	}
 	
 	public static void WindowIcon()
@@ -376,9 +381,9 @@ public class QApplication
 		return CQt.QGuiApplication_Screens();
 	}
 	
-	public static void* ScreenAt(void* point)
+	public static void* ScreenAt(IQPoint point)
 	{
-		return CQt.QGuiApplication_ScreenAt(point);
+		return CQt.QGuiApplication_ScreenAt((point == default) ? default : (void*)point.NativePtr);
 	}
 	
 	public double DevicePixelRatio()
@@ -391,14 +396,14 @@ public class QApplication
 		return CQt.QGuiApplication_OverrideCursor();
 	}
 	
-	public static void SetOverrideCursor(void* overrideCursor)
+	public static void SetOverrideCursor(IQCursor overrideCursor)
 	{
-		CQt.QGuiApplication_SetOverrideCursor(overrideCursor);
+		CQt.QGuiApplication_SetOverrideCursor((overrideCursor == default) ? default : (void*)overrideCursor.NativePtr);
 	}
 	
-	public static void ChangeOverrideCursor(void* param1)
+	public static void ChangeOverrideCursor(IQCursor param1)
 	{
-		CQt.QGuiApplication_ChangeOverrideCursor(param1);
+		CQt.QGuiApplication_ChangeOverrideCursor((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public static void RestoreOverrideCursor()
@@ -531,9 +536,9 @@ public class QApplication
 		return CQt.QCoreApplication_TestAttribute(attribute);
 	}
 	
-	public static void SetOrganizationDomain(libqt_string orgDomain)
+	public static void SetOrganizationDomain(String orgDomain)
 	{
-		CQt.QCoreApplication_SetOrganizationDomain(orgDomain);
+		CQt.QCoreApplication_SetOrganizationDomain(libqt_string(orgDomain));
 	}
 	
 	public static libqt_string OrganizationDomain()
@@ -541,9 +546,9 @@ public class QApplication
 		return CQt.QCoreApplication_OrganizationDomain();
 	}
 	
-	public static void SetOrganizationName(libqt_string orgName)
+	public static void SetOrganizationName(String orgName)
 	{
-		CQt.QCoreApplication_SetOrganizationName(orgName);
+		CQt.QCoreApplication_SetOrganizationName(libqt_string(orgName));
 	}
 	
 	public static libqt_string OrganizationName()
@@ -551,9 +556,9 @@ public class QApplication
 		return CQt.QCoreApplication_OrganizationName();
 	}
 	
-	public static void SetApplicationName(libqt_string application)
+	public static void SetApplicationName(String application)
 	{
-		CQt.QCoreApplication_SetApplicationName(application);
+		CQt.QCoreApplication_SetApplicationName(libqt_string(application));
 	}
 	
 	public static libqt_string ApplicationName()
@@ -561,9 +566,9 @@ public class QApplication
 		return CQt.QCoreApplication_ApplicationName();
 	}
 	
-	public static void SetApplicationVersion(libqt_string version)
+	public static void SetApplicationVersion(String version)
 	{
-		CQt.QCoreApplication_SetApplicationVersion(version);
+		CQt.QCoreApplication_SetApplicationVersion(libqt_string(version));
 	}
 	
 	public static libqt_string ApplicationVersion()
@@ -596,14 +601,14 @@ public class QApplication
 		CQt.QCoreApplication_ProcessEvents2(flags, maxtime);
 	}
 	
-	public static bool SendEvent(void* receiver, void* event)
+	public static bool SendEvent(IQObject receiver, IQEvent event)
 	{
-		return CQt.QCoreApplication_SendEvent(receiver, event);
+		return CQt.QCoreApplication_SendEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public static void PostEvent(void* receiver, void* event)
+	public static void PostEvent(IQObject receiver, IQEvent event)
 	{
-		CQt.QCoreApplication_PostEvent(receiver, event);
+		CQt.QCoreApplication_PostEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public static void SendPostedEvents()
@@ -611,9 +616,9 @@ public class QApplication
 		CQt.QCoreApplication_SendPostedEvents();
 	}
 	
-	public static void RemovePostedEvents(void* receiver)
+	public static void RemovePostedEvents(IQObject receiver)
 	{
-		CQt.QCoreApplication_RemovePostedEvents(receiver);
+		CQt.QCoreApplication_RemovePostedEvents((receiver == null) ? null : (void*)receiver.NativePtr);
 	}
 	
 	public static void* EventDispatcher()
@@ -621,9 +626,9 @@ public class QApplication
 		return CQt.QCoreApplication_EventDispatcher();
 	}
 	
-	public static void SetEventDispatcher(void* eventDispatcher)
+	public static void SetEventDispatcher(IQAbstractEventDispatcher eventDispatcher)
 	{
-		CQt.QCoreApplication_SetEventDispatcher(eventDispatcher);
+		CQt.QCoreApplication_SetEventDispatcher((eventDispatcher == null) ? null : (void*)eventDispatcher.NativePtr);
 	}
 	
 	public static bool StartingUp()
@@ -651,9 +656,9 @@ public class QApplication
 		return CQt.QCoreApplication_ApplicationPid();
 	}
 	
-	public static void SetLibraryPaths(libqt_string[] libraryPaths)
+	public static void SetLibraryPaths(String[] libraryPaths)
 	{
-		CQt.QCoreApplication_SetLibraryPaths(libraryPaths);
+		CQt.QCoreApplication_SetLibraryPaths(null);
 	}
 	
 	public static libqt_string[] LibraryPaths()
@@ -661,27 +666,27 @@ public class QApplication
 		return CQt.QCoreApplication_LibraryPaths();
 	}
 	
-	public static void AddLibraryPath(libqt_string param1)
+	public static void AddLibraryPath(String param1)
 	{
-		CQt.QCoreApplication_AddLibraryPath(param1);
+		CQt.QCoreApplication_AddLibraryPath(libqt_string(param1));
 	}
 	
-	public static void RemoveLibraryPath(libqt_string param1)
+	public static void RemoveLibraryPath(String param1)
 	{
-		CQt.QCoreApplication_RemoveLibraryPath(param1);
+		CQt.QCoreApplication_RemoveLibraryPath(libqt_string(param1));
 	}
 	
-	public static bool InstallTranslator(void* messageFile)
+	public static bool InstallTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_InstallTranslator(messageFile);
+		return CQt.QCoreApplication_InstallTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
 	}
 	
-	public static bool RemoveTranslator(void* messageFile)
+	public static bool RemoveTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_RemoveTranslator(messageFile);
+		return CQt.QCoreApplication_RemoveTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
 	}
 	
-	public static libqt_string Translate(char8[] context, char8[] key)
+	public static libqt_string Translate(char8* context, char8* key)
 	{
 		return CQt.QCoreApplication_Translate(context, key);
 	}
@@ -716,32 +721,32 @@ public class QApplication
 		CQt.QCoreApplication_ProcessEvents1(flags);
 	}
 	
-	public static void PostEvent3(void* receiver, void* event, int32 priority)
+	public static void PostEvent3(IQObject receiver, IQEvent event, int32 priority)
 	{
-		CQt.QCoreApplication_PostEvent3(receiver, event, priority);
+		CQt.QCoreApplication_PostEvent3((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr, priority);
 	}
 	
-	public static void SendPostedEvents1(void* receiver)
+	public static void SendPostedEvents1(IQObject receiver)
 	{
-		CQt.QCoreApplication_SendPostedEvents1(receiver);
+		CQt.QCoreApplication_SendPostedEvents1((receiver == null) ? null : (void*)receiver.NativePtr);
 	}
 	
-	public static void SendPostedEvents2(void* receiver, int32 event_type)
+	public static void SendPostedEvents2(IQObject receiver, int32 event_type)
 	{
-		CQt.QCoreApplication_SendPostedEvents2(receiver, event_type);
+		CQt.QCoreApplication_SendPostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, event_type);
 	}
 	
-	public static void RemovePostedEvents2(void* receiver, int32 eventType)
+	public static void RemovePostedEvents2(IQObject receiver, int32 eventType)
 	{
-		CQt.QCoreApplication_RemovePostedEvents2(receiver, eventType);
+		CQt.QCoreApplication_RemovePostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, eventType);
 	}
 	
-	public static libqt_string Translate3(char8[] context, char8[] key, char8[] disambiguation)
+	public static libqt_string Translate3(char8* context, char8* key, char8* disambiguation)
 	{
 		return CQt.QCoreApplication_Translate3(context, key, disambiguation);
 	}
 	
-	public static libqt_string Translate4(char8[] context, char8[] key, char8[] disambiguation, int32 n)
+	public static libqt_string Translate4(char8* context, char8* key, char8* disambiguation, int32 n)
 	{
 		return CQt.QCoreApplication_Translate4(context, key, disambiguation, n);
 	}
@@ -751,9 +756,9 @@ public class QApplication
 		CQt.QCoreApplication_Exit1(retcode);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -761,9 +766,9 @@ public class QApplication
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -796,9 +801,9 @@ public class QApplication
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -816,39 +821,39 @@ public class QApplication
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -861,12 +866,12 @@ public class QApplication
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -891,7 +896,7 @@ public class QApplication
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -906,31 +911,31 @@ public class QApplication
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QApplication_new")]
-	public static extern void* QApplication_new(int32* argc, char8[] argv);
+	public static extern void* QApplication_new(int32* argc, char8* argv);
 	[LinkName("QApplication_new2")]
-	public static extern void* QApplication_new2(int32* argc, char8[] argv, int32 param3);
+	public static extern void* QApplication_new2(int32* argc, char8* argv, int32 param3);
 	[LinkName("QApplication_MetaObject")]
 	public static extern void* QApplication_MetaObject(void* c_this);
 	[LinkName("QApplication_Metacast")]
-	public static extern void* QApplication_Metacast(void* c_this, char8[] param1);
+	public static extern void* QApplication_Metacast(void* c_this, char8* param1);
 	[LinkName("QApplication_Metacall")]
-	public static extern int32 QApplication_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QApplication_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QApplication_Tr")]
-	public static extern libqt_string QApplication_Tr(char8[] s);
+	public static extern libqt_string QApplication_Tr(char8* s);
 	[LinkName("QApplication_Style")]
 	public static extern void* QApplication_Style();
 	[LinkName("QApplication_SetStyle")]
@@ -940,7 +945,7 @@ extension CQt
 	[LinkName("QApplication_Palette")]
 	public static extern void QApplication_Palette(void* param1);
 	[LinkName("QApplication_PaletteWithClassName")]
-	public static extern void QApplication_PaletteWithClassName(char8[] className);
+	public static extern void QApplication_PaletteWithClassName(char8* className);
 	[LinkName("QApplication_SetPalette")]
 	public static extern void QApplication_SetPalette(void* param1);
 	[LinkName("QApplication_Font")]
@@ -948,7 +953,7 @@ extension CQt
 	[LinkName("QApplication_FontWithQWidget")]
 	public static extern void QApplication_FontWithQWidget(void* param1);
 	[LinkName("QApplication_FontWithClassName")]
-	public static extern void QApplication_FontWithClassName(char8[] className);
+	public static extern void QApplication_FontWithClassName(char8* className);
 	[LinkName("QApplication_SetFont")]
 	public static extern void QApplication_SetFont(void* param1);
 	[LinkName("QApplication_FontMetrics")]
@@ -1012,7 +1017,7 @@ extension CQt
 	[LinkName("QApplication_Notify")]
 	public static extern bool QApplication_Notify(void* c_this, void* param1, void* param2);
 	[LinkName("QApplication_ResolveInterface")]
-	public static extern void* QApplication_ResolveInterface(void* c_this, char8[] name, int32 revision);
+	public static extern void* QApplication_ResolveInterface(void* c_this, char8* name, int32 revision);
 	[LinkName("QApplication_Connect_FocusChanged")]
 	public static extern void QApplication_Connect_FocusChanged(void* c_this, c_intptr slot);
 	[LinkName("QApplication_StyleSheet")]
@@ -1030,13 +1035,13 @@ extension CQt
 	[LinkName("QApplication_Event")]
 	public static extern bool QApplication_Event(void* c_this, void* param1);
 	[LinkName("QApplication_Tr2")]
-	public static extern libqt_string QApplication_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QApplication_Tr2(char8* s, char8* c);
 	[LinkName("QApplication_Tr3")]
-	public static extern libqt_string QApplication_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QApplication_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QApplication_SetPalette2")]
-	public static extern void QApplication_SetPalette2(void* param1, char8[] className);
+	public static extern void QApplication_SetPalette2(void* param1, char8* className);
 	[LinkName("QApplication_SetFont2")]
-	public static extern void QApplication_SetFont2(void* param1, char8[] className);
+	public static extern void QApplication_SetFont2(void* param1, char8* className);
 	[LinkName("QApplication_Alert2")]
 	public static extern void QApplication_Alert2(void* widget, int32 duration);
 	[LinkName("QApplication_SetEffectEnabled2")]

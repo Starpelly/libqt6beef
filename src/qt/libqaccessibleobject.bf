@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAccessibleObject
+public interface IQAccessibleObject
+{
+	void* NativePtr { get; }
+}
+public class QAccessibleObject : IQAccessibleObject, IQAccessibleInterface
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public virtual bool IsValid()
 	{
@@ -21,9 +26,9 @@ public class QAccessibleObject
 		CQt.QAccessibleObject_Rect(this.nativePtr);
 	}
 	
-	public virtual void SetText(int64 t, libqt_string text)
+	public virtual void SetText(int64 t, String text)
 	{
-		CQt.QAccessibleObject_SetText(this.nativePtr, t, text);
+		CQt.QAccessibleObject_SetText(this.nativePtr, t, libqt_string(text));
 	}
 	
 	public virtual void* ChildAt(int32 x, int32 y)
@@ -61,9 +66,9 @@ public class QAccessibleObject
 		return CQt.QAccessibleInterface_ChildCount(this.nativePtr);
 	}
 	
-	public virtual int32 IndexOfChild(void* param1)
+	public virtual int32 IndexOfChild(IQAccessibleInterface param1)
 	{
-		return CQt.QAccessibleInterface_IndexOfChild(this.nativePtr, param1);
+		return CQt.QAccessibleInterface_IndexOfChild(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public virtual libqt_string Text(int64 t)
@@ -76,9 +81,9 @@ public class QAccessibleObject
 		return CQt.QAccessibleInterface_Role(this.nativePtr);
 	}
 	
-	public virtual QAccessible__State State()
+	public virtual void State()
 	{
-		return CQt.QAccessibleInterface_State(this.nativePtr);
+		CQt.QAccessibleInterface_State(this.nativePtr);
 	}
 	
 	public virtual void ForegroundColor()
@@ -155,9 +160,14 @@ extension CQt
 	[LinkName("QAccessibleObject_ChildAt")]
 	public static extern void* QAccessibleObject_ChildAt(void* c_this, int32 x, int32 y);
 }
-public class QAccessibleApplication
+public interface IQAccessibleApplication
+{
+	void* NativePtr { get; }
+}
+public class QAccessibleApplication : IQAccessibleApplication, IQAccessibleObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -179,9 +189,9 @@ public class QAccessibleApplication
 		return CQt.QAccessibleApplication_ChildCount(this.nativePtr);
 	}
 	
-	public virtual int32 IndexOfChild(void* param1)
+	public virtual int32 IndexOfChild(IQAccessibleInterface param1)
 	{
-		return CQt.QAccessibleApplication_IndexOfChild(this.nativePtr, param1);
+		return CQt.QAccessibleApplication_IndexOfChild(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public virtual void* FocusChild()
@@ -209,9 +219,9 @@ public class QAccessibleApplication
 		return CQt.QAccessibleApplication_Role(this.nativePtr);
 	}
 	
-	public virtual QAccessible__State State()
+	public virtual void State()
 	{
-		return CQt.QAccessibleApplication_State(this.nativePtr);
+		CQt.QAccessibleApplication_State(this.nativePtr);
 	}
 	
 	public virtual bool IsValid()
@@ -229,9 +239,9 @@ public class QAccessibleApplication
 		CQt.QAccessibleObject_Rect(this.nativePtr);
 	}
 	
-	public virtual void SetText(int64 t, libqt_string text)
+	public virtual void SetText(int64 t, String text)
 	{
-		CQt.QAccessibleObject_SetText(this.nativePtr, t, text);
+		CQt.QAccessibleObject_SetText(this.nativePtr, t, libqt_string(text));
 	}
 	
 	public virtual void* ChildAt(int32 x, int32 y)
@@ -326,7 +336,7 @@ extension CQt
 	[LinkName("QAccessibleApplication_Role")]
 	public static extern int64 QAccessibleApplication_Role(void* c_this);
 	[LinkName("QAccessibleApplication_State")]
-	public static extern QAccessible__State QAccessibleApplication_State(void* c_this);
+	public static extern void QAccessibleApplication_State(void* c_this);
 	/// Delete this object from C++ memory
 	[LinkName("QAccessibleApplication_Delete")]
 	public static extern void QAccessibleApplication_Delete(void* self);

@@ -29,9 +29,14 @@ public enum QTextOption__Flag
 	ShowDocumentTerminator = 16,
 	IncludeTrailingSpaces = 2147483648,
 }
-public class QTextOption
+public interface IQTextOption
+{
+	void* NativePtr { get; }
+}
+public class QTextOption : IQTextOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -43,9 +48,9 @@ public class QTextOption
 		CQt.QTextOption_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* o)
+	public void OperatorAssign(IQTextOption o)
 	{
-		CQt.QTextOption_OperatorAssign(this.nativePtr, o);
+		CQt.QTextOption_OperatorAssign(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
 	}
 	
 	public void SetAlignment(int64 alignment)
@@ -100,7 +105,7 @@ public class QTextOption
 	
 	public void SetTabArray(double[] tabStops)
 	{
-		CQt.QTextOption_SetTabArray(this.nativePtr, tabStops);
+		CQt.QTextOption_SetTabArray(this.nativePtr, null);
 	}
 	
 	public double[] TabArray()
@@ -110,10 +115,10 @@ public class QTextOption
 	
 	public void SetTabs(QTextOption__Tab[] tabStops)
 	{
-		CQt.QTextOption_SetTabs(this.nativePtr, tabStops);
+		CQt.QTextOption_SetTabs(this.nativePtr, null);
 	}
 	
-	public QTextOption__Tab[] Tabs()
+	public void[] Tabs()
 	{
 		return CQt.QTextOption_Tabs(this.nativePtr);
 	}
@@ -164,9 +169,9 @@ extension CQt
 	[LinkName("QTextOption_TabArray")]
 	public static extern double[] QTextOption_TabArray(void* c_this);
 	[LinkName("QTextOption_SetTabs")]
-	public static extern void QTextOption_SetTabs(void* c_this, QTextOption__Tab[] tabStops);
+	public static extern void QTextOption_SetTabs(void* c_this, void[] tabStops);
 	[LinkName("QTextOption_Tabs")]
-	public static extern QTextOption__Tab[] QTextOption_Tabs(void* c_this);
+	public static extern void[] QTextOption_Tabs(void* c_this);
 	[LinkName("QTextOption_SetUseDesignMetrics")]
 	public static extern void QTextOption_SetUseDesignMetrics(void* c_this, bool b);
 	[LinkName("QTextOption_UseDesignMetrics")]
@@ -175,13 +180,18 @@ extension CQt
 	[LinkName("QTextOption_Delete")]
 	public static extern void QTextOption_Delete(void* self);
 }
-public class QTextOption__Tab
+public interface IQTextOption__Tab
+{
+	void* NativePtr { get; }
+}
+public class QTextOption__Tab : IQTextOption__Tab
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QTextOption__Tab* other)
+	public this(QTextOption__Tab other)
 	{
-		this.nativePtr = CQt.QTextOption__Tab_new(other);
+		this.nativePtr = CQt.QTextOption__Tab_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -189,23 +199,23 @@ public class QTextOption__Tab
 		CQt.QTextOption__Tab_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QTextOption__Tab* other)
+	public bool OperatorEqual(QTextOption__Tab other)
 	{
-		return CQt.QTextOption__Tab_OperatorEqual(this.nativePtr, other);
+		return CQt.QTextOption__Tab_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QTextOption__Tab* other)
+	public bool OperatorNotEqual(QTextOption__Tab other)
 	{
-		return CQt.QTextOption__Tab_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QTextOption__Tab_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QTextOption__Tab_new")]
-	public static extern void* QTextOption__Tab_new(QTextOption__Tab* other);
+	public static extern void* QTextOption__Tab_new(void* other);
 	[LinkName("QTextOption__Tab_new2")]
-	public static extern void* QTextOption__Tab_new2(QTextOption__Tab* other);
+	public static extern void* QTextOption__Tab_new2(void* other);
 	[LinkName("QTextOption__Tab_new3")]
 	public static extern void* QTextOption__Tab_new3();
 	[LinkName("QTextOption__Tab_new4")]
@@ -213,9 +223,9 @@ extension CQt
 	[LinkName("QTextOption__Tab_new5")]
 	public static extern void* QTextOption__Tab_new5(double pos, int64 tabType, void delim);
 	[LinkName("QTextOption__Tab_OperatorEqual")]
-	public static extern bool QTextOption__Tab_OperatorEqual(void* c_this, QTextOption__Tab* other);
+	public static extern bool QTextOption__Tab_OperatorEqual(void* c_this, void* other);
 	[LinkName("QTextOption__Tab_OperatorNotEqual")]
-	public static extern bool QTextOption__Tab_OperatorNotEqual(void* c_this, QTextOption__Tab* other);
+	public static extern bool QTextOption__Tab_OperatorNotEqual(void* c_this, void* other);
 	/// Delete this object from C++ memory
 	[LinkName("QTextOption__Tab_Delete")]
 	public static extern void QTextOption__Tab_Delete(void* self);

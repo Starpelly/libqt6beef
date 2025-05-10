@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPixmap
+public interface IQPixmap
+{
+	void* NativePtr { get; }
+}
+public class QPixmap : IQPixmap, IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QPixmap
 		CQt.QPixmap_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQPixmap param1)
 	{
-		CQt.QPixmap_OperatorAssign(this.nativePtr, param1);
+		CQt.QPixmap_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPixmap other)
 	{
-		CQt.QPixmap_Swap(this.nativePtr, other);
+		CQt.QPixmap_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -81,9 +86,9 @@ public class QPixmap
 		CQt.QPixmap_Mask(this.nativePtr);
 	}
 	
-	public void SetMask(void* mask)
+	public void SetMask(IQBitmap mask)
 	{
-		CQt.QPixmap_SetMask(this.nativePtr, mask);
+		CQt.QPixmap_SetMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
 	public double DevicePixelRatio()
@@ -116,9 +121,9 @@ public class QPixmap
 		CQt.QPixmap_CreateHeuristicMask(this.nativePtr);
 	}
 	
-	public void CreateMaskFromColor(void* maskColor)
+	public void CreateMaskFromColor(IQColor maskColor)
 	{
-		CQt.QPixmap_CreateMaskFromColor(this.nativePtr, maskColor);
+		CQt.QPixmap_CreateMaskFromColor(this.nativePtr, (maskColor == default) ? default : (void*)maskColor.NativePtr);
 	}
 	
 	public void Scaled(int32 w, int32 h)
@@ -126,9 +131,9 @@ public class QPixmap
 		CQt.QPixmap_Scaled(this.nativePtr, w, h);
 	}
 	
-	public void ScaledWithQSize(void* s)
+	public void ScaledWithQSize(IQSize s)
 	{
-		CQt.QPixmap_ScaledWithQSize(this.nativePtr, s);
+		CQt.QPixmap_ScaledWithQSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
 	}
 	
 	public void ScaledToWidth(int32 w)
@@ -141,14 +146,14 @@ public class QPixmap
 		CQt.QPixmap_ScaledToHeight(this.nativePtr, h);
 	}
 	
-	public void Transformed(void* param1)
+	public void Transformed(IQTransform param1)
 	{
-		CQt.QPixmap_Transformed(this.nativePtr, param1);
+		CQt.QPixmap_Transformed(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public static void TrueMatrix(void* m, int32 w, int32 h)
+	public static void TrueMatrix(IQTransform m, int32 w, int32 h)
 	{
-		CQt.QPixmap_TrueMatrix(m, w, h);
+		CQt.QPixmap_TrueMatrix((m == default) ? default : (void*)m.NativePtr, w, h);
 	}
 	
 	public void ToImage()
@@ -156,19 +161,19 @@ public class QPixmap
 		CQt.QPixmap_ToImage(this.nativePtr);
 	}
 	
-	public static void FromImage(void* image)
+	public static void FromImage(IQImage image)
 	{
-		CQt.QPixmap_FromImage(image);
+		CQt.QPixmap_FromImage((image == default) ? default : (void*)image.NativePtr);
 	}
 	
-	public static void FromImageReader(void* imageReader)
+	public static void FromImageReader(IQImageReader imageReader)
 	{
-		CQt.QPixmap_FromImageReader(imageReader);
+		CQt.QPixmap_FromImageReader((imageReader == null) ? null : (void*)imageReader.NativePtr);
 	}
 	
-	public bool Load(libqt_string fileName)
+	public bool Load(String fileName)
 	{
-		return CQt.QPixmap_Load(this.nativePtr, fileName);
+		return CQt.QPixmap_Load(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public bool LoadFromData(uint8* buf, uint32 lenVal)
@@ -176,24 +181,24 @@ public class QPixmap
 		return CQt.QPixmap_LoadFromData(this.nativePtr, buf, lenVal);
 	}
 	
-	public bool LoadFromDataWithData(libqt_string data)
+	public bool LoadFromDataWithData(String data)
 	{
-		return CQt.QPixmap_LoadFromDataWithData(this.nativePtr, data);
+		return CQt.QPixmap_LoadFromDataWithData(this.nativePtr, libqt_string(data));
 	}
 	
-	public bool Save(libqt_string fileName)
+	public bool Save(String fileName)
 	{
-		return CQt.QPixmap_Save(this.nativePtr, fileName);
+		return CQt.QPixmap_Save(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool SaveWithDevice(void* device)
+	public bool SaveWithDevice(IQIODevice device)
 	{
-		return CQt.QPixmap_SaveWithDevice(this.nativePtr, device);
+		return CQt.QPixmap_SaveWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
-	public bool ConvertFromImage(void* img)
+	public bool ConvertFromImage(IQImage img)
 	{
-		return CQt.QPixmap_ConvertFromImage(this.nativePtr, img);
+		return CQt.QPixmap_ConvertFromImage(this.nativePtr, (img == default) ? default : (void*)img.NativePtr);
 	}
 	
 	public void Copy(int32 x, int32 y, int32 width, int32 height)
@@ -211,9 +216,9 @@ public class QPixmap
 		CQt.QPixmap_Scroll(this.nativePtr, dx, dy, x, y, width, height);
 	}
 	
-	public void Scroll2(int32 dx, int32 dy, void* rect)
+	public void Scroll2(int32 dx, int32 dy, IQRect rect)
 	{
-		CQt.QPixmap_Scroll2(this.nativePtr, dx, dy, rect);
+		CQt.QPixmap_Scroll2(this.nativePtr, dx, dy, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public int64 CacheKey()
@@ -251,9 +256,9 @@ public class QPixmap
 		return CQt.QPixmap_Metric(this.nativePtr, param1);
 	}
 	
-	public void Fill1(void* fillColor)
+	public void Fill1(IQColor fillColor)
 	{
-		CQt.QPixmap_Fill1(this.nativePtr, fillColor);
+		CQt.QPixmap_Fill1(this.nativePtr, (fillColor == default) ? default : (void*)fillColor.NativePtr);
 	}
 	
 	public void CreateHeuristicMask1(bool clipTight)
@@ -261,9 +266,9 @@ public class QPixmap
 		CQt.QPixmap_CreateHeuristicMask1(this.nativePtr, clipTight);
 	}
 	
-	public void CreateMaskFromColor2(void* maskColor, int64 mode)
+	public void CreateMaskFromColor2(IQColor maskColor, int64 mode)
 	{
-		CQt.QPixmap_CreateMaskFromColor2(this.nativePtr, maskColor, mode);
+		CQt.QPixmap_CreateMaskFromColor2(this.nativePtr, (maskColor == default) ? default : (void*)maskColor.NativePtr, mode);
 	}
 	
 	public void Scaled3(int32 w, int32 h, int64 aspectMode)
@@ -276,14 +281,14 @@ public class QPixmap
 		CQt.QPixmap_Scaled4(this.nativePtr, w, h, aspectMode, mode);
 	}
 	
-	public void Scaled2(void* s, int64 aspectMode)
+	public void Scaled2(IQSize s, int64 aspectMode)
 	{
-		CQt.QPixmap_Scaled2(this.nativePtr, s, aspectMode);
+		CQt.QPixmap_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode);
 	}
 	
-	public void Scaled32(void* s, int64 aspectMode, int64 mode)
+	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
 	{
-		CQt.QPixmap_Scaled32(this.nativePtr, s, aspectMode, mode);
+		CQt.QPixmap_Scaled32(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode, mode);
 	}
 	
 	public void ScaledToWidth2(int32 w, int64 mode)
@@ -296,89 +301,89 @@ public class QPixmap
 		CQt.QPixmap_ScaledToHeight2(this.nativePtr, h, mode);
 	}
 	
-	public void Transformed2(void* param1, int64 mode)
+	public void Transformed2(IQTransform param1, int64 mode)
 	{
-		CQt.QPixmap_Transformed2(this.nativePtr, param1, mode);
+		CQt.QPixmap_Transformed2(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr, mode);
 	}
 	
-	public static void FromImage2(void* image, int64 flags)
+	public static void FromImage2(IQImage image, int64 flags)
 	{
-		CQt.QPixmap_FromImage2(image, flags);
+		CQt.QPixmap_FromImage2((image == default) ? default : (void*)image.NativePtr, flags);
 	}
 	
-	public static void FromImageReader2(void* imageReader, int64 flags)
+	public static void FromImageReader2(IQImageReader imageReader, int64 flags)
 	{
-		CQt.QPixmap_FromImageReader2(imageReader, flags);
+		CQt.QPixmap_FromImageReader2((imageReader == null) ? null : (void*)imageReader.NativePtr, flags);
 	}
 	
-	public bool Load2(libqt_string fileName, char8[] format)
+	public bool Load2(String fileName, char8* format)
 	{
-		return CQt.QPixmap_Load2(this.nativePtr, fileName, format);
+		return CQt.QPixmap_Load2(this.nativePtr, libqt_string(fileName), format);
 	}
 	
-	public bool Load3(libqt_string fileName, char8[] format, int64 flags)
+	public bool Load3(String fileName, char8* format, int64 flags)
 	{
-		return CQt.QPixmap_Load3(this.nativePtr, fileName, format, flags);
+		return CQt.QPixmap_Load3(this.nativePtr, libqt_string(fileName), format, flags);
 	}
 	
-	public bool LoadFromData3(uint8* buf, uint32 lenVal, char8[] format)
+	public bool LoadFromData3(uint8* buf, uint32 lenVal, char8* format)
 	{
 		return CQt.QPixmap_LoadFromData3(this.nativePtr, buf, lenVal, format);
 	}
 	
-	public bool LoadFromData4(uint8* buf, uint32 lenVal, char8[] format, int64 flags)
+	public bool LoadFromData4(uint8* buf, uint32 lenVal, char8* format, int64 flags)
 	{
 		return CQt.QPixmap_LoadFromData4(this.nativePtr, buf, lenVal, format, flags);
 	}
 	
-	public bool LoadFromData2(libqt_string data, char8[] format)
+	public bool LoadFromData2(String data, char8* format)
 	{
-		return CQt.QPixmap_LoadFromData2(this.nativePtr, data, format);
+		return CQt.QPixmap_LoadFromData2(this.nativePtr, libqt_string(data), format);
 	}
 	
-	public bool LoadFromData32(libqt_string data, char8[] format, int64 flags)
+	public bool LoadFromData32(String data, char8* format, int64 flags)
 	{
-		return CQt.QPixmap_LoadFromData32(this.nativePtr, data, format, flags);
+		return CQt.QPixmap_LoadFromData32(this.nativePtr, libqt_string(data), format, flags);
 	}
 	
-	public bool Save2(libqt_string fileName, char8[] format)
+	public bool Save2(String fileName, char8* format)
 	{
-		return CQt.QPixmap_Save2(this.nativePtr, fileName, format);
+		return CQt.QPixmap_Save2(this.nativePtr, libqt_string(fileName), format);
 	}
 	
-	public bool Save3(libqt_string fileName, char8[] format, int32 quality)
+	public bool Save3(String fileName, char8* format, int32 quality)
 	{
-		return CQt.QPixmap_Save3(this.nativePtr, fileName, format, quality);
+		return CQt.QPixmap_Save3(this.nativePtr, libqt_string(fileName), format, quality);
 	}
 	
-	public bool Save22(void* device, char8[] format)
+	public bool Save22(IQIODevice device, char8* format)
 	{
-		return CQt.QPixmap_Save22(this.nativePtr, device, format);
+		return CQt.QPixmap_Save22(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
 	}
 	
-	public bool Save32(void* device, char8[] format, int32 quality)
+	public bool Save32(IQIODevice device, char8* format, int32 quality)
 	{
-		return CQt.QPixmap_Save32(this.nativePtr, device, format, quality);
+		return CQt.QPixmap_Save32(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format, quality);
 	}
 	
-	public bool ConvertFromImage2(void* img, int64 flags)
+	public bool ConvertFromImage2(IQImage img, int64 flags)
 	{
-		return CQt.QPixmap_ConvertFromImage2(this.nativePtr, img, flags);
+		return CQt.QPixmap_ConvertFromImage2(this.nativePtr, (img == default) ? default : (void*)img.NativePtr, flags);
 	}
 	
-	public void Copy1(void* rect)
+	public void Copy1(IQRect rect)
 	{
-		CQt.QPixmap_Copy1(this.nativePtr, rect);
+		CQt.QPixmap_Copy1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void Scroll7(int32 dx, int32 dy, int32 x, int32 y, int32 width, int32 height, void* exposed)
+	public void Scroll7(int32 dx, int32 dy, int32 x, int32 y, int32 width, int32 height, IQRegion exposed)
 	{
-		CQt.QPixmap_Scroll7(this.nativePtr, dx, dy, x, y, width, height, exposed);
+		CQt.QPixmap_Scroll7(this.nativePtr, dx, dy, x, y, width, height, (exposed == null) ? null : (void*)exposed.NativePtr);
 	}
 	
-	public void Scroll4(int32 dx, int32 dy, void* rect, void* exposed)
+	public void Scroll4(int32 dx, int32 dy, IQRect rect, IQRegion exposed)
 	{
-		CQt.QPixmap_Scroll4(this.nativePtr, dx, dy, rect, exposed);
+		CQt.QPixmap_Scroll4(this.nativePtr, dx, dy, (rect == default) ? default : (void*)rect.NativePtr, (exposed == null) ? null : (void*)exposed.NativePtr);
 	}
 	
 	public bool PaintingActive()
@@ -445,9 +450,9 @@ extension CQt
 	[LinkName("QPixmap_new5")]
 	public static extern void* QPixmap_new5(void* param1);
 	[LinkName("QPixmap_new6")]
-	public static extern void* QPixmap_new6(libqt_string fileName, char8[] format);
+	public static extern void* QPixmap_new6(libqt_string fileName, char8* format);
 	[LinkName("QPixmap_new7")]
-	public static extern void* QPixmap_new7(libqt_string fileName, char8[] format, int64 flags);
+	public static extern void* QPixmap_new7(libqt_string fileName, char8* format, int64 flags);
 	[LinkName("QPixmap_OperatorAssign")]
 	public static extern void QPixmap_OperatorAssign(void* c_this, void* param1);
 	[LinkName("QPixmap_Swap")]
@@ -567,25 +572,25 @@ extension CQt
 	[LinkName("QPixmap_FromImageReader2")]
 	public static extern void QPixmap_FromImageReader2(void* imageReader, int64 flags);
 	[LinkName("QPixmap_Load2")]
-	public static extern bool QPixmap_Load2(void* c_this, libqt_string fileName, char8[] format);
+	public static extern bool QPixmap_Load2(void* c_this, libqt_string fileName, char8* format);
 	[LinkName("QPixmap_Load3")]
-	public static extern bool QPixmap_Load3(void* c_this, libqt_string fileName, char8[] format, int64 flags);
+	public static extern bool QPixmap_Load3(void* c_this, libqt_string fileName, char8* format, int64 flags);
 	[LinkName("QPixmap_LoadFromData3")]
-	public static extern bool QPixmap_LoadFromData3(void* c_this, uint8* buf, uint32 lenVal, char8[] format);
+	public static extern bool QPixmap_LoadFromData3(void* c_this, uint8* buf, uint32 lenVal, char8* format);
 	[LinkName("QPixmap_LoadFromData4")]
-	public static extern bool QPixmap_LoadFromData4(void* c_this, uint8* buf, uint32 lenVal, char8[] format, int64 flags);
+	public static extern bool QPixmap_LoadFromData4(void* c_this, uint8* buf, uint32 lenVal, char8* format, int64 flags);
 	[LinkName("QPixmap_LoadFromData2")]
-	public static extern bool QPixmap_LoadFromData2(void* c_this, libqt_string data, char8[] format);
+	public static extern bool QPixmap_LoadFromData2(void* c_this, libqt_string data, char8* format);
 	[LinkName("QPixmap_LoadFromData32")]
-	public static extern bool QPixmap_LoadFromData32(void* c_this, libqt_string data, char8[] format, int64 flags);
+	public static extern bool QPixmap_LoadFromData32(void* c_this, libqt_string data, char8* format, int64 flags);
 	[LinkName("QPixmap_Save2")]
-	public static extern bool QPixmap_Save2(void* c_this, libqt_string fileName, char8[] format);
+	public static extern bool QPixmap_Save2(void* c_this, libqt_string fileName, char8* format);
 	[LinkName("QPixmap_Save3")]
-	public static extern bool QPixmap_Save3(void* c_this, libqt_string fileName, char8[] format, int32 quality);
+	public static extern bool QPixmap_Save3(void* c_this, libqt_string fileName, char8* format, int32 quality);
 	[LinkName("QPixmap_Save22")]
-	public static extern bool QPixmap_Save22(void* c_this, void* device, char8[] format);
+	public static extern bool QPixmap_Save22(void* c_this, void* device, char8* format);
 	[LinkName("QPixmap_Save32")]
-	public static extern bool QPixmap_Save32(void* c_this, void* device, char8[] format, int32 quality);
+	public static extern bool QPixmap_Save32(void* c_this, void* device, char8* format, int32 quality);
 	[LinkName("QPixmap_ConvertFromImage2")]
 	public static extern bool QPixmap_ConvertFromImage2(void* c_this, void* img, int64 flags);
 	[LinkName("QPixmap_Copy1")]

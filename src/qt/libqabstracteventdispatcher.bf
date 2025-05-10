@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAbstractEventDispatcher
+public interface IQAbstractEventDispatcher
+{
+	void* NativePtr { get; }
+}
+public class QAbstractEventDispatcher : IQAbstractEventDispatcher, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -16,7 +21,7 @@ public class QAbstractEventDispatcher
 		return CQt.QAbstractEventDispatcher_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QAbstractEventDispatcher_Metacast(this.nativePtr, param1);
 	}
@@ -26,7 +31,7 @@ public class QAbstractEventDispatcher
 		return CQt.QAbstractEventDispatcher_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QAbstractEventDispatcher_Tr(s);
 	}
@@ -41,24 +46,24 @@ public class QAbstractEventDispatcher
 		return CQt.QAbstractEventDispatcher_ProcessEvents(this.nativePtr, flags);
 	}
 	
-	public virtual void RegisterSocketNotifier(void* notifier)
+	public virtual void RegisterSocketNotifier(IQSocketNotifier notifier)
 	{
-		CQt.QAbstractEventDispatcher_RegisterSocketNotifier(this.nativePtr, notifier);
+		CQt.QAbstractEventDispatcher_RegisterSocketNotifier(this.nativePtr, (notifier == null) ? null : (void*)notifier.NativePtr);
 	}
 	
-	public virtual void UnregisterSocketNotifier(void* notifier)
+	public virtual void UnregisterSocketNotifier(IQSocketNotifier notifier)
 	{
-		CQt.QAbstractEventDispatcher_UnregisterSocketNotifier(this.nativePtr, notifier);
+		CQt.QAbstractEventDispatcher_UnregisterSocketNotifier(this.nativePtr, (notifier == null) ? null : (void*)notifier.NativePtr);
 	}
 	
-	public int32 RegisterTimer(int64 interval, int64 timerType, void* object)
+	public int32 RegisterTimer(int64 interval, int64 timerType, IQObject object)
 	{
-		return CQt.QAbstractEventDispatcher_RegisterTimer(this.nativePtr, interval, timerType, object);
+		return CQt.QAbstractEventDispatcher_RegisterTimer(this.nativePtr, interval, timerType, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
-	public virtual void RegisterTimer2(int32 timerId, int64 interval, int64 timerType, void* object)
+	public virtual void RegisterTimer2(int32 timerId, int64 interval, int64 timerType, IQObject object)
 	{
-		CQt.QAbstractEventDispatcher_RegisterTimer2(this.nativePtr, timerId, interval, timerType, object);
+		CQt.QAbstractEventDispatcher_RegisterTimer2(this.nativePtr, timerId, interval, timerType, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
 	public virtual bool UnregisterTimer(int32 timerId)
@@ -66,14 +71,14 @@ public class QAbstractEventDispatcher
 		return CQt.QAbstractEventDispatcher_UnregisterTimer(this.nativePtr, timerId);
 	}
 	
-	public virtual bool UnregisterTimers(void* object)
+	public virtual bool UnregisterTimers(IQObject object)
 	{
-		return CQt.QAbstractEventDispatcher_UnregisterTimers(this.nativePtr, object);
+		return CQt.QAbstractEventDispatcher_UnregisterTimers(this.nativePtr, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
-	public virtual QAbstractEventDispatcher__TimerInfo[] RegisteredTimers(void* object)
+	public virtual void[] RegisteredTimers(IQObject object)
 	{
-		return CQt.QAbstractEventDispatcher_RegisteredTimers(this.nativePtr, object);
+		return CQt.QAbstractEventDispatcher_RegisteredTimers(this.nativePtr, (object == null) ? null : (void*)object.NativePtr);
 	}
 	
 	public virtual int32 RemainingTime(int32 timerId)
@@ -101,44 +106,44 @@ public class QAbstractEventDispatcher
 		CQt.QAbstractEventDispatcher_ClosingDown(this.nativePtr);
 	}
 	
-	public void InstallNativeEventFilter(void* filterObj)
+	public void InstallNativeEventFilter(IQAbstractNativeEventFilter filterObj)
 	{
-		CQt.QAbstractEventDispatcher_InstallNativeEventFilter(this.nativePtr, filterObj);
+		CQt.QAbstractEventDispatcher_InstallNativeEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveNativeEventFilter(void* filterObj)
+	public void RemoveNativeEventFilter(IQAbstractNativeEventFilter filterObj)
 	{
-		CQt.QAbstractEventDispatcher_RemoveNativeEventFilter(this.nativePtr, filterObj);
+		CQt.QAbstractEventDispatcher_RemoveNativeEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public bool FilterNativeEvent(libqt_string eventType, void* message, c_uintptr* result)
+	public bool FilterNativeEvent(String eventType, void* message, c_uintptr* result)
 	{
-		return CQt.QAbstractEventDispatcher_FilterNativeEvent(this.nativePtr, eventType, message, result);
+		return CQt.QAbstractEventDispatcher_FilterNativeEvent(this.nativePtr, libqt_string(eventType), message, result);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QAbstractEventDispatcher_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QAbstractEventDispatcher_Tr3(s, c, n);
 	}
 	
-	public static void* Instance1(void* thread)
+	public static void* Instance1(IQThread thread)
 	{
-		return CQt.QAbstractEventDispatcher_Instance1(thread);
+		return CQt.QAbstractEventDispatcher_Instance1((thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -146,9 +151,9 @@ public class QAbstractEventDispatcher
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -181,9 +186,9 @@ public class QAbstractEventDispatcher
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -201,39 +206,39 @@ public class QAbstractEventDispatcher
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -246,12 +251,12 @@ public class QAbstractEventDispatcher
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -276,7 +281,7 @@ public class QAbstractEventDispatcher
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -291,14 +296,14 @@ public class QAbstractEventDispatcher
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -307,11 +312,11 @@ extension CQt
 	[LinkName("QAbstractEventDispatcher_MetaObject")]
 	public static extern void* QAbstractEventDispatcher_MetaObject(void* c_this);
 	[LinkName("QAbstractEventDispatcher_Metacast")]
-	public static extern void* QAbstractEventDispatcher_Metacast(void* c_this, char8[] param1);
+	public static extern void* QAbstractEventDispatcher_Metacast(void* c_this, char8* param1);
 	[LinkName("QAbstractEventDispatcher_Metacall")]
-	public static extern int32 QAbstractEventDispatcher_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QAbstractEventDispatcher_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QAbstractEventDispatcher_Tr")]
-	public static extern libqt_string QAbstractEventDispatcher_Tr(char8[] s);
+	public static extern libqt_string QAbstractEventDispatcher_Tr(char8* s);
 	[LinkName("QAbstractEventDispatcher_Instance")]
 	public static extern void* QAbstractEventDispatcher_Instance();
 	[LinkName("QAbstractEventDispatcher_ProcessEvents")]
@@ -329,7 +334,7 @@ extension CQt
 	[LinkName("QAbstractEventDispatcher_UnregisterTimers")]
 	public static extern bool QAbstractEventDispatcher_UnregisterTimers(void* c_this, void* object);
 	[LinkName("QAbstractEventDispatcher_RegisteredTimers")]
-	public static extern QAbstractEventDispatcher__TimerInfo[] QAbstractEventDispatcher_RegisteredTimers(void* c_this, void* object);
+	public static extern void[] QAbstractEventDispatcher_RegisteredTimers(void* c_this, void* object);
 	[LinkName("QAbstractEventDispatcher_RemainingTime")]
 	public static extern int32 QAbstractEventDispatcher_RemainingTime(void* c_this, int32 timerId);
 	[LinkName("QAbstractEventDispatcher_WakeUp")]
@@ -351,22 +356,27 @@ extension CQt
 	[LinkName("QAbstractEventDispatcher_Connect_Awake")]
 	public static extern void QAbstractEventDispatcher_Connect_Awake(void* c_this, c_intptr slot);
 	[LinkName("QAbstractEventDispatcher_Tr2")]
-	public static extern libqt_string QAbstractEventDispatcher_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QAbstractEventDispatcher_Tr2(char8* s, char8* c);
 	[LinkName("QAbstractEventDispatcher_Tr3")]
-	public static extern libqt_string QAbstractEventDispatcher_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QAbstractEventDispatcher_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QAbstractEventDispatcher_Instance1")]
 	public static extern void* QAbstractEventDispatcher_Instance1(void* thread);
 	/// Delete this object from C++ memory
 	[LinkName("QAbstractEventDispatcher_Delete")]
 	public static extern void QAbstractEventDispatcher_Delete(void* self);
 }
-public class QAbstractEventDispatcher__TimerInfo
+public interface IQAbstractEventDispatcher__TimerInfo
+{
+	void* NativePtr { get; }
+}
+public class QAbstractEventDispatcher__TimerInfo : IQAbstractEventDispatcher__TimerInfo
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QAbstractEventDispatcher__TimerInfo* other)
+	public this(QAbstractEventDispatcher__TimerInfo other)
 	{
-		this.nativePtr = CQt.QAbstractEventDispatcher__TimerInfo_new(other);
+		this.nativePtr = CQt.QAbstractEventDispatcher__TimerInfo_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -376,9 +386,9 @@ public class QAbstractEventDispatcher__TimerInfo
 extension CQt
 {
 	[LinkName("QAbstractEventDispatcher__TimerInfo_new")]
-	public static extern void* QAbstractEventDispatcher__TimerInfo_new(QAbstractEventDispatcher__TimerInfo* other);
+	public static extern void* QAbstractEventDispatcher__TimerInfo_new(void* other);
 	[LinkName("QAbstractEventDispatcher__TimerInfo_new2")]
-	public static extern void* QAbstractEventDispatcher__TimerInfo_new2(QAbstractEventDispatcher__TimerInfo* other);
+	public static extern void* QAbstractEventDispatcher__TimerInfo_new2(void* other);
 	[LinkName("QAbstractEventDispatcher__TimerInfo_new3")]
 	public static extern void* QAbstractEventDispatcher__TimerInfo_new3(int32 id, int32 i, int64 t);
 	/// Delete this object from C++ memory

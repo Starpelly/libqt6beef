@@ -39,13 +39,18 @@ public enum QCborValue__Type
 	Uuid = 65573,
 	Invalid = -1,
 }
-public class QCborParserError
+public interface IQCborParserError
+{
+	void* NativePtr { get; }
+}
+public class QCborParserError : IQCborParserError
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQCborParserError other)
 	{
-		this.nativePtr = CQt.QCborParserError_new(other);
+		this.nativePtr = CQt.QCborParserError_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -71,9 +76,14 @@ extension CQt
 	[LinkName("QCborParserError_Delete")]
 	public static extern void QCborParserError_Delete(void* self);
 }
-public class QCborValue
+public interface IQCborValue
+{
+	void* NativePtr { get; }
+}
+public class QCborValue : IQCborValue
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -85,14 +95,14 @@ public class QCborValue
 		CQt.QCborValue_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCborValue other)
 	{
-		CQt.QCborValue_OperatorAssign(this.nativePtr, other);
+		CQt.QCborValue_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCborValue other)
 	{
-		CQt.QCborValue_Swap(this.nativePtr, other);
+		CQt.QCborValue_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int64 Type()
@@ -265,9 +275,9 @@ public class QCborValue
 		CQt.QCborValue_ToArray(this.nativePtr);
 	}
 	
-	public void ToArrayWithDefaultValue(void* defaultValue)
+	public void ToArrayWithDefaultValue(IQCborArray defaultValue)
 	{
-		CQt.QCborValue_ToArrayWithDefaultValue(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public void ToMap()
@@ -275,14 +285,14 @@ public class QCborValue
 		CQt.QCborValue_ToMap(this.nativePtr);
 	}
 	
-	public void ToMapWithDefaultValue(void* defaultValue)
+	public void ToMapWithDefaultValue(IQCborMap defaultValue)
 	{
-		CQt.QCborValue_ToMapWithDefaultValue(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToMapWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void OperatorSubscript(libqt_string key)
+	public void OperatorSubscript(String key)
 	{
-		CQt.QCborValue_OperatorSubscript(this.nativePtr, key);
+		CQt.QCborValue_OperatorSubscript(this.nativePtr, libqt_string(key));
 	}
 	
 	public void OperatorSubscript2(int64 key)
@@ -295,34 +305,34 @@ public class QCborValue
 		CQt.QCborValue_OperatorSubscript3(this.nativePtr, key);
 	}
 	
-	public void OperatorSubscript5(libqt_string key)
+	public void OperatorSubscript5(String key)
 	{
-		CQt.QCborValue_OperatorSubscript5(this.nativePtr, key);
+		CQt.QCborValue_OperatorSubscript5(this.nativePtr, libqt_string(key));
 	}
 	
-	public int32 Compare(void* other)
+	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValue_Compare(this.nativePtr, other);
+		return CQt.QCborValue_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorEqual(this.nativePtr, other);
+		return CQt.QCborValue_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCborValue_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* other)
+	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborValue_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public static void FromVariant(void* variant)
+	public static void FromVariant(IQVariant variant)
 	{
-		CQt.QCborValue_FromVariant(variant);
+		CQt.QCborValue_FromVariant((variant == default) ? default : (void*)variant.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -330,9 +340,9 @@ public class QCborValue
 		CQt.QCborValue_ToVariant(this.nativePtr);
 	}
 	
-	public static void FromJsonValue(void* v)
+	public static void FromJsonValue(IQJsonValue v)
 	{
-		CQt.QCborValue_FromJsonValue(v);
+		CQt.QCborValue_FromJsonValue((v == default) ? default : (void*)v.NativePtr);
 	}
 	
 	public void ToJsonValue()
@@ -340,17 +350,17 @@ public class QCborValue
 		CQt.QCborValue_ToJsonValue(this.nativePtr);
 	}
 	
-	public static void FromCbor(void* reader)
+	public static void FromCbor(IQCborStreamReader reader)
 	{
-		CQt.QCborValue_FromCbor(reader);
+		CQt.QCborValue_FromCbor((reader == default) ? default : (void*)reader.NativePtr);
 	}
 	
-	public static void FromCborWithBa(libqt_string ba)
+	public static void FromCborWithBa(String ba)
 	{
-		CQt.QCborValue_FromCborWithBa(ba);
+		CQt.QCborValue_FromCborWithBa(libqt_string(ba));
 	}
 	
-	public static void FromCbor2(char8[] data, int32 lenVal)
+	public static void FromCbor2(char8* data, int32 lenVal)
 	{
 		CQt.QCborValue_FromCbor2(data, lenVal);
 	}
@@ -365,9 +375,9 @@ public class QCborValue
 		return CQt.QCborValue_ToCbor(this.nativePtr);
 	}
 	
-	public void ToCborWithWriter(void* writer)
+	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValue_ToCborWithWriter(this.nativePtr, writer);
+		CQt.QCborValue_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -400,54 +410,54 @@ public class QCborValue
 		CQt.QCborValue_Tag1(this.nativePtr, defaultValue);
 	}
 	
-	public void TaggedValue1(void* defaultValue)
+	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValue_TaggedValue1(this.nativePtr, defaultValue);
+		CQt.QCborValue_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public libqt_string ToByteArray1(libqt_string defaultValue)
+	public libqt_string ToByteArray1(String defaultValue)
 	{
-		return CQt.QCborValue_ToByteArray1(this.nativePtr, defaultValue);
+		return CQt.QCborValue_ToByteArray1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public libqt_string ToString1(libqt_string defaultValue)
+	public libqt_string ToString1(String defaultValue)
 	{
-		return CQt.QCborValue_ToString1(this.nativePtr, defaultValue);
+		return CQt.QCborValue_ToString1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public void ToDateTime1(void* defaultValue)
+	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValue_ToDateTime1(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUrl1(void* defaultValue)
+	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValue_ToUrl1(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToRegularExpression1(void* defaultValue)
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValue_ToRegularExpression1(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUuid1(void* defaultValue)
+	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValue_ToUuid1(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public static void FromCbor22(libqt_string ba, void* errorVal)
+	public static void FromCbor22(String ba, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor22(ba, errorVal);
+		CQt.QCborValue_FromCbor22(libqt_string(ba), (errorVal == null) ? null : (void*)errorVal.NativePtr);
 	}
 	
-	public static void FromCbor32(char8[] data, int32 lenVal, void* errorVal)
+	public static void FromCbor32(char8* data, int32 lenVal, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor32(data, lenVal, errorVal);
+		CQt.QCborValue_FromCbor32(data, lenVal, (errorVal == null) ? null : (void*)errorVal.NativePtr);
 	}
 	
-	public static void FromCbor33(uint8* data, int32 lenVal, void* errorVal)
+	public static void FromCbor33(uint8* data, int32 lenVal, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor33(data, lenVal, errorVal);
+		CQt.QCborValue_FromCbor33(data, lenVal, (errorVal == null) ? null : (void*)errorVal.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -455,9 +465,9 @@ public class QCborValue
 		return CQt.QCborValue_ToCbor1(this.nativePtr, opt);
 	}
 	
-	public void ToCbor2(void* writer, int64 opt)
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValue_ToCbor2(this.nativePtr, writer, opt);
+		CQt.QCborValue_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opts)
@@ -489,7 +499,7 @@ extension CQt
 	[LinkName("QCborValue_new10")]
 	public static extern void* QCborValue_new10(libqt_string s);
 	[LinkName("QCborValue_new11")]
-	public static extern void* QCborValue_new11(char8[] s);
+	public static extern void* QCborValue_new11(char8* s);
 	[LinkName("QCborValue_new12")]
 	public static extern void* QCborValue_new12(void* a);
 	[LinkName("QCborValue_new13")]
@@ -619,7 +629,7 @@ extension CQt
 	[LinkName("QCborValue_FromCborWithBa")]
 	public static extern void QCborValue_FromCborWithBa(libqt_string ba);
 	[LinkName("QCborValue_FromCbor2")]
-	public static extern void QCborValue_FromCbor2(char8[] data, int32 lenVal);
+	public static extern void QCborValue_FromCbor2(char8* data, int32 lenVal);
 	[LinkName("QCborValue_FromCbor3")]
 	public static extern void QCborValue_FromCbor3(uint8* data, int32 lenVal);
 	[LinkName("QCborValue_ToCbor")]
@@ -655,7 +665,7 @@ extension CQt
 	[LinkName("QCborValue_FromCbor22")]
 	public static extern void QCborValue_FromCbor22(libqt_string ba, void* errorVal);
 	[LinkName("QCborValue_FromCbor32")]
-	public static extern void QCborValue_FromCbor32(char8[] data, int32 lenVal, void* errorVal);
+	public static extern void QCborValue_FromCbor32(char8* data, int32 lenVal, void* errorVal);
 	[LinkName("QCborValue_FromCbor33")]
 	public static extern void QCborValue_FromCbor33(uint8* data, int32 lenVal, void* errorVal);
 	[LinkName("QCborValue_ToCbor1")]
@@ -668,13 +678,18 @@ extension CQt
 	[LinkName("QCborValue_Delete")]
 	public static extern void QCborValue_Delete(void* self);
 }
-public class QCborValueConstRef
+public interface IQCborValueConstRef
+{
+	void* NativePtr { get; }
+}
+public class QCborValueConstRef : IQCborValueConstRef
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQCborValueConstRef other)
 	{
-		this.nativePtr = CQt.QCborValueConstRef_new(other);
+		this.nativePtr = CQt.QCborValueConstRef_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -857,9 +872,9 @@ public class QCborValueConstRef
 		CQt.QCborValueConstRef_ToArray(this.nativePtr);
 	}
 	
-	public void ToArrayWithQCborArray(void* a)
+	public void ToArrayWithQCborArray(IQCborArray a)
 	{
-		CQt.QCborValueConstRef_ToArrayWithQCborArray(this.nativePtr, a);
+		CQt.QCborValueConstRef_ToArrayWithQCborArray(this.nativePtr, (a == default) ? default : (void*)a.NativePtr);
 	}
 	
 	public void ToMap()
@@ -867,14 +882,14 @@ public class QCborValueConstRef
 		CQt.QCborValueConstRef_ToMap(this.nativePtr);
 	}
 	
-	public void ToMapWithQCborMap(void* m)
+	public void ToMapWithQCborMap(IQCborMap m)
 	{
-		CQt.QCborValueConstRef_ToMapWithQCborMap(this.nativePtr, m);
+		CQt.QCborValueConstRef_ToMapWithQCborMap(this.nativePtr, (m == default) ? default : (void*)m.NativePtr);
 	}
 	
-	public void OperatorSubscript(libqt_string key)
+	public void OperatorSubscript(String key)
 	{
-		CQt.QCborValueConstRef_OperatorSubscript(this.nativePtr, key);
+		CQt.QCborValueConstRef_OperatorSubscript(this.nativePtr, libqt_string(key));
 	}
 	
 	public void OperatorSubscript2(int64 key)
@@ -882,24 +897,24 @@ public class QCborValueConstRef
 		CQt.QCborValueConstRef_OperatorSubscript2(this.nativePtr, key);
 	}
 	
-	public int32 Compare(void* other)
+	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_Compare(this.nativePtr, other);
+		return CQt.QCborValueConstRef_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorEqual(this.nativePtr, other);
+		return CQt.QCborValueConstRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCborValueConstRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* other)
+	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborValueConstRef_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -917,9 +932,9 @@ public class QCborValueConstRef
 		return CQt.QCborValueConstRef_ToCbor(this.nativePtr);
 	}
 	
-	public void ToCborWithWriter(void* writer)
+	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValueConstRef_ToCborWithWriter(this.nativePtr, writer);
+		CQt.QCborValueConstRef_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -937,9 +952,9 @@ public class QCborValueConstRef
 		CQt.QCborValueConstRef_Tag1(this.nativePtr, defaultValue);
 	}
 	
-	public void TaggedValue1(void* defaultValue)
+	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValueConstRef_TaggedValue1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public int64 ToInteger1(int64 defaultValue)
@@ -957,34 +972,34 @@ public class QCborValueConstRef
 		return CQt.QCborValueConstRef_ToDouble1(this.nativePtr, defaultValue);
 	}
 	
-	public libqt_string ToByteArray1(libqt_string defaultValue)
+	public libqt_string ToByteArray1(String defaultValue)
 	{
-		return CQt.QCborValueConstRef_ToByteArray1(this.nativePtr, defaultValue);
+		return CQt.QCborValueConstRef_ToByteArray1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public libqt_string ToString1(libqt_string defaultValue)
+	public libqt_string ToString1(String defaultValue)
 	{
-		return CQt.QCborValueConstRef_ToString1(this.nativePtr, defaultValue);
+		return CQt.QCborValueConstRef_ToString1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public void ToDateTime1(void* defaultValue)
+	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValueConstRef_ToDateTime1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUrl1(void* defaultValue)
+	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValueConstRef_ToUrl1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToRegularExpression1(void* defaultValue)
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValueConstRef_ToRegularExpression1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUuid1(void* defaultValue)
+	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValueConstRef_ToUuid1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -992,9 +1007,9 @@ public class QCborValueConstRef
 		return CQt.QCborValueConstRef_ToCbor1(this.nativePtr, opt);
 	}
 	
-	public void ToCbor2(void* writer, int64 opt)
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValueConstRef_ToCbor2(this.nativePtr, writer, opt);
+		CQt.QCborValueConstRef_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opt)
@@ -1141,13 +1156,18 @@ extension CQt
 	[LinkName("QCborValueConstRef_Delete")]
 	public static extern void QCborValueConstRef_Delete(void* self);
 }
-public class QCborValueRef
+public interface IQCborValueRef
+{
+	void* NativePtr { get; }
+}
+public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQCborValueRef other)
 	{
-		this.nativePtr = CQt.QCborValueRef_new(other);
+		this.nativePtr = CQt.QCborValueRef_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -1155,14 +1175,14 @@ public class QCborValueRef
 		CQt.QCborValueRef_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCborValue other)
 	{
-		CQt.QCborValueRef_OperatorAssign(this.nativePtr, other);
+		CQt.QCborValueRef_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void OperatorAssignWithOther(void* other)
+	public void OperatorAssignWithOther(IQCborValueRef other)
 	{
-		CQt.QCborValueRef_OperatorAssignWithOther(this.nativePtr, other);
+		CQt.QCborValueRef_OperatorAssignWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void OperatorSubscript(int64 key)
@@ -1170,9 +1190,9 @@ public class QCborValueRef
 		CQt.QCborValueRef_OperatorSubscript(this.nativePtr, key);
 	}
 	
-	public void OperatorSubscript2(libqt_string key)
+	public void OperatorSubscript2(String key)
 	{
-		CQt.QCborValueRef_OperatorSubscript2(this.nativePtr, key);
+		CQt.QCborValueRef_OperatorSubscript2(this.nativePtr, libqt_string(key));
 	}
 	
 	public void ToQCborValue()
@@ -1350,9 +1370,9 @@ public class QCborValueRef
 		CQt.QCborValueRef_ToArray(this.nativePtr);
 	}
 	
-	public void ToArrayWithQCborArray(void* a)
+	public void ToArrayWithQCborArray(IQCborArray a)
 	{
-		CQt.QCborValueRef_ToArrayWithQCborArray(this.nativePtr, a);
+		CQt.QCborValueRef_ToArrayWithQCborArray(this.nativePtr, (a == default) ? default : (void*)a.NativePtr);
 	}
 	
 	public void ToMap()
@@ -1360,14 +1380,14 @@ public class QCborValueRef
 		CQt.QCborValueRef_ToMap(this.nativePtr);
 	}
 	
-	public void ToMapWithQCborMap(void* m)
+	public void ToMapWithQCborMap(IQCborMap m)
 	{
-		CQt.QCborValueRef_ToMapWithQCborMap(this.nativePtr, m);
+		CQt.QCborValueRef_ToMapWithQCborMap(this.nativePtr, (m == default) ? default : (void*)m.NativePtr);
 	}
 	
-	public void OperatorSubscript3(libqt_string key)
+	public void OperatorSubscript3(String key)
 	{
-		CQt.QCborValueRef_OperatorSubscript3(this.nativePtr, key);
+		CQt.QCborValueRef_OperatorSubscript3(this.nativePtr, libqt_string(key));
 	}
 	
 	public void OperatorSubscript5(int64 key)
@@ -1375,24 +1395,24 @@ public class QCborValueRef
 		CQt.QCborValueRef_OperatorSubscript5(this.nativePtr, key);
 	}
 	
-	public int32 Compare(void* other)
+	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValueRef_Compare(this.nativePtr, other);
+		return CQt.QCborValueRef_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorEqual(this.nativePtr, other);
+		return CQt.QCborValueRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QCborValueRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorLesser(void* other)
+	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorLesser(this.nativePtr, other);
+		return CQt.QCborValueRef_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -1410,9 +1430,9 @@ public class QCborValueRef
 		return CQt.QCborValueRef_ToCbor(this.nativePtr);
 	}
 	
-	public void ToCborWithWriter(void* writer)
+	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValueRef_ToCborWithWriter(this.nativePtr, writer);
+		CQt.QCborValueRef_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -1430,9 +1450,9 @@ public class QCborValueRef
 		CQt.QCborValueRef_Tag1(this.nativePtr, defaultValue);
 	}
 	
-	public void TaggedValue1(void* defaultValue)
+	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValueRef_TaggedValue1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public int64 ToInteger1(int64 defaultValue)
@@ -1450,34 +1470,34 @@ public class QCborValueRef
 		return CQt.QCborValueRef_ToDouble1(this.nativePtr, defaultValue);
 	}
 	
-	public libqt_string ToByteArray1(libqt_string defaultValue)
+	public libqt_string ToByteArray1(String defaultValue)
 	{
-		return CQt.QCborValueRef_ToByteArray1(this.nativePtr, defaultValue);
+		return CQt.QCborValueRef_ToByteArray1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public libqt_string ToString1(libqt_string defaultValue)
+	public libqt_string ToString1(String defaultValue)
 	{
-		return CQt.QCborValueRef_ToString1(this.nativePtr, defaultValue);
+		return CQt.QCborValueRef_ToString1(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public void ToDateTime1(void* defaultValue)
+	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValueRef_ToDateTime1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUrl1(void* defaultValue)
+	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValueRef_ToUrl1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToRegularExpression1(void* defaultValue)
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValueRef_ToRegularExpression1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ToUuid1(void* defaultValue)
+	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValueRef_ToUuid1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -1485,9 +1505,9 @@ public class QCborValueRef
 		return CQt.QCborValueRef_ToCbor1(this.nativePtr, opt);
 	}
 	
-	public void ToCbor2(void* writer, int64 opt)
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValueRef_ToCbor2(this.nativePtr, writer, opt);
+		CQt.QCborValueRef_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opt)

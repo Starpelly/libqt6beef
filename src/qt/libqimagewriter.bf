@@ -10,9 +10,14 @@ public enum QImageWriter__ImageWriterError
 	UnsupportedFormatError = 2,
 	InvalidImageError = 3,
 }
-public class QImageWriter
+public interface IQImageWriter
+{
+	void* NativePtr { get; }
+}
+public class QImageWriter : IQImageWriter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -24,14 +29,14 @@ public class QImageWriter
 		CQt.QImageWriter_Delete(this.nativePtr);
 	}
 	
-	public static libqt_string Tr(char8[] sourceText)
+	public static libqt_string Tr(char8* sourceText)
 	{
 		return CQt.QImageWriter_Tr(sourceText);
 	}
 	
-	public void SetFormat(libqt_string format)
+	public void SetFormat(String format)
 	{
-		CQt.QImageWriter_SetFormat(this.nativePtr, format);
+		CQt.QImageWriter_SetFormat(this.nativePtr, libqt_string(format));
 	}
 	
 	public libqt_string Format()
@@ -39,9 +44,9 @@ public class QImageWriter
 		return CQt.QImageWriter_Format(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QImageWriter_SetDevice(this.nativePtr, device);
+		CQt.QImageWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -49,9 +54,9 @@ public class QImageWriter
 		return CQt.QImageWriter_Device(this.nativePtr);
 	}
 	
-	public void SetFileName(libqt_string fileName)
+	public void SetFileName(String fileName)
 	{
-		CQt.QImageWriter_SetFileName(this.nativePtr, fileName);
+		CQt.QImageWriter_SetFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public libqt_string FileName()
@@ -79,9 +84,9 @@ public class QImageWriter
 		return CQt.QImageWriter_Compression(this.nativePtr);
 	}
 	
-	public void SetSubType(libqt_string typeVal)
+	public void SetSubType(String typeVal)
 	{
-		CQt.QImageWriter_SetSubType(this.nativePtr, typeVal);
+		CQt.QImageWriter_SetSubType(this.nativePtr, libqt_string(typeVal));
 	}
 	
 	public libqt_string SubType()
@@ -124,9 +129,9 @@ public class QImageWriter
 		CQt.QImageWriter_SetTransformation(this.nativePtr, orientation);
 	}
 	
-	public void SetText(libqt_string key, libqt_string text)
+	public void SetText(String key, String text)
 	{
-		CQt.QImageWriter_SetText(this.nativePtr, key, text);
+		CQt.QImageWriter_SetText(this.nativePtr, libqt_string(key), libqt_string(text));
 	}
 	
 	public bool CanWrite()
@@ -134,9 +139,9 @@ public class QImageWriter
 		return CQt.QImageWriter_CanWrite(this.nativePtr);
 	}
 	
-	public bool Write(void* image)
+	public bool Write(IQImage image)
 	{
-		return CQt.QImageWriter_Write(this.nativePtr, image);
+		return CQt.QImageWriter_Write(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
 	}
 	
 	public int64 Error()
@@ -164,17 +169,17 @@ public class QImageWriter
 		return CQt.QImageWriter_SupportedMimeTypes();
 	}
 	
-	public static libqt_string[] ImageFormatsForMimeType(libqt_string mimeType)
+	public static libqt_string[] ImageFormatsForMimeType(String mimeType)
 	{
-		return CQt.QImageWriter_ImageFormatsForMimeType(mimeType);
+		return CQt.QImageWriter_ImageFormatsForMimeType(libqt_string(mimeType));
 	}
 	
-	public static libqt_string Tr2(char8[] sourceText, char8[] disambiguation)
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
 	{
 		return CQt.QImageWriter_Tr2(sourceText, disambiguation);
 	}
 	
-	public static libqt_string Tr3(char8[] sourceText, char8[] disambiguation, int32 n)
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QImageWriter_Tr3(sourceText, disambiguation, n);
 	}
@@ -191,7 +196,7 @@ extension CQt
 	[LinkName("QImageWriter_new4")]
 	public static extern void* QImageWriter_new4(libqt_string fileName, libqt_string format);
 	[LinkName("QImageWriter_Tr")]
-	public static extern libqt_string QImageWriter_Tr(char8[] sourceText);
+	public static extern libqt_string QImageWriter_Tr(char8* sourceText);
 	[LinkName("QImageWriter_SetFormat")]
 	public static extern void QImageWriter_SetFormat(void* c_this, libqt_string format);
 	[LinkName("QImageWriter_Format")]
@@ -249,9 +254,9 @@ extension CQt
 	[LinkName("QImageWriter_ImageFormatsForMimeType")]
 	public static extern libqt_string[] QImageWriter_ImageFormatsForMimeType(libqt_string mimeType);
 	[LinkName("QImageWriter_Tr2")]
-	public static extern libqt_string QImageWriter_Tr2(char8[] sourceText, char8[] disambiguation);
+	public static extern libqt_string QImageWriter_Tr2(char8* sourceText, char8* disambiguation);
 	[LinkName("QImageWriter_Tr3")]
-	public static extern libqt_string QImageWriter_Tr3(char8[] sourceText, char8[] disambiguation, int32 n);
+	public static extern libqt_string QImageWriter_Tr3(char8* sourceText, char8* disambiguation, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QImageWriter_Delete")]
 	public static extern void QImageWriter_Delete(void* self);

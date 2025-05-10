@@ -38,13 +38,18 @@ public enum QSettings__Scope
 	UserScope = 0,
 	SystemScope = 1,
 }
-public class QSettings
+public interface IQSettings
+{
+	void* NativePtr { get; }
+}
+public class QSettings : IQSettings, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string organization)
+	public this(String organization)
 	{
-		this.nativePtr = CQt.QSettings_new(organization);
+		this.nativePtr = CQt.QSettings_new(libqt_string(organization));
 	}
 	
 	public ~this()
@@ -57,7 +62,7 @@ public class QSettings
 		return CQt.QSettings_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QSettings_Metacast(this.nativePtr, param1);
 	}
@@ -67,7 +72,7 @@ public class QSettings
 		return CQt.QSettings_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QSettings_Tr(s);
 	}
@@ -97,9 +102,9 @@ public class QSettings
 		CQt.QSettings_SetAtomicSyncRequired(this.nativePtr, enable);
 	}
 	
-	public void BeginGroup(void prefix)
+	public void BeginGroup(IQAnyStringView prefix)
 	{
-		CQt.QSettings_BeginGroup(this.nativePtr, prefix);
+		CQt.QSettings_BeginGroup(this.nativePtr, (prefix == default) ? default : (char8*)prefix.NativePtr);
 	}
 	
 	public void EndGroup()
@@ -112,14 +117,14 @@ public class QSettings
 		return CQt.QSettings_Group(this.nativePtr);
 	}
 	
-	public int32 BeginReadArray(void prefix)
+	public int32 BeginReadArray(IQAnyStringView prefix)
 	{
-		return CQt.QSettings_BeginReadArray(this.nativePtr, prefix);
+		return CQt.QSettings_BeginReadArray(this.nativePtr, (prefix == default) ? default : (char8*)prefix.NativePtr);
 	}
 	
-	public void BeginWriteArray(void prefix)
+	public void BeginWriteArray(IQAnyStringView prefix)
 	{
-		CQt.QSettings_BeginWriteArray(this.nativePtr, prefix);
+		CQt.QSettings_BeginWriteArray(this.nativePtr, (prefix == default) ? default : (char8*)prefix.NativePtr);
 	}
 	
 	public void EndArray()
@@ -152,29 +157,29 @@ public class QSettings
 		return CQt.QSettings_IsWritable(this.nativePtr);
 	}
 	
-	public void SetValue(void key, void* value)
+	public void SetValue(IQAnyStringView key, IQVariant value)
 	{
-		CQt.QSettings_SetValue(this.nativePtr, key, value);
+		CQt.QSettings_SetValue(this.nativePtr, (key == default) ? default : (char8*)key.NativePtr, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Value(void key, void* defaultValue)
+	public void Value(IQAnyStringView key, IQVariant defaultValue)
 	{
-		CQt.QSettings_Value(this.nativePtr, key, defaultValue);
+		CQt.QSettings_Value(this.nativePtr, (key == default) ? default : (char8*)key.NativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
 	}
 	
-	public void ValueWithKey(void key)
+	public void ValueWithKey(IQAnyStringView key)
 	{
-		CQt.QSettings_ValueWithKey(this.nativePtr, key);
+		CQt.QSettings_ValueWithKey(this.nativePtr, (key == default) ? default : (char8*)key.NativePtr);
 	}
 	
-	public void Remove(void key)
+	public void Remove(IQAnyStringView key)
 	{
-		CQt.QSettings_Remove(this.nativePtr, key);
+		CQt.QSettings_Remove(this.nativePtr, (key == default) ? default : (char8*)key.NativePtr);
 	}
 	
-	public bool Contains(void key)
+	public bool Contains(IQAnyStringView key)
 	{
-		return CQt.QSettings_Contains(this.nativePtr, key);
+		return CQt.QSettings_Contains(this.nativePtr, (key == default) ? default : (char8*)key.NativePtr);
 	}
 	
 	public void SetFallbacksEnabled(bool b)
@@ -222,34 +227,34 @@ public class QSettings
 		return CQt.QSettings_DefaultFormat();
 	}
 	
-	public static void SetPath(int64 format, int64 _scope, libqt_string path)
+	public static void SetPath(int64 format, int64 _scope, String path)
 	{
-		CQt.QSettings_SetPath(format, _scope, path);
+		CQt.QSettings_SetPath(format, _scope, libqt_string(path));
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QSettings_Event(this.nativePtr, event);
+		return CQt.QSettings_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QSettings_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QSettings_Tr3(s, c, n);
 	}
 	
-	public void BeginWriteArray2(void prefix, int32 size)
+	public void BeginWriteArray2(IQAnyStringView prefix, int32 size)
 	{
-		CQt.QSettings_BeginWriteArray2(this.nativePtr, prefix, size);
+		CQt.QSettings_BeginWriteArray2(this.nativePtr, (prefix == default) ? default : (char8*)prefix.NativePtr, size);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -257,9 +262,9 @@ public class QSettings
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -292,9 +297,9 @@ public class QSettings
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -312,39 +317,39 @@ public class QSettings
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -357,12 +362,12 @@ public class QSettings
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -387,7 +392,7 @@ public class QSettings
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -402,14 +407,14 @@ public class QSettings
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -448,11 +453,11 @@ extension CQt
 	[LinkName("QSettings_MetaObject")]
 	public static extern void* QSettings_MetaObject(void* c_this);
 	[LinkName("QSettings_Metacast")]
-	public static extern void* QSettings_Metacast(void* c_this, char8[] param1);
+	public static extern void* QSettings_Metacast(void* c_this, char8* param1);
 	[LinkName("QSettings_Metacall")]
-	public static extern int32 QSettings_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QSettings_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QSettings_Tr")]
-	public static extern libqt_string QSettings_Tr(char8[] s);
+	public static extern libqt_string QSettings_Tr(char8* s);
 	[LinkName("QSettings_Clear")]
 	public static extern void QSettings_Clear(void* c_this);
 	[LinkName("QSettings_Sync")]
@@ -464,15 +469,15 @@ extension CQt
 	[LinkName("QSettings_SetAtomicSyncRequired")]
 	public static extern void QSettings_SetAtomicSyncRequired(void* c_this, bool enable);
 	[LinkName("QSettings_BeginGroup")]
-	public static extern void QSettings_BeginGroup(void* c_this, void prefix);
+	public static extern void QSettings_BeginGroup(void* c_this, char8* prefix);
 	[LinkName("QSettings_EndGroup")]
 	public static extern void QSettings_EndGroup(void* c_this);
 	[LinkName("QSettings_Group")]
 	public static extern libqt_string QSettings_Group(void* c_this);
 	[LinkName("QSettings_BeginReadArray")]
-	public static extern int32 QSettings_BeginReadArray(void* c_this, void prefix);
+	public static extern int32 QSettings_BeginReadArray(void* c_this, char8* prefix);
 	[LinkName("QSettings_BeginWriteArray")]
-	public static extern void QSettings_BeginWriteArray(void* c_this, void prefix);
+	public static extern void QSettings_BeginWriteArray(void* c_this, char8* prefix);
 	[LinkName("QSettings_EndArray")]
 	public static extern void QSettings_EndArray(void* c_this);
 	[LinkName("QSettings_SetArrayIndex")]
@@ -486,15 +491,15 @@ extension CQt
 	[LinkName("QSettings_IsWritable")]
 	public static extern bool QSettings_IsWritable(void* c_this);
 	[LinkName("QSettings_SetValue")]
-	public static extern void QSettings_SetValue(void* c_this, void key, void* value);
+	public static extern void QSettings_SetValue(void* c_this, char8* key, void* value);
 	[LinkName("QSettings_Value")]
-	public static extern void QSettings_Value(void* c_this, void key, void* defaultValue);
+	public static extern void QSettings_Value(void* c_this, char8* key, void* defaultValue);
 	[LinkName("QSettings_ValueWithKey")]
-	public static extern void QSettings_ValueWithKey(void* c_this, void key);
+	public static extern void QSettings_ValueWithKey(void* c_this, char8* key);
 	[LinkName("QSettings_Remove")]
-	public static extern void QSettings_Remove(void* c_this, void key);
+	public static extern void QSettings_Remove(void* c_this, char8* key);
 	[LinkName("QSettings_Contains")]
-	public static extern bool QSettings_Contains(void* c_this, void key);
+	public static extern bool QSettings_Contains(void* c_this, char8* key);
 	[LinkName("QSettings_SetFallbacksEnabled")]
 	public static extern void QSettings_SetFallbacksEnabled(void* c_this, bool b);
 	[LinkName("QSettings_FallbacksEnabled")]
@@ -518,11 +523,11 @@ extension CQt
 	[LinkName("QSettings_Event")]
 	public static extern bool QSettings_Event(void* c_this, void* event);
 	[LinkName("QSettings_Tr2")]
-	public static extern libqt_string QSettings_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QSettings_Tr2(char8* s, char8* c);
 	[LinkName("QSettings_Tr3")]
-	public static extern libqt_string QSettings_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QSettings_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QSettings_BeginWriteArray2")]
-	public static extern void QSettings_BeginWriteArray2(void* c_this, void prefix, int32 size);
+	public static extern void QSettings_BeginWriteArray2(void* c_this, char8* prefix, int32 size);
 	/// Delete this object from C++ memory
 	[LinkName("QSettings_Delete")]
 	public static extern void QSettings_Delete(void* self);

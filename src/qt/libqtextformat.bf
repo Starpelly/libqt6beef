@@ -231,13 +231,18 @@ public enum QTextFrameFormat__BorderStyle
 	BorderStyle_Inset = 9,
 	BorderStyle_Outset = 10,
 }
-public class QTextLength
+public interface IQTextLength
+{
+	void* NativePtr { get; }
+}
+public class QTextLength : IQTextLength
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTextLength other)
 	{
-		this.nativePtr = CQt.QTextLength_new(other);
+		this.nativePtr = CQt.QTextLength_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -260,14 +265,14 @@ public class QTextLength
 		return CQt.QTextLength_RawValue(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* other)
+	public bool OperatorEqual(IQTextLength other)
 	{
-		return CQt.QTextLength_OperatorEqual(this.nativePtr, other);
+		return CQt.QTextLength_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQTextLength other)
 	{
-		return CQt.QTextLength_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QTextLength_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -304,9 +309,14 @@ extension CQt
 	[LinkName("QTextLength_Delete")]
 	public static extern void QTextLength_Delete(void* self);
 }
-public class QTextFormat
+public interface IQTextFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextFormat : IQTextFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -318,19 +328,19 @@ public class QTextFormat
 		CQt.QTextFormat_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -363,9 +373,9 @@ public class QTextFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -423,9 +433,9 @@ public class QTextFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -518,14 +528,14 @@ public class QTextFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -543,9 +553,9 @@ public class QTextFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -558,9 +568,9 @@ public class QTextFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -688,9 +698,14 @@ extension CQt
 	[LinkName("QTextFormat_Delete")]
 	public static extern void QTextFormat_Delete(void* self);
 }
-public class QTextCharFormat
+public interface IQTextCharFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -707,9 +722,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_IsValid(this.nativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, font);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void Font()
@@ -717,9 +732,9 @@ public class QTextCharFormat
 		CQt.QTextCharFormat_Font(this.nativePtr);
 	}
 	
-	public void SetFontFamily(libqt_string family)
+	public void SetFontFamily(String family)
 	{
-		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, family);
+		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, libqt_string(family));
 	}
 	
 	public libqt_string FontFamily()
@@ -727,9 +742,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_FontFamily(this.nativePtr);
 	}
 	
-	public void SetFontFamilies(libqt_string[] families)
+	public void SetFontFamilies(String[] families)
 	{
-		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, families);
+		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, null);
 	}
 	
 	public void FontFamilies()
@@ -737,9 +752,9 @@ public class QTextCharFormat
 		CQt.QTextCharFormat_FontFamilies(this.nativePtr);
 	}
 	
-	public void SetFontStyleName(libqt_string styleName)
+	public void SetFontStyleName(String styleName)
 	{
-		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, styleName);
+		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, libqt_string(styleName));
 	}
 	
 	public void FontStyleName()
@@ -847,9 +862,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_FontStrikeOut(this.nativePtr);
 	}
 	
-	public void SetUnderlineColor(void* color)
+	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, color);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -937,9 +952,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_VerticalAlignment(this.nativePtr);
 	}
 	
-	public void SetTextOutline(void* pen)
+	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, pen);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -947,9 +962,9 @@ public class QTextCharFormat
 		CQt.QTextCharFormat_TextOutline(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string tip)
+	public void SetToolTip(String tip)
 	{
-		CQt.QTextCharFormat_SetToolTip(this.nativePtr, tip);
+		CQt.QTextCharFormat_SetToolTip(this.nativePtr, libqt_string(tip));
 	}
 	
 	public libqt_string ToolTip()
@@ -997,9 +1012,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_IsAnchor(this.nativePtr);
 	}
 	
-	public void SetAnchorHref(libqt_string value)
+	public void SetAnchorHref(String value)
 	{
-		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, value);
+		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, libqt_string(value));
 	}
 	
 	public libqt_string AnchorHref()
@@ -1007,9 +1022,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_AnchorHref(this.nativePtr);
 	}
 	
-	public void SetAnchorNames(libqt_string[] names)
+	public void SetAnchorNames(String[] names)
 	{
-		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, names);
+		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, null);
 	}
 	
 	public libqt_string[] AnchorNames()
@@ -1037,9 +1052,9 @@ public class QTextCharFormat
 		return CQt.QTextCharFormat_TableCellColumnSpan(this.nativePtr);
 	}
 	
-	public void SetFont2(void* font, int64 behavior)
+	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, font, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
@@ -1047,19 +1062,19 @@ public class QTextCharFormat
 		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -1087,9 +1102,9 @@ public class QTextCharFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -1147,9 +1162,9 @@ public class QTextCharFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -1242,14 +1257,14 @@ public class QTextCharFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -1267,9 +1282,9 @@ public class QTextCharFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -1282,9 +1297,9 @@ public class QTextCharFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -1446,9 +1461,14 @@ extension CQt
 	[LinkName("QTextCharFormat_Delete")]
 	public static extern void QTextCharFormat_Delete(void* self);
 }
-public class QTextBlockFormat
+public interface IQTextBlockFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1587,10 +1607,10 @@ public class QTextBlockFormat
 	
 	public void SetTabPositions(QTextOption__Tab[] tabs)
 	{
-		CQt.QTextBlockFormat_SetTabPositions(this.nativePtr, tabs);
+		CQt.QTextBlockFormat_SetTabPositions(this.nativePtr, null);
 	}
 	
-	public QTextOption__Tab[] TabPositions()
+	public void[] TabPositions()
 	{
 		return CQt.QTextBlockFormat_TabPositions(this.nativePtr);
 	}
@@ -1605,19 +1625,19 @@ public class QTextBlockFormat
 		return CQt.QTextBlockFormat_Marker(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -1645,9 +1665,9 @@ public class QTextBlockFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -1705,9 +1725,9 @@ public class QTextBlockFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -1800,14 +1820,14 @@ public class QTextBlockFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -1825,9 +1845,9 @@ public class QTextBlockFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -1840,9 +1860,9 @@ public class QTextBlockFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -1913,9 +1933,9 @@ extension CQt
 	[LinkName("QTextBlockFormat_PageBreakPolicy")]
 	public static extern int64 QTextBlockFormat_PageBreakPolicy(void* c_this);
 	[LinkName("QTextBlockFormat_SetTabPositions")]
-	public static extern void QTextBlockFormat_SetTabPositions(void* c_this, QTextOption__Tab[] tabs);
+	public static extern void QTextBlockFormat_SetTabPositions(void* c_this, void[] tabs);
 	[LinkName("QTextBlockFormat_TabPositions")]
-	public static extern QTextOption__Tab[] QTextBlockFormat_TabPositions(void* c_this);
+	public static extern void[] QTextBlockFormat_TabPositions(void* c_this);
 	[LinkName("QTextBlockFormat_SetMarker")]
 	public static extern void QTextBlockFormat_SetMarker(void* c_this, int64 marker);
 	[LinkName("QTextBlockFormat_Marker")]
@@ -1924,9 +1944,14 @@ extension CQt
 	[LinkName("QTextBlockFormat_Delete")]
 	public static extern void QTextBlockFormat_Delete(void* self);
 }
-public class QTextListFormat
+public interface IQTextListFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextListFormat : IQTextListFormat, IQTextFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -1963,9 +1988,9 @@ public class QTextListFormat
 		return CQt.QTextListFormat_Indent(this.nativePtr);
 	}
 	
-	public void SetNumberPrefix(libqt_string numberPrefix)
+	public void SetNumberPrefix(String numberPrefix)
 	{
-		CQt.QTextListFormat_SetNumberPrefix(this.nativePtr, numberPrefix);
+		CQt.QTextListFormat_SetNumberPrefix(this.nativePtr, libqt_string(numberPrefix));
 	}
 	
 	public libqt_string NumberPrefix()
@@ -1973,9 +1998,9 @@ public class QTextListFormat
 		return CQt.QTextListFormat_NumberPrefix(this.nativePtr);
 	}
 	
-	public void SetNumberSuffix(libqt_string numberSuffix)
+	public void SetNumberSuffix(String numberSuffix)
 	{
-		CQt.QTextListFormat_SetNumberSuffix(this.nativePtr, numberSuffix);
+		CQt.QTextListFormat_SetNumberSuffix(this.nativePtr, libqt_string(numberSuffix));
 	}
 	
 	public libqt_string NumberSuffix()
@@ -1983,19 +2008,19 @@ public class QTextListFormat
 		return CQt.QTextListFormat_NumberSuffix(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -2023,9 +2048,9 @@ public class QTextListFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -2083,9 +2108,9 @@ public class QTextListFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -2178,14 +2203,14 @@ public class QTextListFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -2203,9 +2228,9 @@ public class QTextListFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -2218,9 +2243,9 @@ public class QTextListFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -2262,9 +2287,14 @@ extension CQt
 	[LinkName("QTextListFormat_Delete")]
 	public static extern void QTextListFormat_Delete(void* self);
 }
-public class QTextImageFormat
+public interface IQTextImageFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -2281,9 +2311,9 @@ public class QTextImageFormat
 		return CQt.QTextImageFormat_IsValid(this.nativePtr);
 	}
 	
-	public void SetName(libqt_string name)
+	public void SetName(String name)
 	{
-		CQt.QTextImageFormat_SetName(this.nativePtr, name);
+		CQt.QTextImageFormat_SetName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string Name()
@@ -2326,9 +2356,9 @@ public class QTextImageFormat
 		return CQt.QTextImageFormat_Quality(this.nativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, font);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void Font()
@@ -2336,9 +2366,9 @@ public class QTextImageFormat
 		CQt.QTextCharFormat_Font(this.nativePtr);
 	}
 	
-	public void SetFontFamily(libqt_string family)
+	public void SetFontFamily(String family)
 	{
-		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, family);
+		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, libqt_string(family));
 	}
 	
 	public libqt_string FontFamily()
@@ -2346,9 +2376,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_FontFamily(this.nativePtr);
 	}
 	
-	public void SetFontFamilies(libqt_string[] families)
+	public void SetFontFamilies(String[] families)
 	{
-		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, families);
+		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, null);
 	}
 	
 	public void FontFamilies()
@@ -2356,9 +2386,9 @@ public class QTextImageFormat
 		CQt.QTextCharFormat_FontFamilies(this.nativePtr);
 	}
 	
-	public void SetFontStyleName(libqt_string styleName)
+	public void SetFontStyleName(String styleName)
 	{
-		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, styleName);
+		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, libqt_string(styleName));
 	}
 	
 	public void FontStyleName()
@@ -2466,9 +2496,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_FontStrikeOut(this.nativePtr);
 	}
 	
-	public void SetUnderlineColor(void* color)
+	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, color);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -2556,9 +2586,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_VerticalAlignment(this.nativePtr);
 	}
 	
-	public void SetTextOutline(void* pen)
+	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, pen);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -2566,9 +2596,9 @@ public class QTextImageFormat
 		CQt.QTextCharFormat_TextOutline(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string tip)
+	public void SetToolTip(String tip)
 	{
-		CQt.QTextCharFormat_SetToolTip(this.nativePtr, tip);
+		CQt.QTextCharFormat_SetToolTip(this.nativePtr, libqt_string(tip));
 	}
 	
 	public libqt_string ToolTip()
@@ -2616,9 +2646,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_IsAnchor(this.nativePtr);
 	}
 	
-	public void SetAnchorHref(libqt_string value)
+	public void SetAnchorHref(String value)
 	{
-		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, value);
+		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, libqt_string(value));
 	}
 	
 	public libqt_string AnchorHref()
@@ -2626,9 +2656,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_AnchorHref(this.nativePtr);
 	}
 	
-	public void SetAnchorNames(libqt_string[] names)
+	public void SetAnchorNames(String[] names)
 	{
-		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, names);
+		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, null);
 	}
 	
 	public libqt_string[] AnchorNames()
@@ -2656,9 +2686,9 @@ public class QTextImageFormat
 		return CQt.QTextCharFormat_TableCellColumnSpan(this.nativePtr);
 	}
 	
-	public void SetFont2(void* font, int64 behavior)
+	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, font, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
@@ -2666,19 +2696,19 @@ public class QTextImageFormat
 		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -2706,9 +2736,9 @@ public class QTextImageFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -2766,9 +2796,9 @@ public class QTextImageFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -2861,14 +2891,14 @@ public class QTextImageFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -2886,9 +2916,9 @@ public class QTextImageFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -2901,9 +2931,9 @@ public class QTextImageFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -2945,9 +2975,14 @@ extension CQt
 	[LinkName("QTextImageFormat_Delete")]
 	public static extern void QTextImageFormat_Delete(void* self);
 }
-public class QTextFrameFormat
+public interface IQTextFrameFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -2984,9 +3019,9 @@ public class QTextFrameFormat
 		return CQt.QTextFrameFormat_Border(this.nativePtr);
 	}
 	
-	public void SetBorderBrush(void* brush)
+	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, brush);
+		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void BorderBrush()
@@ -3069,9 +3104,9 @@ public class QTextFrameFormat
 		CQt.QTextFrameFormat_SetWidth(this.nativePtr, width);
 	}
 	
-	public void SetWidthWithLength(void* length)
+	public void SetWidthWithLength(IQTextLength length)
 	{
-		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, length);
+		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default) ? default : (void*)length.NativePtr);
 	}
 	
 	public void Width()
@@ -3084,9 +3119,9 @@ public class QTextFrameFormat
 		CQt.QTextFrameFormat_SetHeight(this.nativePtr, height);
 	}
 	
-	public void SetHeightWithHeight(void* height)
+	public void SetHeightWithHeight(IQTextLength height)
 	{
-		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, height);
+		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default) ? default : (void*)height.NativePtr);
 	}
 	
 	public void Height()
@@ -3104,19 +3139,19 @@ public class QTextFrameFormat
 		return CQt.QTextFrameFormat_PageBreakPolicy(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -3144,9 +3179,9 @@ public class QTextFrameFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -3204,9 +3239,9 @@ public class QTextFrameFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -3299,14 +3334,14 @@ public class QTextFrameFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -3324,9 +3359,9 @@ public class QTextFrameFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -3339,9 +3374,9 @@ public class QTextFrameFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -3423,9 +3458,14 @@ extension CQt
 	[LinkName("QTextFrameFormat_Delete")]
 	public static extern void QTextFrameFormat_Delete(void* self);
 }
-public class QTextTableFormat
+public interface IQTextTableFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -3452,9 +3492,9 @@ public class QTextTableFormat
 		CQt.QTextTableFormat_SetColumns(this.nativePtr, columns);
 	}
 	
-	public void SetColumnWidthConstraints(void[] constraints)
+	public void SetColumnWidthConstraints(IQTextLength[] constraints)
 	{
-		CQt.QTextTableFormat_SetColumnWidthConstraints(this.nativePtr, constraints);
+		CQt.QTextTableFormat_SetColumnWidthConstraints(this.nativePtr, null);
 	}
 	
 	public void[] ColumnWidthConstraints()
@@ -3537,9 +3577,9 @@ public class QTextTableFormat
 		return CQt.QTextFrameFormat_Border(this.nativePtr);
 	}
 	
-	public void SetBorderBrush(void* brush)
+	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, brush);
+		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void BorderBrush()
@@ -3622,9 +3662,9 @@ public class QTextTableFormat
 		CQt.QTextFrameFormat_SetWidth(this.nativePtr, width);
 	}
 	
-	public void SetWidthWithLength(void* length)
+	public void SetWidthWithLength(IQTextLength length)
 	{
-		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, length);
+		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default) ? default : (void*)length.NativePtr);
 	}
 	
 	public void Width()
@@ -3637,9 +3677,9 @@ public class QTextTableFormat
 		CQt.QTextFrameFormat_SetHeight(this.nativePtr, height);
 	}
 	
-	public void SetHeightWithHeight(void* height)
+	public void SetHeightWithHeight(IQTextLength height)
 	{
-		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, height);
+		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default) ? default : (void*)height.NativePtr);
 	}
 	
 	public void Height()
@@ -3657,19 +3697,19 @@ public class QTextTableFormat
 		return CQt.QTextFrameFormat_PageBreakPolicy(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -3697,9 +3737,9 @@ public class QTextTableFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -3757,9 +3797,9 @@ public class QTextTableFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -3852,14 +3892,14 @@ public class QTextTableFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -3877,9 +3917,9 @@ public class QTextTableFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -3892,9 +3932,9 @@ public class QTextTableFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -3948,9 +3988,14 @@ extension CQt
 	[LinkName("QTextTableFormat_Delete")]
 	public static extern void QTextTableFormat_Delete(void* self);
 }
-public class QTextTableCellFormat
+public interface IQTextTableCellFormat
+{
+	void* NativePtr { get; }
+}
+public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -4102,9 +4147,9 @@ public class QTextTableCellFormat
 		CQt.QTextTableCellFormat_SetBorderStyle(this.nativePtr, style);
 	}
 	
-	public void SetTopBorderBrush(void* brush)
+	public void SetTopBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetTopBorderBrush(this.nativePtr, brush);
+		CQt.QTextTableCellFormat_SetTopBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void TopBorderBrush()
@@ -4112,9 +4157,9 @@ public class QTextTableCellFormat
 		CQt.QTextTableCellFormat_TopBorderBrush(this.nativePtr);
 	}
 	
-	public void SetBottomBorderBrush(void* brush)
+	public void SetBottomBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetBottomBorderBrush(this.nativePtr, brush);
+		CQt.QTextTableCellFormat_SetBottomBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void BottomBorderBrush()
@@ -4122,9 +4167,9 @@ public class QTextTableCellFormat
 		CQt.QTextTableCellFormat_BottomBorderBrush(this.nativePtr);
 	}
 	
-	public void SetLeftBorderBrush(void* brush)
+	public void SetLeftBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetLeftBorderBrush(this.nativePtr, brush);
+		CQt.QTextTableCellFormat_SetLeftBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void LeftBorderBrush()
@@ -4132,9 +4177,9 @@ public class QTextTableCellFormat
 		CQt.QTextTableCellFormat_LeftBorderBrush(this.nativePtr);
 	}
 	
-	public void SetRightBorderBrush(void* brush)
+	public void SetRightBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetRightBorderBrush(this.nativePtr, brush);
+		CQt.QTextTableCellFormat_SetRightBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void RightBorderBrush()
@@ -4142,14 +4187,14 @@ public class QTextTableCellFormat
 		CQt.QTextTableCellFormat_RightBorderBrush(this.nativePtr);
 	}
 	
-	public void SetBorderBrush(void* brush)
+	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetBorderBrush(this.nativePtr, brush);
+		CQt.QTextTableCellFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, font);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void Font()
@@ -4157,9 +4202,9 @@ public class QTextTableCellFormat
 		CQt.QTextCharFormat_Font(this.nativePtr);
 	}
 	
-	public void SetFontFamily(libqt_string family)
+	public void SetFontFamily(String family)
 	{
-		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, family);
+		CQt.QTextCharFormat_SetFontFamily(this.nativePtr, libqt_string(family));
 	}
 	
 	public libqt_string FontFamily()
@@ -4167,9 +4212,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_FontFamily(this.nativePtr);
 	}
 	
-	public void SetFontFamilies(libqt_string[] families)
+	public void SetFontFamilies(String[] families)
 	{
-		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, families);
+		CQt.QTextCharFormat_SetFontFamilies(this.nativePtr, null);
 	}
 	
 	public void FontFamilies()
@@ -4177,9 +4222,9 @@ public class QTextTableCellFormat
 		CQt.QTextCharFormat_FontFamilies(this.nativePtr);
 	}
 	
-	public void SetFontStyleName(libqt_string styleName)
+	public void SetFontStyleName(String styleName)
 	{
-		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, styleName);
+		CQt.QTextCharFormat_SetFontStyleName(this.nativePtr, libqt_string(styleName));
 	}
 	
 	public void FontStyleName()
@@ -4287,9 +4332,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_FontStrikeOut(this.nativePtr);
 	}
 	
-	public void SetUnderlineColor(void* color)
+	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, color);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -4377,9 +4422,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_VerticalAlignment(this.nativePtr);
 	}
 	
-	public void SetTextOutline(void* pen)
+	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, pen);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -4387,9 +4432,9 @@ public class QTextTableCellFormat
 		CQt.QTextCharFormat_TextOutline(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string tip)
+	public void SetToolTip(String tip)
 	{
-		CQt.QTextCharFormat_SetToolTip(this.nativePtr, tip);
+		CQt.QTextCharFormat_SetToolTip(this.nativePtr, libqt_string(tip));
 	}
 	
 	public libqt_string ToolTip()
@@ -4437,9 +4482,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_IsAnchor(this.nativePtr);
 	}
 	
-	public void SetAnchorHref(libqt_string value)
+	public void SetAnchorHref(String value)
 	{
-		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, value);
+		CQt.QTextCharFormat_SetAnchorHref(this.nativePtr, libqt_string(value));
 	}
 	
 	public libqt_string AnchorHref()
@@ -4447,9 +4492,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_AnchorHref(this.nativePtr);
 	}
 	
-	public void SetAnchorNames(libqt_string[] names)
+	public void SetAnchorNames(String[] names)
 	{
-		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, names);
+		CQt.QTextCharFormat_SetAnchorNames(this.nativePtr, null);
 	}
 	
 	public libqt_string[] AnchorNames()
@@ -4477,9 +4522,9 @@ public class QTextTableCellFormat
 		return CQt.QTextCharFormat_TableCellColumnSpan(this.nativePtr);
 	}
 	
-	public void SetFont2(void* font, int64 behavior)
+	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, font, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
@@ -4487,19 +4532,19 @@ public class QTextTableCellFormat
 		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
 	}
 	
-	public void OperatorAssign(void* rhs)
+	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, rhs);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, other);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Merge(void* other)
+	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, other);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -4527,9 +4572,9 @@ public class QTextTableCellFormat
 		CQt.QTextFormat_Property(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty(int32 propertyId, void* value)
+	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, value);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -4587,9 +4632,9 @@ public class QTextTableCellFormat
 		return CQt.QTextFormat_LengthVectorProperty(this.nativePtr, propertyId);
 	}
 	
-	public void SetProperty2(int32 propertyId, void[] lengths)
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
 	{
-		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, lengths);
+		CQt.QTextFormat_SetProperty2(this.nativePtr, propertyId, null);
 	}
 	
 	public void* Properties()
@@ -4682,14 +4727,14 @@ public class QTextTableCellFormat
 		CQt.QTextFormat_ToTableCellFormat(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* rhs)
+	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* rhs)
+	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, rhs);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -4707,9 +4752,9 @@ public class QTextTableCellFormat
 		return CQt.QTextFormat_LayoutDirection(this.nativePtr);
 	}
 	
-	public void SetBackground(void* brush)
+	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, brush);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Background()
@@ -4722,9 +4767,9 @@ public class QTextTableCellFormat
 		CQt.QTextFormat_ClearBackground(this.nativePtr);
 	}
 	
-	public void SetForeground(void* brush)
+	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, brush);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void Foreground()

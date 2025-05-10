@@ -16,9 +16,14 @@ public enum QCompleter__ModelSorting
 	CaseSensitivelySortedModel = 1,
 	CaseInsensitivelySortedModel = 2,
 }
-public class QCompleter
+public interface IQCompleter
+{
+	void* NativePtr { get; }
+}
+public class QCompleter : IQCompleter, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -35,7 +40,7 @@ public class QCompleter
 		return CQt.QCompleter_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QCompleter_Metacast(this.nativePtr, param1);
 	}
@@ -45,14 +50,14 @@ public class QCompleter
 		return CQt.QCompleter_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QCompleter_Tr(s);
 	}
 	
-	public void SetWidget(void* widget)
+	public void SetWidget(IQWidget widget)
 	{
-		CQt.QCompleter_SetWidget(this.nativePtr, widget);
+		CQt.QCompleter_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public void* Widget()
@@ -60,9 +65,9 @@ public class QCompleter
 		return CQt.QCompleter_Widget(this.nativePtr);
 	}
 	
-	public void SetModel(void* c)
+	public void SetModel(IQAbstractItemModel c)
 	{
-		CQt.QCompleter_SetModel(this.nativePtr, c);
+		CQt.QCompleter_SetModel(this.nativePtr, (c == null) ? null : (void*)c.NativePtr);
 	}
 	
 	public void* Model()
@@ -95,9 +100,9 @@ public class QCompleter
 		return CQt.QCompleter_Popup(this.nativePtr);
 	}
 	
-	public void SetPopup(void* popup)
+	public void SetPopup(IQAbstractItemView popup)
 	{
-		CQt.QCompleter_SetPopup(this.nativePtr, popup);
+		CQt.QCompleter_SetPopup(this.nativePtr, (popup == null) ? null : (void*)popup.NativePtr);
 	}
 	
 	public void SetCaseSensitivity(int64 caseSensitivity)
@@ -190,9 +195,9 @@ public class QCompleter
 		return CQt.QCompleter_CompletionPrefix(this.nativePtr);
 	}
 	
-	public void SetCompletionPrefix(libqt_string prefix)
+	public void SetCompletionPrefix(String prefix)
 	{
-		CQt.QCompleter_SetCompletionPrefix(this.nativePtr, prefix);
+		CQt.QCompleter_SetCompletionPrefix(this.nativePtr, libqt_string(prefix));
 	}
 	
 	public void Complete()
@@ -205,39 +210,39 @@ public class QCompleter
 		CQt.QCompleter_SetWrapAround(this.nativePtr, wrap);
 	}
 	
-	public virtual libqt_string PathFromIndex(void* index)
+	public virtual libqt_string PathFromIndex(IQModelIndex index)
 	{
-		return CQt.QCompleter_PathFromIndex(this.nativePtr, index);
+		return CQt.QCompleter_PathFromIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual libqt_string[] SplitPath(libqt_string path)
+	public virtual libqt_string[] SplitPath(String path)
 	{
-		return CQt.QCompleter_SplitPath(this.nativePtr, path);
+		return CQt.QCompleter_SplitPath(this.nativePtr, libqt_string(path));
 	}
 	
-	public virtual bool EventFilter(void* o, void* e)
+	public virtual bool EventFilter(IQObject o, IQEvent e)
 	{
-		return CQt.QCompleter_EventFilter(this.nativePtr, o, e);
+		return CQt.QCompleter_EventFilter(this.nativePtr, (o == null) ? null : (void*)o.NativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
-	public virtual bool Event(void* param1)
+	public virtual bool Event(IQEvent param1)
 	{
-		return CQt.QCompleter_Event(this.nativePtr, param1);
+		return CQt.QCompleter_Event(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QCompleter_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QCompleter_Tr3(s, c, n);
 	}
 	
-	public void Complete1(void* rect)
+	public void Complete1(IQRect rect)
 	{
-		CQt.QCompleter_Complete1(this.nativePtr, rect);
+		CQt.QCompleter_Complete1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -245,9 +250,9 @@ public class QCompleter
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -280,9 +285,9 @@ public class QCompleter
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -300,39 +305,39 @@ public class QCompleter
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -345,12 +350,12 @@ public class QCompleter
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -375,7 +380,7 @@ public class QCompleter
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -390,14 +395,14 @@ public class QCompleter
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -418,11 +423,11 @@ extension CQt
 	[LinkName("QCompleter_MetaObject")]
 	public static extern void* QCompleter_MetaObject(void* c_this);
 	[LinkName("QCompleter_Metacast")]
-	public static extern void* QCompleter_Metacast(void* c_this, char8[] param1);
+	public static extern void* QCompleter_Metacast(void* c_this, char8* param1);
 	[LinkName("QCompleter_Metacall")]
-	public static extern int32 QCompleter_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QCompleter_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QCompleter_Tr")]
-	public static extern libqt_string QCompleter_Tr(char8[] s);
+	public static extern libqt_string QCompleter_Tr(char8* s);
 	[LinkName("QCompleter_SetWidget")]
 	public static extern void QCompleter_SetWidget(void* c_this, void* widget);
 	[LinkName("QCompleter_Widget")]
@@ -494,9 +499,9 @@ extension CQt
 	[LinkName("QCompleter_Event")]
 	public static extern bool QCompleter_Event(void* c_this, void* param1);
 	[LinkName("QCompleter_Tr2")]
-	public static extern libqt_string QCompleter_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QCompleter_Tr2(char8* s, char8* c);
 	[LinkName("QCompleter_Tr3")]
-	public static extern libqt_string QCompleter_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QCompleter_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QCompleter_Complete1")]
 	public static extern void QCompleter_Complete1(void* c_this, void* rect);
 	/// Delete this object from C++ memory

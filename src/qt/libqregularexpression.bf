@@ -36,9 +36,14 @@ public enum QRegularExpression__WildcardConversionOption
 	DefaultWildcardConversion = 0,
 	UnanchoredWildcardConversion = 1,
 }
-public class QRegularExpression
+public interface IQRegularExpression
+{
+	void* NativePtr { get; }
+}
+public class QRegularExpression : IQRegularExpression
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -60,14 +65,14 @@ public class QRegularExpression
 		CQt.QRegularExpression_SetPatternOptions(this.nativePtr, options);
 	}
 	
-	public void OperatorAssign(void* re)
+	public void OperatorAssign(IQRegularExpression re)
 	{
-		CQt.QRegularExpression_OperatorAssign(this.nativePtr, re);
+		CQt.QRegularExpression_OperatorAssign(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQRegularExpression other)
 	{
-		CQt.QRegularExpression_Swap(this.nativePtr, other);
+		CQt.QRegularExpression_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string Pattern()
@@ -75,9 +80,9 @@ public class QRegularExpression
 		return CQt.QRegularExpression_Pattern(this.nativePtr);
 	}
 	
-	public void SetPattern(libqt_string pattern)
+	public void SetPattern(String pattern)
 	{
-		CQt.QRegularExpression_SetPattern(this.nativePtr, pattern);
+		CQt.QRegularExpression_SetPattern(this.nativePtr, libqt_string(pattern));
 	}
 	
 	public bool IsValid()
@@ -105,14 +110,14 @@ public class QRegularExpression
 		return CQt.QRegularExpression_NamedCaptureGroups(this.nativePtr);
 	}
 	
-	public void Match(libqt_string subject)
+	public void Match(String subject)
 	{
-		CQt.QRegularExpression_Match(this.nativePtr, subject);
+		CQt.QRegularExpression_Match(this.nativePtr, libqt_string(subject));
 	}
 	
-	public void GlobalMatch(libqt_string subject)
+	public void GlobalMatch(String subject)
 	{
-		CQt.QRegularExpression_GlobalMatch(this.nativePtr, subject);
+		CQt.QRegularExpression_GlobalMatch(this.nativePtr, libqt_string(subject));
 	}
 	
 	public void Optimize()
@@ -120,64 +125,64 @@ public class QRegularExpression
 		CQt.QRegularExpression_Optimize(this.nativePtr);
 	}
 	
-	public static libqt_string Escape(libqt_string str)
+	public static libqt_string Escape(String str)
 	{
-		return CQt.QRegularExpression_Escape(str);
+		return CQt.QRegularExpression_Escape(libqt_string(str));
 	}
 	
-	public static libqt_string WildcardToRegularExpression(libqt_string str)
+	public static libqt_string WildcardToRegularExpression(String str)
 	{
-		return CQt.QRegularExpression_WildcardToRegularExpression(str);
+		return CQt.QRegularExpression_WildcardToRegularExpression(libqt_string(str));
 	}
 	
-	public static libqt_string AnchoredPattern(libqt_string expression)
+	public static libqt_string AnchoredPattern(String expression)
 	{
-		return CQt.QRegularExpression_AnchoredPattern(expression);
+		return CQt.QRegularExpression_AnchoredPattern(libqt_string(expression));
 	}
 	
-	public bool OperatorEqual(void* re)
+	public bool OperatorEqual(IQRegularExpression re)
 	{
-		return CQt.QRegularExpression_OperatorEqual(this.nativePtr, re);
+		return CQt.QRegularExpression_OperatorEqual(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* re)
+	public bool OperatorNotEqual(IQRegularExpression re)
 	{
-		return CQt.QRegularExpression_OperatorNotEqual(this.nativePtr, re);
+		return CQt.QRegularExpression_OperatorNotEqual(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
 	}
 	
-	public void Match2(libqt_string subject, int32 offset)
+	public void Match2(String subject, int32 offset)
 	{
-		CQt.QRegularExpression_Match2(this.nativePtr, subject, offset);
+		CQt.QRegularExpression_Match2(this.nativePtr, libqt_string(subject), offset);
 	}
 	
-	public void Match3(libqt_string subject, int32 offset, int64 matchType)
+	public void Match3(String subject, int32 offset, int64 matchType)
 	{
-		CQt.QRegularExpression_Match3(this.nativePtr, subject, offset, matchType);
+		CQt.QRegularExpression_Match3(this.nativePtr, libqt_string(subject), offset, matchType);
 	}
 	
-	public void Match4(libqt_string subject, int32 offset, int64 matchType, int64 matchOptions)
+	public void Match4(String subject, int32 offset, int64 matchType, int64 matchOptions)
 	{
-		CQt.QRegularExpression_Match4(this.nativePtr, subject, offset, matchType, matchOptions);
+		CQt.QRegularExpression_Match4(this.nativePtr, libqt_string(subject), offset, matchType, matchOptions);
 	}
 	
-	public void GlobalMatch2(libqt_string subject, int32 offset)
+	public void GlobalMatch2(String subject, int32 offset)
 	{
-		CQt.QRegularExpression_GlobalMatch2(this.nativePtr, subject, offset);
+		CQt.QRegularExpression_GlobalMatch2(this.nativePtr, libqt_string(subject), offset);
 	}
 	
-	public void GlobalMatch3(libqt_string subject, int32 offset, int64 matchType)
+	public void GlobalMatch3(String subject, int32 offset, int64 matchType)
 	{
-		CQt.QRegularExpression_GlobalMatch3(this.nativePtr, subject, offset, matchType);
+		CQt.QRegularExpression_GlobalMatch3(this.nativePtr, libqt_string(subject), offset, matchType);
 	}
 	
-	public void GlobalMatch4(libqt_string subject, int32 offset, int64 matchType, int64 matchOptions)
+	public void GlobalMatch4(String subject, int32 offset, int64 matchType, int64 matchOptions)
 	{
-		CQt.QRegularExpression_GlobalMatch4(this.nativePtr, subject, offset, matchType, matchOptions);
+		CQt.QRegularExpression_GlobalMatch4(this.nativePtr, libqt_string(subject), offset, matchType, matchOptions);
 	}
 	
-	public static libqt_string WildcardToRegularExpression2(libqt_string str, int64 options)
+	public static libqt_string WildcardToRegularExpression2(String str, int64 options)
 	{
-		return CQt.QRegularExpression_WildcardToRegularExpression2(str, options);
+		return CQt.QRegularExpression_WildcardToRegularExpression2(libqt_string(str), options);
 	}
 	
 }
@@ -247,9 +252,14 @@ extension CQt
 	[LinkName("QRegularExpression_Delete")]
 	public static extern void QRegularExpression_Delete(void* self);
 }
-public class QRegularExpressionMatch
+public interface IQRegularExpressionMatch
+{
+	void* NativePtr { get; }
+}
+public class QRegularExpressionMatch : IQRegularExpressionMatch
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -261,14 +271,14 @@ public class QRegularExpressionMatch
 		CQt.QRegularExpressionMatch_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* match)
+	public void OperatorAssign(IQRegularExpressionMatch match)
 	{
-		CQt.QRegularExpressionMatch_OperatorAssign(this.nativePtr, match);
+		CQt.QRegularExpressionMatch_OperatorAssign(this.nativePtr, (match == default) ? default : (void*)match.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQRegularExpressionMatch other)
 	{
-		CQt.QRegularExpressionMatch_Swap(this.nativePtr, other);
+		CQt.QRegularExpressionMatch_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void RegularExpression()
@@ -306,9 +316,9 @@ public class QRegularExpressionMatch
 		return CQt.QRegularExpressionMatch_LastCapturedIndex(this.nativePtr);
 	}
 	
-	public bool HasCaptured(libqt_string name)
+	public bool HasCaptured(String name)
 	{
-		return CQt.QRegularExpressionMatch_HasCaptured(this.nativePtr, name);
+		return CQt.QRegularExpressionMatch_HasCaptured(this.nativePtr, libqt_string(name));
 	}
 	
 	public bool HasCapturedWithNth(int32 nth)
@@ -321,9 +331,9 @@ public class QRegularExpressionMatch
 		return CQt.QRegularExpressionMatch_Captured(this.nativePtr);
 	}
 	
-	public libqt_string CapturedWithName(libqt_string name)
+	public libqt_string CapturedWithName(String name)
 	{
-		return CQt.QRegularExpressionMatch_CapturedWithName(this.nativePtr, name);
+		return CQt.QRegularExpressionMatch_CapturedWithName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string[] CapturedTexts()
@@ -346,19 +356,19 @@ public class QRegularExpressionMatch
 		return CQt.QRegularExpressionMatch_CapturedEnd(this.nativePtr);
 	}
 	
-	public int32 CapturedStartWithName(libqt_string name)
+	public int32 CapturedStartWithName(String name)
 	{
-		return CQt.QRegularExpressionMatch_CapturedStartWithName(this.nativePtr, name);
+		return CQt.QRegularExpressionMatch_CapturedStartWithName(this.nativePtr, libqt_string(name));
 	}
 	
-	public int32 CapturedLengthWithName(libqt_string name)
+	public int32 CapturedLengthWithName(String name)
 	{
-		return CQt.QRegularExpressionMatch_CapturedLengthWithName(this.nativePtr, name);
+		return CQt.QRegularExpressionMatch_CapturedLengthWithName(this.nativePtr, libqt_string(name));
 	}
 	
-	public int32 CapturedEndWithName(libqt_string name)
+	public int32 CapturedEndWithName(String name)
 	{
-		return CQt.QRegularExpressionMatch_CapturedEndWithName(this.nativePtr, name);
+		return CQt.QRegularExpressionMatch_CapturedEndWithName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string Captured1(int32 nth)
@@ -440,9 +450,14 @@ extension CQt
 	[LinkName("QRegularExpressionMatch_Delete")]
 	public static extern void QRegularExpressionMatch_Delete(void* self);
 }
-public class QRegularExpressionMatchIterator
+public interface IQRegularExpressionMatchIterator
+{
+	void* NativePtr { get; }
+}
+public class QRegularExpressionMatchIterator : IQRegularExpressionMatchIterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -454,14 +469,14 @@ public class QRegularExpressionMatchIterator
 		CQt.QRegularExpressionMatchIterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* iterator)
+	public void OperatorAssign(IQRegularExpressionMatchIterator iterator)
 	{
-		CQt.QRegularExpressionMatchIterator_OperatorAssign(this.nativePtr, iterator);
+		CQt.QRegularExpressionMatchIterator_OperatorAssign(this.nativePtr, (iterator == default) ? default : (void*)iterator.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQRegularExpressionMatchIterator other)
 	{
-		CQt.QRegularExpressionMatchIterator_Swap(this.nativePtr, other);
+		CQt.QRegularExpressionMatchIterator_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()

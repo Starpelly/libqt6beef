@@ -9,13 +9,18 @@ public enum QDirIterator__IteratorFlag
 	FollowSymlinks = 1,
 	Subdirectories = 2,
 }
-public class QDirIterator
+public interface IQDirIterator
+{
+	void* NativePtr { get; }
+}
+public class QDirIterator : IQDirIterator
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* dir)
+	public this(IQDir dir)
 	{
-		this.nativePtr = CQt.QDirIterator_new(dir);
+		this.nativePtr = CQt.QDirIterator_new((dir == default) ? default : (void*)dir.NativePtr);
 	}
 	
 	public ~this()

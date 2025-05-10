@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QWhatsThis
+public interface IQWhatsThis
+{
+	void* NativePtr { get; }
+}
+public class QWhatsThis : IQWhatsThis
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQWhatsThis other)
 	{
-		this.nativePtr = CQt.QWhatsThis_new(other);
+		this.nativePtr = CQt.QWhatsThis_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -31,9 +36,9 @@ public class QWhatsThis
 		CQt.QWhatsThis_LeaveWhatsThisMode();
 	}
 	
-	public static void ShowText(void* pos, libqt_string text)
+	public static void ShowText(IQPoint pos, String text)
 	{
-		CQt.QWhatsThis_ShowText(pos, text);
+		CQt.QWhatsThis_ShowText((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text));
 	}
 	
 	public static void HideText()
@@ -46,14 +51,14 @@ public class QWhatsThis
 		return CQt.QWhatsThis_CreateAction();
 	}
 	
-	public static void ShowText3(void* pos, libqt_string text, void* w)
+	public static void ShowText3(IQPoint pos, String text, IQWidget w)
 	{
-		CQt.QWhatsThis_ShowText3(pos, text, w);
+		CQt.QWhatsThis_ShowText3((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text), (w == null) ? null : (void*)w.NativePtr);
 	}
 	
-	public static void* CreateAction1(void* parent)
+	public static void* CreateAction1(IQObject parent)
 	{
-		return CQt.QWhatsThis_CreateAction1(parent);
+		return CQt.QWhatsThis_CreateAction1((parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 }

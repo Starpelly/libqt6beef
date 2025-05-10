@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QPageRanges
+public interface IQPageRanges
+{
+	void* NativePtr { get; }
+}
+public class QPageRanges : IQPageRanges
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QPageRanges
 		CQt.QPageRanges_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQPageRanges other)
 	{
-		CQt.QPageRanges_OperatorAssign(this.nativePtr, other);
+		CQt.QPageRanges_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQPageRanges other)
 	{
-		CQt.QPageRanges_Swap(this.nativePtr, other);
+		CQt.QPageRanges_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void AddPage(int32 pageNumber)
@@ -36,7 +41,7 @@ public class QPageRanges
 		CQt.QPageRanges_AddRange(this.nativePtr, from, to);
 	}
 	
-	public QPageRanges__Range[] ToRangeList()
+	public void[] ToRangeList()
 	{
 		return CQt.QPageRanges_ToRangeList(this.nativePtr);
 	}
@@ -51,9 +56,9 @@ public class QPageRanges
 		return CQt.QPageRanges_ToString(this.nativePtr);
 	}
 	
-	public static void FromString(libqt_string ranges)
+	public static void FromString(String ranges)
 	{
-		CQt.QPageRanges_FromString(ranges);
+		CQt.QPageRanges_FromString(libqt_string(ranges));
 	}
 	
 	public bool Contains(int32 pageNumber)
@@ -97,7 +102,7 @@ extension CQt
 	[LinkName("QPageRanges_AddRange")]
 	public static extern void QPageRanges_AddRange(void* c_this, int32 from, int32 to);
 	[LinkName("QPageRanges_ToRangeList")]
-	public static extern QPageRanges__Range[] QPageRanges_ToRangeList(void* c_this);
+	public static extern void[] QPageRanges_ToRangeList(void* c_this);
 	[LinkName("QPageRanges_Clear")]
 	public static extern void QPageRanges_Clear(void* c_this);
 	[LinkName("QPageRanges_ToString")]
@@ -118,13 +123,18 @@ extension CQt
 	[LinkName("QPageRanges_Delete")]
 	public static extern void QPageRanges_Delete(void* self);
 }
-public class QPageRanges__Range
+public interface IQPageRanges__Range
+{
+	void* NativePtr { get; }
+}
+public class QPageRanges__Range : IQPageRanges__Range
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QPageRanges__Range* other)
+	public this(QPageRanges__Range other)
 	{
-		this.nativePtr = CQt.QPageRanges__Range_new(other);
+		this.nativePtr = CQt.QPageRanges__Range_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -141,13 +151,13 @@ public class QPageRanges__Range
 extension CQt
 {
 	[LinkName("QPageRanges__Range_new")]
-	public static extern void* QPageRanges__Range_new(QPageRanges__Range* other);
+	public static extern void* QPageRanges__Range_new(void* other);
 	[LinkName("QPageRanges__Range_new2")]
-	public static extern void* QPageRanges__Range_new2(QPageRanges__Range* other);
+	public static extern void* QPageRanges__Range_new2(void* other);
 	[LinkName("QPageRanges__Range_new3")]
 	public static extern void* QPageRanges__Range_new3();
 	[LinkName("QPageRanges__Range_new4")]
-	public static extern void* QPageRanges__Range_new4(QPageRanges__Range* param1);
+	public static extern void* QPageRanges__Range_new4(void* param1);
 	[LinkName("QPageRanges__Range_Contains")]
 	public static extern bool QPageRanges__Range_Contains(void* c_this, int32 pageNumber);
 	/// Delete this object from C++ memory

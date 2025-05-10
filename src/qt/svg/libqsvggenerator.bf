@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QSvgGenerator
+public interface IQSvgGenerator
+{
+	void* NativePtr { get; }
+}
+public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,9 +26,9 @@ public class QSvgGenerator
 		return CQt.QSvgGenerator_Title(this.nativePtr);
 	}
 	
-	public void SetTitle(libqt_string title)
+	public void SetTitle(String title)
 	{
-		CQt.QSvgGenerator_SetTitle(this.nativePtr, title);
+		CQt.QSvgGenerator_SetTitle(this.nativePtr, libqt_string(title));
 	}
 	
 	public libqt_string Description()
@@ -31,9 +36,9 @@ public class QSvgGenerator
 		return CQt.QSvgGenerator_Description(this.nativePtr);
 	}
 	
-	public void SetDescription(libqt_string description)
+	public void SetDescription(String description)
 	{
-		CQt.QSvgGenerator_SetDescription(this.nativePtr, description);
+		CQt.QSvgGenerator_SetDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public void Size()
@@ -41,9 +46,9 @@ public class QSvgGenerator
 		CQt.QSvgGenerator_Size(this.nativePtr);
 	}
 	
-	public void SetSize(void* size)
+	public void SetSize(IQSize size)
 	{
-		CQt.QSvgGenerator_SetSize(this.nativePtr, size);
+		CQt.QSvgGenerator_SetSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void ViewBox()
@@ -56,14 +61,14 @@ public class QSvgGenerator
 		CQt.QSvgGenerator_ViewBoxF(this.nativePtr);
 	}
 	
-	public void SetViewBox(void* viewBox)
+	public void SetViewBox(IQRect viewBox)
 	{
-		CQt.QSvgGenerator_SetViewBox(this.nativePtr, viewBox);
+		CQt.QSvgGenerator_SetViewBox(this.nativePtr, (viewBox == default) ? default : (void*)viewBox.NativePtr);
 	}
 	
-	public void SetViewBoxWithViewBox(void* viewBox)
+	public void SetViewBoxWithViewBox(IQRectF viewBox)
 	{
-		CQt.QSvgGenerator_SetViewBoxWithViewBox(this.nativePtr, viewBox);
+		CQt.QSvgGenerator_SetViewBoxWithViewBox(this.nativePtr, (viewBox == default) ? default : (void*)viewBox.NativePtr);
 	}
 	
 	public libqt_string FileName()
@@ -71,9 +76,9 @@ public class QSvgGenerator
 		return CQt.QSvgGenerator_FileName(this.nativePtr);
 	}
 	
-	public void SetFileName(libqt_string fileName)
+	public void SetFileName(String fileName)
 	{
-		CQt.QSvgGenerator_SetFileName(this.nativePtr, fileName);
+		CQt.QSvgGenerator_SetFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public void* OutputDevice()
@@ -81,9 +86,9 @@ public class QSvgGenerator
 		return CQt.QSvgGenerator_OutputDevice(this.nativePtr);
 	}
 	
-	public void SetOutputDevice(void* outputDevice)
+	public void SetOutputDevice(IQIODevice outputDevice)
 	{
-		CQt.QSvgGenerator_SetOutputDevice(this.nativePtr, outputDevice);
+		CQt.QSvgGenerator_SetOutputDevice(this.nativePtr, (outputDevice == null) ? null : (void*)outputDevice.NativePtr);
 	}
 	
 	public void SetResolution(int32 dpi)

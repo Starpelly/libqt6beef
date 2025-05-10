@@ -20,13 +20,18 @@ public enum QTextLine__CursorPosition
 	CursorBetweenCharacters = 0,
 	CursorOnCharacter = 1,
 }
-public class QTextInlineObject
+public interface IQTextInlineObject
+{
+	void* NativePtr { get; }
+}
+public class QTextInlineObject : IQTextInlineObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTextInlineObject other)
 	{
-		this.nativePtr = CQt.QTextInlineObject_new(other);
+		this.nativePtr = CQt.QTextInlineObject_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -138,9 +143,14 @@ extension CQt
 	[LinkName("QTextInlineObject_Delete")]
 	public static extern void QTextInlineObject_Delete(void* self);
 }
-public class QTextLayout
+public interface IQTextLayout
+{
+	void* NativePtr { get; }
+}
+public class QTextLayout : IQTextLayout
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -152,9 +162,9 @@ public class QTextLayout
 		CQt.QTextLayout_Delete(this.nativePtr);
 	}
 	
-	public void SetFont(void* f)
+	public void SetFont(IQFont f)
 	{
-		CQt.QTextLayout_SetFont(this.nativePtr, f);
+		CQt.QTextLayout_SetFont(this.nativePtr, (f == default) ? default : (void*)f.NativePtr);
 	}
 	
 	public void Font()
@@ -162,14 +172,14 @@ public class QTextLayout
 		CQt.QTextLayout_Font(this.nativePtr);
 	}
 	
-	public void SetRawFont(void* rawFont)
+	public void SetRawFont(IQRawFont rawFont)
 	{
-		CQt.QTextLayout_SetRawFont(this.nativePtr, rawFont);
+		CQt.QTextLayout_SetRawFont(this.nativePtr, (rawFont == default) ? default : (void*)rawFont.NativePtr);
 	}
 	
-	public void SetText(libqt_string stringVal)
+	public void SetText(String stringVal)
 	{
-		CQt.QTextLayout_SetText(this.nativePtr, stringVal);
+		CQt.QTextLayout_SetText(this.nativePtr, libqt_string(stringVal));
 	}
 	
 	public libqt_string Text()
@@ -177,9 +187,9 @@ public class QTextLayout
 		return CQt.QTextLayout_Text(this.nativePtr);
 	}
 	
-	public void SetTextOption(void* option)
+	public void SetTextOption(IQTextOption option)
 	{
-		CQt.QTextLayout_SetTextOption(this.nativePtr, option);
+		CQt.QTextLayout_SetTextOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
 	}
 	
 	public void* TextOption()
@@ -187,9 +197,9 @@ public class QTextLayout
 		return CQt.QTextLayout_TextOption(this.nativePtr);
 	}
 	
-	public void SetPreeditArea(int32 position, libqt_string text)
+	public void SetPreeditArea(int32 position, String text)
 	{
-		CQt.QTextLayout_SetPreeditArea(this.nativePtr, position, text);
+		CQt.QTextLayout_SetPreeditArea(this.nativePtr, position, libqt_string(text));
 	}
 	
 	public int32 PreeditAreaPosition()
@@ -204,10 +214,10 @@ public class QTextLayout
 	
 	public void SetFormats(QTextLayout__FormatRange[] overrides)
 	{
-		CQt.QTextLayout_SetFormats(this.nativePtr, overrides);
+		CQt.QTextLayout_SetFormats(this.nativePtr, null);
 	}
 	
-	public QTextLayout__FormatRange[] Formats()
+	public void[] Formats()
 	{
 		return CQt.QTextLayout_Formats(this.nativePtr);
 	}
@@ -297,19 +307,19 @@ public class QTextLayout
 		return CQt.QTextLayout_RightCursorPosition(this.nativePtr, oldPos);
 	}
 	
-	public void Draw(void* p, void* pos)
+	public void Draw(IQPainter p, IQPointF pos)
 	{
-		CQt.QTextLayout_Draw(this.nativePtr, p, pos);
+		CQt.QTextLayout_Draw(this.nativePtr, (p == null) ? null : (void*)p.NativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
-	public void DrawCursor(void* p, void* pos, int32 cursorPosition)
+	public void DrawCursor(IQPainter p, IQPointF pos, int32 cursorPosition)
 	{
-		CQt.QTextLayout_DrawCursor(this.nativePtr, p, pos, cursorPosition);
+		CQt.QTextLayout_DrawCursor(this.nativePtr, (p == null) ? null : (void*)p.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, cursorPosition);
 	}
 	
-	public void DrawCursor2(void* p, void* pos, int32 cursorPosition, int32 width)
+	public void DrawCursor2(IQPainter p, IQPointF pos, int32 cursorPosition, int32 width)
 	{
-		CQt.QTextLayout_DrawCursor2(this.nativePtr, p, pos, cursorPosition, width);
+		CQt.QTextLayout_DrawCursor2(this.nativePtr, (p == null) ? null : (void*)p.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, cursorPosition, width);
 	}
 	
 	public void Position()
@@ -317,9 +327,9 @@ public class QTextLayout
 		CQt.QTextLayout_Position(this.nativePtr);
 	}
 	
-	public void SetPosition(void* p)
+	public void SetPosition(IQPointF p)
 	{
-		CQt.QTextLayout_SetPosition(this.nativePtr, p);
+		CQt.QTextLayout_SetPosition(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -357,14 +367,14 @@ public class QTextLayout
 		return CQt.QTextLayout_PreviousCursorPosition2(this.nativePtr, oldPos, mode);
 	}
 	
-	public void Draw3(void* p, void* pos, QTextLayout__FormatRange[] selections)
+	public void Draw3(IQPainter p, IQPointF pos, QTextLayout__FormatRange[] selections)
 	{
-		CQt.QTextLayout_Draw3(this.nativePtr, p, pos, selections);
+		CQt.QTextLayout_Draw3(this.nativePtr, (p == null) ? null : (void*)p.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, null);
 	}
 	
-	public void Draw4(void* p, void* pos, QTextLayout__FormatRange[] selections, void* clip)
+	public void Draw4(IQPainter p, IQPointF pos, QTextLayout__FormatRange[] selections, IQRectF clip)
 	{
-		CQt.QTextLayout_Draw4(this.nativePtr, p, pos, selections, clip);
+		CQt.QTextLayout_Draw4(this.nativePtr, (p == null) ? null : (void*)p.NativePtr, (pos == default) ? default : (void*)pos.NativePtr, null, (clip == default) ? default : (void*)clip.NativePtr);
 	}
 	
 	public void[] GlyphRuns1(int32 from)
@@ -411,9 +421,9 @@ extension CQt
 	[LinkName("QTextLayout_PreeditAreaText")]
 	public static extern libqt_string QTextLayout_PreeditAreaText(void* c_this);
 	[LinkName("QTextLayout_SetFormats")]
-	public static extern void QTextLayout_SetFormats(void* c_this, QTextLayout__FormatRange[] overrides);
+	public static extern void QTextLayout_SetFormats(void* c_this, void[] overrides);
 	[LinkName("QTextLayout_Formats")]
-	public static extern QTextLayout__FormatRange[] QTextLayout_Formats(void* c_this);
+	public static extern void[] QTextLayout_Formats(void* c_this);
 	[LinkName("QTextLayout_ClearFormats")]
 	public static extern void QTextLayout_ClearFormats(void* c_this);
 	[LinkName("QTextLayout_SetCacheEnabled")]
@@ -473,9 +483,9 @@ extension CQt
 	[LinkName("QTextLayout_PreviousCursorPosition2")]
 	public static extern int32 QTextLayout_PreviousCursorPosition2(void* c_this, int32 oldPos, int64 mode);
 	[LinkName("QTextLayout_Draw3")]
-	public static extern void QTextLayout_Draw3(void* c_this, void* p, void* pos, QTextLayout__FormatRange[] selections);
+	public static extern void QTextLayout_Draw3(void* c_this, void* p, void* pos, void[] selections);
 	[LinkName("QTextLayout_Draw4")]
-	public static extern void QTextLayout_Draw4(void* c_this, void* p, void* pos, QTextLayout__FormatRange[] selections, void* clip);
+	public static extern void QTextLayout_Draw4(void* c_this, void* p, void* pos, void[] selections, void* clip);
 	[LinkName("QTextLayout_GlyphRuns1")]
 	public static extern void[] QTextLayout_GlyphRuns1(void* c_this, int32 from);
 	[LinkName("QTextLayout_GlyphRuns2")]
@@ -484,13 +494,18 @@ extension CQt
 	[LinkName("QTextLayout_Delete")]
 	public static extern void QTextLayout_Delete(void* self);
 }
-public class QTextLine
+public interface IQTextLine
+{
+	void* NativePtr { get; }
+}
+public class QTextLine : IQTextLine
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQTextLine other)
 	{
-		this.nativePtr = CQt.QTextLine_new(other);
+		this.nativePtr = CQt.QTextLine_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -598,9 +613,9 @@ public class QTextLine
 		CQt.QTextLine_SetNumColumns2(this.nativePtr, columns, alignmentWidth);
 	}
 	
-	public void SetPosition(void* pos)
+	public void SetPosition(IQPointF pos)
 	{
-		CQt.QTextLine_SetPosition(this.nativePtr, pos);
+		CQt.QTextLine_SetPosition(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void Position()
@@ -623,9 +638,9 @@ public class QTextLine
 		return CQt.QTextLine_LineNumber(this.nativePtr);
 	}
 	
-	public void Draw(void* painter, void* position)
+	public void Draw(IQPainter painter, IQPointF position)
 	{
-		CQt.QTextLine_Draw(this.nativePtr, painter, position);
+		CQt.QTextLine_Draw(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (position == default) ? default : (void*)position.NativePtr);
 	}
 	
 	public void[] GlyphRuns()
@@ -735,13 +750,18 @@ extension CQt
 	[LinkName("QTextLine_Delete")]
 	public static extern void QTextLine_Delete(void* self);
 }
-public class QTextLayout__FormatRange
+public interface IQTextLayout__FormatRange
+{
+	void* NativePtr { get; }
+}
+public class QTextLayout__FormatRange : IQTextLayout__FormatRange
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QTextLayout__FormatRange* param1)
+	public this(QTextLayout__FormatRange param1)
 	{
-		this.nativePtr = CQt.QTextLayout__FormatRange_new(param1);
+		this.nativePtr = CQt.QTextLayout__FormatRange_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -749,18 +769,18 @@ public class QTextLayout__FormatRange
 		CQt.QTextLayout__FormatRange_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QTextLayout__FormatRange* param1)
+	public void OperatorAssign(QTextLayout__FormatRange param1)
 	{
-		CQt.QTextLayout__FormatRange_OperatorAssign(this.nativePtr, param1);
+		CQt.QTextLayout__FormatRange_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QTextLayout__FormatRange_new")]
-	public static extern void* QTextLayout__FormatRange_new(QTextLayout__FormatRange* param1);
+	public static extern void* QTextLayout__FormatRange_new(void* param1);
 	[LinkName("QTextLayout__FormatRange_OperatorAssign")]
-	public static extern void QTextLayout__FormatRange_OperatorAssign(void* c_this, QTextLayout__FormatRange* param1);
+	public static extern void QTextLayout__FormatRange_OperatorAssign(void* c_this, void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QTextLayout__FormatRange_Delete")]
 	public static extern void QTextLayout__FormatRange_Delete(void* self);

@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QStringMatcher
+public interface IQStringMatcher
+{
+	void* NativePtr { get; }
+}
+public class QStringMatcher : IQStringMatcher
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QStringMatcher
 		CQt.QStringMatcher_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQStringMatcher other)
 	{
-		CQt.QStringMatcher_OperatorAssign(this.nativePtr, other);
+		CQt.QStringMatcher_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void SetPattern(libqt_string pattern)
+	public void SetPattern(String pattern)
 	{
-		CQt.QStringMatcher_SetPattern(this.nativePtr, pattern);
+		CQt.QStringMatcher_SetPattern(this.nativePtr, libqt_string(pattern));
 	}
 	
 	public void SetCaseSensitivity(int64 cs)
@@ -31,14 +36,14 @@ public class QStringMatcher
 		CQt.QStringMatcher_SetCaseSensitivity(this.nativePtr, cs);
 	}
 	
-	public int32 IndexIn(libqt_string str)
+	public int32 IndexIn(String str)
 	{
-		return CQt.QStringMatcher_IndexIn(this.nativePtr, str);
+		return CQt.QStringMatcher_IndexIn(this.nativePtr, libqt_string(str));
 	}
 	
-	public int32 IndexIn2(void* str, int32 length)
+	public int32 IndexIn2(IQChar str, int32 length)
 	{
-		return CQt.QStringMatcher_IndexIn2(this.nativePtr, str, length);
+		return CQt.QStringMatcher_IndexIn2(this.nativePtr, (str == null) ? null : (void*)str.NativePtr, length);
 	}
 	
 	public libqt_string Pattern()
@@ -51,14 +56,14 @@ public class QStringMatcher
 		return CQt.QStringMatcher_CaseSensitivity(this.nativePtr);
 	}
 	
-	public int32 IndexIn22(libqt_string str, int32 from)
+	public int32 IndexIn22(String str, int32 from)
 	{
-		return CQt.QStringMatcher_IndexIn22(this.nativePtr, str, from);
+		return CQt.QStringMatcher_IndexIn22(this.nativePtr, libqt_string(str), from);
 	}
 	
-	public int32 IndexIn3(void* str, int32 length, int32 from)
+	public int32 IndexIn3(IQChar str, int32 length, int32 from)
 	{
-		return CQt.QStringMatcher_IndexIn3(this.nativePtr, str, length, from);
+		return CQt.QStringMatcher_IndexIn3(this.nativePtr, (str == null) ? null : (void*)str.NativePtr, length, from);
 	}
 	
 }

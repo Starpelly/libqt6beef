@@ -19,9 +19,14 @@ public enum QSurface__SurfaceType
 	MetalSurface = 5,
 	Direct3DSurface = 6,
 }
-public class QSurface
+public interface IQSurface
+{
+	void* NativePtr { get; }
+}
+public class QSurface : IQSurface
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{

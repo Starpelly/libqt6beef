@@ -38,13 +38,18 @@ public enum QGraphicsView__OptimizationFlag
 	DontAdjustForAntialiasing = 2,
 	IndirectPainting = 4,
 }
-public class QGraphicsView
+public interface IQGraphicsView
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsView : IQGraphicsView, IQAbstractScrollArea
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* parent)
+	public this(IQWidget parent)
 	{
-		this.nativePtr = CQt.QGraphicsView_new(parent);
+		this.nativePtr = CQt.QGraphicsView_new((parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public ~this()
@@ -57,7 +62,7 @@ public class QGraphicsView
 		return CQt.QGraphicsView_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsView_Metacast(this.nativePtr, param1);
 	}
@@ -67,7 +72,7 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsView_Tr(s);
 	}
@@ -202,9 +207,9 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Scene(this.nativePtr);
 	}
 	
-	public void SetScene(void* scene)
+	public void SetScene(IQGraphicsScene scene)
 	{
-		CQt.QGraphicsView_SetScene(this.nativePtr, scene);
+		CQt.QGraphicsView_SetScene(this.nativePtr, (scene == null) ? null : (void*)scene.NativePtr);
 	}
 	
 	public void SceneRect()
@@ -212,9 +217,9 @@ public class QGraphicsView
 		CQt.QGraphicsView_SceneRect(this.nativePtr);
 	}
 	
-	public void SetSceneRect(void* rect)
+	public void SetSceneRect(IQRectF rect)
 	{
-		CQt.QGraphicsView_SetSceneRect(this.nativePtr, rect);
+		CQt.QGraphicsView_SetSceneRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void SetSceneRect2(double x, double y, double w, double h)
@@ -237,9 +242,9 @@ public class QGraphicsView
 		return CQt.QGraphicsView_IsTransformed(this.nativePtr);
 	}
 	
-	public void SetTransform(void* matrix)
+	public void SetTransform(IQTransform matrix)
 	{
-		CQt.QGraphicsView_SetTransform(this.nativePtr, matrix);
+		CQt.QGraphicsView_SetTransform(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
 	}
 	
 	public void ResetTransform()
@@ -267,9 +272,9 @@ public class QGraphicsView
 		CQt.QGraphicsView_Translate(this.nativePtr, dx, dy);
 	}
 	
-	public void CenterOn(void* pos)
+	public void CenterOn(IQPointF pos)
 	{
-		CQt.QGraphicsView_CenterOn(this.nativePtr, pos);
+		CQt.QGraphicsView_CenterOn(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void CenterOn2(double x, double y)
@@ -277,14 +282,14 @@ public class QGraphicsView
 		CQt.QGraphicsView_CenterOn2(this.nativePtr, x, y);
 	}
 	
-	public void CenterOnWithItem(void* item)
+	public void CenterOnWithItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsView_CenterOnWithItem(this.nativePtr, item);
+		CQt.QGraphicsView_CenterOnWithItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void EnsureVisible(void* rect)
+	public void EnsureVisible(IQRectF rect)
 	{
-		CQt.QGraphicsView_EnsureVisible(this.nativePtr, rect);
+		CQt.QGraphicsView_EnsureVisible(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void EnsureVisible2(double x, double y, double w, double h)
@@ -292,14 +297,14 @@ public class QGraphicsView
 		CQt.QGraphicsView_EnsureVisible2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void EnsureVisibleWithItem(void* item)
+	public void EnsureVisibleWithItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsView_EnsureVisibleWithItem(this.nativePtr, item);
+		CQt.QGraphicsView_EnsureVisibleWithItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void FitInView(void* rect)
+	public void FitInView(IQRectF rect)
 	{
-		CQt.QGraphicsView_FitInView(this.nativePtr, rect);
+		CQt.QGraphicsView_FitInView(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void FitInView2(double x, double y, double w, double h)
@@ -307,14 +312,14 @@ public class QGraphicsView
 		CQt.QGraphicsView_FitInView2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void FitInViewWithItem(void* item)
+	public void FitInViewWithItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsView_FitInViewWithItem(this.nativePtr, item);
+		CQt.QGraphicsView_FitInViewWithItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void Render(void* painter)
+	public void Render(IQPainter painter)
 	{
-		CQt.QGraphicsView_Render(this.nativePtr, painter);
+		CQt.QGraphicsView_Render(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public void*[] Items()
@@ -322,9 +327,9 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Items(this.nativePtr);
 	}
 	
-	public void*[] ItemsWithPos(void* pos)
+	public void*[] ItemsWithPos(IQPoint pos)
 	{
-		return CQt.QGraphicsView_ItemsWithPos(this.nativePtr, pos);
+		return CQt.QGraphicsView_ItemsWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void*[] Items2(int32 x, int32 y)
@@ -332,9 +337,9 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Items2(this.nativePtr, x, y);
 	}
 	
-	public void*[] ItemsWithRect(void* rect)
+	public void*[] ItemsWithRect(IQRect rect)
 	{
-		return CQt.QGraphicsView_ItemsWithRect(this.nativePtr, rect);
+		return CQt.QGraphicsView_ItemsWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public void*[] Items3(int32 x, int32 y, int32 w, int32 h)
@@ -342,14 +347,14 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Items3(this.nativePtr, x, y, w, h);
 	}
 	
-	public void*[] ItemsWithPath(void* path)
+	public void*[] ItemsWithPath(IQPainterPath path)
 	{
-		return CQt.QGraphicsView_ItemsWithPath(this.nativePtr, path);
+		return CQt.QGraphicsView_ItemsWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void* ItemAt(void* pos)
+	public void* ItemAt(IQPoint pos)
 	{
-		return CQt.QGraphicsView_ItemAt(this.nativePtr, pos);
+		return CQt.QGraphicsView_ItemAt(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void* ItemAt2(int32 x, int32 y)
@@ -357,24 +362,24 @@ public class QGraphicsView
 		return CQt.QGraphicsView_ItemAt2(this.nativePtr, x, y);
 	}
 	
-	public void MapToScene(void* point)
+	public void MapToScene(IQPoint point)
 	{
-		CQt.QGraphicsView_MapToScene(this.nativePtr, point);
+		CQt.QGraphicsView_MapToScene(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapToSceneWithPath(void* path)
+	public void MapToSceneWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsView_MapToSceneWithPath(this.nativePtr, path);
+		CQt.QGraphicsView_MapToSceneWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapFromScene(void* point)
+	public void MapFromScene(IQPointF point)
 	{
-		CQt.QGraphicsView_MapFromScene(this.nativePtr, point);
+		CQt.QGraphicsView_MapFromScene(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapFromSceneWithPath(void* path)
+	public void MapFromSceneWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsView_MapFromSceneWithPath(this.nativePtr, path);
+		CQt.QGraphicsView_MapFromSceneWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
 	public void MapToScene2(int32 x, int32 y)
@@ -397,9 +402,9 @@ public class QGraphicsView
 		CQt.QGraphicsView_BackgroundBrush(this.nativePtr);
 	}
 	
-	public void SetBackgroundBrush(void* brush)
+	public void SetBackgroundBrush(IQBrush brush)
 	{
-		CQt.QGraphicsView_SetBackgroundBrush(this.nativePtr, brush);
+		CQt.QGraphicsView_SetBackgroundBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
 	public void ForegroundBrush()
@@ -407,14 +412,14 @@ public class QGraphicsView
 		CQt.QGraphicsView_ForegroundBrush(this.nativePtr);
 	}
 	
-	public void SetForegroundBrush(void* brush)
+	public void SetForegroundBrush(IQBrush brush)
 	{
-		CQt.QGraphicsView_SetForegroundBrush(this.nativePtr, brush);
+		CQt.QGraphicsView_SetForegroundBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void UpdateScene(void[] rects)
+	public void UpdateScene(IQRectF[] rects)
 	{
-		CQt.QGraphicsView_UpdateScene(this.nativePtr, rects);
+		CQt.QGraphicsView_UpdateScene(this.nativePtr, null);
 	}
 	
 	public void InvalidateScene()
@@ -422,54 +427,54 @@ public class QGraphicsView
 		CQt.QGraphicsView_InvalidateScene(this.nativePtr);
 	}
 	
-	public void UpdateSceneRect(void* rect)
+	public void UpdateSceneRect(IQRectF rect)
 	{
-		CQt.QGraphicsView_UpdateSceneRect(this.nativePtr, rect);
+		CQt.QGraphicsView_UpdateSceneRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public virtual void SetupViewport(void* widget)
+	public virtual void SetupViewport(IQWidget widget)
 	{
-		CQt.QGraphicsView_SetupViewport(this.nativePtr, widget);
+		CQt.QGraphicsView_SetupViewport(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QGraphicsView_Event(this.nativePtr, event);
+		return CQt.QGraphicsView_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool ViewportEvent(void* event)
+	public virtual bool ViewportEvent(IQEvent event)
 	{
-		return CQt.QGraphicsView_ViewportEvent(this.nativePtr, event);
+		return CQt.QGraphicsView_ViewportEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void ContextMenuEvent(void* event)
+	public virtual void ContextMenuEvent(IQContextMenuEvent event)
 	{
-		CQt.QGraphicsView_ContextMenuEvent(this.nativePtr, event);
+		CQt.QGraphicsView_ContextMenuEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragEnterEvent(void* event)
+	public virtual void DragEnterEvent(IQDragEnterEvent event)
 	{
-		CQt.QGraphicsView_DragEnterEvent(this.nativePtr, event);
+		CQt.QGraphicsView_DragEnterEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragLeaveEvent(void* event)
+	public virtual void DragLeaveEvent(IQDragLeaveEvent event)
 	{
-		CQt.QGraphicsView_DragLeaveEvent(this.nativePtr, event);
+		CQt.QGraphicsView_DragLeaveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DragMoveEvent(void* event)
+	public virtual void DragMoveEvent(IQDragMoveEvent event)
 	{
-		CQt.QGraphicsView_DragMoveEvent(this.nativePtr, event);
+		CQt.QGraphicsView_DragMoveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DropEvent(void* event)
+	public virtual void DropEvent(IQDropEvent event)
 	{
-		CQt.QGraphicsView_DropEvent(this.nativePtr, event);
+		CQt.QGraphicsView_DropEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void FocusInEvent(void* event)
+	public virtual void FocusInEvent(IQFocusEvent event)
 	{
-		CQt.QGraphicsView_FocusInEvent(this.nativePtr, event);
+		CQt.QGraphicsView_FocusInEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public virtual bool FocusNextPrevChild(bool next)
@@ -477,54 +482,54 @@ public class QGraphicsView
 		return CQt.QGraphicsView_FocusNextPrevChild(this.nativePtr, next);
 	}
 	
-	public virtual void FocusOutEvent(void* event)
+	public virtual void FocusOutEvent(IQFocusEvent event)
 	{
-		CQt.QGraphicsView_FocusOutEvent(this.nativePtr, event);
+		CQt.QGraphicsView_FocusOutEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void KeyPressEvent(void* event)
+	public virtual void KeyPressEvent(IQKeyEvent event)
 	{
-		CQt.QGraphicsView_KeyPressEvent(this.nativePtr, event);
+		CQt.QGraphicsView_KeyPressEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void KeyReleaseEvent(void* event)
+	public virtual void KeyReleaseEvent(IQKeyEvent event)
 	{
-		CQt.QGraphicsView_KeyReleaseEvent(this.nativePtr, event);
+		CQt.QGraphicsView_KeyReleaseEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseDoubleClickEvent(void* event)
+	public virtual void MouseDoubleClickEvent(IQMouseEvent event)
 	{
-		CQt.QGraphicsView_MouseDoubleClickEvent(this.nativePtr, event);
+		CQt.QGraphicsView_MouseDoubleClickEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MousePressEvent(void* event)
+	public virtual void MousePressEvent(IQMouseEvent event)
 	{
-		CQt.QGraphicsView_MousePressEvent(this.nativePtr, event);
+		CQt.QGraphicsView_MousePressEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseMoveEvent(void* event)
+	public virtual void MouseMoveEvent(IQMouseEvent event)
 	{
-		CQt.QGraphicsView_MouseMoveEvent(this.nativePtr, event);
+		CQt.QGraphicsView_MouseMoveEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void MouseReleaseEvent(void* event)
+	public virtual void MouseReleaseEvent(IQMouseEvent event)
 	{
-		CQt.QGraphicsView_MouseReleaseEvent(this.nativePtr, event);
+		CQt.QGraphicsView_MouseReleaseEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void WheelEvent(void* event)
+	public virtual void WheelEvent(IQWheelEvent event)
 	{
-		CQt.QGraphicsView_WheelEvent(this.nativePtr, event);
+		CQt.QGraphicsView_WheelEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void PaintEvent(void* event)
+	public virtual void PaintEvent(IQPaintEvent event)
 	{
-		CQt.QGraphicsView_PaintEvent(this.nativePtr, event);
+		CQt.QGraphicsView_PaintEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void ResizeEvent(void* event)
+	public virtual void ResizeEvent(IQResizeEvent event)
 	{
-		CQt.QGraphicsView_ResizeEvent(this.nativePtr, event);
+		CQt.QGraphicsView_ResizeEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public virtual void ScrollContentsBy(int32 dx, int32 dy)
@@ -532,32 +537,32 @@ public class QGraphicsView
 		CQt.QGraphicsView_ScrollContentsBy(this.nativePtr, dx, dy);
 	}
 	
-	public virtual void ShowEvent(void* event)
+	public virtual void ShowEvent(IQShowEvent event)
 	{
-		CQt.QGraphicsView_ShowEvent(this.nativePtr, event);
+		CQt.QGraphicsView_ShowEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void InputMethodEvent(void* event)
+	public virtual void InputMethodEvent(IQInputMethodEvent event)
 	{
-		CQt.QGraphicsView_InputMethodEvent(this.nativePtr, event);
+		CQt.QGraphicsView_InputMethodEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual void DrawBackground(void* painter, void* rect)
+	public virtual void DrawBackground(IQPainter painter, IQRectF rect)
 	{
-		CQt.QGraphicsView_DrawBackground(this.nativePtr, painter, rect);
+		CQt.QGraphicsView_DrawBackground(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public virtual void DrawForeground(void* painter, void* rect)
+	public virtual void DrawForeground(IQPainter painter, IQRectF rect)
 	{
-		CQt.QGraphicsView_DrawForeground(this.nativePtr, painter, rect);
+		CQt.QGraphicsView_DrawForeground(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsView_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsView_Tr3(s, c, n);
 	}
@@ -572,19 +577,19 @@ public class QGraphicsView
 		CQt.QGraphicsView_SetOptimizationFlag2(this.nativePtr, flag, enabled);
 	}
 	
-	public void SetTransform2(void* matrix, bool combine)
+	public void SetTransform2(IQTransform matrix, bool combine)
 	{
-		CQt.QGraphicsView_SetTransform2(this.nativePtr, matrix, combine);
+		CQt.QGraphicsView_SetTransform2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, combine);
 	}
 	
-	public void EnsureVisible22(void* rect, int32 xmargin)
+	public void EnsureVisible22(IQRectF rect, int32 xmargin)
 	{
-		CQt.QGraphicsView_EnsureVisible22(this.nativePtr, rect, xmargin);
+		CQt.QGraphicsView_EnsureVisible22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xmargin);
 	}
 	
-	public void EnsureVisible3(void* rect, int32 xmargin, int32 ymargin)
+	public void EnsureVisible3(IQRectF rect, int32 xmargin, int32 ymargin)
 	{
-		CQt.QGraphicsView_EnsureVisible3(this.nativePtr, rect, xmargin, ymargin);
+		CQt.QGraphicsView_EnsureVisible3(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xmargin, ymargin);
 	}
 	
 	public void EnsureVisible5(double x, double y, double w, double h, int32 xmargin)
@@ -597,19 +602,19 @@ public class QGraphicsView
 		CQt.QGraphicsView_EnsureVisible6(this.nativePtr, x, y, w, h, xmargin, ymargin);
 	}
 	
-	public void EnsureVisible23(void* item, int32 xmargin)
+	public void EnsureVisible23(IQGraphicsItem item, int32 xmargin)
 	{
-		CQt.QGraphicsView_EnsureVisible23(this.nativePtr, item, xmargin);
+		CQt.QGraphicsView_EnsureVisible23(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, xmargin);
 	}
 	
-	public void EnsureVisible32(void* item, int32 xmargin, int32 ymargin)
+	public void EnsureVisible32(IQGraphicsItem item, int32 xmargin, int32 ymargin)
 	{
-		CQt.QGraphicsView_EnsureVisible32(this.nativePtr, item, xmargin, ymargin);
+		CQt.QGraphicsView_EnsureVisible32(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, xmargin, ymargin);
 	}
 	
-	public void FitInView22(void* rect, int64 aspectRadioMode)
+	public void FitInView22(IQRectF rect, int64 aspectRadioMode)
 	{
-		CQt.QGraphicsView_FitInView22(this.nativePtr, rect, aspectRadioMode);
+		CQt.QGraphicsView_FitInView22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, aspectRadioMode);
 	}
 	
 	public void FitInView5(double x, double y, double w, double h, int64 aspectRadioMode)
@@ -617,29 +622,29 @@ public class QGraphicsView
 		CQt.QGraphicsView_FitInView5(this.nativePtr, x, y, w, h, aspectRadioMode);
 	}
 	
-	public void FitInView23(void* item, int64 aspectRadioMode)
+	public void FitInView23(IQGraphicsItem item, int64 aspectRadioMode)
 	{
-		CQt.QGraphicsView_FitInView23(this.nativePtr, item, aspectRadioMode);
+		CQt.QGraphicsView_FitInView23(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, aspectRadioMode);
 	}
 	
-	public void Render2(void* painter, void* target)
+	public void Render2(IQPainter painter, IQRectF target)
 	{
-		CQt.QGraphicsView_Render2(this.nativePtr, painter, target);
+		CQt.QGraphicsView_Render2(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr);
 	}
 	
-	public void Render3(void* painter, void* target, void* source)
+	public void Render3(IQPainter painter, IQRectF target, IQRect source)
 	{
-		CQt.QGraphicsView_Render3(this.nativePtr, painter, target, source);
+		CQt.QGraphicsView_Render3(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr, (source == default) ? default : (void*)source.NativePtr);
 	}
 	
-	public void Render4(void* painter, void* target, void* source, int64 aspectRatioMode)
+	public void Render4(IQPainter painter, IQRectF target, IQRect source, int64 aspectRatioMode)
 	{
-		CQt.QGraphicsView_Render4(this.nativePtr, painter, target, source, aspectRatioMode);
+		CQt.QGraphicsView_Render4(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (target == default) ? default : (void*)target.NativePtr, (source == default) ? default : (void*)source.NativePtr, aspectRatioMode);
 	}
 	
-	public void*[] Items22(void* rect, int64 mode)
+	public void*[] Items22(IQRect rect, int64 mode)
 	{
-		return CQt.QGraphicsView_Items22(this.nativePtr, rect, mode);
+		return CQt.QGraphicsView_Items22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, mode);
 	}
 	
 	public void*[] Items5(int32 x, int32 y, int32 w, int32 h, int64 mode)
@@ -647,19 +652,19 @@ public class QGraphicsView
 		return CQt.QGraphicsView_Items5(this.nativePtr, x, y, w, h, mode);
 	}
 	
-	public void*[] Items24(void* path, int64 mode)
+	public void*[] Items24(IQPainterPath path, int64 mode)
 	{
-		return CQt.QGraphicsView_Items24(this.nativePtr, path, mode);
+		return CQt.QGraphicsView_Items24(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, mode);
 	}
 	
-	public void InvalidateScene1(void* rect)
+	public void InvalidateScene1(IQRectF rect)
 	{
-		CQt.QGraphicsView_InvalidateScene1(this.nativePtr, rect);
+		CQt.QGraphicsView_InvalidateScene1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void InvalidateScene2(void* rect, int64 layers)
+	public void InvalidateScene2(IQRectF rect, int64 layers)
 	{
-		CQt.QGraphicsView_InvalidateScene2(this.nativePtr, rect, layers);
+		CQt.QGraphicsView_InvalidateScene2(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, layers);
 	}
 	
 	public int64 VerticalScrollBarPolicy()
@@ -677,9 +682,9 @@ public class QGraphicsView
 		return CQt.QAbstractScrollArea_VerticalScrollBar(this.nativePtr);
 	}
 	
-	public void SetVerticalScrollBar(void* scrollbar)
+	public void SetVerticalScrollBar(IQScrollBar scrollbar)
 	{
-		CQt.QAbstractScrollArea_SetVerticalScrollBar(this.nativePtr, scrollbar);
+		CQt.QAbstractScrollArea_SetVerticalScrollBar(this.nativePtr, (scrollbar == null) ? null : (void*)scrollbar.NativePtr);
 	}
 	
 	public int64 HorizontalScrollBarPolicy()
@@ -697,9 +702,9 @@ public class QGraphicsView
 		return CQt.QAbstractScrollArea_HorizontalScrollBar(this.nativePtr);
 	}
 	
-	public void SetHorizontalScrollBar(void* scrollbar)
+	public void SetHorizontalScrollBar(IQScrollBar scrollbar)
 	{
-		CQt.QAbstractScrollArea_SetHorizontalScrollBar(this.nativePtr, scrollbar);
+		CQt.QAbstractScrollArea_SetHorizontalScrollBar(this.nativePtr, (scrollbar == null) ? null : (void*)scrollbar.NativePtr);
 	}
 	
 	public void* CornerWidget()
@@ -707,14 +712,14 @@ public class QGraphicsView
 		return CQt.QAbstractScrollArea_CornerWidget(this.nativePtr);
 	}
 	
-	public void SetCornerWidget(void* widget)
+	public void SetCornerWidget(IQWidget widget)
 	{
-		CQt.QAbstractScrollArea_SetCornerWidget(this.nativePtr, widget);
+		CQt.QAbstractScrollArea_SetCornerWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
-	public void AddScrollBarWidget(void* widget, int64 alignment)
+	public void AddScrollBarWidget(IQWidget widget, int64 alignment)
 	{
-		CQt.QAbstractScrollArea_AddScrollBarWidget(this.nativePtr, widget, alignment);
+		CQt.QAbstractScrollArea_AddScrollBarWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr, alignment);
 	}
 	
 	public void*[] ScrollBarWidgets(int64 alignment)
@@ -727,9 +732,9 @@ public class QGraphicsView
 		return CQt.QAbstractScrollArea_Viewport(this.nativePtr);
 	}
 	
-	public void SetViewport(void* widget)
+	public void SetViewport(IQWidget widget)
 	{
-		CQt.QAbstractScrollArea_SetViewport(this.nativePtr, widget);
+		CQt.QAbstractScrollArea_SetViewport(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public void MaximumViewportSize()
@@ -812,9 +817,9 @@ public class QGraphicsView
 		CQt.QFrame_FrameRect(this.nativePtr);
 	}
 	
-	public void SetFrameRect(void* frameRect)
+	public void SetFrameRect(IQRect frameRect)
 	{
-		CQt.QFrame_SetFrameRect(this.nativePtr, frameRect);
+		CQt.QFrame_SetFrameRect(this.nativePtr, (frameRect == default) ? default : (void*)frameRect.NativePtr);
 	}
 	
 	public virtual int32 DevType()
@@ -847,9 +852,9 @@ public class QGraphicsView
 		return CQt.QWidget_Style(this.nativePtr);
 	}
 	
-	public void SetStyle(void* style)
+	public void SetStyle(IQStyle style)
 	{
-		CQt.QWidget_SetStyle(this.nativePtr, style);
+		CQt.QWidget_SetStyle(this.nativePtr, (style == null) ? null : (void*)style.NativePtr);
 	}
 	
 	public bool IsTopLevel()
@@ -882,9 +887,9 @@ public class QGraphicsView
 		return CQt.QWidget_IsEnabled(this.nativePtr);
 	}
 	
-	public bool IsEnabledTo(void* param1)
+	public bool IsEnabledTo(IQWidget param1)
 	{
-		return CQt.QWidget_IsEnabledTo(this.nativePtr, param1);
+		return CQt.QWidget_IsEnabledTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public void SetEnabled(bool enabled)
@@ -997,9 +1002,9 @@ public class QGraphicsView
 		return CQt.QWidget_MaximumHeight(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* minimumSize)
+	public void SetMinimumSize(IQSize minimumSize)
 	{
-		CQt.QWidget_SetMinimumSize(this.nativePtr, minimumSize);
+		CQt.QWidget_SetMinimumSize(this.nativePtr, (minimumSize == default) ? default : (void*)minimumSize.NativePtr);
 	}
 	
 	public void SetMinimumSize2(int32 minw, int32 minh)
@@ -1007,9 +1012,9 @@ public class QGraphicsView
 		CQt.QWidget_SetMinimumSize2(this.nativePtr, minw, minh);
 	}
 	
-	public void SetMaximumSize(void* maximumSize)
+	public void SetMaximumSize(IQSize maximumSize)
 	{
-		CQt.QWidget_SetMaximumSize(this.nativePtr, maximumSize);
+		CQt.QWidget_SetMaximumSize(this.nativePtr, (maximumSize == default) ? default : (void*)maximumSize.NativePtr);
 	}
 	
 	public void SetMaximumSize2(int32 maxw, int32 maxh)
@@ -1042,9 +1047,9 @@ public class QGraphicsView
 		CQt.QWidget_SizeIncrement(this.nativePtr);
 	}
 	
-	public void SetSizeIncrement(void* sizeIncrement)
+	public void SetSizeIncrement(IQSize sizeIncrement)
 	{
-		CQt.QWidget_SetSizeIncrement(this.nativePtr, sizeIncrement);
+		CQt.QWidget_SetSizeIncrement(this.nativePtr, (sizeIncrement == default) ? default : (void*)sizeIncrement.NativePtr);
 	}
 	
 	public void SetSizeIncrement2(int32 w, int32 h)
@@ -1057,9 +1062,9 @@ public class QGraphicsView
 		CQt.QWidget_BaseSize(this.nativePtr);
 	}
 	
-	public void SetBaseSize(void* baseSize)
+	public void SetBaseSize(IQSize baseSize)
 	{
-		CQt.QWidget_SetBaseSize(this.nativePtr, baseSize);
+		CQt.QWidget_SetBaseSize(this.nativePtr, (baseSize == default) ? default : (void*)baseSize.NativePtr);
 	}
 	
 	public void SetBaseSize2(int32 basew, int32 baseh)
@@ -1067,9 +1072,9 @@ public class QGraphicsView
 		CQt.QWidget_SetBaseSize2(this.nativePtr, basew, baseh);
 	}
 	
-	public void SetFixedSize(void* fixedSize)
+	public void SetFixedSize(IQSize fixedSize)
 	{
-		CQt.QWidget_SetFixedSize(this.nativePtr, fixedSize);
+		CQt.QWidget_SetFixedSize(this.nativePtr, (fixedSize == default) ? default : (void*)fixedSize.NativePtr);
 	}
 	
 	public void SetFixedSize2(int32 w, int32 h)
@@ -1087,64 +1092,64 @@ public class QGraphicsView
 		CQt.QWidget_SetFixedHeight(this.nativePtr, h);
 	}
 	
-	public void MapToGlobal(void* param1)
+	public void MapToGlobal(IQPointF param1)
 	{
-		CQt.QWidget_MapToGlobal(this.nativePtr, param1);
+		CQt.QWidget_MapToGlobal(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToGlobalWithQPoint(void* param1)
+	public void MapToGlobalWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapToGlobalWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapToGlobalWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromGlobal(void* param1)
+	public void MapFromGlobal(IQPointF param1)
 	{
-		CQt.QWidget_MapFromGlobal(this.nativePtr, param1);
+		CQt.QWidget_MapFromGlobal(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromGlobalWithQPoint(void* param1)
+	public void MapFromGlobalWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapFromGlobalWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapFromGlobalWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToParent(void* param1)
+	public void MapToParent(IQPointF param1)
 	{
-		CQt.QWidget_MapToParent(this.nativePtr, param1);
+		CQt.QWidget_MapToParent(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapToParentWithQPoint(void* param1)
+	public void MapToParentWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapToParentWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapToParentWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromParent(void* param1)
+	public void MapFromParent(IQPointF param1)
 	{
-		CQt.QWidget_MapFromParent(this.nativePtr, param1);
+		CQt.QWidget_MapFromParent(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapFromParentWithQPoint(void* param1)
+	public void MapFromParentWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MapFromParentWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MapFromParentWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void MapTo(void* param1, void* param2)
+	public void MapTo(IQWidget param1, IQPointF param2)
 	{
-		CQt.QWidget_MapTo(this.nativePtr, param1, param2);
+		CQt.QWidget_MapTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapTo2(void* param1, void* param2)
+	public void MapTo2(IQWidget param1, IQPoint param2)
 	{
-		CQt.QWidget_MapTo2(this.nativePtr, param1, param2);
+		CQt.QWidget_MapTo2(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapFrom(void* param1, void* param2)
+	public void MapFrom(IQWidget param1, IQPointF param2)
 	{
-		CQt.QWidget_MapFrom(this.nativePtr, param1, param2);
+		CQt.QWidget_MapFrom(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
-	public void MapFrom2(void* param1, void* param2)
+	public void MapFrom2(IQWidget param1, IQPoint param2)
 	{
-		CQt.QWidget_MapFrom2(this.nativePtr, param1, param2);
+		CQt.QWidget_MapFrom2(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == default) ? default : (void*)param2.NativePtr);
 	}
 	
 	public void* Window()
@@ -1167,9 +1172,9 @@ public class QGraphicsView
 		return CQt.QWidget_Palette(this.nativePtr);
 	}
 	
-	public void SetPalette(void* palette)
+	public void SetPalette(IQPalette palette)
 	{
-		CQt.QWidget_SetPalette(this.nativePtr, palette);
+		CQt.QWidget_SetPalette(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
 	}
 	
 	public void SetBackgroundRole(int64 backgroundRole)
@@ -1197,9 +1202,9 @@ public class QGraphicsView
 		return CQt.QWidget_Font(this.nativePtr);
 	}
 	
-	public void SetFont(void* font)
+	public void SetFont(IQFont font)
 	{
-		CQt.QWidget_SetFont(this.nativePtr, font);
+		CQt.QWidget_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
 	}
 	
 	public void FontMetrics()
@@ -1217,9 +1222,9 @@ public class QGraphicsView
 		CQt.QWidget_Cursor(this.nativePtr);
 	}
 	
-	public void SetCursor(void* cursor)
+	public void SetCursor(IQCursor cursor)
 	{
-		CQt.QWidget_SetCursor(this.nativePtr, cursor);
+		CQt.QWidget_SetCursor(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
 	}
 	
 	public void UnsetCursor()
@@ -1252,14 +1257,14 @@ public class QGraphicsView
 		return CQt.QWidget_HasTabletTracking(this.nativePtr);
 	}
 	
-	public void SetMask(void* mask)
+	public void SetMask(IQBitmap mask)
 	{
-		CQt.QWidget_SetMask(this.nativePtr, mask);
+		CQt.QWidget_SetMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
-	public void SetMaskWithMask(void* mask)
+	public void SetMaskWithMask(IQRegion mask)
 	{
-		CQt.QWidget_SetMaskWithMask(this.nativePtr, mask);
+		CQt.QWidget_SetMaskWithMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
 	}
 	
 	public void Mask()
@@ -1272,9 +1277,9 @@ public class QGraphicsView
 		CQt.QWidget_ClearMask(this.nativePtr);
 	}
 	
-	public void RenderWithPainter(void* painter)
+	public void RenderWithPainter(IQPainter painter)
 	{
-		CQt.QWidget_RenderWithPainter(this.nativePtr, painter);
+		CQt.QWidget_RenderWithPainter(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
 	}
 	
 	public void Grab()
@@ -1287,9 +1292,9 @@ public class QGraphicsView
 		return CQt.QWidget_GraphicsEffect(this.nativePtr);
 	}
 	
-	public void SetGraphicsEffect(void* effect)
+	public void SetGraphicsEffect(IQGraphicsEffect effect)
 	{
-		CQt.QWidget_SetGraphicsEffect(this.nativePtr, effect);
+		CQt.QWidget_SetGraphicsEffect(this.nativePtr, (effect == null) ? null : (void*)effect.NativePtr);
 	}
 	
 	public void GrabGesture(int64 typeVal)
@@ -1302,14 +1307,14 @@ public class QGraphicsView
 		CQt.QWidget_UngrabGesture(this.nativePtr, typeVal);
 	}
 	
-	public void SetWindowTitle(libqt_string windowTitle)
+	public void SetWindowTitle(String windowTitle)
 	{
-		CQt.QWidget_SetWindowTitle(this.nativePtr, windowTitle);
+		CQt.QWidget_SetWindowTitle(this.nativePtr, libqt_string(windowTitle));
 	}
 	
-	public void SetStyleSheet(libqt_string styleSheet)
+	public void SetStyleSheet(String styleSheet)
 	{
-		CQt.QWidget_SetStyleSheet(this.nativePtr, styleSheet);
+		CQt.QWidget_SetStyleSheet(this.nativePtr, libqt_string(styleSheet));
 	}
 	
 	public libqt_string StyleSheet()
@@ -1322,9 +1327,9 @@ public class QGraphicsView
 		return CQt.QWidget_WindowTitle(this.nativePtr);
 	}
 	
-	public void SetWindowIcon(void* icon)
+	public void SetWindowIcon(IQIcon icon)
 	{
-		CQt.QWidget_SetWindowIcon(this.nativePtr, icon);
+		CQt.QWidget_SetWindowIcon(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr);
 	}
 	
 	public void WindowIcon()
@@ -1332,9 +1337,9 @@ public class QGraphicsView
 		CQt.QWidget_WindowIcon(this.nativePtr);
 	}
 	
-	public void SetWindowIconText(libqt_string windowIconText)
+	public void SetWindowIconText(String windowIconText)
 	{
-		CQt.QWidget_SetWindowIconText(this.nativePtr, windowIconText);
+		CQt.QWidget_SetWindowIconText(this.nativePtr, libqt_string(windowIconText));
 	}
 	
 	public libqt_string WindowIconText()
@@ -1342,9 +1347,9 @@ public class QGraphicsView
 		return CQt.QWidget_WindowIconText(this.nativePtr);
 	}
 	
-	public void SetWindowRole(libqt_string windowRole)
+	public void SetWindowRole(String windowRole)
 	{
-		CQt.QWidget_SetWindowRole(this.nativePtr, windowRole);
+		CQt.QWidget_SetWindowRole(this.nativePtr, libqt_string(windowRole));
 	}
 	
 	public libqt_string WindowRole()
@@ -1352,9 +1357,9 @@ public class QGraphicsView
 		return CQt.QWidget_WindowRole(this.nativePtr);
 	}
 	
-	public void SetWindowFilePath(libqt_string filePath)
+	public void SetWindowFilePath(String filePath)
 	{
-		CQt.QWidget_SetWindowFilePath(this.nativePtr, filePath);
+		CQt.QWidget_SetWindowFilePath(this.nativePtr, libqt_string(filePath));
 	}
 	
 	public libqt_string WindowFilePath()
@@ -1377,9 +1382,9 @@ public class QGraphicsView
 		return CQt.QWidget_IsWindowModified(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string toolTip)
+	public void SetToolTip(String toolTip)
 	{
-		CQt.QWidget_SetToolTip(this.nativePtr, toolTip);
+		CQt.QWidget_SetToolTip(this.nativePtr, libqt_string(toolTip));
 	}
 	
 	public libqt_string ToolTip()
@@ -1397,9 +1402,9 @@ public class QGraphicsView
 		return CQt.QWidget_ToolTipDuration(this.nativePtr);
 	}
 	
-	public void SetStatusTip(libqt_string statusTip)
+	public void SetStatusTip(String statusTip)
 	{
-		CQt.QWidget_SetStatusTip(this.nativePtr, statusTip);
+		CQt.QWidget_SetStatusTip(this.nativePtr, libqt_string(statusTip));
 	}
 	
 	public libqt_string StatusTip()
@@ -1407,9 +1412,9 @@ public class QGraphicsView
 		return CQt.QWidget_StatusTip(this.nativePtr);
 	}
 	
-	public void SetWhatsThis(libqt_string whatsThis)
+	public void SetWhatsThis(String whatsThis)
 	{
-		CQt.QWidget_SetWhatsThis(this.nativePtr, whatsThis);
+		CQt.QWidget_SetWhatsThis(this.nativePtr, libqt_string(whatsThis));
 	}
 	
 	public libqt_string WhatsThis()
@@ -1422,9 +1427,9 @@ public class QGraphicsView
 		return CQt.QWidget_AccessibleName(this.nativePtr);
 	}
 	
-	public void SetAccessibleName(libqt_string name)
+	public void SetAccessibleName(String name)
 	{
-		CQt.QWidget_SetAccessibleName(this.nativePtr, name);
+		CQt.QWidget_SetAccessibleName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string AccessibleDescription()
@@ -1432,9 +1437,9 @@ public class QGraphicsView
 		return CQt.QWidget_AccessibleDescription(this.nativePtr);
 	}
 	
-	public void SetAccessibleDescription(libqt_string description)
+	public void SetAccessibleDescription(String description)
 	{
-		CQt.QWidget_SetAccessibleDescription(this.nativePtr, description);
+		CQt.QWidget_SetAccessibleDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public void SetLayoutDirection(int64 direction)
@@ -1452,9 +1457,9 @@ public class QGraphicsView
 		CQt.QWidget_UnsetLayoutDirection(this.nativePtr);
 	}
 	
-	public void SetLocale(void* locale)
+	public void SetLocale(IQLocale locale)
 	{
-		CQt.QWidget_SetLocale(this.nativePtr, locale);
+		CQt.QWidget_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -1517,14 +1522,14 @@ public class QGraphicsView
 		return CQt.QWidget_HasFocus(this.nativePtr);
 	}
 	
-	public static void SetTabOrder(void* param1, void* param2)
+	public static void SetTabOrder(IQWidget param1, IQWidget param2)
 	{
-		CQt.QWidget_SetTabOrder(param1, param2);
+		CQt.QWidget_SetTabOrder((param1 == null) ? null : (void*)param1.NativePtr, (param2 == null) ? null : (void*)param2.NativePtr);
 	}
 	
-	public void SetFocusProxy(void* focusProxy)
+	public void SetFocusProxy(IQWidget focusProxy)
 	{
-		CQt.QWidget_SetFocusProxy(this.nativePtr, focusProxy);
+		CQt.QWidget_SetFocusProxy(this.nativePtr, (focusProxy == null) ? null : (void*)focusProxy.NativePtr);
 	}
 	
 	public void* FocusProxy()
@@ -1547,9 +1552,9 @@ public class QGraphicsView
 		CQt.QWidget_GrabMouse(this.nativePtr);
 	}
 	
-	public void GrabMouseWithQCursor(void* param1)
+	public void GrabMouseWithQCursor(IQCursor param1)
 	{
-		CQt.QWidget_GrabMouseWithQCursor(this.nativePtr, param1);
+		CQt.QWidget_GrabMouseWithQCursor(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void ReleaseMouse()
@@ -1567,9 +1572,9 @@ public class QGraphicsView
 		CQt.QWidget_ReleaseKeyboard(this.nativePtr);
 	}
 	
-	public int32 GrabShortcut(void* key)
+	public int32 GrabShortcut(IQKeySequence key)
 	{
-		return CQt.QWidget_GrabShortcut(this.nativePtr, key);
+		return CQt.QWidget_GrabShortcut(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
 	}
 	
 	public void ReleaseShortcut(int32 id)
@@ -1627,14 +1632,14 @@ public class QGraphicsView
 		CQt.QWidget_Update2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void UpdateWithQRect(void* param1)
+	public void UpdateWithQRect(IQRect param1)
 	{
-		CQt.QWidget_UpdateWithQRect(this.nativePtr, param1);
+		CQt.QWidget_UpdateWithQRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void UpdateWithQRegion(void* param1)
+	public void UpdateWithQRegion(IQRegion param1)
 	{
-		CQt.QWidget_UpdateWithQRegion(this.nativePtr, param1);
+		CQt.QWidget_UpdateWithQRegion(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void Repaint2(int32 x, int32 y, int32 w, int32 h)
@@ -1642,14 +1647,14 @@ public class QGraphicsView
 		CQt.QWidget_Repaint2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void RepaintWithQRect(void* param1)
+	public void RepaintWithQRect(IQRect param1)
 	{
-		CQt.QWidget_RepaintWithQRect(this.nativePtr, param1);
+		CQt.QWidget_RepaintWithQRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void RepaintWithQRegion(void* param1)
+	public void RepaintWithQRegion(IQRegion param1)
 	{
-		CQt.QWidget_RepaintWithQRegion(this.nativePtr, param1);
+		CQt.QWidget_RepaintWithQRegion(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public virtual void SetVisible(bool visible)
@@ -1707,9 +1712,9 @@ public class QGraphicsView
 		CQt.QWidget_Lower(this.nativePtr);
 	}
 	
-	public void StackUnder(void* param1)
+	public void StackUnder(IQWidget param1)
 	{
-		CQt.QWidget_StackUnder(this.nativePtr, param1);
+		CQt.QWidget_StackUnder(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public void Move(int32 x, int32 y)
@@ -1717,9 +1722,9 @@ public class QGraphicsView
 		CQt.QWidget_Move(this.nativePtr, x, y);
 	}
 	
-	public void MoveWithQPoint(void* param1)
+	public void MoveWithQPoint(IQPoint param1)
 	{
-		CQt.QWidget_MoveWithQPoint(this.nativePtr, param1);
+		CQt.QWidget_MoveWithQPoint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void Resize(int32 w, int32 h)
@@ -1727,9 +1732,9 @@ public class QGraphicsView
 		CQt.QWidget_Resize(this.nativePtr, w, h);
 	}
 	
-	public void ResizeWithQSize(void* param1)
+	public void ResizeWithQSize(IQSize param1)
 	{
-		CQt.QWidget_ResizeWithQSize(this.nativePtr, param1);
+		CQt.QWidget_ResizeWithQSize(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void SetGeometry(int32 x, int32 y, int32 w, int32 h)
@@ -1737,9 +1742,9 @@ public class QGraphicsView
 		CQt.QWidget_SetGeometry(this.nativePtr, x, y, w, h);
 	}
 	
-	public void SetGeometryWithGeometry(void* geometry)
+	public void SetGeometryWithGeometry(IQRect geometry)
 	{
-		CQt.QWidget_SetGeometryWithGeometry(this.nativePtr, geometry);
+		CQt.QWidget_SetGeometryWithGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
 	}
 	
 	public libqt_string SaveGeometry()
@@ -1747,9 +1752,9 @@ public class QGraphicsView
 		return CQt.QWidget_SaveGeometry(this.nativePtr);
 	}
 	
-	public bool RestoreGeometry(libqt_string geometry)
+	public bool RestoreGeometry(String geometry)
 	{
-		return CQt.QWidget_RestoreGeometry(this.nativePtr, geometry);
+		return CQt.QWidget_RestoreGeometry(this.nativePtr, libqt_string(geometry));
 	}
 	
 	public void AdjustSize()
@@ -1762,9 +1767,9 @@ public class QGraphicsView
 		return CQt.QWidget_IsVisible(this.nativePtr);
 	}
 	
-	public bool IsVisibleTo(void* param1)
+	public bool IsVisibleTo(IQWidget param1)
 	{
-		return CQt.QWidget_IsVisibleTo(this.nativePtr, param1);
+		return CQt.QWidget_IsVisibleTo(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
 	public bool IsHidden()
@@ -1807,9 +1812,9 @@ public class QGraphicsView
 		CQt.QWidget_SizePolicy(this.nativePtr);
 	}
 	
-	public void SetSizePolicy(void sizePolicy)
+	public void SetSizePolicy(IQSizePolicy sizePolicy)
 	{
-		CQt.QWidget_SetSizePolicy(this.nativePtr, sizePolicy);
+		CQt.QWidget_SetSizePolicy(this.nativePtr, (sizePolicy == default) ? default : (void)sizePolicy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 horizontal, int64 vertical)
@@ -1837,9 +1842,9 @@ public class QGraphicsView
 		CQt.QWidget_SetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
 	
-	public void SetContentsMarginsWithMargins(void* margins)
+	public void SetContentsMarginsWithMargins(IQMargins margins)
 	{
-		CQt.QWidget_SetContentsMarginsWithMargins(this.nativePtr, margins);
+		CQt.QWidget_SetContentsMarginsWithMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
 	}
 	
 	public void ContentsMargins()
@@ -1857,9 +1862,9 @@ public class QGraphicsView
 		return CQt.QWidget_Layout(this.nativePtr);
 	}
 	
-	public void SetLayout(void* layout)
+	public void SetLayout(IQLayout layout)
 	{
-		CQt.QWidget_SetLayout(this.nativePtr, layout);
+		CQt.QWidget_SetLayout(this.nativePtr, (layout == null) ? null : (void*)layout.NativePtr);
 	}
 	
 	public void UpdateGeometry()
@@ -1867,14 +1872,14 @@ public class QGraphicsView
 		CQt.QWidget_UpdateGeometry(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQWidget parent)
 	{
-		CQt.QWidget_SetParent(this.nativePtr, parent);
+		CQt.QWidget_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void SetParent2(void* parent, int64 f)
+	public void SetParent2(IQWidget parent, int64 f)
 	{
-		CQt.QWidget_SetParent2(this.nativePtr, parent, f);
+		CQt.QWidget_SetParent2(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr, f);
 	}
 	
 	public void Scroll(int32 dx, int32 dy)
@@ -1882,9 +1887,9 @@ public class QGraphicsView
 		CQt.QWidget_Scroll(this.nativePtr, dx, dy);
 	}
 	
-	public void Scroll2(int32 dx, int32 dy, void* param3)
+	public void Scroll2(int32 dx, int32 dy, IQRect param3)
 	{
-		CQt.QWidget_Scroll2(this.nativePtr, dx, dy, param3);
+		CQt.QWidget_Scroll2(this.nativePtr, dx, dy, (param3 == default) ? default : (void*)param3.NativePtr);
 	}
 	
 	public void* FocusWidget()
@@ -1912,29 +1917,29 @@ public class QGraphicsView
 		CQt.QWidget_SetAcceptDrops(this.nativePtr, on);
 	}
 	
-	public void AddAction(void* action)
+	public void AddAction(IQAction action)
 	{
-		CQt.QWidget_AddAction(this.nativePtr, action);
+		CQt.QWidget_AddAction(this.nativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
-	public void AddActions(void*[] actions)
+	public void AddActions(IQAction[] actions)
 	{
-		CQt.QWidget_AddActions(this.nativePtr, actions);
+		CQt.QWidget_AddActions(this.nativePtr, null);
 	}
 	
-	public void InsertActions(void* before, void*[] actions)
+	public void InsertActions(IQAction before, IQAction[] actions)
 	{
-		CQt.QWidget_InsertActions(this.nativePtr, before, actions);
+		CQt.QWidget_InsertActions(this.nativePtr, (before == null) ? null : (void*)before.NativePtr, null);
 	}
 	
-	public void InsertAction(void* before, void* action)
+	public void InsertAction(IQAction before, IQAction action)
 	{
-		CQt.QWidget_InsertAction(this.nativePtr, before, action);
+		CQt.QWidget_InsertAction(this.nativePtr, (before == null) ? null : (void*)before.NativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
-	public void RemoveAction(void* action)
+	public void RemoveAction(IQAction action)
 	{
-		CQt.QWidget_RemoveAction(this.nativePtr, action);
+		CQt.QWidget_RemoveAction(this.nativePtr, (action == null) ? null : (void*)action.NativePtr);
 	}
 	
 	public void*[] Actions()
@@ -1942,24 +1947,24 @@ public class QGraphicsView
 		return CQt.QWidget_Actions(this.nativePtr);
 	}
 	
-	public void* AddActionWithText(libqt_string text)
+	public void* AddActionWithText(String text)
 	{
-		return CQt.QWidget_AddActionWithText(this.nativePtr, text);
+		return CQt.QWidget_AddActionWithText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void* AddAction2(void* icon, libqt_string text)
+	public void* AddAction2(IQIcon icon, String text)
 	{
-		return CQt.QWidget_AddAction2(this.nativePtr, icon, text);
+		return CQt.QWidget_AddAction2(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr, libqt_string(text));
 	}
 	
-	public void* AddAction3(libqt_string text, void* shortcut)
+	public void* AddAction3(String text, IQKeySequence shortcut)
 	{
-		return CQt.QWidget_AddAction3(this.nativePtr, text, shortcut);
+		return CQt.QWidget_AddAction3(this.nativePtr, libqt_string(text), (shortcut == default) ? default : (void*)shortcut.NativePtr);
 	}
 	
-	public void* AddAction4(void* icon, libqt_string text, void* shortcut)
+	public void* AddAction4(IQIcon icon, String text, IQKeySequence shortcut)
 	{
-		return CQt.QWidget_AddAction4(this.nativePtr, icon, text, shortcut);
+		return CQt.QWidget_AddAction4(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr, libqt_string(text), (shortcut == default) ? default : (void*)shortcut.NativePtr);
 	}
 	
 	public void* ParentWidget()
@@ -2002,9 +2007,9 @@ public class QGraphicsView
 		return CQt.QWidget_ChildAt(this.nativePtr, x, y);
 	}
 	
-	public void* ChildAtWithQPoint(void* p)
+	public void* ChildAtWithQPoint(IQPoint p)
 	{
-		return CQt.QWidget_ChildAtWithQPoint(this.nativePtr, p);
+		return CQt.QWidget_ChildAtWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
 	}
 	
 	public void SetAttribute(int64 param1)
@@ -2027,9 +2032,9 @@ public class QGraphicsView
 		CQt.QWidget_EnsurePolished(this.nativePtr);
 	}
 	
-	public bool IsAncestorOf(void* child)
+	public bool IsAncestorOf(IQWidget child)
 	{
-		return CQt.QWidget_IsAncestorOf(this.nativePtr, child);
+		return CQt.QWidget_IsAncestorOf(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public bool AutoFillBackground()
@@ -2057,14 +2062,14 @@ public class QGraphicsView
 		return CQt.QWidget_Screen(this.nativePtr);
 	}
 	
-	public void SetScreen(void* screen)
+	public void SetScreen(IQScreen screen)
 	{
-		CQt.QWidget_SetScreen(this.nativePtr, screen);
+		CQt.QWidget_SetScreen(this.nativePtr, (screen == null) ? null : (void*)screen.NativePtr);
 	}
 	
-	public static void* CreateWindowContainer(void* window)
+	public static void* CreateWindowContainer(IQWindow window)
 	{
-		return CQt.QWidget_CreateWindowContainer(window);
+		return CQt.QWidget_CreateWindowContainer((window == null) ? null : (void*)window.NativePtr);
 	}
 	
 	public int64 InputMethodHints()
@@ -2077,24 +2082,24 @@ public class QGraphicsView
 		CQt.QWidget_SetInputMethodHints(this.nativePtr, hints);
 	}
 	
-	public void Render22(void* painter, void* targetOffset)
+	public void Render22(IQPainter painter, IQPoint targetOffset)
 	{
-		CQt.QWidget_Render22(this.nativePtr, painter, targetOffset);
+		CQt.QWidget_Render22(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr);
 	}
 	
-	public void Render32(void* painter, void* targetOffset, void* sourceRegion)
+	public void Render32(IQPainter painter, IQPoint targetOffset, IQRegion sourceRegion)
 	{
-		CQt.QWidget_Render32(this.nativePtr, painter, targetOffset, sourceRegion);
+		CQt.QWidget_Render32(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr);
 	}
 	
-	public void Render42(void* painter, void* targetOffset, void* sourceRegion, int64 renderFlags)
+	public void Render42(IQPainter painter, IQPoint targetOffset, IQRegion sourceRegion, int64 renderFlags)
 	{
-		CQt.QWidget_Render42(this.nativePtr, painter, targetOffset, sourceRegion, renderFlags);
+		CQt.QWidget_Render42(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (targetOffset == default) ? default : (void*)targetOffset.NativePtr, (sourceRegion == default) ? default : (void*)sourceRegion.NativePtr, renderFlags);
 	}
 	
-	public void Grab1(void* rectangle)
+	public void Grab1(IQRect rectangle)
 	{
-		CQt.QWidget_Grab1(this.nativePtr, rectangle);
+		CQt.QWidget_Grab1(this.nativePtr, (rectangle == default) ? default : (void*)rectangle.NativePtr);
 	}
 	
 	public void GrabGesture2(int64 typeVal, int64 flags)
@@ -2102,9 +2107,9 @@ public class QGraphicsView
 		CQt.QWidget_GrabGesture2(this.nativePtr, typeVal, flags);
 	}
 	
-	public int32 GrabShortcut2(void* key, int64 context)
+	public int32 GrabShortcut2(IQKeySequence key, int64 context)
 	{
-		return CQt.QWidget_GrabShortcut2(this.nativePtr, key, context);
+		return CQt.QWidget_GrabShortcut2(this.nativePtr, (key == default) ? default : (void*)key.NativePtr, context);
 	}
 	
 	public void SetShortcutEnabled2(int32 id, bool enable)
@@ -2127,14 +2132,14 @@ public class QGraphicsView
 		CQt.QWidget_SetAttribute2(this.nativePtr, param1, on);
 	}
 	
-	public static void* CreateWindowContainer2(void* window, void* parent)
+	public static void* CreateWindowContainer2(IQWindow window, IQWidget parent)
 	{
-		return CQt.QWidget_CreateWindowContainer2(window, parent);
+		return CQt.QWidget_CreateWindowContainer2((window == null) ? null : (void*)window.NativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public static void* CreateWindowContainer3(void* window, void* parent, int64 flags)
+	public static void* CreateWindowContainer3(IQWindow window, IQWidget parent, int64 flags)
 	{
-		return CQt.QWidget_CreateWindowContainer3(window, parent, flags);
+		return CQt.QWidget_CreateWindowContainer3((window == null) ? null : (void*)window.NativePtr, (parent == null) ? null : (void*)parent.NativePtr, flags);
 	}
 	
 	public libqt_string ObjectName()
@@ -2142,9 +2147,9 @@ public class QGraphicsView
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -2177,9 +2182,9 @@ public class QGraphicsView
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -2197,34 +2202,34 @@ public class QGraphicsView
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -2237,12 +2242,12 @@ public class QGraphicsView
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -2267,7 +2272,7 @@ public class QGraphicsView
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -2282,14 +2287,14 @@ public class QGraphicsView
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 	public bool PaintingActive()
@@ -2366,11 +2371,11 @@ extension CQt
 	[LinkName("QGraphicsView_MetaObject")]
 	public static extern void* QGraphicsView_MetaObject(void* c_this);
 	[LinkName("QGraphicsView_Metacast")]
-	public static extern void* QGraphicsView_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsView_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsView_Metacall")]
-	public static extern int32 QGraphicsView_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsView_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsView_Tr")]
-	public static extern libqt_string QGraphicsView_Tr(char8[] s);
+	public static extern libqt_string QGraphicsView_Tr(char8* s);
 	[LinkName("QGraphicsView_SizeHint")]
 	public static extern void QGraphicsView_SizeHint(void* c_this);
 	[LinkName("QGraphicsView_RenderHints")]
@@ -2566,9 +2571,9 @@ extension CQt
 	[LinkName("QGraphicsView_DrawForeground")]
 	public static extern void QGraphicsView_DrawForeground(void* c_this, void* painter, void* rect);
 	[LinkName("QGraphicsView_Tr2")]
-	public static extern libqt_string QGraphicsView_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsView_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsView_Tr3")]
-	public static extern libqt_string QGraphicsView_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsView_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QGraphicsView_SetRenderHint2")]
 	public static extern void QGraphicsView_SetRenderHint2(void* c_this, int64 hint, bool enabled);
 	[LinkName("QGraphicsView_SetOptimizationFlag2")]

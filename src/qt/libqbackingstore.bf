@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QBackingStore
+public interface IQBackingStore
+{
+	void* NativePtr { get; }
+}
+public class QBackingStore : IQBackingStore
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* window)
+	public this(IQWindow window)
 	{
-		this.nativePtr = CQt.QBackingStore_new(window);
+		this.nativePtr = CQt.QBackingStore_new((window == null) ? null : (void*)window.NativePtr);
 	}
 	
 	public ~this()
@@ -26,14 +31,14 @@ public class QBackingStore
 		return CQt.QBackingStore_PaintDevice(this.nativePtr);
 	}
 	
-	public void Flush(void* region)
+	public void Flush(IQRegion region)
 	{
-		CQt.QBackingStore_Flush(this.nativePtr, region);
+		CQt.QBackingStore_Flush(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
 	}
 	
-	public void Resize(void* size)
+	public void Resize(IQSize size)
 	{
-		CQt.QBackingStore_Resize(this.nativePtr, size);
+		CQt.QBackingStore_Resize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void Size()
@@ -41,14 +46,14 @@ public class QBackingStore
 		CQt.QBackingStore_Size(this.nativePtr);
 	}
 	
-	public bool Scroll(void* area, int32 dx, int32 dy)
+	public bool Scroll(IQRegion area, int32 dx, int32 dy)
 	{
-		return CQt.QBackingStore_Scroll(this.nativePtr, area, dx, dy);
+		return CQt.QBackingStore_Scroll(this.nativePtr, (area == default) ? default : (void*)area.NativePtr, dx, dy);
 	}
 	
-	public void BeginPaint(void* param1)
+	public void BeginPaint(IQRegion param1)
 	{
-		CQt.QBackingStore_BeginPaint(this.nativePtr, param1);
+		CQt.QBackingStore_BeginPaint(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void EndPaint()
@@ -56,9 +61,9 @@ public class QBackingStore
 		CQt.QBackingStore_EndPaint(this.nativePtr);
 	}
 	
-	public void SetStaticContents(void* region)
+	public void SetStaticContents(IQRegion region)
 	{
-		CQt.QBackingStore_SetStaticContents(this.nativePtr, region);
+		CQt.QBackingStore_SetStaticContents(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
 	}
 	
 	public void StaticContents()
@@ -71,14 +76,14 @@ public class QBackingStore
 		return CQt.QBackingStore_HasStaticContents(this.nativePtr);
 	}
 	
-	public void Flush2(void* region, void* window)
+	public void Flush2(IQRegion region, IQWindow window)
 	{
-		CQt.QBackingStore_Flush2(this.nativePtr, region, window);
+		CQt.QBackingStore_Flush2(this.nativePtr, (region == default) ? default : (void*)region.NativePtr, (window == null) ? null : (void*)window.NativePtr);
 	}
 	
-	public void Flush3(void* region, void* window, void* offset)
+	public void Flush3(IQRegion region, IQWindow window, IQPoint offset)
 	{
-		CQt.QBackingStore_Flush3(this.nativePtr, region, window, offset);
+		CQt.QBackingStore_Flush3(this.nativePtr, (region == default) ? default : (void*)region.NativePtr, (window == null) ? null : (void*)window.NativePtr, (offset == default) ? default : (void*)offset.NativePtr);
 	}
 	
 }

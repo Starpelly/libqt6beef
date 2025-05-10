@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QGraphicsLinearLayout
+public interface IQGraphicsLinearLayout
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsLinearLayout : IQGraphicsLinearLayout, IQGraphicsLayout
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -26,9 +31,9 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLinearLayout_Orientation(this.nativePtr);
 	}
 	
-	public void AddItem(void* item)
+	public void AddItem(IQGraphicsLayoutItem item)
 	{
-		CQt.QGraphicsLinearLayout_AddItem(this.nativePtr, item);
+		CQt.QGraphicsLinearLayout_AddItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void AddStretch()
@@ -36,9 +41,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLinearLayout_AddStretch(this.nativePtr);
 	}
 	
-	public void InsertItem(int32 index, void* item)
+	public void InsertItem(int32 index, IQGraphicsLayoutItem item)
 	{
-		CQt.QGraphicsLinearLayout_InsertItem(this.nativePtr, index, item);
+		CQt.QGraphicsLinearLayout_InsertItem(this.nativePtr, index, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void InsertStretch(int32 index)
@@ -46,9 +51,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLinearLayout_InsertStretch(this.nativePtr, index);
 	}
 	
-	public void RemoveItem(void* item)
+	public void RemoveItem(IQGraphicsLayoutItem item)
 	{
-		CQt.QGraphicsLinearLayout_RemoveItem(this.nativePtr, item);
+		CQt.QGraphicsLinearLayout_RemoveItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public virtual void RemoveAt(int32 index)
@@ -76,29 +81,29 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLinearLayout_ItemSpacing(this.nativePtr, index);
 	}
 	
-	public void SetStretchFactor(void* item, int32 stretch)
+	public void SetStretchFactor(IQGraphicsLayoutItem item, int32 stretch)
 	{
-		CQt.QGraphicsLinearLayout_SetStretchFactor(this.nativePtr, item, stretch);
+		CQt.QGraphicsLinearLayout_SetStretchFactor(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, stretch);
 	}
 	
-	public int32 StretchFactor(void* item)
+	public int32 StretchFactor(IQGraphicsLayoutItem item)
 	{
-		return CQt.QGraphicsLinearLayout_StretchFactor(this.nativePtr, item);
+		return CQt.QGraphicsLinearLayout_StretchFactor(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public void SetAlignment(void* item, int64 alignment)
+	public void SetAlignment(IQGraphicsLayoutItem item, int64 alignment)
 	{
-		CQt.QGraphicsLinearLayout_SetAlignment(this.nativePtr, item, alignment);
+		CQt.QGraphicsLinearLayout_SetAlignment(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, alignment);
 	}
 	
-	public int64 Alignment(void* item)
+	public int64 Alignment(IQGraphicsLayoutItem item)
 	{
-		return CQt.QGraphicsLinearLayout_Alignment(this.nativePtr, item);
+		return CQt.QGraphicsLinearLayout_Alignment(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
-	public virtual void SetGeometry(void* rect)
+	public virtual void SetGeometry(IQRectF rect)
 	{
-		CQt.QGraphicsLinearLayout_SetGeometry(this.nativePtr, rect);
+		CQt.QGraphicsLinearLayout_SetGeometry(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 	public virtual int32 Count()
@@ -116,9 +121,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLinearLayout_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void SizeHint(int64 which, void* constraint)
+	public virtual void SizeHint(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLinearLayout_SizeHint(this.nativePtr, which, constraint);
+		CQt.QGraphicsLinearLayout_SizeHint(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
 	public void Dump()
@@ -166,9 +171,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLayout_UpdateGeometry(this.nativePtr);
 	}
 	
-	public virtual void WidgetEvent(void* e)
+	public virtual void WidgetEvent(IQEvent e)
 	{
-		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, e);
+		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
 	}
 	
 	public static void SetInstantInvalidatePropagation(bool enable)
@@ -181,9 +186,9 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLayout_InstantInvalidatePropagation();
 	}
 	
-	public void SetSizePolicy(void* policy)
+	public void SetSizePolicy(IQSizePolicy policy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, policy);
+		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default) ? default : (void*)policy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
@@ -196,9 +201,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLayoutItem_SizePolicy(this.nativePtr);
 	}
 	
-	public void SetMinimumSize(void* size)
+	public void SetMinimumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMinimumSize2(double w, double h)
@@ -231,9 +236,9 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLayoutItem_MinimumHeight(this.nativePtr);
 	}
 	
-	public void SetPreferredSize(void* size)
+	public void SetPreferredSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetPreferredSize2(double w, double h)
@@ -266,9 +271,9 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLayoutItem_PreferredHeight(this.nativePtr);
 	}
 	
-	public void SetMaximumSize(void* size)
+	public void SetMaximumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, size);
+		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void SetMaximumSize2(double w, double h)
@@ -326,9 +331,9 @@ public class QGraphicsLinearLayout
 		return CQt.QGraphicsLayoutItem_ParentLayoutItem(this.nativePtr);
 	}
 	
-	public void SetParentLayoutItem(void* parent)
+	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
 	{
-		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, parent);
+		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public bool IsLayout()
@@ -351,9 +356,9 @@ public class QGraphicsLinearLayout
 		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, hPolicy, vPolicy, controlType);
 	}
 	
-	public void EffectiveSizeHint2(int64 which, void* constraint)
+	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, constraint);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
 	}
 	
 }

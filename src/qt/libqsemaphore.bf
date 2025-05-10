@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QSemaphore
+public interface IQSemaphore
+{
+	void* NativePtr { get; }
+}
+public class QSemaphore : IQSemaphore
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -90,9 +95,14 @@ extension CQt
 	[LinkName("QSemaphore_Delete")]
 	public static extern void QSemaphore_Delete(void* self);
 }
-public class QSemaphoreReleaser
+public interface IQSemaphoreReleaser
+{
+	void* NativePtr { get; }
+}
+public class QSemaphoreReleaser : IQSemaphoreReleaser
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -104,9 +114,9 @@ public class QSemaphoreReleaser
 		CQt.QSemaphoreReleaser_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQSemaphoreReleaser other)
 	{
-		CQt.QSemaphoreReleaser_Swap(this.nativePtr, other);
+		CQt.QSemaphoreReleaser_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void* Semaphore()

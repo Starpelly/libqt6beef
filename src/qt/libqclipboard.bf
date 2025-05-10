@@ -10,16 +10,21 @@ public enum QClipboard__Mode
 	FindBuffer = 2,
 	LastMode = 2,
 }
-public class QClipboard
+public interface IQClipboard
+{
+	void* NativePtr { get; }
+}
+public class QClipboard : IQClipboard, IQObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public virtual void* MetaObject()
 	{
 		return CQt.QClipboard_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QClipboard_Metacast(this.nativePtr, param1);
 	}
@@ -29,7 +34,7 @@ public class QClipboard
 		return CQt.QClipboard_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QClipboard_Tr(s);
 	}
@@ -69,14 +74,14 @@ public class QClipboard
 		return CQt.QClipboard_Text(this.nativePtr);
 	}
 	
-	public libqt_string TextWithSubtype(libqt_string subtype)
+	public libqt_string TextWithSubtype(String subtype)
 	{
-		return CQt.QClipboard_TextWithSubtype(this.nativePtr, subtype);
+		return CQt.QClipboard_TextWithSubtype(this.nativePtr, libqt_string(subtype));
 	}
 	
-	public void SetText(libqt_string param1)
+	public void SetText(String param1)
 	{
-		CQt.QClipboard_SetText(this.nativePtr, param1);
+		CQt.QClipboard_SetText(this.nativePtr, libqt_string(param1));
 	}
 	
 	public void* MimeData()
@@ -84,9 +89,9 @@ public class QClipboard
 		return CQt.QClipboard_MimeData(this.nativePtr);
 	}
 	
-	public void SetMimeData(void* data)
+	public void SetMimeData(IQMimeData data)
 	{
-		CQt.QClipboard_SetMimeData(this.nativePtr, data);
+		CQt.QClipboard_SetMimeData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr);
 	}
 	
 	public void Image()
@@ -99,22 +104,22 @@ public class QClipboard
 		CQt.QClipboard_Pixmap(this.nativePtr);
 	}
 	
-	public void SetImage(void* param1)
+	public void SetImage(IQImage param1)
 	{
-		CQt.QClipboard_SetImage(this.nativePtr, param1);
+		CQt.QClipboard_SetImage(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public void SetPixmap(void* param1)
+	public void SetPixmap(IQPixmap param1)
 	{
-		CQt.QClipboard_SetPixmap(this.nativePtr, param1);
+		CQt.QClipboard_SetPixmap(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QClipboard_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QClipboard_Tr3(s, c, n);
 	}
@@ -129,14 +134,14 @@ public class QClipboard
 		return CQt.QClipboard_Text1(this.nativePtr, mode);
 	}
 	
-	public libqt_string Text2(libqt_string subtype, int64 mode)
+	public libqt_string Text2(String subtype, int64 mode)
 	{
-		return CQt.QClipboard_Text2(this.nativePtr, subtype, mode);
+		return CQt.QClipboard_Text2(this.nativePtr, libqt_string(subtype), mode);
 	}
 	
-	public void SetText2(libqt_string param1, int64 mode)
+	public void SetText2(String param1, int64 mode)
 	{
-		CQt.QClipboard_SetText2(this.nativePtr, param1, mode);
+		CQt.QClipboard_SetText2(this.nativePtr, libqt_string(param1), mode);
 	}
 	
 	public void* MimeData1(int64 mode)
@@ -144,9 +149,9 @@ public class QClipboard
 		return CQt.QClipboard_MimeData1(this.nativePtr, mode);
 	}
 	
-	public void SetMimeData2(void* data, int64 mode)
+	public void SetMimeData2(IQMimeData data, int64 mode)
 	{
-		CQt.QClipboard_SetMimeData2(this.nativePtr, data, mode);
+		CQt.QClipboard_SetMimeData2(this.nativePtr, (data == null) ? null : (void*)data.NativePtr, mode);
 	}
 	
 	public void Image1(int64 mode)
@@ -159,24 +164,24 @@ public class QClipboard
 		CQt.QClipboard_Pixmap1(this.nativePtr, mode);
 	}
 	
-	public void SetImage2(void* param1, int64 mode)
+	public void SetImage2(IQImage param1, int64 mode)
 	{
-		CQt.QClipboard_SetImage2(this.nativePtr, param1, mode);
+		CQt.QClipboard_SetImage2(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr, mode);
 	}
 	
-	public void SetPixmap2(void* param1, int64 mode)
+	public void SetPixmap2(IQPixmap param1, int64 mode)
 	{
-		CQt.QClipboard_SetPixmap2(this.nativePtr, param1, mode);
+		CQt.QClipboard_SetPixmap2(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr, mode);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -184,9 +189,9 @@ public class QClipboard
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -219,9 +224,9 @@ public class QClipboard
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -239,39 +244,39 @@ public class QClipboard
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -284,12 +289,12 @@ public class QClipboard
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -314,7 +319,7 @@ public class QClipboard
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -329,14 +334,14 @@ public class QClipboard
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -345,11 +350,11 @@ extension CQt
 	[LinkName("QClipboard_MetaObject")]
 	public static extern void* QClipboard_MetaObject(void* c_this);
 	[LinkName("QClipboard_Metacast")]
-	public static extern void* QClipboard_Metacast(void* c_this, char8[] param1);
+	public static extern void* QClipboard_Metacast(void* c_this, char8* param1);
 	[LinkName("QClipboard_Metacall")]
-	public static extern int32 QClipboard_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QClipboard_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QClipboard_Tr")]
-	public static extern libqt_string QClipboard_Tr(char8[] s);
+	public static extern libqt_string QClipboard_Tr(char8* s);
 	[LinkName("QClipboard_Clear")]
 	public static extern void QClipboard_Clear(void* c_this);
 	[LinkName("QClipboard_SupportsSelection")]
@@ -389,9 +394,9 @@ extension CQt
 	[LinkName("QClipboard_Connect_DataChanged")]
 	public static extern void QClipboard_Connect_DataChanged(void* c_this, c_intptr slot);
 	[LinkName("QClipboard_Tr2")]
-	public static extern libqt_string QClipboard_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QClipboard_Tr2(char8* s, char8* c);
 	[LinkName("QClipboard_Tr3")]
-	public static extern libqt_string QClipboard_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QClipboard_Tr3(char8* s, char8* c, int32 n);
 	[LinkName("QClipboard_Clear1")]
 	public static extern void QClipboard_Clear1(void* c_this, int64 mode);
 	[LinkName("QClipboard_Text1")]

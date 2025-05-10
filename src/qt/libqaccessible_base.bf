@@ -198,13 +198,18 @@ public enum QAccessible__TextBoundaryType
 	LineBoundary = 4,
 	NoBoundary = 5,
 }
-public class QAccessible
+public interface IQAccessible
+{
+	void* NativePtr { get; }
+}
+public class QAccessible : IQAccessible
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQAccessible other)
 	{
-		this.nativePtr = CQt.QAccessible_new(other);
+		this.nativePtr = CQt.QAccessible_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -212,24 +217,24 @@ public class QAccessible
 		CQt.QAccessible_Delete(this.nativePtr);
 	}
 	
-	public static void InstallActivationObserver(QAccessible__ActivationObserver* param1)
+	public static void InstallActivationObserver(QAccessible__ActivationObserver param1)
 	{
-		CQt.QAccessible_InstallActivationObserver(param1);
+		CQt.QAccessible_InstallActivationObserver((param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static void RemoveActivationObserver(QAccessible__ActivationObserver* param1)
+	public static void RemoveActivationObserver(QAccessible__ActivationObserver param1)
 	{
-		CQt.QAccessible_RemoveActivationObserver(param1);
+		CQt.QAccessible_RemoveActivationObserver((param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static void* QueryAccessibleInterface(void* param1)
+	public static void* QueryAccessibleInterface(IQObject param1)
 	{
-		return CQt.QAccessible_QueryAccessibleInterface(param1);
+		return CQt.QAccessible_QueryAccessibleInterface((param1 == null) ? null : (void*)param1.NativePtr);
 	}
 	
-	public static uint32 UniqueId(void* iface)
+	public static uint32 UniqueId(IQAccessibleInterface iface)
 	{
-		return CQt.QAccessible_UniqueId(iface);
+		return CQt.QAccessible_UniqueId((iface == null) ? null : (void*)iface.NativePtr);
 	}
 	
 	public static void* AccessibleInterface(uint32 uniqueId)
@@ -237,9 +242,9 @@ public class QAccessible
 		return CQt.QAccessible_AccessibleInterface(uniqueId);
 	}
 	
-	public static uint32 RegisterAccessibleInterface(void* iface)
+	public static uint32 RegisterAccessibleInterface(IQAccessibleInterface iface)
 	{
-		return CQt.QAccessible_RegisterAccessibleInterface(iface);
+		return CQt.QAccessible_RegisterAccessibleInterface((iface == null) ? null : (void*)iface.NativePtr);
 	}
 	
 	public static void DeleteAccessibleInterface(uint32 uniqueId)
@@ -247,9 +252,9 @@ public class QAccessible
 		CQt.QAccessible_DeleteAccessibleInterface(uniqueId);
 	}
 	
-	public static void UpdateAccessibility(void* event)
+	public static void UpdateAccessibility(IQAccessibleEvent event)
 	{
-		CQt.QAccessible_UpdateAccessibility(event);
+		CQt.QAccessible_UpdateAccessibility((event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public static bool IsActive()
@@ -262,9 +267,9 @@ public class QAccessible
 		CQt.QAccessible_SetActive(active);
 	}
 	
-	public static void SetRootObject(void* object)
+	public static void SetRootObject(IQObject object)
 	{
-		CQt.QAccessible_SetRootObject(object);
+		CQt.QAccessible_SetRootObject((object == null) ? null : (void*)object.NativePtr);
 	}
 	
 	public static void Cleanup()
@@ -272,9 +277,9 @@ public class QAccessible
 		CQt.QAccessible_Cleanup();
 	}
 	
-	public static void* QAccessibleTextBoundaryHelper(void* cursor, int64 boundaryType)
+	public static void* QAccessibleTextBoundaryHelper(IQTextCursor cursor, int64 boundaryType)
 	{
-		return CQt.QAccessible_QAccessibleTextBoundaryHelper(cursor, boundaryType);
+		return CQt.QAccessible_QAccessibleTextBoundaryHelper((cursor == default) ? default : (void*)cursor.NativePtr, boundaryType);
 	}
 	
 }
@@ -285,9 +290,9 @@ extension CQt
 	[LinkName("QAccessible_new2")]
 	public static extern void* QAccessible_new2(void* other);
 	[LinkName("QAccessible_InstallActivationObserver")]
-	public static extern void QAccessible_InstallActivationObserver(QAccessible__ActivationObserver* param1);
+	public static extern void QAccessible_InstallActivationObserver(void* param1);
 	[LinkName("QAccessible_RemoveActivationObserver")]
-	public static extern void QAccessible_RemoveActivationObserver(QAccessible__ActivationObserver* param1);
+	public static extern void QAccessible_RemoveActivationObserver(void* param1);
 	[LinkName("QAccessible_QueryAccessibleInterface")]
 	public static extern void* QAccessible_QueryAccessibleInterface(void* param1);
 	[LinkName("QAccessible_UniqueId")]
@@ -314,13 +319,18 @@ extension CQt
 	[LinkName("QAccessible_Delete")]
 	public static extern void QAccessible_Delete(void* self);
 }
-public class QAccessible__State
+public interface IQAccessible__State
+{
+	void* NativePtr { get; }
+}
+public class QAccessible__State : IQAccessible__State
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QAccessible__State* other)
+	public this(QAccessible__State other)
 	{
-		this.nativePtr = CQt.QAccessible__State_new(other);
+		this.nativePtr = CQt.QAccessible__State_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -330,18 +340,23 @@ public class QAccessible__State
 extension CQt
 {
 	[LinkName("QAccessible__State_new")]
-	public static extern void* QAccessible__State_new(QAccessible__State* other);
+	public static extern void* QAccessible__State_new(void* other);
 	[LinkName("QAccessible__State_new2")]
-	public static extern void* QAccessible__State_new2(QAccessible__State* other);
+	public static extern void* QAccessible__State_new2(void* other);
 	[LinkName("QAccessible__State_new3")]
 	public static extern void* QAccessible__State_new3();
 	/// Delete this object from C++ memory
 	[LinkName("QAccessible__State_Delete")]
 	public static extern void QAccessible__State_Delete(void* self);
 }
-public class QAccessible__ActivationObserver
+public interface IQAccessible__ActivationObserver
+{
+	void* NativePtr { get; }
+}
+public class QAccessible__ActivationObserver : IQAccessible__ActivationObserver
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public ~this()
 	{
@@ -353,9 +368,9 @@ public class QAccessible__ActivationObserver
 		CQt.QAccessible__ActivationObserver_AccessibilityActiveChanged(this.nativePtr, active);
 	}
 	
-	public void OperatorAssign(QAccessible__ActivationObserver* param1)
+	public void OperatorAssign(QAccessible__ActivationObserver param1)
 	{
-		CQt.QAccessible__ActivationObserver_OperatorAssign(this.nativePtr, param1);
+		CQt.QAccessible__ActivationObserver_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -364,7 +379,7 @@ extension CQt
 	[LinkName("QAccessible__ActivationObserver_AccessibilityActiveChanged")]
 	public static extern void QAccessible__ActivationObserver_AccessibilityActiveChanged(void* c_this, bool active);
 	[LinkName("QAccessible__ActivationObserver_OperatorAssign")]
-	public static extern void QAccessible__ActivationObserver_OperatorAssign(void* c_this, QAccessible__ActivationObserver* param1);
+	public static extern void QAccessible__ActivationObserver_OperatorAssign(void* c_this, void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QAccessible__ActivationObserver_Delete")]
 	public static extern void QAccessible__ActivationObserver_Delete(void* self);

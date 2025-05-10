@@ -7,9 +7,14 @@ public enum QGraphicsSvgItem__
 {
 	Type = 13,
 }
-public class QGraphicsSvgItem
+public interface IQGraphicsSvgItem
+{
+	void* NativePtr { get; }
+}
+public class QGraphicsSvgItem : IQGraphicsSvgItem, IQGraphicsObject
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -26,7 +31,7 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsSvgItem_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QGraphicsSvgItem_Metacast(this.nativePtr, param1);
 	}
@@ -36,14 +41,14 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsSvgItem_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QGraphicsSvgItem_Tr(s);
 	}
 	
-	public void SetSharedRenderer(void* renderer)
+	public void SetSharedRenderer(IQSvgRenderer renderer)
 	{
-		CQt.QGraphicsSvgItem_SetSharedRenderer(this.nativePtr, renderer);
+		CQt.QGraphicsSvgItem_SetSharedRenderer(this.nativePtr, (renderer == null) ? null : (void*)renderer.NativePtr);
 	}
 	
 	public void* Renderer()
@@ -51,9 +56,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsSvgItem_Renderer(this.nativePtr);
 	}
 	
-	public void SetElementId(libqt_string id)
+	public void SetElementId(String id)
 	{
-		CQt.QGraphicsSvgItem_SetElementId(this.nativePtr, id);
+		CQt.QGraphicsSvgItem_SetElementId(this.nativePtr, libqt_string(id));
 	}
 	
 	public libqt_string ElementId()
@@ -71,9 +76,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsSvgItem_IsCachingEnabled(this.nativePtr);
 	}
 	
-	public void SetMaximumCacheSize(void* size)
+	public void SetMaximumCacheSize(IQSize size)
 	{
-		CQt.QGraphicsSvgItem_SetMaximumCacheSize(this.nativePtr, size);
+		CQt.QGraphicsSvgItem_SetMaximumCacheSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
 	}
 	
 	public void MaximumCacheSize()
@@ -86,9 +91,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsSvgItem_BoundingRect(this.nativePtr);
 	}
 	
-	public virtual void Paint(void* painter, void* option, void* widget)
+	public virtual void Paint(IQPainter painter, IQStyleOptionGraphicsItem option, IQWidget widget)
 	{
-		CQt.QGraphicsSvgItem_Paint(this.nativePtr, painter, option, widget);
+		CQt.QGraphicsSvgItem_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
 	}
 	
 	public virtual int32 Type()
@@ -96,12 +101,12 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsSvgItem_Type(this.nativePtr);
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QGraphicsSvgItem_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QGraphicsSvgItem_Tr3(s, c, n);
 	}
@@ -121,9 +126,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsObject_GrabGesture2(this.nativePtr, typeVal, flags);
 	}
 	
-	public virtual bool EventFilter(void* watched, void* event)
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -131,9 +136,9 @@ public class QGraphicsSvgItem
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -166,9 +171,9 @@ public class QGraphicsSvgItem
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -186,39 +191,39 @@ public class QGraphicsSvgItem
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -231,12 +236,12 @@ public class QGraphicsSvgItem
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -261,7 +266,7 @@ public class QGraphicsSvgItem
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -276,14 +281,14 @@ public class QGraphicsSvgItem
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 	public void* Scene()
@@ -326,9 +331,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_Panel(this.nativePtr);
 	}
 	
-	public void SetParentItem(void* parent)
+	public void SetParentItem(IQGraphicsItem parent)
 	{
-		CQt.QGraphicsItem_SetParentItem(this.nativePtr, parent);
+		CQt.QGraphicsItem_SetParentItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public void*[] ChildItems()
@@ -366,9 +371,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_Group(this.nativePtr);
 	}
 	
-	public void SetGroup(void* group)
+	public void SetGroup(IQGraphicsItemGroup group)
 	{
-		CQt.QGraphicsItem_SetGroup(this.nativePtr, group);
+		CQt.QGraphicsItem_SetGroup(this.nativePtr, (group == null) ? null : (void*)group.NativePtr);
 	}
 	
 	public int64 Flags()
@@ -416,9 +421,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_ToolTip(this.nativePtr);
 	}
 	
-	public void SetToolTip(libqt_string toolTip)
+	public void SetToolTip(String toolTip)
 	{
-		CQt.QGraphicsItem_SetToolTip(this.nativePtr, toolTip);
+		CQt.QGraphicsItem_SetToolTip(this.nativePtr, libqt_string(toolTip));
 	}
 	
 	public void Cursor()
@@ -426,9 +431,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_Cursor(this.nativePtr);
 	}
 	
-	public void SetCursor(void* cursor)
+	public void SetCursor(IQCursor cursor)
 	{
-		CQt.QGraphicsItem_SetCursor(this.nativePtr, cursor);
+		CQt.QGraphicsItem_SetCursor(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
 	}
 	
 	public bool HasCursor()
@@ -446,9 +451,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_IsVisible(this.nativePtr);
 	}
 	
-	public bool IsVisibleTo(void* parent)
+	public bool IsVisibleTo(IQGraphicsItem parent)
 	{
-		return CQt.QGraphicsItem_IsVisibleTo(this.nativePtr, parent);
+		return CQt.QGraphicsItem_IsVisibleTo(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
 	public void SetVisible(bool visible)
@@ -516,9 +521,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_GraphicsEffect(this.nativePtr);
 	}
 	
-	public void SetGraphicsEffect(void* effect)
+	public void SetGraphicsEffect(IQGraphicsEffect effect)
 	{
-		CQt.QGraphicsItem_SetGraphicsEffect(this.nativePtr, effect);
+		CQt.QGraphicsItem_SetGraphicsEffect(this.nativePtr, (effect == null) ? null : (void*)effect.NativePtr);
 	}
 	
 	public int64 AcceptedMouseButtons()
@@ -601,9 +606,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_FocusProxy(this.nativePtr);
 	}
 	
-	public void SetFocusProxy(void* item)
+	public void SetFocusProxy(IQGraphicsItem item)
 	{
-		CQt.QGraphicsItem_SetFocusProxy(this.nativePtr, item);
+		CQt.QGraphicsItem_SetFocusProxy(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public void* FocusItem()
@@ -666,9 +671,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_ScenePos(this.nativePtr);
 	}
 	
-	public void SetPos(void* pos)
+	public void SetPos(IQPointF pos)
 	{
-		CQt.QGraphicsItem_SetPos(this.nativePtr, pos);
+		CQt.QGraphicsItem_SetPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
 	}
 	
 	public void SetPos2(double x, double y)
@@ -701,19 +706,19 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_SceneTransform(this.nativePtr);
 	}
 	
-	public void DeviceTransform(void* viewportTransform)
+	public void DeviceTransform(IQTransform viewportTransform)
 	{
-		CQt.QGraphicsItem_DeviceTransform(this.nativePtr, viewportTransform);
+		CQt.QGraphicsItem_DeviceTransform(this.nativePtr, (viewportTransform == default) ? default : (void*)viewportTransform.NativePtr);
 	}
 	
-	public void ItemTransform(void* other)
+	public void ItemTransform(IQGraphicsItem other)
 	{
-		CQt.QGraphicsItem_ItemTransform(this.nativePtr, other);
+		CQt.QGraphicsItem_ItemTransform(this.nativePtr, (other == null) ? null : (void*)other.NativePtr);
 	}
 	
-	public void SetTransform(void* matrix)
+	public void SetTransform(IQTransform matrix)
 	{
-		CQt.QGraphicsItem_SetTransform(this.nativePtr, matrix);
+		CQt.QGraphicsItem_SetTransform(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
 	}
 	
 	public void ResetTransform()
@@ -746,9 +751,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_Transformations(this.nativePtr);
 	}
 	
-	public void SetTransformations(void*[] transformations)
+	public void SetTransformations(IQGraphicsTransform[] transformations)
 	{
-		CQt.QGraphicsItem_SetTransformations(this.nativePtr, transformations);
+		CQt.QGraphicsItem_SetTransformations(this.nativePtr, null);
 	}
 	
 	public void TransformOriginPoint()
@@ -756,9 +761,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_TransformOriginPoint(this.nativePtr);
 	}
 	
-	public void SetTransformOriginPoint(void* origin)
+	public void SetTransformOriginPoint(IQPointF origin)
 	{
-		CQt.QGraphicsItem_SetTransformOriginPoint(this.nativePtr, origin);
+		CQt.QGraphicsItem_SetTransformOriginPoint(this.nativePtr, (origin == default) ? default : (void*)origin.NativePtr);
 	}
 	
 	public void SetTransformOriginPoint2(double ax, double ay)
@@ -781,9 +786,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_SetZValue(this.nativePtr, z);
 	}
 	
-	public void StackBefore(void* sibling)
+	public void StackBefore(IQGraphicsItem sibling)
 	{
-		CQt.QGraphicsItem_StackBefore(this.nativePtr, sibling);
+		CQt.QGraphicsItem_StackBefore(this.nativePtr, (sibling == null) ? null : (void*)sibling.NativePtr);
 	}
 	
 	public void ChildrenBoundingRect()
@@ -811,19 +816,19 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_ClipPath(this.nativePtr);
 	}
 	
-	public virtual bool Contains(void* point)
+	public virtual bool Contains(IQPointF point)
 	{
-		return CQt.QGraphicsItem_Contains(this.nativePtr, point);
+		return CQt.QGraphicsItem_Contains(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public virtual bool CollidesWithItem(void* other, int64 mode)
+	public virtual bool CollidesWithItem(IQGraphicsItem other, int64 mode)
 	{
-		return CQt.QGraphicsItem_CollidesWithItem(this.nativePtr, other, mode);
+		return CQt.QGraphicsItem_CollidesWithItem(this.nativePtr, (other == null) ? null : (void*)other.NativePtr, mode);
 	}
 	
-	public virtual bool CollidesWithPath(void* path, int64 mode)
+	public virtual bool CollidesWithPath(IQPainterPath path, int64 mode)
 	{
-		return CQt.QGraphicsItem_CollidesWithPath(this.nativePtr, path, mode);
+		return CQt.QGraphicsItem_CollidesWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr, mode);
 	}
 	
 	public void*[] CollidingItems()
@@ -841,9 +846,9 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_IsObscured2(this.nativePtr, x, y, w, h);
 	}
 	
-	public virtual bool IsObscuredBy(void* item)
+	public virtual bool IsObscuredBy(IQGraphicsItem item)
 	{
-		return CQt.QGraphicsItem_IsObscuredBy(this.nativePtr, item);
+		return CQt.QGraphicsItem_IsObscuredBy(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
 	}
 	
 	public virtual void OpaqueArea()
@@ -851,9 +856,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_OpaqueArea(this.nativePtr);
 	}
 	
-	public void BoundingRegion(void* itemToDeviceTransform)
+	public void BoundingRegion(IQTransform itemToDeviceTransform)
 	{
-		CQt.QGraphicsItem_BoundingRegion(this.nativePtr, itemToDeviceTransform);
+		CQt.QGraphicsItem_BoundingRegion(this.nativePtr, (itemToDeviceTransform == default) ? default : (void*)itemToDeviceTransform.NativePtr);
 	}
 	
 	public double BoundingRegionGranularity()
@@ -881,99 +886,99 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_Scroll(this.nativePtr, dx, dy);
 	}
 	
-	public void MapToItem(void* item, void* point)
+	public void MapToItem(IQGraphicsItem item, IQPointF point)
 	{
-		CQt.QGraphicsItem_MapToItem(this.nativePtr, item, point);
+		CQt.QGraphicsItem_MapToItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapToParent(void* point)
+	public void MapToParent(IQPointF point)
 	{
-		CQt.QGraphicsItem_MapToParent(this.nativePtr, point);
+		CQt.QGraphicsItem_MapToParent(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapToScene(void* point)
+	public void MapToScene(IQPointF point)
 	{
-		CQt.QGraphicsItem_MapToScene(this.nativePtr, point);
+		CQt.QGraphicsItem_MapToScene(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapRectToItem(void* item, void* rect)
+	public void MapRectToItem(IQGraphicsItem item, IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectToItem(this.nativePtr, item, rect);
+		CQt.QGraphicsItem_MapRectToItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapRectToParent(void* rect)
+	public void MapRectToParent(IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectToParent(this.nativePtr, rect);
+		CQt.QGraphicsItem_MapRectToParent(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapRectToScene(void* rect)
+	public void MapRectToScene(IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectToScene(this.nativePtr, rect);
+		CQt.QGraphicsItem_MapRectToScene(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapToItem4(void* item, void* path)
+	public void MapToItem4(IQGraphicsItem item, IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapToItem4(this.nativePtr, item, path);
+		CQt.QGraphicsItem_MapToItem4(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapToParentWithPath(void* path)
+	public void MapToParentWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapToParentWithPath(this.nativePtr, path);
+		CQt.QGraphicsItem_MapToParentWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapToSceneWithPath(void* path)
+	public void MapToSceneWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapToSceneWithPath(this.nativePtr, path);
+		CQt.QGraphicsItem_MapToSceneWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapFromItem(void* item, void* point)
+	public void MapFromItem(IQGraphicsItem item, IQPointF point)
 	{
-		CQt.QGraphicsItem_MapFromItem(this.nativePtr, item, point);
+		CQt.QGraphicsItem_MapFromItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapFromParent(void* point)
+	public void MapFromParent(IQPointF point)
 	{
-		CQt.QGraphicsItem_MapFromParent(this.nativePtr, point);
+		CQt.QGraphicsItem_MapFromParent(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapFromScene(void* point)
+	public void MapFromScene(IQPointF point)
 	{
-		CQt.QGraphicsItem_MapFromScene(this.nativePtr, point);
+		CQt.QGraphicsItem_MapFromScene(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
 	}
 	
-	public void MapRectFromItem(void* item, void* rect)
+	public void MapRectFromItem(IQGraphicsItem item, IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectFromItem(this.nativePtr, item, rect);
+		CQt.QGraphicsItem_MapRectFromItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapRectFromParent(void* rect)
+	public void MapRectFromParent(IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectFromParent(this.nativePtr, rect);
+		CQt.QGraphicsItem_MapRectFromParent(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapRectFromScene(void* rect)
+	public void MapRectFromScene(IQRectF rect)
 	{
-		CQt.QGraphicsItem_MapRectFromScene(this.nativePtr, rect);
+		CQt.QGraphicsItem_MapRectFromScene(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void MapFromItem4(void* item, void* path)
+	public void MapFromItem4(IQGraphicsItem item, IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapFromItem4(this.nativePtr, item, path);
+		CQt.QGraphicsItem_MapFromItem4(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapFromParentWithPath(void* path)
+	public void MapFromParentWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapFromParentWithPath(this.nativePtr, path);
+		CQt.QGraphicsItem_MapFromParentWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapFromSceneWithPath(void* path)
+	public void MapFromSceneWithPath(IQPainterPath path)
 	{
-		CQt.QGraphicsItem_MapFromSceneWithPath(this.nativePtr, path);
+		CQt.QGraphicsItem_MapFromSceneWithPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
 	}
 	
-	public void MapToItem5(void* item, double x, double y)
+	public void MapToItem5(IQGraphicsItem item, double x, double y)
 	{
-		CQt.QGraphicsItem_MapToItem5(this.nativePtr, item, x, y);
+		CQt.QGraphicsItem_MapToItem5(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, x, y);
 	}
 	
 	public void MapToParent2(double x, double y)
@@ -986,9 +991,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_MapToScene2(this.nativePtr, x, y);
 	}
 	
-	public void MapRectToItem2(void* item, double x, double y, double w, double h)
+	public void MapRectToItem2(IQGraphicsItem item, double x, double y, double w, double h)
 	{
-		CQt.QGraphicsItem_MapRectToItem2(this.nativePtr, item, x, y, w, h);
+		CQt.QGraphicsItem_MapRectToItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, x, y, w, h);
 	}
 	
 	public void MapRectToParent2(double x, double y, double w, double h)
@@ -1001,9 +1006,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_MapRectToScene2(this.nativePtr, x, y, w, h);
 	}
 	
-	public void MapFromItem5(void* item, double x, double y)
+	public void MapFromItem5(IQGraphicsItem item, double x, double y)
 	{
-		CQt.QGraphicsItem_MapFromItem5(this.nativePtr, item, x, y);
+		CQt.QGraphicsItem_MapFromItem5(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, x, y);
 	}
 	
 	public void MapFromParent2(double x, double y)
@@ -1016,9 +1021,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_MapFromScene2(this.nativePtr, x, y);
 	}
 	
-	public void MapRectFromItem2(void* item, double x, double y, double w, double h)
+	public void MapRectFromItem2(IQGraphicsItem item, double x, double y, double w, double h)
 	{
-		CQt.QGraphicsItem_MapRectFromItem2(this.nativePtr, item, x, y, w, h);
+		CQt.QGraphicsItem_MapRectFromItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, x, y, w, h);
 	}
 	
 	public void MapRectFromParent2(double x, double y, double w, double h)
@@ -1031,14 +1036,14 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_MapRectFromScene2(this.nativePtr, x, y, w, h);
 	}
 	
-	public bool IsAncestorOf(void* child)
+	public bool IsAncestorOf(IQGraphicsItem child)
 	{
-		return CQt.QGraphicsItem_IsAncestorOf(this.nativePtr, child);
+		return CQt.QGraphicsItem_IsAncestorOf(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
-	public void* CommonAncestorItem(void* other)
+	public void* CommonAncestorItem(IQGraphicsItem other)
 	{
-		return CQt.QGraphicsItem_CommonAncestorItem(this.nativePtr, other);
+		return CQt.QGraphicsItem_CommonAncestorItem(this.nativePtr, (other == null) ? null : (void*)other.NativePtr);
 	}
 	
 	public bool IsUnderMouse()
@@ -1051,9 +1056,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_Data(this.nativePtr, key);
 	}
 	
-	public void SetData(int32 key, void* value)
+	public void SetData(int32 key, IQVariant value)
 	{
-		CQt.QGraphicsItem_SetData(this.nativePtr, key, value);
+		CQt.QGraphicsItem_SetData(this.nativePtr, key, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
 	public int64 InputMethodHints()
@@ -1066,14 +1071,14 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_SetInputMethodHints(this.nativePtr, hints);
 	}
 	
-	public void InstallSceneEventFilter(void* filterItem)
+	public void InstallSceneEventFilter(IQGraphicsItem filterItem)
 	{
-		CQt.QGraphicsItem_InstallSceneEventFilter(this.nativePtr, filterItem);
+		CQt.QGraphicsItem_InstallSceneEventFilter(this.nativePtr, (filterItem == null) ? null : (void*)filterItem.NativePtr);
 	}
 	
-	public void RemoveSceneEventFilter(void* filterItem)
+	public void RemoveSceneEventFilter(IQGraphicsItem filterItem)
 	{
-		CQt.QGraphicsItem_RemoveSceneEventFilter(this.nativePtr, filterItem);
+		CQt.QGraphicsItem_RemoveSceneEventFilter(this.nativePtr, (filterItem == null) ? null : (void*)filterItem.NativePtr);
 	}
 	
 	public void SetFlag2(int64 flag, bool enabled)
@@ -1081,9 +1086,9 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_SetFlag2(this.nativePtr, flag, enabled);
 	}
 	
-	public void SetCacheMode2(int64 mode, void* cacheSize)
+	public void SetCacheMode2(int64 mode, IQSize cacheSize)
 	{
-		CQt.QGraphicsItem_SetCacheMode2(this.nativePtr, mode, cacheSize);
+		CQt.QGraphicsItem_SetCacheMode2(this.nativePtr, mode, (cacheSize == default) ? default : (void*)cacheSize.NativePtr);
 	}
 	
 	public void SetFocus1(int64 focusReason)
@@ -1091,19 +1096,19 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_SetFocus1(this.nativePtr, focusReason);
 	}
 	
-	public void EnsureVisible1(void* rect)
+	public void EnsureVisible1(IQRectF rect)
 	{
-		CQt.QGraphicsItem_EnsureVisible1(this.nativePtr, rect);
+		CQt.QGraphicsItem_EnsureVisible1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void EnsureVisible22(void* rect, int32 xmargin)
+	public void EnsureVisible22(IQRectF rect, int32 xmargin)
 	{
-		CQt.QGraphicsItem_EnsureVisible22(this.nativePtr, rect, xmargin);
+		CQt.QGraphicsItem_EnsureVisible22(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xmargin);
 	}
 	
-	public void EnsureVisible3(void* rect, int32 xmargin, int32 ymargin)
+	public void EnsureVisible3(IQRectF rect, int32 xmargin, int32 ymargin)
 	{
-		CQt.QGraphicsItem_EnsureVisible3(this.nativePtr, rect, xmargin, ymargin);
+		CQt.QGraphicsItem_EnsureVisible3(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xmargin, ymargin);
 	}
 	
 	public void EnsureVisible5(double x, double y, double w, double h, int32 xmargin)
@@ -1116,14 +1121,14 @@ public class QGraphicsSvgItem
 		CQt.QGraphicsItem_EnsureVisible6(this.nativePtr, x, y, w, h, xmargin, ymargin);
 	}
 	
-	public void ItemTransform2(void* other, bool* ok)
+	public void ItemTransform2(IQGraphicsItem other, bool* ok)
 	{
-		CQt.QGraphicsItem_ItemTransform2(this.nativePtr, other, ok);
+		CQt.QGraphicsItem_ItemTransform2(this.nativePtr, (other == null) ? null : (void*)other.NativePtr, ok);
 	}
 	
-	public void SetTransform2(void* matrix, bool combine)
+	public void SetTransform2(IQTransform matrix, bool combine)
 	{
-		CQt.QGraphicsItem_SetTransform2(this.nativePtr, matrix, combine);
+		CQt.QGraphicsItem_SetTransform2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, combine);
 	}
 	
 	public void*[] CollidingItems1(int64 mode)
@@ -1131,19 +1136,19 @@ public class QGraphicsSvgItem
 		return CQt.QGraphicsItem_CollidingItems1(this.nativePtr, mode);
 	}
 	
-	public bool IsObscured1(void* rect)
+	public bool IsObscured1(IQRectF rect)
 	{
-		return CQt.QGraphicsItem_IsObscured1(this.nativePtr, rect);
+		return CQt.QGraphicsItem_IsObscured1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void Update1(void* rect)
+	public void Update1(IQRectF rect)
 	{
-		CQt.QGraphicsItem_Update1(this.nativePtr, rect);
+		CQt.QGraphicsItem_Update1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public void Scroll3(double dx, double dy, void* rect)
+	public void Scroll3(double dx, double dy, IQRectF rect)
 	{
-		CQt.QGraphicsItem_Scroll3(this.nativePtr, dx, dy, rect);
+		CQt.QGraphicsItem_Scroll3(this.nativePtr, dx, dy, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
 }
@@ -1160,11 +1165,11 @@ extension CQt
 	[LinkName("QGraphicsSvgItem_MetaObject")]
 	public static extern void* QGraphicsSvgItem_MetaObject(void* c_this);
 	[LinkName("QGraphicsSvgItem_Metacast")]
-	public static extern void* QGraphicsSvgItem_Metacast(void* c_this, char8[] param1);
+	public static extern void* QGraphicsSvgItem_Metacast(void* c_this, char8* param1);
 	[LinkName("QGraphicsSvgItem_Metacall")]
-	public static extern int32 QGraphicsSvgItem_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QGraphicsSvgItem_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QGraphicsSvgItem_Tr")]
-	public static extern libqt_string QGraphicsSvgItem_Tr(char8[] s);
+	public static extern libqt_string QGraphicsSvgItem_Tr(char8* s);
 	[LinkName("QGraphicsSvgItem_SetSharedRenderer")]
 	public static extern void QGraphicsSvgItem_SetSharedRenderer(void* c_this, void* renderer);
 	[LinkName("QGraphicsSvgItem_Renderer")]
@@ -1188,9 +1193,9 @@ extension CQt
 	[LinkName("QGraphicsSvgItem_Type")]
 	public static extern int32 QGraphicsSvgItem_Type(void* c_this);
 	[LinkName("QGraphicsSvgItem_Tr2")]
-	public static extern libqt_string QGraphicsSvgItem_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QGraphicsSvgItem_Tr2(char8* s, char8* c);
 	[LinkName("QGraphicsSvgItem_Tr3")]
-	public static extern libqt_string QGraphicsSvgItem_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QGraphicsSvgItem_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QGraphicsSvgItem_Delete")]
 	public static extern void QGraphicsSvgItem_Delete(void* self);

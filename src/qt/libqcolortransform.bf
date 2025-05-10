@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QColorTransform
+public interface IQColorTransform
+{
+	void* NativePtr { get; }
+}
+public class QColorTransform : IQColorTransform
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,14 +21,14 @@ public class QColorTransform
 		CQt.QColorTransform_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQColorTransform other)
 	{
-		CQt.QColorTransform_OperatorAssign(this.nativePtr, other);
+		CQt.QColorTransform_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQColorTransform other)
 	{
-		CQt.QColorTransform_Swap(this.nativePtr, other);
+		CQt.QColorTransform_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsIdentity()
@@ -36,14 +41,14 @@ public class QColorTransform
 		return CQt.QColorTransform_Map(this.nativePtr, argb);
 	}
 	
-	public void MapWithRgba64(void rgba64)
+	public void MapWithRgba64(IQRgba64 rgba64)
 	{
-		CQt.QColorTransform_MapWithRgba64(this.nativePtr, rgba64);
+		CQt.QColorTransform_MapWithRgba64(this.nativePtr, (rgba64 == default) ? default : (void)rgba64.NativePtr);
 	}
 	
-	public void MapWithColor(void* color)
+	public void MapWithColor(IQColor color)
 	{
-		CQt.QColorTransform_MapWithColor(this.nativePtr, color);
+		CQt.QColorTransform_MapWithColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 }

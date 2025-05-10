@@ -8,13 +8,18 @@ public enum QCommandLineOption__Flag
 	HiddenFromHelp = 1,
 	ShortOptionStyle = 2,
 }
-public class QCommandLineOption
+public interface IQCommandLineOption
+{
+	void* NativePtr { get; }
+}
+public class QCommandLineOption : IQCommandLineOption
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string name)
+	public this(String name)
 	{
-		this.nativePtr = CQt.QCommandLineOption_new(name);
+		this.nativePtr = CQt.QCommandLineOption_new(libqt_string(name));
 	}
 	
 	public ~this()
@@ -22,14 +27,14 @@ public class QCommandLineOption
 		CQt.QCommandLineOption_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQCommandLineOption other)
 	{
-		CQt.QCommandLineOption_OperatorAssign(this.nativePtr, other);
+		CQt.QCommandLineOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQCommandLineOption other)
 	{
-		CQt.QCommandLineOption_Swap(this.nativePtr, other);
+		CQt.QCommandLineOption_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public libqt_string[] Names()
@@ -37,9 +42,9 @@ public class QCommandLineOption
 		return CQt.QCommandLineOption_Names(this.nativePtr);
 	}
 	
-	public void SetValueName(libqt_string name)
+	public void SetValueName(String name)
 	{
-		CQt.QCommandLineOption_SetValueName(this.nativePtr, name);
+		CQt.QCommandLineOption_SetValueName(this.nativePtr, libqt_string(name));
 	}
 	
 	public libqt_string ValueName()
@@ -47,9 +52,9 @@ public class QCommandLineOption
 		return CQt.QCommandLineOption_ValueName(this.nativePtr);
 	}
 	
-	public void SetDescription(libqt_string description)
+	public void SetDescription(String description)
 	{
-		CQt.QCommandLineOption_SetDescription(this.nativePtr, description);
+		CQt.QCommandLineOption_SetDescription(this.nativePtr, libqt_string(description));
 	}
 	
 	public libqt_string Description()
@@ -57,14 +62,14 @@ public class QCommandLineOption
 		return CQt.QCommandLineOption_Description(this.nativePtr);
 	}
 	
-	public void SetDefaultValue(libqt_string defaultValue)
+	public void SetDefaultValue(String defaultValue)
 	{
-		CQt.QCommandLineOption_SetDefaultValue(this.nativePtr, defaultValue);
+		CQt.QCommandLineOption_SetDefaultValue(this.nativePtr, libqt_string(defaultValue));
 	}
 	
-	public void SetDefaultValues(libqt_string[] defaultValues)
+	public void SetDefaultValues(String[] defaultValues)
 	{
-		CQt.QCommandLineOption_SetDefaultValues(this.nativePtr, defaultValues);
+		CQt.QCommandLineOption_SetDefaultValues(this.nativePtr, null);
 	}
 	
 	public libqt_string[] DefaultValues()

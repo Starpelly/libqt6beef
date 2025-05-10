@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QTextDocumentWriter
+public interface IQTextDocumentWriter
+{
+	void* NativePtr { get; }
+}
+public class QTextDocumentWriter : IQTextDocumentWriter
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QTextDocumentWriter
 		CQt.QTextDocumentWriter_Delete(this.nativePtr);
 	}
 	
-	public void SetFormat(libqt_string format)
+	public void SetFormat(String format)
 	{
-		CQt.QTextDocumentWriter_SetFormat(this.nativePtr, format);
+		CQt.QTextDocumentWriter_SetFormat(this.nativePtr, libqt_string(format));
 	}
 	
 	public libqt_string Format()
@@ -26,9 +31,9 @@ public class QTextDocumentWriter
 		return CQt.QTextDocumentWriter_Format(this.nativePtr);
 	}
 	
-	public void SetDevice(void* device)
+	public void SetDevice(IQIODevice device)
 	{
-		CQt.QTextDocumentWriter_SetDevice(this.nativePtr, device);
+		CQt.QTextDocumentWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
 	}
 	
 	public void* Device()
@@ -36,9 +41,9 @@ public class QTextDocumentWriter
 		return CQt.QTextDocumentWriter_Device(this.nativePtr);
 	}
 	
-	public void SetFileName(libqt_string fileName)
+	public void SetFileName(String fileName)
 	{
-		CQt.QTextDocumentWriter_SetFileName(this.nativePtr, fileName);
+		CQt.QTextDocumentWriter_SetFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
 	public libqt_string FileName()
@@ -46,14 +51,14 @@ public class QTextDocumentWriter
 		return CQt.QTextDocumentWriter_FileName(this.nativePtr);
 	}
 	
-	public bool Write(void* document)
+	public bool Write(IQTextDocument document)
 	{
-		return CQt.QTextDocumentWriter_Write(this.nativePtr, document);
+		return CQt.QTextDocumentWriter_Write(this.nativePtr, (document == null) ? null : (void*)document.NativePtr);
 	}
 	
-	public bool WriteWithFragment(void* fragment)
+	public bool WriteWithFragment(IQTextDocumentFragment fragment)
 	{
-		return CQt.QTextDocumentWriter_WriteWithFragment(this.nativePtr, fragment);
+		return CQt.QTextDocumentWriter_WriteWithFragment(this.nativePtr, (fragment == default) ? default : (void*)fragment.NativePtr);
 	}
 	
 	public static libqt_string[] SupportedDocumentFormats()

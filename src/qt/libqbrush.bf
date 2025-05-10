@@ -204,9 +204,14 @@ public enum QGradient__Preset
 	PerfectBlue = 180,
 	NumPresets = 181,
 }
-public class QBrush
+public interface IQBrush
+{
+	void* NativePtr { get; }
+}
+public class QBrush : IQBrush
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -218,14 +223,14 @@ public class QBrush
 		CQt.QBrush_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* brush)
+	public void OperatorAssign(IQBrush brush)
 	{
-		CQt.QBrush_OperatorAssign(this.nativePtr, brush);
+		CQt.QBrush_OperatorAssign(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQBrush other)
 	{
-		CQt.QBrush_Swap(this.nativePtr, other);
+		CQt.QBrush_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -248,9 +253,9 @@ public class QBrush
 		CQt.QBrush_Transform(this.nativePtr);
 	}
 	
-	public void SetTransform(void* transform)
+	public void SetTransform(IQTransform transform)
 	{
-		CQt.QBrush_SetTransform(this.nativePtr, transform);
+		CQt.QBrush_SetTransform(this.nativePtr, (transform == default) ? default : (void*)transform.NativePtr);
 	}
 	
 	public void Texture()
@@ -258,9 +263,9 @@ public class QBrush
 		CQt.QBrush_Texture(this.nativePtr);
 	}
 	
-	public void SetTexture(void* pixmap)
+	public void SetTexture(IQPixmap pixmap)
 	{
-		CQt.QBrush_SetTexture(this.nativePtr, pixmap);
+		CQt.QBrush_SetTexture(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr);
 	}
 	
 	public void TextureImage()
@@ -268,9 +273,9 @@ public class QBrush
 		CQt.QBrush_TextureImage(this.nativePtr);
 	}
 	
-	public void SetTextureImage(void* image)
+	public void SetTextureImage(IQImage image)
 	{
-		CQt.QBrush_SetTextureImage(this.nativePtr, image);
+		CQt.QBrush_SetTextureImage(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
 	}
 	
 	public void* Color()
@@ -278,9 +283,9 @@ public class QBrush
 		return CQt.QBrush_Color(this.nativePtr);
 	}
 	
-	public void SetColor(void* color)
+	public void SetColor(IQColor color)
 	{
-		CQt.QBrush_SetColor(this.nativePtr, color);
+		CQt.QBrush_SetColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void SetColorWithColor(int64 color)
@@ -298,14 +303,14 @@ public class QBrush
 		return CQt.QBrush_IsOpaque(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(void* b)
+	public bool OperatorEqual(IQBrush b)
 	{
-		return CQt.QBrush_OperatorEqual(this.nativePtr, b);
+		return CQt.QBrush_OperatorEqual(this.nativePtr, (b == default) ? default : (void*)b.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* b)
+	public bool OperatorNotEqual(IQBrush b)
 	{
-		return CQt.QBrush_OperatorNotEqual(this.nativePtr, b);
+		return CQt.QBrush_OperatorNotEqual(this.nativePtr, (b == default) ? default : (void*)b.NativePtr);
 	}
 	
 	public bool IsDetached()
@@ -382,13 +387,18 @@ extension CQt
 	[LinkName("QBrush_Delete")]
 	public static extern void QBrush_Delete(void* self);
 }
-public class QBrushData
+public interface IQBrushData
+{
+	void* NativePtr { get; }
+}
+public class QBrushData : IQBrushData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* param1)
+	public this(IQBrushData param1)
 	{
-		this.nativePtr = CQt.QBrushData_new(param1);
+		this.nativePtr = CQt.QBrushData_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public ~this()
@@ -396,9 +406,9 @@ public class QBrushData
 		CQt.QBrushData_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQBrushData param1)
 	{
-		CQt.QBrushData_OperatorAssign(this.nativePtr, param1);
+		CQt.QBrushData_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }
@@ -412,9 +422,14 @@ extension CQt
 	[LinkName("QBrushData_Delete")]
 	public static extern void QBrushData_Delete(void* self);
 }
-public class QGradient
+public interface IQGradient
+{
+	void* NativePtr { get; }
+}
+public class QGradient : IQGradient
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -441,9 +456,9 @@ public class QGradient
 		return CQt.QGradient_Spread(this.nativePtr);
 	}
 	
-	public void SetColorAt(double pos, void* color)
+	public void SetColorAt(double pos, IQColor color)
 	{
-		CQt.QGradient_SetColorAt(this.nativePtr, pos, color);
+		CQt.QGradient_SetColorAt(this.nativePtr, pos, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void*[] Stops()
@@ -471,14 +486,14 @@ public class QGradient
 		CQt.QGradient_SetInterpolationMode(this.nativePtr, mode);
 	}
 	
-	public bool OperatorEqual(void* gradient)
+	public bool OperatorEqual(IQGradient gradient)
 	{
-		return CQt.QGradient_OperatorEqual(this.nativePtr, gradient);
+		return CQt.QGradient_OperatorEqual(this.nativePtr, (gradient == default) ? default : (void*)gradient.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQGradient other)
 	{
-		return CQt.QGradient_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QGradient_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -516,9 +531,14 @@ extension CQt
 	[LinkName("QGradient_Delete")]
 	public static extern void QGradient_Delete(void* self);
 }
-public class QLinearGradient
+public interface IQLinearGradient
+{
+	void* NativePtr { get; }
+}
+public class QLinearGradient : IQLinearGradient, IQGradient
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -535,9 +555,9 @@ public class QLinearGradient
 		CQt.QLinearGradient_Start(this.nativePtr);
 	}
 	
-	public void SetStart(void* start)
+	public void SetStart(IQPointF start)
 	{
-		CQt.QLinearGradient_SetStart(this.nativePtr, start);
+		CQt.QLinearGradient_SetStart(this.nativePtr, (start == default) ? default : (void*)start.NativePtr);
 	}
 	
 	public void SetStart2(double x, double y)
@@ -550,9 +570,9 @@ public class QLinearGradient
 		CQt.QLinearGradient_FinalStop(this.nativePtr);
 	}
 	
-	public void SetFinalStop(void* stop)
+	public void SetFinalStop(IQPointF stop)
 	{
-		CQt.QLinearGradient_SetFinalStop(this.nativePtr, stop);
+		CQt.QLinearGradient_SetFinalStop(this.nativePtr, (stop == default) ? default : (void*)stop.NativePtr);
 	}
 	
 	public void SetFinalStop2(double x, double y)
@@ -575,9 +595,9 @@ public class QLinearGradient
 		return CQt.QGradient_Spread(this.nativePtr);
 	}
 	
-	public void SetColorAt(double pos, void* color)
+	public void SetColorAt(double pos, IQColor color)
 	{
-		CQt.QGradient_SetColorAt(this.nativePtr, pos, color);
+		CQt.QGradient_SetColorAt(this.nativePtr, pos, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void*[] Stops()
@@ -605,14 +625,14 @@ public class QLinearGradient
 		CQt.QGradient_SetInterpolationMode(this.nativePtr, mode);
 	}
 	
-	public bool OperatorEqual(void* gradient)
+	public bool OperatorEqual(IQGradient gradient)
 	{
-		return CQt.QGradient_OperatorEqual(this.nativePtr, gradient);
+		return CQt.QGradient_OperatorEqual(this.nativePtr, (gradient == default) ? default : (void*)gradient.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQGradient other)
 	{
-		return CQt.QGradient_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QGradient_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -642,9 +662,14 @@ extension CQt
 	[LinkName("QLinearGradient_Delete")]
 	public static extern void QLinearGradient_Delete(void* self);
 }
-public class QRadialGradient
+public interface IQRadialGradient
+{
+	void* NativePtr { get; }
+}
+public class QRadialGradient : IQRadialGradient, IQGradient
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -661,9 +686,9 @@ public class QRadialGradient
 		CQt.QRadialGradient_Center(this.nativePtr);
 	}
 	
-	public void SetCenter(void* center)
+	public void SetCenter(IQPointF center)
 	{
-		CQt.QRadialGradient_SetCenter(this.nativePtr, center);
+		CQt.QRadialGradient_SetCenter(this.nativePtr, (center == default) ? default : (void*)center.NativePtr);
 	}
 	
 	public void SetCenter2(double x, double y)
@@ -676,9 +701,9 @@ public class QRadialGradient
 		CQt.QRadialGradient_FocalPoint(this.nativePtr);
 	}
 	
-	public void SetFocalPoint(void* focalPoint)
+	public void SetFocalPoint(IQPointF focalPoint)
 	{
-		CQt.QRadialGradient_SetFocalPoint(this.nativePtr, focalPoint);
+		CQt.QRadialGradient_SetFocalPoint(this.nativePtr, (focalPoint == default) ? default : (void*)focalPoint.NativePtr);
 	}
 	
 	public void SetFocalPoint2(double x, double y)
@@ -731,9 +756,9 @@ public class QRadialGradient
 		return CQt.QGradient_Spread(this.nativePtr);
 	}
 	
-	public void SetColorAt(double pos, void* color)
+	public void SetColorAt(double pos, IQColor color)
 	{
-		CQt.QGradient_SetColorAt(this.nativePtr, pos, color);
+		CQt.QGradient_SetColorAt(this.nativePtr, pos, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void*[] Stops()
@@ -761,14 +786,14 @@ public class QRadialGradient
 		CQt.QGradient_SetInterpolationMode(this.nativePtr, mode);
 	}
 	
-	public bool OperatorEqual(void* gradient)
+	public bool OperatorEqual(IQGradient gradient)
 	{
-		return CQt.QGradient_OperatorEqual(this.nativePtr, gradient);
+		return CQt.QGradient_OperatorEqual(this.nativePtr, (gradient == default) ? default : (void*)gradient.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQGradient other)
 	{
-		return CQt.QGradient_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QGradient_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -818,9 +843,14 @@ extension CQt
 	[LinkName("QRadialGradient_Delete")]
 	public static extern void QRadialGradient_Delete(void* self);
 }
-public class QConicalGradient
+public interface IQConicalGradient
+{
+	void* NativePtr { get; }
+}
+public class QConicalGradient : IQConicalGradient, IQGradient
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -837,9 +867,9 @@ public class QConicalGradient
 		CQt.QConicalGradient_Center(this.nativePtr);
 	}
 	
-	public void SetCenter(void* center)
+	public void SetCenter(IQPointF center)
 	{
-		CQt.QConicalGradient_SetCenter(this.nativePtr, center);
+		CQt.QConicalGradient_SetCenter(this.nativePtr, (center == default) ? default : (void*)center.NativePtr);
 	}
 	
 	public void SetCenter2(double x, double y)
@@ -872,9 +902,9 @@ public class QConicalGradient
 		return CQt.QGradient_Spread(this.nativePtr);
 	}
 	
-	public void SetColorAt(double pos, void* color)
+	public void SetColorAt(double pos, IQColor color)
 	{
-		CQt.QGradient_SetColorAt(this.nativePtr, pos, color);
+		CQt.QGradient_SetColorAt(this.nativePtr, pos, (color == default) ? default : (void*)color.NativePtr);
 	}
 	
 	public void*[] Stops()
@@ -902,14 +932,14 @@ public class QConicalGradient
 		CQt.QGradient_SetInterpolationMode(this.nativePtr, mode);
 	}
 	
-	public bool OperatorEqual(void* gradient)
+	public bool OperatorEqual(IQGradient gradient)
 	{
-		return CQt.QGradient_OperatorEqual(this.nativePtr, gradient);
+		return CQt.QGradient_OperatorEqual(this.nativePtr, (gradient == default) ? default : (void*)gradient.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(void* other)
+	public bool OperatorNotEqual(IQGradient other)
 	{
-		return CQt.QGradient_OperatorNotEqual(this.nativePtr, other);
+		return CQt.QGradient_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 }
@@ -937,13 +967,18 @@ extension CQt
 	[LinkName("QConicalGradient_Delete")]
 	public static extern void QConicalGradient_Delete(void* self);
 }
-public class QGradient__QGradientData
+public interface IQGradient__QGradientData
+{
+	void* NativePtr { get; }
+}
+public class QGradient__QGradientData : IQGradient__QGradientData
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(QGradient__QGradientData* param1)
+	public this(QGradient__QGradientData param1)
 	{
-		this.nativePtr = CQt.QGradient__QGradientData_new(param1);
+		this.nativePtr = CQt.QGradient__QGradientData_new((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	public ~this()
 	{
@@ -953,7 +988,7 @@ public class QGradient__QGradientData
 extension CQt
 {
 	[LinkName("QGradient__QGradientData_new")]
-	public static extern void* QGradient__QGradientData_new(QGradient__QGradientData* param1);
+	public static extern void* QGradient__QGradientData_new(void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("QGradient__QGradientData_Delete")]
 	public static extern void QGradient__QGradientData_Delete(void* self);

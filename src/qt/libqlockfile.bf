@@ -10,13 +10,18 @@ public enum QLockFile__LockError
 	PermissionError = 2,
 	UnknownError = 3,
 }
-public class QLockFile
+public interface IQLockFile
+{
+	void* NativePtr { get; }
+}
+public class QLockFile : IQLockFile
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(libqt_string fileName)
+	public this(String fileName)
 	{
-		this.nativePtr = CQt.QLockFile_new(fileName);
+		this.nativePtr = CQt.QLockFile_new(libqt_string(fileName));
 	}
 	
 	public ~this()

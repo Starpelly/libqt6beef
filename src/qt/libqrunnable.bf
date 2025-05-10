@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QRunnable
+public interface IQRunnable
+{
+	void* NativePtr { get; }
+}
+public class QRunnable : IQRunnable
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{

@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAnyStringView
+public interface IQAnyStringView
+{
+	void* NativePtr { get; }
+}
+public class QAnyStringView : IQAnyStringView
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQAnyStringView other)
 	{
-		this.nativePtr = CQt.QAnyStringView_new(other);
+		this.nativePtr = CQt.QAnyStringView_new((other == default) ? default : (char8*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -31,14 +36,14 @@ public class QAnyStringView
 		return CQt.QAnyStringView_Data(this.nativePtr);
 	}
 	
-	public static int32 Compare(void lhs, void rhs)
+	public static int32 Compare(IQAnyStringView lhs, IQAnyStringView rhs)
 	{
-		return CQt.QAnyStringView_Compare(lhs, rhs);
+		return CQt.QAnyStringView_Compare((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr);
 	}
 	
-	public static bool Equal(void lhs, void rhs)
+	public static bool Equal(IQAnyStringView lhs, IQAnyStringView rhs)
 	{
-		return CQt.QAnyStringView_Equal(lhs, rhs);
+		return CQt.QAnyStringView_Equal((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr);
 	}
 	
 	public void Front()
@@ -76,18 +81,18 @@ public class QAnyStringView
 		return CQt.QAnyStringView_Length(this.nativePtr);
 	}
 	
-	public static int32 Compare3(void lhs, void rhs, int64 cs)
+	public static int32 Compare3(IQAnyStringView lhs, IQAnyStringView rhs, int64 cs)
 	{
-		return CQt.QAnyStringView_Compare3(lhs, rhs, cs);
+		return CQt.QAnyStringView_Compare3((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr, cs);
 	}
 	
 }
 extension CQt
 {
 	[LinkName("QAnyStringView_new")]
-	public static extern void* QAnyStringView_new(void* other);
+	public static extern void* QAnyStringView_new(char8* other);
 	[LinkName("QAnyStringView_new2")]
-	public static extern void* QAnyStringView_new2(void* other);
+	public static extern void* QAnyStringView_new2(char8* other);
 	[LinkName("QAnyStringView_new3")]
 	public static extern void* QAnyStringView_new3();
 	[LinkName("QAnyStringView_new4")]
@@ -97,7 +102,7 @@ extension CQt
 	[LinkName("QAnyStringView_new6")]
 	public static extern void* QAnyStringView_new6(void* c);
 	[LinkName("QAnyStringView_new7")]
-	public static extern void* QAnyStringView_new7(void* param1);
+	public static extern void* QAnyStringView_new7(char8* param1);
 	[LinkName("QAnyStringView_ToString")]
 	public static extern libqt_string QAnyStringView_ToString(void* c_this);
 	[LinkName("QAnyStringView_Size")]
@@ -105,9 +110,9 @@ extension CQt
 	[LinkName("QAnyStringView_Data")]
 	public static extern void* QAnyStringView_Data(void* c_this);
 	[LinkName("QAnyStringView_Compare")]
-	public static extern int32 QAnyStringView_Compare(void lhs, void rhs);
+	public static extern int32 QAnyStringView_Compare(char8* lhs, char8* rhs);
 	[LinkName("QAnyStringView_Equal")]
-	public static extern bool QAnyStringView_Equal(void lhs, void rhs);
+	public static extern bool QAnyStringView_Equal(char8* lhs, char8* rhs);
 	[LinkName("QAnyStringView_Front")]
 	public static extern void QAnyStringView_Front(void* c_this);
 	[LinkName("QAnyStringView_Back")]
@@ -123,7 +128,7 @@ extension CQt
 	[LinkName("QAnyStringView_Length")]
 	public static extern int32 QAnyStringView_Length(void* c_this);
 	[LinkName("QAnyStringView_Compare3")]
-	public static extern int32 QAnyStringView_Compare3(void lhs, void rhs, int64 cs);
+	public static extern int32 QAnyStringView_Compare3(char8* lhs, char8* rhs, int64 cs);
 	/// Delete this object from C++ memory
 	[LinkName("QAnyStringView_Delete")]
 	public static extern void QAnyStringView_Delete(void* self);

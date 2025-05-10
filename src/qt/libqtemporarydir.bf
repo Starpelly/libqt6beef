@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QTemporaryDir
+public interface IQTemporaryDir
+{
+	void* NativePtr { get; }
+}
+public class QTemporaryDir : IQTemporaryDir
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -16,9 +21,9 @@ public class QTemporaryDir
 		CQt.QTemporaryDir_Delete(this.nativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQTemporaryDir other)
 	{
-		CQt.QTemporaryDir_Swap(this.nativePtr, other);
+		CQt.QTemporaryDir_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -51,9 +56,9 @@ public class QTemporaryDir
 		return CQt.QTemporaryDir_Path(this.nativePtr);
 	}
 	
-	public libqt_string FilePath(libqt_string fileName)
+	public libqt_string FilePath(String fileName)
 	{
-		return CQt.QTemporaryDir_FilePath(this.nativePtr, fileName);
+		return CQt.QTemporaryDir_FilePath(this.nativePtr, libqt_string(fileName));
 	}
 	
 }

@@ -66,9 +66,14 @@ public enum QVariant__Type
 	UserType = 65536,
 	LastType = 4294967295,
 }
-public class QVariant
+public interface IQVariant
+{
+	void* NativePtr { get; }
+}
+public class QVariant : IQVariant
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -80,14 +85,14 @@ public class QVariant
 		CQt.QVariant_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* other)
+	public void OperatorAssign(IQVariant other)
 	{
-		CQt.QVariant_OperatorAssign(this.nativePtr, other);
+		CQt.QVariant_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
-	public void Swap(void* other)
+	public void Swap(IQVariant other)
 	{
-		CQt.QVariant_Swap(this.nativePtr, other);
+		CQt.QVariant_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public int32 UserType()
@@ -100,7 +105,7 @@ public class QVariant
 		return CQt.QVariant_TypeId(this.nativePtr);
 	}
 	
-	public char8[] TypeName()
+	public char8* TypeName()
 	{
 		return CQt.QVariant_TypeName(this.nativePtr);
 	}
@@ -110,19 +115,19 @@ public class QVariant
 		CQt.QVariant_MetaType(this.nativePtr);
 	}
 	
-	public bool CanConvert(void targetType)
+	public bool CanConvert(IQMetaType targetType)
 	{
-		return CQt.QVariant_CanConvert(this.nativePtr, targetType);
+		return CQt.QVariant_CanConvert(this.nativePtr, (targetType == default) ? default : (void)targetType.NativePtr);
 	}
 	
-	public bool Convert(void typeVal)
+	public bool Convert(IQMetaType typeVal)
 	{
-		return CQt.QVariant_Convert(this.nativePtr, typeVal);
+		return CQt.QVariant_Convert(this.nativePtr, (typeVal == default) ? default : (void)typeVal.NativePtr);
 	}
 	
-	public bool CanView(void targetType)
+	public bool CanView(IQMetaType targetType)
 	{
-		return CQt.QVariant_CanView(this.nativePtr, targetType);
+		return CQt.QVariant_CanView(this.nativePtr, (targetType == default) ? default : (void)targetType.NativePtr);
 	}
 	
 	public bool CanConvertWithTargetTypeId(int32 targetTypeId)
@@ -345,14 +350,14 @@ public class QVariant
 		CQt.QVariant_ToPersistentModelIndex(this.nativePtr);
 	}
 	
-	public void Load(void* ds)
+	public void Load(IQDataStream ds)
 	{
-		CQt.QVariant_Load(this.nativePtr, ds);
+		CQt.QVariant_Load(this.nativePtr, (ds == default) ? default : (void*)ds.NativePtr);
 	}
 	
-	public void Save(void* ds)
+	public void Save(IQDataStream ds)
 	{
-		CQt.QVariant_Save(this.nativePtr, ds);
+		CQt.QVariant_Save(this.nativePtr, (ds == default) ? default : (void*)ds.NativePtr);
 	}
 	
 	public int64 Type()
@@ -360,12 +365,12 @@ public class QVariant
 		return CQt.QVariant_Type(this.nativePtr);
 	}
 	
-	public static char8[] TypeToName(int32 typeId)
+	public static char8* TypeToName(int32 typeId)
 	{
 		return CQt.QVariant_TypeToName(typeId);
 	}
 	
-	public static int64 NameToType(char8[] name)
+	public static int64 NameToType(char8* name)
 	{
 		return CQt.QVariant_NameToType(name);
 	}
@@ -385,14 +390,14 @@ public class QVariant
 		return CQt.QVariant_Data2(this.nativePtr);
 	}
 	
-	public void SetValue(void* avalue)
+	public void SetValue(IQVariant avalue)
 	{
-		CQt.QVariant_SetValue(this.nativePtr, avalue);
+		CQt.QVariant_SetValue(this.nativePtr, (avalue == default) ? default : (void*)avalue.NativePtr);
 	}
 	
-	public static void Compare(void* lhs, void* rhs)
+	public static void Compare(IQVariant lhs, IQVariant rhs)
 	{
-		CQt.QVariant_Compare(lhs, rhs);
+		CQt.QVariant_Compare((lhs == default) ? default : (void*)lhs.NativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
 	}
 	
 	public int32 ToInt1(bool* ok)
@@ -454,7 +459,7 @@ extension CQt
 	[LinkName("QVariant_new10")]
 	public static extern void* QVariant_new10(float f);
 	[LinkName("QVariant_new11")]
-	public static extern void* QVariant_new11(char8[] str);
+	public static extern void* QVariant_new11(char8* str);
 	[LinkName("QVariant_new12")]
 	public static extern void* QVariant_new12(libqt_string bytearray);
 	[LinkName("QVariant_new13")]
@@ -526,7 +531,7 @@ extension CQt
 	[LinkName("QVariant_TypeId")]
 	public static extern int32 QVariant_TypeId(void* c_this);
 	[LinkName("QVariant_TypeName")]
-	public static extern char8[] QVariant_TypeName(void* c_this);
+	public static extern char8* QVariant_TypeName(void* c_this);
 	[LinkName("QVariant_MetaType")]
 	public static extern void QVariant_MetaType(void* c_this);
 	[LinkName("QVariant_CanConvert")]
@@ -630,9 +635,9 @@ extension CQt
 	[LinkName("QVariant_Type")]
 	public static extern int64 QVariant_Type(void* c_this);
 	[LinkName("QVariant_TypeToName")]
-	public static extern char8[] QVariant_TypeToName(int32 typeId);
+	public static extern char8* QVariant_TypeToName(int32 typeId);
 	[LinkName("QVariant_NameToType")]
-	public static extern int64 QVariant_NameToType(char8[] name);
+	public static extern int64 QVariant_NameToType(char8* name);
 	[LinkName("QVariant_Data")]
 	public static extern void* QVariant_Data(void* c_this);
 	[LinkName("QVariant_ConstData")]
@@ -661,13 +666,18 @@ extension CQt
 	[LinkName("QVariant_Delete")]
 	public static extern void QVariant_Delete(void* self);
 }
-public class QVariantConstPointer
+public interface IQVariantConstPointer
+{
+	void* NativePtr { get; }
+}
+public class QVariantConstPointer : IQVariantConstPointer
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void variant)
+	public this(IQVariant variant)
 	{
-		this.nativePtr = CQt.QVariantConstPointer_new(variant);
+		this.nativePtr = CQt.QVariantConstPointer_new((variant == default) ? default : (void)variant.NativePtr);
 	}
 	
 	public ~this()
@@ -685,9 +695,9 @@ public class QVariantConstPointer
 		return CQt.QVariantConstPointer_OperatorMinusGreater(this.nativePtr);
 	}
 	
-	public void OperatorAssign(void* param1)
+	public void OperatorAssign(IQVariantConstPointer param1)
 	{
-		CQt.QVariantConstPointer_OperatorAssign(this.nativePtr, param1);
+		CQt.QVariantConstPointer_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 }

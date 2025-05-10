@@ -1569,13 +1569,18 @@ public enum QInternal__Callback
 	EventNotifyCallback = 0,
 	LastCallback = 1,
 }
-public class Disambiguated_t
+public interface IDisambiguated_t
+{
+	void* NativePtr { get; }
+}
+public class Disambiguated_t : IDisambiguated_t
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(Disambiguated_t* other)
+	public this(Disambiguated_t other)
 	{
-		this.nativePtr = CQt.Disambiguated_t_new(other);
+		this.nativePtr = CQt.Disambiguated_t_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	public ~this()
 	{
@@ -1585,24 +1590,29 @@ public class Disambiguated_t
 extension CQt
 {
 	[LinkName("Disambiguated_t_new")]
-	public static extern void* Disambiguated_t_new(Disambiguated_t* other);
+	public static extern void* Disambiguated_t_new(void* other);
 	[LinkName("Disambiguated_t_new2")]
-	public static extern void* Disambiguated_t_new2(Disambiguated_t* other);
+	public static extern void* Disambiguated_t_new2(void* other);
 	[LinkName("Disambiguated_t_new3")]
 	public static extern void* Disambiguated_t_new3();
 	[LinkName("Disambiguated_t_new4")]
-	public static extern void* Disambiguated_t_new4(Disambiguated_t* param1);
+	public static extern void* Disambiguated_t_new4(void* param1);
 	/// Delete this object from C++ memory
 	[LinkName("Disambiguated_t_Delete")]
 	public static extern void Disambiguated_t_Delete(void* self);
 }
-public class QInternal
+public interface IQInternal
+{
+	void* NativePtr { get; }
+}
+public class QInternal : IQInternal
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQInternal other)
 	{
-		this.nativePtr = CQt.QInternal_new(other);
+		this.nativePtr = CQt.QInternal_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()
@@ -1623,18 +1633,23 @@ extension CQt
 	[LinkName("QInternal_new2")]
 	public static extern void* QInternal_new2(void* other);
 	[LinkName("QInternal_ActivateCallbacks")]
-	public static extern bool QInternal_ActivateCallbacks(int64 param1, void** param2);
+	public static extern bool QInternal_ActivateCallbacks(int64 param1, void* param2);
 	/// Delete this object from C++ memory
 	[LinkName("QInternal_Delete")]
 	public static extern void QInternal_Delete(void* self);
 }
-public class QKeyCombination
+public interface IQKeyCombination
+{
+	void* NativePtr { get; }
+}
+public class QKeyCombination : IQKeyCombination
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* other)
+	public this(IQKeyCombination other)
 	{
-		this.nativePtr = CQt.QKeyCombination_new(other);
+		this.nativePtr = CQt.QKeyCombination_new((other == default) ? default : (void*)other.NativePtr);
 	}
 	
 	public ~this()

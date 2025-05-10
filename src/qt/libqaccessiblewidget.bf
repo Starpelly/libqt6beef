@@ -2,13 +2,18 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QAccessibleWidget
+public interface IQAccessibleWidget
+{
+	void* NativePtr { get; }
+}
+public class QAccessibleWidget : IQAccessibleWidget, IQAccessibleObject, IQAccessibleActionInterface
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
-	public this(void* o)
+	public this(IQWidget o)
 	{
-		this.nativePtr = CQt.QAccessibleWidget_new(o);
+		this.nativePtr = CQt.QAccessibleWidget_new((o == null) ? null : (void*)o.NativePtr);
 	}
 	
 	public virtual bool IsValid()
@@ -26,9 +31,9 @@ public class QAccessibleWidget
 		return CQt.QAccessibleWidget_ChildCount(this.nativePtr);
 	}
 	
-	public virtual int32 IndexOfChild(void* child)
+	public virtual int32 IndexOfChild(IQAccessibleInterface child)
 	{
-		return CQt.QAccessibleWidget_IndexOfChild(this.nativePtr, child);
+		return CQt.QAccessibleWidget_IndexOfChild(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
 	}
 	
 	public virtual void*[] Relations(int64 match)
@@ -66,9 +71,9 @@ public class QAccessibleWidget
 		return CQt.QAccessibleWidget_Role(this.nativePtr);
 	}
 	
-	public virtual QAccessible__State State()
+	public virtual void State()
 	{
-		return CQt.QAccessibleWidget_State(this.nativePtr);
+		CQt.QAccessibleWidget_State(this.nativePtr);
 	}
 	
 	public virtual void ForegroundColor()
@@ -91,14 +96,14 @@ public class QAccessibleWidget
 		return CQt.QAccessibleWidget_ActionNames(this.nativePtr);
 	}
 	
-	public virtual void DoAction(libqt_string actionName)
+	public virtual void DoAction(String actionName)
 	{
-		CQt.QAccessibleWidget_DoAction(this.nativePtr, actionName);
+		CQt.QAccessibleWidget_DoAction(this.nativePtr, libqt_string(actionName));
 	}
 	
-	public virtual libqt_string[] KeyBindingsForAction(libqt_string actionName)
+	public virtual libqt_string[] KeyBindingsForAction(String actionName)
 	{
-		return CQt.QAccessibleWidget_KeyBindingsForAction(this.nativePtr, actionName);
+		return CQt.QAccessibleWidget_KeyBindingsForAction(this.nativePtr, libqt_string(actionName));
 	}
 	
 	public virtual void* Object()
@@ -106,9 +111,9 @@ public class QAccessibleWidget
 		return CQt.QAccessibleObject_Object(this.nativePtr);
 	}
 	
-	public virtual void SetText(int64 t, libqt_string text)
+	public virtual void SetText(int64 t, String text)
 	{
-		CQt.QAccessibleObject_SetText(this.nativePtr, t, text);
+		CQt.QAccessibleObject_SetText(this.nativePtr, t, libqt_string(text));
 	}
 	
 	public virtual void* ChildAt(int32 x, int32 y)
@@ -161,19 +166,19 @@ public class QAccessibleWidget
 		CQt.QAccessibleInterface_VirtualHook(this.nativePtr, id, data);
 	}
 	
-	public static libqt_string Tr(char8[] sourceText)
+	public static libqt_string Tr(char8* sourceText)
 	{
 		return CQt.QAccessibleActionInterface_Tr(sourceText);
 	}
 	
-	public virtual libqt_string LocalizedActionName(libqt_string name)
+	public virtual libqt_string LocalizedActionName(String name)
 	{
-		return CQt.QAccessibleActionInterface_LocalizedActionName(this.nativePtr, name);
+		return CQt.QAccessibleActionInterface_LocalizedActionName(this.nativePtr, libqt_string(name));
 	}
 	
-	public virtual libqt_string LocalizedActionDescription(libqt_string name)
+	public virtual libqt_string LocalizedActionDescription(String name)
 	{
-		return CQt.QAccessibleActionInterface_LocalizedActionDescription(this.nativePtr, name);
+		return CQt.QAccessibleActionInterface_LocalizedActionDescription(this.nativePtr, libqt_string(name));
 	}
 	
 	public static libqt_string PressAction()
@@ -236,12 +241,12 @@ public class QAccessibleWidget
 		return CQt.QAccessibleActionInterface_PreviousPageAction();
 	}
 	
-	public static libqt_string Tr2(char8[] sourceText, char8[] disambiguation)
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
 	{
 		return CQt.QAccessibleActionInterface_Tr2(sourceText, disambiguation);
 	}
 	
-	public static libqt_string Tr3(char8[] sourceText, char8[] disambiguation, int32 n)
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QAccessibleActionInterface_Tr3(sourceText, disambiguation, n);
 	}
@@ -278,7 +283,7 @@ extension CQt
 	[LinkName("QAccessibleWidget_Role")]
 	public static extern int64 QAccessibleWidget_Role(void* c_this);
 	[LinkName("QAccessibleWidget_State")]
-	public static extern QAccessible__State QAccessibleWidget_State(void* c_this);
+	public static extern void QAccessibleWidget_State(void* c_this);
 	[LinkName("QAccessibleWidget_ForegroundColor")]
 	public static extern void QAccessibleWidget_ForegroundColor(void* c_this);
 	[LinkName("QAccessibleWidget_BackgroundColor")]

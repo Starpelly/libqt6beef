@@ -2,9 +2,14 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public class QItemDelegate
+public interface IQItemDelegate
+{
+	void* NativePtr { get; }
+}
+public class QItemDelegate : IQItemDelegate, IQAbstractItemDelegate
 {
 	protected void* nativePtr;
+	public void* NativePtr => nativePtr;
 	
 	public this()
 	{
@@ -21,7 +26,7 @@ public class QItemDelegate
 		return CQt.QItemDelegate_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8[] param1)
+	public virtual void* Metacast(char8* param1)
 	{
 		return CQt.QItemDelegate_Metacast(this.nativePtr, param1);
 	}
@@ -31,7 +36,7 @@ public class QItemDelegate
 		return CQt.QItemDelegate_Metacall(this.nativePtr, param1, param2, param3);
 	}
 	
-	public static libqt_string Tr(char8[] s)
+	public static libqt_string Tr(char8* s)
 	{
 		return CQt.QItemDelegate_Tr(s);
 	}
@@ -46,34 +51,34 @@ public class QItemDelegate
 		CQt.QItemDelegate_SetClipping(this.nativePtr, clip);
 	}
 	
-	public virtual void Paint(void* painter, void* option, void* index)
+	public virtual void Paint(IQPainter painter, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		CQt.QItemDelegate_Paint(this.nativePtr, painter, option, index);
+		CQt.QItemDelegate_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void SizeHint(void* option, void* index)
+	public virtual void SizeHint(IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		CQt.QItemDelegate_SizeHint(this.nativePtr, option, index);
+		CQt.QItemDelegate_SizeHint(this.nativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void* CreateEditor(void* parent, void* option, void* index)
+	public virtual void* CreateEditor(IQWidget parent, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		return CQt.QItemDelegate_CreateEditor(this.nativePtr, parent, option, index);
+		return CQt.QItemDelegate_CreateEditor(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void SetEditorData(void* editor, void* index)
+	public virtual void SetEditorData(IQWidget editor, IQModelIndex index)
 	{
-		CQt.QItemDelegate_SetEditorData(this.nativePtr, editor, index);
+		CQt.QItemDelegate_SetEditorData(this.nativePtr, (editor == null) ? null : (void*)editor.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void SetModelData(void* editor, void* model, void* index)
+	public virtual void SetModelData(IQWidget editor, IQAbstractItemModel model, IQModelIndex index)
 	{
-		CQt.QItemDelegate_SetModelData(this.nativePtr, editor, model, index);
+		CQt.QItemDelegate_SetModelData(this.nativePtr, (editor == null) ? null : (void*)editor.NativePtr, (model == null) ? null : (void*)model.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual void UpdateEditorGeometry(void* editor, void* option, void* index)
+	public virtual void UpdateEditorGeometry(IQWidget editor, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		CQt.QItemDelegate_UpdateEditorGeometry(this.nativePtr, editor, option, index);
+		CQt.QItemDelegate_UpdateEditorGeometry(this.nativePtr, (editor == null) ? null : (void*)editor.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public void* ItemEditorFactory()
@@ -81,94 +86,94 @@ public class QItemDelegate
 		return CQt.QItemDelegate_ItemEditorFactory(this.nativePtr);
 	}
 	
-	public void SetItemEditorFactory(void* factory)
+	public void SetItemEditorFactory(IQItemEditorFactory factory)
 	{
-		CQt.QItemDelegate_SetItemEditorFactory(this.nativePtr, factory);
+		CQt.QItemDelegate_SetItemEditorFactory(this.nativePtr, (factory == null) ? null : (void*)factory.NativePtr);
 	}
 	
-	public virtual void DrawDisplay(void* painter, void* option, void* rect, libqt_string text)
+	public virtual void DrawDisplay(IQPainter painter, IQStyleOptionViewItem option, IQRect rect, String text)
 	{
-		CQt.QItemDelegate_DrawDisplay(this.nativePtr, painter, option, rect, text);
+		CQt.QItemDelegate_DrawDisplay(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, libqt_string(text));
 	}
 	
-	public virtual void DrawDecoration(void* painter, void* option, void* rect, void* pixmap)
+	public virtual void DrawDecoration(IQPainter painter, IQStyleOptionViewItem option, IQRect rect, IQPixmap pixmap)
 	{
-		CQt.QItemDelegate_DrawDecoration(this.nativePtr, painter, option, rect, pixmap);
+		CQt.QItemDelegate_DrawDecoration(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr);
 	}
 	
-	public virtual void DrawFocus(void* painter, void* option, void* rect)
+	public virtual void DrawFocus(IQPainter painter, IQStyleOptionViewItem option, IQRect rect)
 	{
-		CQt.QItemDelegate_DrawFocus(this.nativePtr, painter, option, rect);
+		CQt.QItemDelegate_DrawFocus(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
 	}
 	
-	public virtual void DrawCheck(void* painter, void* option, void* rect, int64 state)
+	public virtual void DrawCheck(IQPainter painter, IQStyleOptionViewItem option, IQRect rect, int64 state)
 	{
-		CQt.QItemDelegate_DrawCheck(this.nativePtr, painter, option, rect, state);
+		CQt.QItemDelegate_DrawCheck(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, state);
 	}
 	
-	public void DrawBackground(void* painter, void* option, void* index)
+	public void DrawBackground(IQPainter painter, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		CQt.QItemDelegate_DrawBackground(this.nativePtr, painter, option, index);
+		CQt.QItemDelegate_DrawBackground(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void DoLayout(void* option, void* checkRect, void* iconRect, void* textRect, bool hint)
+	public void DoLayout(IQStyleOptionViewItem option, IQRect checkRect, IQRect iconRect, IQRect textRect, bool hint)
 	{
-		CQt.QItemDelegate_DoLayout(this.nativePtr, option, checkRect, iconRect, textRect, hint);
+		CQt.QItemDelegate_DoLayout(this.nativePtr, (option == default) ? default : (void*)option.NativePtr, (checkRect == null) ? null : (void*)checkRect.NativePtr, (iconRect == null) ? null : (void*)iconRect.NativePtr, (textRect == null) ? null : (void*)textRect.NativePtr, hint);
 	}
 	
-	public void Rect(void* option, void* index, int32 role)
+	public void Rect(IQStyleOptionViewItem option, IQModelIndex index, int32 role)
 	{
-		CQt.QItemDelegate_Rect(this.nativePtr, option, index, role);
+		CQt.QItemDelegate_Rect(this.nativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr, role);
 	}
 	
-	public virtual bool EventFilter(void* object, void* event)
+	public virtual bool EventFilter(IQObject object, IQEvent event)
 	{
-		return CQt.QItemDelegate_EventFilter(this.nativePtr, object, event);
+		return CQt.QItemDelegate_EventFilter(this.nativePtr, (object == null) ? null : (void*)object.NativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
-	public virtual bool EditorEvent(void* event, void* model, void* option, void* index)
+	public virtual bool EditorEvent(IQEvent event, IQAbstractItemModel model, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		return CQt.QItemDelegate_EditorEvent(this.nativePtr, event, model, option, index);
+		return CQt.QItemDelegate_EditorEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr, (model == null) ? null : (void*)model.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public void SetOptions(void* index, void* option)
+	public void SetOptions(IQModelIndex index, IQStyleOptionViewItem option)
 	{
-		CQt.QItemDelegate_SetOptions(this.nativePtr, index, option);
+		CQt.QItemDelegate_SetOptions(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, (option == default) ? default : (void*)option.NativePtr);
 	}
 	
-	public void Decoration(void* option, void* variant)
+	public void Decoration(IQStyleOptionViewItem option, IQVariant variant)
 	{
-		CQt.QItemDelegate_Decoration(this.nativePtr, option, variant);
+		CQt.QItemDelegate_Decoration(this.nativePtr, (option == default) ? default : (void*)option.NativePtr, (variant == default) ? default : (void*)variant.NativePtr);
 	}
 	
-	public void DoCheck(void* option, void* bounding, void* variant)
+	public void DoCheck(IQStyleOptionViewItem option, IQRect bounding, IQVariant variant)
 	{
-		CQt.QItemDelegate_DoCheck(this.nativePtr, option, bounding, variant);
+		CQt.QItemDelegate_DoCheck(this.nativePtr, (option == default) ? default : (void*)option.NativePtr, (bounding == default) ? default : (void*)bounding.NativePtr, (variant == default) ? default : (void*)variant.NativePtr);
 	}
 	
-	public void TextRectangle(void* painter, void* rect, void* font, libqt_string text)
+	public void TextRectangle(IQPainter painter, IQRect rect, IQFont font, String text)
 	{
-		CQt.QItemDelegate_TextRectangle(this.nativePtr, painter, rect, font, text);
+		CQt.QItemDelegate_TextRectangle(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, (font == default) ? default : (void*)font.NativePtr, libqt_string(text));
 	}
 	
-	public static libqt_string Tr2(char8[] s, char8[] c)
+	public static libqt_string Tr2(char8* s, char8* c)
 	{
 		return CQt.QItemDelegate_Tr2(s, c);
 	}
 	
-	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
 	{
 		return CQt.QItemDelegate_Tr3(s, c, n);
 	}
 	
-	public virtual void DestroyEditor(void* editor, void* index)
+	public virtual void DestroyEditor(IQWidget editor, IQModelIndex index)
 	{
-		CQt.QAbstractItemDelegate_DestroyEditor(this.nativePtr, editor, index);
+		CQt.QAbstractItemDelegate_DestroyEditor(this.nativePtr, (editor == null) ? null : (void*)editor.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
-	public virtual bool HelpEvent(void* event, void* view, void* option, void* index)
+	public virtual bool HelpEvent(IQHelpEvent event, IQAbstractItemView view, IQStyleOptionViewItem option, IQModelIndex index)
 	{
-		return CQt.QAbstractItemDelegate_HelpEvent(this.nativePtr, event, view, option, index);
+		return CQt.QAbstractItemDelegate_HelpEvent(this.nativePtr, (event == null) ? null : (void*)event.NativePtr, (view == null) ? null : (void*)view.NativePtr, (option == default) ? default : (void*)option.NativePtr, (index == default) ? default : (void*)index.NativePtr);
 	}
 	
 	public virtual int32[] PaintingRoles()
@@ -176,9 +181,9 @@ public class QItemDelegate
 		return CQt.QAbstractItemDelegate_PaintingRoles(this.nativePtr);
 	}
 	
-	public virtual bool Event(void* event)
+	public virtual bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, event);
+		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -186,9 +191,9 @@ public class QItemDelegate
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(void name)
+	public void SetObjectName(IQAnyStringView name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, name);
+		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
 	}
 	
 	public bool IsWidgetType()
@@ -221,9 +226,9 @@ public class QItemDelegate
 		return CQt.QObject_Thread(this.nativePtr);
 	}
 	
-	public void MoveToThread(void* thread)
+	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, thread);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -241,39 +246,39 @@ public class QItemDelegate
 		return CQt.QObject_Children(this.nativePtr);
 	}
 	
-	public void SetParent(void* parent)
+	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, parent);
+		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
 	}
 	
-	public void InstallEventFilter(void* filterObj)
+	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
 	}
 	
-	public void RemoveEventFilter(void* obj)
+	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
 	}
 	
-	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		return CQt.QObject_Connect(sender, signal, receiver, method);
+		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
 	}
 	
-	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
 	}
 	
-	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -286,12 +291,12 @@ public class QItemDelegate
 		CQt.QObject_DumpObjectInfo(this.nativePtr);
 	}
 	
-	public bool SetProperty(char8[] name, void* value)
+	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
 	}
 	
-	public void Property(char8[] name)
+	public void Property(char8* name)
 	{
 		CQt.QObject_Property(this.nativePtr, name);
 	}
@@ -316,7 +321,7 @@ public class QItemDelegate
 		return CQt.QObject_Parent(this.nativePtr);
 	}
 	
-	public bool Inherits(char8[] classname)
+	public bool Inherits(char8* classname)
 	{
 		return CQt.QObject_Inherits(this.nativePtr, classname);
 	}
@@ -331,14 +336,14 @@ public class QItemDelegate
 		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
 	}
 	
-	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
 	}
 	
-	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
 	}
 	
 }
@@ -351,11 +356,11 @@ extension CQt
 	[LinkName("QItemDelegate_MetaObject")]
 	public static extern void* QItemDelegate_MetaObject(void* c_this);
 	[LinkName("QItemDelegate_Metacast")]
-	public static extern void* QItemDelegate_Metacast(void* c_this, char8[] param1);
+	public static extern void* QItemDelegate_Metacast(void* c_this, char8* param1);
 	[LinkName("QItemDelegate_Metacall")]
-	public static extern int32 QItemDelegate_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QItemDelegate_Metacall(void* c_this, int64 param1, int32 param2, void* param3);
 	[LinkName("QItemDelegate_Tr")]
-	public static extern libqt_string QItemDelegate_Tr(char8[] s);
+	public static extern libqt_string QItemDelegate_Tr(char8* s);
 	[LinkName("QItemDelegate_HasClipping")]
 	public static extern bool QItemDelegate_HasClipping(void* c_this);
 	[LinkName("QItemDelegate_SetClipping")]
@@ -403,9 +408,9 @@ extension CQt
 	[LinkName("QItemDelegate_TextRectangle")]
 	public static extern void QItemDelegate_TextRectangle(void* c_this, void* painter, void* rect, void* font, libqt_string text);
 	[LinkName("QItemDelegate_Tr2")]
-	public static extern libqt_string QItemDelegate_Tr2(char8[] s, char8[] c);
+	public static extern libqt_string QItemDelegate_Tr2(char8* s, char8* c);
 	[LinkName("QItemDelegate_Tr3")]
-	public static extern libqt_string QItemDelegate_Tr3(char8[] s, char8[] c, int32 n);
+	public static extern libqt_string QItemDelegate_Tr3(char8* s, char8* c, int32 n);
 	/// Delete this object from C++ memory
 	[LinkName("QItemDelegate_Delete")]
 	public static extern void QItemDelegate_Delete(void* self);
