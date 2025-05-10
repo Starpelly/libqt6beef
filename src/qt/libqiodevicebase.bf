@@ -16,8 +16,17 @@ public enum QIODeviceBase__OpenModeFlag
 	NewOnly = 64,
 	ExistingOnly = 128,
 }
-public struct QIODeviceBase
+public class QIODeviceBase
+{
+	protected void* nativePtr;
+	
+	public this(void* other)
+	{
+		this.nativePtr = CQt.QIODeviceBase_new(other);
+	}
+}
+extension CQt
 {
 	[LinkName("QIODeviceBase_new")]
-	public static extern QIODeviceBase* QIODeviceBase_new(QIODeviceBase* other);
+	public static extern void* QIODeviceBase_new(void* other);
 }

@@ -10,36 +10,114 @@ public enum QElapsedTimer__ClockType
 	MachAbsoluteTime = 2,
 	PerformanceCounter = 3,
 }
-public struct QElapsedTimer
+public class QElapsedTimer
+{
+	protected void* nativePtr;
+	
+	public this(void* other)
+	{
+		this.nativePtr = CQt.QElapsedTimer_new(other);
+	}
+	
+	public ~this()
+	{
+		CQt.QElapsedTimer_Delete(this.nativePtr);
+	}
+	
+	public static int64 ClockType()
+	{
+		return CQt.QElapsedTimer_ClockType();
+	}
+	
+	public static bool IsMonotonic()
+	{
+		return CQt.QElapsedTimer_IsMonotonic();
+	}
+	
+	public void Start()
+	{
+		CQt.QElapsedTimer_Start(this.nativePtr);
+	}
+	
+	public int64 Restart()
+	{
+		return CQt.QElapsedTimer_Restart(this.nativePtr);
+	}
+	
+	public void Invalidate()
+	{
+		CQt.QElapsedTimer_Invalidate(this.nativePtr);
+	}
+	
+	public bool IsValid()
+	{
+		return CQt.QElapsedTimer_IsValid(this.nativePtr);
+	}
+	
+	public int64 NsecsElapsed()
+	{
+		return CQt.QElapsedTimer_NsecsElapsed(this.nativePtr);
+	}
+	
+	public int64 Elapsed()
+	{
+		return CQt.QElapsedTimer_Elapsed(this.nativePtr);
+	}
+	
+	public bool HasExpired(int64 timeout)
+	{
+		return CQt.QElapsedTimer_HasExpired(this.nativePtr, timeout);
+	}
+	
+	public int64 MsecsSinceReference()
+	{
+		return CQt.QElapsedTimer_MsecsSinceReference(this.nativePtr);
+	}
+	
+	public int64 MsecsTo(void* other)
+	{
+		return CQt.QElapsedTimer_MsecsTo(this.nativePtr, other);
+	}
+	
+	public int64 SecsTo(void* other)
+	{
+		return CQt.QElapsedTimer_SecsTo(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QElapsedTimer_new")]
-	public static extern QElapsedTimer* QElapsedTimer_new(QElapsedTimer* other);
+	public static extern void* QElapsedTimer_new(void* other);
 	[LinkName("QElapsedTimer_new2")]
-	public static extern QElapsedTimer* QElapsedTimer_new2(QElapsedTimer* other);
+	public static extern void* QElapsedTimer_new2(void* other);
 	[LinkName("QElapsedTimer_new3")]
-	public static extern QElapsedTimer* QElapsedTimer_new3();
+	public static extern void* QElapsedTimer_new3();
 	[LinkName("QElapsedTimer_ClockType")]
 	public static extern int64 QElapsedTimer_ClockType();
 	[LinkName("QElapsedTimer_IsMonotonic")]
 	public static extern bool QElapsedTimer_IsMonotonic();
 	[LinkName("QElapsedTimer_Start")]
-	public static extern void QElapsedTimer_Start(Self* c_this);
+	public static extern void QElapsedTimer_Start(void* c_this);
 	[LinkName("QElapsedTimer_Restart")]
-	public static extern int64 QElapsedTimer_Restart(Self* c_this);
+	public static extern int64 QElapsedTimer_Restart(void* c_this);
 	[LinkName("QElapsedTimer_Invalidate")]
-	public static extern void QElapsedTimer_Invalidate(Self* c_this);
+	public static extern void QElapsedTimer_Invalidate(void* c_this);
 	[LinkName("QElapsedTimer_IsValid")]
-	public static extern bool QElapsedTimer_IsValid(Self* c_this);
+	public static extern bool QElapsedTimer_IsValid(void* c_this);
 	[LinkName("QElapsedTimer_NsecsElapsed")]
-	public static extern int64 QElapsedTimer_NsecsElapsed(Self* c_this);
+	public static extern int64 QElapsedTimer_NsecsElapsed(void* c_this);
 	[LinkName("QElapsedTimer_Elapsed")]
-	public static extern int64 QElapsedTimer_Elapsed(Self* c_this);
+	public static extern int64 QElapsedTimer_Elapsed(void* c_this);
 	[LinkName("QElapsedTimer_HasExpired")]
-	public static extern bool QElapsedTimer_HasExpired(Self* c_this, int64 timeout);
+	public static extern bool QElapsedTimer_HasExpired(void* c_this, int64 timeout);
 	[LinkName("QElapsedTimer_MsecsSinceReference")]
-	public static extern int64 QElapsedTimer_MsecsSinceReference(Self* c_this);
+	public static extern int64 QElapsedTimer_MsecsSinceReference(void* c_this);
 	[LinkName("QElapsedTimer_MsecsTo")]
-	public static extern int64 QElapsedTimer_MsecsTo(Self* c_this, QElapsedTimer* other);
+	public static extern int64 QElapsedTimer_MsecsTo(void* c_this, void* other);
 	[LinkName("QElapsedTimer_SecsTo")]
-	public static extern int64 QElapsedTimer_SecsTo(Self* c_this, QElapsedTimer* other);
+	public static extern int64 QElapsedTimer_SecsTo(void* c_this, void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QElapsedTimer_Delete")]
+	public static extern void QElapsedTimer_Delete(void* self);
 }

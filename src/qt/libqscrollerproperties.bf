@@ -42,24 +42,77 @@ public enum QScrollerProperties__ScrollMetric
 	FrameRate = 19,
 	ScrollMetricCount = 20,
 }
-public struct QScrollerProperties
+public class QScrollerProperties
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QScrollerProperties_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QScrollerProperties_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* sp)
+	{
+		CQt.QScrollerProperties_OperatorAssign(this.nativePtr, sp);
+	}
+	
+	public bool OperatorEqual(void* sp)
+	{
+		return CQt.QScrollerProperties_OperatorEqual(this.nativePtr, sp);
+	}
+	
+	public bool OperatorNotEqual(void* sp)
+	{
+		return CQt.QScrollerProperties_OperatorNotEqual(this.nativePtr, sp);
+	}
+	
+	public static void SetDefaultScrollerProperties(void* sp)
+	{
+		CQt.QScrollerProperties_SetDefaultScrollerProperties(sp);
+	}
+	
+	public static void UnsetDefaultScrollerProperties()
+	{
+		CQt.QScrollerProperties_UnsetDefaultScrollerProperties();
+	}
+	
+	public void ScrollMetric(int64 metric)
+	{
+		CQt.QScrollerProperties_ScrollMetric(this.nativePtr, metric);
+	}
+	
+	public void SetScrollMetric(int64 metric, void* value)
+	{
+		CQt.QScrollerProperties_SetScrollMetric(this.nativePtr, metric, value);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QScrollerProperties_new")]
-	public static extern QScrollerProperties* QScrollerProperties_new();
+	public static extern void* QScrollerProperties_new();
 	[LinkName("QScrollerProperties_new2")]
-	public static extern QScrollerProperties* QScrollerProperties_new2(QScrollerProperties* sp);
+	public static extern void* QScrollerProperties_new2(void* sp);
 	[LinkName("QScrollerProperties_OperatorAssign")]
-	public static extern void QScrollerProperties_OperatorAssign(Self* c_this, QScrollerProperties* sp);
+	public static extern void QScrollerProperties_OperatorAssign(void* c_this, void* sp);
 	[LinkName("QScrollerProperties_OperatorEqual")]
-	public static extern bool QScrollerProperties_OperatorEqual(Self* c_this, QScrollerProperties* sp);
+	public static extern bool QScrollerProperties_OperatorEqual(void* c_this, void* sp);
 	[LinkName("QScrollerProperties_OperatorNotEqual")]
-	public static extern bool QScrollerProperties_OperatorNotEqual(Self* c_this, QScrollerProperties* sp);
+	public static extern bool QScrollerProperties_OperatorNotEqual(void* c_this, void* sp);
 	[LinkName("QScrollerProperties_SetDefaultScrollerProperties")]
-	public static extern void QScrollerProperties_SetDefaultScrollerProperties(QScrollerProperties* sp);
+	public static extern void QScrollerProperties_SetDefaultScrollerProperties(void* sp);
 	[LinkName("QScrollerProperties_UnsetDefaultScrollerProperties")]
 	public static extern void QScrollerProperties_UnsetDefaultScrollerProperties();
 	[LinkName("QScrollerProperties_ScrollMetric")]
-	public static extern QVariant QScrollerProperties_ScrollMetric(Self* c_this, int64 metric);
+	public static extern void QScrollerProperties_ScrollMetric(void* c_this, int64 metric);
 	[LinkName("QScrollerProperties_SetScrollMetric")]
-	public static extern void QScrollerProperties_SetScrollMetric(Self* c_this, int64 metric, QVariant* value);
+	public static extern void QScrollerProperties_SetScrollMetric(void* c_this, int64 metric, void* value);
+	/// Delete this object from C++ memory
+	[LinkName("QScrollerProperties_Delete")]
+	public static extern void QScrollerProperties_Delete(void* self);
 }

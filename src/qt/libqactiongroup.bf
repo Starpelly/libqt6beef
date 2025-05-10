@@ -9,54 +9,347 @@ public enum QActionGroup__ExclusionPolicy
 	Exclusive = 1,
 	ExclusiveOptional = 2,
 }
-public struct QActionGroup : QObject
+public class QActionGroup
+{
+	protected void* nativePtr;
+	
+	public this(void* parent)
+	{
+		this.nativePtr = CQt.QActionGroup_new(parent);
+	}
+	
+	public ~this()
+	{
+		CQt.QActionGroup_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QActionGroup_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QActionGroup_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QActionGroup_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QActionGroup_Tr(s);
+	}
+	
+	public void* AddAction(void* a)
+	{
+		return CQt.QActionGroup_AddAction(this.nativePtr, a);
+	}
+	
+	public void* AddActionWithText(libqt_string text)
+	{
+		return CQt.QActionGroup_AddActionWithText(this.nativePtr, text);
+	}
+	
+	public void* AddAction2(void* icon, libqt_string text)
+	{
+		return CQt.QActionGroup_AddAction2(this.nativePtr, icon, text);
+	}
+	
+	public void RemoveAction(void* a)
+	{
+		CQt.QActionGroup_RemoveAction(this.nativePtr, a);
+	}
+	
+	public void*[] Actions()
+	{
+		return CQt.QActionGroup_Actions(this.nativePtr);
+	}
+	
+	public void* CheckedAction()
+	{
+		return CQt.QActionGroup_CheckedAction(this.nativePtr);
+	}
+	
+	public bool IsExclusive()
+	{
+		return CQt.QActionGroup_IsExclusive(this.nativePtr);
+	}
+	
+	public bool IsEnabled()
+	{
+		return CQt.QActionGroup_IsEnabled(this.nativePtr);
+	}
+	
+	public bool IsVisible()
+	{
+		return CQt.QActionGroup_IsVisible(this.nativePtr);
+	}
+	
+	public int64 ExclusionPolicy()
+	{
+		return CQt.QActionGroup_ExclusionPolicy(this.nativePtr);
+	}
+	
+	public void SetEnabled(bool enabled)
+	{
+		CQt.QActionGroup_SetEnabled(this.nativePtr, enabled);
+	}
+	
+	public void SetDisabled(bool b)
+	{
+		CQt.QActionGroup_SetDisabled(this.nativePtr, b);
+	}
+	
+	public void SetVisible(bool visible)
+	{
+		CQt.QActionGroup_SetVisible(this.nativePtr, visible);
+	}
+	
+	public void SetExclusive(bool exclusive)
+	{
+		CQt.QActionGroup_SetExclusive(this.nativePtr, exclusive);
+	}
+	
+	public void SetExclusionPolicy(int64 policy)
+	{
+		CQt.QActionGroup_SetExclusionPolicy(this.nativePtr, policy);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QActionGroup_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QActionGroup_Tr3(s, c, n);
+	}
+	
+	public virtual bool Event(void* event)
+	{
+		return CQt.QObject_Event(this.nativePtr, event);
+	}
+	
+	public virtual bool EventFilter(void* watched, void* event)
+	{
+		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QObject_SetParent(this.nativePtr, parent);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QActionGroup_new")]
-	public static extern QActionGroup* QActionGroup_new(QObject* parent);
+	public static extern void* QActionGroup_new(void* parent);
 	[LinkName("QActionGroup_MetaObject")]
-	public static extern QMetaObject* QActionGroup_MetaObject(Self* c_this);
+	public static extern void* QActionGroup_MetaObject(void* c_this);
 	[LinkName("QActionGroup_Metacast")]
-	public static extern void* QActionGroup_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QActionGroup_Metacast(void* c_this, char8[] param1);
 	[LinkName("QActionGroup_Metacall")]
-	public static extern int32 QActionGroup_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QActionGroup_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QActionGroup_Tr")]
 	public static extern libqt_string QActionGroup_Tr(char8[] s);
 	[LinkName("QActionGroup_AddAction")]
-	public static extern QAction* QActionGroup_AddAction(Self* c_this, QAction* a);
+	public static extern void* QActionGroup_AddAction(void* c_this, void* a);
 	[LinkName("QActionGroup_AddActionWithText")]
-	public static extern QAction* QActionGroup_AddActionWithText(Self* c_this, libqt_string text);
+	public static extern void* QActionGroup_AddActionWithText(void* c_this, libqt_string text);
 	[LinkName("QActionGroup_AddAction2")]
-	public static extern QAction* QActionGroup_AddAction2(Self* c_this, QIcon* icon, libqt_string text);
+	public static extern void* QActionGroup_AddAction2(void* c_this, void* icon, libqt_string text);
 	[LinkName("QActionGroup_RemoveAction")]
-	public static extern void QActionGroup_RemoveAction(Self* c_this, QAction* a);
+	public static extern void QActionGroup_RemoveAction(void* c_this, void* a);
 	[LinkName("QActionGroup_Actions")]
-	public static extern QAction*[] QActionGroup_Actions(Self* c_this);
+	public static extern void*[] QActionGroup_Actions(void* c_this);
 	[LinkName("QActionGroup_CheckedAction")]
-	public static extern QAction* QActionGroup_CheckedAction(Self* c_this);
+	public static extern void* QActionGroup_CheckedAction(void* c_this);
 	[LinkName("QActionGroup_IsExclusive")]
-	public static extern bool QActionGroup_IsExclusive(Self* c_this);
+	public static extern bool QActionGroup_IsExclusive(void* c_this);
 	[LinkName("QActionGroup_IsEnabled")]
-	public static extern bool QActionGroup_IsEnabled(Self* c_this);
+	public static extern bool QActionGroup_IsEnabled(void* c_this);
 	[LinkName("QActionGroup_IsVisible")]
-	public static extern bool QActionGroup_IsVisible(Self* c_this);
+	public static extern bool QActionGroup_IsVisible(void* c_this);
 	[LinkName("QActionGroup_ExclusionPolicy")]
-	public static extern int64 QActionGroup_ExclusionPolicy(Self* c_this);
+	public static extern int64 QActionGroup_ExclusionPolicy(void* c_this);
 	[LinkName("QActionGroup_SetEnabled")]
-	public static extern void QActionGroup_SetEnabled(Self* c_this, bool enabled);
+	public static extern void QActionGroup_SetEnabled(void* c_this, bool enabled);
 	[LinkName("QActionGroup_SetDisabled")]
-	public static extern void QActionGroup_SetDisabled(Self* c_this, bool b);
+	public static extern void QActionGroup_SetDisabled(void* c_this, bool b);
 	[LinkName("QActionGroup_SetVisible")]
-	public static extern void QActionGroup_SetVisible(Self* c_this, bool visible);
+	public static extern void QActionGroup_SetVisible(void* c_this, bool visible);
 	[LinkName("QActionGroup_SetExclusive")]
-	public static extern void QActionGroup_SetExclusive(Self* c_this, bool exclusive);
+	public static extern void QActionGroup_SetExclusive(void* c_this, bool exclusive);
 	[LinkName("QActionGroup_SetExclusionPolicy")]
-	public static extern void QActionGroup_SetExclusionPolicy(Self* c_this, int64 policy);
+	public static extern void QActionGroup_SetExclusionPolicy(void* c_this, int64 policy);
 	[LinkName("QActionGroup_Connect_Triggered")]
-	public static extern void QActionGroup_Connect_Triggered(Self* c_this, c_intptr slot);
+	public static extern void QActionGroup_Connect_Triggered(void* c_this, c_intptr slot);
 	[LinkName("QActionGroup_Connect_Hovered")]
-	public static extern void QActionGroup_Connect_Hovered(Self* c_this, c_intptr slot);
+	public static extern void QActionGroup_Connect_Hovered(void* c_this, c_intptr slot);
 	[LinkName("QActionGroup_Tr2")]
 	public static extern libqt_string QActionGroup_Tr2(char8[] s, char8[] c);
 	[LinkName("QActionGroup_Tr3")]
 	public static extern libqt_string QActionGroup_Tr3(char8[] s, char8[] c, int32 n);
+	/// Delete this object from C++ memory
+	[LinkName("QActionGroup_Delete")]
+	public static extern void QActionGroup_Delete(void* self);
 }

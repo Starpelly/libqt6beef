@@ -2,132 +2,440 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public struct QFileInfo
+public class QFileInfo
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QFileInfo_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QFileInfo_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* fileinfo)
+	{
+		CQt.QFileInfo_OperatorAssign(this.nativePtr, fileinfo);
+	}
+	
+	public void Swap(void* other)
+	{
+		CQt.QFileInfo_Swap(this.nativePtr, other);
+	}
+	
+	public bool OperatorEqual(void* fileinfo)
+	{
+		return CQt.QFileInfo_OperatorEqual(this.nativePtr, fileinfo);
+	}
+	
+	public bool OperatorNotEqual(void* fileinfo)
+	{
+		return CQt.QFileInfo_OperatorNotEqual(this.nativePtr, fileinfo);
+	}
+	
+	public void SetFile(libqt_string file)
+	{
+		CQt.QFileInfo_SetFile(this.nativePtr, file);
+	}
+	
+	public void SetFileWithFile(void* file)
+	{
+		CQt.QFileInfo_SetFileWithFile(this.nativePtr, file);
+	}
+	
+	public void SetFile2(void* dir, libqt_string file)
+	{
+		CQt.QFileInfo_SetFile2(this.nativePtr, dir, file);
+	}
+	
+	public bool Exists()
+	{
+		return CQt.QFileInfo_Exists(this.nativePtr);
+	}
+	
+	public static bool ExistsWithFile(libqt_string file)
+	{
+		return CQt.QFileInfo_ExistsWithFile(file);
+	}
+	
+	public void Refresh()
+	{
+		CQt.QFileInfo_Refresh(this.nativePtr);
+	}
+	
+	public libqt_string FilePath()
+	{
+		return CQt.QFileInfo_FilePath(this.nativePtr);
+	}
+	
+	public libqt_string AbsoluteFilePath()
+	{
+		return CQt.QFileInfo_AbsoluteFilePath(this.nativePtr);
+	}
+	
+	public libqt_string CanonicalFilePath()
+	{
+		return CQt.QFileInfo_CanonicalFilePath(this.nativePtr);
+	}
+	
+	public libqt_string FileName()
+	{
+		return CQt.QFileInfo_FileName(this.nativePtr);
+	}
+	
+	public libqt_string BaseName()
+	{
+		return CQt.QFileInfo_BaseName(this.nativePtr);
+	}
+	
+	public libqt_string CompleteBaseName()
+	{
+		return CQt.QFileInfo_CompleteBaseName(this.nativePtr);
+	}
+	
+	public libqt_string Suffix()
+	{
+		return CQt.QFileInfo_Suffix(this.nativePtr);
+	}
+	
+	public libqt_string BundleName()
+	{
+		return CQt.QFileInfo_BundleName(this.nativePtr);
+	}
+	
+	public libqt_string CompleteSuffix()
+	{
+		return CQt.QFileInfo_CompleteSuffix(this.nativePtr);
+	}
+	
+	public libqt_string Path()
+	{
+		return CQt.QFileInfo_Path(this.nativePtr);
+	}
+	
+	public libqt_string AbsolutePath()
+	{
+		return CQt.QFileInfo_AbsolutePath(this.nativePtr);
+	}
+	
+	public libqt_string CanonicalPath()
+	{
+		return CQt.QFileInfo_CanonicalPath(this.nativePtr);
+	}
+	
+	public void Dir()
+	{
+		CQt.QFileInfo_Dir(this.nativePtr);
+	}
+	
+	public void AbsoluteDir()
+	{
+		CQt.QFileInfo_AbsoluteDir(this.nativePtr);
+	}
+	
+	public bool IsReadable()
+	{
+		return CQt.QFileInfo_IsReadable(this.nativePtr);
+	}
+	
+	public bool IsWritable()
+	{
+		return CQt.QFileInfo_IsWritable(this.nativePtr);
+	}
+	
+	public bool IsExecutable()
+	{
+		return CQt.QFileInfo_IsExecutable(this.nativePtr);
+	}
+	
+	public bool IsHidden()
+	{
+		return CQt.QFileInfo_IsHidden(this.nativePtr);
+	}
+	
+	public bool IsNativePath()
+	{
+		return CQt.QFileInfo_IsNativePath(this.nativePtr);
+	}
+	
+	public bool IsRelative()
+	{
+		return CQt.QFileInfo_IsRelative(this.nativePtr);
+	}
+	
+	public bool IsAbsolute()
+	{
+		return CQt.QFileInfo_IsAbsolute(this.nativePtr);
+	}
+	
+	public bool MakeAbsolute()
+	{
+		return CQt.QFileInfo_MakeAbsolute(this.nativePtr);
+	}
+	
+	public bool IsFile()
+	{
+		return CQt.QFileInfo_IsFile(this.nativePtr);
+	}
+	
+	public bool IsDir()
+	{
+		return CQt.QFileInfo_IsDir(this.nativePtr);
+	}
+	
+	public bool IsSymLink()
+	{
+		return CQt.QFileInfo_IsSymLink(this.nativePtr);
+	}
+	
+	public bool IsSymbolicLink()
+	{
+		return CQt.QFileInfo_IsSymbolicLink(this.nativePtr);
+	}
+	
+	public bool IsShortcut()
+	{
+		return CQt.QFileInfo_IsShortcut(this.nativePtr);
+	}
+	
+	public bool IsAlias()
+	{
+		return CQt.QFileInfo_IsAlias(this.nativePtr);
+	}
+	
+	public bool IsJunction()
+	{
+		return CQt.QFileInfo_IsJunction(this.nativePtr);
+	}
+	
+	public bool IsRoot()
+	{
+		return CQt.QFileInfo_IsRoot(this.nativePtr);
+	}
+	
+	public bool IsBundle()
+	{
+		return CQt.QFileInfo_IsBundle(this.nativePtr);
+	}
+	
+	public libqt_string SymLinkTarget()
+	{
+		return CQt.QFileInfo_SymLinkTarget(this.nativePtr);
+	}
+	
+	public libqt_string JunctionTarget()
+	{
+		return CQt.QFileInfo_JunctionTarget(this.nativePtr);
+	}
+	
+	public libqt_string Owner()
+	{
+		return CQt.QFileInfo_Owner(this.nativePtr);
+	}
+	
+	public uint32 OwnerId()
+	{
+		return CQt.QFileInfo_OwnerId(this.nativePtr);
+	}
+	
+	public libqt_string Group()
+	{
+		return CQt.QFileInfo_Group(this.nativePtr);
+	}
+	
+	public uint32 GroupId()
+	{
+		return CQt.QFileInfo_GroupId(this.nativePtr);
+	}
+	
+	public bool Permission(int64 permissions)
+	{
+		return CQt.QFileInfo_Permission(this.nativePtr, permissions);
+	}
+	
+	public int64 Permissions()
+	{
+		return CQt.QFileInfo_Permissions(this.nativePtr);
+	}
+	
+	public int64 Size()
+	{
+		return CQt.QFileInfo_Size(this.nativePtr);
+	}
+	
+	public void BirthTime()
+	{
+		CQt.QFileInfo_BirthTime(this.nativePtr);
+	}
+	
+	public void MetadataChangeTime()
+	{
+		CQt.QFileInfo_MetadataChangeTime(this.nativePtr);
+	}
+	
+	public void LastModified()
+	{
+		CQt.QFileInfo_LastModified(this.nativePtr);
+	}
+	
+	public void LastRead()
+	{
+		CQt.QFileInfo_LastRead(this.nativePtr);
+	}
+	
+	public void FileTime(int64 time)
+	{
+		CQt.QFileInfo_FileTime(this.nativePtr, time);
+	}
+	
+	public bool Caching()
+	{
+		return CQt.QFileInfo_Caching(this.nativePtr);
+	}
+	
+	public void SetCaching(bool on)
+	{
+		CQt.QFileInfo_SetCaching(this.nativePtr, on);
+	}
+	
+	public void Stat()
+	{
+		CQt.QFileInfo_Stat(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QFileInfo_new")]
-	public static extern QFileInfo* QFileInfo_new();
+	public static extern void* QFileInfo_new();
 	[LinkName("QFileInfo_new2")]
-	public static extern QFileInfo* QFileInfo_new2(libqt_string file);
+	public static extern void* QFileInfo_new2(libqt_string file);
 	[LinkName("QFileInfo_new3")]
-	public static extern QFileInfo* QFileInfo_new3(QFileDevice* file);
+	public static extern void* QFileInfo_new3(void* file);
 	[LinkName("QFileInfo_new4")]
-	public static extern QFileInfo* QFileInfo_new4(QDir* dir, libqt_string file);
+	public static extern void* QFileInfo_new4(void* dir, libqt_string file);
 	[LinkName("QFileInfo_new5")]
-	public static extern QFileInfo* QFileInfo_new5(QFileInfo* fileinfo);
+	public static extern void* QFileInfo_new5(void* fileinfo);
 	[LinkName("QFileInfo_OperatorAssign")]
-	public static extern void QFileInfo_OperatorAssign(Self* c_this, QFileInfo* fileinfo);
+	public static extern void QFileInfo_OperatorAssign(void* c_this, void* fileinfo);
 	[LinkName("QFileInfo_Swap")]
-	public static extern void QFileInfo_Swap(Self* c_this, QFileInfo* other);
+	public static extern void QFileInfo_Swap(void* c_this, void* other);
 	[LinkName("QFileInfo_OperatorEqual")]
-	public static extern bool QFileInfo_OperatorEqual(Self* c_this, QFileInfo* fileinfo);
+	public static extern bool QFileInfo_OperatorEqual(void* c_this, void* fileinfo);
 	[LinkName("QFileInfo_OperatorNotEqual")]
-	public static extern bool QFileInfo_OperatorNotEqual(Self* c_this, QFileInfo* fileinfo);
+	public static extern bool QFileInfo_OperatorNotEqual(void* c_this, void* fileinfo);
 	[LinkName("QFileInfo_SetFile")]
-	public static extern void QFileInfo_SetFile(Self* c_this, libqt_string file);
+	public static extern void QFileInfo_SetFile(void* c_this, libqt_string file);
 	[LinkName("QFileInfo_SetFileWithFile")]
-	public static extern void QFileInfo_SetFileWithFile(Self* c_this, QFileDevice* file);
+	public static extern void QFileInfo_SetFileWithFile(void* c_this, void* file);
 	[LinkName("QFileInfo_SetFile2")]
-	public static extern void QFileInfo_SetFile2(Self* c_this, QDir* dir, libqt_string file);
+	public static extern void QFileInfo_SetFile2(void* c_this, void* dir, libqt_string file);
 	[LinkName("QFileInfo_Exists")]
-	public static extern bool QFileInfo_Exists(Self* c_this);
+	public static extern bool QFileInfo_Exists(void* c_this);
 	[LinkName("QFileInfo_ExistsWithFile")]
 	public static extern bool QFileInfo_ExistsWithFile(libqt_string file);
 	[LinkName("QFileInfo_Refresh")]
-	public static extern void QFileInfo_Refresh(Self* c_this);
+	public static extern void QFileInfo_Refresh(void* c_this);
 	[LinkName("QFileInfo_FilePath")]
-	public static extern libqt_string QFileInfo_FilePath(Self* c_this);
+	public static extern libqt_string QFileInfo_FilePath(void* c_this);
 	[LinkName("QFileInfo_AbsoluteFilePath")]
-	public static extern libqt_string QFileInfo_AbsoluteFilePath(Self* c_this);
+	public static extern libqt_string QFileInfo_AbsoluteFilePath(void* c_this);
 	[LinkName("QFileInfo_CanonicalFilePath")]
-	public static extern libqt_string QFileInfo_CanonicalFilePath(Self* c_this);
+	public static extern libqt_string QFileInfo_CanonicalFilePath(void* c_this);
 	[LinkName("QFileInfo_FileName")]
-	public static extern libqt_string QFileInfo_FileName(Self* c_this);
+	public static extern libqt_string QFileInfo_FileName(void* c_this);
 	[LinkName("QFileInfo_BaseName")]
-	public static extern libqt_string QFileInfo_BaseName(Self* c_this);
+	public static extern libqt_string QFileInfo_BaseName(void* c_this);
 	[LinkName("QFileInfo_CompleteBaseName")]
-	public static extern libqt_string QFileInfo_CompleteBaseName(Self* c_this);
+	public static extern libqt_string QFileInfo_CompleteBaseName(void* c_this);
 	[LinkName("QFileInfo_Suffix")]
-	public static extern libqt_string QFileInfo_Suffix(Self* c_this);
+	public static extern libqt_string QFileInfo_Suffix(void* c_this);
 	[LinkName("QFileInfo_BundleName")]
-	public static extern libqt_string QFileInfo_BundleName(Self* c_this);
+	public static extern libqt_string QFileInfo_BundleName(void* c_this);
 	[LinkName("QFileInfo_CompleteSuffix")]
-	public static extern libqt_string QFileInfo_CompleteSuffix(Self* c_this);
+	public static extern libqt_string QFileInfo_CompleteSuffix(void* c_this);
 	[LinkName("QFileInfo_Path")]
-	public static extern libqt_string QFileInfo_Path(Self* c_this);
+	public static extern libqt_string QFileInfo_Path(void* c_this);
 	[LinkName("QFileInfo_AbsolutePath")]
-	public static extern libqt_string QFileInfo_AbsolutePath(Self* c_this);
+	public static extern libqt_string QFileInfo_AbsolutePath(void* c_this);
 	[LinkName("QFileInfo_CanonicalPath")]
-	public static extern libqt_string QFileInfo_CanonicalPath(Self* c_this);
+	public static extern libqt_string QFileInfo_CanonicalPath(void* c_this);
 	[LinkName("QFileInfo_Dir")]
-	public static extern QDir QFileInfo_Dir(Self* c_this);
+	public static extern void QFileInfo_Dir(void* c_this);
 	[LinkName("QFileInfo_AbsoluteDir")]
-	public static extern QDir QFileInfo_AbsoluteDir(Self* c_this);
+	public static extern void QFileInfo_AbsoluteDir(void* c_this);
 	[LinkName("QFileInfo_IsReadable")]
-	public static extern bool QFileInfo_IsReadable(Self* c_this);
+	public static extern bool QFileInfo_IsReadable(void* c_this);
 	[LinkName("QFileInfo_IsWritable")]
-	public static extern bool QFileInfo_IsWritable(Self* c_this);
+	public static extern bool QFileInfo_IsWritable(void* c_this);
 	[LinkName("QFileInfo_IsExecutable")]
-	public static extern bool QFileInfo_IsExecutable(Self* c_this);
+	public static extern bool QFileInfo_IsExecutable(void* c_this);
 	[LinkName("QFileInfo_IsHidden")]
-	public static extern bool QFileInfo_IsHidden(Self* c_this);
+	public static extern bool QFileInfo_IsHidden(void* c_this);
 	[LinkName("QFileInfo_IsNativePath")]
-	public static extern bool QFileInfo_IsNativePath(Self* c_this);
+	public static extern bool QFileInfo_IsNativePath(void* c_this);
 	[LinkName("QFileInfo_IsRelative")]
-	public static extern bool QFileInfo_IsRelative(Self* c_this);
+	public static extern bool QFileInfo_IsRelative(void* c_this);
 	[LinkName("QFileInfo_IsAbsolute")]
-	public static extern bool QFileInfo_IsAbsolute(Self* c_this);
+	public static extern bool QFileInfo_IsAbsolute(void* c_this);
 	[LinkName("QFileInfo_MakeAbsolute")]
-	public static extern bool QFileInfo_MakeAbsolute(Self* c_this);
+	public static extern bool QFileInfo_MakeAbsolute(void* c_this);
 	[LinkName("QFileInfo_IsFile")]
-	public static extern bool QFileInfo_IsFile(Self* c_this);
+	public static extern bool QFileInfo_IsFile(void* c_this);
 	[LinkName("QFileInfo_IsDir")]
-	public static extern bool QFileInfo_IsDir(Self* c_this);
+	public static extern bool QFileInfo_IsDir(void* c_this);
 	[LinkName("QFileInfo_IsSymLink")]
-	public static extern bool QFileInfo_IsSymLink(Self* c_this);
+	public static extern bool QFileInfo_IsSymLink(void* c_this);
 	[LinkName("QFileInfo_IsSymbolicLink")]
-	public static extern bool QFileInfo_IsSymbolicLink(Self* c_this);
+	public static extern bool QFileInfo_IsSymbolicLink(void* c_this);
 	[LinkName("QFileInfo_IsShortcut")]
-	public static extern bool QFileInfo_IsShortcut(Self* c_this);
+	public static extern bool QFileInfo_IsShortcut(void* c_this);
 	[LinkName("QFileInfo_IsAlias")]
-	public static extern bool QFileInfo_IsAlias(Self* c_this);
+	public static extern bool QFileInfo_IsAlias(void* c_this);
 	[LinkName("QFileInfo_IsJunction")]
-	public static extern bool QFileInfo_IsJunction(Self* c_this);
+	public static extern bool QFileInfo_IsJunction(void* c_this);
 	[LinkName("QFileInfo_IsRoot")]
-	public static extern bool QFileInfo_IsRoot(Self* c_this);
+	public static extern bool QFileInfo_IsRoot(void* c_this);
 	[LinkName("QFileInfo_IsBundle")]
-	public static extern bool QFileInfo_IsBundle(Self* c_this);
+	public static extern bool QFileInfo_IsBundle(void* c_this);
 	[LinkName("QFileInfo_SymLinkTarget")]
-	public static extern libqt_string QFileInfo_SymLinkTarget(Self* c_this);
+	public static extern libqt_string QFileInfo_SymLinkTarget(void* c_this);
 	[LinkName("QFileInfo_JunctionTarget")]
-	public static extern libqt_string QFileInfo_JunctionTarget(Self* c_this);
+	public static extern libqt_string QFileInfo_JunctionTarget(void* c_this);
 	[LinkName("QFileInfo_Owner")]
-	public static extern libqt_string QFileInfo_Owner(Self* c_this);
+	public static extern libqt_string QFileInfo_Owner(void* c_this);
 	[LinkName("QFileInfo_OwnerId")]
-	public static extern uint32 QFileInfo_OwnerId(Self* c_this);
+	public static extern uint32 QFileInfo_OwnerId(void* c_this);
 	[LinkName("QFileInfo_Group")]
-	public static extern libqt_string QFileInfo_Group(Self* c_this);
+	public static extern libqt_string QFileInfo_Group(void* c_this);
 	[LinkName("QFileInfo_GroupId")]
-	public static extern uint32 QFileInfo_GroupId(Self* c_this);
+	public static extern uint32 QFileInfo_GroupId(void* c_this);
 	[LinkName("QFileInfo_Permission")]
-	public static extern bool QFileInfo_Permission(Self* c_this, int64 permissions);
+	public static extern bool QFileInfo_Permission(void* c_this, int64 permissions);
 	[LinkName("QFileInfo_Permissions")]
-	public static extern int64 QFileInfo_Permissions(Self* c_this);
+	public static extern int64 QFileInfo_Permissions(void* c_this);
 	[LinkName("QFileInfo_Size")]
-	public static extern int64 QFileInfo_Size(Self* c_this);
+	public static extern int64 QFileInfo_Size(void* c_this);
 	[LinkName("QFileInfo_BirthTime")]
-	public static extern QDateTime QFileInfo_BirthTime(Self* c_this);
+	public static extern void QFileInfo_BirthTime(void* c_this);
 	[LinkName("QFileInfo_MetadataChangeTime")]
-	public static extern QDateTime QFileInfo_MetadataChangeTime(Self* c_this);
+	public static extern void QFileInfo_MetadataChangeTime(void* c_this);
 	[LinkName("QFileInfo_LastModified")]
-	public static extern QDateTime QFileInfo_LastModified(Self* c_this);
+	public static extern void QFileInfo_LastModified(void* c_this);
 	[LinkName("QFileInfo_LastRead")]
-	public static extern QDateTime QFileInfo_LastRead(Self* c_this);
+	public static extern void QFileInfo_LastRead(void* c_this);
 	[LinkName("QFileInfo_FileTime")]
-	public static extern QDateTime QFileInfo_FileTime(Self* c_this, int64 time);
+	public static extern void QFileInfo_FileTime(void* c_this, int64 time);
 	[LinkName("QFileInfo_Caching")]
-	public static extern bool QFileInfo_Caching(Self* c_this);
+	public static extern bool QFileInfo_Caching(void* c_this);
 	[LinkName("QFileInfo_SetCaching")]
-	public static extern void QFileInfo_SetCaching(Self* c_this, bool on);
+	public static extern void QFileInfo_SetCaching(void* c_this, bool on);
 	[LinkName("QFileInfo_Stat")]
-	public static extern void QFileInfo_Stat(Self* c_this);
+	public static extern void QFileInfo_Stat(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QFileInfo_Delete")]
+	public static extern void QFileInfo_Delete(void* self);
 }

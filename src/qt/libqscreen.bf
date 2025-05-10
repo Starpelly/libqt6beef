@@ -2,114 +2,517 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public struct QScreen : QObject
+public class QScreen
+{
+	protected void* nativePtr;
+	
+	public ~this()
+	{
+		CQt.QScreen_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QScreen_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QScreen_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QScreen_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QScreen_Tr(s);
+	}
+	
+	public libqt_string Name()
+	{
+		return CQt.QScreen_Name(this.nativePtr);
+	}
+	
+	public libqt_string Manufacturer()
+	{
+		return CQt.QScreen_Manufacturer(this.nativePtr);
+	}
+	
+	public libqt_string Model()
+	{
+		return CQt.QScreen_Model(this.nativePtr);
+	}
+	
+	public libqt_string SerialNumber()
+	{
+		return CQt.QScreen_SerialNumber(this.nativePtr);
+	}
+	
+	public int32 Depth()
+	{
+		return CQt.QScreen_Depth(this.nativePtr);
+	}
+	
+	public void Size()
+	{
+		CQt.QScreen_Size(this.nativePtr);
+	}
+	
+	public void Geometry()
+	{
+		CQt.QScreen_Geometry(this.nativePtr);
+	}
+	
+	public void PhysicalSize()
+	{
+		CQt.QScreen_PhysicalSize(this.nativePtr);
+	}
+	
+	public double PhysicalDotsPerInchX()
+	{
+		return CQt.QScreen_PhysicalDotsPerInchX(this.nativePtr);
+	}
+	
+	public double PhysicalDotsPerInchY()
+	{
+		return CQt.QScreen_PhysicalDotsPerInchY(this.nativePtr);
+	}
+	
+	public double PhysicalDotsPerInch()
+	{
+		return CQt.QScreen_PhysicalDotsPerInch(this.nativePtr);
+	}
+	
+	public double LogicalDotsPerInchX()
+	{
+		return CQt.QScreen_LogicalDotsPerInchX(this.nativePtr);
+	}
+	
+	public double LogicalDotsPerInchY()
+	{
+		return CQt.QScreen_LogicalDotsPerInchY(this.nativePtr);
+	}
+	
+	public double LogicalDotsPerInch()
+	{
+		return CQt.QScreen_LogicalDotsPerInch(this.nativePtr);
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return CQt.QScreen_DevicePixelRatio(this.nativePtr);
+	}
+	
+	public void AvailableSize()
+	{
+		CQt.QScreen_AvailableSize(this.nativePtr);
+	}
+	
+	public void AvailableGeometry()
+	{
+		CQt.QScreen_AvailableGeometry(this.nativePtr);
+	}
+	
+	public void*[] VirtualSiblings()
+	{
+		return CQt.QScreen_VirtualSiblings(this.nativePtr);
+	}
+	
+	public void* VirtualSiblingAt(void point)
+	{
+		return CQt.QScreen_VirtualSiblingAt(this.nativePtr, point);
+	}
+	
+	public void VirtualSize()
+	{
+		CQt.QScreen_VirtualSize(this.nativePtr);
+	}
+	
+	public void VirtualGeometry()
+	{
+		CQt.QScreen_VirtualGeometry(this.nativePtr);
+	}
+	
+	public void AvailableVirtualSize()
+	{
+		CQt.QScreen_AvailableVirtualSize(this.nativePtr);
+	}
+	
+	public void AvailableVirtualGeometry()
+	{
+		CQt.QScreen_AvailableVirtualGeometry(this.nativePtr);
+	}
+	
+	public int64 PrimaryOrientation()
+	{
+		return CQt.QScreen_PrimaryOrientation(this.nativePtr);
+	}
+	
+	public int64 Orientation()
+	{
+		return CQt.QScreen_Orientation(this.nativePtr);
+	}
+	
+	public int64 NativeOrientation()
+	{
+		return CQt.QScreen_NativeOrientation(this.nativePtr);
+	}
+	
+	public int32 AngleBetween(int64 a, int64 b)
+	{
+		return CQt.QScreen_AngleBetween(this.nativePtr, a, b);
+	}
+	
+	public void TransformBetween(int64 a, int64 b, void* target)
+	{
+		CQt.QScreen_TransformBetween(this.nativePtr, a, b, target);
+	}
+	
+	public void MapBetween(int64 a, int64 b, void* rect)
+	{
+		CQt.QScreen_MapBetween(this.nativePtr, a, b, rect);
+	}
+	
+	public bool IsPortrait(int64 orientation)
+	{
+		return CQt.QScreen_IsPortrait(this.nativePtr, orientation);
+	}
+	
+	public bool IsLandscape(int64 orientation)
+	{
+		return CQt.QScreen_IsLandscape(this.nativePtr, orientation);
+	}
+	
+	public void GrabWindow()
+	{
+		CQt.QScreen_GrabWindow(this.nativePtr);
+	}
+	
+	public double RefreshRate()
+	{
+		return CQt.QScreen_RefreshRate(this.nativePtr);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QScreen_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QScreen_Tr3(s, c, n);
+	}
+	
+	public void GrabWindow1(c_uintptr window)
+	{
+		CQt.QScreen_GrabWindow1(this.nativePtr, window);
+	}
+	
+	public void GrabWindow2(c_uintptr window, int32 x)
+	{
+		CQt.QScreen_GrabWindow2(this.nativePtr, window, x);
+	}
+	
+	public void GrabWindow3(c_uintptr window, int32 x, int32 y)
+	{
+		CQt.QScreen_GrabWindow3(this.nativePtr, window, x, y);
+	}
+	
+	public void GrabWindow4(c_uintptr window, int32 x, int32 y, int32 w)
+	{
+		CQt.QScreen_GrabWindow4(this.nativePtr, window, x, y, w);
+	}
+	
+	public void GrabWindow5(c_uintptr window, int32 x, int32 y, int32 w, int32 h)
+	{
+		CQt.QScreen_GrabWindow5(this.nativePtr, window, x, y, w, h);
+	}
+	
+	public virtual bool Event(void* event)
+	{
+		return CQt.QObject_Event(this.nativePtr, event);
+	}
+	
+	public virtual bool EventFilter(void* watched, void* event)
+	{
+		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QObject_SetParent(this.nativePtr, parent);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QScreen_MetaObject")]
-	public static extern QMetaObject* QScreen_MetaObject(Self* c_this);
+	public static extern void* QScreen_MetaObject(void* c_this);
 	[LinkName("QScreen_Metacast")]
-	public static extern void* QScreen_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QScreen_Metacast(void* c_this, char8[] param1);
 	[LinkName("QScreen_Metacall")]
-	public static extern int32 QScreen_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QScreen_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QScreen_Tr")]
 	public static extern libqt_string QScreen_Tr(char8[] s);
 	[LinkName("QScreen_Name")]
-	public static extern libqt_string QScreen_Name(Self* c_this);
+	public static extern libqt_string QScreen_Name(void* c_this);
 	[LinkName("QScreen_Manufacturer")]
-	public static extern libqt_string QScreen_Manufacturer(Self* c_this);
+	public static extern libqt_string QScreen_Manufacturer(void* c_this);
 	[LinkName("QScreen_Model")]
-	public static extern libqt_string QScreen_Model(Self* c_this);
+	public static extern libqt_string QScreen_Model(void* c_this);
 	[LinkName("QScreen_SerialNumber")]
-	public static extern libqt_string QScreen_SerialNumber(Self* c_this);
+	public static extern libqt_string QScreen_SerialNumber(void* c_this);
 	[LinkName("QScreen_Depth")]
-	public static extern int32 QScreen_Depth(Self* c_this);
+	public static extern int32 QScreen_Depth(void* c_this);
 	[LinkName("QScreen_Size")]
-	public static extern QSize QScreen_Size(Self* c_this);
+	public static extern void QScreen_Size(void* c_this);
 	[LinkName("QScreen_Geometry")]
-	public static extern QRect QScreen_Geometry(Self* c_this);
+	public static extern void QScreen_Geometry(void* c_this);
 	[LinkName("QScreen_PhysicalSize")]
-	public static extern QSizeF QScreen_PhysicalSize(Self* c_this);
+	public static extern void QScreen_PhysicalSize(void* c_this);
 	[LinkName("QScreen_PhysicalDotsPerInchX")]
-	public static extern double QScreen_PhysicalDotsPerInchX(Self* c_this);
+	public static extern double QScreen_PhysicalDotsPerInchX(void* c_this);
 	[LinkName("QScreen_PhysicalDotsPerInchY")]
-	public static extern double QScreen_PhysicalDotsPerInchY(Self* c_this);
+	public static extern double QScreen_PhysicalDotsPerInchY(void* c_this);
 	[LinkName("QScreen_PhysicalDotsPerInch")]
-	public static extern double QScreen_PhysicalDotsPerInch(Self* c_this);
+	public static extern double QScreen_PhysicalDotsPerInch(void* c_this);
 	[LinkName("QScreen_LogicalDotsPerInchX")]
-	public static extern double QScreen_LogicalDotsPerInchX(Self* c_this);
+	public static extern double QScreen_LogicalDotsPerInchX(void* c_this);
 	[LinkName("QScreen_LogicalDotsPerInchY")]
-	public static extern double QScreen_LogicalDotsPerInchY(Self* c_this);
+	public static extern double QScreen_LogicalDotsPerInchY(void* c_this);
 	[LinkName("QScreen_LogicalDotsPerInch")]
-	public static extern double QScreen_LogicalDotsPerInch(Self* c_this);
+	public static extern double QScreen_LogicalDotsPerInch(void* c_this);
 	[LinkName("QScreen_DevicePixelRatio")]
-	public static extern double QScreen_DevicePixelRatio(Self* c_this);
+	public static extern double QScreen_DevicePixelRatio(void* c_this);
 	[LinkName("QScreen_AvailableSize")]
-	public static extern QSize QScreen_AvailableSize(Self* c_this);
+	public static extern void QScreen_AvailableSize(void* c_this);
 	[LinkName("QScreen_AvailableGeometry")]
-	public static extern QRect QScreen_AvailableGeometry(Self* c_this);
+	public static extern void QScreen_AvailableGeometry(void* c_this);
 	[LinkName("QScreen_VirtualSiblings")]
-	public static extern QScreen*[] QScreen_VirtualSiblings(Self* c_this);
+	public static extern void*[] QScreen_VirtualSiblings(void* c_this);
 	[LinkName("QScreen_VirtualSiblingAt")]
-	public static extern QScreen* QScreen_VirtualSiblingAt(Self* c_this, QPoint point);
+	public static extern void* QScreen_VirtualSiblingAt(void* c_this, void point);
 	[LinkName("QScreen_VirtualSize")]
-	public static extern QSize QScreen_VirtualSize(Self* c_this);
+	public static extern void QScreen_VirtualSize(void* c_this);
 	[LinkName("QScreen_VirtualGeometry")]
-	public static extern QRect QScreen_VirtualGeometry(Self* c_this);
+	public static extern void QScreen_VirtualGeometry(void* c_this);
 	[LinkName("QScreen_AvailableVirtualSize")]
-	public static extern QSize QScreen_AvailableVirtualSize(Self* c_this);
+	public static extern void QScreen_AvailableVirtualSize(void* c_this);
 	[LinkName("QScreen_AvailableVirtualGeometry")]
-	public static extern QRect QScreen_AvailableVirtualGeometry(Self* c_this);
+	public static extern void QScreen_AvailableVirtualGeometry(void* c_this);
 	[LinkName("QScreen_PrimaryOrientation")]
-	public static extern int64 QScreen_PrimaryOrientation(Self* c_this);
+	public static extern int64 QScreen_PrimaryOrientation(void* c_this);
 	[LinkName("QScreen_Orientation")]
-	public static extern int64 QScreen_Orientation(Self* c_this);
+	public static extern int64 QScreen_Orientation(void* c_this);
 	[LinkName("QScreen_NativeOrientation")]
-	public static extern int64 QScreen_NativeOrientation(Self* c_this);
+	public static extern int64 QScreen_NativeOrientation(void* c_this);
 	[LinkName("QScreen_AngleBetween")]
-	public static extern int32 QScreen_AngleBetween(Self* c_this, int64 a, int64 b);
+	public static extern int32 QScreen_AngleBetween(void* c_this, int64 a, int64 b);
 	[LinkName("QScreen_TransformBetween")]
-	public static extern QTransform QScreen_TransformBetween(Self* c_this, int64 a, int64 b, QRect* target);
+	public static extern void QScreen_TransformBetween(void* c_this, int64 a, int64 b, void* target);
 	[LinkName("QScreen_MapBetween")]
-	public static extern QRect QScreen_MapBetween(Self* c_this, int64 a, int64 b, QRect* rect);
+	public static extern void QScreen_MapBetween(void* c_this, int64 a, int64 b, void* rect);
 	[LinkName("QScreen_IsPortrait")]
-	public static extern bool QScreen_IsPortrait(Self* c_this, int64 orientation);
+	public static extern bool QScreen_IsPortrait(void* c_this, int64 orientation);
 	[LinkName("QScreen_IsLandscape")]
-	public static extern bool QScreen_IsLandscape(Self* c_this, int64 orientation);
+	public static extern bool QScreen_IsLandscape(void* c_this, int64 orientation);
 	[LinkName("QScreen_GrabWindow")]
-	public static extern QPixmap QScreen_GrabWindow(Self* c_this);
+	public static extern void QScreen_GrabWindow(void* c_this);
 	[LinkName("QScreen_RefreshRate")]
-	public static extern double QScreen_RefreshRate(Self* c_this);
+	public static extern double QScreen_RefreshRate(void* c_this);
 	[LinkName("QScreen_ResolveInterface")]
-	public static extern void* QScreen_ResolveInterface(Self* c_this, char8[] name, int32 revision);
+	public static extern void* QScreen_ResolveInterface(void* c_this, char8[] name, int32 revision);
 	[LinkName("QScreen_Connect_GeometryChanged")]
-	public static extern void QScreen_Connect_GeometryChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_GeometryChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_AvailableGeometryChanged")]
-	public static extern void QScreen_Connect_AvailableGeometryChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_AvailableGeometryChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_PhysicalSizeChanged")]
-	public static extern void QScreen_Connect_PhysicalSizeChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_PhysicalSizeChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_PhysicalDotsPerInchChanged")]
-	public static extern void QScreen_Connect_PhysicalDotsPerInchChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_PhysicalDotsPerInchChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_LogicalDotsPerInchChanged")]
-	public static extern void QScreen_Connect_LogicalDotsPerInchChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_LogicalDotsPerInchChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_VirtualGeometryChanged")]
-	public static extern void QScreen_Connect_VirtualGeometryChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_VirtualGeometryChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_PrimaryOrientationChanged")]
-	public static extern void QScreen_Connect_PrimaryOrientationChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_PrimaryOrientationChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_OrientationChanged")]
-	public static extern void QScreen_Connect_OrientationChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_OrientationChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Connect_RefreshRateChanged")]
-	public static extern void QScreen_Connect_RefreshRateChanged(Self* c_this, c_intptr slot);
+	public static extern void QScreen_Connect_RefreshRateChanged(void* c_this, c_intptr slot);
 	[LinkName("QScreen_Tr2")]
 	public static extern libqt_string QScreen_Tr2(char8[] s, char8[] c);
 	[LinkName("QScreen_Tr3")]
 	public static extern libqt_string QScreen_Tr3(char8[] s, char8[] c, int32 n);
 	[LinkName("QScreen_GrabWindow1")]
-	public static extern QPixmap QScreen_GrabWindow1(Self* c_this, c_uintptr window);
+	public static extern void QScreen_GrabWindow1(void* c_this, c_uintptr window);
 	[LinkName("QScreen_GrabWindow2")]
-	public static extern QPixmap QScreen_GrabWindow2(Self* c_this, c_uintptr window, int32 x);
+	public static extern void QScreen_GrabWindow2(void* c_this, c_uintptr window, int32 x);
 	[LinkName("QScreen_GrabWindow3")]
-	public static extern QPixmap QScreen_GrabWindow3(Self* c_this, c_uintptr window, int32 x, int32 y);
+	public static extern void QScreen_GrabWindow3(void* c_this, c_uintptr window, int32 x, int32 y);
 	[LinkName("QScreen_GrabWindow4")]
-	public static extern QPixmap QScreen_GrabWindow4(Self* c_this, c_uintptr window, int32 x, int32 y, int32 w);
+	public static extern void QScreen_GrabWindow4(void* c_this, c_uintptr window, int32 x, int32 y, int32 w);
 	[LinkName("QScreen_GrabWindow5")]
-	public static extern QPixmap QScreen_GrabWindow5(Self* c_this, c_uintptr window, int32 x, int32 y, int32 w, int32 h);
+	public static extern void QScreen_GrabWindow5(void* c_this, c_uintptr window, int32 x, int32 y, int32 w, int32 h);
+	/// Delete this object from C++ memory
+	[LinkName("QScreen_Delete")]
+	public static extern void QScreen_Delete(void* self);
 }

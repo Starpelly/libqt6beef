@@ -90,80 +90,218 @@ public enum QKeySequence__SequenceMatch
 	PartialMatch = 1,
 	ExactMatch = 2,
 }
-public struct QKeySequence
+public class QKeySequence
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QKeySequence_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QKeySequence_Delete(this.nativePtr);
+	}
+	
+	public int32 Count()
+	{
+		return CQt.QKeySequence_Count(this.nativePtr);
+	}
+	
+	public bool IsEmpty()
+	{
+		return CQt.QKeySequence_IsEmpty(this.nativePtr);
+	}
+	
+	public libqt_string ToString()
+	{
+		return CQt.QKeySequence_ToString(this.nativePtr);
+	}
+	
+	public static void FromString(libqt_string str)
+	{
+		CQt.QKeySequence_FromString(str);
+	}
+	
+	public static void[] ListFromString(libqt_string str)
+	{
+		return CQt.QKeySequence_ListFromString(str);
+	}
+	
+	public static libqt_string ListToString(void[] list)
+	{
+		return CQt.QKeySequence_ListToString(list);
+	}
+	
+	public int64 Matches(void* seq)
+	{
+		return CQt.QKeySequence_Matches(this.nativePtr, seq);
+	}
+	
+	public static void Mnemonic(libqt_string text)
+	{
+		CQt.QKeySequence_Mnemonic(text);
+	}
+	
+	public static void[] KeyBindings(int64 key)
+	{
+		return CQt.QKeySequence_KeyBindings(key);
+	}
+	
+	public void ToQVariant()
+	{
+		CQt.QKeySequence_ToQVariant(this.nativePtr);
+	}
+	
+	public void OperatorSubscript(uint32 i)
+	{
+		CQt.QKeySequence_OperatorSubscript(this.nativePtr, i);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QKeySequence_OperatorAssign(this.nativePtr, other);
+	}
+	
+	public void Swap(void* other)
+	{
+		CQt.QKeySequence_Swap(this.nativePtr, other);
+	}
+	
+	public bool OperatorEqual(void* other)
+	{
+		return CQt.QKeySequence_OperatorEqual(this.nativePtr, other);
+	}
+	
+	public bool OperatorNotEqual(void* other)
+	{
+		return CQt.QKeySequence_OperatorNotEqual(this.nativePtr, other);
+	}
+	
+	public bool OperatorLesser(void* ks)
+	{
+		return CQt.QKeySequence_OperatorLesser(this.nativePtr, ks);
+	}
+	
+	public bool OperatorGreater(void* other)
+	{
+		return CQt.QKeySequence_OperatorGreater(this.nativePtr, other);
+	}
+	
+	public bool OperatorLesserOrEqual(void* other)
+	{
+		return CQt.QKeySequence_OperatorLesserOrEqual(this.nativePtr, other);
+	}
+	
+	public bool OperatorGreaterOrEqual(void* other)
+	{
+		return CQt.QKeySequence_OperatorGreaterOrEqual(this.nativePtr, other);
+	}
+	
+	public bool IsDetached()
+	{
+		return CQt.QKeySequence_IsDetached(this.nativePtr);
+	}
+	
+	public libqt_string ToString1(int64 format)
+	{
+		return CQt.QKeySequence_ToString1(this.nativePtr, format);
+	}
+	
+	public static void FromString2(libqt_string str, int64 format)
+	{
+		CQt.QKeySequence_FromString2(str, format);
+	}
+	
+	public static void[] ListFromString2(libqt_string str, int64 format)
+	{
+		return CQt.QKeySequence_ListFromString2(str, format);
+	}
+	
+	public static libqt_string ListToString2(void[] list, int64 format)
+	{
+		return CQt.QKeySequence_ListToString2(list, format);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QKeySequence_new")]
-	public static extern QKeySequence* QKeySequence_new();
+	public static extern void* QKeySequence_new();
 	[LinkName("QKeySequence_new2")]
-	public static extern QKeySequence* QKeySequence_new2(libqt_string key);
+	public static extern void* QKeySequence_new2(libqt_string key);
 	[LinkName("QKeySequence_new3")]
-	public static extern QKeySequence* QKeySequence_new3(int32 k1);
+	public static extern void* QKeySequence_new3(int32 k1);
 	[LinkName("QKeySequence_new4")]
-	public static extern QKeySequence* QKeySequence_new4(QKeyCombination k1);
+	public static extern void* QKeySequence_new4(void k1);
 	[LinkName("QKeySequence_new5")]
-	public static extern QKeySequence* QKeySequence_new5(QKeySequence* ks);
+	public static extern void* QKeySequence_new5(void* ks);
 	[LinkName("QKeySequence_new6")]
-	public static extern QKeySequence* QKeySequence_new6(int64 key);
+	public static extern void* QKeySequence_new6(int64 key);
 	[LinkName("QKeySequence_new7")]
-	public static extern QKeySequence* QKeySequence_new7(libqt_string key, int64 format);
+	public static extern void* QKeySequence_new7(libqt_string key, int64 format);
 	[LinkName("QKeySequence_new8")]
-	public static extern QKeySequence* QKeySequence_new8(int32 k1, int32 k2);
+	public static extern void* QKeySequence_new8(int32 k1, int32 k2);
 	[LinkName("QKeySequence_new9")]
-	public static extern QKeySequence* QKeySequence_new9(int32 k1, int32 k2, int32 k3);
+	public static extern void* QKeySequence_new9(int32 k1, int32 k2, int32 k3);
 	[LinkName("QKeySequence_new10")]
-	public static extern QKeySequence* QKeySequence_new10(int32 k1, int32 k2, int32 k3, int32 k4);
+	public static extern void* QKeySequence_new10(int32 k1, int32 k2, int32 k3, int32 k4);
 	[LinkName("QKeySequence_new11")]
-	public static extern QKeySequence* QKeySequence_new11(QKeyCombination k1, QKeyCombination k2);
+	public static extern void* QKeySequence_new11(void k1, void k2);
 	[LinkName("QKeySequence_new12")]
-	public static extern QKeySequence* QKeySequence_new12(QKeyCombination k1, QKeyCombination k2, QKeyCombination k3);
+	public static extern void* QKeySequence_new12(void k1, void k2, void k3);
 	[LinkName("QKeySequence_new13")]
-	public static extern QKeySequence* QKeySequence_new13(QKeyCombination k1, QKeyCombination k2, QKeyCombination k3, QKeyCombination k4);
+	public static extern void* QKeySequence_new13(void k1, void k2, void k3, void k4);
 	[LinkName("QKeySequence_Count")]
-	public static extern int32 QKeySequence_Count(Self* c_this);
+	public static extern int32 QKeySequence_Count(void* c_this);
 	[LinkName("QKeySequence_IsEmpty")]
-	public static extern bool QKeySequence_IsEmpty(Self* c_this);
+	public static extern bool QKeySequence_IsEmpty(void* c_this);
 	[LinkName("QKeySequence_ToString")]
-	public static extern libqt_string QKeySequence_ToString(Self* c_this);
+	public static extern libqt_string QKeySequence_ToString(void* c_this);
 	[LinkName("QKeySequence_FromString")]
-	public static extern QKeySequence QKeySequence_FromString(libqt_string str);
+	public static extern void QKeySequence_FromString(libqt_string str);
 	[LinkName("QKeySequence_ListFromString")]
-	public static extern QKeySequence[] QKeySequence_ListFromString(libqt_string str);
+	public static extern void[] QKeySequence_ListFromString(libqt_string str);
 	[LinkName("QKeySequence_ListToString")]
-	public static extern libqt_string QKeySequence_ListToString(QKeySequence[] list);
+	public static extern libqt_string QKeySequence_ListToString(void[] list);
 	[LinkName("QKeySequence_Matches")]
-	public static extern int64 QKeySequence_Matches(Self* c_this, QKeySequence* seq);
+	public static extern int64 QKeySequence_Matches(void* c_this, void* seq);
 	[LinkName("QKeySequence_Mnemonic")]
-	public static extern QKeySequence QKeySequence_Mnemonic(libqt_string text);
+	public static extern void QKeySequence_Mnemonic(libqt_string text);
 	[LinkName("QKeySequence_KeyBindings")]
-	public static extern QKeySequence[] QKeySequence_KeyBindings(int64 key);
+	public static extern void[] QKeySequence_KeyBindings(int64 key);
 	[LinkName("QKeySequence_ToQVariant")]
-	public static extern QVariant QKeySequence_ToQVariant(Self* c_this);
+	public static extern void QKeySequence_ToQVariant(void* c_this);
 	[LinkName("QKeySequence_OperatorSubscript")]
-	public static extern QKeyCombination QKeySequence_OperatorSubscript(Self* c_this, uint32 i);
+	public static extern void QKeySequence_OperatorSubscript(void* c_this, uint32 i);
 	[LinkName("QKeySequence_OperatorAssign")]
-	public static extern void QKeySequence_OperatorAssign(Self* c_this, QKeySequence* other);
+	public static extern void QKeySequence_OperatorAssign(void* c_this, void* other);
 	[LinkName("QKeySequence_Swap")]
-	public static extern void QKeySequence_Swap(Self* c_this, QKeySequence* other);
+	public static extern void QKeySequence_Swap(void* c_this, void* other);
 	[LinkName("QKeySequence_OperatorEqual")]
-	public static extern bool QKeySequence_OperatorEqual(Self* c_this, QKeySequence* other);
+	public static extern bool QKeySequence_OperatorEqual(void* c_this, void* other);
 	[LinkName("QKeySequence_OperatorNotEqual")]
-	public static extern bool QKeySequence_OperatorNotEqual(Self* c_this, QKeySequence* other);
+	public static extern bool QKeySequence_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QKeySequence_OperatorLesser")]
-	public static extern bool QKeySequence_OperatorLesser(Self* c_this, QKeySequence* ks);
+	public static extern bool QKeySequence_OperatorLesser(void* c_this, void* ks);
 	[LinkName("QKeySequence_OperatorGreater")]
-	public static extern bool QKeySequence_OperatorGreater(Self* c_this, QKeySequence* other);
+	public static extern bool QKeySequence_OperatorGreater(void* c_this, void* other);
 	[LinkName("QKeySequence_OperatorLesserOrEqual")]
-	public static extern bool QKeySequence_OperatorLesserOrEqual(Self* c_this, QKeySequence* other);
+	public static extern bool QKeySequence_OperatorLesserOrEqual(void* c_this, void* other);
 	[LinkName("QKeySequence_OperatorGreaterOrEqual")]
-	public static extern bool QKeySequence_OperatorGreaterOrEqual(Self* c_this, QKeySequence* other);
+	public static extern bool QKeySequence_OperatorGreaterOrEqual(void* c_this, void* other);
 	[LinkName("QKeySequence_IsDetached")]
-	public static extern bool QKeySequence_IsDetached(Self* c_this);
+	public static extern bool QKeySequence_IsDetached(void* c_this);
 	[LinkName("QKeySequence_ToString1")]
-	public static extern libqt_string QKeySequence_ToString1(Self* c_this, int64 format);
+	public static extern libqt_string QKeySequence_ToString1(void* c_this, int64 format);
 	[LinkName("QKeySequence_FromString2")]
-	public static extern QKeySequence QKeySequence_FromString2(libqt_string str, int64 format);
+	public static extern void QKeySequence_FromString2(libqt_string str, int64 format);
 	[LinkName("QKeySequence_ListFromString2")]
-	public static extern QKeySequence[] QKeySequence_ListFromString2(libqt_string str, int64 format);
+	public static extern void[] QKeySequence_ListFromString2(libqt_string str, int64 format);
 	[LinkName("QKeySequence_ListToString2")]
-	public static extern libqt_string QKeySequence_ListToString2(QKeySequence[] list, int64 format);
+	public static extern libqt_string QKeySequence_ListToString2(void[] list, int64 format);
+	/// Delete this object from C++ memory
+	[LinkName("QKeySequence_Delete")]
+	public static extern void QKeySequence_Delete(void* self);
 }

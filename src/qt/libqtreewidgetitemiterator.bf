@@ -26,32 +26,90 @@ public enum QTreeWidgetItemIterator__IteratorFlag
 	NotEditable = 131072,
 	UserFlag = 16777216,
 }
-public struct QTreeWidgetItemIterator
+public class QTreeWidgetItemIterator
+{
+	protected void* nativePtr;
+	
+	public this(void* it)
+	{
+		this.nativePtr = CQt.QTreeWidgetItemIterator_new(it);
+	}
+	
+	public ~this()
+	{
+		CQt.QTreeWidgetItemIterator_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* it)
+	{
+		CQt.QTreeWidgetItemIterator_OperatorAssign(this.nativePtr, it);
+	}
+	
+	public void* OperatorPlusPlus()
+	{
+		return CQt.QTreeWidgetItemIterator_OperatorPlusPlus(this.nativePtr);
+	}
+	
+	public void OperatorPlusPlusWithInt(int32 param1)
+	{
+		CQt.QTreeWidgetItemIterator_OperatorPlusPlusWithInt(this.nativePtr, param1);
+	}
+	
+	public void* OperatorPlusAssign(int32 n)
+	{
+		return CQt.QTreeWidgetItemIterator_OperatorPlusAssign(this.nativePtr, n);
+	}
+	
+	public void* OperatorMinusMinus()
+	{
+		return CQt.QTreeWidgetItemIterator_OperatorMinusMinus(this.nativePtr);
+	}
+	
+	public void OperatorMinusMinusWithInt(int32 param1)
+	{
+		CQt.QTreeWidgetItemIterator_OperatorMinusMinusWithInt(this.nativePtr, param1);
+	}
+	
+	public void* OperatorMinusAssign(int32 n)
+	{
+		return CQt.QTreeWidgetItemIterator_OperatorMinusAssign(this.nativePtr, n);
+	}
+	
+	public void* OperatorMultiply()
+	{
+		return CQt.QTreeWidgetItemIterator_OperatorMultiply(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QTreeWidgetItemIterator_new")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_new(QTreeWidgetItemIterator* it);
+	public static extern void* QTreeWidgetItemIterator_new(void* it);
 	[LinkName("QTreeWidgetItemIterator_new2")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_new2(QTreeWidget* widget);
+	public static extern void* QTreeWidgetItemIterator_new2(void* widget);
 	[LinkName("QTreeWidgetItemIterator_new3")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_new3(QTreeWidgetItem* item);
+	public static extern void* QTreeWidgetItemIterator_new3(void* item);
 	[LinkName("QTreeWidgetItemIterator_new4")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_new4(QTreeWidget* widget, int64 flags);
+	public static extern void* QTreeWidgetItemIterator_new4(void* widget, int64 flags);
 	[LinkName("QTreeWidgetItemIterator_new5")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_new5(QTreeWidgetItem* item, int64 flags);
+	public static extern void* QTreeWidgetItemIterator_new5(void* item, int64 flags);
 	[LinkName("QTreeWidgetItemIterator_OperatorAssign")]
-	public static extern void QTreeWidgetItemIterator_OperatorAssign(Self* c_this, QTreeWidgetItemIterator* it);
+	public static extern void QTreeWidgetItemIterator_OperatorAssign(void* c_this, void* it);
 	[LinkName("QTreeWidgetItemIterator_OperatorPlusPlus")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_OperatorPlusPlus(Self* c_this);
+	public static extern void* QTreeWidgetItemIterator_OperatorPlusPlus(void* c_this);
 	[LinkName("QTreeWidgetItemIterator_OperatorPlusPlusWithInt")]
-	public static extern QTreeWidgetItemIterator QTreeWidgetItemIterator_OperatorPlusPlusWithInt(Self* c_this, int32 param1);
+	public static extern void QTreeWidgetItemIterator_OperatorPlusPlusWithInt(void* c_this, int32 param1);
 	[LinkName("QTreeWidgetItemIterator_OperatorPlusAssign")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_OperatorPlusAssign(Self* c_this, int32 n);
+	public static extern void* QTreeWidgetItemIterator_OperatorPlusAssign(void* c_this, int32 n);
 	[LinkName("QTreeWidgetItemIterator_OperatorMinusMinus")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_OperatorMinusMinus(Self* c_this);
+	public static extern void* QTreeWidgetItemIterator_OperatorMinusMinus(void* c_this);
 	[LinkName("QTreeWidgetItemIterator_OperatorMinusMinusWithInt")]
-	public static extern QTreeWidgetItemIterator QTreeWidgetItemIterator_OperatorMinusMinusWithInt(Self* c_this, int32 param1);
+	public static extern void QTreeWidgetItemIterator_OperatorMinusMinusWithInt(void* c_this, int32 param1);
 	[LinkName("QTreeWidgetItemIterator_OperatorMinusAssign")]
-	public static extern QTreeWidgetItemIterator* QTreeWidgetItemIterator_OperatorMinusAssign(Self* c_this, int32 n);
+	public static extern void* QTreeWidgetItemIterator_OperatorMinusAssign(void* c_this, int32 n);
 	[LinkName("QTreeWidgetItemIterator_OperatorMultiply")]
-	public static extern QTreeWidgetItem* QTreeWidgetItemIterator_OperatorMultiply(Self* c_this);
+	public static extern void* QTreeWidgetItemIterator_OperatorMultiply(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QTreeWidgetItemIterator_Delete")]
+	public static extern void QTreeWidgetItemIterator_Delete(void* self);
 }

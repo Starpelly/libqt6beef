@@ -2,38 +2,281 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public struct QVideoSink : QObject
+public class QVideoSink
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QVideoSink_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QVideoSink_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QVideoSink_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QVideoSink_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QVideoSink_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QVideoSink_Tr(s);
+	}
+	
+	public void VideoSize()
+	{
+		CQt.QVideoSink_VideoSize(this.nativePtr);
+	}
+	
+	public libqt_string SubtitleText()
+	{
+		return CQt.QVideoSink_SubtitleText(this.nativePtr);
+	}
+	
+	public void SetSubtitleText(libqt_string subtitle)
+	{
+		CQt.QVideoSink_SetSubtitleText(this.nativePtr, subtitle);
+	}
+	
+	public void SetVideoFrame(void* frame)
+	{
+		CQt.QVideoSink_SetVideoFrame(this.nativePtr, frame);
+	}
+	
+	public void VideoFrame()
+	{
+		CQt.QVideoSink_VideoFrame(this.nativePtr);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QVideoSink_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QVideoSink_Tr3(s, c, n);
+	}
+	
+	public virtual bool Event(void* event)
+	{
+		return CQt.QObject_Event(this.nativePtr, event);
+	}
+	
+	public virtual bool EventFilter(void* watched, void* event)
+	{
+		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QObject_SetParent(this.nativePtr, parent);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QVideoSink_new")]
-	public static extern QVideoSink* QVideoSink_new();
+	public static extern void* QVideoSink_new();
 	[LinkName("QVideoSink_new2")]
-	public static extern QVideoSink* QVideoSink_new2(QObject* parent);
+	public static extern void* QVideoSink_new2(void* parent);
 	[LinkName("QVideoSink_MetaObject")]
-	public static extern QMetaObject* QVideoSink_MetaObject(Self* c_this);
+	public static extern void* QVideoSink_MetaObject(void* c_this);
 	[LinkName("QVideoSink_Metacast")]
-	public static extern void* QVideoSink_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QVideoSink_Metacast(void* c_this, char8[] param1);
 	[LinkName("QVideoSink_Metacall")]
-	public static extern int32 QVideoSink_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QVideoSink_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QVideoSink_Tr")]
 	public static extern libqt_string QVideoSink_Tr(char8[] s);
 	[LinkName("QVideoSink_VideoSize")]
-	public static extern QSize QVideoSink_VideoSize(Self* c_this);
+	public static extern void QVideoSink_VideoSize(void* c_this);
 	[LinkName("QVideoSink_SubtitleText")]
-	public static extern libqt_string QVideoSink_SubtitleText(Self* c_this);
+	public static extern libqt_string QVideoSink_SubtitleText(void* c_this);
 	[LinkName("QVideoSink_SetSubtitleText")]
-	public static extern void QVideoSink_SetSubtitleText(Self* c_this, libqt_string subtitle);
+	public static extern void QVideoSink_SetSubtitleText(void* c_this, libqt_string subtitle);
 	[LinkName("QVideoSink_SetVideoFrame")]
-	public static extern void QVideoSink_SetVideoFrame(Self* c_this, QVideoFrame* frame);
+	public static extern void QVideoSink_SetVideoFrame(void* c_this, void* frame);
 	[LinkName("QVideoSink_VideoFrame")]
-	public static extern QVideoFrame QVideoSink_VideoFrame(Self* c_this);
+	public static extern void QVideoSink_VideoFrame(void* c_this);
 	[LinkName("QVideoSink_Connect_VideoFrameChanged")]
-	public static extern void QVideoSink_Connect_VideoFrameChanged(Self* c_this, c_intptr slot);
+	public static extern void QVideoSink_Connect_VideoFrameChanged(void* c_this, c_intptr slot);
 	[LinkName("QVideoSink_Connect_SubtitleTextChanged")]
-	public static extern void QVideoSink_Connect_SubtitleTextChanged(Self* c_this, c_intptr slot);
+	public static extern void QVideoSink_Connect_SubtitleTextChanged(void* c_this, c_intptr slot);
 	[LinkName("QVideoSink_Connect_VideoSizeChanged")]
-	public static extern void QVideoSink_Connect_VideoSizeChanged(Self* c_this, c_intptr slot);
+	public static extern void QVideoSink_Connect_VideoSizeChanged(void* c_this, c_intptr slot);
 	[LinkName("QVideoSink_Tr2")]
 	public static extern libqt_string QVideoSink_Tr2(char8[] s, char8[] c);
 	[LinkName("QVideoSink_Tr3")]
 	public static extern libqt_string QVideoSink_Tr3(char8[] s, char8[] c, int32 n);
+	/// Delete this object from C++ memory
+	[LinkName("QVideoSink_Delete")]
+	public static extern void QVideoSink_Delete(void* self);
 }

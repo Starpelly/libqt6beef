@@ -610,68 +610,463 @@ public enum QStyle__StandardPixmap
 	NStandardPixmap = 79,
 	SP_CustomBase = 4026531840,
 }
-public struct QStyle : QObject
+public class QStyle
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyle_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyle_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QStyle_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QStyle_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QStyle_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QStyle_Tr(s);
+	}
+	
+	public libqt_string Name()
+	{
+		return CQt.QStyle_Name(this.nativePtr);
+	}
+	
+	public virtual void Polish(void* widget)
+	{
+		CQt.QStyle_Polish(this.nativePtr, widget);
+	}
+	
+	public virtual void Unpolish(void* widget)
+	{
+		CQt.QStyle_Unpolish(this.nativePtr, widget);
+	}
+	
+	public virtual void PolishWithApplication(void* application)
+	{
+		CQt.QStyle_PolishWithApplication(this.nativePtr, application);
+	}
+	
+	public virtual void UnpolishWithApplication(void* application)
+	{
+		CQt.QStyle_UnpolishWithApplication(this.nativePtr, application);
+	}
+	
+	public virtual void PolishWithPalette(void* palette)
+	{
+		CQt.QStyle_PolishWithPalette(this.nativePtr, palette);
+	}
+	
+	public virtual void ItemTextRect(void* fm, void* r, int32 flags, bool enabled, libqt_string text)
+	{
+		CQt.QStyle_ItemTextRect(this.nativePtr, fm, r, flags, enabled, text);
+	}
+	
+	public virtual void ItemPixmapRect(void* r, int32 flags, void* pixmap)
+	{
+		CQt.QStyle_ItemPixmapRect(this.nativePtr, r, flags, pixmap);
+	}
+	
+	public virtual void DrawItemText(void* painter, void* rect, int32 flags, void* pal, bool enabled, libqt_string text, int64 textRole)
+	{
+		CQt.QStyle_DrawItemText(this.nativePtr, painter, rect, flags, pal, enabled, text, textRole);
+	}
+	
+	public virtual void DrawItemPixmap(void* painter, void* rect, int32 alignment, void* pixmap)
+	{
+		CQt.QStyle_DrawItemPixmap(this.nativePtr, painter, rect, alignment, pixmap);
+	}
+	
+	public virtual void StandardPalette()
+	{
+		CQt.QStyle_StandardPalette(this.nativePtr);
+	}
+	
+	public virtual void DrawPrimitive(int64 pe, void* opt, void* p, void* w)
+	{
+		CQt.QStyle_DrawPrimitive(this.nativePtr, pe, opt, p, w);
+	}
+	
+	public virtual void DrawControl(int64 element, void* opt, void* p, void* w)
+	{
+		CQt.QStyle_DrawControl(this.nativePtr, element, opt, p, w);
+	}
+	
+	public virtual void SubElementRect(int64 subElement, void* option, void* widget)
+	{
+		CQt.QStyle_SubElementRect(this.nativePtr, subElement, option, widget);
+	}
+	
+	public virtual void DrawComplexControl(int64 cc, void* opt, void* p, void* widget)
+	{
+		CQt.QStyle_DrawComplexControl(this.nativePtr, cc, opt, p, widget);
+	}
+	
+	public virtual int64 HitTestComplexControl(int64 cc, void* opt, void* pt, void* widget)
+	{
+		return CQt.QStyle_HitTestComplexControl(this.nativePtr, cc, opt, pt, widget);
+	}
+	
+	public virtual void SubControlRect(int64 cc, void* opt, int64 sc, void* widget)
+	{
+		CQt.QStyle_SubControlRect(this.nativePtr, cc, opt, sc, widget);
+	}
+	
+	public virtual int32 PixelMetric(int64 metric, void* option, void* widget)
+	{
+		return CQt.QStyle_PixelMetric(this.nativePtr, metric, option, widget);
+	}
+	
+	public virtual void SizeFromContents(int64 ct, void* opt, void* contentsSize, void* w)
+	{
+		CQt.QStyle_SizeFromContents(this.nativePtr, ct, opt, contentsSize, w);
+	}
+	
+	public virtual int32 StyleHint(int64 stylehint, void* opt, void* widget, void* returnData)
+	{
+		return CQt.QStyle_StyleHint(this.nativePtr, stylehint, opt, widget, returnData);
+	}
+	
+	public virtual void StandardPixmap(int64 standardPixmap, void* opt, void* widget)
+	{
+		CQt.QStyle_StandardPixmap(this.nativePtr, standardPixmap, opt, widget);
+	}
+	
+	public virtual void StandardIcon(int64 standardIcon, void* option, void* widget)
+	{
+		CQt.QStyle_StandardIcon(this.nativePtr, standardIcon, option, widget);
+	}
+	
+	public virtual void GeneratedIconPixmap(int64 iconMode, void* pixmap, void* opt)
+	{
+		CQt.QStyle_GeneratedIconPixmap(this.nativePtr, iconMode, pixmap, opt);
+	}
+	
+	public static void VisualRect(int64 direction, void* boundingRect, void* logicalRect)
+	{
+		CQt.QStyle_VisualRect(direction, boundingRect, logicalRect);
+	}
+	
+	public static void VisualPos(int64 direction, void* boundingRect, void* logicalPos)
+	{
+		CQt.QStyle_VisualPos(direction, boundingRect, logicalPos);
+	}
+	
+	public static int32 SliderPositionFromValue(int32 min, int32 max, int32 val, int32 space)
+	{
+		return CQt.QStyle_SliderPositionFromValue(min, max, val, space);
+	}
+	
+	public static int32 SliderValueFromPosition(int32 min, int32 max, int32 pos, int32 space)
+	{
+		return CQt.QStyle_SliderValueFromPosition(min, max, pos, space);
+	}
+	
+	public static int64 VisualAlignment(int64 direction, int64 alignment)
+	{
+		return CQt.QStyle_VisualAlignment(direction, alignment);
+	}
+	
+	public static void AlignedRect(int64 direction, int64 alignment, void* size, void* rectangle)
+	{
+		CQt.QStyle_AlignedRect(direction, alignment, size, rectangle);
+	}
+	
+	public virtual int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, void* option, void* widget)
+	{
+		return CQt.QStyle_LayoutSpacing(this.nativePtr, control1, control2, orientation, option, widget);
+	}
+	
+	public int32 CombinedLayoutSpacing(int64 controls1, int64 controls2, int64 orientation)
+	{
+		return CQt.QStyle_CombinedLayoutSpacing(this.nativePtr, controls1, controls2, orientation);
+	}
+	
+	public void* Proxy()
+	{
+		return CQt.QStyle_Proxy(this.nativePtr);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QStyle_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QStyle_Tr3(s, c, n);
+	}
+	
+	public static int32 SliderPositionFromValue5(int32 min, int32 max, int32 val, int32 space, bool upsideDown)
+	{
+		return CQt.QStyle_SliderPositionFromValue5(min, max, val, space, upsideDown);
+	}
+	
+	public static int32 SliderValueFromPosition5(int32 min, int32 max, int32 pos, int32 space, bool upsideDown)
+	{
+		return CQt.QStyle_SliderValueFromPosition5(min, max, pos, space, upsideDown);
+	}
+	
+	public int32 CombinedLayoutSpacing4(int64 controls1, int64 controls2, int64 orientation, void* option)
+	{
+		return CQt.QStyle_CombinedLayoutSpacing4(this.nativePtr, controls1, controls2, orientation, option);
+	}
+	
+	public int32 CombinedLayoutSpacing5(int64 controls1, int64 controls2, int64 orientation, void* option, void* widget)
+	{
+		return CQt.QStyle_CombinedLayoutSpacing5(this.nativePtr, controls1, controls2, orientation, option, widget);
+	}
+	
+	public virtual bool Event(void* event)
+	{
+		return CQt.QObject_Event(this.nativePtr, event);
+	}
+	
+	public virtual bool EventFilter(void* watched, void* event)
+	{
+		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QObject_SetParent(this.nativePtr, parent);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyle_new")]
-	public static extern QStyle* QStyle_new();
+	public static extern void* QStyle_new();
 	[LinkName("QStyle_MetaObject")]
-	public static extern QMetaObject* QStyle_MetaObject(Self* c_this);
+	public static extern void* QStyle_MetaObject(void* c_this);
 	[LinkName("QStyle_Metacast")]
-	public static extern void* QStyle_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QStyle_Metacast(void* c_this, char8[] param1);
 	[LinkName("QStyle_Metacall")]
-	public static extern int32 QStyle_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QStyle_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QStyle_Tr")]
 	public static extern libqt_string QStyle_Tr(char8[] s);
 	[LinkName("QStyle_Name")]
-	public static extern libqt_string QStyle_Name(Self* c_this);
+	public static extern libqt_string QStyle_Name(void* c_this);
 	[LinkName("QStyle_Polish")]
-	public static extern void QStyle_Polish(Self* c_this, QWidget* widget);
+	public static extern void QStyle_Polish(void* c_this, void* widget);
 	[LinkName("QStyle_Unpolish")]
-	public static extern void QStyle_Unpolish(Self* c_this, QWidget* widget);
+	public static extern void QStyle_Unpolish(void* c_this, void* widget);
 	[LinkName("QStyle_PolishWithApplication")]
-	public static extern void QStyle_PolishWithApplication(Self* c_this, QApplication* application);
+	public static extern void QStyle_PolishWithApplication(void* c_this, void* application);
 	[LinkName("QStyle_UnpolishWithApplication")]
-	public static extern void QStyle_UnpolishWithApplication(Self* c_this, QApplication* application);
+	public static extern void QStyle_UnpolishWithApplication(void* c_this, void* application);
 	[LinkName("QStyle_PolishWithPalette")]
-	public static extern void QStyle_PolishWithPalette(Self* c_this, QPalette* palette);
+	public static extern void QStyle_PolishWithPalette(void* c_this, void* palette);
 	[LinkName("QStyle_ItemTextRect")]
-	public static extern QRect QStyle_ItemTextRect(Self* c_this, QFontMetrics* fm, QRect* r, int32 flags, bool enabled, libqt_string text);
+	public static extern void QStyle_ItemTextRect(void* c_this, void* fm, void* r, int32 flags, bool enabled, libqt_string text);
 	[LinkName("QStyle_ItemPixmapRect")]
-	public static extern QRect QStyle_ItemPixmapRect(Self* c_this, QRect* r, int32 flags, QPixmap* pixmap);
+	public static extern void QStyle_ItemPixmapRect(void* c_this, void* r, int32 flags, void* pixmap);
 	[LinkName("QStyle_DrawItemText")]
-	public static extern void QStyle_DrawItemText(Self* c_this, QPainter* painter, QRect* rect, int32 flags, QPalette* pal, bool enabled, libqt_string text, int64 textRole);
+	public static extern void QStyle_DrawItemText(void* c_this, void* painter, void* rect, int32 flags, void* pal, bool enabled, libqt_string text, int64 textRole);
 	[LinkName("QStyle_DrawItemPixmap")]
-	public static extern void QStyle_DrawItemPixmap(Self* c_this, QPainter* painter, QRect* rect, int32 alignment, QPixmap* pixmap);
+	public static extern void QStyle_DrawItemPixmap(void* c_this, void* painter, void* rect, int32 alignment, void* pixmap);
 	[LinkName("QStyle_StandardPalette")]
-	public static extern QPalette QStyle_StandardPalette(Self* c_this);
+	public static extern void QStyle_StandardPalette(void* c_this);
 	[LinkName("QStyle_DrawPrimitive")]
-	public static extern void QStyle_DrawPrimitive(Self* c_this, int64 pe, QStyleOption* opt, QPainter* p, QWidget* w);
+	public static extern void QStyle_DrawPrimitive(void* c_this, int64 pe, void* opt, void* p, void* w);
 	[LinkName("QStyle_DrawControl")]
-	public static extern void QStyle_DrawControl(Self* c_this, int64 element, QStyleOption* opt, QPainter* p, QWidget* w);
+	public static extern void QStyle_DrawControl(void* c_this, int64 element, void* opt, void* p, void* w);
 	[LinkName("QStyle_SubElementRect")]
-	public static extern QRect QStyle_SubElementRect(Self* c_this, int64 subElement, QStyleOption* option, QWidget* widget);
+	public static extern void QStyle_SubElementRect(void* c_this, int64 subElement, void* option, void* widget);
 	[LinkName("QStyle_DrawComplexControl")]
-	public static extern void QStyle_DrawComplexControl(Self* c_this, int64 cc, QStyleOptionComplex* opt, QPainter* p, QWidget* widget);
+	public static extern void QStyle_DrawComplexControl(void* c_this, int64 cc, void* opt, void* p, void* widget);
 	[LinkName("QStyle_HitTestComplexControl")]
-	public static extern int64 QStyle_HitTestComplexControl(Self* c_this, int64 cc, QStyleOptionComplex* opt, QPoint* pt, QWidget* widget);
+	public static extern int64 QStyle_HitTestComplexControl(void* c_this, int64 cc, void* opt, void* pt, void* widget);
 	[LinkName("QStyle_SubControlRect")]
-	public static extern QRect QStyle_SubControlRect(Self* c_this, int64 cc, QStyleOptionComplex* opt, int64 sc, QWidget* widget);
+	public static extern void QStyle_SubControlRect(void* c_this, int64 cc, void* opt, int64 sc, void* widget);
 	[LinkName("QStyle_PixelMetric")]
-	public static extern int32 QStyle_PixelMetric(Self* c_this, int64 metric, QStyleOption* option, QWidget* widget);
+	public static extern int32 QStyle_PixelMetric(void* c_this, int64 metric, void* option, void* widget);
 	[LinkName("QStyle_SizeFromContents")]
-	public static extern QSize QStyle_SizeFromContents(Self* c_this, int64 ct, QStyleOption* opt, QSize* contentsSize, QWidget* w);
+	public static extern void QStyle_SizeFromContents(void* c_this, int64 ct, void* opt, void* contentsSize, void* w);
 	[LinkName("QStyle_StyleHint")]
-	public static extern int32 QStyle_StyleHint(Self* c_this, int64 stylehint, QStyleOption* opt, QWidget* widget, QStyleHintReturn* returnData);
+	public static extern int32 QStyle_StyleHint(void* c_this, int64 stylehint, void* opt, void* widget, void* returnData);
 	[LinkName("QStyle_StandardPixmap")]
-	public static extern QPixmap QStyle_StandardPixmap(Self* c_this, int64 standardPixmap, QStyleOption* opt, QWidget* widget);
+	public static extern void QStyle_StandardPixmap(void* c_this, int64 standardPixmap, void* opt, void* widget);
 	[LinkName("QStyle_StandardIcon")]
-	public static extern QIcon QStyle_StandardIcon(Self* c_this, int64 standardIcon, QStyleOption* option, QWidget* widget);
+	public static extern void QStyle_StandardIcon(void* c_this, int64 standardIcon, void* option, void* widget);
 	[LinkName("QStyle_GeneratedIconPixmap")]
-	public static extern QPixmap QStyle_GeneratedIconPixmap(Self* c_this, int64 iconMode, QPixmap* pixmap, QStyleOption* opt);
+	public static extern void QStyle_GeneratedIconPixmap(void* c_this, int64 iconMode, void* pixmap, void* opt);
 	[LinkName("QStyle_VisualRect")]
-	public static extern QRect QStyle_VisualRect(int64 direction, QRect* boundingRect, QRect* logicalRect);
+	public static extern void QStyle_VisualRect(int64 direction, void* boundingRect, void* logicalRect);
 	[LinkName("QStyle_VisualPos")]
-	public static extern QPoint QStyle_VisualPos(int64 direction, QRect* boundingRect, QPoint* logicalPos);
+	public static extern void QStyle_VisualPos(int64 direction, void* boundingRect, void* logicalPos);
 	[LinkName("QStyle_SliderPositionFromValue")]
 	public static extern int32 QStyle_SliderPositionFromValue(int32 min, int32 max, int32 val, int32 space);
 	[LinkName("QStyle_SliderValueFromPosition")]
@@ -679,13 +1074,13 @@ public struct QStyle : QObject
 	[LinkName("QStyle_VisualAlignment")]
 	public static extern int64 QStyle_VisualAlignment(int64 direction, int64 alignment);
 	[LinkName("QStyle_AlignedRect")]
-	public static extern QRect QStyle_AlignedRect(int64 direction, int64 alignment, QSize* size, QRect* rectangle);
+	public static extern void QStyle_AlignedRect(int64 direction, int64 alignment, void* size, void* rectangle);
 	[LinkName("QStyle_LayoutSpacing")]
-	public static extern int32 QStyle_LayoutSpacing(Self* c_this, int64 control1, int64 control2, int64 orientation, QStyleOption* option, QWidget* widget);
+	public static extern int32 QStyle_LayoutSpacing(void* c_this, int64 control1, int64 control2, int64 orientation, void* option, void* widget);
 	[LinkName("QStyle_CombinedLayoutSpacing")]
-	public static extern int32 QStyle_CombinedLayoutSpacing(Self* c_this, int64 controls1, int64 controls2, int64 orientation);
+	public static extern int32 QStyle_CombinedLayoutSpacing(void* c_this, int64 controls1, int64 controls2, int64 orientation);
 	[LinkName("QStyle_Proxy")]
-	public static extern QStyle* QStyle_Proxy(Self* c_this);
+	public static extern void* QStyle_Proxy(void* c_this);
 	[LinkName("QStyle_Tr2")]
 	public static extern libqt_string QStyle_Tr2(char8[] s, char8[] c);
 	[LinkName("QStyle_Tr3")]
@@ -695,7 +1090,10 @@ public struct QStyle : QObject
 	[LinkName("QStyle_SliderValueFromPosition5")]
 	public static extern int32 QStyle_SliderValueFromPosition5(int32 min, int32 max, int32 pos, int32 space, bool upsideDown);
 	[LinkName("QStyle_CombinedLayoutSpacing4")]
-	public static extern int32 QStyle_CombinedLayoutSpacing4(Self* c_this, int64 controls1, int64 controls2, int64 orientation, QStyleOption* option);
+	public static extern int32 QStyle_CombinedLayoutSpacing4(void* c_this, int64 controls1, int64 controls2, int64 orientation, void* option);
 	[LinkName("QStyle_CombinedLayoutSpacing5")]
-	public static extern int32 QStyle_CombinedLayoutSpacing5(Self* c_this, int64 controls1, int64 controls2, int64 orientation, QStyleOption* option, QWidget* widget);
+	public static extern int32 QStyle_CombinedLayoutSpacing5(void* c_this, int64 controls1, int64 controls2, int64 orientation, void* option, void* widget);
+	/// Delete this object from C++ memory
+	[LinkName("QStyle_Delete")]
+	public static extern void QStyle_Delete(void* self);
 }

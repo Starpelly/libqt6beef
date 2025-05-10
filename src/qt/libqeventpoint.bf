@@ -11,104 +11,342 @@ public enum QEventPoint__State
 	Updated = 2,
 	Released = 8,
 }
-public struct QEventPoint
+public class QEventPoint
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QEventPoint_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QEventPoint_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QEventPoint_OperatorAssign(this.nativePtr, other);
+	}
+	
+	public bool OperatorEqual(void* other)
+	{
+		return CQt.QEventPoint_OperatorEqual(this.nativePtr, other);
+	}
+	
+	public bool OperatorNotEqual(void* other)
+	{
+		return CQt.QEventPoint_OperatorNotEqual(this.nativePtr, other);
+	}
+	
+	public void Swap(void* other)
+	{
+		CQt.QEventPoint_Swap(this.nativePtr, other);
+	}
+	
+	public void Position()
+	{
+		CQt.QEventPoint_Position(this.nativePtr);
+	}
+	
+	public void PressPosition()
+	{
+		CQt.QEventPoint_PressPosition(this.nativePtr);
+	}
+	
+	public void GrabPosition()
+	{
+		CQt.QEventPoint_GrabPosition(this.nativePtr);
+	}
+	
+	public void LastPosition()
+	{
+		CQt.QEventPoint_LastPosition(this.nativePtr);
+	}
+	
+	public void ScenePosition()
+	{
+		CQt.QEventPoint_ScenePosition(this.nativePtr);
+	}
+	
+	public void ScenePressPosition()
+	{
+		CQt.QEventPoint_ScenePressPosition(this.nativePtr);
+	}
+	
+	public void SceneGrabPosition()
+	{
+		CQt.QEventPoint_SceneGrabPosition(this.nativePtr);
+	}
+	
+	public void SceneLastPosition()
+	{
+		CQt.QEventPoint_SceneLastPosition(this.nativePtr);
+	}
+	
+	public void GlobalPosition()
+	{
+		CQt.QEventPoint_GlobalPosition(this.nativePtr);
+	}
+	
+	public void GlobalPressPosition()
+	{
+		CQt.QEventPoint_GlobalPressPosition(this.nativePtr);
+	}
+	
+	public void GlobalGrabPosition()
+	{
+		CQt.QEventPoint_GlobalGrabPosition(this.nativePtr);
+	}
+	
+	public void GlobalLastPosition()
+	{
+		CQt.QEventPoint_GlobalLastPosition(this.nativePtr);
+	}
+	
+	public void NormalizedPosition()
+	{
+		CQt.QEventPoint_NormalizedPosition(this.nativePtr);
+	}
+	
+	public void Pos()
+	{
+		CQt.QEventPoint_Pos(this.nativePtr);
+	}
+	
+	public void StartPos()
+	{
+		CQt.QEventPoint_StartPos(this.nativePtr);
+	}
+	
+	public void ScenePos()
+	{
+		CQt.QEventPoint_ScenePos(this.nativePtr);
+	}
+	
+	public void StartScenePos()
+	{
+		CQt.QEventPoint_StartScenePos(this.nativePtr);
+	}
+	
+	public void ScreenPos()
+	{
+		CQt.QEventPoint_ScreenPos(this.nativePtr);
+	}
+	
+	public void StartScreenPos()
+	{
+		CQt.QEventPoint_StartScreenPos(this.nativePtr);
+	}
+	
+	public void StartNormalizedPos()
+	{
+		CQt.QEventPoint_StartNormalizedPos(this.nativePtr);
+	}
+	
+	public void NormalizedPos()
+	{
+		CQt.QEventPoint_NormalizedPos(this.nativePtr);
+	}
+	
+	public void LastPos()
+	{
+		CQt.QEventPoint_LastPos(this.nativePtr);
+	}
+	
+	public void LastScenePos()
+	{
+		CQt.QEventPoint_LastScenePos(this.nativePtr);
+	}
+	
+	public void LastScreenPos()
+	{
+		CQt.QEventPoint_LastScreenPos(this.nativePtr);
+	}
+	
+	public void LastNormalizedPos()
+	{
+		CQt.QEventPoint_LastNormalizedPos(this.nativePtr);
+	}
+	
+	public void Velocity()
+	{
+		CQt.QEventPoint_Velocity(this.nativePtr);
+	}
+	
+	public int64 State()
+	{
+		return CQt.QEventPoint_State(this.nativePtr);
+	}
+	
+	public void* Device()
+	{
+		return CQt.QEventPoint_Device(this.nativePtr);
+	}
+	
+	public int32 Id()
+	{
+		return CQt.QEventPoint_Id(this.nativePtr);
+	}
+	
+	public void UniqueId()
+	{
+		CQt.QEventPoint_UniqueId(this.nativePtr);
+	}
+	
+	public c_ulong Timestamp()
+	{
+		return CQt.QEventPoint_Timestamp(this.nativePtr);
+	}
+	
+	public c_ulong LastTimestamp()
+	{
+		return CQt.QEventPoint_LastTimestamp(this.nativePtr);
+	}
+	
+	public c_ulong PressTimestamp()
+	{
+		return CQt.QEventPoint_PressTimestamp(this.nativePtr);
+	}
+	
+	public double TimeHeld()
+	{
+		return CQt.QEventPoint_TimeHeld(this.nativePtr);
+	}
+	
+	public double Pressure()
+	{
+		return CQt.QEventPoint_Pressure(this.nativePtr);
+	}
+	
+	public double Rotation()
+	{
+		return CQt.QEventPoint_Rotation(this.nativePtr);
+	}
+	
+	public void EllipseDiameters()
+	{
+		CQt.QEventPoint_EllipseDiameters(this.nativePtr);
+	}
+	
+	public bool IsAccepted()
+	{
+		return CQt.QEventPoint_IsAccepted(this.nativePtr);
+	}
+	
+	public void SetAccepted()
+	{
+		CQt.QEventPoint_SetAccepted(this.nativePtr);
+	}
+	
+	public void SetAccepted1(bool accepted)
+	{
+		CQt.QEventPoint_SetAccepted1(this.nativePtr, accepted);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QEventPoint_new")]
-	public static extern QEventPoint* QEventPoint_new();
+	public static extern void* QEventPoint_new();
 	[LinkName("QEventPoint_new2")]
-	public static extern QEventPoint* QEventPoint_new2(int32 pointId, int64 state, QPointF* scenePosition, QPointF* globalPosition);
+	public static extern void* QEventPoint_new2(int32 pointId, int64 state, void* scenePosition, void* globalPosition);
 	[LinkName("QEventPoint_new3")]
-	public static extern QEventPoint* QEventPoint_new3(QEventPoint* other);
+	public static extern void* QEventPoint_new3(void* other);
 	[LinkName("QEventPoint_new4")]
-	public static extern QEventPoint* QEventPoint_new4(int32 id);
+	public static extern void* QEventPoint_new4(int32 id);
 	[LinkName("QEventPoint_new5")]
-	public static extern QEventPoint* QEventPoint_new5(int32 id, QPointingDevice* device);
+	public static extern void* QEventPoint_new5(int32 id, void* device);
 	[LinkName("QEventPoint_OperatorAssign")]
-	public static extern void QEventPoint_OperatorAssign(Self* c_this, QEventPoint* other);
+	public static extern void QEventPoint_OperatorAssign(void* c_this, void* other);
 	[LinkName("QEventPoint_OperatorEqual")]
-	public static extern bool QEventPoint_OperatorEqual(Self* c_this, QEventPoint* other);
+	public static extern bool QEventPoint_OperatorEqual(void* c_this, void* other);
 	[LinkName("QEventPoint_OperatorNotEqual")]
-	public static extern bool QEventPoint_OperatorNotEqual(Self* c_this, QEventPoint* other);
+	public static extern bool QEventPoint_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QEventPoint_Swap")]
-	public static extern void QEventPoint_Swap(Self* c_this, QEventPoint* other);
+	public static extern void QEventPoint_Swap(void* c_this, void* other);
 	[LinkName("QEventPoint_Position")]
-	public static extern QPointF QEventPoint_Position(Self* c_this);
+	public static extern void QEventPoint_Position(void* c_this);
 	[LinkName("QEventPoint_PressPosition")]
-	public static extern QPointF QEventPoint_PressPosition(Self* c_this);
+	public static extern void QEventPoint_PressPosition(void* c_this);
 	[LinkName("QEventPoint_GrabPosition")]
-	public static extern QPointF QEventPoint_GrabPosition(Self* c_this);
+	public static extern void QEventPoint_GrabPosition(void* c_this);
 	[LinkName("QEventPoint_LastPosition")]
-	public static extern QPointF QEventPoint_LastPosition(Self* c_this);
+	public static extern void QEventPoint_LastPosition(void* c_this);
 	[LinkName("QEventPoint_ScenePosition")]
-	public static extern QPointF QEventPoint_ScenePosition(Self* c_this);
+	public static extern void QEventPoint_ScenePosition(void* c_this);
 	[LinkName("QEventPoint_ScenePressPosition")]
-	public static extern QPointF QEventPoint_ScenePressPosition(Self* c_this);
+	public static extern void QEventPoint_ScenePressPosition(void* c_this);
 	[LinkName("QEventPoint_SceneGrabPosition")]
-	public static extern QPointF QEventPoint_SceneGrabPosition(Self* c_this);
+	public static extern void QEventPoint_SceneGrabPosition(void* c_this);
 	[LinkName("QEventPoint_SceneLastPosition")]
-	public static extern QPointF QEventPoint_SceneLastPosition(Self* c_this);
+	public static extern void QEventPoint_SceneLastPosition(void* c_this);
 	[LinkName("QEventPoint_GlobalPosition")]
-	public static extern QPointF QEventPoint_GlobalPosition(Self* c_this);
+	public static extern void QEventPoint_GlobalPosition(void* c_this);
 	[LinkName("QEventPoint_GlobalPressPosition")]
-	public static extern QPointF QEventPoint_GlobalPressPosition(Self* c_this);
+	public static extern void QEventPoint_GlobalPressPosition(void* c_this);
 	[LinkName("QEventPoint_GlobalGrabPosition")]
-	public static extern QPointF QEventPoint_GlobalGrabPosition(Self* c_this);
+	public static extern void QEventPoint_GlobalGrabPosition(void* c_this);
 	[LinkName("QEventPoint_GlobalLastPosition")]
-	public static extern QPointF QEventPoint_GlobalLastPosition(Self* c_this);
+	public static extern void QEventPoint_GlobalLastPosition(void* c_this);
 	[LinkName("QEventPoint_NormalizedPosition")]
-	public static extern QPointF QEventPoint_NormalizedPosition(Self* c_this);
+	public static extern void QEventPoint_NormalizedPosition(void* c_this);
 	[LinkName("QEventPoint_Pos")]
-	public static extern QPointF QEventPoint_Pos(Self* c_this);
+	public static extern void QEventPoint_Pos(void* c_this);
 	[LinkName("QEventPoint_StartPos")]
-	public static extern QPointF QEventPoint_StartPos(Self* c_this);
+	public static extern void QEventPoint_StartPos(void* c_this);
 	[LinkName("QEventPoint_ScenePos")]
-	public static extern QPointF QEventPoint_ScenePos(Self* c_this);
+	public static extern void QEventPoint_ScenePos(void* c_this);
 	[LinkName("QEventPoint_StartScenePos")]
-	public static extern QPointF QEventPoint_StartScenePos(Self* c_this);
+	public static extern void QEventPoint_StartScenePos(void* c_this);
 	[LinkName("QEventPoint_ScreenPos")]
-	public static extern QPointF QEventPoint_ScreenPos(Self* c_this);
+	public static extern void QEventPoint_ScreenPos(void* c_this);
 	[LinkName("QEventPoint_StartScreenPos")]
-	public static extern QPointF QEventPoint_StartScreenPos(Self* c_this);
+	public static extern void QEventPoint_StartScreenPos(void* c_this);
 	[LinkName("QEventPoint_StartNormalizedPos")]
-	public static extern QPointF QEventPoint_StartNormalizedPos(Self* c_this);
+	public static extern void QEventPoint_StartNormalizedPos(void* c_this);
 	[LinkName("QEventPoint_NormalizedPos")]
-	public static extern QPointF QEventPoint_NormalizedPos(Self* c_this);
+	public static extern void QEventPoint_NormalizedPos(void* c_this);
 	[LinkName("QEventPoint_LastPos")]
-	public static extern QPointF QEventPoint_LastPos(Self* c_this);
+	public static extern void QEventPoint_LastPos(void* c_this);
 	[LinkName("QEventPoint_LastScenePos")]
-	public static extern QPointF QEventPoint_LastScenePos(Self* c_this);
+	public static extern void QEventPoint_LastScenePos(void* c_this);
 	[LinkName("QEventPoint_LastScreenPos")]
-	public static extern QPointF QEventPoint_LastScreenPos(Self* c_this);
+	public static extern void QEventPoint_LastScreenPos(void* c_this);
 	[LinkName("QEventPoint_LastNormalizedPos")]
-	public static extern QPointF QEventPoint_LastNormalizedPos(Self* c_this);
+	public static extern void QEventPoint_LastNormalizedPos(void* c_this);
 	[LinkName("QEventPoint_Velocity")]
-	public static extern QVector2D QEventPoint_Velocity(Self* c_this);
+	public static extern void QEventPoint_Velocity(void* c_this);
 	[LinkName("QEventPoint_State")]
-	public static extern int64 QEventPoint_State(Self* c_this);
+	public static extern int64 QEventPoint_State(void* c_this);
 	[LinkName("QEventPoint_Device")]
-	public static extern QPointingDevice* QEventPoint_Device(Self* c_this);
+	public static extern void* QEventPoint_Device(void* c_this);
 	[LinkName("QEventPoint_Id")]
-	public static extern int32 QEventPoint_Id(Self* c_this);
+	public static extern int32 QEventPoint_Id(void* c_this);
 	[LinkName("QEventPoint_UniqueId")]
-	public static extern QPointingDeviceUniqueId QEventPoint_UniqueId(Self* c_this);
+	public static extern void QEventPoint_UniqueId(void* c_this);
 	[LinkName("QEventPoint_Timestamp")]
-	public static extern c_ulong QEventPoint_Timestamp(Self* c_this);
+	public static extern c_ulong QEventPoint_Timestamp(void* c_this);
 	[LinkName("QEventPoint_LastTimestamp")]
-	public static extern c_ulong QEventPoint_LastTimestamp(Self* c_this);
+	public static extern c_ulong QEventPoint_LastTimestamp(void* c_this);
 	[LinkName("QEventPoint_PressTimestamp")]
-	public static extern c_ulong QEventPoint_PressTimestamp(Self* c_this);
+	public static extern c_ulong QEventPoint_PressTimestamp(void* c_this);
 	[LinkName("QEventPoint_TimeHeld")]
-	public static extern double QEventPoint_TimeHeld(Self* c_this);
+	public static extern double QEventPoint_TimeHeld(void* c_this);
 	[LinkName("QEventPoint_Pressure")]
-	public static extern double QEventPoint_Pressure(Self* c_this);
+	public static extern double QEventPoint_Pressure(void* c_this);
 	[LinkName("QEventPoint_Rotation")]
-	public static extern double QEventPoint_Rotation(Self* c_this);
+	public static extern double QEventPoint_Rotation(void* c_this);
 	[LinkName("QEventPoint_EllipseDiameters")]
-	public static extern QSizeF QEventPoint_EllipseDiameters(Self* c_this);
+	public static extern void QEventPoint_EllipseDiameters(void* c_this);
 	[LinkName("QEventPoint_IsAccepted")]
-	public static extern bool QEventPoint_IsAccepted(Self* c_this);
+	public static extern bool QEventPoint_IsAccepted(void* c_this);
 	[LinkName("QEventPoint_SetAccepted")]
-	public static extern void QEventPoint_SetAccepted(Self* c_this);
+	public static extern void QEventPoint_SetAccepted(void* c_this);
 	[LinkName("QEventPoint_SetAccepted1")]
-	public static extern void QEventPoint_SetAccepted1(Self* c_this, bool accepted);
+	public static extern void QEventPoint_SetAccepted1(void* c_this, bool accepted);
+	/// Delete this object from C++ memory
+	[LinkName("QEventPoint_Delete")]
+	public static extern void QEventPoint_Delete(void* self);
 }

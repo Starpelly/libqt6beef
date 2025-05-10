@@ -33,24 +33,82 @@ public enum QCryptographicHash__Algorithm
 	Blake2s_224 = 21,
 	Blake2s_256 = 22,
 }
-public struct QCryptographicHash
+public class QCryptographicHash
+{
+	protected void* nativePtr;
+	
+	public this(int64 method)
+	{
+		this.nativePtr = CQt.QCryptographicHash_new(method);
+	}
+	
+	public ~this()
+	{
+		CQt.QCryptographicHash_Delete(this.nativePtr);
+	}
+	
+	public void Reset()
+	{
+		CQt.QCryptographicHash_Reset(this.nativePtr);
+	}
+	
+	public void AddData(char8[] data, int32 length)
+	{
+		CQt.QCryptographicHash_AddData(this.nativePtr, data, length);
+	}
+	
+	public void AddDataWithData(void data)
+	{
+		CQt.QCryptographicHash_AddDataWithData(this.nativePtr, data);
+	}
+	
+	public bool AddDataWithDevice(void* device)
+	{
+		return CQt.QCryptographicHash_AddDataWithDevice(this.nativePtr, device);
+	}
+	
+	public libqt_string Result()
+	{
+		return CQt.QCryptographicHash_Result(this.nativePtr);
+	}
+	
+	public void ResultView()
+	{
+		CQt.QCryptographicHash_ResultView(this.nativePtr);
+	}
+	
+	public static libqt_string Hash(void data, int64 method)
+	{
+		return CQt.QCryptographicHash_Hash(data, method);
+	}
+	
+	public static int32 HashLength(int64 method)
+	{
+		return CQt.QCryptographicHash_HashLength(method);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QCryptographicHash_new")]
-	public static extern QCryptographicHash* QCryptographicHash_new(int64 method);
+	public static extern void* QCryptographicHash_new(int64 method);
 	[LinkName("QCryptographicHash_Reset")]
-	public static extern void QCryptographicHash_Reset(Self* c_this);
+	public static extern void QCryptographicHash_Reset(void* c_this);
 	[LinkName("QCryptographicHash_AddData")]
-	public static extern void QCryptographicHash_AddData(Self* c_this, char8[] data, int32 length);
+	public static extern void QCryptographicHash_AddData(void* c_this, char8[] data, int32 length);
 	[LinkName("QCryptographicHash_AddDataWithData")]
-	public static extern void QCryptographicHash_AddDataWithData(Self* c_this, QByteArrayView data);
+	public static extern void QCryptographicHash_AddDataWithData(void* c_this, void data);
 	[LinkName("QCryptographicHash_AddDataWithDevice")]
-	public static extern bool QCryptographicHash_AddDataWithDevice(Self* c_this, QIODevice* device);
+	public static extern bool QCryptographicHash_AddDataWithDevice(void* c_this, void* device);
 	[LinkName("QCryptographicHash_Result")]
-	public static extern libqt_string QCryptographicHash_Result(Self* c_this);
+	public static extern libqt_string QCryptographicHash_Result(void* c_this);
 	[LinkName("QCryptographicHash_ResultView")]
-	public static extern QByteArrayView QCryptographicHash_ResultView(Self* c_this);
+	public static extern void QCryptographicHash_ResultView(void* c_this);
 	[LinkName("QCryptographicHash_Hash")]
-	public static extern libqt_string QCryptographicHash_Hash(QByteArrayView data, int64 method);
+	public static extern libqt_string QCryptographicHash_Hash(void data, int64 method);
 	[LinkName("QCryptographicHash_HashLength")]
 	public static extern int32 QCryptographicHash_HashLength(int64 method);
+	/// Delete this object from C++ memory
+	[LinkName("QCryptographicHash_Delete")]
+	public static extern void QCryptographicHash_Delete(void* self);
 }

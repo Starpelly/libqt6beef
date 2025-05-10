@@ -83,84 +83,282 @@ public enum QVideoFrameFormat__ColorRange
 	ColorRange_Video = 1,
 	ColorRange_Full = 2,
 }
-public struct QVideoFrameFormat
+public class QVideoFrameFormat
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QVideoFrameFormat_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QVideoFrameFormat_Delete(this.nativePtr);
+	}
+	
+	public void Swap(void* other)
+	{
+		CQt.QVideoFrameFormat_Swap(this.nativePtr, other);
+	}
+	
+	public void Detach()
+	{
+		CQt.QVideoFrameFormat_Detach(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* format)
+	{
+		CQt.QVideoFrameFormat_OperatorAssign(this.nativePtr, format);
+	}
+	
+	public bool OperatorEqual(void* format)
+	{
+		return CQt.QVideoFrameFormat_OperatorEqual(this.nativePtr, format);
+	}
+	
+	public bool OperatorNotEqual(void* format)
+	{
+		return CQt.QVideoFrameFormat_OperatorNotEqual(this.nativePtr, format);
+	}
+	
+	public bool IsValid()
+	{
+		return CQt.QVideoFrameFormat_IsValid(this.nativePtr);
+	}
+	
+	public int64 PixelFormat()
+	{
+		return CQt.QVideoFrameFormat_PixelFormat(this.nativePtr);
+	}
+	
+	public void FrameSize()
+	{
+		CQt.QVideoFrameFormat_FrameSize(this.nativePtr);
+	}
+	
+	public void SetFrameSize(void* size)
+	{
+		CQt.QVideoFrameFormat_SetFrameSize(this.nativePtr, size);
+	}
+	
+	public void SetFrameSize2(int32 width, int32 height)
+	{
+		CQt.QVideoFrameFormat_SetFrameSize2(this.nativePtr, width, height);
+	}
+	
+	public int32 FrameWidth()
+	{
+		return CQt.QVideoFrameFormat_FrameWidth(this.nativePtr);
+	}
+	
+	public int32 FrameHeight()
+	{
+		return CQt.QVideoFrameFormat_FrameHeight(this.nativePtr);
+	}
+	
+	public int32 PlaneCount()
+	{
+		return CQt.QVideoFrameFormat_PlaneCount(this.nativePtr);
+	}
+	
+	public void Viewport()
+	{
+		CQt.QVideoFrameFormat_Viewport(this.nativePtr);
+	}
+	
+	public void SetViewport(void* viewport)
+	{
+		CQt.QVideoFrameFormat_SetViewport(this.nativePtr, viewport);
+	}
+	
+	public int64 ScanLineDirection()
+	{
+		return CQt.QVideoFrameFormat_ScanLineDirection(this.nativePtr);
+	}
+	
+	public void SetScanLineDirection(int64 direction)
+	{
+		CQt.QVideoFrameFormat_SetScanLineDirection(this.nativePtr, direction);
+	}
+	
+	public double FrameRate()
+	{
+		return CQt.QVideoFrameFormat_FrameRate(this.nativePtr);
+	}
+	
+	public void SetFrameRate(double rate)
+	{
+		CQt.QVideoFrameFormat_SetFrameRate(this.nativePtr, rate);
+	}
+	
+	public int64 YCbCrColorSpace()
+	{
+		return CQt.QVideoFrameFormat_YCbCrColorSpace(this.nativePtr);
+	}
+	
+	public void SetYCbCrColorSpace(int64 colorSpace)
+	{
+		CQt.QVideoFrameFormat_SetYCbCrColorSpace(this.nativePtr, colorSpace);
+	}
+	
+	public int64 ColorSpace()
+	{
+		return CQt.QVideoFrameFormat_ColorSpace(this.nativePtr);
+	}
+	
+	public void SetColorSpace(int64 colorSpace)
+	{
+		CQt.QVideoFrameFormat_SetColorSpace(this.nativePtr, colorSpace);
+	}
+	
+	public int64 ColorTransfer()
+	{
+		return CQt.QVideoFrameFormat_ColorTransfer(this.nativePtr);
+	}
+	
+	public void SetColorTransfer(int64 colorTransfer)
+	{
+		CQt.QVideoFrameFormat_SetColorTransfer(this.nativePtr, colorTransfer);
+	}
+	
+	public int64 ColorRange()
+	{
+		return CQt.QVideoFrameFormat_ColorRange(this.nativePtr);
+	}
+	
+	public void SetColorRange(int64 range)
+	{
+		CQt.QVideoFrameFormat_SetColorRange(this.nativePtr, range);
+	}
+	
+	public bool IsMirrored()
+	{
+		return CQt.QVideoFrameFormat_IsMirrored(this.nativePtr);
+	}
+	
+	public void SetMirrored(bool mirrored)
+	{
+		CQt.QVideoFrameFormat_SetMirrored(this.nativePtr, mirrored);
+	}
+	
+	public libqt_string VertexShaderFileName()
+	{
+		return CQt.QVideoFrameFormat_VertexShaderFileName(this.nativePtr);
+	}
+	
+	public libqt_string FragmentShaderFileName()
+	{
+		return CQt.QVideoFrameFormat_FragmentShaderFileName(this.nativePtr);
+	}
+	
+	public float MaxLuminance()
+	{
+		return CQt.QVideoFrameFormat_MaxLuminance(this.nativePtr);
+	}
+	
+	public void SetMaxLuminance(float lum)
+	{
+		CQt.QVideoFrameFormat_SetMaxLuminance(this.nativePtr, lum);
+	}
+	
+	public static int64 PixelFormatFromImageFormat(int64 format)
+	{
+		return CQt.QVideoFrameFormat_PixelFormatFromImageFormat(format);
+	}
+	
+	public static int64 ImageFormatFromPixelFormat(int64 format)
+	{
+		return CQt.QVideoFrameFormat_ImageFormatFromPixelFormat(format);
+	}
+	
+	public static libqt_string PixelFormatToString(int64 pixelFormat)
+	{
+		return CQt.QVideoFrameFormat_PixelFormatToString(pixelFormat);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QVideoFrameFormat_new")]
-	public static extern QVideoFrameFormat* QVideoFrameFormat_new();
+	public static extern void* QVideoFrameFormat_new();
 	[LinkName("QVideoFrameFormat_new2")]
-	public static extern QVideoFrameFormat* QVideoFrameFormat_new2(QSize* size, int64 pixelFormat);
+	public static extern void* QVideoFrameFormat_new2(void* size, int64 pixelFormat);
 	[LinkName("QVideoFrameFormat_new3")]
-	public static extern QVideoFrameFormat* QVideoFrameFormat_new3(QVideoFrameFormat* format);
+	public static extern void* QVideoFrameFormat_new3(void* format);
 	[LinkName("QVideoFrameFormat_Swap")]
-	public static extern void QVideoFrameFormat_Swap(Self* c_this, QVideoFrameFormat* other);
+	public static extern void QVideoFrameFormat_Swap(void* c_this, void* other);
 	[LinkName("QVideoFrameFormat_Detach")]
-	public static extern void QVideoFrameFormat_Detach(Self* c_this);
+	public static extern void QVideoFrameFormat_Detach(void* c_this);
 	[LinkName("QVideoFrameFormat_OperatorAssign")]
-	public static extern void QVideoFrameFormat_OperatorAssign(Self* c_this, QVideoFrameFormat* format);
+	public static extern void QVideoFrameFormat_OperatorAssign(void* c_this, void* format);
 	[LinkName("QVideoFrameFormat_OperatorEqual")]
-	public static extern bool QVideoFrameFormat_OperatorEqual(Self* c_this, QVideoFrameFormat* format);
+	public static extern bool QVideoFrameFormat_OperatorEqual(void* c_this, void* format);
 	[LinkName("QVideoFrameFormat_OperatorNotEqual")]
-	public static extern bool QVideoFrameFormat_OperatorNotEqual(Self* c_this, QVideoFrameFormat* format);
+	public static extern bool QVideoFrameFormat_OperatorNotEqual(void* c_this, void* format);
 	[LinkName("QVideoFrameFormat_IsValid")]
-	public static extern bool QVideoFrameFormat_IsValid(Self* c_this);
+	public static extern bool QVideoFrameFormat_IsValid(void* c_this);
 	[LinkName("QVideoFrameFormat_PixelFormat")]
-	public static extern int64 QVideoFrameFormat_PixelFormat(Self* c_this);
+	public static extern int64 QVideoFrameFormat_PixelFormat(void* c_this);
 	[LinkName("QVideoFrameFormat_FrameSize")]
-	public static extern QSize QVideoFrameFormat_FrameSize(Self* c_this);
+	public static extern void QVideoFrameFormat_FrameSize(void* c_this);
 	[LinkName("QVideoFrameFormat_SetFrameSize")]
-	public static extern void QVideoFrameFormat_SetFrameSize(Self* c_this, QSize* size);
+	public static extern void QVideoFrameFormat_SetFrameSize(void* c_this, void* size);
 	[LinkName("QVideoFrameFormat_SetFrameSize2")]
-	public static extern void QVideoFrameFormat_SetFrameSize2(Self* c_this, int32 width, int32 height);
+	public static extern void QVideoFrameFormat_SetFrameSize2(void* c_this, int32 width, int32 height);
 	[LinkName("QVideoFrameFormat_FrameWidth")]
-	public static extern int32 QVideoFrameFormat_FrameWidth(Self* c_this);
+	public static extern int32 QVideoFrameFormat_FrameWidth(void* c_this);
 	[LinkName("QVideoFrameFormat_FrameHeight")]
-	public static extern int32 QVideoFrameFormat_FrameHeight(Self* c_this);
+	public static extern int32 QVideoFrameFormat_FrameHeight(void* c_this);
 	[LinkName("QVideoFrameFormat_PlaneCount")]
-	public static extern int32 QVideoFrameFormat_PlaneCount(Self* c_this);
+	public static extern int32 QVideoFrameFormat_PlaneCount(void* c_this);
 	[LinkName("QVideoFrameFormat_Viewport")]
-	public static extern QRect QVideoFrameFormat_Viewport(Self* c_this);
+	public static extern void QVideoFrameFormat_Viewport(void* c_this);
 	[LinkName("QVideoFrameFormat_SetViewport")]
-	public static extern void QVideoFrameFormat_SetViewport(Self* c_this, QRect* viewport);
+	public static extern void QVideoFrameFormat_SetViewport(void* c_this, void* viewport);
 	[LinkName("QVideoFrameFormat_ScanLineDirection")]
-	public static extern int64 QVideoFrameFormat_ScanLineDirection(Self* c_this);
+	public static extern int64 QVideoFrameFormat_ScanLineDirection(void* c_this);
 	[LinkName("QVideoFrameFormat_SetScanLineDirection")]
-	public static extern void QVideoFrameFormat_SetScanLineDirection(Self* c_this, int64 direction);
+	public static extern void QVideoFrameFormat_SetScanLineDirection(void* c_this, int64 direction);
 	[LinkName("QVideoFrameFormat_FrameRate")]
-	public static extern double QVideoFrameFormat_FrameRate(Self* c_this);
+	public static extern double QVideoFrameFormat_FrameRate(void* c_this);
 	[LinkName("QVideoFrameFormat_SetFrameRate")]
-	public static extern void QVideoFrameFormat_SetFrameRate(Self* c_this, double rate);
+	public static extern void QVideoFrameFormat_SetFrameRate(void* c_this, double rate);
 	[LinkName("QVideoFrameFormat_YCbCrColorSpace")]
-	public static extern int64 QVideoFrameFormat_YCbCrColorSpace(Self* c_this);
+	public static extern int64 QVideoFrameFormat_YCbCrColorSpace(void* c_this);
 	[LinkName("QVideoFrameFormat_SetYCbCrColorSpace")]
-	public static extern void QVideoFrameFormat_SetYCbCrColorSpace(Self* c_this, int64 colorSpace);
+	public static extern void QVideoFrameFormat_SetYCbCrColorSpace(void* c_this, int64 colorSpace);
 	[LinkName("QVideoFrameFormat_ColorSpace")]
-	public static extern int64 QVideoFrameFormat_ColorSpace(Self* c_this);
+	public static extern int64 QVideoFrameFormat_ColorSpace(void* c_this);
 	[LinkName("QVideoFrameFormat_SetColorSpace")]
-	public static extern void QVideoFrameFormat_SetColorSpace(Self* c_this, int64 colorSpace);
+	public static extern void QVideoFrameFormat_SetColorSpace(void* c_this, int64 colorSpace);
 	[LinkName("QVideoFrameFormat_ColorTransfer")]
-	public static extern int64 QVideoFrameFormat_ColorTransfer(Self* c_this);
+	public static extern int64 QVideoFrameFormat_ColorTransfer(void* c_this);
 	[LinkName("QVideoFrameFormat_SetColorTransfer")]
-	public static extern void QVideoFrameFormat_SetColorTransfer(Self* c_this, int64 colorTransfer);
+	public static extern void QVideoFrameFormat_SetColorTransfer(void* c_this, int64 colorTransfer);
 	[LinkName("QVideoFrameFormat_ColorRange")]
-	public static extern int64 QVideoFrameFormat_ColorRange(Self* c_this);
+	public static extern int64 QVideoFrameFormat_ColorRange(void* c_this);
 	[LinkName("QVideoFrameFormat_SetColorRange")]
-	public static extern void QVideoFrameFormat_SetColorRange(Self* c_this, int64 range);
+	public static extern void QVideoFrameFormat_SetColorRange(void* c_this, int64 range);
 	[LinkName("QVideoFrameFormat_IsMirrored")]
-	public static extern bool QVideoFrameFormat_IsMirrored(Self* c_this);
+	public static extern bool QVideoFrameFormat_IsMirrored(void* c_this);
 	[LinkName("QVideoFrameFormat_SetMirrored")]
-	public static extern void QVideoFrameFormat_SetMirrored(Self* c_this, bool mirrored);
+	public static extern void QVideoFrameFormat_SetMirrored(void* c_this, bool mirrored);
 	[LinkName("QVideoFrameFormat_VertexShaderFileName")]
-	public static extern libqt_string QVideoFrameFormat_VertexShaderFileName(Self* c_this);
+	public static extern libqt_string QVideoFrameFormat_VertexShaderFileName(void* c_this);
 	[LinkName("QVideoFrameFormat_FragmentShaderFileName")]
-	public static extern libqt_string QVideoFrameFormat_FragmentShaderFileName(Self* c_this);
+	public static extern libqt_string QVideoFrameFormat_FragmentShaderFileName(void* c_this);
 	[LinkName("QVideoFrameFormat_MaxLuminance")]
-	public static extern float QVideoFrameFormat_MaxLuminance(Self* c_this);
+	public static extern float QVideoFrameFormat_MaxLuminance(void* c_this);
 	[LinkName("QVideoFrameFormat_SetMaxLuminance")]
-	public static extern void QVideoFrameFormat_SetMaxLuminance(Self* c_this, float lum);
+	public static extern void QVideoFrameFormat_SetMaxLuminance(void* c_this, float lum);
 	[LinkName("QVideoFrameFormat_PixelFormatFromImageFormat")]
 	public static extern int64 QVideoFrameFormat_PixelFormatFromImageFormat(int64 format);
 	[LinkName("QVideoFrameFormat_ImageFormatFromPixelFormat")]
 	public static extern int64 QVideoFrameFormat_ImageFormatFromPixelFormat(int64 format);
 	[LinkName("QVideoFrameFormat_PixelFormatToString")]
 	public static extern libqt_string QVideoFrameFormat_PixelFormatToString(int64 pixelFormat);
+	/// Delete this object from C++ memory
+	[LinkName("QVideoFrameFormat_Delete")]
+	public static extern void QVideoFrameFormat_Delete(void* self);
 }

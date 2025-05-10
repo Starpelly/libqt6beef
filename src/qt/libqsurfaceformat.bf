@@ -40,96 +40,324 @@ public enum QSurfaceFormat__ColorSpace
 	DefaultColorSpace = 0,
 	sRGBColorSpace = 1,
 }
-public struct QSurfaceFormat
+public class QSurfaceFormat
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QSurfaceFormat_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QSurfaceFormat_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QSurfaceFormat_OperatorAssign(this.nativePtr, other);
+	}
+	
+	public void SetDepthBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetDepthBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 DepthBufferSize()
+	{
+		return CQt.QSurfaceFormat_DepthBufferSize(this.nativePtr);
+	}
+	
+	public void SetStencilBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetStencilBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 StencilBufferSize()
+	{
+		return CQt.QSurfaceFormat_StencilBufferSize(this.nativePtr);
+	}
+	
+	public void SetRedBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetRedBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 RedBufferSize()
+	{
+		return CQt.QSurfaceFormat_RedBufferSize(this.nativePtr);
+	}
+	
+	public void SetGreenBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetGreenBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 GreenBufferSize()
+	{
+		return CQt.QSurfaceFormat_GreenBufferSize(this.nativePtr);
+	}
+	
+	public void SetBlueBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetBlueBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 BlueBufferSize()
+	{
+		return CQt.QSurfaceFormat_BlueBufferSize(this.nativePtr);
+	}
+	
+	public void SetAlphaBufferSize(int32 size)
+	{
+		CQt.QSurfaceFormat_SetAlphaBufferSize(this.nativePtr, size);
+	}
+	
+	public int32 AlphaBufferSize()
+	{
+		return CQt.QSurfaceFormat_AlphaBufferSize(this.nativePtr);
+	}
+	
+	public void SetSamples(int32 numSamples)
+	{
+		CQt.QSurfaceFormat_SetSamples(this.nativePtr, numSamples);
+	}
+	
+	public int32 Samples()
+	{
+		return CQt.QSurfaceFormat_Samples(this.nativePtr);
+	}
+	
+	public void SetSwapBehavior(int64 behavior)
+	{
+		CQt.QSurfaceFormat_SetSwapBehavior(this.nativePtr, behavior);
+	}
+	
+	public int64 SwapBehavior()
+	{
+		return CQt.QSurfaceFormat_SwapBehavior(this.nativePtr);
+	}
+	
+	public bool HasAlpha()
+	{
+		return CQt.QSurfaceFormat_HasAlpha(this.nativePtr);
+	}
+	
+	public void SetProfile(int64 profile)
+	{
+		CQt.QSurfaceFormat_SetProfile(this.nativePtr, profile);
+	}
+	
+	public int64 Profile()
+	{
+		return CQt.QSurfaceFormat_Profile(this.nativePtr);
+	}
+	
+	public void SetRenderableType(int64 typeVal)
+	{
+		CQt.QSurfaceFormat_SetRenderableType(this.nativePtr, typeVal);
+	}
+	
+	public int64 RenderableType()
+	{
+		return CQt.QSurfaceFormat_RenderableType(this.nativePtr);
+	}
+	
+	public void SetMajorVersion(int32 majorVersion)
+	{
+		CQt.QSurfaceFormat_SetMajorVersion(this.nativePtr, majorVersion);
+	}
+	
+	public int32 MajorVersion()
+	{
+		return CQt.QSurfaceFormat_MajorVersion(this.nativePtr);
+	}
+	
+	public void SetMinorVersion(int32 minorVersion)
+	{
+		CQt.QSurfaceFormat_SetMinorVersion(this.nativePtr, minorVersion);
+	}
+	
+	public int32 MinorVersion()
+	{
+		return CQt.QSurfaceFormat_MinorVersion(this.nativePtr);
+	}
+	
+	public void* Version()
+	{
+		return CQt.QSurfaceFormat_Version(this.nativePtr);
+	}
+	
+	public void SetVersion(int32 major, int32 minor)
+	{
+		CQt.QSurfaceFormat_SetVersion(this.nativePtr, major, minor);
+	}
+	
+	public bool Stereo()
+	{
+		return CQt.QSurfaceFormat_Stereo(this.nativePtr);
+	}
+	
+	public void SetStereo(bool enable)
+	{
+		CQt.QSurfaceFormat_SetStereo(this.nativePtr, enable);
+	}
+	
+	public void SetOptions(int64 options)
+	{
+		CQt.QSurfaceFormat_SetOptions(this.nativePtr, options);
+	}
+	
+	public void SetOption(int64 option)
+	{
+		CQt.QSurfaceFormat_SetOption(this.nativePtr, option);
+	}
+	
+	public bool TestOption(int64 option)
+	{
+		return CQt.QSurfaceFormat_TestOption(this.nativePtr, option);
+	}
+	
+	public int64 Options()
+	{
+		return CQt.QSurfaceFormat_Options(this.nativePtr);
+	}
+	
+	public int32 SwapInterval()
+	{
+		return CQt.QSurfaceFormat_SwapInterval(this.nativePtr);
+	}
+	
+	public void SetSwapInterval(int32 interval)
+	{
+		CQt.QSurfaceFormat_SetSwapInterval(this.nativePtr, interval);
+	}
+	
+	public void* ColorSpace()
+	{
+		return CQt.QSurfaceFormat_ColorSpace(this.nativePtr);
+	}
+	
+	public void SetColorSpace(void* colorSpace)
+	{
+		CQt.QSurfaceFormat_SetColorSpace(this.nativePtr, colorSpace);
+	}
+	
+	public void SetColorSpaceWithColorSpace(int64 colorSpace)
+	{
+		CQt.QSurfaceFormat_SetColorSpaceWithColorSpace(this.nativePtr, colorSpace);
+	}
+	
+	public static void SetDefaultFormat(void* format)
+	{
+		CQt.QSurfaceFormat_SetDefaultFormat(format);
+	}
+	
+	public static void DefaultFormat()
+	{
+		CQt.QSurfaceFormat_DefaultFormat();
+	}
+	
+	public void SetOption2(int64 option, bool on)
+	{
+		CQt.QSurfaceFormat_SetOption2(this.nativePtr, option, on);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QSurfaceFormat_new")]
-	public static extern QSurfaceFormat* QSurfaceFormat_new();
+	public static extern void* QSurfaceFormat_new();
 	[LinkName("QSurfaceFormat_new2")]
-	public static extern QSurfaceFormat* QSurfaceFormat_new2(int64 options);
+	public static extern void* QSurfaceFormat_new2(int64 options);
 	[LinkName("QSurfaceFormat_new3")]
-	public static extern QSurfaceFormat* QSurfaceFormat_new3(QSurfaceFormat* other);
+	public static extern void* QSurfaceFormat_new3(void* other);
 	[LinkName("QSurfaceFormat_OperatorAssign")]
-	public static extern void QSurfaceFormat_OperatorAssign(Self* c_this, QSurfaceFormat* other);
+	public static extern void QSurfaceFormat_OperatorAssign(void* c_this, void* other);
 	[LinkName("QSurfaceFormat_SetDepthBufferSize")]
-	public static extern void QSurfaceFormat_SetDepthBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetDepthBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_DepthBufferSize")]
-	public static extern int32 QSurfaceFormat_DepthBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_DepthBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetStencilBufferSize")]
-	public static extern void QSurfaceFormat_SetStencilBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetStencilBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_StencilBufferSize")]
-	public static extern int32 QSurfaceFormat_StencilBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_StencilBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetRedBufferSize")]
-	public static extern void QSurfaceFormat_SetRedBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetRedBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_RedBufferSize")]
-	public static extern int32 QSurfaceFormat_RedBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_RedBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetGreenBufferSize")]
-	public static extern void QSurfaceFormat_SetGreenBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetGreenBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_GreenBufferSize")]
-	public static extern int32 QSurfaceFormat_GreenBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_GreenBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetBlueBufferSize")]
-	public static extern void QSurfaceFormat_SetBlueBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetBlueBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_BlueBufferSize")]
-	public static extern int32 QSurfaceFormat_BlueBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_BlueBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetAlphaBufferSize")]
-	public static extern void QSurfaceFormat_SetAlphaBufferSize(Self* c_this, int32 size);
+	public static extern void QSurfaceFormat_SetAlphaBufferSize(void* c_this, int32 size);
 	[LinkName("QSurfaceFormat_AlphaBufferSize")]
-	public static extern int32 QSurfaceFormat_AlphaBufferSize(Self* c_this);
+	public static extern int32 QSurfaceFormat_AlphaBufferSize(void* c_this);
 	[LinkName("QSurfaceFormat_SetSamples")]
-	public static extern void QSurfaceFormat_SetSamples(Self* c_this, int32 numSamples);
+	public static extern void QSurfaceFormat_SetSamples(void* c_this, int32 numSamples);
 	[LinkName("QSurfaceFormat_Samples")]
-	public static extern int32 QSurfaceFormat_Samples(Self* c_this);
+	public static extern int32 QSurfaceFormat_Samples(void* c_this);
 	[LinkName("QSurfaceFormat_SetSwapBehavior")]
-	public static extern void QSurfaceFormat_SetSwapBehavior(Self* c_this, int64 behavior);
+	public static extern void QSurfaceFormat_SetSwapBehavior(void* c_this, int64 behavior);
 	[LinkName("QSurfaceFormat_SwapBehavior")]
-	public static extern int64 QSurfaceFormat_SwapBehavior(Self* c_this);
+	public static extern int64 QSurfaceFormat_SwapBehavior(void* c_this);
 	[LinkName("QSurfaceFormat_HasAlpha")]
-	public static extern bool QSurfaceFormat_HasAlpha(Self* c_this);
+	public static extern bool QSurfaceFormat_HasAlpha(void* c_this);
 	[LinkName("QSurfaceFormat_SetProfile")]
-	public static extern void QSurfaceFormat_SetProfile(Self* c_this, int64 profile);
+	public static extern void QSurfaceFormat_SetProfile(void* c_this, int64 profile);
 	[LinkName("QSurfaceFormat_Profile")]
-	public static extern int64 QSurfaceFormat_Profile(Self* c_this);
+	public static extern int64 QSurfaceFormat_Profile(void* c_this);
 	[LinkName("QSurfaceFormat_SetRenderableType")]
-	public static extern void QSurfaceFormat_SetRenderableType(Self* c_this, int64 typeVal);
+	public static extern void QSurfaceFormat_SetRenderableType(void* c_this, int64 typeVal);
 	[LinkName("QSurfaceFormat_RenderableType")]
-	public static extern int64 QSurfaceFormat_RenderableType(Self* c_this);
+	public static extern int64 QSurfaceFormat_RenderableType(void* c_this);
 	[LinkName("QSurfaceFormat_SetMajorVersion")]
-	public static extern void QSurfaceFormat_SetMajorVersion(Self* c_this, int32 majorVersion);
+	public static extern void QSurfaceFormat_SetMajorVersion(void* c_this, int32 majorVersion);
 	[LinkName("QSurfaceFormat_MajorVersion")]
-	public static extern int32 QSurfaceFormat_MajorVersion(Self* c_this);
+	public static extern int32 QSurfaceFormat_MajorVersion(void* c_this);
 	[LinkName("QSurfaceFormat_SetMinorVersion")]
-	public static extern void QSurfaceFormat_SetMinorVersion(Self* c_this, int32 minorVersion);
+	public static extern void QSurfaceFormat_SetMinorVersion(void* c_this, int32 minorVersion);
 	[LinkName("QSurfaceFormat_MinorVersion")]
-	public static extern int32 QSurfaceFormat_MinorVersion(Self* c_this);
+	public static extern int32 QSurfaceFormat_MinorVersion(void* c_this);
 	[LinkName("QSurfaceFormat_Version")]
-	public static extern void* QSurfaceFormat_Version(Self* c_this);
+	public static extern void* QSurfaceFormat_Version(void* c_this);
 	[LinkName("QSurfaceFormat_SetVersion")]
-	public static extern void QSurfaceFormat_SetVersion(Self* c_this, int32 major, int32 minor);
+	public static extern void QSurfaceFormat_SetVersion(void* c_this, int32 major, int32 minor);
 	[LinkName("QSurfaceFormat_Stereo")]
-	public static extern bool QSurfaceFormat_Stereo(Self* c_this);
+	public static extern bool QSurfaceFormat_Stereo(void* c_this);
 	[LinkName("QSurfaceFormat_SetStereo")]
-	public static extern void QSurfaceFormat_SetStereo(Self* c_this, bool enable);
+	public static extern void QSurfaceFormat_SetStereo(void* c_this, bool enable);
 	[LinkName("QSurfaceFormat_SetOptions")]
-	public static extern void QSurfaceFormat_SetOptions(Self* c_this, int64 options);
+	public static extern void QSurfaceFormat_SetOptions(void* c_this, int64 options);
 	[LinkName("QSurfaceFormat_SetOption")]
-	public static extern void QSurfaceFormat_SetOption(Self* c_this, int64 option);
+	public static extern void QSurfaceFormat_SetOption(void* c_this, int64 option);
 	[LinkName("QSurfaceFormat_TestOption")]
-	public static extern bool QSurfaceFormat_TestOption(Self* c_this, int64 option);
+	public static extern bool QSurfaceFormat_TestOption(void* c_this, int64 option);
 	[LinkName("QSurfaceFormat_Options")]
-	public static extern int64 QSurfaceFormat_Options(Self* c_this);
+	public static extern int64 QSurfaceFormat_Options(void* c_this);
 	[LinkName("QSurfaceFormat_SwapInterval")]
-	public static extern int32 QSurfaceFormat_SwapInterval(Self* c_this);
+	public static extern int32 QSurfaceFormat_SwapInterval(void* c_this);
 	[LinkName("QSurfaceFormat_SetSwapInterval")]
-	public static extern void QSurfaceFormat_SetSwapInterval(Self* c_this, int32 interval);
+	public static extern void QSurfaceFormat_SetSwapInterval(void* c_this, int32 interval);
 	[LinkName("QSurfaceFormat_ColorSpace")]
-	public static extern QColorSpace* QSurfaceFormat_ColorSpace(Self* c_this);
+	public static extern void* QSurfaceFormat_ColorSpace(void* c_this);
 	[LinkName("QSurfaceFormat_SetColorSpace")]
-	public static extern void QSurfaceFormat_SetColorSpace(Self* c_this, QColorSpace* colorSpace);
+	public static extern void QSurfaceFormat_SetColorSpace(void* c_this, void* colorSpace);
 	[LinkName("QSurfaceFormat_SetColorSpaceWithColorSpace")]
-	public static extern void QSurfaceFormat_SetColorSpaceWithColorSpace(Self* c_this, int64 colorSpace);
+	public static extern void QSurfaceFormat_SetColorSpaceWithColorSpace(void* c_this, int64 colorSpace);
 	[LinkName("QSurfaceFormat_SetDefaultFormat")]
-	public static extern void QSurfaceFormat_SetDefaultFormat(QSurfaceFormat* format);
+	public static extern void QSurfaceFormat_SetDefaultFormat(void* format);
 	[LinkName("QSurfaceFormat_DefaultFormat")]
-	public static extern QSurfaceFormat QSurfaceFormat_DefaultFormat();
+	public static extern void QSurfaceFormat_DefaultFormat();
 	[LinkName("QSurfaceFormat_SetOption2")]
-	public static extern void QSurfaceFormat_SetOption2(Self* c_this, int64 option, bool on);
+	public static extern void QSurfaceFormat_SetOption2(void* c_this, int64 option, bool on);
+	/// Delete this object from C++ memory
+	[LinkName("QSurfaceFormat_Delete")]
+	public static extern void QSurfaceFormat_Delete(void* self);
 }

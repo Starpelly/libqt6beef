@@ -472,223 +472,997 @@ public enum QStyleHintReturnVariant__StyleOptionVersion
 {
 	Version = 1,
 }
-public struct QStyleOption
+public class QStyleOption
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOption_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOption_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOption_new")]
-	public static extern QStyleOption* QStyleOption_new();
+	public static extern void* QStyleOption_new();
 	[LinkName("QStyleOption_new2")]
-	public static extern QStyleOption* QStyleOption_new2(QStyleOption* other);
+	public static extern void* QStyleOption_new2(void* other);
 	[LinkName("QStyleOption_new3")]
-	public static extern QStyleOption* QStyleOption_new3(int32 version);
+	public static extern void* QStyleOption_new3(int32 version);
 	[LinkName("QStyleOption_new4")]
-	public static extern QStyleOption* QStyleOption_new4(int32 version, int32 typeVal);
+	public static extern void* QStyleOption_new4(int32 version, int32 typeVal);
 	[LinkName("QStyleOption_InitFrom")]
-	public static extern void QStyleOption_InitFrom(Self* c_this, QWidget* w);
+	public static extern void QStyleOption_InitFrom(void* c_this, void* w);
 	[LinkName("QStyleOption_OperatorAssign")]
-	public static extern void QStyleOption_OperatorAssign(Self* c_this, QStyleOption* other);
+	public static extern void QStyleOption_OperatorAssign(void* c_this, void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOption_Delete")]
+	public static extern void QStyleOption_Delete(void* self);
 }
-public struct QStyleOptionFocusRect : QStyleOption
+public class QStyleOptionFocusRect
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionFocusRect_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionFocusRect_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionFocusRect_new")]
-	public static extern QStyleOptionFocusRect* QStyleOptionFocusRect_new();
+	public static extern void* QStyleOptionFocusRect_new();
 	[LinkName("QStyleOptionFocusRect_new2")]
-	public static extern QStyleOptionFocusRect* QStyleOptionFocusRect_new2(QStyleOptionFocusRect* other);
+	public static extern void* QStyleOptionFocusRect_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionFocusRect_Delete")]
+	public static extern void QStyleOptionFocusRect_Delete(void* self);
 }
-public struct QStyleOptionFrame : QStyleOption
+public class QStyleOptionFrame
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionFrame_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionFrame_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionFrame_new")]
-	public static extern QStyleOptionFrame* QStyleOptionFrame_new();
+	public static extern void* QStyleOptionFrame_new();
 	[LinkName("QStyleOptionFrame_new2")]
-	public static extern QStyleOptionFrame* QStyleOptionFrame_new2(QStyleOptionFrame* other);
+	public static extern void* QStyleOptionFrame_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionFrame_Delete")]
+	public static extern void QStyleOptionFrame_Delete(void* self);
 }
-public struct QStyleOptionTabWidgetFrame : QStyleOption
+public class QStyleOptionTabWidgetFrame
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionTabWidgetFrame_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionTabWidgetFrame_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionTabWidgetFrame_new")]
-	public static extern QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new();
+	public static extern void* QStyleOptionTabWidgetFrame_new();
 	[LinkName("QStyleOptionTabWidgetFrame_new2")]
-	public static extern QStyleOptionTabWidgetFrame* QStyleOptionTabWidgetFrame_new2(QStyleOptionTabWidgetFrame* other);
+	public static extern void* QStyleOptionTabWidgetFrame_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionTabWidgetFrame_Delete")]
+	public static extern void QStyleOptionTabWidgetFrame_Delete(void* self);
 }
-public struct QStyleOptionTabBarBase : QStyleOption
+public class QStyleOptionTabBarBase
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionTabBarBase_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionTabBarBase_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionTabBarBase_new")]
-	public static extern QStyleOptionTabBarBase* QStyleOptionTabBarBase_new();
+	public static extern void* QStyleOptionTabBarBase_new();
 	[LinkName("QStyleOptionTabBarBase_new2")]
-	public static extern QStyleOptionTabBarBase* QStyleOptionTabBarBase_new2(QStyleOptionTabBarBase* other);
+	public static extern void* QStyleOptionTabBarBase_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionTabBarBase_Delete")]
+	public static extern void QStyleOptionTabBarBase_Delete(void* self);
 }
-public struct QStyleOptionHeader : QStyleOption
+public class QStyleOptionHeader
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionHeader_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionHeader_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionHeader_new")]
-	public static extern QStyleOptionHeader* QStyleOptionHeader_new();
+	public static extern void* QStyleOptionHeader_new();
 	[LinkName("QStyleOptionHeader_new2")]
-	public static extern QStyleOptionHeader* QStyleOptionHeader_new2(QStyleOptionHeader* other);
+	public static extern void* QStyleOptionHeader_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionHeader_Delete")]
+	public static extern void QStyleOptionHeader_Delete(void* self);
 }
-public struct QStyleOptionHeaderV2 : QStyleOptionHeader
+public class QStyleOptionHeaderV2
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionHeaderV2_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionHeaderV2_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionHeaderV2_new")]
-	public static extern QStyleOptionHeaderV2* QStyleOptionHeaderV2_new();
+	public static extern void* QStyleOptionHeaderV2_new();
 	[LinkName("QStyleOptionHeaderV2_new2")]
-	public static extern QStyleOptionHeaderV2* QStyleOptionHeaderV2_new2(QStyleOptionHeaderV2* other);
+	public static extern void* QStyleOptionHeaderV2_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionHeaderV2_Delete")]
+	public static extern void QStyleOptionHeaderV2_Delete(void* self);
 }
-public struct QStyleOptionButton : QStyleOption
+public class QStyleOptionButton
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionButton_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionButton_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionButton_new")]
-	public static extern QStyleOptionButton* QStyleOptionButton_new();
+	public static extern void* QStyleOptionButton_new();
 	[LinkName("QStyleOptionButton_new2")]
-	public static extern QStyleOptionButton* QStyleOptionButton_new2(QStyleOptionButton* other);
+	public static extern void* QStyleOptionButton_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionButton_Delete")]
+	public static extern void QStyleOptionButton_Delete(void* self);
 }
-public struct QStyleOptionTab : QStyleOption
+public class QStyleOptionTab
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionTab_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionTab_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionTab_new")]
-	public static extern QStyleOptionTab* QStyleOptionTab_new();
+	public static extern void* QStyleOptionTab_new();
 	[LinkName("QStyleOptionTab_new2")]
-	public static extern QStyleOptionTab* QStyleOptionTab_new2(QStyleOptionTab* other);
+	public static extern void* QStyleOptionTab_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionTab_Delete")]
+	public static extern void QStyleOptionTab_Delete(void* self);
 }
-public struct QStyleOptionToolBar : QStyleOption
+public class QStyleOptionToolBar
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionToolBar_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionToolBar_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionToolBar_new")]
-	public static extern QStyleOptionToolBar* QStyleOptionToolBar_new();
+	public static extern void* QStyleOptionToolBar_new();
 	[LinkName("QStyleOptionToolBar_new2")]
-	public static extern QStyleOptionToolBar* QStyleOptionToolBar_new2(QStyleOptionToolBar* other);
+	public static extern void* QStyleOptionToolBar_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionToolBar_Delete")]
+	public static extern void QStyleOptionToolBar_Delete(void* self);
 }
-public struct QStyleOptionProgressBar : QStyleOption
+public class QStyleOptionProgressBar
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionProgressBar_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionProgressBar_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionProgressBar_new")]
-	public static extern QStyleOptionProgressBar* QStyleOptionProgressBar_new();
+	public static extern void* QStyleOptionProgressBar_new();
 	[LinkName("QStyleOptionProgressBar_new2")]
-	public static extern QStyleOptionProgressBar* QStyleOptionProgressBar_new2(QStyleOptionProgressBar* other);
+	public static extern void* QStyleOptionProgressBar_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionProgressBar_Delete")]
+	public static extern void QStyleOptionProgressBar_Delete(void* self);
 }
-public struct QStyleOptionMenuItem : QStyleOption
+public class QStyleOptionMenuItem
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionMenuItem_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionMenuItem_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionMenuItem_new")]
-	public static extern QStyleOptionMenuItem* QStyleOptionMenuItem_new();
+	public static extern void* QStyleOptionMenuItem_new();
 	[LinkName("QStyleOptionMenuItem_new2")]
-	public static extern QStyleOptionMenuItem* QStyleOptionMenuItem_new2(QStyleOptionMenuItem* other);
+	public static extern void* QStyleOptionMenuItem_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionMenuItem_Delete")]
+	public static extern void QStyleOptionMenuItem_Delete(void* self);
 }
-public struct QStyleOptionDockWidget : QStyleOption
+public class QStyleOptionDockWidget
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionDockWidget_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionDockWidget_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionDockWidget_new")]
-	public static extern QStyleOptionDockWidget* QStyleOptionDockWidget_new();
+	public static extern void* QStyleOptionDockWidget_new();
 	[LinkName("QStyleOptionDockWidget_new2")]
-	public static extern QStyleOptionDockWidget* QStyleOptionDockWidget_new2(QStyleOptionDockWidget* other);
+	public static extern void* QStyleOptionDockWidget_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionDockWidget_Delete")]
+	public static extern void QStyleOptionDockWidget_Delete(void* self);
 }
-public struct QStyleOptionViewItem : QStyleOption
+public class QStyleOptionViewItem
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionViewItem_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionViewItem_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionViewItem_new")]
-	public static extern QStyleOptionViewItem* QStyleOptionViewItem_new();
+	public static extern void* QStyleOptionViewItem_new();
 	[LinkName("QStyleOptionViewItem_new2")]
-	public static extern QStyleOptionViewItem* QStyleOptionViewItem_new2(QStyleOptionViewItem* other);
+	public static extern void* QStyleOptionViewItem_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionViewItem_Delete")]
+	public static extern void QStyleOptionViewItem_Delete(void* self);
 }
-public struct QStyleOptionToolBox : QStyleOption
+public class QStyleOptionToolBox
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionToolBox_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionToolBox_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionToolBox_new")]
-	public static extern QStyleOptionToolBox* QStyleOptionToolBox_new();
+	public static extern void* QStyleOptionToolBox_new();
 	[LinkName("QStyleOptionToolBox_new2")]
-	public static extern QStyleOptionToolBox* QStyleOptionToolBox_new2(QStyleOptionToolBox* other);
+	public static extern void* QStyleOptionToolBox_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionToolBox_Delete")]
+	public static extern void QStyleOptionToolBox_Delete(void* self);
 }
-public struct QStyleOptionRubberBand : QStyleOption
+public class QStyleOptionRubberBand
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionRubberBand_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionRubberBand_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionRubberBand_new")]
-	public static extern QStyleOptionRubberBand* QStyleOptionRubberBand_new();
+	public static extern void* QStyleOptionRubberBand_new();
 	[LinkName("QStyleOptionRubberBand_new2")]
-	public static extern QStyleOptionRubberBand* QStyleOptionRubberBand_new2(QStyleOptionRubberBand* other);
+	public static extern void* QStyleOptionRubberBand_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionRubberBand_Delete")]
+	public static extern void QStyleOptionRubberBand_Delete(void* self);
 }
-public struct QStyleOptionComplex : QStyleOption
+public class QStyleOptionComplex
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionComplex_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionComplex_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionComplex_new")]
-	public static extern QStyleOptionComplex* QStyleOptionComplex_new();
+	public static extern void* QStyleOptionComplex_new();
 	[LinkName("QStyleOptionComplex_new2")]
-	public static extern QStyleOptionComplex* QStyleOptionComplex_new2(QStyleOptionComplex* other);
+	public static extern void* QStyleOptionComplex_new2(void* other);
 	[LinkName("QStyleOptionComplex_new3")]
-	public static extern QStyleOptionComplex* QStyleOptionComplex_new3(int32 version);
+	public static extern void* QStyleOptionComplex_new3(int32 version);
 	[LinkName("QStyleOptionComplex_new4")]
-	public static extern QStyleOptionComplex* QStyleOptionComplex_new4(int32 version, int32 typeVal);
+	public static extern void* QStyleOptionComplex_new4(int32 version, int32 typeVal);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionComplex_Delete")]
+	public static extern void QStyleOptionComplex_Delete(void* self);
 }
-public struct QStyleOptionSlider : QStyleOptionComplex
+public class QStyleOptionSlider
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionSlider_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionSlider_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionSlider_new")]
-	public static extern QStyleOptionSlider* QStyleOptionSlider_new();
+	public static extern void* QStyleOptionSlider_new();
 	[LinkName("QStyleOptionSlider_new2")]
-	public static extern QStyleOptionSlider* QStyleOptionSlider_new2(QStyleOptionSlider* other);
+	public static extern void* QStyleOptionSlider_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionSlider_Delete")]
+	public static extern void QStyleOptionSlider_Delete(void* self);
 }
-public struct QStyleOptionSpinBox : QStyleOptionComplex
+public class QStyleOptionSpinBox
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionSpinBox_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionSpinBox_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionSpinBox_new")]
-	public static extern QStyleOptionSpinBox* QStyleOptionSpinBox_new();
+	public static extern void* QStyleOptionSpinBox_new();
 	[LinkName("QStyleOptionSpinBox_new2")]
-	public static extern QStyleOptionSpinBox* QStyleOptionSpinBox_new2(QStyleOptionSpinBox* other);
+	public static extern void* QStyleOptionSpinBox_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionSpinBox_Delete")]
+	public static extern void QStyleOptionSpinBox_Delete(void* self);
 }
-public struct QStyleOptionToolButton : QStyleOptionComplex
+public class QStyleOptionToolButton
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionToolButton_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionToolButton_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionToolButton_new")]
-	public static extern QStyleOptionToolButton* QStyleOptionToolButton_new();
+	public static extern void* QStyleOptionToolButton_new();
 	[LinkName("QStyleOptionToolButton_new2")]
-	public static extern QStyleOptionToolButton* QStyleOptionToolButton_new2(QStyleOptionToolButton* other);
+	public static extern void* QStyleOptionToolButton_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionToolButton_Delete")]
+	public static extern void QStyleOptionToolButton_Delete(void* self);
 }
-public struct QStyleOptionComboBox : QStyleOptionComplex
+public class QStyleOptionComboBox
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionComboBox_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionComboBox_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionComboBox_new")]
-	public static extern QStyleOptionComboBox* QStyleOptionComboBox_new();
+	public static extern void* QStyleOptionComboBox_new();
 	[LinkName("QStyleOptionComboBox_new2")]
-	public static extern QStyleOptionComboBox* QStyleOptionComboBox_new2(QStyleOptionComboBox* other);
+	public static extern void* QStyleOptionComboBox_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionComboBox_Delete")]
+	public static extern void QStyleOptionComboBox_Delete(void* self);
 }
-public struct QStyleOptionTitleBar : QStyleOptionComplex
+public class QStyleOptionTitleBar
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionTitleBar_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionTitleBar_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionTitleBar_new")]
-	public static extern QStyleOptionTitleBar* QStyleOptionTitleBar_new();
+	public static extern void* QStyleOptionTitleBar_new();
 	[LinkName("QStyleOptionTitleBar_new2")]
-	public static extern QStyleOptionTitleBar* QStyleOptionTitleBar_new2(QStyleOptionTitleBar* other);
+	public static extern void* QStyleOptionTitleBar_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionTitleBar_Delete")]
+	public static extern void QStyleOptionTitleBar_Delete(void* self);
 }
-public struct QStyleOptionGroupBox : QStyleOptionComplex
+public class QStyleOptionGroupBox
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionGroupBox_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionGroupBox_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionGroupBox_new")]
-	public static extern QStyleOptionGroupBox* QStyleOptionGroupBox_new();
+	public static extern void* QStyleOptionGroupBox_new();
 	[LinkName("QStyleOptionGroupBox_new2")]
-	public static extern QStyleOptionGroupBox* QStyleOptionGroupBox_new2(QStyleOptionGroupBox* other);
+	public static extern void* QStyleOptionGroupBox_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionGroupBox_Delete")]
+	public static extern void QStyleOptionGroupBox_Delete(void* self);
 }
-public struct QStyleOptionSizeGrip : QStyleOptionComplex
+public class QStyleOptionSizeGrip
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionSizeGrip_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionSizeGrip_Delete(this.nativePtr);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionSizeGrip_new")]
-	public static extern QStyleOptionSizeGrip* QStyleOptionSizeGrip_new();
+	public static extern void* QStyleOptionSizeGrip_new();
 	[LinkName("QStyleOptionSizeGrip_new2")]
-	public static extern QStyleOptionSizeGrip* QStyleOptionSizeGrip_new2(QStyleOptionSizeGrip* other);
+	public static extern void* QStyleOptionSizeGrip_new2(void* other);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionSizeGrip_Delete")]
+	public static extern void QStyleOptionSizeGrip_Delete(void* self);
 }
-public struct QStyleOptionGraphicsItem : QStyleOption
+public class QStyleOptionGraphicsItem
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleOptionGraphicsItem_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleOptionGraphicsItem_Delete(this.nativePtr);
+	}
+	
+	public static double LevelOfDetailFromTransform(void* worldTransform)
+	{
+		return CQt.QStyleOptionGraphicsItem_LevelOfDetailFromTransform(worldTransform);
+	}
+	
+	public void InitFrom(void* w)
+	{
+		CQt.QStyleOption_InitFrom(this.nativePtr, w);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QStyleOption_OperatorAssign(this.nativePtr, other);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleOptionGraphicsItem_new")]
-	public static extern QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new();
+	public static extern void* QStyleOptionGraphicsItem_new();
 	[LinkName("QStyleOptionGraphicsItem_new2")]
-	public static extern QStyleOptionGraphicsItem* QStyleOptionGraphicsItem_new2(QStyleOptionGraphicsItem* other);
+	public static extern void* QStyleOptionGraphicsItem_new2(void* other);
 	[LinkName("QStyleOptionGraphicsItem_LevelOfDetailFromTransform")]
-	public static extern double QStyleOptionGraphicsItem_LevelOfDetailFromTransform(QTransform* worldTransform);
+	public static extern double QStyleOptionGraphicsItem_LevelOfDetailFromTransform(void* worldTransform);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleOptionGraphicsItem_Delete")]
+	public static extern void QStyleOptionGraphicsItem_Delete(void* self);
 }
-public struct QStyleHintReturn
+public class QStyleHintReturn
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleHintReturn_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleHintReturn_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* param1)
+	{
+		CQt.QStyleHintReturn_OperatorAssign(this.nativePtr, param1);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleHintReturn_new")]
-	public static extern QStyleHintReturn* QStyleHintReturn_new();
+	public static extern void* QStyleHintReturn_new();
 	[LinkName("QStyleHintReturn_new2")]
-	public static extern QStyleHintReturn* QStyleHintReturn_new2(QStyleHintReturn* param1);
+	public static extern void* QStyleHintReturn_new2(void* param1);
 	[LinkName("QStyleHintReturn_new3")]
-	public static extern QStyleHintReturn* QStyleHintReturn_new3(int32 version);
+	public static extern void* QStyleHintReturn_new3(int32 version);
 	[LinkName("QStyleHintReturn_new4")]
-	public static extern QStyleHintReturn* QStyleHintReturn_new4(int32 version, int32 typeVal);
+	public static extern void* QStyleHintReturn_new4(int32 version, int32 typeVal);
 	[LinkName("QStyleHintReturn_OperatorAssign")]
-	public static extern void QStyleHintReturn_OperatorAssign(Self* c_this, QStyleHintReturn* param1);
+	public static extern void QStyleHintReturn_OperatorAssign(void* c_this, void* param1);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleHintReturn_Delete")]
+	public static extern void QStyleHintReturn_Delete(void* self);
 }
-public struct QStyleHintReturnMask : QStyleHintReturn
+public class QStyleHintReturnMask
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleHintReturnMask_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleHintReturnMask_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* param1)
+	{
+		CQt.QStyleHintReturnMask_OperatorAssign(this.nativePtr, param1);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleHintReturnMask_new")]
-	public static extern QStyleHintReturnMask* QStyleHintReturnMask_new();
+	public static extern void* QStyleHintReturnMask_new();
 	[LinkName("QStyleHintReturnMask_new2")]
-	public static extern QStyleHintReturnMask* QStyleHintReturnMask_new2(QStyleHintReturnMask* param1);
+	public static extern void* QStyleHintReturnMask_new2(void* param1);
 	[LinkName("QStyleHintReturnMask_OperatorAssign")]
-	public static extern void QStyleHintReturnMask_OperatorAssign(Self* c_this, QStyleHintReturnMask* param1);
+	public static extern void QStyleHintReturnMask_OperatorAssign(void* c_this, void* param1);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleHintReturnMask_Delete")]
+	public static extern void QStyleHintReturnMask_Delete(void* self);
 }
-public struct QStyleHintReturnVariant : QStyleHintReturn
+public class QStyleHintReturnVariant
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStyleHintReturnVariant_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStyleHintReturnVariant_Delete(this.nativePtr);
+	}
+	
+	public void OperatorAssign(void* param1)
+	{
+		CQt.QStyleHintReturnVariant_OperatorAssign(this.nativePtr, param1);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStyleHintReturnVariant_new")]
-	public static extern QStyleHintReturnVariant* QStyleHintReturnVariant_new();
+	public static extern void* QStyleHintReturnVariant_new();
 	[LinkName("QStyleHintReturnVariant_new2")]
-	public static extern QStyleHintReturnVariant* QStyleHintReturnVariant_new2(QStyleHintReturnVariant* param1);
+	public static extern void* QStyleHintReturnVariant_new2(void* param1);
 	[LinkName("QStyleHintReturnVariant_OperatorAssign")]
-	public static extern void QStyleHintReturnVariant_OperatorAssign(Self* c_this, QStyleHintReturnVariant* param1);
+	public static extern void QStyleHintReturnVariant_OperatorAssign(void* c_this, void* param1);
+	/// Delete this object from C++ memory
+	[LinkName("QStyleHintReturnVariant_Delete")]
+	public static extern void QStyleHintReturnVariant_Delete(void* self);
 }

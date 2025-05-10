@@ -56,10 +56,33 @@ public enum QCborError__Code
 	UnsupportedType = 1026,
 	NoError = 0,
 }
-public struct QCborError
+public class QCborError
+{
+	protected void* nativePtr;
+	
+	public ~this()
+	{
+		CQt.QCborError_Delete(this.nativePtr);
+	}
+	
+	public int64 ToQCborError__Code()
+	{
+		return CQt.QCborError_ToQCborError__Code(this.nativePtr);
+	}
+	
+	public libqt_string ToString()
+	{
+		return CQt.QCborError_ToString(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QCborError_ToQCborError__Code")]
-	public static extern int64 QCborError_ToQCborError__Code(Self* c_this);
+	public static extern int64 QCborError_ToQCborError__Code(void* c_this);
 	[LinkName("QCborError_ToString")]
-	public static extern libqt_string QCborError_ToString(Self* c_this);
+	public static extern libqt_string QCborError_ToString(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QCborError_Delete")]
+	public static extern void QCborError_Delete(void* self);
 }

@@ -29,87 +29,291 @@ public enum QVideoFrame__PaintOptions__PaintFlag
 {
 	DontDrawSubtitles = 1,
 }
-public struct QVideoFrame
+public class QVideoFrame
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QVideoFrame_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QVideoFrame_Delete(this.nativePtr);
+	}
+	
+	public void Swap(void* other)
+	{
+		CQt.QVideoFrame_Swap(this.nativePtr, other);
+	}
+	
+	public void OperatorAssign(void* other)
+	{
+		CQt.QVideoFrame_OperatorAssign(this.nativePtr, other);
+	}
+	
+	public bool OperatorEqual(void* other)
+	{
+		return CQt.QVideoFrame_OperatorEqual(this.nativePtr, other);
+	}
+	
+	public bool OperatorNotEqual(void* other)
+	{
+		return CQt.QVideoFrame_OperatorNotEqual(this.nativePtr, other);
+	}
+	
+	public bool IsValid()
+	{
+		return CQt.QVideoFrame_IsValid(this.nativePtr);
+	}
+	
+	public int64 PixelFormat()
+	{
+		return CQt.QVideoFrame_PixelFormat(this.nativePtr);
+	}
+	
+	public void SurfaceFormat()
+	{
+		CQt.QVideoFrame_SurfaceFormat(this.nativePtr);
+	}
+	
+	public int64 HandleType()
+	{
+		return CQt.QVideoFrame_HandleType(this.nativePtr);
+	}
+	
+	public void Size()
+	{
+		CQt.QVideoFrame_Size(this.nativePtr);
+	}
+	
+	public int32 Width()
+	{
+		return CQt.QVideoFrame_Width(this.nativePtr);
+	}
+	
+	public int32 Height()
+	{
+		return CQt.QVideoFrame_Height(this.nativePtr);
+	}
+	
+	public bool IsMapped()
+	{
+		return CQt.QVideoFrame_IsMapped(this.nativePtr);
+	}
+	
+	public bool IsReadable()
+	{
+		return CQt.QVideoFrame_IsReadable(this.nativePtr);
+	}
+	
+	public bool IsWritable()
+	{
+		return CQt.QVideoFrame_IsWritable(this.nativePtr);
+	}
+	
+	public int64 MapMode()
+	{
+		return CQt.QVideoFrame_MapMode(this.nativePtr);
+	}
+	
+	public bool Map(int64 mode)
+	{
+		return CQt.QVideoFrame_Map(this.nativePtr, mode);
+	}
+	
+	public void Unmap()
+	{
+		CQt.QVideoFrame_Unmap(this.nativePtr);
+	}
+	
+	public int32 BytesPerLine(int32 plane)
+	{
+		return CQt.QVideoFrame_BytesPerLine(this.nativePtr, plane);
+	}
+	
+	public uint8* Bits(int32 plane)
+	{
+		return CQt.QVideoFrame_Bits(this.nativePtr, plane);
+	}
+	
+	public uint8* BitsWithPlane(int32 plane)
+	{
+		return CQt.QVideoFrame_BitsWithPlane(this.nativePtr, plane);
+	}
+	
+	public int32 MappedBytes(int32 plane)
+	{
+		return CQt.QVideoFrame_MappedBytes(this.nativePtr, plane);
+	}
+	
+	public int32 PlaneCount()
+	{
+		return CQt.QVideoFrame_PlaneCount(this.nativePtr);
+	}
+	
+	public int64 StartTime()
+	{
+		return CQt.QVideoFrame_StartTime(this.nativePtr);
+	}
+	
+	public void SetStartTime(int64 time)
+	{
+		CQt.QVideoFrame_SetStartTime(this.nativePtr, time);
+	}
+	
+	public int64 EndTime()
+	{
+		return CQt.QVideoFrame_EndTime(this.nativePtr);
+	}
+	
+	public void SetEndTime(int64 time)
+	{
+		CQt.QVideoFrame_SetEndTime(this.nativePtr, time);
+	}
+	
+	public void SetRotationAngle(int64 rotationAngle)
+	{
+		CQt.QVideoFrame_SetRotationAngle(this.nativePtr, rotationAngle);
+	}
+	
+	public int64 RotationAngle()
+	{
+		return CQt.QVideoFrame_RotationAngle(this.nativePtr);
+	}
+	
+	public void SetMirrored(bool mirrored)
+	{
+		CQt.QVideoFrame_SetMirrored(this.nativePtr, mirrored);
+	}
+	
+	public bool Mirrored()
+	{
+		return CQt.QVideoFrame_Mirrored(this.nativePtr);
+	}
+	
+	public void ToImage()
+	{
+		CQt.QVideoFrame_ToImage(this.nativePtr);
+	}
+	
+	public libqt_string SubtitleText()
+	{
+		return CQt.QVideoFrame_SubtitleText(this.nativePtr);
+	}
+	
+	public void SetSubtitleText(libqt_string text)
+	{
+		CQt.QVideoFrame_SetSubtitleText(this.nativePtr, text);
+	}
+	
+	public void Paint(void* painter, void* rect, QVideoFrame__PaintOptions* options)
+	{
+		CQt.QVideoFrame_Paint(this.nativePtr, painter, rect, options);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QVideoFrame_new")]
-	public static extern QVideoFrame* QVideoFrame_new();
+	public static extern void* QVideoFrame_new();
 	[LinkName("QVideoFrame_new2")]
-	public static extern QVideoFrame* QVideoFrame_new2(QVideoFrameFormat* format);
+	public static extern void* QVideoFrame_new2(void* format);
 	[LinkName("QVideoFrame_new3")]
-	public static extern QVideoFrame* QVideoFrame_new3(QVideoFrame* other);
+	public static extern void* QVideoFrame_new3(void* other);
 	[LinkName("QVideoFrame_Swap")]
-	public static extern void QVideoFrame_Swap(Self* c_this, QVideoFrame* other);
+	public static extern void QVideoFrame_Swap(void* c_this, void* other);
 	[LinkName("QVideoFrame_OperatorAssign")]
-	public static extern void QVideoFrame_OperatorAssign(Self* c_this, QVideoFrame* other);
+	public static extern void QVideoFrame_OperatorAssign(void* c_this, void* other);
 	[LinkName("QVideoFrame_OperatorEqual")]
-	public static extern bool QVideoFrame_OperatorEqual(Self* c_this, QVideoFrame* other);
+	public static extern bool QVideoFrame_OperatorEqual(void* c_this, void* other);
 	[LinkName("QVideoFrame_OperatorNotEqual")]
-	public static extern bool QVideoFrame_OperatorNotEqual(Self* c_this, QVideoFrame* other);
+	public static extern bool QVideoFrame_OperatorNotEqual(void* c_this, void* other);
 	[LinkName("QVideoFrame_IsValid")]
-	public static extern bool QVideoFrame_IsValid(Self* c_this);
+	public static extern bool QVideoFrame_IsValid(void* c_this);
 	[LinkName("QVideoFrame_PixelFormat")]
-	public static extern int64 QVideoFrame_PixelFormat(Self* c_this);
+	public static extern int64 QVideoFrame_PixelFormat(void* c_this);
 	[LinkName("QVideoFrame_SurfaceFormat")]
-	public static extern QVideoFrameFormat QVideoFrame_SurfaceFormat(Self* c_this);
+	public static extern void QVideoFrame_SurfaceFormat(void* c_this);
 	[LinkName("QVideoFrame_HandleType")]
-	public static extern int64 QVideoFrame_HandleType(Self* c_this);
+	public static extern int64 QVideoFrame_HandleType(void* c_this);
 	[LinkName("QVideoFrame_Size")]
-	public static extern QSize QVideoFrame_Size(Self* c_this);
+	public static extern void QVideoFrame_Size(void* c_this);
 	[LinkName("QVideoFrame_Width")]
-	public static extern int32 QVideoFrame_Width(Self* c_this);
+	public static extern int32 QVideoFrame_Width(void* c_this);
 	[LinkName("QVideoFrame_Height")]
-	public static extern int32 QVideoFrame_Height(Self* c_this);
+	public static extern int32 QVideoFrame_Height(void* c_this);
 	[LinkName("QVideoFrame_IsMapped")]
-	public static extern bool QVideoFrame_IsMapped(Self* c_this);
+	public static extern bool QVideoFrame_IsMapped(void* c_this);
 	[LinkName("QVideoFrame_IsReadable")]
-	public static extern bool QVideoFrame_IsReadable(Self* c_this);
+	public static extern bool QVideoFrame_IsReadable(void* c_this);
 	[LinkName("QVideoFrame_IsWritable")]
-	public static extern bool QVideoFrame_IsWritable(Self* c_this);
+	public static extern bool QVideoFrame_IsWritable(void* c_this);
 	[LinkName("QVideoFrame_MapMode")]
-	public static extern int64 QVideoFrame_MapMode(Self* c_this);
+	public static extern int64 QVideoFrame_MapMode(void* c_this);
 	[LinkName("QVideoFrame_Map")]
-	public static extern bool QVideoFrame_Map(Self* c_this, int64 mode);
+	public static extern bool QVideoFrame_Map(void* c_this, int64 mode);
 	[LinkName("QVideoFrame_Unmap")]
-	public static extern void QVideoFrame_Unmap(Self* c_this);
+	public static extern void QVideoFrame_Unmap(void* c_this);
 	[LinkName("QVideoFrame_BytesPerLine")]
-	public static extern int32 QVideoFrame_BytesPerLine(Self* c_this, int32 plane);
+	public static extern int32 QVideoFrame_BytesPerLine(void* c_this, int32 plane);
 	[LinkName("QVideoFrame_Bits")]
-	public static extern uint8* QVideoFrame_Bits(Self* c_this, int32 plane);
+	public static extern uint8* QVideoFrame_Bits(void* c_this, int32 plane);
 	[LinkName("QVideoFrame_BitsWithPlane")]
-	public static extern uint8* QVideoFrame_BitsWithPlane(Self* c_this, int32 plane);
+	public static extern uint8* QVideoFrame_BitsWithPlane(void* c_this, int32 plane);
 	[LinkName("QVideoFrame_MappedBytes")]
-	public static extern int32 QVideoFrame_MappedBytes(Self* c_this, int32 plane);
+	public static extern int32 QVideoFrame_MappedBytes(void* c_this, int32 plane);
 	[LinkName("QVideoFrame_PlaneCount")]
-	public static extern int32 QVideoFrame_PlaneCount(Self* c_this);
+	public static extern int32 QVideoFrame_PlaneCount(void* c_this);
 	[LinkName("QVideoFrame_StartTime")]
-	public static extern int64 QVideoFrame_StartTime(Self* c_this);
+	public static extern int64 QVideoFrame_StartTime(void* c_this);
 	[LinkName("QVideoFrame_SetStartTime")]
-	public static extern void QVideoFrame_SetStartTime(Self* c_this, int64 time);
+	public static extern void QVideoFrame_SetStartTime(void* c_this, int64 time);
 	[LinkName("QVideoFrame_EndTime")]
-	public static extern int64 QVideoFrame_EndTime(Self* c_this);
+	public static extern int64 QVideoFrame_EndTime(void* c_this);
 	[LinkName("QVideoFrame_SetEndTime")]
-	public static extern void QVideoFrame_SetEndTime(Self* c_this, int64 time);
+	public static extern void QVideoFrame_SetEndTime(void* c_this, int64 time);
 	[LinkName("QVideoFrame_SetRotationAngle")]
-	public static extern void QVideoFrame_SetRotationAngle(Self* c_this, int64 rotationAngle);
+	public static extern void QVideoFrame_SetRotationAngle(void* c_this, int64 rotationAngle);
 	[LinkName("QVideoFrame_RotationAngle")]
-	public static extern int64 QVideoFrame_RotationAngle(Self* c_this);
+	public static extern int64 QVideoFrame_RotationAngle(void* c_this);
 	[LinkName("QVideoFrame_SetMirrored")]
-	public static extern void QVideoFrame_SetMirrored(Self* c_this, bool mirrored);
+	public static extern void QVideoFrame_SetMirrored(void* c_this, bool mirrored);
 	[LinkName("QVideoFrame_Mirrored")]
-	public static extern bool QVideoFrame_Mirrored(Self* c_this);
+	public static extern bool QVideoFrame_Mirrored(void* c_this);
 	[LinkName("QVideoFrame_ToImage")]
-	public static extern QImage QVideoFrame_ToImage(Self* c_this);
+	public static extern void QVideoFrame_ToImage(void* c_this);
 	[LinkName("QVideoFrame_SubtitleText")]
-	public static extern libqt_string QVideoFrame_SubtitleText(Self* c_this);
+	public static extern libqt_string QVideoFrame_SubtitleText(void* c_this);
 	[LinkName("QVideoFrame_SetSubtitleText")]
-	public static extern void QVideoFrame_SetSubtitleText(Self* c_this, libqt_string text);
+	public static extern void QVideoFrame_SetSubtitleText(void* c_this, libqt_string text);
 	[LinkName("QVideoFrame_Paint")]
-	public static extern void QVideoFrame_Paint(Self* c_this, QPainter* painter, QRectF* rect, QVideoFrame__PaintOptions* options);
+	public static extern void QVideoFrame_Paint(void* c_this, void* painter, void* rect, QVideoFrame__PaintOptions* options);
+	/// Delete this object from C++ memory
+	[LinkName("QVideoFrame_Delete")]
+	public static extern void QVideoFrame_Delete(void* self);
 }
-public struct QVideoFrame__PaintOptions
+public class QVideoFrame__PaintOptions
+{
+	protected void* nativePtr;
+	
+	public this(QVideoFrame__PaintOptions* other)
+	{
+		this.nativePtr = CQt.QVideoFrame__PaintOptions_new(other);
+	}
+	public ~this()
+	{
+		CQt.QVideoFrame__PaintOptions_Delete(this.nativePtr);
+	}
+}
+extension CQt
 {
 	[LinkName("QVideoFrame__PaintOptions_new")]
-	public static extern QVideoFrame__PaintOptions* QVideoFrame__PaintOptions_new(QVideoFrame__PaintOptions* other);
+	public static extern void* QVideoFrame__PaintOptions_new(QVideoFrame__PaintOptions* other);
 	[LinkName("QVideoFrame__PaintOptions_new2")]
-	public static extern QVideoFrame__PaintOptions* QVideoFrame__PaintOptions_new2(QVideoFrame__PaintOptions* other);
+	public static extern void* QVideoFrame__PaintOptions_new2(QVideoFrame__PaintOptions* other);
+	/// Delete this object from C++ memory
+	[LinkName("QVideoFrame__PaintOptions_Delete")]
+	public static extern void QVideoFrame__PaintOptions_Delete(void* self);
 }

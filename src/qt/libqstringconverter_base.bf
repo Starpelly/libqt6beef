@@ -26,30 +26,92 @@ public enum QStringConverter__Encoding
 	System = 8,
 	LastEncoding = 8,
 }
-public struct QStringConverterBase
+public class QStringConverterBase
+{
+	protected void* nativePtr;
+}
+extension CQt
 {
 }
-public struct QStringConverter : QStringConverterBase
+public class QStringConverter
+{
+	protected void* nativePtr;
+	
+	public bool IsValid()
+	{
+		return CQt.QStringConverter_IsValid(this.nativePtr);
+	}
+	
+	public void ResetState()
+	{
+		CQt.QStringConverter_ResetState(this.nativePtr);
+	}
+	
+	public bool HasError()
+	{
+		return CQt.QStringConverter_HasError(this.nativePtr);
+	}
+	
+	public char8[] Name()
+	{
+		return CQt.QStringConverter_Name(this.nativePtr);
+	}
+	
+	public static char8[] NameForEncoding(int64 e)
+	{
+		return CQt.QStringConverter_NameForEncoding(e);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStringConverter_IsValid")]
-	public static extern bool QStringConverter_IsValid(Self* c_this);
+	public static extern bool QStringConverter_IsValid(void* c_this);
 	[LinkName("QStringConverter_ResetState")]
-	public static extern void QStringConverter_ResetState(Self* c_this);
+	public static extern void QStringConverter_ResetState(void* c_this);
 	[LinkName("QStringConverter_HasError")]
-	public static extern bool QStringConverter_HasError(Self* c_this);
+	public static extern bool QStringConverter_HasError(void* c_this);
 	[LinkName("QStringConverter_Name")]
-	public static extern char8[] QStringConverter_Name(Self* c_this);
+	public static extern char8[] QStringConverter_Name(void* c_this);
 	[LinkName("QStringConverter_NameForEncoding")]
 	public static extern char8[] QStringConverter_NameForEncoding(int64 e);
 }
-public struct QStringConverterBase__State
+public class QStringConverterBase__State
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QStringConverterBase__State_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QStringConverterBase__State_Delete(this.nativePtr);
+	}
+	
+	public void Clear()
+	{
+		CQt.QStringConverterBase__State_Clear(this.nativePtr);
+	}
+	
+	public void Reset()
+	{
+		CQt.QStringConverterBase__State_Reset(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QStringConverterBase__State_new")]
-	public static extern QStringConverterBase__State* QStringConverterBase__State_new();
+	public static extern void* QStringConverterBase__State_new();
 	[LinkName("QStringConverterBase__State_new2")]
-	public static extern QStringConverterBase__State* QStringConverterBase__State_new2(int64 f);
+	public static extern void* QStringConverterBase__State_new2(int64 f);
 	[LinkName("QStringConverterBase__State_Clear")]
-	public static extern void QStringConverterBase__State_Clear(Self* c_this);
+	public static extern void QStringConverterBase__State_Clear(void* c_this);
 	[LinkName("QStringConverterBase__State_Reset")]
-	public static extern void QStringConverterBase__State_Reset(Self* c_this);
+	public static extern void QStringConverterBase__State_Reset(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QStringConverterBase__State_Delete")]
+	public static extern void QStringConverterBase__State_Delete(void* self);
 }

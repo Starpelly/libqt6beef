@@ -28,24 +28,82 @@ public enum QtPrivate__QContainerImplHelper__CutResult
 	Full = 2,
 	Subset = 3,
 }
-public struct QArrayData
+public class QArrayData
+{
+	protected void* nativePtr;
+	
+	public ~this()
+	{
+		CQt.QArrayData_Delete(this.nativePtr);
+	}
+	
+	public int32 AllocatedCapacity()
+	{
+		return CQt.QArrayData_AllocatedCapacity(this.nativePtr);
+	}
+	
+	public int32 ConstAllocatedCapacity()
+	{
+		return CQt.QArrayData_ConstAllocatedCapacity(this.nativePtr);
+	}
+	
+	public bool Ref()
+	{
+		return CQt.QArrayData_Ref(this.nativePtr);
+	}
+	
+	public bool Deref()
+	{
+		return CQt.QArrayData_Deref(this.nativePtr);
+	}
+	
+	public bool IsShared()
+	{
+		return CQt.QArrayData_IsShared(this.nativePtr);
+	}
+	
+	public bool NeedsDetach()
+	{
+		return CQt.QArrayData_NeedsDetach(this.nativePtr);
+	}
+	
+	public int32 DetachCapacity(int32 newSize)
+	{
+		return CQt.QArrayData_DetachCapacity(this.nativePtr, newSize);
+	}
+	
+	public static void* ReallocateUnaligned(void* data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option)
+	{
+		return CQt.QArrayData_ReallocateUnaligned(data, dataPointer, objectSize, newCapacity, option);
+	}
+	
+	public static void Deallocate(void* data, int32 objectSize, int32 alignment)
+	{
+		CQt.QArrayData_Deallocate(data, objectSize, alignment);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QArrayData_AllocatedCapacity")]
-	public static extern int32 QArrayData_AllocatedCapacity(Self* c_this);
+	public static extern int32 QArrayData_AllocatedCapacity(void* c_this);
 	[LinkName("QArrayData_ConstAllocatedCapacity")]
-	public static extern int32 QArrayData_ConstAllocatedCapacity(Self* c_this);
+	public static extern int32 QArrayData_ConstAllocatedCapacity(void* c_this);
 	[LinkName("QArrayData_Ref")]
-	public static extern bool QArrayData_Ref(Self* c_this);
+	public static extern bool QArrayData_Ref(void* c_this);
 	[LinkName("QArrayData_Deref")]
-	public static extern bool QArrayData_Deref(Self* c_this);
+	public static extern bool QArrayData_Deref(void* c_this);
 	[LinkName("QArrayData_IsShared")]
-	public static extern bool QArrayData_IsShared(Self* c_this);
+	public static extern bool QArrayData_IsShared(void* c_this);
 	[LinkName("QArrayData_NeedsDetach")]
-	public static extern bool QArrayData_NeedsDetach(Self* c_this);
+	public static extern bool QArrayData_NeedsDetach(void* c_this);
 	[LinkName("QArrayData_DetachCapacity")]
-	public static extern int32 QArrayData_DetachCapacity(Self* c_this, int32 newSize);
+	public static extern int32 QArrayData_DetachCapacity(void* c_this, int32 newSize);
 	[LinkName("QArrayData_ReallocateUnaligned")]
-	public static extern void* QArrayData_ReallocateUnaligned(QArrayData* data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option);
+	public static extern void* QArrayData_ReallocateUnaligned(void* data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option);
 	[LinkName("QArrayData_Deallocate")]
-	public static extern void QArrayData_Deallocate(QArrayData* data, int32 objectSize, int32 alignment);
+	public static extern void QArrayData_Deallocate(void* data, int32 objectSize, int32 alignment);
+	/// Delete this object from C++ memory
+	[LinkName("QArrayData_Delete")]
+	public static extern void QArrayData_Delete(void* self);
 }

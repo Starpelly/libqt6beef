@@ -9,30 +9,103 @@ public enum QColormap__Mode
 	Indexed = 1,
 	Gray = 2,
 }
-public struct QColormap
+public class QColormap
+{
+	protected void* nativePtr;
+	
+	public this(void* colormap)
+	{
+		this.nativePtr = CQt.QColormap_new(colormap);
+	}
+	
+	public ~this()
+	{
+		CQt.QColormap_Delete(this.nativePtr);
+	}
+	
+	public static void Initialize()
+	{
+		CQt.QColormap_Initialize();
+	}
+	
+	public static void Cleanup()
+	{
+		CQt.QColormap_Cleanup();
+	}
+	
+	public static void Instance()
+	{
+		CQt.QColormap_Instance();
+	}
+	
+	public void OperatorAssign(void* colormap)
+	{
+		CQt.QColormap_OperatorAssign(this.nativePtr, colormap);
+	}
+	
+	public int64 Mode()
+	{
+		return CQt.QColormap_Mode(this.nativePtr);
+	}
+	
+	public int32 Depth()
+	{
+		return CQt.QColormap_Depth(this.nativePtr);
+	}
+	
+	public int32 Size()
+	{
+		return CQt.QColormap_Size(this.nativePtr);
+	}
+	
+	public uint32 Pixel(void* color)
+	{
+		return CQt.QColormap_Pixel(this.nativePtr, color);
+	}
+	
+	public void ColorAt(uint32 pixel)
+	{
+		CQt.QColormap_ColorAt(this.nativePtr, pixel);
+	}
+	
+	public void[] Colormap()
+	{
+		return CQt.QColormap_Colormap(this.nativePtr);
+	}
+	
+	public static void Instance1(int32 screen)
+	{
+		CQt.QColormap_Instance1(screen);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QColormap_new")]
-	public static extern QColormap* QColormap_new(QColormap* colormap);
+	public static extern void* QColormap_new(void* colormap);
 	[LinkName("QColormap_Initialize")]
 	public static extern void QColormap_Initialize();
 	[LinkName("QColormap_Cleanup")]
 	public static extern void QColormap_Cleanup();
 	[LinkName("QColormap_Instance")]
-	public static extern QColormap QColormap_Instance();
+	public static extern void QColormap_Instance();
 	[LinkName("QColormap_OperatorAssign")]
-	public static extern void QColormap_OperatorAssign(Self* c_this, QColormap* colormap);
+	public static extern void QColormap_OperatorAssign(void* c_this, void* colormap);
 	[LinkName("QColormap_Mode")]
-	public static extern int64 QColormap_Mode(Self* c_this);
+	public static extern int64 QColormap_Mode(void* c_this);
 	[LinkName("QColormap_Depth")]
-	public static extern int32 QColormap_Depth(Self* c_this);
+	public static extern int32 QColormap_Depth(void* c_this);
 	[LinkName("QColormap_Size")]
-	public static extern int32 QColormap_Size(Self* c_this);
+	public static extern int32 QColormap_Size(void* c_this);
 	[LinkName("QColormap_Pixel")]
-	public static extern uint32 QColormap_Pixel(Self* c_this, QColor* color);
+	public static extern uint32 QColormap_Pixel(void* c_this, void* color);
 	[LinkName("QColormap_ColorAt")]
-	public static extern QColor QColormap_ColorAt(Self* c_this, uint32 pixel);
+	public static extern void QColormap_ColorAt(void* c_this, uint32 pixel);
 	[LinkName("QColormap_Colormap")]
-	public static extern QColor[] QColormap_Colormap(Self* c_this);
+	public static extern void[] QColormap_Colormap(void* c_this);
 	[LinkName("QColormap_Instance1")]
-	public static extern QColormap QColormap_Instance1(int32 screen);
+	public static extern void QColormap_Instance1(int32 screen);
+	/// Delete this object from C++ memory
+	[LinkName("QColormap_Delete")]
+	public static extern void QColormap_Delete(void* self);
 }

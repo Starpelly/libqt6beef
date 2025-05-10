@@ -18,18 +18,61 @@ public enum QAbstractFileIconProvider__Option
 {
 	DontUseCustomDirectoryIcons = 1,
 }
-public struct QAbstractFileIconProvider
+public class QAbstractFileIconProvider
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QAbstractFileIconProvider_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QAbstractFileIconProvider_Delete(this.nativePtr);
+	}
+	
+	public virtual void Icon(int64 param1)
+	{
+		CQt.QAbstractFileIconProvider_Icon(this.nativePtr, param1);
+	}
+	
+	public virtual void IconWithQFileInfo(void* param1)
+	{
+		CQt.QAbstractFileIconProvider_IconWithQFileInfo(this.nativePtr, param1);
+	}
+	
+	public virtual libqt_string Type(void* param1)
+	{
+		return CQt.QAbstractFileIconProvider_Type(this.nativePtr, param1);
+	}
+	
+	public virtual void SetOptions(int64 options)
+	{
+		CQt.QAbstractFileIconProvider_SetOptions(this.nativePtr, options);
+	}
+	
+	public virtual int64 Options()
+	{
+		return CQt.QAbstractFileIconProvider_Options(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QAbstractFileIconProvider_new")]
-	public static extern QAbstractFileIconProvider* QAbstractFileIconProvider_new();
+	public static extern void* QAbstractFileIconProvider_new();
 	[LinkName("QAbstractFileIconProvider_Icon")]
-	public static extern QIcon QAbstractFileIconProvider_Icon(Self* c_this, int64 param1);
+	public static extern void QAbstractFileIconProvider_Icon(void* c_this, int64 param1);
 	[LinkName("QAbstractFileIconProvider_IconWithQFileInfo")]
-	public static extern QIcon QAbstractFileIconProvider_IconWithQFileInfo(Self* c_this, QFileInfo* param1);
+	public static extern void QAbstractFileIconProvider_IconWithQFileInfo(void* c_this, void* param1);
 	[LinkName("QAbstractFileIconProvider_Type")]
-	public static extern libqt_string QAbstractFileIconProvider_Type(Self* c_this, QFileInfo* param1);
+	public static extern libqt_string QAbstractFileIconProvider_Type(void* c_this, void* param1);
 	[LinkName("QAbstractFileIconProvider_SetOptions")]
-	public static extern void QAbstractFileIconProvider_SetOptions(Self* c_this, int64 options);
+	public static extern void QAbstractFileIconProvider_SetOptions(void* c_this, int64 options);
 	[LinkName("QAbstractFileIconProvider_Options")]
-	public static extern int64 QAbstractFileIconProvider_Options(Self* c_this);
+	public static extern int64 QAbstractFileIconProvider_Options(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QAbstractFileIconProvider_Delete")]
+	public static extern void QAbstractFileIconProvider_Delete(void* self);
 }

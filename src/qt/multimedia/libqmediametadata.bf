@@ -34,28 +34,91 @@ public enum QMediaMetaData__Key
 	Orientation = 26,
 	Resolution = 27,
 }
-public struct QMediaMetaData
+public class QMediaMetaData
+{
+	protected void* nativePtr;
+	
+	public this(void* param1)
+	{
+		this.nativePtr = CQt.QMediaMetaData_new(param1);
+	}
+	
+	public ~this()
+	{
+		CQt.QMediaMetaData_Delete(this.nativePtr);
+	}
+	
+	public void Value(int64 k)
+	{
+		CQt.QMediaMetaData_Value(this.nativePtr, k);
+	}
+	
+	public void Insert(int64 k, void* value)
+	{
+		CQt.QMediaMetaData_Insert(this.nativePtr, k, value);
+	}
+	
+	public void Remove(int64 k)
+	{
+		CQt.QMediaMetaData_Remove(this.nativePtr, k);
+	}
+	
+	public int64[] Keys()
+	{
+		return CQt.QMediaMetaData_Keys(this.nativePtr);
+	}
+	
+	public void* OperatorSubscript(int64 k)
+	{
+		return CQt.QMediaMetaData_OperatorSubscript(this.nativePtr, k);
+	}
+	
+	public void Clear()
+	{
+		CQt.QMediaMetaData_Clear(this.nativePtr);
+	}
+	
+	public bool IsEmpty()
+	{
+		return CQt.QMediaMetaData_IsEmpty(this.nativePtr);
+	}
+	
+	public libqt_string StringValue(int64 k)
+	{
+		return CQt.QMediaMetaData_StringValue(this.nativePtr, k);
+	}
+	
+	public static libqt_string MetaDataKeyToString(int64 k)
+	{
+		return CQt.QMediaMetaData_MetaDataKeyToString(k);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QMediaMetaData_new")]
-	public static extern QMediaMetaData* QMediaMetaData_new(QMediaMetaData* param1);
+	public static extern void* QMediaMetaData_new(void* param1);
 	[LinkName("QMediaMetaData_new2")]
-	public static extern QMediaMetaData* QMediaMetaData_new2();
+	public static extern void* QMediaMetaData_new2();
 	[LinkName("QMediaMetaData_Value")]
-	public static extern QVariant QMediaMetaData_Value(Self* c_this, int64 k);
+	public static extern void QMediaMetaData_Value(void* c_this, int64 k);
 	[LinkName("QMediaMetaData_Insert")]
-	public static extern void QMediaMetaData_Insert(Self* c_this, int64 k, QVariant* value);
+	public static extern void QMediaMetaData_Insert(void* c_this, int64 k, void* value);
 	[LinkName("QMediaMetaData_Remove")]
-	public static extern void QMediaMetaData_Remove(Self* c_this, int64 k);
+	public static extern void QMediaMetaData_Remove(void* c_this, int64 k);
 	[LinkName("QMediaMetaData_Keys")]
-	public static extern int64[] QMediaMetaData_Keys(Self* c_this);
+	public static extern int64[] QMediaMetaData_Keys(void* c_this);
 	[LinkName("QMediaMetaData_OperatorSubscript")]
-	public static extern QVariant* QMediaMetaData_OperatorSubscript(Self* c_this, int64 k);
+	public static extern void* QMediaMetaData_OperatorSubscript(void* c_this, int64 k);
 	[LinkName("QMediaMetaData_Clear")]
-	public static extern void QMediaMetaData_Clear(Self* c_this);
+	public static extern void QMediaMetaData_Clear(void* c_this);
 	[LinkName("QMediaMetaData_IsEmpty")]
-	public static extern bool QMediaMetaData_IsEmpty(Self* c_this);
+	public static extern bool QMediaMetaData_IsEmpty(void* c_this);
 	[LinkName("QMediaMetaData_StringValue")]
-	public static extern libqt_string QMediaMetaData_StringValue(Self* c_this, int64 k);
+	public static extern libqt_string QMediaMetaData_StringValue(void* c_this, int64 k);
 	[LinkName("QMediaMetaData_MetaDataKeyToString")]
 	public static extern libqt_string QMediaMetaData_MetaDataKeyToString(int64 k);
+	/// Delete this object from C++ memory
+	[LinkName("QMediaMetaData_Delete")]
+	public static extern void QMediaMetaData_Delete(void* self);
 }

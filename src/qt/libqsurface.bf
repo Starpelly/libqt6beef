@@ -19,18 +19,56 @@ public enum QSurface__SurfaceType
 	MetalSurface = 5,
 	Direct3DSurface = 6,
 }
-public struct QSurface
+public class QSurface
+{
+	protected void* nativePtr;
+	
+	public ~this()
+	{
+		CQt.QSurface_Delete(this.nativePtr);
+	}
+	
+	public int64 SurfaceClass()
+	{
+		return CQt.QSurface_SurfaceClass(this.nativePtr);
+	}
+	
+	public virtual void Format()
+	{
+		CQt.QSurface_Format(this.nativePtr);
+	}
+	
+	public virtual int64 SurfaceType()
+	{
+		return CQt.QSurface_SurfaceType(this.nativePtr);
+	}
+	
+	public bool SupportsOpenGL()
+	{
+		return CQt.QSurface_SupportsOpenGL(this.nativePtr);
+	}
+	
+	public virtual void Size()
+	{
+		CQt.QSurface_Size(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QSurface_SurfaceClass")]
-	public static extern int64 QSurface_SurfaceClass(Self* c_this);
+	public static extern int64 QSurface_SurfaceClass(void* c_this);
 	[LinkName("QSurface_Format")]
-	public static extern QSurfaceFormat QSurface_Format(Self* c_this);
+	public static extern void QSurface_Format(void* c_this);
 	[LinkName("QSurface_SurfaceType")]
-	public static extern int64 QSurface_SurfaceType(Self* c_this);
+	public static extern int64 QSurface_SurfaceType(void* c_this);
 	[LinkName("QSurface_SupportsOpenGL")]
-	public static extern bool QSurface_SupportsOpenGL(Self* c_this);
+	public static extern bool QSurface_SupportsOpenGL(void* c_this);
 	[LinkName("QSurface_Size")]
-	public static extern QSize QSurface_Size(Self* c_this);
+	public static extern void QSurface_Size(void* c_this);
 	[LinkName("QSurface_OperatorAssign")]
-	public static extern void QSurface_OperatorAssign(Self* c_this, QSurface* param1);
+	public static extern void QSurface_OperatorAssign(void* c_this, void* param1);
+	/// Delete this object from C++ memory
+	[LinkName("QSurface_Delete")]
+	public static extern void QSurface_Delete(void* self);
 }

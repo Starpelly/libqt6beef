@@ -2,226 +2,2789 @@ using System;
 using System.Interop;
 namespace Qt;
 
-public struct QTreeView : QAbstractItemView
+public class QTreeView
+{
+	protected void* nativePtr;
+	
+	public this(void* parent)
+	{
+		this.nativePtr = CQt.QTreeView_new(parent);
+	}
+	
+	public ~this()
+	{
+		CQt.QTreeView_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QTreeView_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QTreeView_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QTreeView_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QTreeView_Tr(s);
+	}
+	
+	public virtual void SetModel(void* model)
+	{
+		CQt.QTreeView_SetModel(this.nativePtr, model);
+	}
+	
+	public virtual void SetRootIndex(void* index)
+	{
+		CQt.QTreeView_SetRootIndex(this.nativePtr, index);
+	}
+	
+	public virtual void SetSelectionModel(void* selectionModel)
+	{
+		CQt.QTreeView_SetSelectionModel(this.nativePtr, selectionModel);
+	}
+	
+	public void* Header()
+	{
+		return CQt.QTreeView_Header(this.nativePtr);
+	}
+	
+	public void SetHeader(void* header)
+	{
+		CQt.QTreeView_SetHeader(this.nativePtr, header);
+	}
+	
+	public int32 AutoExpandDelay()
+	{
+		return CQt.QTreeView_AutoExpandDelay(this.nativePtr);
+	}
+	
+	public void SetAutoExpandDelay(int32 delay)
+	{
+		CQt.QTreeView_SetAutoExpandDelay(this.nativePtr, delay);
+	}
+	
+	public int32 Indentation()
+	{
+		return CQt.QTreeView_Indentation(this.nativePtr);
+	}
+	
+	public void SetIndentation(int32 i)
+	{
+		CQt.QTreeView_SetIndentation(this.nativePtr, i);
+	}
+	
+	public void ResetIndentation()
+	{
+		CQt.QTreeView_ResetIndentation(this.nativePtr);
+	}
+	
+	public bool RootIsDecorated()
+	{
+		return CQt.QTreeView_RootIsDecorated(this.nativePtr);
+	}
+	
+	public void SetRootIsDecorated(bool show)
+	{
+		CQt.QTreeView_SetRootIsDecorated(this.nativePtr, show);
+	}
+	
+	public bool UniformRowHeights()
+	{
+		return CQt.QTreeView_UniformRowHeights(this.nativePtr);
+	}
+	
+	public void SetUniformRowHeights(bool uniform)
+	{
+		CQt.QTreeView_SetUniformRowHeights(this.nativePtr, uniform);
+	}
+	
+	public bool ItemsExpandable()
+	{
+		return CQt.QTreeView_ItemsExpandable(this.nativePtr);
+	}
+	
+	public void SetItemsExpandable(bool enable)
+	{
+		CQt.QTreeView_SetItemsExpandable(this.nativePtr, enable);
+	}
+	
+	public bool ExpandsOnDoubleClick()
+	{
+		return CQt.QTreeView_ExpandsOnDoubleClick(this.nativePtr);
+	}
+	
+	public void SetExpandsOnDoubleClick(bool enable)
+	{
+		CQt.QTreeView_SetExpandsOnDoubleClick(this.nativePtr, enable);
+	}
+	
+	public int32 ColumnViewportPosition(int32 column)
+	{
+		return CQt.QTreeView_ColumnViewportPosition(this.nativePtr, column);
+	}
+	
+	public int32 ColumnWidth(int32 column)
+	{
+		return CQt.QTreeView_ColumnWidth(this.nativePtr, column);
+	}
+	
+	public void SetColumnWidth(int32 column, int32 width)
+	{
+		CQt.QTreeView_SetColumnWidth(this.nativePtr, column, width);
+	}
+	
+	public int32 ColumnAt(int32 x)
+	{
+		return CQt.QTreeView_ColumnAt(this.nativePtr, x);
+	}
+	
+	public bool IsColumnHidden(int32 column)
+	{
+		return CQt.QTreeView_IsColumnHidden(this.nativePtr, column);
+	}
+	
+	public void SetColumnHidden(int32 column, bool hide)
+	{
+		CQt.QTreeView_SetColumnHidden(this.nativePtr, column, hide);
+	}
+	
+	public bool IsHeaderHidden()
+	{
+		return CQt.QTreeView_IsHeaderHidden(this.nativePtr);
+	}
+	
+	public void SetHeaderHidden(bool hide)
+	{
+		CQt.QTreeView_SetHeaderHidden(this.nativePtr, hide);
+	}
+	
+	public bool IsRowHidden(int32 row, void* parent)
+	{
+		return CQt.QTreeView_IsRowHidden(this.nativePtr, row, parent);
+	}
+	
+	public void SetRowHidden(int32 row, void* parent, bool hide)
+	{
+		CQt.QTreeView_SetRowHidden(this.nativePtr, row, parent, hide);
+	}
+	
+	public bool IsFirstColumnSpanned(int32 row, void* parent)
+	{
+		return CQt.QTreeView_IsFirstColumnSpanned(this.nativePtr, row, parent);
+	}
+	
+	public void SetFirstColumnSpanned(int32 row, void* parent, bool span)
+	{
+		CQt.QTreeView_SetFirstColumnSpanned(this.nativePtr, row, parent, span);
+	}
+	
+	public bool IsExpanded(void* index)
+	{
+		return CQt.QTreeView_IsExpanded(this.nativePtr, index);
+	}
+	
+	public void SetExpanded(void* index, bool expand)
+	{
+		CQt.QTreeView_SetExpanded(this.nativePtr, index, expand);
+	}
+	
+	public void SetSortingEnabled(bool enable)
+	{
+		CQt.QTreeView_SetSortingEnabled(this.nativePtr, enable);
+	}
+	
+	public bool IsSortingEnabled()
+	{
+		return CQt.QTreeView_IsSortingEnabled(this.nativePtr);
+	}
+	
+	public void SetAnimated(bool enable)
+	{
+		CQt.QTreeView_SetAnimated(this.nativePtr, enable);
+	}
+	
+	public bool IsAnimated()
+	{
+		return CQt.QTreeView_IsAnimated(this.nativePtr);
+	}
+	
+	public void SetAllColumnsShowFocus(bool enable)
+	{
+		CQt.QTreeView_SetAllColumnsShowFocus(this.nativePtr, enable);
+	}
+	
+	public bool AllColumnsShowFocus()
+	{
+		return CQt.QTreeView_AllColumnsShowFocus(this.nativePtr);
+	}
+	
+	public void SetWordWrap(bool on)
+	{
+		CQt.QTreeView_SetWordWrap(this.nativePtr, on);
+	}
+	
+	public bool WordWrap()
+	{
+		return CQt.QTreeView_WordWrap(this.nativePtr);
+	}
+	
+	public void SetTreePosition(int32 logicalIndex)
+	{
+		CQt.QTreeView_SetTreePosition(this.nativePtr, logicalIndex);
+	}
+	
+	public int32 TreePosition()
+	{
+		return CQt.QTreeView_TreePosition(this.nativePtr);
+	}
+	
+	public virtual void KeyboardSearch(libqt_string search)
+	{
+		CQt.QTreeView_KeyboardSearch(this.nativePtr, search);
+	}
+	
+	public virtual void VisualRect(void* index)
+	{
+		CQt.QTreeView_VisualRect(this.nativePtr, index);
+	}
+	
+	public virtual void ScrollTo(void* index, int64 hint)
+	{
+		CQt.QTreeView_ScrollTo(this.nativePtr, index, hint);
+	}
+	
+	public virtual void IndexAt(void* p)
+	{
+		CQt.QTreeView_IndexAt(this.nativePtr, p);
+	}
+	
+	public void IndexAbove(void* index)
+	{
+		CQt.QTreeView_IndexAbove(this.nativePtr, index);
+	}
+	
+	public void IndexBelow(void* index)
+	{
+		CQt.QTreeView_IndexBelow(this.nativePtr, index);
+	}
+	
+	public virtual void DoItemsLayout()
+	{
+		CQt.QTreeView_DoItemsLayout(this.nativePtr);
+	}
+	
+	public virtual void Reset()
+	{
+		CQt.QTreeView_Reset(this.nativePtr);
+	}
+	
+	public virtual void DataChanged(void* topLeft, void* bottomRight, int32[] roles)
+	{
+		CQt.QTreeView_DataChanged(this.nativePtr, topLeft, bottomRight, roles);
+	}
+	
+	public virtual void SelectAll()
+	{
+		CQt.QTreeView_SelectAll(this.nativePtr);
+	}
+	
+	public void HideColumn(int32 column)
+	{
+		CQt.QTreeView_HideColumn(this.nativePtr, column);
+	}
+	
+	public void ShowColumn(int32 column)
+	{
+		CQt.QTreeView_ShowColumn(this.nativePtr, column);
+	}
+	
+	public void Expand(void* index)
+	{
+		CQt.QTreeView_Expand(this.nativePtr, index);
+	}
+	
+	public void Collapse(void* index)
+	{
+		CQt.QTreeView_Collapse(this.nativePtr, index);
+	}
+	
+	public void ResizeColumnToContents(int32 column)
+	{
+		CQt.QTreeView_ResizeColumnToContents(this.nativePtr, column);
+	}
+	
+	public void SortByColumn(int32 column, int64 order)
+	{
+		CQt.QTreeView_SortByColumn(this.nativePtr, column, order);
+	}
+	
+	public void ExpandAll()
+	{
+		CQt.QTreeView_ExpandAll(this.nativePtr);
+	}
+	
+	public void ExpandRecursively(void* index)
+	{
+		CQt.QTreeView_ExpandRecursively(this.nativePtr, index);
+	}
+	
+	public void CollapseAll()
+	{
+		CQt.QTreeView_CollapseAll(this.nativePtr);
+	}
+	
+	public void ExpandToDepth(int32 depth)
+	{
+		CQt.QTreeView_ExpandToDepth(this.nativePtr, depth);
+	}
+	
+	public void ColumnResized(int32 column, int32 oldSize, int32 newSize)
+	{
+		CQt.QTreeView_ColumnResized(this.nativePtr, column, oldSize, newSize);
+	}
+	
+	public void ColumnCountChanged(int32 oldCount, int32 newCount)
+	{
+		CQt.QTreeView_ColumnCountChanged(this.nativePtr, oldCount, newCount);
+	}
+	
+	public void ColumnMoved()
+	{
+		CQt.QTreeView_ColumnMoved(this.nativePtr);
+	}
+	
+	public void Reexpand()
+	{
+		CQt.QTreeView_Reexpand(this.nativePtr);
+	}
+	
+	public void RowsRemoved(void* parent, int32 first, int32 last)
+	{
+		CQt.QTreeView_RowsRemoved(this.nativePtr, parent, first, last);
+	}
+	
+	public virtual void VerticalScrollbarValueChanged(int32 value)
+	{
+		CQt.QTreeView_VerticalScrollbarValueChanged(this.nativePtr, value);
+	}
+	
+	public virtual void ScrollContentsBy(int32 dx, int32 dy)
+	{
+		CQt.QTreeView_ScrollContentsBy(this.nativePtr, dx, dy);
+	}
+	
+	public virtual void RowsInserted(void* parent, int32 start, int32 end)
+	{
+		CQt.QTreeView_RowsInserted(this.nativePtr, parent, start, end);
+	}
+	
+	public virtual void RowsAboutToBeRemoved(void* parent, int32 start, int32 end)
+	{
+		CQt.QTreeView_RowsAboutToBeRemoved(this.nativePtr, parent, start, end);
+	}
+	
+	public virtual void MoveCursor(int64 cursorAction, int64 modifiers)
+	{
+		CQt.QTreeView_MoveCursor(this.nativePtr, cursorAction, modifiers);
+	}
+	
+	public virtual int32 HorizontalOffset()
+	{
+		return CQt.QTreeView_HorizontalOffset(this.nativePtr);
+	}
+	
+	public virtual int32 VerticalOffset()
+	{
+		return CQt.QTreeView_VerticalOffset(this.nativePtr);
+	}
+	
+	public virtual void SetSelection(void* rect, int64 command)
+	{
+		CQt.QTreeView_SetSelection(this.nativePtr, rect, command);
+	}
+	
+	public virtual void VisualRegionForSelection(void* selection)
+	{
+		CQt.QTreeView_VisualRegionForSelection(this.nativePtr, selection);
+	}
+	
+	public virtual void[] SelectedIndexes()
+	{
+		return CQt.QTreeView_SelectedIndexes(this.nativePtr);
+	}
+	
+	public virtual void ChangeEvent(void* event)
+	{
+		CQt.QTreeView_ChangeEvent(this.nativePtr, event);
+	}
+	
+	public virtual void TimerEvent(void* event)
+	{
+		CQt.QTreeView_TimerEvent(this.nativePtr, event);
+	}
+	
+	public virtual void PaintEvent(void* event)
+	{
+		CQt.QTreeView_PaintEvent(this.nativePtr, event);
+	}
+	
+	public void DrawTree(void* painter, void* region)
+	{
+		CQt.QTreeView_DrawTree(this.nativePtr, painter, region);
+	}
+	
+	public virtual void DrawRow(void* painter, void* options, void* index)
+	{
+		CQt.QTreeView_DrawRow(this.nativePtr, painter, options, index);
+	}
+	
+	public virtual void DrawBranches(void* painter, void* rect, void* index)
+	{
+		CQt.QTreeView_DrawBranches(this.nativePtr, painter, rect, index);
+	}
+	
+	public virtual void MousePressEvent(void* event)
+	{
+		CQt.QTreeView_MousePressEvent(this.nativePtr, event);
+	}
+	
+	public virtual void MouseReleaseEvent(void* event)
+	{
+		CQt.QTreeView_MouseReleaseEvent(this.nativePtr, event);
+	}
+	
+	public virtual void MouseDoubleClickEvent(void* event)
+	{
+		CQt.QTreeView_MouseDoubleClickEvent(this.nativePtr, event);
+	}
+	
+	public virtual void MouseMoveEvent(void* event)
+	{
+		CQt.QTreeView_MouseMoveEvent(this.nativePtr, event);
+	}
+	
+	public virtual void KeyPressEvent(void* event)
+	{
+		CQt.QTreeView_KeyPressEvent(this.nativePtr, event);
+	}
+	
+	public virtual void DragMoveEvent(void* event)
+	{
+		CQt.QTreeView_DragMoveEvent(this.nativePtr, event);
+	}
+	
+	public virtual bool ViewportEvent(void* event)
+	{
+		return CQt.QTreeView_ViewportEvent(this.nativePtr, event);
+	}
+	
+	public virtual void UpdateGeometries()
+	{
+		CQt.QTreeView_UpdateGeometries(this.nativePtr);
+	}
+	
+	public virtual void ViewportSizeHint()
+	{
+		CQt.QTreeView_ViewportSizeHint(this.nativePtr);
+	}
+	
+	public virtual int32 SizeHintForColumn(int32 column)
+	{
+		return CQt.QTreeView_SizeHintForColumn(this.nativePtr, column);
+	}
+	
+	public int32 IndexRowSizeHint(void* index)
+	{
+		return CQt.QTreeView_IndexRowSizeHint(this.nativePtr, index);
+	}
+	
+	public int32 RowHeight(void* index)
+	{
+		return CQt.QTreeView_RowHeight(this.nativePtr, index);
+	}
+	
+	public virtual void HorizontalScrollbarAction(int32 action)
+	{
+		CQt.QTreeView_HorizontalScrollbarAction(this.nativePtr, action);
+	}
+	
+	public virtual bool IsIndexHidden(void* index)
+	{
+		return CQt.QTreeView_IsIndexHidden(this.nativePtr, index);
+	}
+	
+	public virtual void SelectionChanged(void* selected, void* deselected)
+	{
+		CQt.QTreeView_SelectionChanged(this.nativePtr, selected, deselected);
+	}
+	
+	public virtual void CurrentChanged(void* current, void* previous)
+	{
+		CQt.QTreeView_CurrentChanged(this.nativePtr, current, previous);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QTreeView_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QTreeView_Tr3(s, c, n);
+	}
+	
+	public void ExpandRecursively2(void* index, int32 depth)
+	{
+		CQt.QTreeView_ExpandRecursively2(this.nativePtr, index, depth);
+	}
+	
+	public void* Model()
+	{
+		return CQt.QAbstractItemView_Model(this.nativePtr);
+	}
+	
+	public void* SelectionModel()
+	{
+		return CQt.QAbstractItemView_SelectionModel(this.nativePtr);
+	}
+	
+	public void SetItemDelegate(void* _delegate)
+	{
+		CQt.QAbstractItemView_SetItemDelegate(this.nativePtr, _delegate);
+	}
+	
+	public void* ItemDelegate()
+	{
+		return CQt.QAbstractItemView_ItemDelegate(this.nativePtr);
+	}
+	
+	public void SetSelectionMode(int64 mode)
+	{
+		CQt.QAbstractItemView_SetSelectionMode(this.nativePtr, mode);
+	}
+	
+	public int64 SelectionMode()
+	{
+		return CQt.QAbstractItemView_SelectionMode(this.nativePtr);
+	}
+	
+	public void SetSelectionBehavior(int64 behavior)
+	{
+		CQt.QAbstractItemView_SetSelectionBehavior(this.nativePtr, behavior);
+	}
+	
+	public int64 SelectionBehavior()
+	{
+		return CQt.QAbstractItemView_SelectionBehavior(this.nativePtr);
+	}
+	
+	public void CurrentIndex()
+	{
+		CQt.QAbstractItemView_CurrentIndex(this.nativePtr);
+	}
+	
+	public void RootIndex()
+	{
+		CQt.QAbstractItemView_RootIndex(this.nativePtr);
+	}
+	
+	public void SetEditTriggers(int64 triggers)
+	{
+		CQt.QAbstractItemView_SetEditTriggers(this.nativePtr, triggers);
+	}
+	
+	public int64 EditTriggers()
+	{
+		return CQt.QAbstractItemView_EditTriggers(this.nativePtr);
+	}
+	
+	public void SetVerticalScrollMode(int64 mode)
+	{
+		CQt.QAbstractItemView_SetVerticalScrollMode(this.nativePtr, mode);
+	}
+	
+	public int64 VerticalScrollMode()
+	{
+		return CQt.QAbstractItemView_VerticalScrollMode(this.nativePtr);
+	}
+	
+	public void ResetVerticalScrollMode()
+	{
+		CQt.QAbstractItemView_ResetVerticalScrollMode(this.nativePtr);
+	}
+	
+	public void SetHorizontalScrollMode(int64 mode)
+	{
+		CQt.QAbstractItemView_SetHorizontalScrollMode(this.nativePtr, mode);
+	}
+	
+	public int64 HorizontalScrollMode()
+	{
+		return CQt.QAbstractItemView_HorizontalScrollMode(this.nativePtr);
+	}
+	
+	public void ResetHorizontalScrollMode()
+	{
+		CQt.QAbstractItemView_ResetHorizontalScrollMode(this.nativePtr);
+	}
+	
+	public void SetAutoScroll(bool enable)
+	{
+		CQt.QAbstractItemView_SetAutoScroll(this.nativePtr, enable);
+	}
+	
+	public bool HasAutoScroll()
+	{
+		return CQt.QAbstractItemView_HasAutoScroll(this.nativePtr);
+	}
+	
+	public void SetAutoScrollMargin(int32 margin)
+	{
+		CQt.QAbstractItemView_SetAutoScrollMargin(this.nativePtr, margin);
+	}
+	
+	public int32 AutoScrollMargin()
+	{
+		return CQt.QAbstractItemView_AutoScrollMargin(this.nativePtr);
+	}
+	
+	public void SetTabKeyNavigation(bool enable)
+	{
+		CQt.QAbstractItemView_SetTabKeyNavigation(this.nativePtr, enable);
+	}
+	
+	public bool TabKeyNavigation()
+	{
+		return CQt.QAbstractItemView_TabKeyNavigation(this.nativePtr);
+	}
+	
+	public void SetDropIndicatorShown(bool enable)
+	{
+		CQt.QAbstractItemView_SetDropIndicatorShown(this.nativePtr, enable);
+	}
+	
+	public bool ShowDropIndicator()
+	{
+		return CQt.QAbstractItemView_ShowDropIndicator(this.nativePtr);
+	}
+	
+	public void SetDragEnabled(bool enable)
+	{
+		CQt.QAbstractItemView_SetDragEnabled(this.nativePtr, enable);
+	}
+	
+	public bool DragEnabled()
+	{
+		return CQt.QAbstractItemView_DragEnabled(this.nativePtr);
+	}
+	
+	public void SetDragDropOverwriteMode(bool overwrite)
+	{
+		CQt.QAbstractItemView_SetDragDropOverwriteMode(this.nativePtr, overwrite);
+	}
+	
+	public bool DragDropOverwriteMode()
+	{
+		return CQt.QAbstractItemView_DragDropOverwriteMode(this.nativePtr);
+	}
+	
+	public void SetDragDropMode(int64 behavior)
+	{
+		CQt.QAbstractItemView_SetDragDropMode(this.nativePtr, behavior);
+	}
+	
+	public int64 DragDropMode()
+	{
+		return CQt.QAbstractItemView_DragDropMode(this.nativePtr);
+	}
+	
+	public void SetDefaultDropAction(int64 dropAction)
+	{
+		CQt.QAbstractItemView_SetDefaultDropAction(this.nativePtr, dropAction);
+	}
+	
+	public int64 DefaultDropAction()
+	{
+		return CQt.QAbstractItemView_DefaultDropAction(this.nativePtr);
+	}
+	
+	public void SetAlternatingRowColors(bool enable)
+	{
+		CQt.QAbstractItemView_SetAlternatingRowColors(this.nativePtr, enable);
+	}
+	
+	public bool AlternatingRowColors()
+	{
+		return CQt.QAbstractItemView_AlternatingRowColors(this.nativePtr);
+	}
+	
+	public void SetIconSize(void* size)
+	{
+		CQt.QAbstractItemView_SetIconSize(this.nativePtr, size);
+	}
+	
+	public void IconSize()
+	{
+		CQt.QAbstractItemView_IconSize(this.nativePtr);
+	}
+	
+	public void SetTextElideMode(int64 mode)
+	{
+		CQt.QAbstractItemView_SetTextElideMode(this.nativePtr, mode);
+	}
+	
+	public int64 TextElideMode()
+	{
+		return CQt.QAbstractItemView_TextElideMode(this.nativePtr);
+	}
+	
+	public void SizeHintForIndex(void* index)
+	{
+		CQt.QAbstractItemView_SizeHintForIndex(this.nativePtr, index);
+	}
+	
+	public virtual int32 SizeHintForRow(int32 row)
+	{
+		return CQt.QAbstractItemView_SizeHintForRow(this.nativePtr, row);
+	}
+	
+	public void OpenPersistentEditor(void* index)
+	{
+		CQt.QAbstractItemView_OpenPersistentEditor(this.nativePtr, index);
+	}
+	
+	public void ClosePersistentEditor(void* index)
+	{
+		CQt.QAbstractItemView_ClosePersistentEditor(this.nativePtr, index);
+	}
+	
+	public bool IsPersistentEditorOpen(void* index)
+	{
+		return CQt.QAbstractItemView_IsPersistentEditorOpen(this.nativePtr, index);
+	}
+	
+	public void SetIndexWidget(void* index, void* widget)
+	{
+		CQt.QAbstractItemView_SetIndexWidget(this.nativePtr, index, widget);
+	}
+	
+	public void* IndexWidget(void* index)
+	{
+		return CQt.QAbstractItemView_IndexWidget(this.nativePtr, index);
+	}
+	
+	public void SetItemDelegateForRow(int32 row, void* _delegate)
+	{
+		CQt.QAbstractItemView_SetItemDelegateForRow(this.nativePtr, row, _delegate);
+	}
+	
+	public void* ItemDelegateForRow(int32 row)
+	{
+		return CQt.QAbstractItemView_ItemDelegateForRow(this.nativePtr, row);
+	}
+	
+	public void SetItemDelegateForColumn(int32 column, void* _delegate)
+	{
+		CQt.QAbstractItemView_SetItemDelegateForColumn(this.nativePtr, column, _delegate);
+	}
+	
+	public void* ItemDelegateForColumn(int32 column)
+	{
+		return CQt.QAbstractItemView_ItemDelegateForColumn(this.nativePtr, column);
+	}
+	
+	public void* ItemDelegateWithIndex(void* index)
+	{
+		return CQt.QAbstractItemView_ItemDelegateWithIndex(this.nativePtr, index);
+	}
+	
+	public virtual void* ItemDelegateForIndex(void* index)
+	{
+		return CQt.QAbstractItemView_ItemDelegateForIndex(this.nativePtr, index);
+	}
+	
+	public virtual void InputMethodQuery(int64 query)
+	{
+		CQt.QAbstractItemView_InputMethodQuery(this.nativePtr, query);
+	}
+	
+	public void Edit(void* index)
+	{
+		CQt.QAbstractItemView_Edit(this.nativePtr, index);
+	}
+	
+	public void ClearSelection()
+	{
+		CQt.QAbstractItemView_ClearSelection(this.nativePtr);
+	}
+	
+	public void SetCurrentIndex(void* index)
+	{
+		CQt.QAbstractItemView_SetCurrentIndex(this.nativePtr, index);
+	}
+	
+	public void ScrollToTop()
+	{
+		CQt.QAbstractItemView_ScrollToTop(this.nativePtr);
+	}
+	
+	public void ScrollToBottom()
+	{
+		CQt.QAbstractItemView_ScrollToBottom(this.nativePtr);
+	}
+	
+	public void Update(void* index)
+	{
+		CQt.QAbstractItemView_Update(this.nativePtr, index);
+	}
+	
+	public int64 VerticalScrollBarPolicy()
+	{
+		return CQt.QAbstractScrollArea_VerticalScrollBarPolicy(this.nativePtr);
+	}
+	
+	public void SetVerticalScrollBarPolicy(int64 verticalScrollBarPolicy)
+	{
+		CQt.QAbstractScrollArea_SetVerticalScrollBarPolicy(this.nativePtr, verticalScrollBarPolicy);
+	}
+	
+	public void* VerticalScrollBar()
+	{
+		return CQt.QAbstractScrollArea_VerticalScrollBar(this.nativePtr);
+	}
+	
+	public void SetVerticalScrollBar(void* scrollbar)
+	{
+		CQt.QAbstractScrollArea_SetVerticalScrollBar(this.nativePtr, scrollbar);
+	}
+	
+	public int64 HorizontalScrollBarPolicy()
+	{
+		return CQt.QAbstractScrollArea_HorizontalScrollBarPolicy(this.nativePtr);
+	}
+	
+	public void SetHorizontalScrollBarPolicy(int64 horizontalScrollBarPolicy)
+	{
+		CQt.QAbstractScrollArea_SetHorizontalScrollBarPolicy(this.nativePtr, horizontalScrollBarPolicy);
+	}
+	
+	public void* HorizontalScrollBar()
+	{
+		return CQt.QAbstractScrollArea_HorizontalScrollBar(this.nativePtr);
+	}
+	
+	public void SetHorizontalScrollBar(void* scrollbar)
+	{
+		CQt.QAbstractScrollArea_SetHorizontalScrollBar(this.nativePtr, scrollbar);
+	}
+	
+	public void* CornerWidget()
+	{
+		return CQt.QAbstractScrollArea_CornerWidget(this.nativePtr);
+	}
+	
+	public void SetCornerWidget(void* widget)
+	{
+		CQt.QAbstractScrollArea_SetCornerWidget(this.nativePtr, widget);
+	}
+	
+	public void AddScrollBarWidget(void* widget, int64 alignment)
+	{
+		CQt.QAbstractScrollArea_AddScrollBarWidget(this.nativePtr, widget, alignment);
+	}
+	
+	public void*[] ScrollBarWidgets(int64 alignment)
+	{
+		return CQt.QAbstractScrollArea_ScrollBarWidgets(this.nativePtr, alignment);
+	}
+	
+	public void* Viewport()
+	{
+		return CQt.QAbstractScrollArea_Viewport(this.nativePtr);
+	}
+	
+	public void SetViewport(void* widget)
+	{
+		CQt.QAbstractScrollArea_SetViewport(this.nativePtr, widget);
+	}
+	
+	public void MaximumViewportSize()
+	{
+		CQt.QAbstractScrollArea_MaximumViewportSize(this.nativePtr);
+	}
+	
+	public virtual void MinimumSizeHint()
+	{
+		CQt.QAbstractScrollArea_MinimumSizeHint(this.nativePtr);
+	}
+	
+	public virtual void SizeHint()
+	{
+		CQt.QAbstractScrollArea_SizeHint(this.nativePtr);
+	}
+	
+	public virtual void SetupViewport(void* viewport)
+	{
+		CQt.QAbstractScrollArea_SetupViewport(this.nativePtr, viewport);
+	}
+	
+	public int64 SizeAdjustPolicy()
+	{
+		return CQt.QAbstractScrollArea_SizeAdjustPolicy(this.nativePtr);
+	}
+	
+	public void SetSizeAdjustPolicy(int64 policy)
+	{
+		CQt.QAbstractScrollArea_SetSizeAdjustPolicy(this.nativePtr, policy);
+	}
+	
+	public int32 FrameStyle()
+	{
+		return CQt.QFrame_FrameStyle(this.nativePtr);
+	}
+	
+	public void SetFrameStyle(int32 frameStyle)
+	{
+		CQt.QFrame_SetFrameStyle(this.nativePtr, frameStyle);
+	}
+	
+	public int32 FrameWidth()
+	{
+		return CQt.QFrame_FrameWidth(this.nativePtr);
+	}
+	
+	public int64 FrameShape()
+	{
+		return CQt.QFrame_FrameShape(this.nativePtr);
+	}
+	
+	public void SetFrameShape(int64 frameShape)
+	{
+		CQt.QFrame_SetFrameShape(this.nativePtr, frameShape);
+	}
+	
+	public int64 FrameShadow()
+	{
+		return CQt.QFrame_FrameShadow(this.nativePtr);
+	}
+	
+	public void SetFrameShadow(int64 frameShadow)
+	{
+		CQt.QFrame_SetFrameShadow(this.nativePtr, frameShadow);
+	}
+	
+	public int32 LineWidth()
+	{
+		return CQt.QFrame_LineWidth(this.nativePtr);
+	}
+	
+	public void SetLineWidth(int32 lineWidth)
+	{
+		CQt.QFrame_SetLineWidth(this.nativePtr, lineWidth);
+	}
+	
+	public int32 MidLineWidth()
+	{
+		return CQt.QFrame_MidLineWidth(this.nativePtr);
+	}
+	
+	public void SetMidLineWidth(int32 midLineWidth)
+	{
+		CQt.QFrame_SetMidLineWidth(this.nativePtr, midLineWidth);
+	}
+	
+	public void FrameRect()
+	{
+		CQt.QFrame_FrameRect(this.nativePtr);
+	}
+	
+	public void SetFrameRect(void* frameRect)
+	{
+		CQt.QFrame_SetFrameRect(this.nativePtr, frameRect);
+	}
+	
+	public virtual int32 DevType()
+	{
+		return CQt.QWidget_DevType(this.nativePtr);
+	}
+	
+	public c_uintptr WinId()
+	{
+		return CQt.QWidget_WinId(this.nativePtr);
+	}
+	
+	public void CreateWinId()
+	{
+		CQt.QWidget_CreateWinId(this.nativePtr);
+	}
+	
+	public c_uintptr InternalWinId()
+	{
+		return CQt.QWidget_InternalWinId(this.nativePtr);
+	}
+	
+	public c_uintptr EffectiveWinId()
+	{
+		return CQt.QWidget_EffectiveWinId(this.nativePtr);
+	}
+	
+	public void* Style()
+	{
+		return CQt.QWidget_Style(this.nativePtr);
+	}
+	
+	public void SetStyle(void* style)
+	{
+		CQt.QWidget_SetStyle(this.nativePtr, style);
+	}
+	
+	public bool IsTopLevel()
+	{
+		return CQt.QWidget_IsTopLevel(this.nativePtr);
+	}
+	
+	public bool IsWindow()
+	{
+		return CQt.QWidget_IsWindow(this.nativePtr);
+	}
+	
+	public bool IsModal()
+	{
+		return CQt.QWidget_IsModal(this.nativePtr);
+	}
+	
+	public int64 WindowModality()
+	{
+		return CQt.QWidget_WindowModality(this.nativePtr);
+	}
+	
+	public void SetWindowModality(int64 windowModality)
+	{
+		CQt.QWidget_SetWindowModality(this.nativePtr, windowModality);
+	}
+	
+	public bool IsEnabled()
+	{
+		return CQt.QWidget_IsEnabled(this.nativePtr);
+	}
+	
+	public bool IsEnabledTo(void* param1)
+	{
+		return CQt.QWidget_IsEnabledTo(this.nativePtr, param1);
+	}
+	
+	public void SetEnabled(bool enabled)
+	{
+		CQt.QWidget_SetEnabled(this.nativePtr, enabled);
+	}
+	
+	public void SetDisabled(bool disabled)
+	{
+		CQt.QWidget_SetDisabled(this.nativePtr, disabled);
+	}
+	
+	public void SetWindowModified(bool windowModified)
+	{
+		CQt.QWidget_SetWindowModified(this.nativePtr, windowModified);
+	}
+	
+	public void FrameGeometry()
+	{
+		CQt.QWidget_FrameGeometry(this.nativePtr);
+	}
+	
+	public void* Geometry()
+	{
+		return CQt.QWidget_Geometry(this.nativePtr);
+	}
+	
+	public void NormalGeometry()
+	{
+		CQt.QWidget_NormalGeometry(this.nativePtr);
+	}
+	
+	public int32 X()
+	{
+		return CQt.QWidget_X(this.nativePtr);
+	}
+	
+	public int32 Y()
+	{
+		return CQt.QWidget_Y(this.nativePtr);
+	}
+	
+	public void Pos()
+	{
+		CQt.QWidget_Pos(this.nativePtr);
+	}
+	
+	public void FrameSize()
+	{
+		CQt.QWidget_FrameSize(this.nativePtr);
+	}
+	
+	public void Size()
+	{
+		CQt.QWidget_Size(this.nativePtr);
+	}
+	
+	public int32 Width()
+	{
+		return CQt.QWidget_Width(this.nativePtr);
+	}
+	
+	public int32 Height()
+	{
+		return CQt.QWidget_Height(this.nativePtr);
+	}
+	
+	public void Rect()
+	{
+		CQt.QWidget_Rect(this.nativePtr);
+	}
+	
+	public void ChildrenRect()
+	{
+		CQt.QWidget_ChildrenRect(this.nativePtr);
+	}
+	
+	public void ChildrenRegion()
+	{
+		CQt.QWidget_ChildrenRegion(this.nativePtr);
+	}
+	
+	public void MinimumSize()
+	{
+		CQt.QWidget_MinimumSize(this.nativePtr);
+	}
+	
+	public void MaximumSize()
+	{
+		CQt.QWidget_MaximumSize(this.nativePtr);
+	}
+	
+	public int32 MinimumWidth()
+	{
+		return CQt.QWidget_MinimumWidth(this.nativePtr);
+	}
+	
+	public int32 MinimumHeight()
+	{
+		return CQt.QWidget_MinimumHeight(this.nativePtr);
+	}
+	
+	public int32 MaximumWidth()
+	{
+		return CQt.QWidget_MaximumWidth(this.nativePtr);
+	}
+	
+	public int32 MaximumHeight()
+	{
+		return CQt.QWidget_MaximumHeight(this.nativePtr);
+	}
+	
+	public void SetMinimumSize(void* minimumSize)
+	{
+		CQt.QWidget_SetMinimumSize(this.nativePtr, minimumSize);
+	}
+	
+	public void SetMinimumSize2(int32 minw, int32 minh)
+	{
+		CQt.QWidget_SetMinimumSize2(this.nativePtr, minw, minh);
+	}
+	
+	public void SetMaximumSize(void* maximumSize)
+	{
+		CQt.QWidget_SetMaximumSize(this.nativePtr, maximumSize);
+	}
+	
+	public void SetMaximumSize2(int32 maxw, int32 maxh)
+	{
+		CQt.QWidget_SetMaximumSize2(this.nativePtr, maxw, maxh);
+	}
+	
+	public void SetMinimumWidth(int32 minw)
+	{
+		CQt.QWidget_SetMinimumWidth(this.nativePtr, minw);
+	}
+	
+	public void SetMinimumHeight(int32 minh)
+	{
+		CQt.QWidget_SetMinimumHeight(this.nativePtr, minh);
+	}
+	
+	public void SetMaximumWidth(int32 maxw)
+	{
+		CQt.QWidget_SetMaximumWidth(this.nativePtr, maxw);
+	}
+	
+	public void SetMaximumHeight(int32 maxh)
+	{
+		CQt.QWidget_SetMaximumHeight(this.nativePtr, maxh);
+	}
+	
+	public void SizeIncrement()
+	{
+		CQt.QWidget_SizeIncrement(this.nativePtr);
+	}
+	
+	public void SetSizeIncrement(void* sizeIncrement)
+	{
+		CQt.QWidget_SetSizeIncrement(this.nativePtr, sizeIncrement);
+	}
+	
+	public void SetSizeIncrement2(int32 w, int32 h)
+	{
+		CQt.QWidget_SetSizeIncrement2(this.nativePtr, w, h);
+	}
+	
+	public void BaseSize()
+	{
+		CQt.QWidget_BaseSize(this.nativePtr);
+	}
+	
+	public void SetBaseSize(void* baseSize)
+	{
+		CQt.QWidget_SetBaseSize(this.nativePtr, baseSize);
+	}
+	
+	public void SetBaseSize2(int32 basew, int32 baseh)
+	{
+		CQt.QWidget_SetBaseSize2(this.nativePtr, basew, baseh);
+	}
+	
+	public void SetFixedSize(void* fixedSize)
+	{
+		CQt.QWidget_SetFixedSize(this.nativePtr, fixedSize);
+	}
+	
+	public void SetFixedSize2(int32 w, int32 h)
+	{
+		CQt.QWidget_SetFixedSize2(this.nativePtr, w, h);
+	}
+	
+	public void SetFixedWidth(int32 w)
+	{
+		CQt.QWidget_SetFixedWidth(this.nativePtr, w);
+	}
+	
+	public void SetFixedHeight(int32 h)
+	{
+		CQt.QWidget_SetFixedHeight(this.nativePtr, h);
+	}
+	
+	public void MapToGlobal(void* param1)
+	{
+		CQt.QWidget_MapToGlobal(this.nativePtr, param1);
+	}
+	
+	public void MapToGlobalWithQPoint(void* param1)
+	{
+		CQt.QWidget_MapToGlobalWithQPoint(this.nativePtr, param1);
+	}
+	
+	public void MapFromGlobal(void* param1)
+	{
+		CQt.QWidget_MapFromGlobal(this.nativePtr, param1);
+	}
+	
+	public void MapFromGlobalWithQPoint(void* param1)
+	{
+		CQt.QWidget_MapFromGlobalWithQPoint(this.nativePtr, param1);
+	}
+	
+	public void MapToParent(void* param1)
+	{
+		CQt.QWidget_MapToParent(this.nativePtr, param1);
+	}
+	
+	public void MapToParentWithQPoint(void* param1)
+	{
+		CQt.QWidget_MapToParentWithQPoint(this.nativePtr, param1);
+	}
+	
+	public void MapFromParent(void* param1)
+	{
+		CQt.QWidget_MapFromParent(this.nativePtr, param1);
+	}
+	
+	public void MapFromParentWithQPoint(void* param1)
+	{
+		CQt.QWidget_MapFromParentWithQPoint(this.nativePtr, param1);
+	}
+	
+	public void MapTo(void* param1, void* param2)
+	{
+		CQt.QWidget_MapTo(this.nativePtr, param1, param2);
+	}
+	
+	public void MapTo2(void* param1, void* param2)
+	{
+		CQt.QWidget_MapTo2(this.nativePtr, param1, param2);
+	}
+	
+	public void MapFrom(void* param1, void* param2)
+	{
+		CQt.QWidget_MapFrom(this.nativePtr, param1, param2);
+	}
+	
+	public void MapFrom2(void* param1, void* param2)
+	{
+		CQt.QWidget_MapFrom2(this.nativePtr, param1, param2);
+	}
+	
+	public void* Window()
+	{
+		return CQt.QWidget_Window(this.nativePtr);
+	}
+	
+	public void* NativeParentWidget()
+	{
+		return CQt.QWidget_NativeParentWidget(this.nativePtr);
+	}
+	
+	public void* TopLevelWidget()
+	{
+		return CQt.QWidget_TopLevelWidget(this.nativePtr);
+	}
+	
+	public void* Palette()
+	{
+		return CQt.QWidget_Palette(this.nativePtr);
+	}
+	
+	public void SetPalette(void* palette)
+	{
+		CQt.QWidget_SetPalette(this.nativePtr, palette);
+	}
+	
+	public void SetBackgroundRole(int64 backgroundRole)
+	{
+		CQt.QWidget_SetBackgroundRole(this.nativePtr, backgroundRole);
+	}
+	
+	public int64 BackgroundRole()
+	{
+		return CQt.QWidget_BackgroundRole(this.nativePtr);
+	}
+	
+	public void SetForegroundRole(int64 foregroundRole)
+	{
+		CQt.QWidget_SetForegroundRole(this.nativePtr, foregroundRole);
+	}
+	
+	public int64 ForegroundRole()
+	{
+		return CQt.QWidget_ForegroundRole(this.nativePtr);
+	}
+	
+	public void* Font()
+	{
+		return CQt.QWidget_Font(this.nativePtr);
+	}
+	
+	public void SetFont(void* font)
+	{
+		CQt.QWidget_SetFont(this.nativePtr, font);
+	}
+	
+	public void FontMetrics()
+	{
+		CQt.QWidget_FontMetrics(this.nativePtr);
+	}
+	
+	public void FontInfo()
+	{
+		CQt.QWidget_FontInfo(this.nativePtr);
+	}
+	
+	public void Cursor()
+	{
+		CQt.QWidget_Cursor(this.nativePtr);
+	}
+	
+	public void SetCursor(void* cursor)
+	{
+		CQt.QWidget_SetCursor(this.nativePtr, cursor);
+	}
+	
+	public void UnsetCursor()
+	{
+		CQt.QWidget_UnsetCursor(this.nativePtr);
+	}
+	
+	public void SetMouseTracking(bool enable)
+	{
+		CQt.QWidget_SetMouseTracking(this.nativePtr, enable);
+	}
+	
+	public bool HasMouseTracking()
+	{
+		return CQt.QWidget_HasMouseTracking(this.nativePtr);
+	}
+	
+	public bool UnderMouse()
+	{
+		return CQt.QWidget_UnderMouse(this.nativePtr);
+	}
+	
+	public void SetTabletTracking(bool enable)
+	{
+		CQt.QWidget_SetTabletTracking(this.nativePtr, enable);
+	}
+	
+	public bool HasTabletTracking()
+	{
+		return CQt.QWidget_HasTabletTracking(this.nativePtr);
+	}
+	
+	public void SetMask(void* mask)
+	{
+		CQt.QWidget_SetMask(this.nativePtr, mask);
+	}
+	
+	public void SetMaskWithMask(void* mask)
+	{
+		CQt.QWidget_SetMaskWithMask(this.nativePtr, mask);
+	}
+	
+	public void Mask()
+	{
+		CQt.QWidget_Mask(this.nativePtr);
+	}
+	
+	public void ClearMask()
+	{
+		CQt.QWidget_ClearMask(this.nativePtr);
+	}
+	
+	public void Render(void* target)
+	{
+		CQt.QWidget_Render(this.nativePtr, target);
+	}
+	
+	public void RenderWithPainter(void* painter)
+	{
+		CQt.QWidget_RenderWithPainter(this.nativePtr, painter);
+	}
+	
+	public void Grab()
+	{
+		CQt.QWidget_Grab(this.nativePtr);
+	}
+	
+	public void* GraphicsEffect()
+	{
+		return CQt.QWidget_GraphicsEffect(this.nativePtr);
+	}
+	
+	public void SetGraphicsEffect(void* effect)
+	{
+		CQt.QWidget_SetGraphicsEffect(this.nativePtr, effect);
+	}
+	
+	public void GrabGesture(int64 typeVal)
+	{
+		CQt.QWidget_GrabGesture(this.nativePtr, typeVal);
+	}
+	
+	public void UngrabGesture(int64 typeVal)
+	{
+		CQt.QWidget_UngrabGesture(this.nativePtr, typeVal);
+	}
+	
+	public void SetWindowTitle(libqt_string windowTitle)
+	{
+		CQt.QWidget_SetWindowTitle(this.nativePtr, windowTitle);
+	}
+	
+	public void SetStyleSheet(libqt_string styleSheet)
+	{
+		CQt.QWidget_SetStyleSheet(this.nativePtr, styleSheet);
+	}
+	
+	public libqt_string StyleSheet()
+	{
+		return CQt.QWidget_StyleSheet(this.nativePtr);
+	}
+	
+	public libqt_string WindowTitle()
+	{
+		return CQt.QWidget_WindowTitle(this.nativePtr);
+	}
+	
+	public void SetWindowIcon(void* icon)
+	{
+		CQt.QWidget_SetWindowIcon(this.nativePtr, icon);
+	}
+	
+	public void WindowIcon()
+	{
+		CQt.QWidget_WindowIcon(this.nativePtr);
+	}
+	
+	public void SetWindowIconText(libqt_string windowIconText)
+	{
+		CQt.QWidget_SetWindowIconText(this.nativePtr, windowIconText);
+	}
+	
+	public libqt_string WindowIconText()
+	{
+		return CQt.QWidget_WindowIconText(this.nativePtr);
+	}
+	
+	public void SetWindowRole(libqt_string windowRole)
+	{
+		CQt.QWidget_SetWindowRole(this.nativePtr, windowRole);
+	}
+	
+	public libqt_string WindowRole()
+	{
+		return CQt.QWidget_WindowRole(this.nativePtr);
+	}
+	
+	public void SetWindowFilePath(libqt_string filePath)
+	{
+		CQt.QWidget_SetWindowFilePath(this.nativePtr, filePath);
+	}
+	
+	public libqt_string WindowFilePath()
+	{
+		return CQt.QWidget_WindowFilePath(this.nativePtr);
+	}
+	
+	public void SetWindowOpacity(double level)
+	{
+		CQt.QWidget_SetWindowOpacity(this.nativePtr, level);
+	}
+	
+	public double WindowOpacity()
+	{
+		return CQt.QWidget_WindowOpacity(this.nativePtr);
+	}
+	
+	public bool IsWindowModified()
+	{
+		return CQt.QWidget_IsWindowModified(this.nativePtr);
+	}
+	
+	public void SetToolTip(libqt_string toolTip)
+	{
+		CQt.QWidget_SetToolTip(this.nativePtr, toolTip);
+	}
+	
+	public libqt_string ToolTip()
+	{
+		return CQt.QWidget_ToolTip(this.nativePtr);
+	}
+	
+	public void SetToolTipDuration(int32 msec)
+	{
+		CQt.QWidget_SetToolTipDuration(this.nativePtr, msec);
+	}
+	
+	public int32 ToolTipDuration()
+	{
+		return CQt.QWidget_ToolTipDuration(this.nativePtr);
+	}
+	
+	public void SetStatusTip(libqt_string statusTip)
+	{
+		CQt.QWidget_SetStatusTip(this.nativePtr, statusTip);
+	}
+	
+	public libqt_string StatusTip()
+	{
+		return CQt.QWidget_StatusTip(this.nativePtr);
+	}
+	
+	public void SetWhatsThis(libqt_string whatsThis)
+	{
+		CQt.QWidget_SetWhatsThis(this.nativePtr, whatsThis);
+	}
+	
+	public libqt_string WhatsThis()
+	{
+		return CQt.QWidget_WhatsThis(this.nativePtr);
+	}
+	
+	public libqt_string AccessibleName()
+	{
+		return CQt.QWidget_AccessibleName(this.nativePtr);
+	}
+	
+	public void SetAccessibleName(libqt_string name)
+	{
+		CQt.QWidget_SetAccessibleName(this.nativePtr, name);
+	}
+	
+	public libqt_string AccessibleDescription()
+	{
+		return CQt.QWidget_AccessibleDescription(this.nativePtr);
+	}
+	
+	public void SetAccessibleDescription(libqt_string description)
+	{
+		CQt.QWidget_SetAccessibleDescription(this.nativePtr, description);
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		CQt.QWidget_SetLayoutDirection(this.nativePtr, direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return CQt.QWidget_LayoutDirection(this.nativePtr);
+	}
+	
+	public void UnsetLayoutDirection()
+	{
+		CQt.QWidget_UnsetLayoutDirection(this.nativePtr);
+	}
+	
+	public void SetLocale(void* locale)
+	{
+		CQt.QWidget_SetLocale(this.nativePtr, locale);
+	}
+	
+	public void Locale()
+	{
+		CQt.QWidget_Locale(this.nativePtr);
+	}
+	
+	public void UnsetLocale()
+	{
+		CQt.QWidget_UnsetLocale(this.nativePtr);
+	}
+	
+	public bool IsRightToLeft()
+	{
+		return CQt.QWidget_IsRightToLeft(this.nativePtr);
+	}
+	
+	public bool IsLeftToRight()
+	{
+		return CQt.QWidget_IsLeftToRight(this.nativePtr);
+	}
+	
+	public void SetFocus()
+	{
+		CQt.QWidget_SetFocus(this.nativePtr);
+	}
+	
+	public bool IsActiveWindow()
+	{
+		return CQt.QWidget_IsActiveWindow(this.nativePtr);
+	}
+	
+	public void ActivateWindow()
+	{
+		CQt.QWidget_ActivateWindow(this.nativePtr);
+	}
+	
+	public void ClearFocus()
+	{
+		CQt.QWidget_ClearFocus(this.nativePtr);
+	}
+	
+	public void SetFocusWithReason(int64 reason)
+	{
+		CQt.QWidget_SetFocusWithReason(this.nativePtr, reason);
+	}
+	
+	public int64 FocusPolicy()
+	{
+		return CQt.QWidget_FocusPolicy(this.nativePtr);
+	}
+	
+	public void SetFocusPolicy(int64 policy)
+	{
+		CQt.QWidget_SetFocusPolicy(this.nativePtr, policy);
+	}
+	
+	public bool HasFocus()
+	{
+		return CQt.QWidget_HasFocus(this.nativePtr);
+	}
+	
+	public static void SetTabOrder(void* param1, void* param2)
+	{
+		CQt.QWidget_SetTabOrder(param1, param2);
+	}
+	
+	public void SetFocusProxy(void* focusProxy)
+	{
+		CQt.QWidget_SetFocusProxy(this.nativePtr, focusProxy);
+	}
+	
+	public void* FocusProxy()
+	{
+		return CQt.QWidget_FocusProxy(this.nativePtr);
+	}
+	
+	public int64 ContextMenuPolicy()
+	{
+		return CQt.QWidget_ContextMenuPolicy(this.nativePtr);
+	}
+	
+	public void SetContextMenuPolicy(int64 policy)
+	{
+		CQt.QWidget_SetContextMenuPolicy(this.nativePtr, policy);
+	}
+	
+	public void GrabMouse()
+	{
+		CQt.QWidget_GrabMouse(this.nativePtr);
+	}
+	
+	public void GrabMouseWithQCursor(void* param1)
+	{
+		CQt.QWidget_GrabMouseWithQCursor(this.nativePtr, param1);
+	}
+	
+	public void ReleaseMouse()
+	{
+		CQt.QWidget_ReleaseMouse(this.nativePtr);
+	}
+	
+	public void GrabKeyboard()
+	{
+		CQt.QWidget_GrabKeyboard(this.nativePtr);
+	}
+	
+	public void ReleaseKeyboard()
+	{
+		CQt.QWidget_ReleaseKeyboard(this.nativePtr);
+	}
+	
+	public int32 GrabShortcut(void* key)
+	{
+		return CQt.QWidget_GrabShortcut(this.nativePtr, key);
+	}
+	
+	public void ReleaseShortcut(int32 id)
+	{
+		CQt.QWidget_ReleaseShortcut(this.nativePtr, id);
+	}
+	
+	public void SetShortcutEnabled(int32 id)
+	{
+		CQt.QWidget_SetShortcutEnabled(this.nativePtr, id);
+	}
+	
+	public void SetShortcutAutoRepeat(int32 id)
+	{
+		CQt.QWidget_SetShortcutAutoRepeat(this.nativePtr, id);
+	}
+	
+	public static void* MouseGrabber()
+	{
+		return CQt.QWidget_MouseGrabber();
+	}
+	
+	public static void* KeyboardGrabber()
+	{
+		return CQt.QWidget_KeyboardGrabber();
+	}
+	
+	public bool UpdatesEnabled()
+	{
+		return CQt.QWidget_UpdatesEnabled(this.nativePtr);
+	}
+	
+	public void SetUpdatesEnabled(bool enable)
+	{
+		CQt.QWidget_SetUpdatesEnabled(this.nativePtr, enable);
+	}
+	
+	public void* GraphicsProxyWidget()
+	{
+		return CQt.QWidget_GraphicsProxyWidget(this.nativePtr);
+	}
+	
+	public void Repaint()
+	{
+		CQt.QWidget_Repaint(this.nativePtr);
+	}
+	
+	public void Update2(int32 x, int32 y, int32 w, int32 h)
+	{
+		CQt.QWidget_Update2(this.nativePtr, x, y, w, h);
+	}
+	
+	public void UpdateWithQRect(void* param1)
+	{
+		CQt.QWidget_UpdateWithQRect(this.nativePtr, param1);
+	}
+	
+	public void UpdateWithQRegion(void* param1)
+	{
+		CQt.QWidget_UpdateWithQRegion(this.nativePtr, param1);
+	}
+	
+	public void Repaint2(int32 x, int32 y, int32 w, int32 h)
+	{
+		CQt.QWidget_Repaint2(this.nativePtr, x, y, w, h);
+	}
+	
+	public void RepaintWithQRect(void* param1)
+	{
+		CQt.QWidget_RepaintWithQRect(this.nativePtr, param1);
+	}
+	
+	public void RepaintWithQRegion(void* param1)
+	{
+		CQt.QWidget_RepaintWithQRegion(this.nativePtr, param1);
+	}
+	
+	public virtual void SetVisible(bool visible)
+	{
+		CQt.QWidget_SetVisible(this.nativePtr, visible);
+	}
+	
+	public void SetHidden(bool hidden)
+	{
+		CQt.QWidget_SetHidden(this.nativePtr, hidden);
+	}
+	
+	public void Show()
+	{
+		CQt.QWidget_Show(this.nativePtr);
+	}
+	
+	public void Hide()
+	{
+		CQt.QWidget_Hide(this.nativePtr);
+	}
+	
+	public void ShowMinimized()
+	{
+		CQt.QWidget_ShowMinimized(this.nativePtr);
+	}
+	
+	public void ShowMaximized()
+	{
+		CQt.QWidget_ShowMaximized(this.nativePtr);
+	}
+	
+	public void ShowFullScreen()
+	{
+		CQt.QWidget_ShowFullScreen(this.nativePtr);
+	}
+	
+	public void ShowNormal()
+	{
+		CQt.QWidget_ShowNormal(this.nativePtr);
+	}
+	
+	public bool Close()
+	{
+		return CQt.QWidget_Close(this.nativePtr);
+	}
+	
+	public void Raise()
+	{
+		CQt.QWidget_Raise(this.nativePtr);
+	}
+	
+	public void Lower()
+	{
+		CQt.QWidget_Lower(this.nativePtr);
+	}
+	
+	public void StackUnder(void* param1)
+	{
+		CQt.QWidget_StackUnder(this.nativePtr, param1);
+	}
+	
+	public void Move(int32 x, int32 y)
+	{
+		CQt.QWidget_Move(this.nativePtr, x, y);
+	}
+	
+	public void MoveWithQPoint(void* param1)
+	{
+		CQt.QWidget_MoveWithQPoint(this.nativePtr, param1);
+	}
+	
+	public void Resize(int32 w, int32 h)
+	{
+		CQt.QWidget_Resize(this.nativePtr, w, h);
+	}
+	
+	public void ResizeWithQSize(void* param1)
+	{
+		CQt.QWidget_ResizeWithQSize(this.nativePtr, param1);
+	}
+	
+	public void SetGeometry(int32 x, int32 y, int32 w, int32 h)
+	{
+		CQt.QWidget_SetGeometry(this.nativePtr, x, y, w, h);
+	}
+	
+	public void SetGeometryWithGeometry(void* geometry)
+	{
+		CQt.QWidget_SetGeometryWithGeometry(this.nativePtr, geometry);
+	}
+	
+	public libqt_string SaveGeometry()
+	{
+		return CQt.QWidget_SaveGeometry(this.nativePtr);
+	}
+	
+	public bool RestoreGeometry(libqt_string geometry)
+	{
+		return CQt.QWidget_RestoreGeometry(this.nativePtr, geometry);
+	}
+	
+	public void AdjustSize()
+	{
+		CQt.QWidget_AdjustSize(this.nativePtr);
+	}
+	
+	public bool IsVisible()
+	{
+		return CQt.QWidget_IsVisible(this.nativePtr);
+	}
+	
+	public bool IsVisibleTo(void* param1)
+	{
+		return CQt.QWidget_IsVisibleTo(this.nativePtr, param1);
+	}
+	
+	public bool IsHidden()
+	{
+		return CQt.QWidget_IsHidden(this.nativePtr);
+	}
+	
+	public bool IsMinimized()
+	{
+		return CQt.QWidget_IsMinimized(this.nativePtr);
+	}
+	
+	public bool IsMaximized()
+	{
+		return CQt.QWidget_IsMaximized(this.nativePtr);
+	}
+	
+	public bool IsFullScreen()
+	{
+		return CQt.QWidget_IsFullScreen(this.nativePtr);
+	}
+	
+	public int64 WindowState()
+	{
+		return CQt.QWidget_WindowState(this.nativePtr);
+	}
+	
+	public void SetWindowState(int64 state)
+	{
+		CQt.QWidget_SetWindowState(this.nativePtr, state);
+	}
+	
+	public void OverrideWindowState(int64 state)
+	{
+		CQt.QWidget_OverrideWindowState(this.nativePtr, state);
+	}
+	
+	public void SizePolicy()
+	{
+		CQt.QWidget_SizePolicy(this.nativePtr);
+	}
+	
+	public void SetSizePolicy(void sizePolicy)
+	{
+		CQt.QWidget_SetSizePolicy(this.nativePtr, sizePolicy);
+	}
+	
+	public void SetSizePolicy2(int64 horizontal, int64 vertical)
+	{
+		CQt.QWidget_SetSizePolicy2(this.nativePtr, horizontal, vertical);
+	}
+	
+	public virtual int32 HeightForWidth(int32 param1)
+	{
+		return CQt.QWidget_HeightForWidth(this.nativePtr, param1);
+	}
+	
+	public virtual bool HasHeightForWidth()
+	{
+		return CQt.QWidget_HasHeightForWidth(this.nativePtr);
+	}
+	
+	public void VisibleRegion()
+	{
+		CQt.QWidget_VisibleRegion(this.nativePtr);
+	}
+	
+	public void SetContentsMargins(int32 left, int32 top, int32 right, int32 bottom)
+	{
+		CQt.QWidget_SetContentsMargins(this.nativePtr, left, top, right, bottom);
+	}
+	
+	public void SetContentsMarginsWithMargins(void* margins)
+	{
+		CQt.QWidget_SetContentsMarginsWithMargins(this.nativePtr, margins);
+	}
+	
+	public void ContentsMargins()
+	{
+		CQt.QWidget_ContentsMargins(this.nativePtr);
+	}
+	
+	public void ContentsRect()
+	{
+		CQt.QWidget_ContentsRect(this.nativePtr);
+	}
+	
+	public void* Layout()
+	{
+		return CQt.QWidget_Layout(this.nativePtr);
+	}
+	
+	public void SetLayout(void* layout)
+	{
+		CQt.QWidget_SetLayout(this.nativePtr, layout);
+	}
+	
+	public void UpdateGeometry()
+	{
+		CQt.QWidget_UpdateGeometry(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QWidget_SetParent(this.nativePtr, parent);
+	}
+	
+	public void SetParent2(void* parent, int64 f)
+	{
+		CQt.QWidget_SetParent2(this.nativePtr, parent, f);
+	}
+	
+	public void Scroll(int32 dx, int32 dy)
+	{
+		CQt.QWidget_Scroll(this.nativePtr, dx, dy);
+	}
+	
+	public void Scroll2(int32 dx, int32 dy, void* param3)
+	{
+		CQt.QWidget_Scroll2(this.nativePtr, dx, dy, param3);
+	}
+	
+	public void* FocusWidget()
+	{
+		return CQt.QWidget_FocusWidget(this.nativePtr);
+	}
+	
+	public void* NextInFocusChain()
+	{
+		return CQt.QWidget_NextInFocusChain(this.nativePtr);
+	}
+	
+	public void* PreviousInFocusChain()
+	{
+		return CQt.QWidget_PreviousInFocusChain(this.nativePtr);
+	}
+	
+	public bool AcceptDrops()
+	{
+		return CQt.QWidget_AcceptDrops(this.nativePtr);
+	}
+	
+	public void SetAcceptDrops(bool on)
+	{
+		CQt.QWidget_SetAcceptDrops(this.nativePtr, on);
+	}
+	
+	public void AddAction(void* action)
+	{
+		CQt.QWidget_AddAction(this.nativePtr, action);
+	}
+	
+	public void AddActions(void*[] actions)
+	{
+		CQt.QWidget_AddActions(this.nativePtr, actions);
+	}
+	
+	public void InsertActions(void* before, void*[] actions)
+	{
+		CQt.QWidget_InsertActions(this.nativePtr, before, actions);
+	}
+	
+	public void InsertAction(void* before, void* action)
+	{
+		CQt.QWidget_InsertAction(this.nativePtr, before, action);
+	}
+	
+	public void RemoveAction(void* action)
+	{
+		CQt.QWidget_RemoveAction(this.nativePtr, action);
+	}
+	
+	public void*[] Actions()
+	{
+		return CQt.QWidget_Actions(this.nativePtr);
+	}
+	
+	public void* AddActionWithText(libqt_string text)
+	{
+		return CQt.QWidget_AddActionWithText(this.nativePtr, text);
+	}
+	
+	public void* AddAction2(void* icon, libqt_string text)
+	{
+		return CQt.QWidget_AddAction2(this.nativePtr, icon, text);
+	}
+	
+	public void* AddAction3(libqt_string text, void* shortcut)
+	{
+		return CQt.QWidget_AddAction3(this.nativePtr, text, shortcut);
+	}
+	
+	public void* AddAction4(void* icon, libqt_string text, void* shortcut)
+	{
+		return CQt.QWidget_AddAction4(this.nativePtr, icon, text, shortcut);
+	}
+	
+	public void* ParentWidget()
+	{
+		return CQt.QWidget_ParentWidget(this.nativePtr);
+	}
+	
+	public void SetWindowFlags(int64 typeVal)
+	{
+		CQt.QWidget_SetWindowFlags(this.nativePtr, typeVal);
+	}
+	
+	public int64 WindowFlags()
+	{
+		return CQt.QWidget_WindowFlags(this.nativePtr);
+	}
+	
+	public void SetWindowFlag(int64 param1)
+	{
+		CQt.QWidget_SetWindowFlag(this.nativePtr, param1);
+	}
+	
+	public void OverrideWindowFlags(int64 typeVal)
+	{
+		CQt.QWidget_OverrideWindowFlags(this.nativePtr, typeVal);
+	}
+	
+	public int64 WindowType()
+	{
+		return CQt.QWidget_WindowType(this.nativePtr);
+	}
+	
+	public static void* Find(uint64 param1)
+	{
+		return CQt.QWidget_Find(param1);
+	}
+	
+	public void* ChildAt(int32 x, int32 y)
+	{
+		return CQt.QWidget_ChildAt(this.nativePtr, x, y);
+	}
+	
+	public void* ChildAtWithQPoint(void* p)
+	{
+		return CQt.QWidget_ChildAtWithQPoint(this.nativePtr, p);
+	}
+	
+	public void SetAttribute(int64 param1)
+	{
+		CQt.QWidget_SetAttribute(this.nativePtr, param1);
+	}
+	
+	public bool TestAttribute(int64 param1)
+	{
+		return CQt.QWidget_TestAttribute(this.nativePtr, param1);
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return CQt.QWidget_PaintEngine(this.nativePtr);
+	}
+	
+	public void EnsurePolished()
+	{
+		CQt.QWidget_EnsurePolished(this.nativePtr);
+	}
+	
+	public bool IsAncestorOf(void* child)
+	{
+		return CQt.QWidget_IsAncestorOf(this.nativePtr, child);
+	}
+	
+	public bool AutoFillBackground()
+	{
+		return CQt.QWidget_AutoFillBackground(this.nativePtr);
+	}
+	
+	public void SetAutoFillBackground(bool enabled)
+	{
+		CQt.QWidget_SetAutoFillBackground(this.nativePtr, enabled);
+	}
+	
+	public void* BackingStore()
+	{
+		return CQt.QWidget_BackingStore(this.nativePtr);
+	}
+	
+	public void* WindowHandle()
+	{
+		return CQt.QWidget_WindowHandle(this.nativePtr);
+	}
+	
+	public void* Screen()
+	{
+		return CQt.QWidget_Screen(this.nativePtr);
+	}
+	
+	public void SetScreen(void* screen)
+	{
+		CQt.QWidget_SetScreen(this.nativePtr, screen);
+	}
+	
+	public static void* CreateWindowContainer(void* window)
+	{
+		return CQt.QWidget_CreateWindowContainer(window);
+	}
+	
+	public int64 InputMethodHints()
+	{
+		return CQt.QWidget_InputMethodHints(this.nativePtr);
+	}
+	
+	public void SetInputMethodHints(int64 hints)
+	{
+		CQt.QWidget_SetInputMethodHints(this.nativePtr, hints);
+	}
+	
+	public void Render2(void* target, void* targetOffset)
+	{
+		CQt.QWidget_Render2(this.nativePtr, target, targetOffset);
+	}
+	
+	public void Render3(void* target, void* targetOffset, void* sourceRegion)
+	{
+		CQt.QWidget_Render3(this.nativePtr, target, targetOffset, sourceRegion);
+	}
+	
+	public void Render4(void* target, void* targetOffset, void* sourceRegion, int64 renderFlags)
+	{
+		CQt.QWidget_Render4(this.nativePtr, target, targetOffset, sourceRegion, renderFlags);
+	}
+	
+	public void Render22(void* painter, void* targetOffset)
+	{
+		CQt.QWidget_Render22(this.nativePtr, painter, targetOffset);
+	}
+	
+	public void Render32(void* painter, void* targetOffset, void* sourceRegion)
+	{
+		CQt.QWidget_Render32(this.nativePtr, painter, targetOffset, sourceRegion);
+	}
+	
+	public void Render42(void* painter, void* targetOffset, void* sourceRegion, int64 renderFlags)
+	{
+		CQt.QWidget_Render42(this.nativePtr, painter, targetOffset, sourceRegion, renderFlags);
+	}
+	
+	public void Grab1(void* rectangle)
+	{
+		CQt.QWidget_Grab1(this.nativePtr, rectangle);
+	}
+	
+	public void GrabGesture2(int64 typeVal, int64 flags)
+	{
+		CQt.QWidget_GrabGesture2(this.nativePtr, typeVal, flags);
+	}
+	
+	public int32 GrabShortcut2(void* key, int64 context)
+	{
+		return CQt.QWidget_GrabShortcut2(this.nativePtr, key, context);
+	}
+	
+	public void SetShortcutEnabled2(int32 id, bool enable)
+	{
+		CQt.QWidget_SetShortcutEnabled2(this.nativePtr, id, enable);
+	}
+	
+	public void SetShortcutAutoRepeat2(int32 id, bool enable)
+	{
+		CQt.QWidget_SetShortcutAutoRepeat2(this.nativePtr, id, enable);
+	}
+	
+	public void SetWindowFlag2(int64 param1, bool on)
+	{
+		CQt.QWidget_SetWindowFlag2(this.nativePtr, param1, on);
+	}
+	
+	public void SetAttribute2(int64 param1, bool on)
+	{
+		CQt.QWidget_SetAttribute2(this.nativePtr, param1, on);
+	}
+	
+	public static void* CreateWindowContainer2(void* window, void* parent)
+	{
+		return CQt.QWidget_CreateWindowContainer2(window, parent);
+	}
+	
+	public static void* CreateWindowContainer3(void* window, void* parent, int64 flags)
+	{
+		return CQt.QWidget_CreateWindowContainer3(window, parent, flags);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+	public bool PaintingActive()
+	{
+		return CQt.QPaintDevice_PaintingActive(this.nativePtr);
+	}
+	
+	public int32 WidthMM()
+	{
+		return CQt.QPaintDevice_WidthMM(this.nativePtr);
+	}
+	
+	public int32 HeightMM()
+	{
+		return CQt.QPaintDevice_HeightMM(this.nativePtr);
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return CQt.QPaintDevice_LogicalDpiX(this.nativePtr);
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return CQt.QPaintDevice_LogicalDpiY(this.nativePtr);
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return CQt.QPaintDevice_PhysicalDpiX(this.nativePtr);
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return CQt.QPaintDevice_PhysicalDpiY(this.nativePtr);
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return CQt.QPaintDevice_DevicePixelRatio(this.nativePtr);
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return CQt.QPaintDevice_DevicePixelRatioF(this.nativePtr);
+	}
+	
+	public int32 ColorCount()
+	{
+		return CQt.QPaintDevice_ColorCount(this.nativePtr);
+	}
+	
+	public int32 Depth()
+	{
+		return CQt.QPaintDevice_Depth(this.nativePtr);
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QTreeView_new")]
-	public static extern QTreeView* QTreeView_new(QWidget* parent);
+	public static extern void* QTreeView_new(void* parent);
 	[LinkName("QTreeView_new2")]
-	public static extern QTreeView* QTreeView_new2();
+	public static extern void* QTreeView_new2();
 	[LinkName("QTreeView_MetaObject")]
-	public static extern QMetaObject* QTreeView_MetaObject(Self* c_this);
+	public static extern void* QTreeView_MetaObject(void* c_this);
 	[LinkName("QTreeView_Metacast")]
-	public static extern void* QTreeView_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QTreeView_Metacast(void* c_this, char8[] param1);
 	[LinkName("QTreeView_Metacall")]
-	public static extern int32 QTreeView_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QTreeView_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QTreeView_Tr")]
 	public static extern libqt_string QTreeView_Tr(char8[] s);
 	[LinkName("QTreeView_SetModel")]
-	public static extern void QTreeView_SetModel(Self* c_this, QAbstractItemModel* model);
+	public static extern void QTreeView_SetModel(void* c_this, void* model);
 	[LinkName("QTreeView_SetRootIndex")]
-	public static extern void QTreeView_SetRootIndex(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_SetRootIndex(void* c_this, void* index);
 	[LinkName("QTreeView_SetSelectionModel")]
-	public static extern void QTreeView_SetSelectionModel(Self* c_this, QItemSelectionModel* selectionModel);
+	public static extern void QTreeView_SetSelectionModel(void* c_this, void* selectionModel);
 	[LinkName("QTreeView_Header")]
-	public static extern QHeaderView* QTreeView_Header(Self* c_this);
+	public static extern void* QTreeView_Header(void* c_this);
 	[LinkName("QTreeView_SetHeader")]
-	public static extern void QTreeView_SetHeader(Self* c_this, QHeaderView* header);
+	public static extern void QTreeView_SetHeader(void* c_this, void* header);
 	[LinkName("QTreeView_AutoExpandDelay")]
-	public static extern int32 QTreeView_AutoExpandDelay(Self* c_this);
+	public static extern int32 QTreeView_AutoExpandDelay(void* c_this);
 	[LinkName("QTreeView_SetAutoExpandDelay")]
-	public static extern void QTreeView_SetAutoExpandDelay(Self* c_this, int32 delay);
+	public static extern void QTreeView_SetAutoExpandDelay(void* c_this, int32 delay);
 	[LinkName("QTreeView_Indentation")]
-	public static extern int32 QTreeView_Indentation(Self* c_this);
+	public static extern int32 QTreeView_Indentation(void* c_this);
 	[LinkName("QTreeView_SetIndentation")]
-	public static extern void QTreeView_SetIndentation(Self* c_this, int32 i);
+	public static extern void QTreeView_SetIndentation(void* c_this, int32 i);
 	[LinkName("QTreeView_ResetIndentation")]
-	public static extern void QTreeView_ResetIndentation(Self* c_this);
+	public static extern void QTreeView_ResetIndentation(void* c_this);
 	[LinkName("QTreeView_RootIsDecorated")]
-	public static extern bool QTreeView_RootIsDecorated(Self* c_this);
+	public static extern bool QTreeView_RootIsDecorated(void* c_this);
 	[LinkName("QTreeView_SetRootIsDecorated")]
-	public static extern void QTreeView_SetRootIsDecorated(Self* c_this, bool show);
+	public static extern void QTreeView_SetRootIsDecorated(void* c_this, bool show);
 	[LinkName("QTreeView_UniformRowHeights")]
-	public static extern bool QTreeView_UniformRowHeights(Self* c_this);
+	public static extern bool QTreeView_UniformRowHeights(void* c_this);
 	[LinkName("QTreeView_SetUniformRowHeights")]
-	public static extern void QTreeView_SetUniformRowHeights(Self* c_this, bool uniform);
+	public static extern void QTreeView_SetUniformRowHeights(void* c_this, bool uniform);
 	[LinkName("QTreeView_ItemsExpandable")]
-	public static extern bool QTreeView_ItemsExpandable(Self* c_this);
+	public static extern bool QTreeView_ItemsExpandable(void* c_this);
 	[LinkName("QTreeView_SetItemsExpandable")]
-	public static extern void QTreeView_SetItemsExpandable(Self* c_this, bool enable);
+	public static extern void QTreeView_SetItemsExpandable(void* c_this, bool enable);
 	[LinkName("QTreeView_ExpandsOnDoubleClick")]
-	public static extern bool QTreeView_ExpandsOnDoubleClick(Self* c_this);
+	public static extern bool QTreeView_ExpandsOnDoubleClick(void* c_this);
 	[LinkName("QTreeView_SetExpandsOnDoubleClick")]
-	public static extern void QTreeView_SetExpandsOnDoubleClick(Self* c_this, bool enable);
+	public static extern void QTreeView_SetExpandsOnDoubleClick(void* c_this, bool enable);
 	[LinkName("QTreeView_ColumnViewportPosition")]
-	public static extern int32 QTreeView_ColumnViewportPosition(Self* c_this, int32 column);
+	public static extern int32 QTreeView_ColumnViewportPosition(void* c_this, int32 column);
 	[LinkName("QTreeView_ColumnWidth")]
-	public static extern int32 QTreeView_ColumnWidth(Self* c_this, int32 column);
+	public static extern int32 QTreeView_ColumnWidth(void* c_this, int32 column);
 	[LinkName("QTreeView_SetColumnWidth")]
-	public static extern void QTreeView_SetColumnWidth(Self* c_this, int32 column, int32 width);
+	public static extern void QTreeView_SetColumnWidth(void* c_this, int32 column, int32 width);
 	[LinkName("QTreeView_ColumnAt")]
-	public static extern int32 QTreeView_ColumnAt(Self* c_this, int32 x);
+	public static extern int32 QTreeView_ColumnAt(void* c_this, int32 x);
 	[LinkName("QTreeView_IsColumnHidden")]
-	public static extern bool QTreeView_IsColumnHidden(Self* c_this, int32 column);
+	public static extern bool QTreeView_IsColumnHidden(void* c_this, int32 column);
 	[LinkName("QTreeView_SetColumnHidden")]
-	public static extern void QTreeView_SetColumnHidden(Self* c_this, int32 column, bool hide);
+	public static extern void QTreeView_SetColumnHidden(void* c_this, int32 column, bool hide);
 	[LinkName("QTreeView_IsHeaderHidden")]
-	public static extern bool QTreeView_IsHeaderHidden(Self* c_this);
+	public static extern bool QTreeView_IsHeaderHidden(void* c_this);
 	[LinkName("QTreeView_SetHeaderHidden")]
-	public static extern void QTreeView_SetHeaderHidden(Self* c_this, bool hide);
+	public static extern void QTreeView_SetHeaderHidden(void* c_this, bool hide);
 	[LinkName("QTreeView_IsRowHidden")]
-	public static extern bool QTreeView_IsRowHidden(Self* c_this, int32 row, QModelIndex* parent);
+	public static extern bool QTreeView_IsRowHidden(void* c_this, int32 row, void* parent);
 	[LinkName("QTreeView_SetRowHidden")]
-	public static extern void QTreeView_SetRowHidden(Self* c_this, int32 row, QModelIndex* parent, bool hide);
+	public static extern void QTreeView_SetRowHidden(void* c_this, int32 row, void* parent, bool hide);
 	[LinkName("QTreeView_IsFirstColumnSpanned")]
-	public static extern bool QTreeView_IsFirstColumnSpanned(Self* c_this, int32 row, QModelIndex* parent);
+	public static extern bool QTreeView_IsFirstColumnSpanned(void* c_this, int32 row, void* parent);
 	[LinkName("QTreeView_SetFirstColumnSpanned")]
-	public static extern void QTreeView_SetFirstColumnSpanned(Self* c_this, int32 row, QModelIndex* parent, bool span);
+	public static extern void QTreeView_SetFirstColumnSpanned(void* c_this, int32 row, void* parent, bool span);
 	[LinkName("QTreeView_IsExpanded")]
-	public static extern bool QTreeView_IsExpanded(Self* c_this, QModelIndex* index);
+	public static extern bool QTreeView_IsExpanded(void* c_this, void* index);
 	[LinkName("QTreeView_SetExpanded")]
-	public static extern void QTreeView_SetExpanded(Self* c_this, QModelIndex* index, bool expand);
+	public static extern void QTreeView_SetExpanded(void* c_this, void* index, bool expand);
 	[LinkName("QTreeView_SetSortingEnabled")]
-	public static extern void QTreeView_SetSortingEnabled(Self* c_this, bool enable);
+	public static extern void QTreeView_SetSortingEnabled(void* c_this, bool enable);
 	[LinkName("QTreeView_IsSortingEnabled")]
-	public static extern bool QTreeView_IsSortingEnabled(Self* c_this);
+	public static extern bool QTreeView_IsSortingEnabled(void* c_this);
 	[LinkName("QTreeView_SetAnimated")]
-	public static extern void QTreeView_SetAnimated(Self* c_this, bool enable);
+	public static extern void QTreeView_SetAnimated(void* c_this, bool enable);
 	[LinkName("QTreeView_IsAnimated")]
-	public static extern bool QTreeView_IsAnimated(Self* c_this);
+	public static extern bool QTreeView_IsAnimated(void* c_this);
 	[LinkName("QTreeView_SetAllColumnsShowFocus")]
-	public static extern void QTreeView_SetAllColumnsShowFocus(Self* c_this, bool enable);
+	public static extern void QTreeView_SetAllColumnsShowFocus(void* c_this, bool enable);
 	[LinkName("QTreeView_AllColumnsShowFocus")]
-	public static extern bool QTreeView_AllColumnsShowFocus(Self* c_this);
+	public static extern bool QTreeView_AllColumnsShowFocus(void* c_this);
 	[LinkName("QTreeView_SetWordWrap")]
-	public static extern void QTreeView_SetWordWrap(Self* c_this, bool on);
+	public static extern void QTreeView_SetWordWrap(void* c_this, bool on);
 	[LinkName("QTreeView_WordWrap")]
-	public static extern bool QTreeView_WordWrap(Self* c_this);
+	public static extern bool QTreeView_WordWrap(void* c_this);
 	[LinkName("QTreeView_SetTreePosition")]
-	public static extern void QTreeView_SetTreePosition(Self* c_this, int32 logicalIndex);
+	public static extern void QTreeView_SetTreePosition(void* c_this, int32 logicalIndex);
 	[LinkName("QTreeView_TreePosition")]
-	public static extern int32 QTreeView_TreePosition(Self* c_this);
+	public static extern int32 QTreeView_TreePosition(void* c_this);
 	[LinkName("QTreeView_KeyboardSearch")]
-	public static extern void QTreeView_KeyboardSearch(Self* c_this, libqt_string search);
+	public static extern void QTreeView_KeyboardSearch(void* c_this, libqt_string search);
 	[LinkName("QTreeView_VisualRect")]
-	public static extern QRect QTreeView_VisualRect(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_VisualRect(void* c_this, void* index);
 	[LinkName("QTreeView_ScrollTo")]
-	public static extern void QTreeView_ScrollTo(Self* c_this, QModelIndex* index, int64 hint);
+	public static extern void QTreeView_ScrollTo(void* c_this, void* index, int64 hint);
 	[LinkName("QTreeView_IndexAt")]
-	public static extern QModelIndex QTreeView_IndexAt(Self* c_this, QPoint* p);
+	public static extern void QTreeView_IndexAt(void* c_this, void* p);
 	[LinkName("QTreeView_IndexAbove")]
-	public static extern QModelIndex QTreeView_IndexAbove(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_IndexAbove(void* c_this, void* index);
 	[LinkName("QTreeView_IndexBelow")]
-	public static extern QModelIndex QTreeView_IndexBelow(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_IndexBelow(void* c_this, void* index);
 	[LinkName("QTreeView_DoItemsLayout")]
-	public static extern void QTreeView_DoItemsLayout(Self* c_this);
+	public static extern void QTreeView_DoItemsLayout(void* c_this);
 	[LinkName("QTreeView_Reset")]
-	public static extern void QTreeView_Reset(Self* c_this);
+	public static extern void QTreeView_Reset(void* c_this);
 	[LinkName("QTreeView_DataChanged")]
-	public static extern void QTreeView_DataChanged(Self* c_this, QModelIndex* topLeft, QModelIndex* bottomRight, int32[] roles);
+	public static extern void QTreeView_DataChanged(void* c_this, void* topLeft, void* bottomRight, int32[] roles);
 	[LinkName("QTreeView_SelectAll")]
-	public static extern void QTreeView_SelectAll(Self* c_this);
+	public static extern void QTreeView_SelectAll(void* c_this);
 	[LinkName("QTreeView_Connect_Expanded")]
-	public static extern void QTreeView_Connect_Expanded(Self* c_this, c_intptr slot);
+	public static extern void QTreeView_Connect_Expanded(void* c_this, c_intptr slot);
 	[LinkName("QTreeView_Connect_Collapsed")]
-	public static extern void QTreeView_Connect_Collapsed(Self* c_this, c_intptr slot);
+	public static extern void QTreeView_Connect_Collapsed(void* c_this, c_intptr slot);
 	[LinkName("QTreeView_HideColumn")]
-	public static extern void QTreeView_HideColumn(Self* c_this, int32 column);
+	public static extern void QTreeView_HideColumn(void* c_this, int32 column);
 	[LinkName("QTreeView_ShowColumn")]
-	public static extern void QTreeView_ShowColumn(Self* c_this, int32 column);
+	public static extern void QTreeView_ShowColumn(void* c_this, int32 column);
 	[LinkName("QTreeView_Expand")]
-	public static extern void QTreeView_Expand(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_Expand(void* c_this, void* index);
 	[LinkName("QTreeView_Collapse")]
-	public static extern void QTreeView_Collapse(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_Collapse(void* c_this, void* index);
 	[LinkName("QTreeView_ResizeColumnToContents")]
-	public static extern void QTreeView_ResizeColumnToContents(Self* c_this, int32 column);
+	public static extern void QTreeView_ResizeColumnToContents(void* c_this, int32 column);
 	[LinkName("QTreeView_SortByColumn")]
-	public static extern void QTreeView_SortByColumn(Self* c_this, int32 column, int64 order);
+	public static extern void QTreeView_SortByColumn(void* c_this, int32 column, int64 order);
 	[LinkName("QTreeView_ExpandAll")]
-	public static extern void QTreeView_ExpandAll(Self* c_this);
+	public static extern void QTreeView_ExpandAll(void* c_this);
 	[LinkName("QTreeView_ExpandRecursively")]
-	public static extern void QTreeView_ExpandRecursively(Self* c_this, QModelIndex* index);
+	public static extern void QTreeView_ExpandRecursively(void* c_this, void* index);
 	[LinkName("QTreeView_CollapseAll")]
-	public static extern void QTreeView_CollapseAll(Self* c_this);
+	public static extern void QTreeView_CollapseAll(void* c_this);
 	[LinkName("QTreeView_ExpandToDepth")]
-	public static extern void QTreeView_ExpandToDepth(Self* c_this, int32 depth);
+	public static extern void QTreeView_ExpandToDepth(void* c_this, int32 depth);
 	[LinkName("QTreeView_ColumnResized")]
-	public static extern void QTreeView_ColumnResized(Self* c_this, int32 column, int32 oldSize, int32 newSize);
+	public static extern void QTreeView_ColumnResized(void* c_this, int32 column, int32 oldSize, int32 newSize);
 	[LinkName("QTreeView_ColumnCountChanged")]
-	public static extern void QTreeView_ColumnCountChanged(Self* c_this, int32 oldCount, int32 newCount);
+	public static extern void QTreeView_ColumnCountChanged(void* c_this, int32 oldCount, int32 newCount);
 	[LinkName("QTreeView_ColumnMoved")]
-	public static extern void QTreeView_ColumnMoved(Self* c_this);
+	public static extern void QTreeView_ColumnMoved(void* c_this);
 	[LinkName("QTreeView_Reexpand")]
-	public static extern void QTreeView_Reexpand(Self* c_this);
+	public static extern void QTreeView_Reexpand(void* c_this);
 	[LinkName("QTreeView_RowsRemoved")]
-	public static extern void QTreeView_RowsRemoved(Self* c_this, QModelIndex* parent, int32 first, int32 last);
+	public static extern void QTreeView_RowsRemoved(void* c_this, void* parent, int32 first, int32 last);
 	[LinkName("QTreeView_VerticalScrollbarValueChanged")]
-	public static extern void QTreeView_VerticalScrollbarValueChanged(Self* c_this, int32 value);
+	public static extern void QTreeView_VerticalScrollbarValueChanged(void* c_this, int32 value);
 	[LinkName("QTreeView_ScrollContentsBy")]
-	public static extern void QTreeView_ScrollContentsBy(Self* c_this, int32 dx, int32 dy);
+	public static extern void QTreeView_ScrollContentsBy(void* c_this, int32 dx, int32 dy);
 	[LinkName("QTreeView_RowsInserted")]
-	public static extern void QTreeView_RowsInserted(Self* c_this, QModelIndex* parent, int32 start, int32 end);
+	public static extern void QTreeView_RowsInserted(void* c_this, void* parent, int32 start, int32 end);
 	[LinkName("QTreeView_RowsAboutToBeRemoved")]
-	public static extern void QTreeView_RowsAboutToBeRemoved(Self* c_this, QModelIndex* parent, int32 start, int32 end);
+	public static extern void QTreeView_RowsAboutToBeRemoved(void* c_this, void* parent, int32 start, int32 end);
 	[LinkName("QTreeView_MoveCursor")]
-	public static extern QModelIndex QTreeView_MoveCursor(Self* c_this, int64 cursorAction, int64 modifiers);
+	public static extern void QTreeView_MoveCursor(void* c_this, int64 cursorAction, int64 modifiers);
 	[LinkName("QTreeView_HorizontalOffset")]
-	public static extern int32 QTreeView_HorizontalOffset(Self* c_this);
+	public static extern int32 QTreeView_HorizontalOffset(void* c_this);
 	[LinkName("QTreeView_VerticalOffset")]
-	public static extern int32 QTreeView_VerticalOffset(Self* c_this);
+	public static extern int32 QTreeView_VerticalOffset(void* c_this);
 	[LinkName("QTreeView_SetSelection")]
-	public static extern void QTreeView_SetSelection(Self* c_this, QRect* rect, int64 command);
+	public static extern void QTreeView_SetSelection(void* c_this, void* rect, int64 command);
 	[LinkName("QTreeView_VisualRegionForSelection")]
-	public static extern QRegion QTreeView_VisualRegionForSelection(Self* c_this, QItemSelection* selection);
+	public static extern void QTreeView_VisualRegionForSelection(void* c_this, void* selection);
 	[LinkName("QTreeView_SelectedIndexes")]
-	public static extern QModelIndex[] QTreeView_SelectedIndexes(Self* c_this);
+	public static extern void[] QTreeView_SelectedIndexes(void* c_this);
 	[LinkName("QTreeView_ChangeEvent")]
-	public static extern void QTreeView_ChangeEvent(Self* c_this, QEvent* event);
+	public static extern void QTreeView_ChangeEvent(void* c_this, void* event);
 	[LinkName("QTreeView_TimerEvent")]
-	public static extern void QTreeView_TimerEvent(Self* c_this, QTimerEvent* event);
+	public static extern void QTreeView_TimerEvent(void* c_this, void* event);
 	[LinkName("QTreeView_PaintEvent")]
-	public static extern void QTreeView_PaintEvent(Self* c_this, QPaintEvent* event);
+	public static extern void QTreeView_PaintEvent(void* c_this, void* event);
 	[LinkName("QTreeView_DrawTree")]
-	public static extern void QTreeView_DrawTree(Self* c_this, QPainter* painter, QRegion* region);
+	public static extern void QTreeView_DrawTree(void* c_this, void* painter, void* region);
 	[LinkName("QTreeView_DrawRow")]
-	public static extern void QTreeView_DrawRow(Self* c_this, QPainter* painter, QStyleOptionViewItem* options, QModelIndex* index);
+	public static extern void QTreeView_DrawRow(void* c_this, void* painter, void* options, void* index);
 	[LinkName("QTreeView_DrawBranches")]
-	public static extern void QTreeView_DrawBranches(Self* c_this, QPainter* painter, QRect* rect, QModelIndex* index);
+	public static extern void QTreeView_DrawBranches(void* c_this, void* painter, void* rect, void* index);
 	[LinkName("QTreeView_MousePressEvent")]
-	public static extern void QTreeView_MousePressEvent(Self* c_this, QMouseEvent* event);
+	public static extern void QTreeView_MousePressEvent(void* c_this, void* event);
 	[LinkName("QTreeView_MouseReleaseEvent")]
-	public static extern void QTreeView_MouseReleaseEvent(Self* c_this, QMouseEvent* event);
+	public static extern void QTreeView_MouseReleaseEvent(void* c_this, void* event);
 	[LinkName("QTreeView_MouseDoubleClickEvent")]
-	public static extern void QTreeView_MouseDoubleClickEvent(Self* c_this, QMouseEvent* event);
+	public static extern void QTreeView_MouseDoubleClickEvent(void* c_this, void* event);
 	[LinkName("QTreeView_MouseMoveEvent")]
-	public static extern void QTreeView_MouseMoveEvent(Self* c_this, QMouseEvent* event);
+	public static extern void QTreeView_MouseMoveEvent(void* c_this, void* event);
 	[LinkName("QTreeView_KeyPressEvent")]
-	public static extern void QTreeView_KeyPressEvent(Self* c_this, QKeyEvent* event);
+	public static extern void QTreeView_KeyPressEvent(void* c_this, void* event);
 	[LinkName("QTreeView_DragMoveEvent")]
-	public static extern void QTreeView_DragMoveEvent(Self* c_this, QDragMoveEvent* event);
+	public static extern void QTreeView_DragMoveEvent(void* c_this, void* event);
 	[LinkName("QTreeView_ViewportEvent")]
-	public static extern bool QTreeView_ViewportEvent(Self* c_this, QEvent* event);
+	public static extern bool QTreeView_ViewportEvent(void* c_this, void* event);
 	[LinkName("QTreeView_UpdateGeometries")]
-	public static extern void QTreeView_UpdateGeometries(Self* c_this);
+	public static extern void QTreeView_UpdateGeometries(void* c_this);
 	[LinkName("QTreeView_ViewportSizeHint")]
-	public static extern QSize QTreeView_ViewportSizeHint(Self* c_this);
+	public static extern void QTreeView_ViewportSizeHint(void* c_this);
 	[LinkName("QTreeView_SizeHintForColumn")]
-	public static extern int32 QTreeView_SizeHintForColumn(Self* c_this, int32 column);
+	public static extern int32 QTreeView_SizeHintForColumn(void* c_this, int32 column);
 	[LinkName("QTreeView_IndexRowSizeHint")]
-	public static extern int32 QTreeView_IndexRowSizeHint(Self* c_this, QModelIndex* index);
+	public static extern int32 QTreeView_IndexRowSizeHint(void* c_this, void* index);
 	[LinkName("QTreeView_RowHeight")]
-	public static extern int32 QTreeView_RowHeight(Self* c_this, QModelIndex* index);
+	public static extern int32 QTreeView_RowHeight(void* c_this, void* index);
 	[LinkName("QTreeView_HorizontalScrollbarAction")]
-	public static extern void QTreeView_HorizontalScrollbarAction(Self* c_this, int32 action);
+	public static extern void QTreeView_HorizontalScrollbarAction(void* c_this, int32 action);
 	[LinkName("QTreeView_IsIndexHidden")]
-	public static extern bool QTreeView_IsIndexHidden(Self* c_this, QModelIndex* index);
+	public static extern bool QTreeView_IsIndexHidden(void* c_this, void* index);
 	[LinkName("QTreeView_SelectionChanged")]
-	public static extern void QTreeView_SelectionChanged(Self* c_this, QItemSelection* selected, QItemSelection* deselected);
+	public static extern void QTreeView_SelectionChanged(void* c_this, void* selected, void* deselected);
 	[LinkName("QTreeView_CurrentChanged")]
-	public static extern void QTreeView_CurrentChanged(Self* c_this, QModelIndex* current, QModelIndex* previous);
+	public static extern void QTreeView_CurrentChanged(void* c_this, void* current, void* previous);
 	[LinkName("QTreeView_Tr2")]
 	public static extern libqt_string QTreeView_Tr2(char8[] s, char8[] c);
 	[LinkName("QTreeView_Tr3")]
 	public static extern libqt_string QTreeView_Tr3(char8[] s, char8[] c, int32 n);
 	[LinkName("QTreeView_ExpandRecursively2")]
-	public static extern void QTreeView_ExpandRecursively2(Self* c_this, QModelIndex* index, int32 depth);
+	public static extern void QTreeView_ExpandRecursively2(void* c_this, void* index, int32 depth);
+	/// Delete this object from C++ memory
+	[LinkName("QTreeView_Delete")]
+	public static extern void QTreeView_Delete(void* self);
 }

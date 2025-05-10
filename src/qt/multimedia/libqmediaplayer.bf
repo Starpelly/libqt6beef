@@ -36,140 +36,563 @@ public enum QMediaPlayer__Loops
 	Infinite = -1,
 	Once = 1,
 }
-public struct QMediaPlayer : QObject
+public class QMediaPlayer
+{
+	protected void* nativePtr;
+	
+	public this()
+	{
+		this.nativePtr = CQt.QMediaPlayer_new();
+	}
+	
+	public ~this()
+	{
+		CQt.QMediaPlayer_Delete(this.nativePtr);
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return CQt.QMediaPlayer_MetaObject(this.nativePtr);
+	}
+	
+	public virtual void* Metacast(char8[] param1)
+	{
+		return CQt.QMediaPlayer_Metacast(this.nativePtr, param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	{
+		return CQt.QMediaPlayer_Metacall(this.nativePtr, param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8[] s)
+	{
+		return CQt.QMediaPlayer_Tr(s);
+	}
+	
+	public void[] AudioTracks()
+	{
+		return CQt.QMediaPlayer_AudioTracks(this.nativePtr);
+	}
+	
+	public void[] VideoTracks()
+	{
+		return CQt.QMediaPlayer_VideoTracks(this.nativePtr);
+	}
+	
+	public void[] SubtitleTracks()
+	{
+		return CQt.QMediaPlayer_SubtitleTracks(this.nativePtr);
+	}
+	
+	public int32 ActiveAudioTrack()
+	{
+		return CQt.QMediaPlayer_ActiveAudioTrack(this.nativePtr);
+	}
+	
+	public int32 ActiveVideoTrack()
+	{
+		return CQt.QMediaPlayer_ActiveVideoTrack(this.nativePtr);
+	}
+	
+	public int32 ActiveSubtitleTrack()
+	{
+		return CQt.QMediaPlayer_ActiveSubtitleTrack(this.nativePtr);
+	}
+	
+	public void SetActiveAudioTrack(int32 index)
+	{
+		CQt.QMediaPlayer_SetActiveAudioTrack(this.nativePtr, index);
+	}
+	
+	public void SetActiveVideoTrack(int32 index)
+	{
+		CQt.QMediaPlayer_SetActiveVideoTrack(this.nativePtr, index);
+	}
+	
+	public void SetActiveSubtitleTrack(int32 index)
+	{
+		CQt.QMediaPlayer_SetActiveSubtitleTrack(this.nativePtr, index);
+	}
+	
+	public void SetAudioOutput(void* output)
+	{
+		CQt.QMediaPlayer_SetAudioOutput(this.nativePtr, output);
+	}
+	
+	public void* AudioOutput()
+	{
+		return CQt.QMediaPlayer_AudioOutput(this.nativePtr);
+	}
+	
+	public void SetVideoOutput(void* videoOutput)
+	{
+		CQt.QMediaPlayer_SetVideoOutput(this.nativePtr, videoOutput);
+	}
+	
+	public void* VideoOutput()
+	{
+		return CQt.QMediaPlayer_VideoOutput(this.nativePtr);
+	}
+	
+	public void SetVideoSink(void* sink)
+	{
+		CQt.QMediaPlayer_SetVideoSink(this.nativePtr, sink);
+	}
+	
+	public void* VideoSink()
+	{
+		return CQt.QMediaPlayer_VideoSink(this.nativePtr);
+	}
+	
+	public void Source()
+	{
+		CQt.QMediaPlayer_Source(this.nativePtr);
+	}
+	
+	public void* SourceDevice()
+	{
+		return CQt.QMediaPlayer_SourceDevice(this.nativePtr);
+	}
+	
+	public int64 PlaybackState()
+	{
+		return CQt.QMediaPlayer_PlaybackState(this.nativePtr);
+	}
+	
+	public int64 MediaStatus()
+	{
+		return CQt.QMediaPlayer_MediaStatus(this.nativePtr);
+	}
+	
+	public int64 Duration()
+	{
+		return CQt.QMediaPlayer_Duration(this.nativePtr);
+	}
+	
+	public int64 Position()
+	{
+		return CQt.QMediaPlayer_Position(this.nativePtr);
+	}
+	
+	public bool HasAudio()
+	{
+		return CQt.QMediaPlayer_HasAudio(this.nativePtr);
+	}
+	
+	public bool HasVideo()
+	{
+		return CQt.QMediaPlayer_HasVideo(this.nativePtr);
+	}
+	
+	public float BufferProgress()
+	{
+		return CQt.QMediaPlayer_BufferProgress(this.nativePtr);
+	}
+	
+	public void BufferedTimeRange()
+	{
+		CQt.QMediaPlayer_BufferedTimeRange(this.nativePtr);
+	}
+	
+	public bool IsSeekable()
+	{
+		return CQt.QMediaPlayer_IsSeekable(this.nativePtr);
+	}
+	
+	public double PlaybackRate()
+	{
+		return CQt.QMediaPlayer_PlaybackRate(this.nativePtr);
+	}
+	
+	public int32 Loops()
+	{
+		return CQt.QMediaPlayer_Loops(this.nativePtr);
+	}
+	
+	public void SetLoops(int32 loops)
+	{
+		CQt.QMediaPlayer_SetLoops(this.nativePtr, loops);
+	}
+	
+	public int64 Error()
+	{
+		return CQt.QMediaPlayer_Error(this.nativePtr);
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return CQt.QMediaPlayer_ErrorString(this.nativePtr);
+	}
+	
+	public bool IsAvailable()
+	{
+		return CQt.QMediaPlayer_IsAvailable(this.nativePtr);
+	}
+	
+	public void MetaData()
+	{
+		CQt.QMediaPlayer_MetaData(this.nativePtr);
+	}
+	
+	public void Play()
+	{
+		CQt.QMediaPlayer_Play(this.nativePtr);
+	}
+	
+	public void Pause()
+	{
+		CQt.QMediaPlayer_Pause(this.nativePtr);
+	}
+	
+	public void Stop()
+	{
+		CQt.QMediaPlayer_Stop(this.nativePtr);
+	}
+	
+	public void SetPosition(int64 position)
+	{
+		CQt.QMediaPlayer_SetPosition(this.nativePtr, position);
+	}
+	
+	public void SetPlaybackRate(double rate)
+	{
+		CQt.QMediaPlayer_SetPlaybackRate(this.nativePtr, rate);
+	}
+	
+	public void SetSource(void* source)
+	{
+		CQt.QMediaPlayer_SetSource(this.nativePtr, source);
+	}
+	
+	public void SetSourceDevice(void* device)
+	{
+		CQt.QMediaPlayer_SetSourceDevice(this.nativePtr, device);
+	}
+	
+	public static libqt_string Tr2(char8[] s, char8[] c)
+	{
+		return CQt.QMediaPlayer_Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8[] s, char8[] c, int32 n)
+	{
+		return CQt.QMediaPlayer_Tr3(s, c, n);
+	}
+	
+	public void SetSourceDevice2(void* device, void* sourceUrl)
+	{
+		CQt.QMediaPlayer_SetSourceDevice2(this.nativePtr, device, sourceUrl);
+	}
+	
+	public virtual bool Event(void* event)
+	{
+		return CQt.QObject_Event(this.nativePtr, event);
+	}
+	
+	public virtual bool EventFilter(void* watched, void* event)
+	{
+		return CQt.QObject_EventFilter(this.nativePtr, watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return CQt.QObject_ObjectName(this.nativePtr);
+	}
+	
+	public void SetObjectName(void name)
+	{
+		CQt.QObject_SetObjectName(this.nativePtr, name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return CQt.QObject_IsWidgetType(this.nativePtr);
+	}
+	
+	public bool IsWindowType()
+	{
+		return CQt.QObject_IsWindowType(this.nativePtr);
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return CQt.QObject_IsQuickItemType(this.nativePtr);
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return CQt.QObject_SignalsBlocked(this.nativePtr);
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return CQt.QObject_BlockSignals(this.nativePtr, b);
+	}
+	
+	public void* Thread()
+	{
+		return CQt.QObject_Thread(this.nativePtr);
+	}
+	
+	public void MoveToThread(void* thread)
+	{
+		CQt.QObject_MoveToThread(this.nativePtr, thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return CQt.QObject_StartTimer(this.nativePtr, interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		CQt.QObject_KillTimer(this.nativePtr, id);
+	}
+	
+	public void*[] Children()
+	{
+		return CQt.QObject_Children(this.nativePtr);
+	}
+	
+	public void SetParent(void* parent)
+	{
+		CQt.QObject_SetParent(this.nativePtr, parent);
+	}
+	
+	public void InstallEventFilter(void* filterObj)
+	{
+		CQt.QObject_InstallEventFilter(this.nativePtr, filterObj);
+	}
+	
+	public void RemoveEventFilter(void* obj)
+	{
+		CQt.QObject_RemoveEventFilter(this.nativePtr, obj);
+	}
+	
+	public static QMetaObject__Connection Connect(void* sender, void* signal, void* receiver, void* method)
+	{
+		return CQt.QObject_Connect(sender, signal, receiver, method);
+	}
+	
+	public QMetaObject__Connection Connect2(void* sender, char8[] signal, char8[] member)
+	{
+		return CQt.QObject_Connect2(this.nativePtr, sender, signal, member);
+	}
+	
+	public static bool Disconnect(void* sender, void* signal, void* receiver, void* member)
+	{
+		return CQt.QObject_Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection* param1)
+	{
+		return CQt.QObject_DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		CQt.QObject_DumpObjectTree(this.nativePtr);
+	}
+	
+	public void DumpObjectInfo()
+	{
+		CQt.QObject_DumpObjectInfo(this.nativePtr);
+	}
+	
+	public bool SetProperty(char8[] name, void* value)
+	{
+		return CQt.QObject_SetProperty(this.nativePtr, name, value);
+	}
+	
+	public void Property(char8[] name)
+	{
+		CQt.QObject_Property(this.nativePtr, name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return CQt.QObject_DynamicPropertyNames(this.nativePtr);
+	}
+	
+	public void* BindingStorage()
+	{
+		return CQt.QObject_BindingStorage(this.nativePtr);
+	}
+	
+	public void* BindingStorage2()
+	{
+		return CQt.QObject_BindingStorage2(this.nativePtr);
+	}
+	
+	public void* Parent()
+	{
+		return CQt.QObject_Parent(this.nativePtr);
+	}
+	
+	public bool Inherits(char8[] classname)
+	{
+		return CQt.QObject_Inherits(this.nativePtr, classname);
+	}
+	
+	public void DeleteLater()
+	{
+		CQt.QObject_DeleteLater(this.nativePtr);
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+	}
+	
+	public static QMetaObject__Connection Connect5(void* sender, void* signal, void* receiver, void* method, int64 typeVal)
+	{
+		return CQt.QObject_Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public QMetaObject__Connection Connect4(void* sender, char8[] signal, char8[] member, int64 typeVal)
+	{
+		return CQt.QObject_Connect4(this.nativePtr, sender, signal, member, typeVal);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QMediaPlayer_new")]
-	public static extern QMediaPlayer* QMediaPlayer_new();
+	public static extern void* QMediaPlayer_new();
 	[LinkName("QMediaPlayer_new2")]
-	public static extern QMediaPlayer* QMediaPlayer_new2(QObject* parent);
+	public static extern void* QMediaPlayer_new2(void* parent);
 	[LinkName("QMediaPlayer_MetaObject")]
-	public static extern QMetaObject* QMediaPlayer_MetaObject(Self* c_this);
+	public static extern void* QMediaPlayer_MetaObject(void* c_this);
 	[LinkName("QMediaPlayer_Metacast")]
-	public static extern void* QMediaPlayer_Metacast(Self* c_this, char8[] param1);
+	public static extern void* QMediaPlayer_Metacast(void* c_this, char8[] param1);
 	[LinkName("QMediaPlayer_Metacall")]
-	public static extern int32 QMediaPlayer_Metacall(Self* c_this, int64 param1, int32 param2, void** param3);
+	public static extern int32 QMediaPlayer_Metacall(void* c_this, int64 param1, int32 param2, void** param3);
 	[LinkName("QMediaPlayer_Tr")]
 	public static extern libqt_string QMediaPlayer_Tr(char8[] s);
 	[LinkName("QMediaPlayer_AudioTracks")]
-	public static extern QMediaMetaData[] QMediaPlayer_AudioTracks(Self* c_this);
+	public static extern void[] QMediaPlayer_AudioTracks(void* c_this);
 	[LinkName("QMediaPlayer_VideoTracks")]
-	public static extern QMediaMetaData[] QMediaPlayer_VideoTracks(Self* c_this);
+	public static extern void[] QMediaPlayer_VideoTracks(void* c_this);
 	[LinkName("QMediaPlayer_SubtitleTracks")]
-	public static extern QMediaMetaData[] QMediaPlayer_SubtitleTracks(Self* c_this);
+	public static extern void[] QMediaPlayer_SubtitleTracks(void* c_this);
 	[LinkName("QMediaPlayer_ActiveAudioTrack")]
-	public static extern int32 QMediaPlayer_ActiveAudioTrack(Self* c_this);
+	public static extern int32 QMediaPlayer_ActiveAudioTrack(void* c_this);
 	[LinkName("QMediaPlayer_ActiveVideoTrack")]
-	public static extern int32 QMediaPlayer_ActiveVideoTrack(Self* c_this);
+	public static extern int32 QMediaPlayer_ActiveVideoTrack(void* c_this);
 	[LinkName("QMediaPlayer_ActiveSubtitleTrack")]
-	public static extern int32 QMediaPlayer_ActiveSubtitleTrack(Self* c_this);
+	public static extern int32 QMediaPlayer_ActiveSubtitleTrack(void* c_this);
 	[LinkName("QMediaPlayer_SetActiveAudioTrack")]
-	public static extern void QMediaPlayer_SetActiveAudioTrack(Self* c_this, int32 index);
+	public static extern void QMediaPlayer_SetActiveAudioTrack(void* c_this, int32 index);
 	[LinkName("QMediaPlayer_SetActiveVideoTrack")]
-	public static extern void QMediaPlayer_SetActiveVideoTrack(Self* c_this, int32 index);
+	public static extern void QMediaPlayer_SetActiveVideoTrack(void* c_this, int32 index);
 	[LinkName("QMediaPlayer_SetActiveSubtitleTrack")]
-	public static extern void QMediaPlayer_SetActiveSubtitleTrack(Self* c_this, int32 index);
+	public static extern void QMediaPlayer_SetActiveSubtitleTrack(void* c_this, int32 index);
 	[LinkName("QMediaPlayer_SetAudioOutput")]
-	public static extern void QMediaPlayer_SetAudioOutput(Self* c_this, QAudioOutput* output);
+	public static extern void QMediaPlayer_SetAudioOutput(void* c_this, void* output);
 	[LinkName("QMediaPlayer_AudioOutput")]
-	public static extern QAudioOutput* QMediaPlayer_AudioOutput(Self* c_this);
+	public static extern void* QMediaPlayer_AudioOutput(void* c_this);
 	[LinkName("QMediaPlayer_SetVideoOutput")]
-	public static extern void QMediaPlayer_SetVideoOutput(Self* c_this, QObject* videoOutput);
+	public static extern void QMediaPlayer_SetVideoOutput(void* c_this, void* videoOutput);
 	[LinkName("QMediaPlayer_VideoOutput")]
-	public static extern QObject* QMediaPlayer_VideoOutput(Self* c_this);
+	public static extern void* QMediaPlayer_VideoOutput(void* c_this);
 	[LinkName("QMediaPlayer_SetVideoSink")]
-	public static extern void QMediaPlayer_SetVideoSink(Self* c_this, QVideoSink* sink);
+	public static extern void QMediaPlayer_SetVideoSink(void* c_this, void* sink);
 	[LinkName("QMediaPlayer_VideoSink")]
-	public static extern QVideoSink* QMediaPlayer_VideoSink(Self* c_this);
+	public static extern void* QMediaPlayer_VideoSink(void* c_this);
 	[LinkName("QMediaPlayer_Source")]
-	public static extern QUrl QMediaPlayer_Source(Self* c_this);
+	public static extern void QMediaPlayer_Source(void* c_this);
 	[LinkName("QMediaPlayer_SourceDevice")]
-	public static extern QIODevice* QMediaPlayer_SourceDevice(Self* c_this);
+	public static extern void* QMediaPlayer_SourceDevice(void* c_this);
 	[LinkName("QMediaPlayer_PlaybackState")]
-	public static extern int64 QMediaPlayer_PlaybackState(Self* c_this);
+	public static extern int64 QMediaPlayer_PlaybackState(void* c_this);
 	[LinkName("QMediaPlayer_MediaStatus")]
-	public static extern int64 QMediaPlayer_MediaStatus(Self* c_this);
+	public static extern int64 QMediaPlayer_MediaStatus(void* c_this);
 	[LinkName("QMediaPlayer_Duration")]
-	public static extern int64 QMediaPlayer_Duration(Self* c_this);
+	public static extern int64 QMediaPlayer_Duration(void* c_this);
 	[LinkName("QMediaPlayer_Position")]
-	public static extern int64 QMediaPlayer_Position(Self* c_this);
+	public static extern int64 QMediaPlayer_Position(void* c_this);
 	[LinkName("QMediaPlayer_HasAudio")]
-	public static extern bool QMediaPlayer_HasAudio(Self* c_this);
+	public static extern bool QMediaPlayer_HasAudio(void* c_this);
 	[LinkName("QMediaPlayer_HasVideo")]
-	public static extern bool QMediaPlayer_HasVideo(Self* c_this);
+	public static extern bool QMediaPlayer_HasVideo(void* c_this);
 	[LinkName("QMediaPlayer_BufferProgress")]
-	public static extern float QMediaPlayer_BufferProgress(Self* c_this);
+	public static extern float QMediaPlayer_BufferProgress(void* c_this);
 	[LinkName("QMediaPlayer_BufferedTimeRange")]
-	public static extern QMediaTimeRange QMediaPlayer_BufferedTimeRange(Self* c_this);
+	public static extern void QMediaPlayer_BufferedTimeRange(void* c_this);
 	[LinkName("QMediaPlayer_IsSeekable")]
-	public static extern bool QMediaPlayer_IsSeekable(Self* c_this);
+	public static extern bool QMediaPlayer_IsSeekable(void* c_this);
 	[LinkName("QMediaPlayer_PlaybackRate")]
-	public static extern double QMediaPlayer_PlaybackRate(Self* c_this);
+	public static extern double QMediaPlayer_PlaybackRate(void* c_this);
 	[LinkName("QMediaPlayer_Loops")]
-	public static extern int32 QMediaPlayer_Loops(Self* c_this);
+	public static extern int32 QMediaPlayer_Loops(void* c_this);
 	[LinkName("QMediaPlayer_SetLoops")]
-	public static extern void QMediaPlayer_SetLoops(Self* c_this, int32 loops);
+	public static extern void QMediaPlayer_SetLoops(void* c_this, int32 loops);
 	[LinkName("QMediaPlayer_Error")]
-	public static extern int64 QMediaPlayer_Error(Self* c_this);
+	public static extern int64 QMediaPlayer_Error(void* c_this);
 	[LinkName("QMediaPlayer_ErrorString")]
-	public static extern libqt_string QMediaPlayer_ErrorString(Self* c_this);
+	public static extern libqt_string QMediaPlayer_ErrorString(void* c_this);
 	[LinkName("QMediaPlayer_IsAvailable")]
-	public static extern bool QMediaPlayer_IsAvailable(Self* c_this);
+	public static extern bool QMediaPlayer_IsAvailable(void* c_this);
 	[LinkName("QMediaPlayer_MetaData")]
-	public static extern QMediaMetaData QMediaPlayer_MetaData(Self* c_this);
+	public static extern void QMediaPlayer_MetaData(void* c_this);
 	[LinkName("QMediaPlayer_Play")]
-	public static extern void QMediaPlayer_Play(Self* c_this);
+	public static extern void QMediaPlayer_Play(void* c_this);
 	[LinkName("QMediaPlayer_Pause")]
-	public static extern void QMediaPlayer_Pause(Self* c_this);
+	public static extern void QMediaPlayer_Pause(void* c_this);
 	[LinkName("QMediaPlayer_Stop")]
-	public static extern void QMediaPlayer_Stop(Self* c_this);
+	public static extern void QMediaPlayer_Stop(void* c_this);
 	[LinkName("QMediaPlayer_SetPosition")]
-	public static extern void QMediaPlayer_SetPosition(Self* c_this, int64 position);
+	public static extern void QMediaPlayer_SetPosition(void* c_this, int64 position);
 	[LinkName("QMediaPlayer_SetPlaybackRate")]
-	public static extern void QMediaPlayer_SetPlaybackRate(Self* c_this, double rate);
+	public static extern void QMediaPlayer_SetPlaybackRate(void* c_this, double rate);
 	[LinkName("QMediaPlayer_SetSource")]
-	public static extern void QMediaPlayer_SetSource(Self* c_this, QUrl* source);
+	public static extern void QMediaPlayer_SetSource(void* c_this, void* source);
 	[LinkName("QMediaPlayer_SetSourceDevice")]
-	public static extern void QMediaPlayer_SetSourceDevice(Self* c_this, QIODevice* device);
+	public static extern void QMediaPlayer_SetSourceDevice(void* c_this, void* device);
 	[LinkName("QMediaPlayer_Connect_SourceChanged")]
-	public static extern void QMediaPlayer_Connect_SourceChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_SourceChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_PlaybackStateChanged")]
-	public static extern void QMediaPlayer_Connect_PlaybackStateChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_PlaybackStateChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_MediaStatusChanged")]
-	public static extern void QMediaPlayer_Connect_MediaStatusChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_MediaStatusChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_DurationChanged")]
-	public static extern void QMediaPlayer_Connect_DurationChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_DurationChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_PositionChanged")]
-	public static extern void QMediaPlayer_Connect_PositionChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_PositionChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_HasAudioChanged")]
-	public static extern void QMediaPlayer_Connect_HasAudioChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_HasAudioChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_HasVideoChanged")]
-	public static extern void QMediaPlayer_Connect_HasVideoChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_HasVideoChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_BufferProgressChanged")]
-	public static extern void QMediaPlayer_Connect_BufferProgressChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_BufferProgressChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_SeekableChanged")]
-	public static extern void QMediaPlayer_Connect_SeekableChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_SeekableChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_PlaybackRateChanged")]
-	public static extern void QMediaPlayer_Connect_PlaybackRateChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_PlaybackRateChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_LoopsChanged")]
-	public static extern void QMediaPlayer_Connect_LoopsChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_LoopsChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_MetaDataChanged")]
-	public static extern void QMediaPlayer_Connect_MetaDataChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_MetaDataChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_VideoOutputChanged")]
-	public static extern void QMediaPlayer_Connect_VideoOutputChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_VideoOutputChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_AudioOutputChanged")]
-	public static extern void QMediaPlayer_Connect_AudioOutputChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_AudioOutputChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_TracksChanged")]
-	public static extern void QMediaPlayer_Connect_TracksChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_TracksChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_ActiveTracksChanged")]
-	public static extern void QMediaPlayer_Connect_ActiveTracksChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_ActiveTracksChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_ErrorChanged")]
-	public static extern void QMediaPlayer_Connect_ErrorChanged(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_ErrorChanged(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Connect_ErrorOccurred")]
-	public static extern void QMediaPlayer_Connect_ErrorOccurred(Self* c_this, c_intptr slot);
+	public static extern void QMediaPlayer_Connect_ErrorOccurred(void* c_this, c_intptr slot);
 	[LinkName("QMediaPlayer_Tr2")]
 	public static extern libqt_string QMediaPlayer_Tr2(char8[] s, char8[] c);
 	[LinkName("QMediaPlayer_Tr3")]
 	public static extern libqt_string QMediaPlayer_Tr3(char8[] s, char8[] c, int32 n);
 	[LinkName("QMediaPlayer_SetSourceDevice2")]
-	public static extern void QMediaPlayer_SetSourceDevice2(Self* c_this, QIODevice* device, QUrl* sourceUrl);
+	public static extern void QMediaPlayer_SetSourceDevice2(void* c_this, void* device, void* sourceUrl);
+	/// Delete this object from C++ memory
+	[LinkName("QMediaPlayer_Delete")]
+	public static extern void QMediaPlayer_Delete(void* self);
 }

@@ -19,18 +19,34 @@ public enum QDrawBorderPixmap__DrawingHint
 	OpaqueFrame = 495,
 	OpaqueAll = 511,
 }
-public struct QTileRules
+public class QTileRules
+{
+	protected void* nativePtr;
+	
+	public this(void* other)
+	{
+		this.nativePtr = CQt.QTileRules_new(other);
+	}
+	public ~this()
+	{
+		CQt.QTileRules_Delete(this.nativePtr);
+	}
+}
+extension CQt
 {
 	[LinkName("QTileRules_new")]
-	public static extern QTileRules* QTileRules_new(QTileRules* other);
+	public static extern void* QTileRules_new(void* other);
 	[LinkName("QTileRules_new2")]
-	public static extern QTileRules* QTileRules_new2(QTileRules* other);
+	public static extern void* QTileRules_new2(void* other);
 	[LinkName("QTileRules_new3")]
-	public static extern QTileRules* QTileRules_new3(int64 horizontalRule, int64 verticalRule);
+	public static extern void* QTileRules_new3(int64 horizontalRule, int64 verticalRule);
 	[LinkName("QTileRules_new4")]
-	public static extern QTileRules* QTileRules_new4();
+	public static extern void* QTileRules_new4();
 	[LinkName("QTileRules_new5")]
-	public static extern QTileRules* QTileRules_new5(QTileRules* param1);
+	public static extern void* QTileRules_new5(void* param1);
 	[LinkName("QTileRules_new6")]
-	public static extern QTileRules* QTileRules_new6(int64 rule);
+	public static extern void* QTileRules_new6(int64 rule);
+	/// Delete this object from C++ memory
+	[LinkName("QTileRules_Delete")]
+	public static extern void QTileRules_Delete(void* self);
 }

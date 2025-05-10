@@ -1569,54 +1569,136 @@ public enum QInternal__Callback
 	EventNotifyCallback = 0,
 	LastCallback = 1,
 }
-public struct Disambiguated_t
+public class Disambiguated_t
+{
+	protected void* nativePtr;
+	
+	public this(Disambiguated_t* other)
+	{
+		this.nativePtr = CQt.Disambiguated_t_new(other);
+	}
+	public ~this()
+	{
+		CQt.Disambiguated_t_Delete(this.nativePtr);
+	}
+}
+extension CQt
 {
 	[LinkName("Disambiguated_t_new")]
-	public static extern Disambiguated_t* Disambiguated_t_new(Disambiguated_t* other);
+	public static extern void* Disambiguated_t_new(Disambiguated_t* other);
 	[LinkName("Disambiguated_t_new2")]
-	public static extern Disambiguated_t* Disambiguated_t_new2(Disambiguated_t* other);
+	public static extern void* Disambiguated_t_new2(Disambiguated_t* other);
 	[LinkName("Disambiguated_t_new3")]
-	public static extern Disambiguated_t* Disambiguated_t_new3();
+	public static extern void* Disambiguated_t_new3();
 	[LinkName("Disambiguated_t_new4")]
-	public static extern Disambiguated_t* Disambiguated_t_new4(Disambiguated_t* param1);
+	public static extern void* Disambiguated_t_new4(Disambiguated_t* param1);
+	/// Delete this object from C++ memory
+	[LinkName("Disambiguated_t_Delete")]
+	public static extern void Disambiguated_t_Delete(void* self);
 }
-public struct QInternal
+public class QInternal
+{
+	protected void* nativePtr;
+	
+	public this(void* other)
+	{
+		this.nativePtr = CQt.QInternal_new(other);
+	}
+	
+	public ~this()
+	{
+		CQt.QInternal_Delete(this.nativePtr);
+	}
+	
+	public static bool ActivateCallbacks(int64 param1, void** param2)
+	{
+		return CQt.QInternal_ActivateCallbacks(param1, param2);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QInternal_new")]
-	public static extern QInternal* QInternal_new(QInternal* other);
+	public static extern void* QInternal_new(void* other);
 	[LinkName("QInternal_new2")]
-	public static extern QInternal* QInternal_new2(QInternal* other);
+	public static extern void* QInternal_new2(void* other);
 	[LinkName("QInternal_ActivateCallbacks")]
 	public static extern bool QInternal_ActivateCallbacks(int64 param1, void** param2);
+	/// Delete this object from C++ memory
+	[LinkName("QInternal_Delete")]
+	public static extern void QInternal_Delete(void* self);
 }
-public struct QKeyCombination
+public class QKeyCombination
+{
+	protected void* nativePtr;
+	
+	public this(void* other)
+	{
+		this.nativePtr = CQt.QKeyCombination_new(other);
+	}
+	
+	public ~this()
+	{
+		CQt.QKeyCombination_Delete(this.nativePtr);
+	}
+	
+	public int64 KeyboardModifiers()
+	{
+		return CQt.QKeyCombination_KeyboardModifiers(this.nativePtr);
+	}
+	
+	public int64 Key()
+	{
+		return CQt.QKeyCombination_Key(this.nativePtr);
+	}
+	
+	public static void FromCombined(int32 combined)
+	{
+		CQt.QKeyCombination_FromCombined(combined);
+	}
+	
+	public int32 ToCombined()
+	{
+		return CQt.QKeyCombination_ToCombined(this.nativePtr);
+	}
+	
+	public int32 ToInt()
+	{
+		return CQt.QKeyCombination_ToInt(this.nativePtr);
+	}
+	
+}
+extension CQt
 {
 	[LinkName("QKeyCombination_new")]
-	public static extern QKeyCombination* QKeyCombination_new(QKeyCombination* other);
+	public static extern void* QKeyCombination_new(void* other);
 	[LinkName("QKeyCombination_new2")]
-	public static extern QKeyCombination* QKeyCombination_new2(QKeyCombination* other);
+	public static extern void* QKeyCombination_new2(void* other);
 	[LinkName("QKeyCombination_new3")]
-	public static extern QKeyCombination* QKeyCombination_new3();
+	public static extern void* QKeyCombination_new3();
 	[LinkName("QKeyCombination_new4")]
-	public static extern QKeyCombination* QKeyCombination_new4(int64 modifiers);
+	public static extern void* QKeyCombination_new4(int64 modifiers);
 	[LinkName("QKeyCombination_new5")]
-	public static extern QKeyCombination* QKeyCombination_new5(int64 modifiers);
+	public static extern void* QKeyCombination_new5(int64 modifiers);
 	[LinkName("QKeyCombination_new6")]
-	public static extern QKeyCombination* QKeyCombination_new6(QKeyCombination* param1);
+	public static extern void* QKeyCombination_new6(void* param1);
 	[LinkName("QKeyCombination_new7")]
-	public static extern QKeyCombination* QKeyCombination_new7(int64 key);
+	public static extern void* QKeyCombination_new7(int64 key);
 	[LinkName("QKeyCombination_new8")]
-	public static extern QKeyCombination* QKeyCombination_new8(int64 modifiers, int64 key);
+	public static extern void* QKeyCombination_new8(int64 modifiers, int64 key);
 	[LinkName("QKeyCombination_new9")]
-	public static extern QKeyCombination* QKeyCombination_new9(int64 modifiers, int64 key);
+	public static extern void* QKeyCombination_new9(int64 modifiers, int64 key);
 	[LinkName("QKeyCombination_KeyboardModifiers")]
-	public static extern int64 QKeyCombination_KeyboardModifiers(Self* c_this);
+	public static extern int64 QKeyCombination_KeyboardModifiers(void* c_this);
 	[LinkName("QKeyCombination_Key")]
-	public static extern int64 QKeyCombination_Key(Self* c_this);
+	public static extern int64 QKeyCombination_Key(void* c_this);
 	[LinkName("QKeyCombination_FromCombined")]
-	public static extern QKeyCombination QKeyCombination_FromCombined(int32 combined);
+	public static extern void QKeyCombination_FromCombined(int32 combined);
 	[LinkName("QKeyCombination_ToCombined")]
-	public static extern int32 QKeyCombination_ToCombined(Self* c_this);
+	public static extern int32 QKeyCombination_ToCombined(void* c_this);
 	[LinkName("QKeyCombination_ToInt")]
-	public static extern int32 QKeyCombination_ToInt(Self* c_this);
+	public static extern int32 QKeyCombination_ToInt(void* c_this);
+	/// Delete this object from C++ memory
+	[LinkName("QKeyCombination_Delete")]
+	public static extern void QKeyCombination_Delete(void* self);
 }

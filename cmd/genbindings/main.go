@@ -463,8 +463,8 @@ func generateClangCaches(includeFiles []string, clangBin string, cflags []string
 
 func main() {
 	clang := flag.String("clang", "clang", "Custom path to clang")
-	// outDir := flag.String("outdir", "../../", "Output directory for generated gen_** files")
-	outDir := flag.String("outdir", "/mnt/d/libqt6zig", "Output directory for generated gen_** files")
+	outDir := flag.String("outdir", "../../", "Output directory for generated gen_** files")
+	// outDir := flag.String("outdir", "/mnt/d/libqt6zig", "Output directory for generated gen_** files")
 	extraLibsDir := flag.String("extralibs", "/usr/local/src/", "Base directory to find extra library checkouts")
 
 	flag.Parse()
