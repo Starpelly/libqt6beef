@@ -6,29 +6,34 @@ public interface IQMediaTimeRange
 {
 	void* NativePtr { get; }
 }
-public class QMediaTimeRange : IQMediaTimeRange
+public struct QMediaTimeRangePtr : IQMediaTimeRange, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMediaTimeRange_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QMediaTimeRange_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMediaTimeRange_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQMediaTimeRange param1)
 	{
-		CQt.QMediaTimeRange_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QMediaTimeRange_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQMediaTimeRange other)
 	{
-		CQt.QMediaTimeRange_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QMediaTimeRange_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Detach()
@@ -36,9 +41,9 @@ public class QMediaTimeRange : IQMediaTimeRange
 		CQt.QMediaTimeRange_Detach(this.nativePtr);
 	}
 	
-	public void OperatorAssignWithQMediaTimeRangeInterval(QMediaTimeRange__Interval param1)
+	public void OperatorAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
 	{
-		CQt.QMediaTimeRange_OperatorAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QMediaTimeRange_OperatorAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public int64 EarliestTime()
@@ -76,14 +81,14 @@ public class QMediaTimeRange : IQMediaTimeRange
 		CQt.QMediaTimeRange_AddInterval(this.nativePtr, start, end);
 	}
 	
-	public void AddIntervalWithInterval(QMediaTimeRange__Interval interval)
+	public void AddIntervalWithInterval(QMediaTimeRange__IntervalPtr interval)
 	{
-		CQt.QMediaTimeRange_AddIntervalWithInterval(this.nativePtr, (interval == default) ? default : (void*)interval.NativePtr);
+		CQt.QMediaTimeRange_AddIntervalWithInterval(this.nativePtr, (interval == default || interval.NativePtr == default) ? default : interval.NativePtr);
 	}
 	
 	public void AddTimeRange(IQMediaTimeRange param1)
 	{
-		CQt.QMediaTimeRange_AddTimeRange(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QMediaTimeRange_AddTimeRange(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void RemoveInterval(int64 start, int64 end)
@@ -91,39 +96,164 @@ public class QMediaTimeRange : IQMediaTimeRange
 		CQt.QMediaTimeRange_RemoveInterval(this.nativePtr, start, end);
 	}
 	
-	public void RemoveIntervalWithInterval(QMediaTimeRange__Interval interval)
+	public void RemoveIntervalWithInterval(QMediaTimeRange__IntervalPtr interval)
 	{
-		CQt.QMediaTimeRange_RemoveIntervalWithInterval(this.nativePtr, (interval == default) ? default : (void*)interval.NativePtr);
+		CQt.QMediaTimeRange_RemoveIntervalWithInterval(this.nativePtr, (interval == default || interval.NativePtr == default) ? default : interval.NativePtr);
 	}
 	
 	public void RemoveTimeRange(IQMediaTimeRange param1)
 	{
-		CQt.QMediaTimeRange_RemoveTimeRange(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QMediaTimeRange_RemoveTimeRange(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorPlusAssign(IQMediaTimeRange param1)
 	{
-		return CQt.QMediaTimeRange_OperatorPlusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QMediaTimeRange_OperatorPlusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
-	public void* OperatorPlusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__Interval param1)
+	public void* OperatorPlusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
 	{
-		return CQt.QMediaTimeRange_OperatorPlusAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QMediaTimeRange_OperatorPlusAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMediaTimeRange param1)
 	{
-		return CQt.QMediaTimeRange_OperatorMinusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QMediaTimeRange_OperatorMinusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
-	public void* OperatorMinusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__Interval param1)
+	public void* OperatorMinusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
 	{
-		return CQt.QMediaTimeRange_OperatorMinusAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QMediaTimeRange_OperatorMinusAssignWithQMediaTimeRangeInterval(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Clear()
 	{
 		CQt.QMediaTimeRange_Clear(this.nativePtr);
+	}
+	
+}
+public class QMediaTimeRange
+{
+	public QMediaTimeRangePtr handle;
+	
+	public static implicit operator QMediaTimeRangePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QMediaTimeRangePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQMediaTimeRange param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQMediaTimeRange other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public void OperatorAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
+	{
+		this.handle.OperatorAssignWithQMediaTimeRangeInterval(param1);
+	}
+	
+	public int64 EarliestTime()
+	{
+		return this.handle.EarliestTime();
+	}
+	
+	public int64 LatestTime()
+	{
+		return this.handle.LatestTime();
+	}
+	
+	public void[] Intervals()
+	{
+		return this.handle.Intervals();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsContinuous()
+	{
+		return this.handle.IsContinuous();
+	}
+	
+	public bool Contains(int64 time)
+	{
+		return this.handle.Contains(time);
+	}
+	
+	public void AddInterval(int64 start, int64 end)
+	{
+		this.handle.AddInterval(start, end);
+	}
+	
+	public void AddIntervalWithInterval(QMediaTimeRange__IntervalPtr interval)
+	{
+		this.handle.AddIntervalWithInterval(interval);
+	}
+	
+	public void AddTimeRange(IQMediaTimeRange param1)
+	{
+		this.handle.AddTimeRange(param1);
+	}
+	
+	public void RemoveInterval(int64 start, int64 end)
+	{
+		this.handle.RemoveInterval(start, end);
+	}
+	
+	public void RemoveIntervalWithInterval(QMediaTimeRange__IntervalPtr interval)
+	{
+		this.handle.RemoveIntervalWithInterval(interval);
+	}
+	
+	public void RemoveTimeRange(IQMediaTimeRange param1)
+	{
+		this.handle.RemoveTimeRange(param1);
+	}
+	
+	public void* OperatorPlusAssign(IQMediaTimeRange param1)
+	{
+		return this.handle.OperatorPlusAssign(param1);
+	}
+	
+	public void* OperatorPlusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
+	{
+		return this.handle.OperatorPlusAssignWithQMediaTimeRangeInterval(param1);
+	}
+	
+	public void* OperatorMinusAssign(IQMediaTimeRange param1)
+	{
+		return this.handle.OperatorMinusAssign(param1);
+	}
+	
+	public void* OperatorMinusAssignWithQMediaTimeRangeInterval(QMediaTimeRange__IntervalPtr param1)
+	{
+		return this.handle.OperatorMinusAssignWithQMediaTimeRangeInterval(param1);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
 	}
 	
 }
@@ -187,17 +317,22 @@ public interface IQMediaTimeRange__Interval
 {
 	void* NativePtr { get; }
 }
-public class QMediaTimeRange__Interval : IQMediaTimeRange__Interval
+public struct QMediaTimeRange__IntervalPtr : IQMediaTimeRange__Interval, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QMediaTimeRange__Interval other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMediaTimeRange__Interval_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QMediaTimeRange__IntervalPtr other)
+	{
+		return .(CQt.QMediaTimeRange__Interval_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMediaTimeRange__Interval_Delete(this.nativePtr);
 	}
@@ -230,6 +365,56 @@ public class QMediaTimeRange__Interval : IQMediaTimeRange__Interval
 	public void Translated(int64 offset)
 	{
 		CQt.QMediaTimeRange__Interval_Translated(this.nativePtr, offset);
+	}
+	
+}
+public class QMediaTimeRange__Interval
+{
+	public QMediaTimeRange__IntervalPtr handle;
+	
+	public static implicit operator QMediaTimeRange__IntervalPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QMediaTimeRange__IntervalPtr other)
+	{
+		this.handle = QMediaTimeRange__IntervalPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 Start()
+	{
+		return this.handle.Start();
+	}
+	
+	public int64 End()
+	{
+		return this.handle.End();
+	}
+	
+	public bool Contains(int64 time)
+	{
+		return this.handle.Contains(time);
+	}
+	
+	public bool IsNormal()
+	{
+		return this.handle.IsNormal();
+	}
+	
+	public void Normalized()
+	{
+		this.handle.Normalized();
+	}
+	
+	public void Translated(int64 offset)
+	{
+		this.handle.Translated(offset);
 	}
 	
 }

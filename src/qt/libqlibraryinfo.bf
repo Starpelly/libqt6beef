@@ -25,17 +25,22 @@ public interface IQLibraryInfo
 {
 	void* NativePtr { get; }
 }
-public class QLibraryInfo : IQLibraryInfo
+public struct QLibraryInfoPtr : IQLibraryInfo, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQLibraryInfo other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLibraryInfo_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQLibraryInfo other)
+	{
+		return .(CQt.QLibraryInfo_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLibraryInfo_Delete(this.nativePtr);
 	}
@@ -57,17 +62,67 @@ public class QLibraryInfo : IQLibraryInfo
 	
 	public static libqt_string Path(int64 p)
 	{
-		return CQt.QLibraryInfo_Path(p);
+		return CQt.QLibraryInfo_Path((int64)p);
 	}
 	
 	public static libqt_string Location(int64 location)
 	{
-		return CQt.QLibraryInfo_Location(location);
+		return CQt.QLibraryInfo_Location((int64)location);
 	}
 	
 	public static libqt_string[] PlatformPluginArguments(String platformName)
 	{
 		return CQt.QLibraryInfo_PlatformPluginArguments(libqt_string(platformName));
+	}
+	
+}
+public class QLibraryInfo
+{
+	public QLibraryInfoPtr handle;
+	
+	public static implicit operator QLibraryInfoPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQLibraryInfo other)
+	{
+		this.handle = QLibraryInfoPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static char8* Build()
+	{
+		return QLibraryInfoPtr.Build();
+	}
+	
+	public static bool IsDebugBuild()
+	{
+		return QLibraryInfoPtr.IsDebugBuild();
+	}
+	
+	public static void Version()
+	{
+		QLibraryInfoPtr.Version();
+	}
+	
+	public static libqt_string Path(int64 p)
+	{
+		return QLibraryInfoPtr.Path(p);
+	}
+	
+	public static libqt_string Location(int64 location)
+	{
+		return QLibraryInfoPtr.Location(location);
+	}
+	
+	public static libqt_string[] PlatformPluginArguments(String platformName)
+	{
+		return QLibraryInfoPtr.PlatformPluginArguments(platformName);
 	}
 	
 }

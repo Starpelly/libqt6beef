@@ -6,17 +6,22 @@ public interface IQSvgGenerator
 {
 	void* NativePtr { get; }
 }
-public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
+public struct QSvgGeneratorPtr : IQSvgGenerator, IDisposable, IQPaintDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSvgGenerator_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QSvgGenerator_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSvgGenerator_Delete(this.nativePtr);
 	}
@@ -48,7 +53,7 @@ public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 	
 	public void SetSize(IQSize size)
 	{
-		CQt.QSvgGenerator_SetSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QSvgGenerator_SetSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void ViewBox()
@@ -63,12 +68,12 @@ public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 	
 	public void SetViewBox(IQRect viewBox)
 	{
-		CQt.QSvgGenerator_SetViewBox(this.nativePtr, (viewBox == default) ? default : (void*)viewBox.NativePtr);
+		CQt.QSvgGenerator_SetViewBox(this.nativePtr, (viewBox == default || viewBox.NativePtr == default) ? default : viewBox.NativePtr);
 	}
 	
 	public void SetViewBoxWithViewBox(IQRectF viewBox)
 	{
-		CQt.QSvgGenerator_SetViewBoxWithViewBox(this.nativePtr, (viewBox == default) ? default : (void*)viewBox.NativePtr);
+		CQt.QSvgGenerator_SetViewBoxWithViewBox(this.nativePtr, (viewBox == default || viewBox.NativePtr == default) ? default : viewBox.NativePtr);
 	}
 	
 	public libqt_string FileName()
@@ -88,7 +93,7 @@ public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 	
 	public void SetOutputDevice(IQIODevice outputDevice)
 	{
-		CQt.QSvgGenerator_SetOutputDevice(this.nativePtr, (outputDevice == null) ? null : (void*)outputDevice.NativePtr);
+		CQt.QSvgGenerator_SetOutputDevice(this.nativePtr, (outputDevice == default || outputDevice.NativePtr == default) ? default : outputDevice.NativePtr);
 	}
 	
 	public void SetResolution(int32 dpi)
@@ -101,17 +106,17 @@ public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 		return CQt.QSvgGenerator_Resolution(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QSvgGenerator_PaintEngine(this.nativePtr);
 	}
 	
-	public virtual int32 Metric(int64 metric)
+	public int32 Metric(int64 metric)
 	{
-		return CQt.QSvgGenerator_Metric(this.nativePtr, metric);
+		return CQt.QSvgGenerator_Metric(this.nativePtr, (int64)metric);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QPaintDevice_DevType(this.nativePtr);
 	}
@@ -184,6 +189,191 @@ public class QSvgGenerator : IQSvgGenerator, IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QSvgGenerator
+{
+	public QSvgGeneratorPtr handle;
+	
+	public static implicit operator QSvgGeneratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QSvgGeneratorPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string Title()
+	{
+		return this.handle.Title();
+	}
+	
+	public void SetTitle(String title)
+	{
+		this.handle.SetTitle(title);
+	}
+	
+	public libqt_string Description()
+	{
+		return this.handle.Description();
+	}
+	
+	public void SetDescription(String description)
+	{
+		this.handle.SetDescription(description);
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public void SetSize(IQSize size)
+	{
+		this.handle.SetSize(size);
+	}
+	
+	public void ViewBox()
+	{
+		this.handle.ViewBox();
+	}
+	
+	public void ViewBoxF()
+	{
+		this.handle.ViewBoxF();
+	}
+	
+	public void SetViewBox(IQRect viewBox)
+	{
+		this.handle.SetViewBox(viewBox);
+	}
+	
+	public void SetViewBoxWithViewBox(IQRectF viewBox)
+	{
+		this.handle.SetViewBoxWithViewBox(viewBox);
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public void SetFileName(String fileName)
+	{
+		this.handle.SetFileName(fileName);
+	}
+	
+	public void* OutputDevice()
+	{
+		return this.handle.OutputDevice();
+	}
+	
+	public void SetOutputDevice(IQIODevice outputDevice)
+	{
+		this.handle.SetOutputDevice(outputDevice);
+	}
+	
+	public void SetResolution(int32 dpi)
+	{
+		this.handle.SetResolution(dpi);
+	}
+	
+	public int32 Resolution()
+	{
+		return this.handle.Resolution();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public virtual int32 Metric(int64 metric)
+	{
+		return this.handle.Metric(metric);
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QSvgGeneratorPtr.DevicePixelRatioFScale();
 	}
 	
 }

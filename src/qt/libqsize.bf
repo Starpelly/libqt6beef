@@ -6,17 +6,22 @@ public interface IQSize
 {
 	void* NativePtr { get; }
 }
-public class QSize : IQSize
+public struct QSizePtr : IQSize, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQSize other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSize_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQSize other)
+	{
+		return .(CQt.QSize_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSize_Delete(this.nativePtr);
 	}
@@ -68,52 +73,52 @@ public class QSize : IQSize
 	
 	public void Scale(int32 w, int32 h, int64 mode)
 	{
-		CQt.QSize_Scale(this.nativePtr, w, h, mode);
+		CQt.QSize_Scale(this.nativePtr, w, h, (int64)mode);
 	}
 	
 	public void Scale2(IQSize s, int64 mode)
 	{
-		CQt.QSize_Scale2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, mode);
+		CQt.QSize_Scale2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)mode);
 	}
 	
 	public void Scaled(int32 w, int32 h, int64 mode)
 	{
-		CQt.QSize_Scaled(this.nativePtr, w, h, mode);
+		CQt.QSize_Scaled(this.nativePtr, w, h, (int64)mode);
 	}
 	
 	public void Scaled2(IQSize s, int64 mode)
 	{
-		CQt.QSize_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, mode);
+		CQt.QSize_Scaled2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)mode);
 	}
 	
 	public void ExpandedTo(IQSize param1)
 	{
-		CQt.QSize_ExpandedTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QSize_ExpandedTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void BoundedTo(IQSize param1)
 	{
-		CQt.QSize_BoundedTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QSize_BoundedTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void GrownBy(IQMargins m)
 	{
-		CQt.QSize_GrownBy(this.nativePtr, (m == default) ? default : (void)m.NativePtr);
+		CQt.QSize_GrownBy(this.nativePtr, default);
 	}
 	
 	public void ShrunkBy(IQMargins m)
 	{
-		CQt.QSize_ShrunkBy(this.nativePtr, (m == default) ? default : (void)m.NativePtr);
+		CQt.QSize_ShrunkBy(this.nativePtr, default);
 	}
 	
 	public void* OperatorPlusAssign(IQSize param1)
 	{
-		return CQt.QSize_OperatorPlusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QSize_OperatorPlusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQSize param1)
 	{
-		return CQt.QSize_OperatorMinusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QSize_OperatorMinusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(double c)
@@ -129,6 +134,136 @@ public class QSize : IQSize
 	public void ToSizeF()
 	{
 		CQt.QSize_ToSizeF(this.nativePtr);
+	}
+	
+}
+public class QSize
+{
+	public QSizePtr handle;
+	
+	public static implicit operator QSizePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQSize other)
+	{
+		this.handle = QSizePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void SetWidth(int32 w)
+	{
+		this.handle.SetWidth(w);
+	}
+	
+	public void SetHeight(int32 h)
+	{
+		this.handle.SetHeight(h);
+	}
+	
+	public void Transpose()
+	{
+		this.handle.Transpose();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void Scale(int32 w, int32 h, int64 mode)
+	{
+		this.handle.Scale(w, h, mode);
+	}
+	
+	public void Scale2(IQSize s, int64 mode)
+	{
+		this.handle.Scale2(s, mode);
+	}
+	
+	public void Scaled(int32 w, int32 h, int64 mode)
+	{
+		this.handle.Scaled(w, h, mode);
+	}
+	
+	public void Scaled2(IQSize s, int64 mode)
+	{
+		this.handle.Scaled2(s, mode);
+	}
+	
+	public void ExpandedTo(IQSize param1)
+	{
+		this.handle.ExpandedTo(param1);
+	}
+	
+	public void BoundedTo(IQSize param1)
+	{
+		this.handle.BoundedTo(param1);
+	}
+	
+	public void GrownBy(IQMargins m)
+	{
+		this.handle.GrownBy(default);
+	}
+	
+	public void ShrunkBy(IQMargins m)
+	{
+		this.handle.ShrunkBy(default);
+	}
+	
+	public void* OperatorPlusAssign(IQSize param1)
+	{
+		return this.handle.OperatorPlusAssign(param1);
+	}
+	
+	public void* OperatorMinusAssign(IQSize param1)
+	{
+		return this.handle.OperatorMinusAssign(param1);
+	}
+	
+	public void* OperatorMultiplyAssign(double c)
+	{
+		return this.handle.OperatorMultiplyAssign(c);
+	}
+	
+	public void* OperatorDivideAssign(double c)
+	{
+		return this.handle.OperatorDivideAssign(c);
+	}
+	
+	public void ToSizeF()
+	{
+		this.handle.ToSizeF();
 	}
 	
 }
@@ -196,17 +331,22 @@ public interface IQSizeF
 {
 	void* NativePtr { get; }
 }
-public class QSizeF : IQSizeF
+public struct QSizeFPtr : IQSizeF, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQSizeF other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSizeF_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQSizeF other)
+	{
+		return .(CQt.QSizeF_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSizeF_Delete(this.nativePtr);
 	}
@@ -258,52 +398,52 @@ public class QSizeF : IQSizeF
 	
 	public void Scale(double w, double h, int64 mode)
 	{
-		CQt.QSizeF_Scale(this.nativePtr, w, h, mode);
+		CQt.QSizeF_Scale(this.nativePtr, w, h, (int64)mode);
 	}
 	
 	public void Scale2(IQSizeF s, int64 mode)
 	{
-		CQt.QSizeF_Scale2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, mode);
+		CQt.QSizeF_Scale2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)mode);
 	}
 	
 	public void Scaled(double w, double h, int64 mode)
 	{
-		CQt.QSizeF_Scaled(this.nativePtr, w, h, mode);
+		CQt.QSizeF_Scaled(this.nativePtr, w, h, (int64)mode);
 	}
 	
 	public void Scaled2(IQSizeF s, int64 mode)
 	{
-		CQt.QSizeF_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, mode);
+		CQt.QSizeF_Scaled2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)mode);
 	}
 	
 	public void ExpandedTo(IQSizeF param1)
 	{
-		CQt.QSizeF_ExpandedTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QSizeF_ExpandedTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void BoundedTo(IQSizeF param1)
 	{
-		CQt.QSizeF_BoundedTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QSizeF_BoundedTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void GrownBy(IQMarginsF m)
 	{
-		CQt.QSizeF_GrownBy(this.nativePtr, (m == default) ? default : (void)m.NativePtr);
+		CQt.QSizeF_GrownBy(this.nativePtr, default);
 	}
 	
 	public void ShrunkBy(IQMarginsF m)
 	{
-		CQt.QSizeF_ShrunkBy(this.nativePtr, (m == default) ? default : (void)m.NativePtr);
+		CQt.QSizeF_ShrunkBy(this.nativePtr, default);
 	}
 	
 	public void* OperatorPlusAssign(IQSizeF param1)
 	{
-		return CQt.QSizeF_OperatorPlusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QSizeF_OperatorPlusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQSizeF param1)
 	{
-		return CQt.QSizeF_OperatorMinusAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QSizeF_OperatorMinusAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(double c)
@@ -319,6 +459,136 @@ public class QSizeF : IQSizeF
 	public void ToSize()
 	{
 		CQt.QSizeF_ToSize(this.nativePtr);
+	}
+	
+}
+public class QSizeF
+{
+	public QSizeFPtr handle;
+	
+	public static implicit operator QSizeFPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQSizeF other)
+	{
+		this.handle = QSizeFPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public double Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public double Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void SetWidth(double w)
+	{
+		this.handle.SetWidth(w);
+	}
+	
+	public void SetHeight(double h)
+	{
+		this.handle.SetHeight(h);
+	}
+	
+	public void Transpose()
+	{
+		this.handle.Transpose();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void Scale(double w, double h, int64 mode)
+	{
+		this.handle.Scale(w, h, mode);
+	}
+	
+	public void Scale2(IQSizeF s, int64 mode)
+	{
+		this.handle.Scale2(s, mode);
+	}
+	
+	public void Scaled(double w, double h, int64 mode)
+	{
+		this.handle.Scaled(w, h, mode);
+	}
+	
+	public void Scaled2(IQSizeF s, int64 mode)
+	{
+		this.handle.Scaled2(s, mode);
+	}
+	
+	public void ExpandedTo(IQSizeF param1)
+	{
+		this.handle.ExpandedTo(param1);
+	}
+	
+	public void BoundedTo(IQSizeF param1)
+	{
+		this.handle.BoundedTo(param1);
+	}
+	
+	public void GrownBy(IQMarginsF m)
+	{
+		this.handle.GrownBy(default);
+	}
+	
+	public void ShrunkBy(IQMarginsF m)
+	{
+		this.handle.ShrunkBy(default);
+	}
+	
+	public void* OperatorPlusAssign(IQSizeF param1)
+	{
+		return this.handle.OperatorPlusAssign(param1);
+	}
+	
+	public void* OperatorMinusAssign(IQSizeF param1)
+	{
+		return this.handle.OperatorMinusAssign(param1);
+	}
+	
+	public void* OperatorMultiplyAssign(double c)
+	{
+		return this.handle.OperatorMultiplyAssign(c);
+	}
+	
+	public void* OperatorDivideAssign(double c)
+	{
+		return this.handle.OperatorDivideAssign(c);
+	}
+	
+	public void ToSize()
+	{
+		this.handle.ToSize();
 	}
 	
 }

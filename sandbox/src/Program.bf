@@ -9,26 +9,47 @@ class TestWindow : QMainWindow
 	QMenuBar m_menubar ~ delete _;
 	QPushButton m_button ~ delete _;
 
+	// Bepis m_bepis ~ delete _;
+
 	public this(IQWidget parent) : base(parent)
 	{
 		Resize(1280, 720);
 
-		m_menubar = new QMenuBar(this);
-		m_menubar.AddActionWithText("File");
-		m_menubar.AddActionWithText("Edit");
-		m_menubar.AddActionWithText("View");
-		m_menubar.AddActionWithText("Build");
-		m_menubar.AddActionWithText("Debug");
-		m_menubar.AddActionWithText("Test");
-		m_menubar.AddActionWithText("Window");
-		m_menubar.AddActionWithText("Help");
+		// Menubar
+		{
+			m_menubar = new QMenuBar(this);
 
-		SetMenuBar(m_menubar);
+			// File
+			{
+				let file = QMenuPtr(m_menubar.AddMenuWithTitle("File"));
+				file.AddMenuWithTitle("Quit");
+			}
+
+			m_menubar.AddMenuWithTitle("Edit");
+			m_menubar.AddMenuWithTitle("View");
+			m_menubar.AddMenuWithTitle("Build");
+			m_menubar.AddMenuWithTitle("Debug");
+			m_menubar.AddMenuWithTitle("Test");
+			m_menubar.AddMenuWithTitle("Window");
+
+			// Help
+			{
+				QMenuPtr(m_menubar.AddMenuWithTitle("Help"));
+			}
+
+			SetMenuBar(m_menubar);
+		}
 
 		m_button = new QPushButton(this);
-		m_button.SetText("Hello!");
+		m_button.SetText("Play Animation");
 
-		m_button.SetGeometry(32, 32, 64, 32);
+		m_button.Move(32, 32);
+
+		/*
+		m_bepis = new Bepis(this);
+		m_bepis.Resize(200, 300);
+		m_bepis.Move(32, 128);
+		*/
 	}
 
 	public void Init()
@@ -36,6 +57,34 @@ class TestWindow : QMainWindow
 		// QMessageBox.AboutQt(this);
 	}
 }
+/*
+class Bepis : QWidget
+{
+	public this(IQWidget parent) : base(parent)
+	{
+
+	}
+
+	public override void PaintEvent(IQPaintEvent event)
+	{
+		base.PaintEvent(event);
+
+		let painter = scope QPainter();
+		let pen = scope QPen();
+		let brush = scope QBrush();
+		let color = scope QColor(null);
+		brush.SetColor(color);
+
+		painter.SetPenWithPen(pen);
+		painter.SetBrush(brush);
+
+		let rect = scope QRectF(null);
+		rect.SetWidth(100);
+		rect.SetHeight(100);
+		painter.DrawRect(rect);
+	}
+}
+*/
 
 class Program
 {

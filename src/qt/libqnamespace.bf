@@ -1573,18 +1573,41 @@ public interface IDisambiguated_t
 {
 	void* NativePtr { get; }
 }
-public class Disambiguated_t : IDisambiguated_t
+public struct Disambiguated_tPtr : IDisambiguated_t, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(Disambiguated_t other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.Disambiguated_t_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(Disambiguated_tPtr other)
+	{
+		return .(CQt.Disambiguated_t_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.Disambiguated_t_Delete(this.nativePtr);
+	}
+}
+public class Disambiguated_t
+{
+	public Disambiguated_tPtr handle;
+	
+	public static implicit operator Disambiguated_tPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(Disambiguated_tPtr other)
+	{
+		this.handle = Disambiguated_tPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.Disambiguated_t_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt
@@ -1605,24 +1628,54 @@ public interface IQInternal
 {
 	void* NativePtr { get; }
 }
-public class QInternal : IQInternal
+public struct QInternalPtr : IQInternal, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQInternal other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QInternal_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQInternal other)
+	{
+		return .(CQt.QInternal_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QInternal_Delete(this.nativePtr);
 	}
 	
-	public static bool ActivateCallbacks(int64 param1, void** param2)
+	public static bool ActivateCallbacks(int64 param1, void* param2)
 	{
-		return CQt.QInternal_ActivateCallbacks(param1, param2);
+		return CQt.QInternal_ActivateCallbacks((int64)param1, param2);
+	}
+	
+}
+public class QInternal
+{
+	public QInternalPtr handle;
+	
+	public static implicit operator QInternalPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQInternal other)
+	{
+		this.handle = QInternalPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static bool ActivateCallbacks(int64 param1, void* param2)
+	{
+		return QInternalPtr.ActivateCallbacks(param1, param2);
 	}
 	
 }
@@ -1642,17 +1695,22 @@ public interface IQKeyCombination
 {
 	void* NativePtr { get; }
 }
-public class QKeyCombination : IQKeyCombination
+public struct QKeyCombinationPtr : IQKeyCombination, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQKeyCombination other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QKeyCombination_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQKeyCombination other)
+	{
+		return .(CQt.QKeyCombination_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QKeyCombination_Delete(this.nativePtr);
 	}
@@ -1680,6 +1738,51 @@ public class QKeyCombination : IQKeyCombination
 	public int32 ToInt()
 	{
 		return CQt.QKeyCombination_ToInt(this.nativePtr);
+	}
+	
+}
+public class QKeyCombination
+{
+	public QKeyCombinationPtr handle;
+	
+	public static implicit operator QKeyCombinationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQKeyCombination other)
+	{
+		this.handle = QKeyCombinationPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 KeyboardModifiers()
+	{
+		return this.handle.KeyboardModifiers();
+	}
+	
+	public int64 Key()
+	{
+		return this.handle.Key();
+	}
+	
+	public static void FromCombined(int32 combined)
+	{
+		QKeyCombinationPtr.FromCombined(combined);
+	}
+	
+	public int32 ToCombined()
+	{
+		return this.handle.ToCombined();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
 	}
 	
 }

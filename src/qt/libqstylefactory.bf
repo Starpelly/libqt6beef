@@ -6,17 +6,22 @@ public interface IQStyleFactory
 {
 	void* NativePtr { get; }
 }
-public class QStyleFactory : IQStyleFactory
+public struct QStyleFactoryPtr : IQStyleFactory, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQStyleFactory other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStyleFactory_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQStyleFactory other)
+	{
+		return .(CQt.QStyleFactory_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStyleFactory_Delete(this.nativePtr);
 	}
@@ -29,6 +34,36 @@ public class QStyleFactory : IQStyleFactory
 	public static void* Create(String param1)
 	{
 		return CQt.QStyleFactory_Create(libqt_string(param1));
+	}
+	
+}
+public class QStyleFactory
+{
+	public QStyleFactoryPtr handle;
+	
+	public static implicit operator QStyleFactoryPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQStyleFactory other)
+	{
+		this.handle = QStyleFactoryPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string[] Keys()
+	{
+		return QStyleFactoryPtr.Keys();
+	}
+	
+	public static void* Create(String param1)
+	{
+		return QStyleFactoryPtr.Create(param1);
 	}
 	
 }

@@ -13,39 +13,44 @@ public interface IQAudioDevice
 {
 	void* NativePtr { get; }
 }
-public class QAudioDevice : IQAudioDevice
+public struct QAudioDevicePtr : IQAudioDevice, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAudioDevice_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QAudioDevice_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAudioDevice_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQAudioDevice other)
 	{
-		CQt.QAudioDevice_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QAudioDevice_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorAssign(IQAudioDevice other)
 	{
-		CQt.QAudioDevice_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QAudioDevice_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQAudioDevice other)
 	{
-		return CQt.QAudioDevice_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QAudioDevice_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQAudioDevice other)
 	{
-		return CQt.QAudioDevice_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QAudioDevice_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -75,7 +80,7 @@ public class QAudioDevice : IQAudioDevice
 	
 	public bool IsFormatSupported(IQAudioFormat format)
 	{
-		return CQt.QAudioDevice_IsFormatSupported(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QAudioDevice_IsFormatSupported(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void PreferredFormat()
@@ -111,6 +116,111 @@ public class QAudioDevice : IQAudioDevice
 	public int64 ChannelConfiguration()
 	{
 		return CQt.QAudioDevice_ChannelConfiguration(this.nativePtr);
+	}
+	
+}
+public class QAudioDevice
+{
+	public QAudioDevicePtr handle;
+	
+	public static implicit operator QAudioDevicePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QAudioDevicePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQAudioDevice other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void OperatorAssign(IQAudioDevice other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool OperatorEqual(IQAudioDevice other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQAudioDevice other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public libqt_string Id()
+	{
+		return this.handle.Id();
+	}
+	
+	public libqt_string Description()
+	{
+		return this.handle.Description();
+	}
+	
+	public bool IsDefault()
+	{
+		return this.handle.IsDefault();
+	}
+	
+	public int64 Mode()
+	{
+		return this.handle.Mode();
+	}
+	
+	public bool IsFormatSupported(IQAudioFormat format)
+	{
+		return this.handle.IsFormatSupported(format);
+	}
+	
+	public void PreferredFormat()
+	{
+		this.handle.PreferredFormat();
+	}
+	
+	public int32 MinimumSampleRate()
+	{
+		return this.handle.MinimumSampleRate();
+	}
+	
+	public int32 MaximumSampleRate()
+	{
+		return this.handle.MaximumSampleRate();
+	}
+	
+	public int32 MinimumChannelCount()
+	{
+		return this.handle.MinimumChannelCount();
+	}
+	
+	public int32 MaximumChannelCount()
+	{
+		return this.handle.MaximumChannelCount();
+	}
+	
+	public int64[] SupportedSampleFormats()
+	{
+		return this.handle.SupportedSampleFormats();
+	}
+	
+	public int64 ChannelConfiguration()
+	{
+		return this.handle.ChannelConfiguration();
 	}
 	
 }

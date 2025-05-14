@@ -32,24 +32,29 @@ public interface IQCborStreamReader
 {
 	void* NativePtr { get; }
 }
-public class QCborStreamReader : IQCborStreamReader
+public struct QCborStreamReaderPtr : IQCborStreamReader, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborStreamReader_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCborStreamReader_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborStreamReader_Delete(this.nativePtr);
 	}
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QCborStreamReader_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QCborStreamReader_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -194,7 +199,7 @@ public class QCborStreamReader : IQCborStreamReader
 	
 	public bool IsSimpleTypeWithSt(void st)
 	{
-		return CQt.QCborStreamReader_IsSimpleTypeWithSt(this.nativePtr, st);
+		return CQt.QCborStreamReader_IsSimpleTypeWithSt(this.nativePtr, default);
 	}
 	
 	public bool IsFalse()
@@ -295,6 +300,276 @@ public class QCborStreamReader : IQCborStreamReader
 	public bool Next1(int32 maxRecursion)
 	{
 		return CQt.QCborStreamReader_Next1(this.nativePtr, maxRecursion);
+	}
+	
+}
+public class QCborStreamReader
+{
+	public QCborStreamReaderPtr handle;
+	
+	public static implicit operator QCborStreamReaderPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCborStreamReaderPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void AddData(String data)
+	{
+		this.handle.AddData(data);
+	}
+	
+	public void AddData2(char8* data, int32 lenVal)
+	{
+		this.handle.AddData2(data, lenVal);
+	}
+	
+	public void AddData3(uint8* data, int32 lenVal)
+	{
+		this.handle.AddData3(data, lenVal);
+	}
+	
+	public void Reparse()
+	{
+		this.handle.Reparse();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
+	}
+	
+	public void LastError()
+	{
+		this.handle.LastError();
+	}
+	
+	public int64 CurrentOffset()
+	{
+		return this.handle.CurrentOffset();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 ContainerDepth()
+	{
+		return this.handle.ContainerDepth();
+	}
+	
+	public int64 ParentContainerType()
+	{
+		return this.handle.ParentContainerType();
+	}
+	
+	public bool HasNext()
+	{
+		return this.handle.HasNext();
+	}
+	
+	public bool Next()
+	{
+		return this.handle.Next();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsUnsignedInteger()
+	{
+		return this.handle.IsUnsignedInteger();
+	}
+	
+	public bool IsNegativeInteger()
+	{
+		return this.handle.IsNegativeInteger();
+	}
+	
+	public bool IsInteger()
+	{
+		return this.handle.IsInteger();
+	}
+	
+	public bool IsByteArray()
+	{
+		return this.handle.IsByteArray();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsMap()
+	{
+		return this.handle.IsMap();
+	}
+	
+	public bool IsTag()
+	{
+		return this.handle.IsTag();
+	}
+	
+	public bool IsSimpleType()
+	{
+		return this.handle.IsSimpleType();
+	}
+	
+	public bool IsFloat16()
+	{
+		return this.handle.IsFloat16();
+	}
+	
+	public bool IsFloat()
+	{
+		return this.handle.IsFloat();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsInvalid()
+	{
+		return this.handle.IsInvalid();
+	}
+	
+	public bool IsSimpleTypeWithSt(void st)
+	{
+		return this.handle.IsSimpleTypeWithSt(default);
+	}
+	
+	public bool IsFalse()
+	{
+		return this.handle.IsFalse();
+	}
+	
+	public bool IsTrue()
+	{
+		return this.handle.IsTrue();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool IsLengthKnown()
+	{
+		return this.handle.IsLengthKnown();
+	}
+	
+	public uint64 Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public bool IsContainer()
+	{
+		return this.handle.IsContainer();
+	}
+	
+	public bool EnterContainer()
+	{
+		return this.handle.EnterContainer();
+	}
+	
+	public bool LeaveContainer()
+	{
+		return this.handle.LeaveContainer();
+	}
+	
+	public int32 CurrentStringChunkSize()
+	{
+		return this.handle.CurrentStringChunkSize();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public void ToTag()
+	{
+		this.handle.ToTag();
+	}
+	
+	public uint64 ToUnsignedInteger()
+	{
+		return this.handle.ToUnsignedInteger();
+	}
+	
+	public void ToNegativeInteger()
+	{
+		this.handle.ToNegativeInteger();
+	}
+	
+	public void ToSimpleType()
+	{
+		this.handle.ToSimpleType();
+	}
+	
+	public float ToFloat()
+	{
+		return this.handle.ToFloat();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public bool Next1(int32 maxRecursion)
+	{
+		return this.handle.Next1(maxRecursion);
 	}
 	
 }

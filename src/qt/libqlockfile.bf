@@ -14,17 +14,22 @@ public interface IQLockFile
 {
 	void* NativePtr { get; }
 }
-public class QLockFile : IQLockFile
+public struct QLockFilePtr : IQLockFile, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(String fileName)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLockFile_new(libqt_string(fileName));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(String fileName)
+	{
+		return .(CQt.QLockFile_new(libqt_string(fileName)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLockFile_Delete(this.nativePtr);
 	}
@@ -77,6 +82,76 @@ public class QLockFile : IQLockFile
 	public bool TryLock1(int32 timeout)
 	{
 		return CQt.QLockFile_TryLock1(this.nativePtr, timeout);
+	}
+	
+}
+public class QLockFile
+{
+	public QLockFilePtr handle;
+	
+	public static implicit operator QLockFilePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(String fileName)
+	{
+		this.handle = QLockFilePtr.New(fileName);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public bool Lock()
+	{
+		return this.handle.Lock();
+	}
+	
+	public bool TryLock()
+	{
+		return this.handle.TryLock();
+	}
+	
+	public void Unlock()
+	{
+		this.handle.Unlock();
+	}
+	
+	public void SetStaleLockTime(int32 staleLockTime)
+	{
+		this.handle.SetStaleLockTime(staleLockTime);
+	}
+	
+	public int32 StaleLockTime()
+	{
+		return this.handle.StaleLockTime();
+	}
+	
+	public bool IsLocked()
+	{
+		return this.handle.IsLocked();
+	}
+	
+	public bool RemoveStaleLockFile()
+	{
+		return this.handle.RemoveStaleLockFile();
+	}
+	
+	public int64 Error()
+	{
+		return this.handle.Error();
+	}
+	
+	public bool TryLock1(int32 timeout)
+	{
+		return this.handle.TryLock1(timeout);
 	}
 	
 }

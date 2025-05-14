@@ -6,17 +6,22 @@ public interface IQRgba64
 {
 	void* NativePtr { get; }
 }
-public class QRgba64 : IQRgba64
+public struct QRgba64Ptr : IQRgba64, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRgba64_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRgba64_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRgba64_Delete(this.nativePtr);
 	}
@@ -139,6 +144,146 @@ public class QRgba64 : IQRgba64
 	public void OperatorAssign(uint64 _rgba)
 	{
 		CQt.QRgba64_OperatorAssign(this.nativePtr, _rgba);
+	}
+	
+}
+public class QRgba64
+{
+	public QRgba64Ptr handle;
+	
+	public static implicit operator QRgba64Ptr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRgba64Ptr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void FromRgba64(uint64 c)
+	{
+		QRgba64Ptr.FromRgba64(c);
+	}
+	
+	public static void FromRgba642(uint16 red, uint16 green, uint16 blue, uint16 alpha)
+	{
+		QRgba64Ptr.FromRgba642(red, green, blue, alpha);
+	}
+	
+	public static void FromRgba(uint8 red, uint8 green, uint8 blue, uint8 alpha)
+	{
+		QRgba64Ptr.FromRgba(red, green, blue, alpha);
+	}
+	
+	public static void FromArgb32(uint32 rgb)
+	{
+		QRgba64Ptr.FromArgb32(rgb);
+	}
+	
+	public bool IsOpaque()
+	{
+		return this.handle.IsOpaque();
+	}
+	
+	public bool IsTransparent()
+	{
+		return this.handle.IsTransparent();
+	}
+	
+	public uint16 Red()
+	{
+		return this.handle.Red();
+	}
+	
+	public uint16 Green()
+	{
+		return this.handle.Green();
+	}
+	
+	public uint16 Blue()
+	{
+		return this.handle.Blue();
+	}
+	
+	public uint16 Alpha()
+	{
+		return this.handle.Alpha();
+	}
+	
+	public void SetRed(uint16 _red)
+	{
+		this.handle.SetRed(_red);
+	}
+	
+	public void SetGreen(uint16 _green)
+	{
+		this.handle.SetGreen(_green);
+	}
+	
+	public void SetBlue(uint16 _blue)
+	{
+		this.handle.SetBlue(_blue);
+	}
+	
+	public void SetAlpha(uint16 _alpha)
+	{
+		this.handle.SetAlpha(_alpha);
+	}
+	
+	public uint8 Red8()
+	{
+		return this.handle.Red8();
+	}
+	
+	public uint8 Green8()
+	{
+		return this.handle.Green8();
+	}
+	
+	public uint8 Blue8()
+	{
+		return this.handle.Blue8();
+	}
+	
+	public uint8 Alpha8()
+	{
+		return this.handle.Alpha8();
+	}
+	
+	public uint32 ToArgb32()
+	{
+		return this.handle.ToArgb32();
+	}
+	
+	public uint16 ToRgb16()
+	{
+		return this.handle.ToRgb16();
+	}
+	
+	public void Premultiplied()
+	{
+		this.handle.Premultiplied();
+	}
+	
+	public void Unpremultiplied()
+	{
+		this.handle.Unpremultiplied();
+	}
+	
+	public uint64 ToUnsignedLongLong()
+	{
+		return this.handle.ToUnsignedLongLong();
+	}
+	
+	public void OperatorAssign(uint64 _rgba)
+	{
+		this.handle.OperatorAssign(_rgba);
 	}
 	
 }

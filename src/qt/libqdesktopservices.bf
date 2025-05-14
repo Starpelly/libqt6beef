@@ -6,34 +6,74 @@ public interface IQDesktopServices
 {
 	void* NativePtr { get; }
 }
-public class QDesktopServices : IQDesktopServices
+public struct QDesktopServicesPtr : IQDesktopServices, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQDesktopServices other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDesktopServices_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQDesktopServices other)
+	{
+		return .(CQt.QDesktopServices_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDesktopServices_Delete(this.nativePtr);
 	}
 	
 	public static bool OpenUrl(IQUrl url)
 	{
-		return CQt.QDesktopServices_OpenUrl((url == default) ? default : (void*)url.NativePtr);
+		return CQt.QDesktopServices_OpenUrl((url == default || url.NativePtr == default) ? default : url.NativePtr);
 	}
 	
 	public static void SetUrlHandler(String scheme, IQObject receiver, char8* method)
 	{
-		CQt.QDesktopServices_SetUrlHandler(libqt_string(scheme), (receiver == null) ? null : (void*)receiver.NativePtr, method);
+		CQt.QDesktopServices_SetUrlHandler(libqt_string(scheme), (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, method);
 	}
 	
 	public static void UnsetUrlHandler(String scheme)
 	{
 		CQt.QDesktopServices_UnsetUrlHandler(libqt_string(scheme));
+	}
+	
+}
+public class QDesktopServices
+{
+	public QDesktopServicesPtr handle;
+	
+	public static implicit operator QDesktopServicesPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQDesktopServices other)
+	{
+		this.handle = QDesktopServicesPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static bool OpenUrl(IQUrl url)
+	{
+		return QDesktopServicesPtr.OpenUrl(url);
+	}
+	
+	public static void SetUrlHandler(String scheme, IQObject receiver, char8* method)
+	{
+		QDesktopServicesPtr.SetUrlHandler(scheme, receiver, method);
+	}
+	
+	public static void UnsetUrlHandler(String scheme)
+	{
+		QDesktopServicesPtr.UnsetUrlHandler(scheme);
 	}
 	
 }

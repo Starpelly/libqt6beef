@@ -6,29 +6,64 @@ public interface IQItemEditorCreatorBase
 {
 	void* NativePtr { get; }
 }
-public class QItemEditorCreatorBase : IQItemEditorCreatorBase
+public struct QItemEditorCreatorBasePtr : IQItemEditorCreatorBase, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QItemEditorCreatorBase_Delete(this.nativePtr);
 	}
 	
-	public virtual void* CreateWidget(IQWidget parent)
+	public void* CreateWidget(IQWidget parent)
 	{
-		return CQt.QItemEditorCreatorBase_CreateWidget(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		return CQt.QItemEditorCreatorBase_CreateWidget(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual libqt_string ValuePropertyName()
+	public libqt_string ValuePropertyName()
 	{
 		return CQt.QItemEditorCreatorBase_ValuePropertyName(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQItemEditorCreatorBase param1)
 	{
-		CQt.QItemEditorCreatorBase_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QItemEditorCreatorBase_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QItemEditorCreatorBase
+{
+	public QItemEditorCreatorBasePtr handle;
+	
+	public static implicit operator QItemEditorCreatorBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* CreateWidget(IQWidget parent)
+	{
+		return this.handle.CreateWidget(parent);
+	}
+	
+	public virtual libqt_string ValuePropertyName()
+	{
+		return this.handle.ValuePropertyName();
+	}
+	
+	public void OperatorAssign(IQItemEditorCreatorBase param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -48,34 +83,39 @@ public interface IQItemEditorFactory
 {
 	void* NativePtr { get; }
 }
-public class QItemEditorFactory : IQItemEditorFactory
+public struct QItemEditorFactoryPtr : IQItemEditorFactory, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QItemEditorFactory_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QItemEditorFactory_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QItemEditorFactory_Delete(this.nativePtr);
 	}
 	
-	public virtual void* CreateEditor(int32 userType, IQWidget parent)
+	public void* CreateEditor(int32 userType, IQWidget parent)
 	{
-		return CQt.QItemEditorFactory_CreateEditor(this.nativePtr, userType, (parent == null) ? null : (void*)parent.NativePtr);
+		return CQt.QItemEditorFactory_CreateEditor(this.nativePtr, userType, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual libqt_string ValuePropertyName(int32 userType)
+	public libqt_string ValuePropertyName(int32 userType)
 	{
 		return CQt.QItemEditorFactory_ValuePropertyName(this.nativePtr, userType);
 	}
 	
 	public void RegisterEditor(int32 userType, IQItemEditorCreatorBase creator)
 	{
-		CQt.QItemEditorFactory_RegisterEditor(this.nativePtr, userType, (creator == null) ? null : (void*)creator.NativePtr);
+		CQt.QItemEditorFactory_RegisterEditor(this.nativePtr, userType, (creator == default || creator.NativePtr == default) ? default : creator.NativePtr);
 	}
 	
 	public static void* DefaultFactory()
@@ -85,7 +125,52 @@ public class QItemEditorFactory : IQItemEditorFactory
 	
 	public static void SetDefaultFactory(IQItemEditorFactory factory)
 	{
-		CQt.QItemEditorFactory_SetDefaultFactory((factory == null) ? null : (void*)factory.NativePtr);
+		CQt.QItemEditorFactory_SetDefaultFactory((factory == default || factory.NativePtr == default) ? default : factory.NativePtr);
+	}
+	
+}
+public class QItemEditorFactory
+{
+	public QItemEditorFactoryPtr handle;
+	
+	public static implicit operator QItemEditorFactoryPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QItemEditorFactoryPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* CreateEditor(int32 userType, IQWidget parent)
+	{
+		return this.handle.CreateEditor(userType, parent);
+	}
+	
+	public virtual libqt_string ValuePropertyName(int32 userType)
+	{
+		return this.handle.ValuePropertyName(userType);
+	}
+	
+	public void RegisterEditor(int32 userType, IQItemEditorCreatorBase creator)
+	{
+		this.handle.RegisterEditor(userType, creator);
+	}
+	
+	public static void* DefaultFactory()
+	{
+		return QItemEditorFactoryPtr.DefaultFactory();
+	}
+	
+	public static void SetDefaultFactory(IQItemEditorFactory factory)
+	{
+		QItemEditorFactoryPtr.SetDefaultFactory(factory);
 	}
 	
 }

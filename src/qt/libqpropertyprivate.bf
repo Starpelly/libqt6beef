@@ -6,18 +6,41 @@ public interface IQUntypedPropertyData
 {
 	void* NativePtr { get; }
 }
-public class QUntypedPropertyData : IQUntypedPropertyData
+public struct QUntypedPropertyDataPtr : IQUntypedPropertyData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQUntypedPropertyData other)
+	{
+		return .(CQt.QUntypedPropertyData_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QUntypedPropertyData_Delete(this.nativePtr);
+	}
+}
+public class QUntypedPropertyData
+{
+	public QUntypedPropertyDataPtr handle;
+	
+	public static implicit operator QUntypedPropertyDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQUntypedPropertyData other)
 	{
-		this.nativePtr = CQt.QUntypedPropertyData_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QUntypedPropertyDataPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QUntypedPropertyData_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt
@@ -34,10 +57,24 @@ public interface IQPropertyProxyBindingData
 {
 	void* NativePtr { get; }
 }
-public class QPropertyProxyBindingData : IQPropertyProxyBindingData
+public struct QPropertyProxyBindingDataPtr : IQPropertyProxyBindingData
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
+	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+}
+public class QPropertyProxyBindingData
+{
+	public QPropertyProxyBindingDataPtr handle;
+	
+	public static implicit operator QPropertyProxyBindingDataPtr(Self self)
+	{
+		return self.handle;
+	}
 }
 extension CQt
 {

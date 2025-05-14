@@ -6,17 +6,22 @@ public interface IQGenericPluginFactory
 {
 	void* NativePtr { get; }
 }
-public class QGenericPluginFactory : IQGenericPluginFactory
+public struct QGenericPluginFactoryPtr : IQGenericPluginFactory, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQGenericPluginFactory other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGenericPluginFactory_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQGenericPluginFactory other)
+	{
+		return .(CQt.QGenericPluginFactory_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGenericPluginFactory_Delete(this.nativePtr);
 	}
@@ -29,6 +34,36 @@ public class QGenericPluginFactory : IQGenericPluginFactory
 	public static void* Create(String param1, String param2)
 	{
 		return CQt.QGenericPluginFactory_Create(libqt_string(param1), libqt_string(param2));
+	}
+	
+}
+public class QGenericPluginFactory
+{
+	public QGenericPluginFactoryPtr handle;
+	
+	public static implicit operator QGenericPluginFactoryPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQGenericPluginFactory other)
+	{
+		this.handle = QGenericPluginFactoryPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string[] Keys()
+	{
+		return QGenericPluginFactoryPtr.Keys();
+	}
+	
+	public static void* Create(String param1, String param2)
+	{
+		return QGenericPluginFactoryPtr.Create(param1, param2);
 	}
 	
 }

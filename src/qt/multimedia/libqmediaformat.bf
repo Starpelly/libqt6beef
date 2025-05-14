@@ -71,29 +71,34 @@ public interface IQMediaFormat
 {
 	void* NativePtr { get; }
 }
-public class QMediaFormat : IQMediaFormat
+public struct QMediaFormatPtr : IQMediaFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMediaFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QMediaFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMediaFormat_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQMediaFormat other)
 	{
-		CQt.QMediaFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QMediaFormat_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQMediaFormat other)
 	{
-		CQt.QMediaFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QMediaFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 FileFormat()
@@ -103,12 +108,12 @@ public class QMediaFormat : IQMediaFormat
 	
 	public void SetFileFormat(int64 f)
 	{
-		CQt.QMediaFormat_SetFileFormat(this.nativePtr, f);
+		CQt.QMediaFormat_SetFileFormat(this.nativePtr, (int64)f);
 	}
 	
 	public void SetVideoCodec(int64 codec)
 	{
-		CQt.QMediaFormat_SetVideoCodec(this.nativePtr, codec);
+		CQt.QMediaFormat_SetVideoCodec(this.nativePtr, (int64)codec);
 	}
 	
 	public int64 VideoCodec()
@@ -118,7 +123,7 @@ public class QMediaFormat : IQMediaFormat
 	
 	public void SetAudioCodec(int64 codec)
 	{
-		CQt.QMediaFormat_SetAudioCodec(this.nativePtr, codec);
+		CQt.QMediaFormat_SetAudioCodec(this.nativePtr, (int64)codec);
 	}
 	
 	public int64 AudioCodec()
@@ -128,7 +133,7 @@ public class QMediaFormat : IQMediaFormat
 	
 	public bool IsSupported(int64 mode)
 	{
-		return CQt.QMediaFormat_IsSupported(this.nativePtr, mode);
+		return CQt.QMediaFormat_IsSupported(this.nativePtr, (int64)mode);
 	}
 	
 	public void MimeType()
@@ -138,62 +143,192 @@ public class QMediaFormat : IQMediaFormat
 	
 	public int64[] SupportedFileFormats(int64 m)
 	{
-		return CQt.QMediaFormat_SupportedFileFormats(this.nativePtr, m);
+		return CQt.QMediaFormat_SupportedFileFormats(this.nativePtr, (int64)m);
 	}
 	
 	public int64[] SupportedVideoCodecs(int64 m)
 	{
-		return CQt.QMediaFormat_SupportedVideoCodecs(this.nativePtr, m);
+		return CQt.QMediaFormat_SupportedVideoCodecs(this.nativePtr, (int64)m);
 	}
 	
 	public int64[] SupportedAudioCodecs(int64 m)
 	{
-		return CQt.QMediaFormat_SupportedAudioCodecs(this.nativePtr, m);
+		return CQt.QMediaFormat_SupportedAudioCodecs(this.nativePtr, (int64)m);
 	}
 	
 	public static libqt_string FileFormatName(int64 fileFormat)
 	{
-		return CQt.QMediaFormat_FileFormatName(fileFormat);
+		return CQt.QMediaFormat_FileFormatName((int64)fileFormat);
 	}
 	
 	public static libqt_string AudioCodecName(int64 codec)
 	{
-		return CQt.QMediaFormat_AudioCodecName(codec);
+		return CQt.QMediaFormat_AudioCodecName((int64)codec);
 	}
 	
 	public static libqt_string VideoCodecName(int64 codec)
 	{
-		return CQt.QMediaFormat_VideoCodecName(codec);
+		return CQt.QMediaFormat_VideoCodecName((int64)codec);
 	}
 	
 	public static libqt_string FileFormatDescription(int64 fileFormat)
 	{
-		return CQt.QMediaFormat_FileFormatDescription(fileFormat);
+		return CQt.QMediaFormat_FileFormatDescription((int64)fileFormat);
 	}
 	
 	public static libqt_string AudioCodecDescription(int64 codec)
 	{
-		return CQt.QMediaFormat_AudioCodecDescription(codec);
+		return CQt.QMediaFormat_AudioCodecDescription((int64)codec);
 	}
 	
 	public static libqt_string VideoCodecDescription(int64 codec)
 	{
-		return CQt.QMediaFormat_VideoCodecDescription(codec);
+		return CQt.QMediaFormat_VideoCodecDescription((int64)codec);
 	}
 	
 	public bool OperatorEqual(IQMediaFormat other)
 	{
-		return CQt.QMediaFormat_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMediaFormat_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQMediaFormat other)
 	{
-		return CQt.QMediaFormat_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMediaFormat_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ResolveForEncoding(int64 flags)
 	{
-		CQt.QMediaFormat_ResolveForEncoding(this.nativePtr, flags);
+		CQt.QMediaFormat_ResolveForEncoding(this.nativePtr, (int64)flags);
+	}
+	
+}
+public class QMediaFormat
+{
+	public QMediaFormatPtr handle;
+	
+	public static implicit operator QMediaFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QMediaFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQMediaFormat other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQMediaFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int64 FileFormat()
+	{
+		return this.handle.FileFormat();
+	}
+	
+	public void SetFileFormat(int64 f)
+	{
+		this.handle.SetFileFormat(f);
+	}
+	
+	public void SetVideoCodec(int64 codec)
+	{
+		this.handle.SetVideoCodec(codec);
+	}
+	
+	public int64 VideoCodec()
+	{
+		return this.handle.VideoCodec();
+	}
+	
+	public void SetAudioCodec(int64 codec)
+	{
+		this.handle.SetAudioCodec(codec);
+	}
+	
+	public int64 AudioCodec()
+	{
+		return this.handle.AudioCodec();
+	}
+	
+	public bool IsSupported(int64 mode)
+	{
+		return this.handle.IsSupported(mode);
+	}
+	
+	public void MimeType()
+	{
+		this.handle.MimeType();
+	}
+	
+	public int64[] SupportedFileFormats(int64 m)
+	{
+		return this.handle.SupportedFileFormats(m);
+	}
+	
+	public int64[] SupportedVideoCodecs(int64 m)
+	{
+		return this.handle.SupportedVideoCodecs(m);
+	}
+	
+	public int64[] SupportedAudioCodecs(int64 m)
+	{
+		return this.handle.SupportedAudioCodecs(m);
+	}
+	
+	public static libqt_string FileFormatName(int64 fileFormat)
+	{
+		return QMediaFormatPtr.FileFormatName(fileFormat);
+	}
+	
+	public static libqt_string AudioCodecName(int64 codec)
+	{
+		return QMediaFormatPtr.AudioCodecName(codec);
+	}
+	
+	public static libqt_string VideoCodecName(int64 codec)
+	{
+		return QMediaFormatPtr.VideoCodecName(codec);
+	}
+	
+	public static libqt_string FileFormatDescription(int64 fileFormat)
+	{
+		return QMediaFormatPtr.FileFormatDescription(fileFormat);
+	}
+	
+	public static libqt_string AudioCodecDescription(int64 codec)
+	{
+		return QMediaFormatPtr.AudioCodecDescription(codec);
+	}
+	
+	public static libqt_string VideoCodecDescription(int64 codec)
+	{
+		return QMediaFormatPtr.VideoCodecDescription(codec);
+	}
+	
+	public bool OperatorEqual(IQMediaFormat other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQMediaFormat other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void ResolveForEncoding(int64 flags)
+	{
+		this.handle.ResolveForEncoding(flags);
 	}
 	
 }

@@ -6,17 +6,22 @@ public interface IQPoint
 {
 	void* NativePtr { get; }
 }
-public class QPoint : IQPoint
+public struct QPointPtr : IQPoint, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQPoint other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPoint_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQPoint other)
+	{
+		return .(CQt.QPoint_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPoint_Delete(this.nativePtr);
 	}
@@ -58,12 +63,12 @@ public class QPoint : IQPoint
 	
 	public void* OperatorPlusAssign(IQPoint p)
 	{
-		return CQt.QPoint_OperatorPlusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPoint_OperatorPlusAssign(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQPoint p)
 	{
-		return CQt.QPoint_OperatorMinusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPoint_OperatorMinusAssign(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(float factor)
@@ -88,12 +93,107 @@ public class QPoint : IQPoint
 	
 	public static int32 DotProduct(IQPoint p1, IQPoint p2)
 	{
-		return CQt.QPoint_DotProduct((p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		return CQt.QPoint_DotProduct((p1 == default || p1.NativePtr == default) ? default : p1.NativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void ToPointF()
 	{
 		CQt.QPoint_ToPointF(this.nativePtr);
+	}
+	
+}
+public class QPoint
+{
+	public QPointPtr handle;
+	
+	public static implicit operator QPointPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQPoint other)
+	{
+		this.handle = QPointPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public int32 X()
+	{
+		return this.handle.X();
+	}
+	
+	public int32 Y()
+	{
+		return this.handle.Y();
+	}
+	
+	public void SetX(int32 x)
+	{
+		this.handle.SetX(x);
+	}
+	
+	public void SetY(int32 y)
+	{
+		this.handle.SetY(y);
+	}
+	
+	public int32 ManhattanLength()
+	{
+		return this.handle.ManhattanLength();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void* OperatorPlusAssign(IQPoint p)
+	{
+		return this.handle.OperatorPlusAssign(p);
+	}
+	
+	public void* OperatorMinusAssign(IQPoint p)
+	{
+		return this.handle.OperatorMinusAssign(p);
+	}
+	
+	public void* OperatorMultiplyAssign(float factor)
+	{
+		return this.handle.OperatorMultiplyAssign(factor);
+	}
+	
+	public void* OperatorMultiplyAssignWithFactor(double factor)
+	{
+		return this.handle.OperatorMultiplyAssignWithFactor(factor);
+	}
+	
+	public void* OperatorMultiplyAssign2(int32 factor)
+	{
+		return this.handle.OperatorMultiplyAssign2(factor);
+	}
+	
+	public void* OperatorDivideAssign(double divisor)
+	{
+		return this.handle.OperatorDivideAssign(divisor);
+	}
+	
+	public static int32 DotProduct(IQPoint p1, IQPoint p2)
+	{
+		return QPointPtr.DotProduct(p1, p2);
+	}
+	
+	public void ToPointF()
+	{
+		this.handle.ToPointF();
 	}
 	
 }
@@ -147,17 +247,22 @@ public interface IQPointF
 {
 	void* NativePtr { get; }
 }
-public class QPointF : IQPointF
+public struct QPointFPtr : IQPointF, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQPointF other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPointF_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQPointF other)
+	{
+		return .(CQt.QPointF_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPointF_Delete(this.nativePtr);
 	}
@@ -199,12 +304,12 @@ public class QPointF : IQPointF
 	
 	public void* OperatorPlusAssign(IQPointF p)
 	{
-		return CQt.QPointF_OperatorPlusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPointF_OperatorPlusAssign(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQPointF p)
 	{
-		return CQt.QPointF_OperatorMinusAssign(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPointF_OperatorMinusAssign(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(double c)
@@ -219,12 +324,97 @@ public class QPointF : IQPointF
 	
 	public static double DotProduct(IQPointF p1, IQPointF p2)
 	{
-		return CQt.QPointF_DotProduct((p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		return CQt.QPointF_DotProduct((p1 == default || p1.NativePtr == default) ? default : p1.NativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void ToPoint()
 	{
 		CQt.QPointF_ToPoint(this.nativePtr);
+	}
+	
+}
+public class QPointF
+{
+	public QPointFPtr handle;
+	
+	public static implicit operator QPointFPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQPointF other)
+	{
+		this.handle = QPointFPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public double ManhattanLength()
+	{
+		return this.handle.ManhattanLength();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public double X()
+	{
+		return this.handle.X();
+	}
+	
+	public double Y()
+	{
+		return this.handle.Y();
+	}
+	
+	public void SetX(double x)
+	{
+		this.handle.SetX(x);
+	}
+	
+	public void SetY(double y)
+	{
+		this.handle.SetY(y);
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void* OperatorPlusAssign(IQPointF p)
+	{
+		return this.handle.OperatorPlusAssign(p);
+	}
+	
+	public void* OperatorMinusAssign(IQPointF p)
+	{
+		return this.handle.OperatorMinusAssign(p);
+	}
+	
+	public void* OperatorMultiplyAssign(double c)
+	{
+		return this.handle.OperatorMultiplyAssign(c);
+	}
+	
+	public void* OperatorDivideAssign(double c)
+	{
+		return this.handle.OperatorDivideAssign(c);
+	}
+	
+	public static double DotProduct(IQPointF p1, IQPointF p2)
+	{
+		return QPointFPtr.DotProduct(p1, p2);
+	}
+	
+	public void ToPoint()
+	{
+		this.handle.ToPoint();
 	}
 	
 }

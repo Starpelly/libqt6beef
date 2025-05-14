@@ -6,17 +6,22 @@ public interface IQVersionNumber
 {
 	void* NativePtr { get; }
 }
-public class QVersionNumber : IQVersionNumber
+public struct QVersionNumberPtr : IQVersionNumber, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVersionNumber_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QVersionNumber_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QVersionNumber_Delete(this.nativePtr);
 	}
@@ -68,17 +73,17 @@ public class QVersionNumber : IQVersionNumber
 	
 	public bool IsPrefixOf(IQVersionNumber other)
 	{
-		return CQt.QVersionNumber_IsPrefixOf(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QVersionNumber_IsPrefixOf(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public static int32 Compare(IQVersionNumber v1, IQVersionNumber v2)
 	{
-		return CQt.QVersionNumber_Compare((v1 == default) ? default : (void*)v1.NativePtr, (v2 == default) ? default : (void*)v2.NativePtr);
+		return CQt.QVersionNumber_Compare((v1 == default || v1.NativePtr == default) ? default : v1.NativePtr, (v2 == default || v2.NativePtr == default) ? default : v2.NativePtr);
 	}
 	
 	public static void CommonPrefix(IQVersionNumber v1, IQVersionNumber v2)
 	{
-		CQt.QVersionNumber_CommonPrefix((v1 == default) ? default : (void*)v1.NativePtr, (v2 == default) ? default : (void*)v2.NativePtr);
+		CQt.QVersionNumber_CommonPrefix((v1 == default || v1.NativePtr == default) ? default : v1.NativePtr, (v2 == default || v2.NativePtr == default) ? default : v2.NativePtr);
 	}
 	
 	public libqt_string ToString()
@@ -86,14 +91,109 @@ public class QVersionNumber : IQVersionNumber
 		return CQt.QVersionNumber_ToString(this.nativePtr);
 	}
 	
-	public static void FromString(IQAnyStringView stringVal)
+	public static void FromString(char8* stringVal)
 	{
-		CQt.QVersionNumber_FromString((stringVal == default) ? default : (char8*)stringVal.NativePtr);
+		CQt.QVersionNumber_FromString(stringVal);
 	}
 	
-	public static void FromString2(IQAnyStringView stringVal, int32* suffixIndex)
+	public static void FromString2(char8* stringVal, int32* suffixIndex)
 	{
-		CQt.QVersionNumber_FromString2((stringVal == default) ? default : (char8*)stringVal.NativePtr, suffixIndex);
+		CQt.QVersionNumber_FromString2(stringVal, suffixIndex);
+	}
+	
+}
+public class QVersionNumber
+{
+	public QVersionNumberPtr handle;
+	
+	public static implicit operator QVersionNumberPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QVersionNumberPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsNormalized()
+	{
+		return this.handle.IsNormalized();
+	}
+	
+	public int32 MajorVersion()
+	{
+		return this.handle.MajorVersion();
+	}
+	
+	public int32 MinorVersion()
+	{
+		return this.handle.MinorVersion();
+	}
+	
+	public int32 MicroVersion()
+	{
+		return this.handle.MicroVersion();
+	}
+	
+	public void Normalized()
+	{
+		this.handle.Normalized();
+	}
+	
+	public int32[] Segments()
+	{
+		return this.handle.Segments();
+	}
+	
+	public int32 SegmentAt(int32 index)
+	{
+		return this.handle.SegmentAt(index);
+	}
+	
+	public int32 SegmentCount()
+	{
+		return this.handle.SegmentCount();
+	}
+	
+	public bool IsPrefixOf(IQVersionNumber other)
+	{
+		return this.handle.IsPrefixOf(other);
+	}
+	
+	public static int32 Compare(IQVersionNumber v1, IQVersionNumber v2)
+	{
+		return QVersionNumberPtr.Compare(v1, v2);
+	}
+	
+	public static void CommonPrefix(IQVersionNumber v1, IQVersionNumber v2)
+	{
+		QVersionNumberPtr.CommonPrefix(v1, v2);
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public static void FromString(char8* stringVal)
+	{
+		QVersionNumberPtr.FromString(stringVal);
+	}
+	
+	public static void FromString2(char8* stringVal, int32* suffixIndex)
+	{
+		QVersionNumberPtr.FromString2(stringVal, suffixIndex);
 	}
 	
 }
@@ -149,17 +249,22 @@ public interface IQTypeRevision
 {
 	void* NativePtr { get; }
 }
-public class QTypeRevision : IQTypeRevision
+public struct QTypeRevisionPtr : IQTypeRevision, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQTypeRevision other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTypeRevision_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQTypeRevision other)
+	{
+		return .(CQt.QTypeRevision_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTypeRevision_Delete(this.nativePtr);
 	}
@@ -192,6 +297,56 @@ public class QTypeRevision : IQTypeRevision
 	public bool IsValid()
 	{
 		return CQt.QTypeRevision_IsValid(this.nativePtr);
+	}
+	
+}
+public class QTypeRevision
+{
+	public QTypeRevisionPtr handle;
+	
+	public static implicit operator QTypeRevisionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQTypeRevision other)
+	{
+		this.handle = QTypeRevisionPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void Zero()
+	{
+		QTypeRevisionPtr.Zero();
+	}
+	
+	public bool HasMajorVersion()
+	{
+		return this.handle.HasMajorVersion();
+	}
+	
+	public uint8 MajorVersion()
+	{
+		return this.handle.MajorVersion();
+	}
+	
+	public bool HasMinorVersion()
+	{
+		return this.handle.HasMinorVersion();
+	}
+	
+	public uint8 MinorVersion()
+	{
+		return this.handle.MinorVersion();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
 	}
 	
 }

@@ -68,17 +68,22 @@ public interface IQDataStream
 {
 	void* NativePtr { get; }
 }
-public class QDataStream : IQDataStream, IQIODeviceBase
+public struct QDataStreamPtr : IQDataStream, IDisposable, IQIODeviceBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDataStream_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QDataStream_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDataStream_Delete(this.nativePtr);
 	}
@@ -90,7 +95,7 @@ public class QDataStream : IQDataStream, IQIODeviceBase
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QDataStream_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QDataStream_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public bool AtEnd()
@@ -105,7 +110,7 @@ public class QDataStream : IQDataStream, IQIODeviceBase
 	
 	public void SetStatus(int64 status)
 	{
-		CQt.QDataStream_SetStatus(this.nativePtr, status);
+		CQt.QDataStream_SetStatus(this.nativePtr, (int64)status);
 	}
 	
 	public void ResetStatus()
@@ -120,7 +125,7 @@ public class QDataStream : IQDataStream, IQIODeviceBase
 	
 	public void SetFloatingPointPrecision(int64 precision)
 	{
-		CQt.QDataStream_SetFloatingPointPrecision(this.nativePtr, precision);
+		CQt.QDataStream_SetFloatingPointPrecision(this.nativePtr, (int64)precision);
 	}
 	
 	public int64 ByteOrder()
@@ -130,7 +135,7 @@ public class QDataStream : IQDataStream, IQIODeviceBase
 	
 	public void SetByteOrder(int64 byteOrder)
 	{
-		CQt.QDataStream_SetByteOrder(this.nativePtr, byteOrder);
+		CQt.QDataStream_SetByteOrder(this.nativePtr, (int64)byteOrder);
 	}
 	
 	public int32 Version()
@@ -321,6 +326,266 @@ public class QDataStream : IQDataStream, IQIODeviceBase
 	public bool IsDeviceTransactionStarted()
 	{
 		return CQt.QDataStream_IsDeviceTransactionStarted(this.nativePtr);
+	}
+	
+}
+public class QDataStream
+{
+	public QDataStreamPtr handle;
+	
+	public static implicit operator QDataStreamPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QDataStreamPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public bool AtEnd()
+	{
+		return this.handle.AtEnd();
+	}
+	
+	public int64 Status()
+	{
+		return this.handle.Status();
+	}
+	
+	public void SetStatus(int64 status)
+	{
+		this.handle.SetStatus(status);
+	}
+	
+	public void ResetStatus()
+	{
+		this.handle.ResetStatus();
+	}
+	
+	public int64 FloatingPointPrecision()
+	{
+		return this.handle.FloatingPointPrecision();
+	}
+	
+	public void SetFloatingPointPrecision(int64 precision)
+	{
+		this.handle.SetFloatingPointPrecision(precision);
+	}
+	
+	public int64 ByteOrder()
+	{
+		return this.handle.ByteOrder();
+	}
+	
+	public void SetByteOrder(int64 byteOrder)
+	{
+		this.handle.SetByteOrder(byteOrder);
+	}
+	
+	public int32 Version()
+	{
+		return this.handle.Version();
+	}
+	
+	public void SetVersion(int32 version)
+	{
+		this.handle.SetVersion(version);
+	}
+	
+	public void OperatorShiftRight(int8* i)
+	{
+		this.handle.OperatorShiftRight(i);
+	}
+	
+	public void OperatorShiftRightWithQint8(int8* i)
+	{
+		this.handle.OperatorShiftRightWithQint8(i);
+	}
+	
+	public void OperatorShiftRightWithQuint8(uint8* i)
+	{
+		this.handle.OperatorShiftRightWithQuint8(i);
+	}
+	
+	public void OperatorShiftRightWithQint16(int16* i)
+	{
+		this.handle.OperatorShiftRightWithQint16(i);
+	}
+	
+	public void OperatorShiftRightWithQuint16(uint16* i)
+	{
+		this.handle.OperatorShiftRightWithQuint16(i);
+	}
+	
+	public void OperatorShiftRightWithQint32(int32* i)
+	{
+		this.handle.OperatorShiftRightWithQint32(i);
+	}
+	
+	public void OperatorShiftRightWithQuint32(uint32* i)
+	{
+		this.handle.OperatorShiftRightWithQuint32(i);
+	}
+	
+	public void OperatorShiftRightWithQint64(int64* i)
+	{
+		this.handle.OperatorShiftRightWithQint64(i);
+	}
+	
+	public void OperatorShiftRightWithQuint64(uint64* i)
+	{
+		this.handle.OperatorShiftRightWithQuint64(i);
+	}
+	
+	public void OperatorShiftRightWithBool(bool* i)
+	{
+		this.handle.OperatorShiftRightWithBool(i);
+	}
+	
+	public void OperatorShiftRightWithFloat(float* f)
+	{
+		this.handle.OperatorShiftRightWithFloat(f);
+	}
+	
+	public void OperatorShiftRightWithDouble(double* f)
+	{
+		this.handle.OperatorShiftRightWithDouble(f);
+	}
+	
+	public void OperatorShiftRightWithStr(char8* str)
+	{
+		this.handle.OperatorShiftRightWithStr(str);
+	}
+	
+	public void OperatorShiftLeft(int8 i)
+	{
+		this.handle.OperatorShiftLeft(i);
+	}
+	
+	public void OperatorShiftLeftWithQint8(int8 i)
+	{
+		this.handle.OperatorShiftLeftWithQint8(i);
+	}
+	
+	public void OperatorShiftLeftWithQuint8(uint8 i)
+	{
+		this.handle.OperatorShiftLeftWithQuint8(i);
+	}
+	
+	public void OperatorShiftLeftWithQint16(int16 i)
+	{
+		this.handle.OperatorShiftLeftWithQint16(i);
+	}
+	
+	public void OperatorShiftLeftWithQuint16(uint16 i)
+	{
+		this.handle.OperatorShiftLeftWithQuint16(i);
+	}
+	
+	public void OperatorShiftLeftWithQint32(int32 i)
+	{
+		this.handle.OperatorShiftLeftWithQint32(i);
+	}
+	
+	public void OperatorShiftLeftWithQuint32(uint32 i)
+	{
+		this.handle.OperatorShiftLeftWithQuint32(i);
+	}
+	
+	public void OperatorShiftLeftWithQint64(int64 i)
+	{
+		this.handle.OperatorShiftLeftWithQint64(i);
+	}
+	
+	public void OperatorShiftLeftWithQuint64(uint64 i)
+	{
+		this.handle.OperatorShiftLeftWithQuint64(i);
+	}
+	
+	public void OperatorShiftLeftWithBool(bool i)
+	{
+		this.handle.OperatorShiftLeftWithBool(i);
+	}
+	
+	public void OperatorShiftLeftWithFloat(float f)
+	{
+		this.handle.OperatorShiftLeftWithFloat(f);
+	}
+	
+	public void OperatorShiftLeftWithDouble(double f)
+	{
+		this.handle.OperatorShiftLeftWithDouble(f);
+	}
+	
+	public void OperatorShiftLeftWithStr(char8* str)
+	{
+		this.handle.OperatorShiftLeftWithStr(str);
+	}
+	
+	public void* ReadBytes(char8* param1, uint32* lenVal)
+	{
+		return this.handle.ReadBytes(param1, lenVal);
+	}
+	
+	public int32 ReadRawData(char8* param1, int32 lenVal)
+	{
+		return this.handle.ReadRawData(param1, lenVal);
+	}
+	
+	public void WriteBytes(char8* param1, uint32 lenVal)
+	{
+		this.handle.WriteBytes(param1, lenVal);
+	}
+	
+	public int32 WriteRawData(char8* param1, int32 lenVal)
+	{
+		return this.handle.WriteRawData(param1, lenVal);
+	}
+	
+	public int32 SkipRawData(int32 lenVal)
+	{
+		return this.handle.SkipRawData(lenVal);
+	}
+	
+	public void StartTransaction()
+	{
+		this.handle.StartTransaction();
+	}
+	
+	public bool CommitTransaction()
+	{
+		return this.handle.CommitTransaction();
+	}
+	
+	public void RollbackTransaction()
+	{
+		this.handle.RollbackTransaction();
+	}
+	
+	public void AbortTransaction()
+	{
+		this.handle.AbortTransaction();
+	}
+	
+	public bool IsDeviceTransactionStarted()
+	{
+		return this.handle.IsDeviceTransactionStarted();
 	}
 	
 }

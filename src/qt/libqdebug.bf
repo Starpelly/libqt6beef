@@ -13,29 +13,34 @@ public interface IQDebug
 {
 	void* NativePtr { get; }
 }
-public class QDebug : IQDebug, IQIODeviceBase
+public struct QDebugPtr : IQDebug, IDisposable, IQIODeviceBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQIODevice device)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDebug_new((device == null) ? null : (void*)device.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQIODevice device)
+	{
+		return .(CQt.QDebug_new((device == default || device.NativePtr == default) ? default : device.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDebug_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQDebug other)
 	{
-		CQt.QDebug_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDebug_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQDebug other)
 	{
-		CQt.QDebug_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDebug_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* ResetFormat()
@@ -100,7 +105,7 @@ public class QDebug : IQDebug, IQIODeviceBase
 	
 	public void* OperatorShiftLeft(IQChar t)
 	{
-		return CQt.QDebug_OperatorShiftLeft(this.nativePtr, (t == default) ? default : (void)t.NativePtr);
+		return CQt.QDebug_OperatorShiftLeft(this.nativePtr, default);
 	}
 	
 	public void* OperatorShiftLeftWithBool(bool t)
@@ -178,9 +183,9 @@ public class QDebug : IQDebug, IQIODeviceBase
 		return CQt.QDebug_OperatorShiftLeftWithQByteArray(this.nativePtr, libqt_string(t));
 	}
 	
-	public void* OperatorShiftLeftWithQByteArrayView(IQByteArrayView t)
+	public void* OperatorShiftLeftWithQByteArrayView(char8* t)
 	{
-		return CQt.QDebug_OperatorShiftLeftWithQByteArrayView(this.nativePtr, (t == default) ? default : (char8*)t.NativePtr);
+		return CQt.QDebug_OperatorShiftLeftWithQByteArrayView(this.nativePtr, t);
 	}
 	
 	public void* OperatorShiftLeftWithVoid(void* t)
@@ -191,6 +196,191 @@ public class QDebug : IQDebug, IQIODeviceBase
 	public void* MaybeQuote1(int8 c)
 	{
 		return CQt.QDebug_MaybeQuote1(this.nativePtr, c);
+	}
+	
+}
+public class QDebug
+{
+	public QDebugPtr handle;
+	
+	public static implicit operator QDebugPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQIODevice device)
+	{
+		this.handle = QDebugPtr.New(device);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQDebug other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQDebug other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void* ResetFormat()
+	{
+		return this.handle.ResetFormat();
+	}
+	
+	public void* Space()
+	{
+		return this.handle.Space();
+	}
+	
+	public void* Nospace()
+	{
+		return this.handle.Nospace();
+	}
+	
+	public void* MaybeSpace()
+	{
+		return this.handle.MaybeSpace();
+	}
+	
+	public void* Verbosity(int32 verbosityLevel)
+	{
+		return this.handle.Verbosity(verbosityLevel);
+	}
+	
+	public int32 Verbosity2()
+	{
+		return this.handle.Verbosity2();
+	}
+	
+	public void SetVerbosity(int32 verbosityLevel)
+	{
+		this.handle.SetVerbosity(verbosityLevel);
+	}
+	
+	public bool AutoInsertSpaces()
+	{
+		return this.handle.AutoInsertSpaces();
+	}
+	
+	public void SetAutoInsertSpaces(bool b)
+	{
+		this.handle.SetAutoInsertSpaces(b);
+	}
+	
+	public void* Quote()
+	{
+		return this.handle.Quote();
+	}
+	
+	public void* Noquote()
+	{
+		return this.handle.Noquote();
+	}
+	
+	public void* MaybeQuote()
+	{
+		return this.handle.MaybeQuote();
+	}
+	
+	public void* OperatorShiftLeft(IQChar t)
+	{
+		return this.handle.OperatorShiftLeft(default);
+	}
+	
+	public void* OperatorShiftLeftWithBool(bool t)
+	{
+		return this.handle.OperatorShiftLeftWithBool(t);
+	}
+	
+	public void* OperatorShiftLeftWithChar(int8 t)
+	{
+		return this.handle.OperatorShiftLeftWithChar(t);
+	}
+	
+	public void* OperatorShiftLeftWithShort(int16 t)
+	{
+		return this.handle.OperatorShiftLeftWithShort(t);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedshort(uint16 t)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedshort(t);
+	}
+	
+	public void* OperatorShiftLeftWithInt(int32 t)
+	{
+		return this.handle.OperatorShiftLeftWithInt(t);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedint(uint32 t)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedint(t);
+	}
+	
+	public void* OperatorShiftLeftWithLong(c_long t)
+	{
+		return this.handle.OperatorShiftLeftWithLong(t);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedlong(c_ulong t)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedlong(t);
+	}
+	
+	public void* OperatorShiftLeftWithQint64(int64 t)
+	{
+		return this.handle.OperatorShiftLeftWithQint64(t);
+	}
+	
+	public void* OperatorShiftLeftWithQuint64(uint64 t)
+	{
+		return this.handle.OperatorShiftLeftWithQuint64(t);
+	}
+	
+	public void* OperatorShiftLeftWithFloat(float t)
+	{
+		return this.handle.OperatorShiftLeftWithFloat(t);
+	}
+	
+	public void* OperatorShiftLeftWithDouble(double t)
+	{
+		return this.handle.OperatorShiftLeftWithDouble(t);
+	}
+	
+	public void* OperatorShiftLeft2(char8* t)
+	{
+		return this.handle.OperatorShiftLeft2(t);
+	}
+	
+	public void* OperatorShiftLeftWithQString(String t)
+	{
+		return this.handle.OperatorShiftLeftWithQString(t);
+	}
+	
+	public void* OperatorShiftLeftWithQByteArray(String t)
+	{
+		return this.handle.OperatorShiftLeftWithQByteArray(t);
+	}
+	
+	public void* OperatorShiftLeftWithQByteArrayView(char8* t)
+	{
+		return this.handle.OperatorShiftLeftWithQByteArrayView(t);
+	}
+	
+	public void* OperatorShiftLeftWithVoid(void* t)
+	{
+		return this.handle.OperatorShiftLeftWithVoid(t);
+	}
+	
+	public void* MaybeQuote1(int8 c)
+	{
+		return this.handle.MaybeQuote1(c);
 	}
 	
 }
@@ -274,18 +464,41 @@ public interface IQDebugStateSaver
 {
 	void* NativePtr { get; }
 }
-public class QDebugStateSaver : IQDebugStateSaver
+public struct QDebugStateSaverPtr : IQDebugStateSaver, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQDebug dbg)
+	{
+		return .(CQt.QDebugStateSaver_new((dbg == default || dbg.NativePtr == default) ? default : dbg.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QDebugStateSaver_Delete(this.nativePtr);
+	}
+}
+public class QDebugStateSaver
+{
+	public QDebugStateSaverPtr handle;
+	
+	public static implicit operator QDebugStateSaverPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQDebug dbg)
 	{
-		this.nativePtr = CQt.QDebugStateSaver_new((dbg == default) ? default : (void*)dbg.NativePtr);
+		this.handle = QDebugStateSaverPtr.New(dbg);
 	}
 	public ~this()
 	{
-		CQt.QDebugStateSaver_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt
@@ -300,17 +513,22 @@ public interface IQNoDebug
 {
 	void* NativePtr { get; }
 }
-public class QNoDebug : IQNoDebug
+public struct QNoDebugPtr : IQNoDebug, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQNoDebug other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QNoDebug_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQNoDebug other)
+	{
+		return .(CQt.QNoDebug_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QNoDebug_Delete(this.nativePtr);
 	}
@@ -353,6 +571,66 @@ public class QNoDebug : IQNoDebug
 	public void* MaybeQuote1(int8 param1)
 	{
 		return CQt.QNoDebug_MaybeQuote1(this.nativePtr, param1);
+	}
+	
+}
+public class QNoDebug
+{
+	public QNoDebugPtr handle;
+	
+	public static implicit operator QNoDebugPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQNoDebug other)
+	{
+		this.handle = QNoDebugPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void* Space()
+	{
+		return this.handle.Space();
+	}
+	
+	public void* Nospace()
+	{
+		return this.handle.Nospace();
+	}
+	
+	public void* MaybeSpace()
+	{
+		return this.handle.MaybeSpace();
+	}
+	
+	public void* Quote()
+	{
+		return this.handle.Quote();
+	}
+	
+	public void* Noquote()
+	{
+		return this.handle.Noquote();
+	}
+	
+	public void* MaybeQuote()
+	{
+		return this.handle.MaybeQuote();
+	}
+	
+	public void* Verbosity(int32 param1)
+	{
+		return this.handle.Verbosity(param1);
+	}
+	
+	public void* MaybeQuote1(int8 param1)
+	{
+		return this.handle.MaybeQuote1(param1);
 	}
 	
 }

@@ -17,34 +17,39 @@ public interface IQJsonValue
 {
 	void* NativePtr { get; }
 }
-public class QJsonValue : IQJsonValue
+public struct QJsonValuePtr : IQJsonValue, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonValue_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QJsonValue_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonValue_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQJsonValue other)
 	{
-		CQt.QJsonValue_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonValue_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQJsonValue other)
 	{
-		CQt.QJsonValue_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonValue_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public static void FromVariant(IQVariant variant)
 	{
-		CQt.QJsonValue_FromVariant((variant == default) ? default : (void*)variant.NativePtr);
+		CQt.QJsonValue_FromVariant((variant == default || variant.NativePtr == default) ? default : variant.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -129,7 +134,7 @@ public class QJsonValue : IQJsonValue
 	
 	public void ToArrayWithDefaultValue(IQJsonArray defaultValue)
 	{
-		CQt.QJsonValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QJsonValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToObject()
@@ -139,7 +144,7 @@ public class QJsonValue : IQJsonValue
 	
 	public void ToObjectWithDefaultValue(IQJsonObject defaultValue)
 	{
-		CQt.QJsonValue_ToObjectWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QJsonValue_ToObjectWithDefaultValue(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void OperatorSubscript(String key)
@@ -154,12 +159,12 @@ public class QJsonValue : IQJsonValue
 	
 	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValue_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValue_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValue_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValue_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -180,6 +185,176 @@ public class QJsonValue : IQJsonValue
 	public double ToDouble1(double defaultValue)
 	{
 		return CQt.QJsonValue_ToDouble1(this.nativePtr, defaultValue);
+	}
+	
+}
+public class QJsonValue
+{
+	public QJsonValuePtr handle;
+	
+	public static implicit operator QJsonValuePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QJsonValuePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQJsonValue other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQJsonValue other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public static void FromVariant(IQVariant variant)
+	{
+		QJsonValuePtr.FromVariant(variant);
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsObject()
+	{
+		return this.handle.IsObject();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string ToStringWithDefaultValue(String defaultValue)
+	{
+		return this.handle.ToStringWithDefaultValue(defaultValue);
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToArrayWithDefaultValue(IQJsonArray defaultValue)
+	{
+		this.handle.ToArrayWithDefaultValue(defaultValue);
+	}
+	
+	public void ToObject()
+	{
+		this.handle.ToObject();
+	}
+	
+	public void ToObjectWithDefaultValue(IQJsonObject defaultValue)
+	{
+		this.handle.ToObjectWithDefaultValue(defaultValue);
+	}
+	
+	public void OperatorSubscript(String key)
+	{
+		this.handle.OperatorSubscript(key);
+	}
+	
+	public void OperatorSubscriptWithQsizetype(int32 i)
+	{
+		this.handle.OperatorSubscriptWithQsizetype(i);
+	}
+	
+	public bool OperatorEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public int32 ToInt1(int32 defaultValue)
+	{
+		return this.handle.ToInt1(defaultValue);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
 	}
 	
 }
@@ -275,17 +450,22 @@ public interface IQJsonValueConstRef
 {
 	void* NativePtr { get; }
 }
-public class QJsonValueConstRef : IQJsonValueConstRef
+public struct QJsonValueConstRefPtr : IQJsonValueConstRef, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQJsonValueConstRef other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonValueConstRef_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQJsonValueConstRef other)
+	{
+		return .(CQt.QJsonValueConstRef_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonValueConstRef_Delete(this.nativePtr);
 	}
@@ -382,12 +562,12 @@ public class QJsonValueConstRef : IQJsonValueConstRef
 	
 	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueConstRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValueConstRef_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueConstRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValueConstRef_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -413,6 +593,151 @@ public class QJsonValueConstRef : IQJsonValueConstRef
 	public libqt_string ToString1(String defaultValue)
 	{
 		return CQt.QJsonValueConstRef_ToString1(this.nativePtr, libqt_string(defaultValue));
+	}
+	
+}
+public class QJsonValueConstRef
+{
+	public QJsonValueConstRefPtr handle;
+	
+	public static implicit operator QJsonValueConstRefPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQJsonValueConstRef other)
+	{
+		this.handle = QJsonValueConstRefPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void ToQJsonValue()
+	{
+		this.handle.ToQJsonValue();
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsObject()
+	{
+		return this.handle.IsObject();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToObject()
+	{
+		this.handle.ToObject();
+	}
+	
+	public void OperatorSubscriptWithQsizetype(int32 i)
+	{
+		this.handle.OperatorSubscriptWithQsizetype(i);
+	}
+	
+	public bool OperatorEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public int32 ToInt1(int32 defaultValue)
+	{
+		return this.handle.ToInt1(defaultValue);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
+	}
+	
+	public libqt_string ToString1(String defaultValue)
+	{
+		return this.handle.ToString1(defaultValue);
 	}
 	
 }
@@ -480,29 +805,34 @@ public interface IQJsonValueRef
 {
 	void* NativePtr { get; }
 }
-public class QJsonValueRef : IQJsonValueRef, IQJsonValueConstRef
+public struct QJsonValueRefPtr : IQJsonValueRef, IDisposable, IQJsonValueConstRef
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQJsonValueRef other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonValueRef_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQJsonValueRef other)
+	{
+		return .(CQt.QJsonValueRef_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonValueRef_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQJsonValue val)
 	{
-		CQt.QJsonValueRef_OperatorAssign(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
+		CQt.QJsonValueRef_OperatorAssign(this.nativePtr, (val == default || val.NativePtr == default) ? default : val.NativePtr);
 	}
 	
 	public void OperatorAssignWithVal(IQJsonValueRef val)
 	{
-		CQt.QJsonValueRef_OperatorAssignWithVal(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
+		CQt.QJsonValueRef_OperatorAssignWithVal(this.nativePtr, (val == default || val.NativePtr == default) ? default : val.NativePtr);
 	}
 	
 	public void ToQJsonValue()
@@ -597,12 +927,12 @@ public class QJsonValueRef : IQJsonValueRef, IQJsonValueConstRef
 	
 	public bool OperatorEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValueRef_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQJsonValue other)
 	{
-		return CQt.QJsonValueRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonValueRef_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool ToBool1(bool defaultValue)
@@ -628,6 +958,161 @@ public class QJsonValueRef : IQJsonValueRef, IQJsonValueConstRef
 	public libqt_string ToString1(String defaultValue)
 	{
 		return CQt.QJsonValueRef_ToString1(this.nativePtr, libqt_string(defaultValue));
+	}
+	
+}
+public class QJsonValueRef
+{
+	public QJsonValueRefPtr handle;
+	
+	public static implicit operator QJsonValueRefPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQJsonValueRef other)
+	{
+		this.handle = QJsonValueRefPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQJsonValue val)
+	{
+		this.handle.OperatorAssign(val);
+	}
+	
+	public void OperatorAssignWithVal(IQJsonValueRef val)
+	{
+		this.handle.OperatorAssignWithVal(val);
+	}
+	
+	public void ToQJsonValue()
+	{
+		this.handle.ToQJsonValue();
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsObject()
+	{
+		return this.handle.IsObject();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToObject()
+	{
+		this.handle.ToObject();
+	}
+	
+	public void OperatorSubscriptWithQsizetype(int32 i)
+	{
+		this.handle.OperatorSubscriptWithQsizetype(i);
+	}
+	
+	public bool OperatorEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQJsonValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public int32 ToInt1(int32 defaultValue)
+	{
+		return this.handle.ToInt1(defaultValue);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
+	}
+	
+	public libqt_string ToString1(String defaultValue)
+	{
+		return this.handle.ToString1(defaultValue);
 	}
 	
 }

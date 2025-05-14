@@ -6,24 +6,29 @@ public interface IQTextDocumentFragment
 {
 	void* NativePtr { get; }
 }
-public class QTextDocumentFragment : IQTextDocumentFragment
+public struct QTextDocumentFragmentPtr : IQTextDocumentFragment, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextDocumentFragment_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextDocumentFragment_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextDocumentFragment_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTextDocumentFragment rhs)
 	{
-		CQt.QTextDocumentFragment_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextDocumentFragment_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -73,12 +78,92 @@ public class QTextDocumentFragment : IQTextDocumentFragment
 	
 	public static void FromHtml2(String html, IQTextDocument resourceProvider)
 	{
-		CQt.QTextDocumentFragment_FromHtml2(libqt_string(html), (resourceProvider == null) ? null : (void*)resourceProvider.NativePtr);
+		CQt.QTextDocumentFragment_FromHtml2(libqt_string(html), (resourceProvider == default || resourceProvider.NativePtr == default) ? default : resourceProvider.NativePtr);
 	}
 	
 	public static void FromMarkdown2(String markdown, int64 features)
 	{
 		CQt.QTextDocumentFragment_FromMarkdown2(libqt_string(markdown), features);
+	}
+	
+}
+public class QTextDocumentFragment
+{
+	public QTextDocumentFragmentPtr handle;
+	
+	public static implicit operator QTextDocumentFragmentPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextDocumentFragmentPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTextDocumentFragment rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public libqt_string ToPlainText()
+	{
+		return this.handle.ToPlainText();
+	}
+	
+	public libqt_string ToRawText()
+	{
+		return this.handle.ToRawText();
+	}
+	
+	public libqt_string ToHtml()
+	{
+		return this.handle.ToHtml();
+	}
+	
+	public libqt_string ToMarkdown()
+	{
+		return this.handle.ToMarkdown();
+	}
+	
+	public static void FromPlainText(String plainText)
+	{
+		QTextDocumentFragmentPtr.FromPlainText(plainText);
+	}
+	
+	public static void FromHtml(String html)
+	{
+		QTextDocumentFragmentPtr.FromHtml(html);
+	}
+	
+	public static void FromMarkdown(String markdown)
+	{
+		QTextDocumentFragmentPtr.FromMarkdown(markdown);
+	}
+	
+	public libqt_string ToMarkdown1(int64 features)
+	{
+		return this.handle.ToMarkdown1(features);
+	}
+	
+	public static void FromHtml2(String html, IQTextDocument resourceProvider)
+	{
+		QTextDocumentFragmentPtr.FromHtml2(html, resourceProvider);
+	}
+	
+	public static void FromMarkdown2(String markdown, int64 features)
+	{
+		QTextDocumentFragmentPtr.FromMarkdown2(markdown, features);
 	}
 	
 }

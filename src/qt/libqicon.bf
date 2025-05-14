@@ -20,29 +20,34 @@ public interface IQIcon
 {
 	void* NativePtr { get; }
 }
-public class QIcon : IQIcon
+public struct QIconPtr : IQIcon, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QIcon_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QIcon_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QIcon_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQIcon other)
 	{
-		CQt.QIcon_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QIcon_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQIcon other)
 	{
-		CQt.QIcon_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QIcon_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -52,7 +57,7 @@ public class QIcon : IQIcon
 	
 	public void Pixmap(IQSize size)
 	{
-		CQt.QIcon_Pixmap(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QIcon_Pixmap(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void Pixmap2(int32 w, int32 h)
@@ -67,22 +72,22 @@ public class QIcon : IQIcon
 	
 	public void Pixmap3(IQSize size, double devicePixelRatio)
 	{
-		CQt.QIcon_Pixmap3(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, devicePixelRatio);
+		CQt.QIcon_Pixmap3(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, devicePixelRatio);
 	}
 	
 	public void Pixmap4(IQWindow window, IQSize size)
 	{
-		CQt.QIcon_Pixmap4(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QIcon_Pixmap4(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void ActualSize(IQSize size)
 	{
-		CQt.QIcon_ActualSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QIcon_ActualSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void ActualSize2(IQWindow window, IQSize size)
 	{
-		CQt.QIcon_ActualSize2(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QIcon_ActualSize2(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public libqt_string Name()
@@ -92,12 +97,12 @@ public class QIcon : IQIcon
 	
 	public void Paint(IQPainter painter, IQRect rect)
 	{
-		CQt.QIcon_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QIcon_Paint(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Paint2(IQPainter painter, int32 x, int32 y, int32 w, int32 h)
 	{
-		CQt.QIcon_Paint2(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, x, y, w, h);
+		CQt.QIcon_Paint2(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, x, y, w, h);
 	}
 	
 	public bool IsNull()
@@ -122,7 +127,7 @@ public class QIcon : IQIcon
 	
 	public void AddPixmap(IQPixmap pixmap)
 	{
-		CQt.QIcon_AddPixmap(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr);
+		CQt.QIcon_AddPixmap(this.nativePtr, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
 	public void AddFile(String fileName)
@@ -152,7 +157,7 @@ public class QIcon : IQIcon
 	
 	public static void FromTheme2(String name, IQIcon fallback)
 	{
-		CQt.QIcon_FromTheme2(libqt_string(name), (fallback == default) ? default : (void*)fallback.NativePtr);
+		CQt.QIcon_FromTheme2(libqt_string(name), (fallback == default || fallback.NativePtr == default) ? default : fallback.NativePtr);
 	}
 	
 	public static bool HasThemeIcon(String name)
@@ -202,137 +207,457 @@ public class QIcon : IQIcon
 	
 	public void Pixmap22(IQSize size, int64 mode)
 	{
-		CQt.QIcon_Pixmap22(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode);
+		CQt.QIcon_Pixmap22(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode);
 	}
 	
 	public void Pixmap32(IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIcon_Pixmap32(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
+		CQt.QIcon_Pixmap32(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void Pixmap33(int32 w, int32 h, int64 mode)
 	{
-		CQt.QIcon_Pixmap33(this.nativePtr, w, h, mode);
+		CQt.QIcon_Pixmap33(this.nativePtr, w, h, (int64)mode);
 	}
 	
 	public void Pixmap42(int32 w, int32 h, int64 mode, int64 state)
 	{
-		CQt.QIcon_Pixmap42(this.nativePtr, w, h, mode, state);
+		CQt.QIcon_Pixmap42(this.nativePtr, w, h, (int64)mode, (int64)state);
 	}
 	
 	public void Pixmap23(int32 extent, int64 mode)
 	{
-		CQt.QIcon_Pixmap23(this.nativePtr, extent, mode);
+		CQt.QIcon_Pixmap23(this.nativePtr, extent, (int64)mode);
 	}
 	
 	public void Pixmap34(int32 extent, int64 mode, int64 state)
 	{
-		CQt.QIcon_Pixmap34(this.nativePtr, extent, mode, state);
+		CQt.QIcon_Pixmap34(this.nativePtr, extent, (int64)mode, (int64)state);
 	}
 	
 	public void Pixmap35(IQSize size, double devicePixelRatio, int64 mode)
 	{
-		CQt.QIcon_Pixmap35(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, devicePixelRatio, mode);
+		CQt.QIcon_Pixmap35(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, devicePixelRatio, (int64)mode);
 	}
 	
 	public void Pixmap43(IQSize size, double devicePixelRatio, int64 mode, int64 state)
 	{
-		CQt.QIcon_Pixmap43(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, devicePixelRatio, mode, state);
+		CQt.QIcon_Pixmap43(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, devicePixelRatio, (int64)mode, (int64)state);
 	}
 	
 	public void Pixmap36(IQWindow window, IQSize size, int64 mode)
 	{
-		CQt.QIcon_Pixmap36(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr, mode);
+		CQt.QIcon_Pixmap36(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode);
 	}
 	
 	public void Pixmap44(IQWindow window, IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIcon_Pixmap44(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
+		CQt.QIcon_Pixmap44(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void ActualSize22(IQSize size, int64 mode)
 	{
-		CQt.QIcon_ActualSize22(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode);
+		CQt.QIcon_ActualSize22(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode);
 	}
 	
 	public void ActualSize3(IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIcon_ActualSize3(this.nativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
+		CQt.QIcon_ActualSize3(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void ActualSize32(IQWindow window, IQSize size, int64 mode)
 	{
-		CQt.QIcon_ActualSize32(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr, mode);
+		CQt.QIcon_ActualSize32(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode);
 	}
 	
 	public void ActualSize4(IQWindow window, IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIcon_ActualSize4(this.nativePtr, (window == null) ? null : (void*)window.NativePtr, (size == default) ? default : (void*)size.NativePtr, mode, state);
+		CQt.QIcon_ActualSize4(this.nativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void Paint3(IQPainter painter, IQRect rect, int64 alignment)
 	{
-		CQt.QIcon_Paint3(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, alignment);
+		CQt.QIcon_Paint3(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, alignment);
 	}
 	
 	public void Paint4(IQPainter painter, IQRect rect, int64 alignment, int64 mode)
 	{
-		CQt.QIcon_Paint4(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, alignment, mode);
+		CQt.QIcon_Paint4(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, alignment, (int64)mode);
 	}
 	
 	public void Paint5(IQPainter painter, IQRect rect, int64 alignment, int64 mode, int64 state)
 	{
-		CQt.QIcon_Paint5(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, alignment, mode, state);
+		CQt.QIcon_Paint5(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, alignment, (int64)mode, (int64)state);
 	}
 	
 	public void Paint6(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment)
 	{
-		CQt.QIcon_Paint6(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, x, y, w, h, alignment);
+		CQt.QIcon_Paint6(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, x, y, w, h, alignment);
 	}
 	
 	public void Paint7(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment, int64 mode)
 	{
-		CQt.QIcon_Paint7(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, x, y, w, h, alignment, mode);
+		CQt.QIcon_Paint7(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, x, y, w, h, alignment, (int64)mode);
 	}
 	
 	public void Paint8(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment, int64 mode, int64 state)
 	{
-		CQt.QIcon_Paint8(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, x, y, w, h, alignment, mode, state);
+		CQt.QIcon_Paint8(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, x, y, w, h, alignment, (int64)mode, (int64)state);
 	}
 	
 	public void AddPixmap2(IQPixmap pixmap, int64 mode)
 	{
-		CQt.QIcon_AddPixmap2(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr, mode);
+		CQt.QIcon_AddPixmap2(this.nativePtr, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr, (int64)mode);
 	}
 	
 	public void AddPixmap3(IQPixmap pixmap, int64 mode, int64 state)
 	{
-		CQt.QIcon_AddPixmap3(this.nativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr, mode, state);
+		CQt.QIcon_AddPixmap3(this.nativePtr, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void AddFile2(String fileName, IQSize size)
 	{
-		CQt.QIcon_AddFile2(this.nativePtr, libqt_string(fileName), (size == default) ? default : (void*)size.NativePtr);
+		CQt.QIcon_AddFile2(this.nativePtr, libqt_string(fileName), (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void AddFile3(String fileName, IQSize size, int64 mode)
 	{
-		CQt.QIcon_AddFile3(this.nativePtr, libqt_string(fileName), (size == default) ? default : (void*)size.NativePtr, mode);
+		CQt.QIcon_AddFile3(this.nativePtr, libqt_string(fileName), (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode);
 	}
 	
 	public void AddFile4(String fileName, IQSize size, int64 mode, int64 state)
 	{
-		CQt.QIcon_AddFile4(this.nativePtr, libqt_string(fileName), (size == default) ? default : (void*)size.NativePtr, mode, state);
+		CQt.QIcon_AddFile4(this.nativePtr, libqt_string(fileName), (size == default || size.NativePtr == default) ? default : size.NativePtr, (int64)mode, (int64)state);
 	}
 	
 	public void[] AvailableSizes1(int64 mode)
 	{
-		return CQt.QIcon_AvailableSizes1(this.nativePtr, mode);
+		return CQt.QIcon_AvailableSizes1(this.nativePtr, (int64)mode);
 	}
 	
 	public void[] AvailableSizes2(int64 mode, int64 state)
 	{
-		return CQt.QIcon_AvailableSizes2(this.nativePtr, mode, state);
+		return CQt.QIcon_AvailableSizes2(this.nativePtr, (int64)mode, (int64)state);
+	}
+	
+}
+public class QIcon
+{
+	public QIconPtr handle;
+	
+	public static implicit operator QIconPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QIconPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQIcon other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQIcon other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void Pixmap(IQSize size)
+	{
+		this.handle.Pixmap(size);
+	}
+	
+	public void Pixmap2(int32 w, int32 h)
+	{
+		this.handle.Pixmap2(w, h);
+	}
+	
+	public void PixmapWithExtent(int32 extent)
+	{
+		this.handle.PixmapWithExtent(extent);
+	}
+	
+	public void Pixmap3(IQSize size, double devicePixelRatio)
+	{
+		this.handle.Pixmap3(size, devicePixelRatio);
+	}
+	
+	public void Pixmap4(IQWindow window, IQSize size)
+	{
+		this.handle.Pixmap4(window, size);
+	}
+	
+	public void ActualSize(IQSize size)
+	{
+		this.handle.ActualSize(size);
+	}
+	
+	public void ActualSize2(IQWindow window, IQSize size)
+	{
+		this.handle.ActualSize2(window, size);
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public void Paint(IQPainter painter, IQRect rect)
+	{
+		this.handle.Paint(painter, rect);
+	}
+	
+	public void Paint2(IQPainter painter, int32 x, int32 y, int32 w, int32 h)
+	{
+		this.handle.Paint2(painter, x, y, w, h);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public int64 CacheKey()
+	{
+		return this.handle.CacheKey();
+	}
+	
+	public void AddPixmap(IQPixmap pixmap)
+	{
+		this.handle.AddPixmap(pixmap);
+	}
+	
+	public void AddFile(String fileName)
+	{
+		this.handle.AddFile(fileName);
+	}
+	
+	public void[] AvailableSizes()
+	{
+		return this.handle.AvailableSizes();
+	}
+	
+	public void SetIsMask(bool isMask)
+	{
+		this.handle.SetIsMask(isMask);
+	}
+	
+	public bool IsMask()
+	{
+		return this.handle.IsMask();
+	}
+	
+	public static void FromTheme(String name)
+	{
+		QIconPtr.FromTheme(name);
+	}
+	
+	public static void FromTheme2(String name, IQIcon fallback)
+	{
+		QIconPtr.FromTheme2(name, fallback);
+	}
+	
+	public static bool HasThemeIcon(String name)
+	{
+		return QIconPtr.HasThemeIcon(name);
+	}
+	
+	public static libqt_string[] ThemeSearchPaths()
+	{
+		return QIconPtr.ThemeSearchPaths();
+	}
+	
+	public static void SetThemeSearchPaths(String[] searchpath)
+	{
+		QIconPtr.SetThemeSearchPaths(null);
+	}
+	
+	public static libqt_string[] FallbackSearchPaths()
+	{
+		return QIconPtr.FallbackSearchPaths();
+	}
+	
+	public static void SetFallbackSearchPaths(String[] paths)
+	{
+		QIconPtr.SetFallbackSearchPaths(null);
+	}
+	
+	public static libqt_string ThemeName()
+	{
+		return QIconPtr.ThemeName();
+	}
+	
+	public static void SetThemeName(String path)
+	{
+		QIconPtr.SetThemeName(path);
+	}
+	
+	public static libqt_string FallbackThemeName()
+	{
+		return QIconPtr.FallbackThemeName();
+	}
+	
+	public static void SetFallbackThemeName(String name)
+	{
+		QIconPtr.SetFallbackThemeName(name);
+	}
+	
+	public void Pixmap22(IQSize size, int64 mode)
+	{
+		this.handle.Pixmap22(size, mode);
+	}
+	
+	public void Pixmap32(IQSize size, int64 mode, int64 state)
+	{
+		this.handle.Pixmap32(size, mode, state);
+	}
+	
+	public void Pixmap33(int32 w, int32 h, int64 mode)
+	{
+		this.handle.Pixmap33(w, h, mode);
+	}
+	
+	public void Pixmap42(int32 w, int32 h, int64 mode, int64 state)
+	{
+		this.handle.Pixmap42(w, h, mode, state);
+	}
+	
+	public void Pixmap23(int32 extent, int64 mode)
+	{
+		this.handle.Pixmap23(extent, mode);
+	}
+	
+	public void Pixmap34(int32 extent, int64 mode, int64 state)
+	{
+		this.handle.Pixmap34(extent, mode, state);
+	}
+	
+	public void Pixmap35(IQSize size, double devicePixelRatio, int64 mode)
+	{
+		this.handle.Pixmap35(size, devicePixelRatio, mode);
+	}
+	
+	public void Pixmap43(IQSize size, double devicePixelRatio, int64 mode, int64 state)
+	{
+		this.handle.Pixmap43(size, devicePixelRatio, mode, state);
+	}
+	
+	public void Pixmap36(IQWindow window, IQSize size, int64 mode)
+	{
+		this.handle.Pixmap36(window, size, mode);
+	}
+	
+	public void Pixmap44(IQWindow window, IQSize size, int64 mode, int64 state)
+	{
+		this.handle.Pixmap44(window, size, mode, state);
+	}
+	
+	public void ActualSize22(IQSize size, int64 mode)
+	{
+		this.handle.ActualSize22(size, mode);
+	}
+	
+	public void ActualSize3(IQSize size, int64 mode, int64 state)
+	{
+		this.handle.ActualSize3(size, mode, state);
+	}
+	
+	public void ActualSize32(IQWindow window, IQSize size, int64 mode)
+	{
+		this.handle.ActualSize32(window, size, mode);
+	}
+	
+	public void ActualSize4(IQWindow window, IQSize size, int64 mode, int64 state)
+	{
+		this.handle.ActualSize4(window, size, mode, state);
+	}
+	
+	public void Paint3(IQPainter painter, IQRect rect, int64 alignment)
+	{
+		this.handle.Paint3(painter, rect, alignment);
+	}
+	
+	public void Paint4(IQPainter painter, IQRect rect, int64 alignment, int64 mode)
+	{
+		this.handle.Paint4(painter, rect, alignment, mode);
+	}
+	
+	public void Paint5(IQPainter painter, IQRect rect, int64 alignment, int64 mode, int64 state)
+	{
+		this.handle.Paint5(painter, rect, alignment, mode, state);
+	}
+	
+	public void Paint6(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment)
+	{
+		this.handle.Paint6(painter, x, y, w, h, alignment);
+	}
+	
+	public void Paint7(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment, int64 mode)
+	{
+		this.handle.Paint7(painter, x, y, w, h, alignment, mode);
+	}
+	
+	public void Paint8(IQPainter painter, int32 x, int32 y, int32 w, int32 h, int64 alignment, int64 mode, int64 state)
+	{
+		this.handle.Paint8(painter, x, y, w, h, alignment, mode, state);
+	}
+	
+	public void AddPixmap2(IQPixmap pixmap, int64 mode)
+	{
+		this.handle.AddPixmap2(pixmap, mode);
+	}
+	
+	public void AddPixmap3(IQPixmap pixmap, int64 mode, int64 state)
+	{
+		this.handle.AddPixmap3(pixmap, mode, state);
+	}
+	
+	public void AddFile2(String fileName, IQSize size)
+	{
+		this.handle.AddFile2(fileName, size);
+	}
+	
+	public void AddFile3(String fileName, IQSize size, int64 mode)
+	{
+		this.handle.AddFile3(fileName, size, mode);
+	}
+	
+	public void AddFile4(String fileName, IQSize size, int64 mode, int64 state)
+	{
+		this.handle.AddFile4(fileName, size, mode, state);
+	}
+	
+	public void[] AvailableSizes1(int64 mode)
+	{
+		return this.handle.AvailableSizes1(mode);
+	}
+	
+	public void[] AvailableSizes2(int64 mode, int64 state)
+	{
+		return this.handle.AvailableSizes2(mode, state);
 	}
 	
 }

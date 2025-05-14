@@ -37,34 +37,39 @@ public interface IQStandardPaths
 {
 	void* NativePtr { get; }
 }
-public class QStandardPaths : IQStandardPaths
+public struct QStandardPathsPtr : IQStandardPaths
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
 	public static libqt_string WritableLocation(int64 typeVal)
 	{
-		return CQt.QStandardPaths_WritableLocation(typeVal);
+		return CQt.QStandardPaths_WritableLocation((int64)typeVal);
 	}
 	
 	public static libqt_string[] StandardLocations(int64 typeVal)
 	{
-		return CQt.QStandardPaths_StandardLocations(typeVal);
+		return CQt.QStandardPaths_StandardLocations((int64)typeVal);
 	}
 	
 	public static libqt_string Locate(int64 typeVal, String fileName)
 	{
-		return CQt.QStandardPaths_Locate(typeVal, libqt_string(fileName));
+		return CQt.QStandardPaths_Locate((int64)typeVal, libqt_string(fileName));
 	}
 	
 	public static libqt_string[] LocateAll(int64 typeVal, String fileName)
 	{
-		return CQt.QStandardPaths_LocateAll(typeVal, libqt_string(fileName));
+		return CQt.QStandardPaths_LocateAll((int64)typeVal, libqt_string(fileName));
 	}
 	
 	public static libqt_string DisplayName(int64 typeVal)
 	{
-		return CQt.QStandardPaths_DisplayName(typeVal);
+		return CQt.QStandardPaths_DisplayName((int64)typeVal);
 	}
 	
 	public static libqt_string FindExecutable(String executableName)
@@ -84,17 +89,82 @@ public class QStandardPaths : IQStandardPaths
 	
 	public static libqt_string Locate3(int64 typeVal, String fileName, int64 options)
 	{
-		return CQt.QStandardPaths_Locate3(typeVal, libqt_string(fileName), options);
+		return CQt.QStandardPaths_Locate3((int64)typeVal, libqt_string(fileName), options);
 	}
 	
 	public static libqt_string[] LocateAll3(int64 typeVal, String fileName, int64 options)
 	{
-		return CQt.QStandardPaths_LocateAll3(typeVal, libqt_string(fileName), options);
+		return CQt.QStandardPaths_LocateAll3((int64)typeVal, libqt_string(fileName), options);
 	}
 	
 	public static libqt_string FindExecutable2(String executableName, String[] paths)
 	{
 		return CQt.QStandardPaths_FindExecutable2(libqt_string(executableName), null);
+	}
+	
+}
+public class QStandardPaths
+{
+	public QStandardPathsPtr handle;
+	
+	public static implicit operator QStandardPathsPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public static libqt_string WritableLocation(int64 typeVal)
+	{
+		return QStandardPathsPtr.WritableLocation(typeVal);
+	}
+	
+	public static libqt_string[] StandardLocations(int64 typeVal)
+	{
+		return QStandardPathsPtr.StandardLocations(typeVal);
+	}
+	
+	public static libqt_string Locate(int64 typeVal, String fileName)
+	{
+		return QStandardPathsPtr.Locate(typeVal, fileName);
+	}
+	
+	public static libqt_string[] LocateAll(int64 typeVal, String fileName)
+	{
+		return QStandardPathsPtr.LocateAll(typeVal, fileName);
+	}
+	
+	public static libqt_string DisplayName(int64 typeVal)
+	{
+		return QStandardPathsPtr.DisplayName(typeVal);
+	}
+	
+	public static libqt_string FindExecutable(String executableName)
+	{
+		return QStandardPathsPtr.FindExecutable(executableName);
+	}
+	
+	public static void SetTestModeEnabled(bool testMode)
+	{
+		QStandardPathsPtr.SetTestModeEnabled(testMode);
+	}
+	
+	public static bool IsTestModeEnabled()
+	{
+		return QStandardPathsPtr.IsTestModeEnabled();
+	}
+	
+	public static libqt_string Locate3(int64 typeVal, String fileName, int64 options)
+	{
+		return QStandardPathsPtr.Locate3(typeVal, fileName, options);
+	}
+	
+	public static libqt_string[] LocateAll3(int64 typeVal, String fileName, int64 options)
+	{
+		return QStandardPathsPtr.LocateAll3(typeVal, fileName, options);
+	}
+	
+	public static libqt_string FindExecutable2(String executableName, String[] paths)
+	{
+		return QStandardPathsPtr.FindExecutable2(executableName, null);
 	}
 	
 }

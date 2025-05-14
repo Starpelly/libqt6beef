@@ -23,18 +23,41 @@ public interface IQTileRules
 {
 	void* NativePtr { get; }
 }
-public class QTileRules : IQTileRules
+public struct QTileRulesPtr : IQTileRules, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQTileRules other)
+	{
+		return .(CQt.QTileRules_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QTileRules_Delete(this.nativePtr);
+	}
+}
+public class QTileRules
+{
+	public QTileRulesPtr handle;
+	
+	public static implicit operator QTileRulesPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQTileRules other)
 	{
-		this.nativePtr = CQt.QTileRules_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QTileRulesPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QTileRules_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt

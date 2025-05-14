@@ -6,29 +6,34 @@ public interface IQStorageInfo
 {
 	void* NativePtr { get; }
 }
-public class QStorageInfo : IQStorageInfo
+public struct QStorageInfoPtr : IQStorageInfo, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStorageInfo_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStorageInfo_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStorageInfo_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQStorageInfo other)
 	{
-		CQt.QStorageInfo_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QStorageInfo_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQStorageInfo other)
 	{
-		CQt.QStorageInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QStorageInfo_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetPath(String path)
@@ -119,6 +124,126 @@ public class QStorageInfo : IQStorageInfo
 	public static void Root()
 	{
 		CQt.QStorageInfo_Root();
+	}
+	
+}
+public class QStorageInfo
+{
+	public QStorageInfoPtr handle;
+	
+	public static implicit operator QStorageInfoPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStorageInfoPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQStorageInfo other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQStorageInfo other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void SetPath(String path)
+	{
+		this.handle.SetPath(path);
+	}
+	
+	public libqt_string RootPath()
+	{
+		return this.handle.RootPath();
+	}
+	
+	public libqt_string Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public libqt_string Subvolume()
+	{
+		return this.handle.Subvolume();
+	}
+	
+	public libqt_string FileSystemType()
+	{
+		return this.handle.FileSystemType();
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public libqt_string DisplayName()
+	{
+		return this.handle.DisplayName();
+	}
+	
+	public int64 BytesTotal()
+	{
+		return this.handle.BytesTotal();
+	}
+	
+	public int64 BytesFree()
+	{
+		return this.handle.BytesFree();
+	}
+	
+	public int64 BytesAvailable()
+	{
+		return this.handle.BytesAvailable();
+	}
+	
+	public int32 BlockSize()
+	{
+		return this.handle.BlockSize();
+	}
+	
+	public bool IsRoot()
+	{
+		return this.handle.IsRoot();
+	}
+	
+	public bool IsReadOnly()
+	{
+		return this.handle.IsReadOnly();
+	}
+	
+	public bool IsReady()
+	{
+		return this.handle.IsReady();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void Refresh()
+	{
+		this.handle.Refresh();
+	}
+	
+	public static void[] MountedVolumes()
+	{
+		return QStorageInfoPtr.MountedVolumes();
+	}
+	
+	public static void Root()
+	{
+		QStorageInfoPtr.Root();
 	}
 	
 }

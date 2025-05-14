@@ -38,34 +38,39 @@ public interface IQMediaMetaData
 {
 	void* NativePtr { get; }
 }
-public class QMediaMetaData : IQMediaMetaData
+public struct QMediaMetaDataPtr : IQMediaMetaData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMediaMetaData param1)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMediaMetaData_new((param1 == default) ? default : (void*)param1.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMediaMetaData param1)
+	{
+		return .(CQt.QMediaMetaData_new((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMediaMetaData_Delete(this.nativePtr);
 	}
 	
 	public void Value(int64 k)
 	{
-		CQt.QMediaMetaData_Value(this.nativePtr, k);
+		CQt.QMediaMetaData_Value(this.nativePtr, (int64)k);
 	}
 	
 	public void Insert(int64 k, IQVariant value)
 	{
-		CQt.QMediaMetaData_Insert(this.nativePtr, k, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QMediaMetaData_Insert(this.nativePtr, (int64)k, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Remove(int64 k)
 	{
-		CQt.QMediaMetaData_Remove(this.nativePtr, k);
+		CQt.QMediaMetaData_Remove(this.nativePtr, (int64)k);
 	}
 	
 	public int64[] Keys()
@@ -75,7 +80,7 @@ public class QMediaMetaData : IQMediaMetaData
 	
 	public void* OperatorSubscript(int64 k)
 	{
-		return CQt.QMediaMetaData_OperatorSubscript(this.nativePtr, k);
+		return CQt.QMediaMetaData_OperatorSubscript(this.nativePtr, (int64)k);
 	}
 	
 	public void Clear()
@@ -90,12 +95,77 @@ public class QMediaMetaData : IQMediaMetaData
 	
 	public libqt_string StringValue(int64 k)
 	{
-		return CQt.QMediaMetaData_StringValue(this.nativePtr, k);
+		return CQt.QMediaMetaData_StringValue(this.nativePtr, (int64)k);
 	}
 	
 	public static libqt_string MetaDataKeyToString(int64 k)
 	{
-		return CQt.QMediaMetaData_MetaDataKeyToString(k);
+		return CQt.QMediaMetaData_MetaDataKeyToString((int64)k);
+	}
+	
+}
+public class QMediaMetaData
+{
+	public QMediaMetaDataPtr handle;
+	
+	public static implicit operator QMediaMetaDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMediaMetaData param1)
+	{
+		this.handle = QMediaMetaDataPtr.New(param1);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Value(int64 k)
+	{
+		this.handle.Value(k);
+	}
+	
+	public void Insert(int64 k, IQVariant value)
+	{
+		this.handle.Insert(k, value);
+	}
+	
+	public void Remove(int64 k)
+	{
+		this.handle.Remove(k);
+	}
+	
+	public int64[] Keys()
+	{
+		return this.handle.Keys();
+	}
+	
+	public void* OperatorSubscript(int64 k)
+	{
+		return this.handle.OperatorSubscript(k);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public libqt_string StringValue(int64 k)
+	{
+		return this.handle.StringValue(k);
+	}
+	
+	public static libqt_string MetaDataKeyToString(int64 k)
+	{
+		return QMediaMetaDataPtr.MetaDataKeyToString(k);
 	}
 	
 }

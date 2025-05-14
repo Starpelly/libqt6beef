@@ -24,24 +24,29 @@ public interface IQTextBoundaryFinder
 {
 	void* NativePtr { get; }
 }
-public class QTextBoundaryFinder : IQTextBoundaryFinder
+public struct QTextBoundaryFinderPtr : IQTextBoundaryFinder, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextBoundaryFinder_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextBoundaryFinder_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextBoundaryFinder_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTextBoundaryFinder other)
 	{
-		CQt.QTextBoundaryFinder_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextBoundaryFinder_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -97,6 +102,86 @@ public class QTextBoundaryFinder : IQTextBoundaryFinder
 	public int64 BoundaryReasons()
 	{
 		return CQt.QTextBoundaryFinder_BoundaryReasons(this.nativePtr);
+	}
+	
+}
+public class QTextBoundaryFinder
+{
+	public QTextBoundaryFinderPtr handle;
+	
+	public static implicit operator QTextBoundaryFinderPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextBoundaryFinderPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTextBoundaryFinder other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public libqt_string String()
+	{
+		return this.handle.String();
+	}
+	
+	public void ToStart()
+	{
+		this.handle.ToStart();
+	}
+	
+	public void ToEnd()
+	{
+		this.handle.ToEnd();
+	}
+	
+	public int32 Position()
+	{
+		return this.handle.Position();
+	}
+	
+	public void SetPosition(int32 position)
+	{
+		this.handle.SetPosition(position);
+	}
+	
+	public int32 ToNextBoundary()
+	{
+		return this.handle.ToNextBoundary();
+	}
+	
+	public int32 ToPreviousBoundary()
+	{
+		return this.handle.ToPreviousBoundary();
+	}
+	
+	public bool IsAtBoundary()
+	{
+		return this.handle.IsAtBoundary();
+	}
+	
+	public int64 BoundaryReasons()
+	{
+		return this.handle.BoundaryReasons();
 	}
 	
 }

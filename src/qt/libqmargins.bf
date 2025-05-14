@@ -6,17 +6,22 @@ public interface IQMargins
 {
 	void* NativePtr { get; }
 }
-public class QMargins : IQMargins
+public struct QMarginsPtr : IQMargins, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMargins other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMargins_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMargins other)
+	{
+		return .(CQt.QMargins_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMargins_Delete(this.nativePtr);
 	}
@@ -68,12 +73,12 @@ public class QMargins : IQMargins
 	
 	public void* OperatorPlusAssign(IQMargins margins)
 	{
-		return CQt.QMargins_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QMargins_OperatorPlusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMargins margins)
 	{
-		return CQt.QMargins_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QMargins_OperatorMinusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssignWithInt(int32 param1)
@@ -109,6 +114,116 @@ public class QMargins : IQMargins
 	public void ToMarginsF()
 	{
 		CQt.QMargins_ToMarginsF(this.nativePtr);
+	}
+	
+}
+public class QMargins
+{
+	public QMarginsPtr handle;
+	
+	public static implicit operator QMarginsPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMargins other)
+	{
+		this.handle = QMarginsPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public int32 Left()
+	{
+		return this.handle.Left();
+	}
+	
+	public int32 Top()
+	{
+		return this.handle.Top();
+	}
+	
+	public int32 Right()
+	{
+		return this.handle.Right();
+	}
+	
+	public int32 Bottom()
+	{
+		return this.handle.Bottom();
+	}
+	
+	public void SetLeft(int32 left)
+	{
+		this.handle.SetLeft(left);
+	}
+	
+	public void SetTop(int32 top)
+	{
+		this.handle.SetTop(top);
+	}
+	
+	public void SetRight(int32 right)
+	{
+		this.handle.SetRight(right);
+	}
+	
+	public void SetBottom(int32 bottom)
+	{
+		this.handle.SetBottom(bottom);
+	}
+	
+	public void* OperatorPlusAssign(IQMargins margins)
+	{
+		return this.handle.OperatorPlusAssign(margins);
+	}
+	
+	public void* OperatorMinusAssign(IQMargins margins)
+	{
+		return this.handle.OperatorMinusAssign(margins);
+	}
+	
+	public void* OperatorPlusAssignWithInt(int32 param1)
+	{
+		return this.handle.OperatorPlusAssignWithInt(param1);
+	}
+	
+	public void* OperatorMinusAssignWithInt(int32 param1)
+	{
+		return this.handle.OperatorMinusAssignWithInt(param1);
+	}
+	
+	public void* OperatorMultiplyAssign(int32 param1)
+	{
+		return this.handle.OperatorMultiplyAssign(param1);
+	}
+	
+	public void* OperatorDivideAssign(int32 param1)
+	{
+		return this.handle.OperatorDivideAssign(param1);
+	}
+	
+	public void* OperatorMultiplyAssignWithDouble(double param1)
+	{
+		return this.handle.OperatorMultiplyAssignWithDouble(param1);
+	}
+	
+	public void* OperatorDivideAssignWithDouble(double param1)
+	{
+		return this.handle.OperatorDivideAssignWithDouble(param1);
+	}
+	
+	public void ToMarginsF()
+	{
+		this.handle.ToMarginsF();
 	}
 	
 }
@@ -168,17 +283,22 @@ public interface IQMarginsF
 {
 	void* NativePtr { get; }
 }
-public class QMarginsF : IQMarginsF
+public struct QMarginsFPtr : IQMarginsF, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMarginsF other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMarginsF_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMarginsF other)
+	{
+		return .(CQt.QMarginsF_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMarginsF_Delete(this.nativePtr);
 	}
@@ -230,12 +350,12 @@ public class QMarginsF : IQMarginsF
 	
 	public void* OperatorPlusAssign(IQMarginsF margins)
 	{
-		return CQt.QMarginsF_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QMarginsF_OperatorPlusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMarginsF margins)
 	{
-		return CQt.QMarginsF_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QMarginsF_OperatorMinusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssignWithAddend(double addend)
@@ -261,6 +381,106 @@ public class QMarginsF : IQMarginsF
 	public void ToMargins()
 	{
 		CQt.QMarginsF_ToMargins(this.nativePtr);
+	}
+	
+}
+public class QMarginsF
+{
+	public QMarginsFPtr handle;
+	
+	public static implicit operator QMarginsFPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMarginsF other)
+	{
+		this.handle = QMarginsFPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public double Left()
+	{
+		return this.handle.Left();
+	}
+	
+	public double Top()
+	{
+		return this.handle.Top();
+	}
+	
+	public double Right()
+	{
+		return this.handle.Right();
+	}
+	
+	public double Bottom()
+	{
+		return this.handle.Bottom();
+	}
+	
+	public void SetLeft(double aleft)
+	{
+		this.handle.SetLeft(aleft);
+	}
+	
+	public void SetTop(double atop)
+	{
+		this.handle.SetTop(atop);
+	}
+	
+	public void SetRight(double aright)
+	{
+		this.handle.SetRight(aright);
+	}
+	
+	public void SetBottom(double abottom)
+	{
+		this.handle.SetBottom(abottom);
+	}
+	
+	public void* OperatorPlusAssign(IQMarginsF margins)
+	{
+		return this.handle.OperatorPlusAssign(margins);
+	}
+	
+	public void* OperatorMinusAssign(IQMarginsF margins)
+	{
+		return this.handle.OperatorMinusAssign(margins);
+	}
+	
+	public void* OperatorPlusAssignWithAddend(double addend)
+	{
+		return this.handle.OperatorPlusAssignWithAddend(addend);
+	}
+	
+	public void* OperatorMinusAssignWithSubtrahend(double subtrahend)
+	{
+		return this.handle.OperatorMinusAssignWithSubtrahend(subtrahend);
+	}
+	
+	public void* OperatorMultiplyAssign(double factor)
+	{
+		return this.handle.OperatorMultiplyAssign(factor);
+	}
+	
+	public void* OperatorDivideAssign(double divisor)
+	{
+		return this.handle.OperatorDivideAssign(divisor);
+	}
+	
+	public void ToMargins()
+	{
+		this.handle.ToMargins();
 	}
 	
 }

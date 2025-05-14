@@ -30,10 +30,24 @@ public interface IQStringConverterBase
 {
 	void* NativePtr { get; }
 }
-public class QStringConverterBase : IQStringConverterBase
+public struct QStringConverterBasePtr : IQStringConverterBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
+	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+}
+public class QStringConverterBase
+{
+	public QStringConverterBasePtr handle;
+	
+	public static implicit operator QStringConverterBasePtr(Self self)
+	{
+		return self.handle;
+	}
 }
 extension CQt
 {
@@ -42,10 +56,15 @@ public interface IQStringConverter
 {
 	void* NativePtr { get; }
 }
-public class QStringConverter : IQStringConverter, IQStringConverterBase
+public struct QStringConverterPtr : IQStringConverter, IQStringConverterBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
+	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
 	
 	public bool IsValid()
 	{
@@ -69,7 +88,42 @@ public class QStringConverter : IQStringConverter, IQStringConverterBase
 	
 	public static char8* NameForEncoding(int64 e)
 	{
-		return CQt.QStringConverter_NameForEncoding(e);
+		return CQt.QStringConverter_NameForEncoding((int64)e);
+	}
+	
+}
+public class QStringConverter
+{
+	public QStringConverterPtr handle;
+	
+	public static implicit operator QStringConverterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void ResetState()
+	{
+		this.handle.ResetState();
+	}
+	
+	public bool HasError()
+	{
+		return this.handle.HasError();
+	}
+	
+	public char8* Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public static char8* NameForEncoding(int64 e)
+	{
+		return QStringConverterPtr.NameForEncoding(e);
 	}
 	
 }
@@ -90,17 +144,22 @@ public interface IQStringConverterBase__State
 {
 	void* NativePtr { get; }
 }
-public class QStringConverterBase__State : IQStringConverterBase__State
+public struct QStringConverterBase__StatePtr : IQStringConverterBase__State, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStringConverterBase__State_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStringConverterBase__State_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStringConverterBase__State_Delete(this.nativePtr);
 	}
@@ -113,6 +172,36 @@ public class QStringConverterBase__State : IQStringConverterBase__State
 	public void Reset()
 	{
 		CQt.QStringConverterBase__State_Reset(this.nativePtr);
+	}
+	
+}
+public class QStringConverterBase__State
+{
+	public QStringConverterBase__StatePtr handle;
+	
+	public static implicit operator QStringConverterBase__StatePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStringConverterBase__StatePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
 	}
 	
 }

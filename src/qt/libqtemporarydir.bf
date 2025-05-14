@@ -6,24 +6,29 @@ public interface IQTemporaryDir
 {
 	void* NativePtr { get; }
 }
-public class QTemporaryDir : IQTemporaryDir
+public struct QTemporaryDirPtr : IQTemporaryDir, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTemporaryDir_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTemporaryDir_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTemporaryDir_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQTemporaryDir other)
 	{
-		CQt.QTemporaryDir_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTemporaryDir_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -59,6 +64,66 @@ public class QTemporaryDir : IQTemporaryDir
 	public libqt_string FilePath(String fileName)
 	{
 		return CQt.QTemporaryDir_FilePath(this.nativePtr, libqt_string(fileName));
+	}
+	
+}
+public class QTemporaryDir
+{
+	public QTemporaryDirPtr handle;
+	
+	public static implicit operator QTemporaryDirPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTemporaryDirPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQTemporaryDir other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public bool AutoRemove()
+	{
+		return this.handle.AutoRemove();
+	}
+	
+	public void SetAutoRemove(bool b)
+	{
+		this.handle.SetAutoRemove(b);
+	}
+	
+	public bool Remove()
+	{
+		return this.handle.Remove();
+	}
+	
+	public libqt_string Path()
+	{
+		return this.handle.Path();
+	}
+	
+	public libqt_string FilePath(String fileName)
+	{
+		return this.handle.FilePath(fileName);
 	}
 	
 }

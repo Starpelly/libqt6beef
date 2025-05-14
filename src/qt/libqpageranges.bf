@@ -6,29 +6,34 @@ public interface IQPageRanges
 {
 	void* NativePtr { get; }
 }
-public class QPageRanges : IQPageRanges
+public struct QPageRangesPtr : IQPageRanges, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPageRanges_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPageRanges_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPageRanges_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQPageRanges other)
 	{
-		CQt.QPageRanges_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPageRanges_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQPageRanges other)
 	{
-		CQt.QPageRanges_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPageRanges_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void AddPage(int32 pageNumber)
@@ -87,6 +92,91 @@ public class QPageRanges : IQPageRanges
 	}
 	
 }
+public class QPageRanges
+{
+	public QPageRangesPtr handle;
+	
+	public static implicit operator QPageRangesPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPageRangesPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQPageRanges other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQPageRanges other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void AddPage(int32 pageNumber)
+	{
+		this.handle.AddPage(pageNumber);
+	}
+	
+	public void AddRange(int32 from, int32 to)
+	{
+		this.handle.AddRange(from, to);
+	}
+	
+	public void[] ToRangeList()
+	{
+		return this.handle.ToRangeList();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public static void FromString(String ranges)
+	{
+		QPageRangesPtr.FromString(ranges);
+	}
+	
+	public bool Contains(int32 pageNumber)
+	{
+		return this.handle.Contains(pageNumber);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 FirstPage()
+	{
+		return this.handle.FirstPage();
+	}
+	
+	public int32 LastPage()
+	{
+		return this.handle.LastPage();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QPageRanges_new")]
@@ -127,17 +217,22 @@ public interface IQPageRanges__Range
 {
 	void* NativePtr { get; }
 }
-public class QPageRanges__Range : IQPageRanges__Range
+public struct QPageRanges__RangePtr : IQPageRanges__Range, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QPageRanges__Range other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPageRanges__Range_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QPageRanges__RangePtr other)
+	{
+		return .(CQt.QPageRanges__Range_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPageRanges__Range_Delete(this.nativePtr);
 	}
@@ -145,6 +240,31 @@ public class QPageRanges__Range : IQPageRanges__Range
 	public bool Contains(int32 pageNumber)
 	{
 		return CQt.QPageRanges__Range_Contains(this.nativePtr, pageNumber);
+	}
+	
+}
+public class QPageRanges__Range
+{
+	public QPageRanges__RangePtr handle;
+	
+	public static implicit operator QPageRanges__RangePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QPageRanges__RangePtr other)
+	{
+		this.handle = QPageRanges__RangePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool Contains(int32 pageNumber)
+	{
+		return this.handle.Contains(pageNumber);
 	}
 	
 }

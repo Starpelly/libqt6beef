@@ -6,17 +6,22 @@ public interface IQLoggingCategory
 {
 	void* NativePtr { get; }
 }
-public class QLoggingCategory : IQLoggingCategory
+public struct QLoggingCategoryPtr : IQLoggingCategory, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(char8* category)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLoggingCategory_new(category);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(char8* category)
+	{
+		return .(CQt.QLoggingCategory_new(category));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLoggingCategory_Delete(this.nativePtr);
 	}
@@ -64,6 +69,71 @@ public class QLoggingCategory : IQLoggingCategory
 	public static void SetFilterRules(String rules)
 	{
 		CQt.QLoggingCategory_SetFilterRules(libqt_string(rules));
+	}
+	
+}
+public class QLoggingCategory
+{
+	public QLoggingCategoryPtr handle;
+	
+	public static implicit operator QLoggingCategoryPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(char8* category)
+	{
+		this.handle = QLoggingCategoryPtr.New(category);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsDebugEnabled()
+	{
+		return this.handle.IsDebugEnabled();
+	}
+	
+	public bool IsInfoEnabled()
+	{
+		return this.handle.IsInfoEnabled();
+	}
+	
+	public bool IsWarningEnabled()
+	{
+		return this.handle.IsWarningEnabled();
+	}
+	
+	public bool IsCriticalEnabled()
+	{
+		return this.handle.IsCriticalEnabled();
+	}
+	
+	public char8* CategoryName()
+	{
+		return this.handle.CategoryName();
+	}
+	
+	public void* OperatorCall()
+	{
+		return this.handle.OperatorCall();
+	}
+	
+	public void* OperatorCall2()
+	{
+		return this.handle.OperatorCall2();
+	}
+	
+	public static void* DefaultCategory()
+	{
+		return QLoggingCategoryPtr.DefaultCategory();
+	}
+	
+	public static void SetFilterRules(String rules)
+	{
+		QLoggingCategoryPtr.SetFilterRules(rules);
 	}
 	
 }

@@ -6,87 +6,92 @@ public interface IQLayoutItem
 {
 	void* NativePtr { get; }
 }
-public class QLayoutItem : IQLayoutItem
+public struct QLayoutItemPtr : IQLayoutItem, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLayoutItem_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QLayoutItem_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLayoutItem_Delete(this.nativePtr);
 	}
 	
-	public virtual void SizeHint()
+	public void SizeHint()
 	{
 		CQt.QLayoutItem_SizeHint(this.nativePtr);
 	}
 	
-	public virtual void MinimumSize()
+	public void MinimumSize()
 	{
 		CQt.QLayoutItem_MinimumSize(this.nativePtr);
 	}
 	
-	public virtual void MaximumSize()
+	public void MaximumSize()
 	{
 		CQt.QLayoutItem_MaximumSize(this.nativePtr);
 	}
 	
-	public virtual int64 ExpandingDirections()
+	public int64 ExpandingDirections()
 	{
 		return CQt.QLayoutItem_ExpandingDirections(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRect geometry)
+	public void SetGeometry(IQRect geometry)
 	{
-		CQt.QLayoutItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
+		CQt.QLayoutItem_SetGeometry(this.nativePtr, (geometry == default || geometry.NativePtr == default) ? default : geometry.NativePtr);
 	}
 	
-	public virtual void Geometry()
+	public void Geometry()
 	{
 		CQt.QLayoutItem_Geometry(this.nativePtr);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QLayoutItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual bool HasHeightForWidth()
+	public bool HasHeightForWidth()
 	{
 		return CQt.QLayoutItem_HasHeightForWidth(this.nativePtr);
 	}
 	
-	public virtual int32 HeightForWidth(int32 param1)
+	public int32 HeightForWidth(int32 param1)
 	{
 		return CQt.QLayoutItem_HeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual int32 MinimumHeightForWidth(int32 param1)
+	public int32 MinimumHeightForWidth(int32 param1)
 	{
 		return CQt.QLayoutItem_MinimumHeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual void Invalidate()
+	public void Invalidate()
 	{
 		CQt.QLayoutItem_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void* Widget()
+	public void* Widget()
 	{
 		return CQt.QLayoutItem_Widget(this.nativePtr);
 	}
 	
-	public virtual void* Layout()
+	public void* Layout()
 	{
 		return CQt.QLayoutItem_Layout(this.nativePtr);
 	}
 	
-	public virtual void* SpacerItem()
+	public void* SpacerItem()
 	{
 		return CQt.QLayoutItem_SpacerItem(this.nativePtr);
 	}
@@ -101,14 +106,124 @@ public class QLayoutItem : IQLayoutItem
 		CQt.QLayoutItem_SetAlignment(this.nativePtr, a);
 	}
 	
-	public virtual int64 ControlTypes()
+	public int64 ControlTypes()
 	{
 		return CQt.QLayoutItem_ControlTypes(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQLayoutItem param1)
 	{
-		CQt.QLayoutItem_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QLayoutItem_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QLayoutItem
+{
+	public QLayoutItemPtr handle;
+	
+	public static implicit operator QLayoutItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QLayoutItemPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void SizeHint()
+	{
+		this.handle.SizeHint();
+	}
+	
+	public virtual void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public virtual void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public virtual int64 ExpandingDirections()
+	{
+		return this.handle.ExpandingDirections();
+	}
+	
+	public virtual void SetGeometry(IQRect geometry)
+	{
+		this.handle.SetGeometry(geometry);
+	}
+	
+	public virtual void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public virtual bool HasHeightForWidth()
+	{
+		return this.handle.HasHeightForWidth();
+	}
+	
+	public virtual int32 HeightForWidth(int32 param1)
+	{
+		return this.handle.HeightForWidth(param1);
+	}
+	
+	public virtual int32 MinimumHeightForWidth(int32 param1)
+	{
+		return this.handle.MinimumHeightForWidth(param1);
+	}
+	
+	public virtual void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public virtual void* Widget()
+	{
+		return this.handle.Widget();
+	}
+	
+	public virtual void* Layout()
+	{
+		return this.handle.Layout();
+	}
+	
+	public virtual void* SpacerItem()
+	{
+		return this.handle.SpacerItem();
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetAlignment(int64 a)
+	{
+		this.handle.SetAlignment(a);
+	}
+	
+	public virtual int64 ControlTypes()
+	{
+		return this.handle.ControlTypes();
+	}
+	
+	public void OperatorAssign(IQLayoutItem param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -164,17 +279,22 @@ public interface IQSpacerItem
 {
 	void* NativePtr { get; }
 }
-public class QSpacerItem : IQSpacerItem, IQLayoutItem
+public struct QSpacerItemPtr : IQSpacerItem, IDisposable, IQLayoutItem
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int32 w, int32 h)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSpacerItem_new(w, h);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int32 w, int32 h)
+	{
+		return .(CQt.QSpacerItem_new(w, h));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSpacerItem_Delete(this.nativePtr);
 	}
@@ -184,42 +304,42 @@ public class QSpacerItem : IQSpacerItem, IQLayoutItem
 		CQt.QSpacerItem_ChangeSize(this.nativePtr, w, h);
 	}
 	
-	public virtual void SizeHint()
+	public void SizeHint()
 	{
 		CQt.QSpacerItem_SizeHint(this.nativePtr);
 	}
 	
-	public virtual void MinimumSize()
+	public void MinimumSize()
 	{
 		CQt.QSpacerItem_MinimumSize(this.nativePtr);
 	}
 	
-	public virtual void MaximumSize()
+	public void MaximumSize()
 	{
 		CQt.QSpacerItem_MaximumSize(this.nativePtr);
 	}
 	
-	public virtual int64 ExpandingDirections()
+	public int64 ExpandingDirections()
 	{
 		return CQt.QSpacerItem_ExpandingDirections(this.nativePtr);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QSpacerItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRect geometry)
+	public void SetGeometry(IQRect geometry)
 	{
-		CQt.QSpacerItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
+		CQt.QSpacerItem_SetGeometry(this.nativePtr, (geometry == default || geometry.NativePtr == default) ? default : geometry.NativePtr);
 	}
 	
-	public virtual void Geometry()
+	public void Geometry()
 	{
 		CQt.QSpacerItem_Geometry(this.nativePtr);
 	}
 	
-	public virtual void* SpacerItem()
+	public void* SpacerItem()
 	{
 		return CQt.QSpacerItem_SpacerItem(this.nativePtr);
 	}
@@ -231,40 +351,40 @@ public class QSpacerItem : IQSpacerItem, IQLayoutItem
 	
 	public void ChangeSize3(int32 w, int32 h, int64 hData)
 	{
-		CQt.QSpacerItem_ChangeSize3(this.nativePtr, w, h, hData);
+		CQt.QSpacerItem_ChangeSize3(this.nativePtr, w, h, (int64)hData);
 	}
 	
 	public void ChangeSize4(int32 w, int32 h, int64 hData, int64 vData)
 	{
-		CQt.QSpacerItem_ChangeSize4(this.nativePtr, w, h, hData, vData);
+		CQt.QSpacerItem_ChangeSize4(this.nativePtr, w, h, (int64)hData, (int64)vData);
 	}
 	
-	public virtual bool HasHeightForWidth()
+	public bool HasHeightForWidth()
 	{
 		return CQt.QLayoutItem_HasHeightForWidth(this.nativePtr);
 	}
 	
-	public virtual int32 HeightForWidth(int32 param1)
+	public int32 HeightForWidth(int32 param1)
 	{
 		return CQt.QLayoutItem_HeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual int32 MinimumHeightForWidth(int32 param1)
+	public int32 MinimumHeightForWidth(int32 param1)
 	{
 		return CQt.QLayoutItem_MinimumHeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual void Invalidate()
+	public void Invalidate()
 	{
 		CQt.QLayoutItem_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void* Widget()
+	public void* Widget()
 	{
 		return CQt.QLayoutItem_Widget(this.nativePtr);
 	}
 	
-	public virtual void* Layout()
+	public void* Layout()
 	{
 		return CQt.QLayoutItem_Layout(this.nativePtr);
 	}
@@ -279,9 +399,134 @@ public class QSpacerItem : IQSpacerItem, IQLayoutItem
 		CQt.QLayoutItem_SetAlignment(this.nativePtr, a);
 	}
 	
-	public virtual int64 ControlTypes()
+	public int64 ControlTypes()
 	{
 		return CQt.QLayoutItem_ControlTypes(this.nativePtr);
+	}
+	
+}
+public class QSpacerItem
+{
+	public QSpacerItemPtr handle;
+	
+	public static implicit operator QSpacerItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int32 w, int32 h)
+	{
+		this.handle = QSpacerItemPtr.New(w, h);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void ChangeSize(int32 w, int32 h)
+	{
+		this.handle.ChangeSize(w, h);
+	}
+	
+	public virtual void SizeHint()
+	{
+		this.handle.SizeHint();
+	}
+	
+	public virtual void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public virtual void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public virtual int64 ExpandingDirections()
+	{
+		return this.handle.ExpandingDirections();
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public virtual void SetGeometry(IQRect geometry)
+	{
+		this.handle.SetGeometry(geometry);
+	}
+	
+	public virtual void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public virtual void* SpacerItem()
+	{
+		return this.handle.SpacerItem();
+	}
+	
+	public void SizePolicy()
+	{
+		this.handle.SizePolicy();
+	}
+	
+	public void ChangeSize3(int32 w, int32 h, int64 hData)
+	{
+		this.handle.ChangeSize3(w, h, hData);
+	}
+	
+	public void ChangeSize4(int32 w, int32 h, int64 hData, int64 vData)
+	{
+		this.handle.ChangeSize4(w, h, hData, vData);
+	}
+	
+	public virtual bool HasHeightForWidth()
+	{
+		return this.handle.HasHeightForWidth();
+	}
+	
+	public virtual int32 HeightForWidth(int32 param1)
+	{
+		return this.handle.HeightForWidth(param1);
+	}
+	
+	public virtual int32 MinimumHeightForWidth(int32 param1)
+	{
+		return this.handle.MinimumHeightForWidth(param1);
+	}
+	
+	public virtual void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public virtual void* Widget()
+	{
+		return this.handle.Widget();
+	}
+	
+	public virtual void* Layout()
+	{
+		return this.handle.Layout();
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetAlignment(int64 a)
+	{
+		this.handle.SetAlignment(a);
+	}
+	
+	public virtual int64 ControlTypes()
+	{
+		return this.handle.ControlTypes();
 	}
 	
 }
@@ -327,92 +572,97 @@ public interface IQWidgetItem
 {
 	void* NativePtr { get; }
 }
-public class QWidgetItem : IQWidgetItem, IQLayoutItem
+public struct QWidgetItemPtr : IQWidgetItem, IDisposable, IQLayoutItem
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQWidget w)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QWidgetItem_new((w == null) ? null : (void*)w.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQWidget w)
+	{
+		return .(CQt.QWidgetItem_new((w == default || w.NativePtr == default) ? default : w.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QWidgetItem_Delete(this.nativePtr);
 	}
 	
-	public virtual void SizeHint()
+	public void SizeHint()
 	{
 		CQt.QWidgetItem_SizeHint(this.nativePtr);
 	}
 	
-	public virtual void MinimumSize()
+	public void MinimumSize()
 	{
 		CQt.QWidgetItem_MinimumSize(this.nativePtr);
 	}
 	
-	public virtual void MaximumSize()
+	public void MaximumSize()
 	{
 		CQt.QWidgetItem_MaximumSize(this.nativePtr);
 	}
 	
-	public virtual int64 ExpandingDirections()
+	public int64 ExpandingDirections()
 	{
 		return CQt.QWidgetItem_ExpandingDirections(this.nativePtr);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QWidgetItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRect geometry)
+	public void SetGeometry(IQRect geometry)
 	{
-		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
+		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default || geometry.NativePtr == default) ? default : geometry.NativePtr);
 	}
 	
-	public virtual void Geometry()
+	public void Geometry()
 	{
 		CQt.QWidgetItem_Geometry(this.nativePtr);
 	}
 	
-	public virtual void* Widget()
+	public void* Widget()
 	{
 		return CQt.QWidgetItem_Widget(this.nativePtr);
 	}
 	
-	public virtual bool HasHeightForWidth()
+	public bool HasHeightForWidth()
 	{
 		return CQt.QWidgetItem_HasHeightForWidth(this.nativePtr);
 	}
 	
-	public virtual int32 HeightForWidth(int32 param1)
+	public int32 HeightForWidth(int32 param1)
 	{
 		return CQt.QWidgetItem_HeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual int32 MinimumHeightForWidth(int32 param1)
+	public int32 MinimumHeightForWidth(int32 param1)
 	{
 		return CQt.QWidgetItem_MinimumHeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual int64 ControlTypes()
+	public int64 ControlTypes()
 	{
 		return CQt.QWidgetItem_ControlTypes(this.nativePtr);
 	}
 	
-	public virtual void Invalidate()
+	public void Invalidate()
 	{
 		CQt.QLayoutItem_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void* Layout()
+	public void* Layout()
 	{
 		return CQt.QLayoutItem_Layout(this.nativePtr);
 	}
 	
-	public virtual void* SpacerItem()
+	public void* SpacerItem()
 	{
 		return CQt.QLayoutItem_SpacerItem(this.nativePtr);
 	}
@@ -425,6 +675,111 @@ public class QWidgetItem : IQWidgetItem, IQLayoutItem
 	public void SetAlignment(int64 a)
 	{
 		CQt.QLayoutItem_SetAlignment(this.nativePtr, a);
+	}
+	
+}
+public class QWidgetItem
+{
+	public QWidgetItemPtr handle;
+	
+	public static implicit operator QWidgetItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQWidget w)
+	{
+		this.handle = QWidgetItemPtr.New(w);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void SizeHint()
+	{
+		this.handle.SizeHint();
+	}
+	
+	public virtual void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public virtual void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public virtual int64 ExpandingDirections()
+	{
+		return this.handle.ExpandingDirections();
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public virtual void SetGeometry(IQRect geometry)
+	{
+		this.handle.SetGeometry(geometry);
+	}
+	
+	public virtual void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public virtual void* Widget()
+	{
+		return this.handle.Widget();
+	}
+	
+	public virtual bool HasHeightForWidth()
+	{
+		return this.handle.HasHeightForWidth();
+	}
+	
+	public virtual int32 HeightForWidth(int32 param1)
+	{
+		return this.handle.HeightForWidth(param1);
+	}
+	
+	public virtual int32 MinimumHeightForWidth(int32 param1)
+	{
+		return this.handle.MinimumHeightForWidth(param1);
+	}
+	
+	public virtual int64 ControlTypes()
+	{
+		return this.handle.ControlTypes();
+	}
+	
+	public virtual void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public virtual void* Layout()
+	{
+		return this.handle.Layout();
+	}
+	
+	public virtual void* SpacerItem()
+	{
+		return this.handle.SpacerItem();
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetAlignment(int64 a)
+	{
+		this.handle.SetAlignment(a);
 	}
 	
 }
@@ -464,92 +819,97 @@ public interface IQWidgetItemV2
 {
 	void* NativePtr { get; }
 }
-public class QWidgetItemV2 : IQWidgetItemV2, IQWidgetItem
+public struct QWidgetItemV2Ptr : IQWidgetItemV2, IDisposable, IQWidgetItem
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQWidget widget)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QWidgetItemV2_new((widget == null) ? null : (void*)widget.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQWidget widget)
+	{
+		return .(CQt.QWidgetItemV2_new((widget == default || widget.NativePtr == default) ? default : widget.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QWidgetItemV2_Delete(this.nativePtr);
 	}
 	
-	public virtual void SizeHint()
+	public void SizeHint()
 	{
 		CQt.QWidgetItemV2_SizeHint(this.nativePtr);
 	}
 	
-	public virtual void MinimumSize()
+	public void MinimumSize()
 	{
 		CQt.QWidgetItemV2_MinimumSize(this.nativePtr);
 	}
 	
-	public virtual void MaximumSize()
+	public void MaximumSize()
 	{
 		CQt.QWidgetItemV2_MaximumSize(this.nativePtr);
 	}
 	
-	public virtual int32 HeightForWidth(int32 width)
+	public int32 HeightForWidth(int32 width)
 	{
 		return CQt.QWidgetItemV2_HeightForWidth(this.nativePtr, width);
 	}
 	
-	public virtual int64 ExpandingDirections()
+	public int64 ExpandingDirections()
 	{
 		return CQt.QWidgetItem_ExpandingDirections(this.nativePtr);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QWidgetItem_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRect geometry)
+	public void SetGeometry(IQRect geometry)
 	{
-		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default) ? default : (void*)geometry.NativePtr);
+		CQt.QWidgetItem_SetGeometry(this.nativePtr, (geometry == default || geometry.NativePtr == default) ? default : geometry.NativePtr);
 	}
 	
-	public virtual void Geometry()
+	public void Geometry()
 	{
 		CQt.QWidgetItem_Geometry(this.nativePtr);
 	}
 	
-	public virtual void* Widget()
+	public void* Widget()
 	{
 		return CQt.QWidgetItem_Widget(this.nativePtr);
 	}
 	
-	public virtual bool HasHeightForWidth()
+	public bool HasHeightForWidth()
 	{
 		return CQt.QWidgetItem_HasHeightForWidth(this.nativePtr);
 	}
 	
-	public virtual int32 MinimumHeightForWidth(int32 param1)
+	public int32 MinimumHeightForWidth(int32 param1)
 	{
 		return CQt.QWidgetItem_MinimumHeightForWidth(this.nativePtr, param1);
 	}
 	
-	public virtual int64 ControlTypes()
+	public int64 ControlTypes()
 	{
 		return CQt.QWidgetItem_ControlTypes(this.nativePtr);
 	}
 	
-	public virtual void Invalidate()
+	public void Invalidate()
 	{
 		CQt.QLayoutItem_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void* Layout()
+	public void* Layout()
 	{
 		return CQt.QLayoutItem_Layout(this.nativePtr);
 	}
 	
-	public virtual void* SpacerItem()
+	public void* SpacerItem()
 	{
 		return CQt.QLayoutItem_SpacerItem(this.nativePtr);
 	}
@@ -562,6 +922,111 @@ public class QWidgetItemV2 : IQWidgetItemV2, IQWidgetItem
 	public void SetAlignment(int64 a)
 	{
 		CQt.QLayoutItem_SetAlignment(this.nativePtr, a);
+	}
+	
+}
+public class QWidgetItemV2
+{
+	public QWidgetItemV2Ptr handle;
+	
+	public static implicit operator QWidgetItemV2Ptr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQWidget widget)
+	{
+		this.handle = QWidgetItemV2Ptr.New(widget);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void SizeHint()
+	{
+		this.handle.SizeHint();
+	}
+	
+	public virtual void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public virtual void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public virtual int32 HeightForWidth(int32 width)
+	{
+		return this.handle.HeightForWidth(width);
+	}
+	
+	public virtual int64 ExpandingDirections()
+	{
+		return this.handle.ExpandingDirections();
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public virtual void SetGeometry(IQRect geometry)
+	{
+		this.handle.SetGeometry(geometry);
+	}
+	
+	public virtual void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public virtual void* Widget()
+	{
+		return this.handle.Widget();
+	}
+	
+	public virtual bool HasHeightForWidth()
+	{
+		return this.handle.HasHeightForWidth();
+	}
+	
+	public virtual int32 MinimumHeightForWidth(int32 param1)
+	{
+		return this.handle.MinimumHeightForWidth(param1);
+	}
+	
+	public virtual int64 ControlTypes()
+	{
+		return this.handle.ControlTypes();
+	}
+	
+	public virtual void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public virtual void* Layout()
+	{
+		return this.handle.Layout();
+	}
+	
+	public virtual void* SpacerItem()
+	{
+		return this.handle.SpacerItem();
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetAlignment(int64 a)
+	{
+		this.handle.SetAlignment(a);
 	}
 	
 }

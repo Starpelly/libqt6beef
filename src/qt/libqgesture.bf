@@ -28,34 +28,39 @@ public interface IQGesture
 {
 	void* NativePtr { get; }
 }
-public class QGesture : IQGesture, IQObject
+public struct QGesturePtr : IQGesture, IDisposable, IQObject
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -80,7 +85,7 @@ public class QGesture : IQGesture, IQObject
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -95,7 +100,7 @@ public class QGesture : IQGesture, IQObject
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -113,14 +118,14 @@ public class QGesture : IQGesture, IQObject
 		return CQt.QGesture_Tr3(s, c, n);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -128,9 +133,9 @@ public class QGesture : IQGesture, IQObject
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -165,7 +170,7 @@ public class QGesture : IQGesture, IQObject
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -185,37 +190,37 @@ public class QGesture : IQGesture, IQObject
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -230,7 +235,7 @@ public class QGesture : IQGesture, IQObject
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -270,17 +275,277 @@ public class QGesture : IQGesture, IQObject
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QGesture
+{
+	public QGesturePtr handle;
+	
+	public static implicit operator QGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QGesturePtr.Tr(s);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QGesturePtr.Tr3(s, c, n);
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -326,34 +591,39 @@ public interface IQPanGesture
 {
 	void* NativePtr { get; }
 }
-public class QPanGesture : IQPanGesture, IQGesture
+public struct QPanGesturePtr : IQPanGesture, IDisposable, IQGesture
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPanGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPanGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPanGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QPanGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QPanGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QPanGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QPanGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -383,12 +653,12 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public void SetLastOffset(IQPointF value)
 	{
-		CQt.QPanGesture_SetLastOffset(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QPanGesture_SetLastOffset(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void SetOffset(IQPointF value)
 	{
-		CQt.QPanGesture_SetOffset(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QPanGesture_SetOffset(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void SetAcceleration(double value)
@@ -423,7 +693,7 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -438,7 +708,7 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -446,14 +716,14 @@ public class QPanGesture : IQPanGesture, IQGesture
 		return CQt.QGesture_GestureCancelPolicy(this.nativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -461,9 +731,9 @@ public class QPanGesture : IQPanGesture, IQGesture
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -498,7 +768,7 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -518,37 +788,37 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -563,7 +833,7 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -603,17 +873,312 @@ public class QPanGesture : IQPanGesture, IQGesture
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QPanGesture
+{
+	public QPanGesturePtr handle;
+	
+	public static implicit operator QPanGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPanGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QPanGesturePtr.Tr(s);
+	}
+	
+	public void LastOffset()
+	{
+		this.handle.LastOffset();
+	}
+	
+	public void Offset()
+	{
+		this.handle.Offset();
+	}
+	
+	public void Delta()
+	{
+		this.handle.Delta();
+	}
+	
+	public double Acceleration()
+	{
+		return this.handle.Acceleration();
+	}
+	
+	public void SetLastOffset(IQPointF value)
+	{
+		this.handle.SetLastOffset(value);
+	}
+	
+	public void SetOffset(IQPointF value)
+	{
+		this.handle.SetOffset(value);
+	}
+	
+	public void SetAcceleration(double value)
+	{
+		this.handle.SetAcceleration(value);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QPanGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QPanGesturePtr.Tr3(s, c, n);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QPanGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QPanGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QPanGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QPanGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -657,34 +1222,39 @@ public interface IQPinchGesture
 {
 	void* NativePtr { get; }
 }
-public class QPinchGesture : IQPinchGesture, IQGesture
+public struct QPinchGesturePtr : IQPinchGesture, IDisposable, IQGesture
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPinchGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPinchGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPinchGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QPinchGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QPinchGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QPinchGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QPinchGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -729,17 +1299,17 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public void SetStartCenterPoint(IQPointF value)
 	{
-		CQt.QPinchGesture_SetStartCenterPoint(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QPinchGesture_SetStartCenterPoint(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void SetLastCenterPoint(IQPointF value)
 	{
-		CQt.QPinchGesture_SetLastCenterPoint(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QPinchGesture_SetLastCenterPoint(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void SetCenterPoint(IQPointF value)
 	{
-		CQt.QPinchGesture_SetCenterPoint(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QPinchGesture_SetCenterPoint(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public double TotalScaleFactor()
@@ -829,7 +1399,7 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -844,7 +1414,7 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -852,14 +1422,14 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 		return CQt.QGesture_GestureCancelPolicy(this.nativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -867,9 +1437,9 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -904,7 +1474,7 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -924,37 +1494,37 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -969,7 +1539,7 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -1009,17 +1579,387 @@ public class QPinchGesture : IQPinchGesture, IQGesture
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QPinchGesture
+{
+	public QPinchGesturePtr handle;
+	
+	public static implicit operator QPinchGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPinchGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QPinchGesturePtr.Tr(s);
+	}
+	
+	public int64 TotalChangeFlags()
+	{
+		return this.handle.TotalChangeFlags();
+	}
+	
+	public void SetTotalChangeFlags(int64 value)
+	{
+		this.handle.SetTotalChangeFlags(value);
+	}
+	
+	public int64 ChangeFlags()
+	{
+		return this.handle.ChangeFlags();
+	}
+	
+	public void SetChangeFlags(int64 value)
+	{
+		this.handle.SetChangeFlags(value);
+	}
+	
+	public void StartCenterPoint()
+	{
+		this.handle.StartCenterPoint();
+	}
+	
+	public void LastCenterPoint()
+	{
+		this.handle.LastCenterPoint();
+	}
+	
+	public void CenterPoint()
+	{
+		this.handle.CenterPoint();
+	}
+	
+	public void SetStartCenterPoint(IQPointF value)
+	{
+		this.handle.SetStartCenterPoint(value);
+	}
+	
+	public void SetLastCenterPoint(IQPointF value)
+	{
+		this.handle.SetLastCenterPoint(value);
+	}
+	
+	public void SetCenterPoint(IQPointF value)
+	{
+		this.handle.SetCenterPoint(value);
+	}
+	
+	public double TotalScaleFactor()
+	{
+		return this.handle.TotalScaleFactor();
+	}
+	
+	public double LastScaleFactor()
+	{
+		return this.handle.LastScaleFactor();
+	}
+	
+	public double ScaleFactor()
+	{
+		return this.handle.ScaleFactor();
+	}
+	
+	public void SetTotalScaleFactor(double value)
+	{
+		this.handle.SetTotalScaleFactor(value);
+	}
+	
+	public void SetLastScaleFactor(double value)
+	{
+		this.handle.SetLastScaleFactor(value);
+	}
+	
+	public void SetScaleFactor(double value)
+	{
+		this.handle.SetScaleFactor(value);
+	}
+	
+	public double TotalRotationAngle()
+	{
+		return this.handle.TotalRotationAngle();
+	}
+	
+	public double LastRotationAngle()
+	{
+		return this.handle.LastRotationAngle();
+	}
+	
+	public double RotationAngle()
+	{
+		return this.handle.RotationAngle();
+	}
+	
+	public void SetTotalRotationAngle(double value)
+	{
+		this.handle.SetTotalRotationAngle(value);
+	}
+	
+	public void SetLastRotationAngle(double value)
+	{
+		this.handle.SetLastRotationAngle(value);
+	}
+	
+	public void SetRotationAngle(double value)
+	{
+		this.handle.SetRotationAngle(value);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QPinchGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QPinchGesturePtr.Tr3(s, c, n);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QPinchGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QPinchGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QPinchGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QPinchGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -1093,34 +2033,39 @@ public interface IQSwipeGesture
 {
 	void* NativePtr { get; }
 }
-public class QSwipeGesture : IQSwipeGesture, IQGesture
+public struct QSwipeGesturePtr : IQSwipeGesture, IDisposable, IQGesture
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSwipeGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QSwipeGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSwipeGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QSwipeGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QSwipeGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QSwipeGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QSwipeGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -1175,7 +2120,7 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -1190,7 +2135,7 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -1198,14 +2143,14 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 		return CQt.QGesture_GestureCancelPolicy(this.nativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1213,9 +2158,9 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -1250,7 +2195,7 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1270,37 +2215,37 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1315,7 +2260,7 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -1355,17 +2300,297 @@ public class QSwipeGesture : IQSwipeGesture, IQGesture
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QSwipeGesture
+{
+	public QSwipeGesturePtr handle;
+	
+	public static implicit operator QSwipeGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QSwipeGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QSwipeGesturePtr.Tr(s);
+	}
+	
+	public int64 HorizontalDirection()
+	{
+		return this.handle.HorizontalDirection();
+	}
+	
+	public int64 VerticalDirection()
+	{
+		return this.handle.VerticalDirection();
+	}
+	
+	public double SwipeAngle()
+	{
+		return this.handle.SwipeAngle();
+	}
+	
+	public void SetSwipeAngle(double value)
+	{
+		this.handle.SetSwipeAngle(value);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QSwipeGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QSwipeGesturePtr.Tr3(s, c, n);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QSwipeGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QSwipeGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QSwipeGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QSwipeGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -1403,34 +2628,39 @@ public interface IQTapGesture
 {
 	void* NativePtr { get; }
 }
-public class QTapGesture : IQTapGesture, IQGesture
+public struct QTapGesturePtr : IQTapGesture, IDisposable, IQGesture
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTapGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTapGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTapGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QTapGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QTapGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QTapGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QTapGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -1445,7 +2675,7 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public void SetPosition(IQPointF pos)
 	{
-		CQt.QTapGesture_SetPosition(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QTapGesture_SetPosition(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public static libqt_string Tr2(char8* s, char8* c)
@@ -1475,7 +2705,7 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -1490,7 +2720,7 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -1498,14 +2728,14 @@ public class QTapGesture : IQTapGesture, IQGesture
 		return CQt.QGesture_GestureCancelPolicy(this.nativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1513,9 +2743,9 @@ public class QTapGesture : IQTapGesture, IQGesture
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -1550,7 +2780,7 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1570,37 +2800,37 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1615,7 +2845,7 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -1655,17 +2885,287 @@ public class QTapGesture : IQTapGesture, IQGesture
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QTapGesture
+{
+	public QTapGesturePtr handle;
+	
+	public static implicit operator QTapGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTapGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QTapGesturePtr.Tr(s);
+	}
+	
+	public void Position()
+	{
+		this.handle.Position();
+	}
+	
+	public void SetPosition(IQPointF pos)
+	{
+		this.handle.SetPosition(pos);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QTapGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QTapGesturePtr.Tr3(s, c, n);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QTapGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QTapGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QTapGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QTapGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -1699,34 +3199,39 @@ public interface IQTapAndHoldGesture
 {
 	void* NativePtr { get; }
 }
-public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
+public struct QTapAndHoldGesturePtr : IQTapAndHoldGesture, IDisposable, IQGesture
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTapAndHoldGesture_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTapAndHoldGesture_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTapAndHoldGesture_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QTapAndHoldGesture_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QTapAndHoldGesture_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QTapAndHoldGesture_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QTapAndHoldGesture_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -1741,7 +3246,7 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public void SetPosition(IQPointF pos)
 	{
-		CQt.QTapAndHoldGesture_SetPosition(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QTapAndHoldGesture_SetPosition(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public static void SetTimeout(int32 msecs)
@@ -1781,7 +3286,7 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public void SetHotSpot(IQPointF value)
 	{
-		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QGesture_SetHotSpot(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool HasHotSpot()
@@ -1796,7 +3301,7 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public void SetGestureCancelPolicy(int64 policy)
 	{
-		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, policy);
+		CQt.QGesture_SetGestureCancelPolicy(this.nativePtr, (int64)policy);
 	}
 	
 	public int64 GestureCancelPolicy()
@@ -1804,14 +3309,14 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 		return CQt.QGesture_GestureCancelPolicy(this.nativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1819,9 +3324,9 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -1856,7 +3361,7 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1876,37 +3381,37 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1921,7 +3426,7 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -1961,17 +3466,297 @@ public class QTapAndHoldGesture : IQTapAndHoldGesture, IQGesture
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QTapAndHoldGesture
+{
+	public QTapAndHoldGesturePtr handle;
+	
+	public static implicit operator QTapAndHoldGesturePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTapAndHoldGesturePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QTapAndHoldGesturePtr.Tr(s);
+	}
+	
+	public void Position()
+	{
+		this.handle.Position();
+	}
+	
+	public void SetPosition(IQPointF pos)
+	{
+		this.handle.SetPosition(pos);
+	}
+	
+	public static void SetTimeout(int32 msecs)
+	{
+		QTapAndHoldGesturePtr.SetTimeout(msecs);
+	}
+	
+	public static int32 Timeout()
+	{
+		return QTapAndHoldGesturePtr.Timeout();
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QTapAndHoldGesturePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QTapAndHoldGesturePtr.Tr3(s, c, n);
+	}
+	
+	public int64 GestureType()
+	{
+		return this.handle.GestureType();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public void SetHotSpot(IQPointF value)
+	{
+		this.handle.SetHotSpot(value);
+	}
+	
+	public bool HasHotSpot()
+	{
+		return this.handle.HasHotSpot();
+	}
+	
+	public void UnsetHotSpot()
+	{
+		this.handle.UnsetHotSpot();
+	}
+	
+	public void SetGestureCancelPolicy(int64 policy)
+	{
+		this.handle.SetGestureCancelPolicy(policy);
+	}
+	
+	public int64 GestureCancelPolicy()
+	{
+		return this.handle.GestureCancelPolicy();
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QTapAndHoldGesturePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QTapAndHoldGesturePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QTapAndHoldGesturePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QTapAndHoldGesturePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }
@@ -2009,17 +3794,22 @@ public interface IQGestureEvent
 {
 	void* NativePtr { get; }
 }
-public class QGestureEvent : IQGestureEvent, IQEvent
+public struct QGestureEventPtr : IQGestureEvent, IDisposable, IQEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQGesture[] gestures)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGestureEvent_new(null);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQGesture[] gestures)
+	{
+		return .(CQt.QGestureEvent_new(null));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGestureEvent_Delete(this.nativePtr);
 	}
@@ -2031,7 +3821,7 @@ public class QGestureEvent : IQGestureEvent, IQEvent
 	
 	public void* Gesture(int64 typeVal)
 	{
-		return CQt.QGestureEvent_Gesture(this.nativePtr, typeVal);
+		return CQt.QGestureEvent_Gesture(this.nativePtr, (int64)typeVal);
 	}
 	
 	public void*[] ActiveGestures()
@@ -2046,47 +3836,47 @@ public class QGestureEvent : IQGestureEvent, IQEvent
 	
 	public void SetAccepted(IQGesture param1, bool param2)
 	{
-		CQt.QGestureEvent_SetAccepted(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, param2);
+		CQt.QGestureEvent_SetAccepted(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr, param2);
 	}
 	
 	public void Accept(IQGesture param1)
 	{
-		CQt.QGestureEvent_Accept(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		CQt.QGestureEvent_Accept(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Ignore(IQGesture param1)
 	{
-		CQt.QGestureEvent_Ignore(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		CQt.QGestureEvent_Ignore(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool IsAccepted(IQGesture param1)
 	{
-		return CQt.QGestureEvent_IsAccepted(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		return CQt.QGestureEvent_IsAccepted(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void SetAccepted2(int64 param1, bool param2)
 	{
-		CQt.QGestureEvent_SetAccepted2(this.nativePtr, param1, param2);
+		CQt.QGestureEvent_SetAccepted2(this.nativePtr, (int64)param1, param2);
 	}
 	
 	public void AcceptWithQtGestureType(int64 param1)
 	{
-		CQt.QGestureEvent_AcceptWithQtGestureType(this.nativePtr, param1);
+		CQt.QGestureEvent_AcceptWithQtGestureType(this.nativePtr, (int64)param1);
 	}
 	
 	public void IgnoreWithQtGestureType(int64 param1)
 	{
-		CQt.QGestureEvent_IgnoreWithQtGestureType(this.nativePtr, param1);
+		CQt.QGestureEvent_IgnoreWithQtGestureType(this.nativePtr, (int64)param1);
 	}
 	
 	public bool IsAcceptedWithQtGestureType(int64 param1)
 	{
-		return CQt.QGestureEvent_IsAcceptedWithQtGestureType(this.nativePtr, param1);
+		return CQt.QGestureEvent_IsAcceptedWithQtGestureType(this.nativePtr, (int64)param1);
 	}
 	
 	public void SetWidget(IQWidget widget)
 	{
-		CQt.QGestureEvent_SetWidget(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QGestureEvent_SetWidget(this.nativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
 	public void* Widget()
@@ -2096,7 +3886,7 @@ public class QGestureEvent : IQGestureEvent, IQEvent
 	
 	public void MapToGraphicsScene(IQPointF gesturePoint)
 	{
-		CQt.QGestureEvent_MapToGraphicsScene(this.nativePtr, (gesturePoint == default) ? default : (void*)gesturePoint.NativePtr);
+		CQt.QGestureEvent_MapToGraphicsScene(this.nativePtr, (gesturePoint == default || gesturePoint.NativePtr == default) ? default : gesturePoint.NativePtr);
 	}
 	
 	public int64 Type()
@@ -2129,7 +3919,7 @@ public class QGestureEvent : IQGestureEvent, IQEvent
 		return CQt.QEvent_RegisterEventType();
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QEvent_Clone(this.nativePtr);
 	}
@@ -2137,6 +3927,141 @@ public class QGestureEvent : IQGestureEvent, IQEvent
 	public static int32 RegisterEventType1(int32 hint)
 	{
 		return CQt.QEvent_RegisterEventType1(hint);
+	}
+	
+}
+public class QGestureEvent
+{
+	public QGestureEventPtr handle;
+	
+	public static implicit operator QGestureEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQGesture[] gestures)
+	{
+		this.handle = QGestureEventPtr.New(null);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void*[] Gestures()
+	{
+		return this.handle.Gestures();
+	}
+	
+	public void* Gesture(int64 typeVal)
+	{
+		return this.handle.Gesture(typeVal);
+	}
+	
+	public void*[] ActiveGestures()
+	{
+		return this.handle.ActiveGestures();
+	}
+	
+	public void*[] CanceledGestures()
+	{
+		return this.handle.CanceledGestures();
+	}
+	
+	public void SetAccepted(IQGesture param1, bool param2)
+	{
+		this.handle.SetAccepted(param1, param2);
+	}
+	
+	public void Accept(IQGesture param1)
+	{
+		this.handle.Accept(param1);
+	}
+	
+	public void Ignore(IQGesture param1)
+	{
+		this.handle.Ignore(param1);
+	}
+	
+	public bool IsAccepted(IQGesture param1)
+	{
+		return this.handle.IsAccepted(param1);
+	}
+	
+	public void SetAccepted2(int64 param1, bool param2)
+	{
+		this.handle.SetAccepted2(param1, param2);
+	}
+	
+	public void AcceptWithQtGestureType(int64 param1)
+	{
+		this.handle.AcceptWithQtGestureType(param1);
+	}
+	
+	public void IgnoreWithQtGestureType(int64 param1)
+	{
+		this.handle.IgnoreWithQtGestureType(param1);
+	}
+	
+	public bool IsAcceptedWithQtGestureType(int64 param1)
+	{
+		return this.handle.IsAcceptedWithQtGestureType(param1);
+	}
+	
+	public void SetWidget(IQWidget widget)
+	{
+		this.handle.SetWidget(widget);
+	}
+	
+	public void* Widget()
+	{
+		return this.handle.Widget();
+	}
+	
+	public void MapToGraphicsScene(IQPointF gesturePoint)
+	{
+		this.handle.MapToGraphicsScene(gesturePoint);
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool Spontaneous()
+	{
+		return this.handle.Spontaneous();
+	}
+	
+	public bool IsInputEvent()
+	{
+		return this.handle.IsInputEvent();
+	}
+	
+	public bool IsPointerEvent()
+	{
+		return this.handle.IsPointerEvent();
+	}
+	
+	public bool IsSinglePointEvent()
+	{
+		return this.handle.IsSinglePointEvent();
+	}
+	
+	public static int32 RegisterEventType()
+	{
+		return QGestureEventPtr.RegisterEventType();
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public static int32 RegisterEventType1(int32 hint)
+	{
+		return QGestureEventPtr.RegisterEventType1(hint);
 	}
 	
 }

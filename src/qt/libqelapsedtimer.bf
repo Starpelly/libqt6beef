@@ -14,17 +14,22 @@ public interface IQElapsedTimer
 {
 	void* NativePtr { get; }
 }
-public class QElapsedTimer : IQElapsedTimer
+public struct QElapsedTimerPtr : IQElapsedTimer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQElapsedTimer other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QElapsedTimer_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQElapsedTimer other)
+	{
+		return .(CQt.QElapsedTimer_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QElapsedTimer_Delete(this.nativePtr);
 	}
@@ -81,12 +86,92 @@ public class QElapsedTimer : IQElapsedTimer
 	
 	public int64 MsecsTo(IQElapsedTimer other)
 	{
-		return CQt.QElapsedTimer_MsecsTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QElapsedTimer_MsecsTo(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 SecsTo(IQElapsedTimer other)
 	{
-		return CQt.QElapsedTimer_SecsTo(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QElapsedTimer_SecsTo(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QElapsedTimer
+{
+	public QElapsedTimerPtr handle;
+	
+	public static implicit operator QElapsedTimerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQElapsedTimer other)
+	{
+		this.handle = QElapsedTimerPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static int64 ClockType()
+	{
+		return QElapsedTimerPtr.ClockType();
+	}
+	
+	public static bool IsMonotonic()
+	{
+		return QElapsedTimerPtr.IsMonotonic();
+	}
+	
+	public void Start()
+	{
+		this.handle.Start();
+	}
+	
+	public int64 Restart()
+	{
+		return this.handle.Restart();
+	}
+	
+	public void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int64 NsecsElapsed()
+	{
+		return this.handle.NsecsElapsed();
+	}
+	
+	public int64 Elapsed()
+	{
+		return this.handle.Elapsed();
+	}
+	
+	public bool HasExpired(int64 timeout)
+	{
+		return this.handle.HasExpired(timeout);
+	}
+	
+	public int64 MsecsSinceReference()
+	{
+		return this.handle.MsecsSinceReference();
+	}
+	
+	public int64 MsecsTo(IQElapsedTimer other)
+	{
+		return this.handle.MsecsTo(other);
+	}
+	
+	public int64 SecsTo(IQElapsedTimer other)
+	{
+		return this.handle.SecsTo(other);
 	}
 	
 }

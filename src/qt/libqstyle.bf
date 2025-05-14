@@ -614,34 +614,39 @@ public interface IQStyle
 {
 	void* NativePtr { get; }
 }
-public class QStyle : IQStyle, IQObject
+public struct QStylePtr : IQStyle, IDisposable, IQObject
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStyle_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStyle_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStyle_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QStyle_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QStyle_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QStyle_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QStyle_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -654,124 +659,124 @@ public class QStyle : IQStyle, IQObject
 		return CQt.QStyle_Name(this.nativePtr);
 	}
 	
-	public virtual void Polish(IQWidget widget)
+	public void Polish(IQWidget widget)
 	{
-		CQt.QStyle_Polish(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_Polish(this.nativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void Unpolish(IQWidget widget)
+	public void Unpolish(IQWidget widget)
 	{
-		CQt.QStyle_Unpolish(this.nativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_Unpolish(this.nativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void PolishWithApplication(IQApplication application)
+	public void PolishWithApplication(IQApplication application)
 	{
-		CQt.QStyle_PolishWithApplication(this.nativePtr, (application == null) ? null : (void*)application.NativePtr);
+		CQt.QStyle_PolishWithApplication(this.nativePtr, (application == default || application.NativePtr == default) ? default : application.NativePtr);
 	}
 	
-	public virtual void UnpolishWithApplication(IQApplication application)
+	public void UnpolishWithApplication(IQApplication application)
 	{
-		CQt.QStyle_UnpolishWithApplication(this.nativePtr, (application == null) ? null : (void*)application.NativePtr);
+		CQt.QStyle_UnpolishWithApplication(this.nativePtr, (application == default || application.NativePtr == default) ? default : application.NativePtr);
 	}
 	
-	public virtual void PolishWithPalette(IQPalette palette)
+	public void PolishWithPalette(IQPalette palette)
 	{
-		CQt.QStyle_PolishWithPalette(this.nativePtr, (palette == default) ? default : (void*)palette.NativePtr);
+		CQt.QStyle_PolishWithPalette(this.nativePtr, (palette == default || palette.NativePtr == default) ? default : palette.NativePtr);
 	}
 	
-	public virtual void ItemTextRect(IQFontMetrics fm, IQRect r, int32 flags, bool enabled, String text)
+	public void ItemTextRect(IQFontMetrics fm, IQRect r, int32 flags, bool enabled, String text)
 	{
-		CQt.QStyle_ItemTextRect(this.nativePtr, (fm == default) ? default : (void*)fm.NativePtr, (r == default) ? default : (void*)r.NativePtr, flags, enabled, libqt_string(text));
+		CQt.QStyle_ItemTextRect(this.nativePtr, (fm == default || fm.NativePtr == default) ? default : fm.NativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr, flags, enabled, libqt_string(text));
 	}
 	
-	public virtual void ItemPixmapRect(IQRect r, int32 flags, IQPixmap pixmap)
+	public void ItemPixmapRect(IQRect r, int32 flags, IQPixmap pixmap)
 	{
-		CQt.QStyle_ItemPixmapRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, flags, (pixmap == default) ? default : (void*)pixmap.NativePtr);
+		CQt.QStyle_ItemPixmapRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr, flags, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
-	public virtual void DrawItemText(IQPainter painter, IQRect rect, int32 flags, IQPalette pal, bool enabled, String text, int64 textRole)
+	public void DrawItemText(IQPainter painter, IQRect rect, int32 flags, IQPalette pal, bool enabled, String text, int64 textRole)
 	{
-		CQt.QStyle_DrawItemText(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, flags, (pal == default) ? default : (void*)pal.NativePtr, enabled, libqt_string(text), textRole);
+		CQt.QStyle_DrawItemText(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, flags, (pal == default || pal.NativePtr == default) ? default : pal.NativePtr, enabled, libqt_string(text), (int64)textRole);
 	}
 	
-	public virtual void DrawItemPixmap(IQPainter painter, IQRect rect, int32 alignment, IQPixmap pixmap)
+	public void DrawItemPixmap(IQPainter painter, IQRect rect, int32 alignment, IQPixmap pixmap)
 	{
-		CQt.QStyle_DrawItemPixmap(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, alignment, (pixmap == default) ? default : (void*)pixmap.NativePtr);
+		CQt.QStyle_DrawItemPixmap(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, alignment, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
-	public virtual void StandardPalette()
+	public void StandardPalette()
 	{
 		CQt.QStyle_StandardPalette(this.nativePtr);
 	}
 	
-	public virtual void DrawPrimitive(int64 pe, IQStyleOption opt, IQPainter p, IQWidget w)
+	public void DrawPrimitive(int64 pe, IQStyleOption opt, IQPainter p, IQWidget w)
 	{
-		CQt.QStyle_DrawPrimitive(this.nativePtr, pe, (opt == null) ? null : (void*)opt.NativePtr, (p == null) ? null : (void*)p.NativePtr, (w == null) ? null : (void*)w.NativePtr);
+		CQt.QStyle_DrawPrimitive(this.nativePtr, (int64)pe, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr, (w == default || w.NativePtr == default) ? default : w.NativePtr);
 	}
 	
-	public virtual void DrawControl(int64 element, IQStyleOption opt, IQPainter p, IQWidget w)
+	public void DrawControl(int64 element, IQStyleOption opt, IQPainter p, IQWidget w)
 	{
-		CQt.QStyle_DrawControl(this.nativePtr, element, (opt == null) ? null : (void*)opt.NativePtr, (p == null) ? null : (void*)p.NativePtr, (w == null) ? null : (void*)w.NativePtr);
+		CQt.QStyle_DrawControl(this.nativePtr, (int64)element, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr, (w == default || w.NativePtr == default) ? default : w.NativePtr);
 	}
 	
-	public virtual void SubElementRect(int64 subElement, IQStyleOption option, IQWidget widget)
+	public void SubElementRect(int64 subElement, IQStyleOption option, IQWidget widget)
 	{
-		CQt.QStyle_SubElementRect(this.nativePtr, subElement, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_SubElementRect(this.nativePtr, (int64)subElement, (option == default || option.NativePtr == default) ? default : option.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void DrawComplexControl(int64 cc, IQStyleOptionComplex opt, IQPainter p, IQWidget widget)
+	public void DrawComplexControl(int64 cc, IQStyleOptionComplex opt, IQPainter p, IQWidget widget)
 	{
-		CQt.QStyle_DrawComplexControl(this.nativePtr, cc, (opt == null) ? null : (void*)opt.NativePtr, (p == null) ? null : (void*)p.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_DrawComplexControl(this.nativePtr, (int64)cc, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual int64 HitTestComplexControl(int64 cc, IQStyleOptionComplex opt, IQPoint pt, IQWidget widget)
+	public int64 HitTestComplexControl(int64 cc, IQStyleOptionComplex opt, IQPoint pt, IQWidget widget)
 	{
-		return CQt.QStyle_HitTestComplexControl(this.nativePtr, cc, (opt == null) ? null : (void*)opt.NativePtr, (pt == default) ? default : (void*)pt.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		return CQt.QStyle_HitTestComplexControl(this.nativePtr, (int64)cc, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void SubControlRect(int64 cc, IQStyleOptionComplex opt, int64 sc, IQWidget widget)
+	public void SubControlRect(int64 cc, IQStyleOptionComplex opt, int64 sc, IQWidget widget)
 	{
-		CQt.QStyle_SubControlRect(this.nativePtr, cc, (opt == null) ? null : (void*)opt.NativePtr, sc, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_SubControlRect(this.nativePtr, (int64)cc, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (int64)sc, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual int32 PixelMetric(int64 metric, IQStyleOption option, IQWidget widget)
+	public int32 PixelMetric(int64 metric, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QStyle_PixelMetric(this.nativePtr, metric, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		return CQt.QStyle_PixelMetric(this.nativePtr, (int64)metric, (option == default || option.NativePtr == default) ? default : option.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void SizeFromContents(int64 ct, IQStyleOption opt, IQSize contentsSize, IQWidget w)
+	public void SizeFromContents(int64 ct, IQStyleOption opt, IQSize contentsSize, IQWidget w)
 	{
-		CQt.QStyle_SizeFromContents(this.nativePtr, ct, (opt == null) ? null : (void*)opt.NativePtr, (contentsSize == default) ? default : (void*)contentsSize.NativePtr, (w == null) ? null : (void*)w.NativePtr);
+		CQt.QStyle_SizeFromContents(this.nativePtr, (int64)ct, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (contentsSize == default || contentsSize.NativePtr == default) ? default : contentsSize.NativePtr, (w == default || w.NativePtr == default) ? default : w.NativePtr);
 	}
 	
-	public virtual int32 StyleHint(int64 stylehint, IQStyleOption opt, IQWidget widget, IQStyleHintReturn returnData)
+	public int32 StyleHint(int64 stylehint, IQStyleOption opt, IQWidget widget, IQStyleHintReturn returnData)
 	{
-		return CQt.QStyle_StyleHint(this.nativePtr, stylehint, (opt == null) ? null : (void*)opt.NativePtr, (widget == null) ? null : (void*)widget.NativePtr, (returnData == null) ? null : (void*)returnData.NativePtr);
+		return CQt.QStyle_StyleHint(this.nativePtr, (int64)stylehint, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr, (returnData == default || returnData.NativePtr == default) ? default : returnData.NativePtr);
 	}
 	
-	public virtual void StandardPixmap(int64 standardPixmap, IQStyleOption opt, IQWidget widget)
+	public void StandardPixmap(int64 standardPixmap, IQStyleOption opt, IQWidget widget)
 	{
-		CQt.QStyle_StandardPixmap(this.nativePtr, standardPixmap, (opt == null) ? null : (void*)opt.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_StandardPixmap(this.nativePtr, (int64)standardPixmap, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void StandardIcon(int64 standardIcon, IQStyleOption option, IQWidget widget)
+	public void StandardIcon(int64 standardIcon, IQStyleOption option, IQWidget widget)
 	{
-		CQt.QStyle_StandardIcon(this.nativePtr, standardIcon, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		CQt.QStyle_StandardIcon(this.nativePtr, (int64)standardIcon, (option == default || option.NativePtr == default) ? default : option.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual void GeneratedIconPixmap(int64 iconMode, IQPixmap pixmap, IQStyleOption opt)
+	public void GeneratedIconPixmap(int64 iconMode, IQPixmap pixmap, IQStyleOption opt)
 	{
-		CQt.QStyle_GeneratedIconPixmap(this.nativePtr, iconMode, (pixmap == default) ? default : (void*)pixmap.NativePtr, (opt == null) ? null : (void*)opt.NativePtr);
+		CQt.QStyle_GeneratedIconPixmap(this.nativePtr, (int64)iconMode, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr, (opt == default || opt.NativePtr == default) ? default : opt.NativePtr);
 	}
 	
 	public static void VisualRect(int64 direction, IQRect boundingRect, IQRect logicalRect)
 	{
-		CQt.QStyle_VisualRect(direction, (boundingRect == default) ? default : (void*)boundingRect.NativePtr, (logicalRect == default) ? default : (void*)logicalRect.NativePtr);
+		CQt.QStyle_VisualRect((int64)direction, (boundingRect == default || boundingRect.NativePtr == default) ? default : boundingRect.NativePtr, (logicalRect == default || logicalRect.NativePtr == default) ? default : logicalRect.NativePtr);
 	}
 	
 	public static void VisualPos(int64 direction, IQRect boundingRect, IQPoint logicalPos)
 	{
-		CQt.QStyle_VisualPos(direction, (boundingRect == default) ? default : (void*)boundingRect.NativePtr, (logicalPos == default) ? default : (void*)logicalPos.NativePtr);
+		CQt.QStyle_VisualPos((int64)direction, (boundingRect == default || boundingRect.NativePtr == default) ? default : boundingRect.NativePtr, (logicalPos == default || logicalPos.NativePtr == default) ? default : logicalPos.NativePtr);
 	}
 	
 	public static int32 SliderPositionFromValue(int32 min, int32 max, int32 val, int32 space)
@@ -786,22 +791,22 @@ public class QStyle : IQStyle, IQObject
 	
 	public static int64 VisualAlignment(int64 direction, int64 alignment)
 	{
-		return CQt.QStyle_VisualAlignment(direction, alignment);
+		return CQt.QStyle_VisualAlignment((int64)direction, alignment);
 	}
 	
 	public static void AlignedRect(int64 direction, int64 alignment, IQSize size, IQRect rectangle)
 	{
-		CQt.QStyle_AlignedRect(direction, alignment, (size == default) ? default : (void*)size.NativePtr, (rectangle == default) ? default : (void*)rectangle.NativePtr);
+		CQt.QStyle_AlignedRect((int64)direction, alignment, (size == default || size.NativePtr == default) ? default : size.NativePtr, (rectangle == default || rectangle.NativePtr == default) ? default : rectangle.NativePtr);
 	}
 	
-	public virtual int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, IQStyleOption option, IQWidget widget)
+	public int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QStyle_LayoutSpacing(this.nativePtr, control1, control2, orientation, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		return CQt.QStyle_LayoutSpacing(this.nativePtr, (int64)control1, (int64)control2, (int64)orientation, (option == default || option.NativePtr == default) ? default : option.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
 	public int32 CombinedLayoutSpacing(int64 controls1, int64 controls2, int64 orientation)
 	{
-		return CQt.QStyle_CombinedLayoutSpacing(this.nativePtr, controls1, controls2, orientation);
+		return CQt.QStyle_CombinedLayoutSpacing(this.nativePtr, controls1, controls2, (int64)orientation);
 	}
 	
 	public void* Proxy()
@@ -831,22 +836,22 @@ public class QStyle : IQStyle, IQObject
 	
 	public int32 CombinedLayoutSpacing4(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option)
 	{
-		return CQt.QStyle_CombinedLayoutSpacing4(this.nativePtr, controls1, controls2, orientation, (option == null) ? null : (void*)option.NativePtr);
+		return CQt.QStyle_CombinedLayoutSpacing4(this.nativePtr, controls1, controls2, (int64)orientation, (option == default || option.NativePtr == default) ? default : option.NativePtr);
 	}
 	
 	public int32 CombinedLayoutSpacing5(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option, IQWidget widget)
 	{
-		return CQt.QStyle_CombinedLayoutSpacing5(this.nativePtr, controls1, controls2, orientation, (option == null) ? null : (void*)option.NativePtr, (widget == null) ? null : (void*)widget.NativePtr);
+		return CQt.QStyle_CombinedLayoutSpacing5(this.nativePtr, controls1, controls2, (int64)orientation, (option == default || option.NativePtr == default) ? default : option.NativePtr, (widget == default || widget.NativePtr == default) ? default : widget.NativePtr);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -854,9 +859,9 @@ public class QStyle : IQStyle, IQObject
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -891,7 +896,7 @@ public class QStyle : IQStyle, IQObject
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -911,37 +916,37 @@ public class QStyle : IQStyle, IQObject
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -956,7 +961,7 @@ public class QStyle : IQStyle, IQObject
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -996,17 +1001,417 @@ public class QStyle : IQStyle, IQObject
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QStyle
+{
+	public QStylePtr handle;
+	
+	public static implicit operator QStylePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStylePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QStylePtr.Tr(s);
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public virtual void Polish(IQWidget widget)
+	{
+		this.handle.Polish(widget);
+	}
+	
+	public virtual void Unpolish(IQWidget widget)
+	{
+		this.handle.Unpolish(widget);
+	}
+	
+	public virtual void PolishWithApplication(IQApplication application)
+	{
+		this.handle.PolishWithApplication(application);
+	}
+	
+	public virtual void UnpolishWithApplication(IQApplication application)
+	{
+		this.handle.UnpolishWithApplication(application);
+	}
+	
+	public virtual void PolishWithPalette(IQPalette palette)
+	{
+		this.handle.PolishWithPalette(palette);
+	}
+	
+	public virtual void ItemTextRect(IQFontMetrics fm, IQRect r, int32 flags, bool enabled, String text)
+	{
+		this.handle.ItemTextRect(fm, r, flags, enabled, text);
+	}
+	
+	public virtual void ItemPixmapRect(IQRect r, int32 flags, IQPixmap pixmap)
+	{
+		this.handle.ItemPixmapRect(r, flags, pixmap);
+	}
+	
+	public virtual void DrawItemText(IQPainter painter, IQRect rect, int32 flags, IQPalette pal, bool enabled, String text, int64 textRole)
+	{
+		this.handle.DrawItemText(painter, rect, flags, pal, enabled, text, textRole);
+	}
+	
+	public virtual void DrawItemPixmap(IQPainter painter, IQRect rect, int32 alignment, IQPixmap pixmap)
+	{
+		this.handle.DrawItemPixmap(painter, rect, alignment, pixmap);
+	}
+	
+	public virtual void StandardPalette()
+	{
+		this.handle.StandardPalette();
+	}
+	
+	public virtual void DrawPrimitive(int64 pe, IQStyleOption opt, IQPainter p, IQWidget w)
+	{
+		this.handle.DrawPrimitive(pe, opt, p, w);
+	}
+	
+	public virtual void DrawControl(int64 element, IQStyleOption opt, IQPainter p, IQWidget w)
+	{
+		this.handle.DrawControl(element, opt, p, w);
+	}
+	
+	public virtual void SubElementRect(int64 subElement, IQStyleOption option, IQWidget widget)
+	{
+		this.handle.SubElementRect(subElement, option, widget);
+	}
+	
+	public virtual void DrawComplexControl(int64 cc, IQStyleOptionComplex opt, IQPainter p, IQWidget widget)
+	{
+		this.handle.DrawComplexControl(cc, opt, p, widget);
+	}
+	
+	public virtual int64 HitTestComplexControl(int64 cc, IQStyleOptionComplex opt, IQPoint pt, IQWidget widget)
+	{
+		return this.handle.HitTestComplexControl(cc, opt, pt, widget);
+	}
+	
+	public virtual void SubControlRect(int64 cc, IQStyleOptionComplex opt, int64 sc, IQWidget widget)
+	{
+		this.handle.SubControlRect(cc, opt, sc, widget);
+	}
+	
+	public virtual int32 PixelMetric(int64 metric, IQStyleOption option, IQWidget widget)
+	{
+		return this.handle.PixelMetric(metric, option, widget);
+	}
+	
+	public virtual void SizeFromContents(int64 ct, IQStyleOption opt, IQSize contentsSize, IQWidget w)
+	{
+		this.handle.SizeFromContents(ct, opt, contentsSize, w);
+	}
+	
+	public virtual int32 StyleHint(int64 stylehint, IQStyleOption opt, IQWidget widget, IQStyleHintReturn returnData)
+	{
+		return this.handle.StyleHint(stylehint, opt, widget, returnData);
+	}
+	
+	public virtual void StandardPixmap(int64 standardPixmap, IQStyleOption opt, IQWidget widget)
+	{
+		this.handle.StandardPixmap(standardPixmap, opt, widget);
+	}
+	
+	public virtual void StandardIcon(int64 standardIcon, IQStyleOption option, IQWidget widget)
+	{
+		this.handle.StandardIcon(standardIcon, option, widget);
+	}
+	
+	public virtual void GeneratedIconPixmap(int64 iconMode, IQPixmap pixmap, IQStyleOption opt)
+	{
+		this.handle.GeneratedIconPixmap(iconMode, pixmap, opt);
+	}
+	
+	public static void VisualRect(int64 direction, IQRect boundingRect, IQRect logicalRect)
+	{
+		QStylePtr.VisualRect(direction, boundingRect, logicalRect);
+	}
+	
+	public static void VisualPos(int64 direction, IQRect boundingRect, IQPoint logicalPos)
+	{
+		QStylePtr.VisualPos(direction, boundingRect, logicalPos);
+	}
+	
+	public static int32 SliderPositionFromValue(int32 min, int32 max, int32 val, int32 space)
+	{
+		return QStylePtr.SliderPositionFromValue(min, max, val, space);
+	}
+	
+	public static int32 SliderValueFromPosition(int32 min, int32 max, int32 pos, int32 space)
+	{
+		return QStylePtr.SliderValueFromPosition(min, max, pos, space);
+	}
+	
+	public static int64 VisualAlignment(int64 direction, int64 alignment)
+	{
+		return QStylePtr.VisualAlignment(direction, alignment);
+	}
+	
+	public static void AlignedRect(int64 direction, int64 alignment, IQSize size, IQRect rectangle)
+	{
+		QStylePtr.AlignedRect(direction, alignment, size, rectangle);
+	}
+	
+	public virtual int32 LayoutSpacing(int64 control1, int64 control2, int64 orientation, IQStyleOption option, IQWidget widget)
+	{
+		return this.handle.LayoutSpacing(control1, control2, orientation, option, widget);
+	}
+	
+	public int32 CombinedLayoutSpacing(int64 controls1, int64 controls2, int64 orientation)
+	{
+		return this.handle.CombinedLayoutSpacing(controls1, controls2, orientation);
+	}
+	
+	public void* Proxy()
+	{
+		return this.handle.Proxy();
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QStylePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QStylePtr.Tr3(s, c, n);
+	}
+	
+	public static int32 SliderPositionFromValue5(int32 min, int32 max, int32 val, int32 space, bool upsideDown)
+	{
+		return QStylePtr.SliderPositionFromValue5(min, max, val, space, upsideDown);
+	}
+	
+	public static int32 SliderValueFromPosition5(int32 min, int32 max, int32 pos, int32 space, bool upsideDown)
+	{
+		return QStylePtr.SliderValueFromPosition5(min, max, pos, space, upsideDown);
+	}
+	
+	public int32 CombinedLayoutSpacing4(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option)
+	{
+		return this.handle.CombinedLayoutSpacing4(controls1, controls2, orientation, option);
+	}
+	
+	public int32 CombinedLayoutSpacing5(int64 controls1, int64 controls2, int64 orientation, IQStyleOption option, IQWidget widget)
+	{
+		return this.handle.CombinedLayoutSpacing5(controls1, controls2, orientation, option, widget);
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QStylePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QStylePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QStylePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QStylePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }

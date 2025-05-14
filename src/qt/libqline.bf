@@ -13,17 +13,22 @@ public interface IQLine
 {
 	void* NativePtr { get; }
 }
-public class QLine : IQLine
+public struct QLinePtr : IQLine, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQLine other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLine_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQLine other)
+	{
+		return .(CQt.QLine_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLine_Delete(this.nativePtr);
 	}
@@ -75,7 +80,7 @@ public class QLine : IQLine
 	
 	public void Translate(IQPoint p)
 	{
-		CQt.QLine_Translate(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QLine_Translate(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translate2(int32 dx, int32 dy)
@@ -85,7 +90,7 @@ public class QLine : IQLine
 	
 	public void Translated(IQPoint p)
 	{
-		CQt.QLine_Translated(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QLine_Translated(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translated2(int32 dx, int32 dy)
@@ -100,17 +105,17 @@ public class QLine : IQLine
 	
 	public void SetP1(IQPoint p1)
 	{
-		CQt.QLine_SetP1(this.nativePtr, (p1 == default) ? default : (void*)p1.NativePtr);
+		CQt.QLine_SetP1(this.nativePtr, (p1 == default || p1.NativePtr == default) ? default : p1.NativePtr);
 	}
 	
 	public void SetP2(IQPoint p2)
 	{
-		CQt.QLine_SetP2(this.nativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		CQt.QLine_SetP2(this.nativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void SetPoints(IQPoint p1, IQPoint p2)
 	{
-		CQt.QLine_SetPoints(this.nativePtr, (p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		CQt.QLine_SetPoints(this.nativePtr, (p1 == default || p1.NativePtr == default) ? default : p1.NativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void SetLine(int32 x1, int32 y1, int32 x2, int32 y2)
@@ -120,17 +125,142 @@ public class QLine : IQLine
 	
 	public bool OperatorEqual(IQLine d)
 	{
-		return CQt.QLine_OperatorEqual(this.nativePtr, (d == default) ? default : (void*)d.NativePtr);
+		return CQt.QLine_OperatorEqual(this.nativePtr, (d == default || d.NativePtr == default) ? default : d.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQLine d)
 	{
-		return CQt.QLine_OperatorNotEqual(this.nativePtr, (d == default) ? default : (void*)d.NativePtr);
+		return CQt.QLine_OperatorNotEqual(this.nativePtr, (d == default || d.NativePtr == default) ? default : d.NativePtr);
 	}
 	
 	public void ToLineF()
 	{
 		CQt.QLine_ToLineF(this.nativePtr);
+	}
+	
+}
+public class QLine
+{
+	public QLinePtr handle;
+	
+	public static implicit operator QLinePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQLine other)
+	{
+		this.handle = QLinePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void P1()
+	{
+		this.handle.P1();
+	}
+	
+	public void P2()
+	{
+		this.handle.P2();
+	}
+	
+	public int32 X1()
+	{
+		return this.handle.X1();
+	}
+	
+	public int32 Y1()
+	{
+		return this.handle.Y1();
+	}
+	
+	public int32 X2()
+	{
+		return this.handle.X2();
+	}
+	
+	public int32 Y2()
+	{
+		return this.handle.Y2();
+	}
+	
+	public int32 Dx()
+	{
+		return this.handle.Dx();
+	}
+	
+	public int32 Dy()
+	{
+		return this.handle.Dy();
+	}
+	
+	public void Translate(IQPoint p)
+	{
+		this.handle.Translate(p);
+	}
+	
+	public void Translate2(int32 dx, int32 dy)
+	{
+		this.handle.Translate2(dx, dy);
+	}
+	
+	public void Translated(IQPoint p)
+	{
+		this.handle.Translated(p);
+	}
+	
+	public void Translated2(int32 dx, int32 dy)
+	{
+		this.handle.Translated2(dx, dy);
+	}
+	
+	public void Center()
+	{
+		this.handle.Center();
+	}
+	
+	public void SetP1(IQPoint p1)
+	{
+		this.handle.SetP1(p1);
+	}
+	
+	public void SetP2(IQPoint p2)
+	{
+		this.handle.SetP2(p2);
+	}
+	
+	public void SetPoints(IQPoint p1, IQPoint p2)
+	{
+		this.handle.SetPoints(p1, p2);
+	}
+	
+	public void SetLine(int32 x1, int32 y1, int32 x2, int32 y2)
+	{
+		this.handle.SetLine(x1, y1, x2, y2);
+	}
+	
+	public bool OperatorEqual(IQLine d)
+	{
+		return this.handle.OperatorEqual(d);
+	}
+	
+	public bool OperatorNotEqual(IQLine d)
+	{
+		return this.handle.OperatorNotEqual(d);
+	}
+	
+	public void ToLineF()
+	{
+		this.handle.ToLineF();
 	}
 	
 }
@@ -198,17 +328,22 @@ public interface IQLineF
 {
 	void* NativePtr { get; }
 }
-public class QLineF : IQLineF
+public struct QLineFPtr : IQLineF, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQLineF other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLineF_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQLineF other)
+	{
+		return .(CQt.QLineF_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLineF_Delete(this.nativePtr);
 	}
@@ -285,7 +420,7 @@ public class QLineF : IQLineF
 	
 	public double AngleTo(IQLineF l)
 	{
-		return CQt.QLineF_AngleTo(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
+		return CQt.QLineF_AngleTo(this.nativePtr, (l == default || l.NativePtr == default) ? default : l.NativePtr);
 	}
 	
 	public void UnitVector()
@@ -300,7 +435,7 @@ public class QLineF : IQLineF
 	
 	public int64 Intersects(IQLineF l)
 	{
-		return CQt.QLineF_Intersects(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
+		return CQt.QLineF_Intersects(this.nativePtr, (l == default || l.NativePtr == default) ? default : l.NativePtr);
 	}
 	
 	public void PointAt(double t)
@@ -310,7 +445,7 @@ public class QLineF : IQLineF
 	
 	public void Translate(IQPointF p)
 	{
-		CQt.QLineF_Translate(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QLineF_Translate(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translate2(double dx, double dy)
@@ -320,7 +455,7 @@ public class QLineF : IQLineF
 	
 	public void Translated(IQPointF p)
 	{
-		CQt.QLineF_Translated(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QLineF_Translated(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translated2(double dx, double dy)
@@ -335,17 +470,17 @@ public class QLineF : IQLineF
 	
 	public void SetP1(IQPointF p1)
 	{
-		CQt.QLineF_SetP1(this.nativePtr, (p1 == default) ? default : (void*)p1.NativePtr);
+		CQt.QLineF_SetP1(this.nativePtr, (p1 == default || p1.NativePtr == default) ? default : p1.NativePtr);
 	}
 	
 	public void SetP2(IQPointF p2)
 	{
-		CQt.QLineF_SetP2(this.nativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		CQt.QLineF_SetP2(this.nativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void SetPoints(IQPointF p1, IQPointF p2)
 	{
-		CQt.QLineF_SetPoints(this.nativePtr, (p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		CQt.QLineF_SetPoints(this.nativePtr, (p1 == default || p1.NativePtr == default) ? default : p1.NativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void SetLine(double x1, double y1, double x2, double y2)
@@ -355,12 +490,12 @@ public class QLineF : IQLineF
 	
 	public bool OperatorEqual(IQLineF d)
 	{
-		return CQt.QLineF_OperatorEqual(this.nativePtr, (d == default) ? default : (void*)d.NativePtr);
+		return CQt.QLineF_OperatorEqual(this.nativePtr, (d == default || d.NativePtr == default) ? default : d.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQLineF d)
 	{
-		return CQt.QLineF_OperatorNotEqual(this.nativePtr, (d == default) ? default : (void*)d.NativePtr);
+		return CQt.QLineF_OperatorNotEqual(this.nativePtr, (d == default || d.NativePtr == default) ? default : d.NativePtr);
 	}
 	
 	public void ToLine()
@@ -370,7 +505,187 @@ public class QLineF : IQLineF
 	
 	public int64 Intersects2(IQLineF l, IQPointF intersectionPoint)
 	{
-		return CQt.QLineF_Intersects2(this.nativePtr, (l == default) ? default : (void*)l.NativePtr, (intersectionPoint == null) ? null : (void*)intersectionPoint.NativePtr);
+		return CQt.QLineF_Intersects2(this.nativePtr, (l == default || l.NativePtr == default) ? default : l.NativePtr, (intersectionPoint == default || intersectionPoint.NativePtr == default) ? default : intersectionPoint.NativePtr);
+	}
+	
+}
+public class QLineF
+{
+	public QLineFPtr handle;
+	
+	public static implicit operator QLineFPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQLineF other)
+	{
+		this.handle = QLineFPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void FromPolar(double length, double angle)
+	{
+		QLineFPtr.FromPolar(length, angle);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void P1()
+	{
+		this.handle.P1();
+	}
+	
+	public void P2()
+	{
+		this.handle.P2();
+	}
+	
+	public double X1()
+	{
+		return this.handle.X1();
+	}
+	
+	public double Y1()
+	{
+		return this.handle.Y1();
+	}
+	
+	public double X2()
+	{
+		return this.handle.X2();
+	}
+	
+	public double Y2()
+	{
+		return this.handle.Y2();
+	}
+	
+	public double Dx()
+	{
+		return this.handle.Dx();
+	}
+	
+	public double Dy()
+	{
+		return this.handle.Dy();
+	}
+	
+	public double Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public void SetLength(double lenVal)
+	{
+		this.handle.SetLength(lenVal);
+	}
+	
+	public double Angle()
+	{
+		return this.handle.Angle();
+	}
+	
+	public void SetAngle(double angle)
+	{
+		this.handle.SetAngle(angle);
+	}
+	
+	public double AngleTo(IQLineF l)
+	{
+		return this.handle.AngleTo(l);
+	}
+	
+	public void UnitVector()
+	{
+		this.handle.UnitVector();
+	}
+	
+	public void NormalVector()
+	{
+		this.handle.NormalVector();
+	}
+	
+	public int64 Intersects(IQLineF l)
+	{
+		return this.handle.Intersects(l);
+	}
+	
+	public void PointAt(double t)
+	{
+		this.handle.PointAt(t);
+	}
+	
+	public void Translate(IQPointF p)
+	{
+		this.handle.Translate(p);
+	}
+	
+	public void Translate2(double dx, double dy)
+	{
+		this.handle.Translate2(dx, dy);
+	}
+	
+	public void Translated(IQPointF p)
+	{
+		this.handle.Translated(p);
+	}
+	
+	public void Translated2(double dx, double dy)
+	{
+		this.handle.Translated2(dx, dy);
+	}
+	
+	public void Center()
+	{
+		this.handle.Center();
+	}
+	
+	public void SetP1(IQPointF p1)
+	{
+		this.handle.SetP1(p1);
+	}
+	
+	public void SetP2(IQPointF p2)
+	{
+		this.handle.SetP2(p2);
+	}
+	
+	public void SetPoints(IQPointF p1, IQPointF p2)
+	{
+		this.handle.SetPoints(p1, p2);
+	}
+	
+	public void SetLine(double x1, double y1, double x2, double y2)
+	{
+		this.handle.SetLine(x1, y1, x2, y2);
+	}
+	
+	public bool OperatorEqual(IQLineF d)
+	{
+		return this.handle.OperatorEqual(d);
+	}
+	
+	public bool OperatorNotEqual(IQLineF d)
+	{
+		return this.handle.OperatorNotEqual(d);
+	}
+	
+	public void ToLine()
+	{
+		this.handle.ToLine();
+	}
+	
+	public int64 Intersects2(IQLineF l, IQPointF intersectionPoint)
+	{
+		return this.handle.Intersects2(l, intersectionPoint);
 	}
 	
 }

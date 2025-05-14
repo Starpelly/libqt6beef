@@ -33,29 +33,34 @@ public interface IQColorSpace
 {
 	void* NativePtr { get; }
 }
-public class QColorSpace : IQColorSpace
+public struct QColorSpacePtr : IQColorSpace, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QColorSpace_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QColorSpace_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QColorSpace_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQColorSpace colorSpace)
 	{
-		CQt.QColorSpace_OperatorAssign(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
+		CQt.QColorSpace_OperatorAssign(this.nativePtr, (colorSpace == default || colorSpace.NativePtr == default) ? default : colorSpace.NativePtr);
 	}
 	
 	public void Swap(IQColorSpace colorSpace)
 	{
-		CQt.QColorSpace_Swap(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
+		CQt.QColorSpace_Swap(this.nativePtr, (colorSpace == default || colorSpace.NativePtr == default) ? default : colorSpace.NativePtr);
 	}
 	
 	public int64 Primaries()
@@ -85,7 +90,7 @@ public class QColorSpace : IQColorSpace
 	
 	public void SetTransferFunction(int64 transferFunction)
 	{
-		CQt.QColorSpace_SetTransferFunction(this.nativePtr, transferFunction);
+		CQt.QColorSpace_SetTransferFunction(this.nativePtr, (int64)transferFunction);
 	}
 	
 	public void SetTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
@@ -100,7 +105,7 @@ public class QColorSpace : IQColorSpace
 	
 	public void WithTransferFunction(int64 transferFunction)
 	{
-		CQt.QColorSpace_WithTransferFunction(this.nativePtr, transferFunction);
+		CQt.QColorSpace_WithTransferFunction(this.nativePtr, (int64)transferFunction);
 	}
 	
 	public void WithTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
@@ -115,12 +120,12 @@ public class QColorSpace : IQColorSpace
 	
 	public void SetPrimaries(int64 primariesId)
 	{
-		CQt.QColorSpace_SetPrimaries(this.nativePtr, primariesId);
+		CQt.QColorSpace_SetPrimaries(this.nativePtr, (int64)primariesId);
 	}
 	
 	public void SetPrimaries2(IQPointF whitePoint, IQPointF redPoint, IQPointF greenPoint, IQPointF bluePoint)
 	{
-		CQt.QColorSpace_SetPrimaries2(this.nativePtr, (whitePoint == default) ? default : (void*)whitePoint.NativePtr, (redPoint == default) ? default : (void*)redPoint.NativePtr, (greenPoint == default) ? default : (void*)greenPoint.NativePtr, (bluePoint == default) ? default : (void*)bluePoint.NativePtr);
+		CQt.QColorSpace_SetPrimaries2(this.nativePtr, (whitePoint == default || whitePoint.NativePtr == default) ? default : whitePoint.NativePtr, (redPoint == default || redPoint.NativePtr == default) ? default : redPoint.NativePtr, (greenPoint == default || greenPoint.NativePtr == default) ? default : greenPoint.NativePtr, (bluePoint == default || bluePoint.NativePtr == default) ? default : bluePoint.NativePtr);
 	}
 	
 	public void Detach()
@@ -145,7 +150,7 @@ public class QColorSpace : IQColorSpace
 	
 	public void TransformationToColorSpace(IQColorSpace colorspace)
 	{
-		CQt.QColorSpace_TransformationToColorSpace(this.nativePtr, (colorspace == default) ? default : (void*)colorspace.NativePtr);
+		CQt.QColorSpace_TransformationToColorSpace(this.nativePtr, (colorspace == default || colorspace.NativePtr == default) ? default : colorspace.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -155,12 +160,147 @@ public class QColorSpace : IQColorSpace
 	
 	public void SetTransferFunction2(int64 transferFunction, float gamma)
 	{
-		CQt.QColorSpace_SetTransferFunction2(this.nativePtr, transferFunction, gamma);
+		CQt.QColorSpace_SetTransferFunction2(this.nativePtr, (int64)transferFunction, gamma);
 	}
 	
 	public void WithTransferFunction2(int64 transferFunction, float gamma)
 	{
-		CQt.QColorSpace_WithTransferFunction2(this.nativePtr, transferFunction, gamma);
+		CQt.QColorSpace_WithTransferFunction2(this.nativePtr, (int64)transferFunction, gamma);
+	}
+	
+}
+public class QColorSpace
+{
+	public QColorSpacePtr handle;
+	
+	public static implicit operator QColorSpacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QColorSpacePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQColorSpace colorSpace)
+	{
+		this.handle.OperatorAssign(colorSpace);
+	}
+	
+	public void Swap(IQColorSpace colorSpace)
+	{
+		this.handle.Swap(colorSpace);
+	}
+	
+	public int64 Primaries()
+	{
+		return this.handle.Primaries();
+	}
+	
+	public int64 TransferFunction()
+	{
+		return this.handle.TransferFunction();
+	}
+	
+	public float Gamma()
+	{
+		return this.handle.Gamma();
+	}
+	
+	public libqt_string Description()
+	{
+		return this.handle.Description();
+	}
+	
+	public void SetDescription(String description)
+	{
+		this.handle.SetDescription(description);
+	}
+	
+	public void SetTransferFunction(int64 transferFunction)
+	{
+		this.handle.SetTransferFunction(transferFunction);
+	}
+	
+	public void SetTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
+	{
+		this.handle.SetTransferFunctionWithTransferFunctionTable(null);
+	}
+	
+	public void SetTransferFunctions(uint16[] redTransferFunctionTable, uint16[] greenTransferFunctionTable, uint16[] blueTransferFunctionTable)
+	{
+		this.handle.SetTransferFunctions(null, null, null);
+	}
+	
+	public void WithTransferFunction(int64 transferFunction)
+	{
+		this.handle.WithTransferFunction(transferFunction);
+	}
+	
+	public void WithTransferFunctionWithTransferFunctionTable(uint16[] transferFunctionTable)
+	{
+		this.handle.WithTransferFunctionWithTransferFunctionTable(null);
+	}
+	
+	public void WithTransferFunctions(uint16[] redTransferFunctionTable, uint16[] greenTransferFunctionTable, uint16[] blueTransferFunctionTable)
+	{
+		this.handle.WithTransferFunctions(null, null, null);
+	}
+	
+	public void SetPrimaries(int64 primariesId)
+	{
+		this.handle.SetPrimaries(primariesId);
+	}
+	
+	public void SetPrimaries2(IQPointF whitePoint, IQPointF redPoint, IQPointF greenPoint, IQPointF bluePoint)
+	{
+		this.handle.SetPrimaries2(whitePoint, redPoint, greenPoint, bluePoint);
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public static void FromIccProfile(String iccProfile)
+	{
+		QColorSpacePtr.FromIccProfile(iccProfile);
+	}
+	
+	public libqt_string IccProfile()
+	{
+		return this.handle.IccProfile();
+	}
+	
+	public void TransformationToColorSpace(IQColorSpace colorspace)
+	{
+		this.handle.TransformationToColorSpace(colorspace);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetTransferFunction2(int64 transferFunction, float gamma)
+	{
+		this.handle.SetTransferFunction2(transferFunction, gamma);
+	}
+	
+	public void WithTransferFunction2(int64 transferFunction, float gamma)
+	{
+		this.handle.WithTransferFunction2(transferFunction, gamma);
 	}
 	
 }

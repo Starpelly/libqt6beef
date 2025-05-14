@@ -70,29 +70,34 @@ public interface IQVariant
 {
 	void* NativePtr { get; }
 }
-public class QVariant : IQVariant
+public struct QVariantPtr : IQVariant, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVariant_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QVariant_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QVariant_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQVariant other)
 	{
-		CQt.QVariant_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QVariant_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQVariant other)
 	{
-		CQt.QVariant_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QVariant_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int32 UserType()
@@ -117,17 +122,17 @@ public class QVariant : IQVariant
 	
 	public bool CanConvert(IQMetaType targetType)
 	{
-		return CQt.QVariant_CanConvert(this.nativePtr, (targetType == default) ? default : (void)targetType.NativePtr);
+		return CQt.QVariant_CanConvert(this.nativePtr, default);
 	}
 	
 	public bool Convert(IQMetaType typeVal)
 	{
-		return CQt.QVariant_Convert(this.nativePtr, (typeVal == default) ? default : (void)typeVal.NativePtr);
+		return CQt.QVariant_Convert(this.nativePtr, default);
 	}
 	
 	public bool CanView(IQMetaType targetType)
 	{
-		return CQt.QVariant_CanView(this.nativePtr, (targetType == default) ? default : (void)targetType.NativePtr);
+		return CQt.QVariant_CanView(this.nativePtr, default);
 	}
 	
 	public bool CanConvertWithTargetTypeId(int32 targetTypeId)
@@ -352,12 +357,12 @@ public class QVariant : IQVariant
 	
 	public void Load(IQDataStream ds)
 	{
-		CQt.QVariant_Load(this.nativePtr, (ds == default) ? default : (void*)ds.NativePtr);
+		CQt.QVariant_Load(this.nativePtr, (ds == default || ds.NativePtr == default) ? default : ds.NativePtr);
 	}
 	
 	public void Save(IQDataStream ds)
 	{
-		CQt.QVariant_Save(this.nativePtr, (ds == default) ? default : (void*)ds.NativePtr);
+		CQt.QVariant_Save(this.nativePtr, (ds == default || ds.NativePtr == default) ? default : ds.NativePtr);
 	}
 	
 	public int64 Type()
@@ -392,12 +397,12 @@ public class QVariant : IQVariant
 	
 	public void SetValue(IQVariant avalue)
 	{
-		CQt.QVariant_SetValue(this.nativePtr, (avalue == default) ? default : (void*)avalue.NativePtr);
+		CQt.QVariant_SetValue(this.nativePtr, (avalue == default || avalue.NativePtr == default) ? default : avalue.NativePtr);
 	}
 	
 	public static void Compare(IQVariant lhs, IQVariant rhs)
 	{
-		CQt.QVariant_Compare((lhs == default) ? default : (void*)lhs.NativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QVariant_Compare((lhs == default || lhs.NativePtr == default) ? default : lhs.NativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public int32 ToInt1(bool* ok)
@@ -433,6 +438,376 @@ public class QVariant : IQVariant
 	public double ToReal1(bool* ok)
 	{
 		return CQt.QVariant_ToReal1(this.nativePtr, ok);
+	}
+	
+}
+public class QVariant
+{
+	public QVariantPtr handle;
+	
+	public static implicit operator QVariantPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QVariantPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQVariant other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQVariant other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int32 UserType()
+	{
+		return this.handle.UserType();
+	}
+	
+	public int32 TypeId()
+	{
+		return this.handle.TypeId();
+	}
+	
+	public char8* TypeName()
+	{
+		return this.handle.TypeName();
+	}
+	
+	public void MetaType()
+	{
+		this.handle.MetaType();
+	}
+	
+	public bool CanConvert(IQMetaType targetType)
+	{
+		return this.handle.CanConvert(default);
+	}
+	
+	public bool Convert(IQMetaType typeVal)
+	{
+		return this.handle.Convert(default);
+	}
+	
+	public bool CanView(IQMetaType targetType)
+	{
+		return this.handle.CanView(default);
+	}
+	
+	public bool CanConvertWithTargetTypeId(int32 targetTypeId)
+	{
+		return this.handle.CanConvertWithTargetTypeId(targetTypeId);
+	}
+	
+	public bool ConvertWithTargetTypeId(int32 targetTypeId)
+	{
+		return this.handle.ConvertWithTargetTypeId(targetTypeId);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public uint32 ToUInt()
+	{
+		return this.handle.ToUInt();
+	}
+	
+	public int64 ToLongLong()
+	{
+		return this.handle.ToLongLong();
+	}
+	
+	public uint64 ToULongLong()
+	{
+		return this.handle.ToULongLong();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public float ToFloat()
+	{
+		return this.handle.ToFloat();
+	}
+	
+	public double ToReal()
+	{
+		return this.handle.ToReal();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public void ToBitArray()
+	{
+		this.handle.ToBitArray();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string[] ToStringList()
+	{
+		return this.handle.ToStringList();
+	}
+	
+	public void ToChar()
+	{
+		this.handle.ToChar();
+	}
+	
+	public void ToDate()
+	{
+		this.handle.ToDate();
+	}
+	
+	public void ToTime()
+	{
+		this.handle.ToTime();
+	}
+	
+	public void ToDateTime()
+	{
+		this.handle.ToDateTime();
+	}
+	
+	public void* ToMap()
+	{
+		return this.handle.ToMap();
+	}
+	
+	public void* ToHash()
+	{
+		return this.handle.ToHash();
+	}
+	
+	public void ToPoint()
+	{
+		this.handle.ToPoint();
+	}
+	
+	public void ToPointF()
+	{
+		this.handle.ToPointF();
+	}
+	
+	public void ToRect()
+	{
+		this.handle.ToRect();
+	}
+	
+	public void ToSize()
+	{
+		this.handle.ToSize();
+	}
+	
+	public void ToSizeF()
+	{
+		this.handle.ToSizeF();
+	}
+	
+	public void ToLine()
+	{
+		this.handle.ToLine();
+	}
+	
+	public void ToLineF()
+	{
+		this.handle.ToLineF();
+	}
+	
+	public void ToRectF()
+	{
+		this.handle.ToRectF();
+	}
+	
+	public void ToLocale()
+	{
+		this.handle.ToLocale();
+	}
+	
+	public void ToRegularExpression()
+	{
+		this.handle.ToRegularExpression();
+	}
+	
+	public void ToEasingCurve()
+	{
+		this.handle.ToEasingCurve();
+	}
+	
+	public void ToUuid()
+	{
+		this.handle.ToUuid();
+	}
+	
+	public void ToUrl()
+	{
+		this.handle.ToUrl();
+	}
+	
+	public void ToJsonValue()
+	{
+		this.handle.ToJsonValue();
+	}
+	
+	public void ToJsonObject()
+	{
+		this.handle.ToJsonObject();
+	}
+	
+	public void ToJsonArray()
+	{
+		this.handle.ToJsonArray();
+	}
+	
+	public void ToJsonDocument()
+	{
+		this.handle.ToJsonDocument();
+	}
+	
+	public void ToModelIndex()
+	{
+		this.handle.ToModelIndex();
+	}
+	
+	public void ToPersistentModelIndex()
+	{
+		this.handle.ToPersistentModelIndex();
+	}
+	
+	public void Load(IQDataStream ds)
+	{
+		this.handle.Load(ds);
+	}
+	
+	public void Save(IQDataStream ds)
+	{
+		this.handle.Save(ds);
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public static char8* TypeToName(int32 typeId)
+	{
+		return QVariantPtr.TypeToName(typeId);
+	}
+	
+	public static int64 NameToType(char8* name)
+	{
+		return QVariantPtr.NameToType(name);
+	}
+	
+	public void* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public void* ConstData()
+	{
+		return this.handle.ConstData();
+	}
+	
+	public void* Data2()
+	{
+		return this.handle.Data2();
+	}
+	
+	public void SetValue(IQVariant avalue)
+	{
+		this.handle.SetValue(avalue);
+	}
+	
+	public static void Compare(IQVariant lhs, IQVariant rhs)
+	{
+		QVariantPtr.Compare(lhs, rhs);
+	}
+	
+	public int32 ToInt1(bool* ok)
+	{
+		return this.handle.ToInt1(ok);
+	}
+	
+	public uint32 ToUInt1(bool* ok)
+	{
+		return this.handle.ToUInt1(ok);
+	}
+	
+	public int64 ToLongLong1(bool* ok)
+	{
+		return this.handle.ToLongLong1(ok);
+	}
+	
+	public uint64 ToULongLong1(bool* ok)
+	{
+		return this.handle.ToULongLong1(ok);
+	}
+	
+	public double ToDouble1(bool* ok)
+	{
+		return this.handle.ToDouble1(ok);
+	}
+	
+	public float ToFloat1(bool* ok)
+	{
+		return this.handle.ToFloat1(ok);
+	}
+	
+	public double ToReal1(bool* ok)
+	{
+		return this.handle.ToReal1(ok);
 	}
 	
 }
@@ -670,17 +1045,22 @@ public interface IQVariantConstPointer
 {
 	void* NativePtr { get; }
 }
-public class QVariantConstPointer : IQVariantConstPointer
+public struct QVariantConstPointerPtr : IQVariantConstPointer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQVariant variant)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVariantConstPointer_new((variant == default) ? default : (void)variant.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQVariant variant)
+	{
+		return .(CQt.QVariantConstPointer_new(default));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QVariantConstPointer_Delete(this.nativePtr);
 	}
@@ -697,7 +1077,42 @@ public class QVariantConstPointer : IQVariantConstPointer
 	
 	public void OperatorAssign(IQVariantConstPointer param1)
 	{
-		CQt.QVariantConstPointer_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QVariantConstPointer_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QVariantConstPointer
+{
+	public QVariantConstPointerPtr handle;
+	
+	public static implicit operator QVariantConstPointerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQVariant variant)
+	{
+		this.handle = QVariantConstPointerPtr.New(default);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorMultiply()
+	{
+		this.handle.OperatorMultiply();
+	}
+	
+	public void* OperatorMinusGreater()
+	{
+		return this.handle.OperatorMinusGreater();
+	}
+	
+	public void OperatorAssign(IQVariantConstPointer param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }

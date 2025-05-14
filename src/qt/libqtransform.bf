@@ -16,24 +16,29 @@ public interface IQTransform
 {
 	void* NativePtr { get; }
 }
-public class QTransform : IQTransform
+public struct QTransformPtr : IQTransform, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQTransform other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTransform_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQTransform other)
+	{
+		return .(CQt.QTransform_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTransform_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTransform param1)
 	{
-		CQt.QTransform_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QTransform_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool IsAffine()
@@ -178,22 +183,22 @@ public class QTransform : IQTransform
 	
 	public bool OperatorEqual(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QTransform_OperatorEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QTransform_OperatorNotEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(IQTransform param1)
 	{
-		return CQt.QTransform_OperatorMultiplyAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QTransform_OperatorMultiplyAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void OperatorMultiply(IQTransform o)
 	{
-		CQt.QTransform_OperatorMultiply(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
+		CQt.QTransform_OperatorMultiply(this.nativePtr, (o == default || o.NativePtr == default) ? default : o.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -208,42 +213,42 @@ public class QTransform : IQTransform
 	
 	public void Map(IQPoint p)
 	{
-		CQt.QTransform_Map(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QTransform_Map(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MapWithQPointF(IQPointF p)
 	{
-		CQt.QTransform_MapWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QTransform_MapWithQPointF(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MapWithQLine(IQLine l)
 	{
-		CQt.QTransform_MapWithQLine(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
+		CQt.QTransform_MapWithQLine(this.nativePtr, (l == default || l.NativePtr == default) ? default : l.NativePtr);
 	}
 	
 	public void MapWithQLineF(IQLineF l)
 	{
-		CQt.QTransform_MapWithQLineF(this.nativePtr, (l == default) ? default : (void*)l.NativePtr);
+		CQt.QTransform_MapWithQLineF(this.nativePtr, (l == default || l.NativePtr == default) ? default : l.NativePtr);
 	}
 	
 	public void MapWithQRegion(IQRegion r)
 	{
-		CQt.QTransform_MapWithQRegion(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QTransform_MapWithQRegion(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void MapWithQPainterPath(IQPainterPath p)
 	{
-		CQt.QTransform_MapWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QTransform_MapWithQPainterPath(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MapRect(IQRect param1)
 	{
-		CQt.QTransform_MapRect(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QTransform_MapRect(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void MapRectWithQRectF(IQRectF param1)
 	{
-		CQt.QTransform_MapRectWithQRectF(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QTransform_MapRectWithQRectF(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Map2(int32 x, int32 y, int32* tx, int32* ty)
@@ -293,12 +298,302 @@ public class QTransform : IQTransform
 	
 	public void* Rotate2(double a, int64 axis)
 	{
-		return CQt.QTransform_Rotate2(this.nativePtr, a, axis);
+		return CQt.QTransform_Rotate2(this.nativePtr, a, (int64)axis);
 	}
 	
 	public void* RotateRadians2(double a, int64 axis)
 	{
-		return CQt.QTransform_RotateRadians2(this.nativePtr, a, axis);
+		return CQt.QTransform_RotateRadians2(this.nativePtr, a, (int64)axis);
+	}
+	
+}
+public class QTransform
+{
+	public QTransformPtr handle;
+	
+	public static implicit operator QTransformPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQTransform other)
+	{
+		this.handle = QTransformPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTransform param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public bool IsAffine()
+	{
+		return this.handle.IsAffine();
+	}
+	
+	public bool IsIdentity()
+	{
+		return this.handle.IsIdentity();
+	}
+	
+	public bool IsInvertible()
+	{
+		return this.handle.IsInvertible();
+	}
+	
+	public bool IsScaling()
+	{
+		return this.handle.IsScaling();
+	}
+	
+	public bool IsRotating()
+	{
+		return this.handle.IsRotating();
+	}
+	
+	public bool IsTranslating()
+	{
+		return this.handle.IsTranslating();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public double Determinant()
+	{
+		return this.handle.Determinant();
+	}
+	
+	public double M11()
+	{
+		return this.handle.M11();
+	}
+	
+	public double M12()
+	{
+		return this.handle.M12();
+	}
+	
+	public double M13()
+	{
+		return this.handle.M13();
+	}
+	
+	public double M21()
+	{
+		return this.handle.M21();
+	}
+	
+	public double M22()
+	{
+		return this.handle.M22();
+	}
+	
+	public double M23()
+	{
+		return this.handle.M23();
+	}
+	
+	public double M31()
+	{
+		return this.handle.M31();
+	}
+	
+	public double M32()
+	{
+		return this.handle.M32();
+	}
+	
+	public double M33()
+	{
+		return this.handle.M33();
+	}
+	
+	public double Dx()
+	{
+		return this.handle.Dx();
+	}
+	
+	public double Dy()
+	{
+		return this.handle.Dy();
+	}
+	
+	public void SetMatrix(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33)
+	{
+		this.handle.SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
+	}
+	
+	public void Inverted()
+	{
+		this.handle.Inverted();
+	}
+	
+	public void Adjoint()
+	{
+		this.handle.Adjoint();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void* Translate(double dx, double dy)
+	{
+		return this.handle.Translate(dx, dy);
+	}
+	
+	public void* Scale(double sx, double sy)
+	{
+		return this.handle.Scale(sx, sy);
+	}
+	
+	public void* Shear(double sh, double sv)
+	{
+		return this.handle.Shear(sh, sv);
+	}
+	
+	public void* Rotate(double a)
+	{
+		return this.handle.Rotate(a);
+	}
+	
+	public void* RotateRadians(double a)
+	{
+		return this.handle.RotateRadians(a);
+	}
+	
+	public bool OperatorEqual(IQTransform param1)
+	{
+		return this.handle.OperatorEqual(param1);
+	}
+	
+	public bool OperatorNotEqual(IQTransform param1)
+	{
+		return this.handle.OperatorNotEqual(param1);
+	}
+	
+	public void* OperatorMultiplyAssign(IQTransform param1)
+	{
+		return this.handle.OperatorMultiplyAssign(param1);
+	}
+	
+	public void OperatorMultiply(IQTransform o)
+	{
+		this.handle.OperatorMultiply(o);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
+	}
+	
+	public void Map(IQPoint p)
+	{
+		this.handle.Map(p);
+	}
+	
+	public void MapWithQPointF(IQPointF p)
+	{
+		this.handle.MapWithQPointF(p);
+	}
+	
+	public void MapWithQLine(IQLine l)
+	{
+		this.handle.MapWithQLine(l);
+	}
+	
+	public void MapWithQLineF(IQLineF l)
+	{
+		this.handle.MapWithQLineF(l);
+	}
+	
+	public void MapWithQRegion(IQRegion r)
+	{
+		this.handle.MapWithQRegion(r);
+	}
+	
+	public void MapWithQPainterPath(IQPainterPath p)
+	{
+		this.handle.MapWithQPainterPath(p);
+	}
+	
+	public void MapRect(IQRect param1)
+	{
+		this.handle.MapRect(param1);
+	}
+	
+	public void MapRectWithQRectF(IQRectF param1)
+	{
+		this.handle.MapRectWithQRectF(param1);
+	}
+	
+	public void Map2(int32 x, int32 y, int32* tx, int32* ty)
+	{
+		this.handle.Map2(x, y, tx, ty);
+	}
+	
+	public void Map3(double x, double y, double* tx, double* ty)
+	{
+		this.handle.Map3(x, y, tx, ty);
+	}
+	
+	public void* OperatorMultiplyAssignWithDiv(double div)
+	{
+		return this.handle.OperatorMultiplyAssignWithDiv(div);
+	}
+	
+	public void* OperatorDivideAssign(double div)
+	{
+		return this.handle.OperatorDivideAssign(div);
+	}
+	
+	public void* OperatorPlusAssign(double div)
+	{
+		return this.handle.OperatorPlusAssign(div);
+	}
+	
+	public void* OperatorMinusAssign(double div)
+	{
+		return this.handle.OperatorMinusAssign(div);
+	}
+	
+	public static void FromTranslate(double dx, double dy)
+	{
+		QTransformPtr.FromTranslate(dx, dy);
+	}
+	
+	public static void FromScale(double dx, double dy)
+	{
+		QTransformPtr.FromScale(dx, dy);
+	}
+	
+	public void Inverted1(bool* invertible)
+	{
+		this.handle.Inverted1(invertible);
+	}
+	
+	public void* Rotate2(double a, int64 axis)
+	{
+		return this.handle.Rotate2(a, axis);
+	}
+	
+	public void* RotateRadians2(double a, int64 axis)
+	{
+		return this.handle.RotateRadians2(a, axis);
 	}
 	
 }

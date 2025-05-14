@@ -27,29 +27,34 @@ public interface IQTimeZone
 {
 	void* NativePtr { get; }
 }
-public class QTimeZone : IQTimeZone
+public struct QTimeZonePtr : IQTimeZone, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTimeZone_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTimeZone_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTimeZone_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTimeZone other)
 	{
-		CQt.QTimeZone_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTimeZone_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQTimeZone other)
 	{
-		CQt.QTimeZone_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTimeZone_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -79,32 +84,32 @@ public class QTimeZone : IQTimeZone
 	
 	public libqt_string DisplayName(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_DisplayName(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_DisplayName(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public libqt_string DisplayNameWithTimeType(int64 timeType)
 	{
-		return CQt.QTimeZone_DisplayNameWithTimeType(this.nativePtr, timeType);
+		return CQt.QTimeZone_DisplayNameWithTimeType(this.nativePtr, (int64)timeType);
 	}
 	
 	public libqt_string Abbreviation(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_Abbreviation(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_Abbreviation(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public int32 OffsetFromUtc(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_OffsetFromUtc(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_OffsetFromUtc(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public int32 StandardTimeOffset(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_StandardTimeOffset(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_StandardTimeOffset(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public int32 DaylightTimeOffset(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_DaylightTimeOffset(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_DaylightTimeOffset(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public bool HasDaylightTime()
@@ -114,12 +119,12 @@ public class QTimeZone : IQTimeZone
 	
 	public bool IsDaylightTime(IQDateTime atDateTime)
 	{
-		return CQt.QTimeZone_IsDaylightTime(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr);
+		return CQt.QTimeZone_IsDaylightTime(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr);
 	}
 	
 	public void OffsetData(IQDateTime forDateTime)
 	{
-		CQt.QTimeZone_OffsetData(this.nativePtr, (forDateTime == default) ? default : (void*)forDateTime.NativePtr);
+		CQt.QTimeZone_OffsetData(this.nativePtr, (forDateTime == default || forDateTime.NativePtr == default) ? default : forDateTime.NativePtr);
 	}
 	
 	public bool HasTransitions()
@@ -129,17 +134,17 @@ public class QTimeZone : IQTimeZone
 	
 	public void NextTransition(IQDateTime afterDateTime)
 	{
-		CQt.QTimeZone_NextTransition(this.nativePtr, (afterDateTime == default) ? default : (void*)afterDateTime.NativePtr);
+		CQt.QTimeZone_NextTransition(this.nativePtr, (afterDateTime == default || afterDateTime.NativePtr == default) ? default : afterDateTime.NativePtr);
 	}
 	
 	public void PreviousTransition(IQDateTime beforeDateTime)
 	{
-		CQt.QTimeZone_PreviousTransition(this.nativePtr, (beforeDateTime == default) ? default : (void*)beforeDateTime.NativePtr);
+		CQt.QTimeZone_PreviousTransition(this.nativePtr, (beforeDateTime == default || beforeDateTime.NativePtr == default) ? default : beforeDateTime.NativePtr);
 	}
 	
 	public void[] Transitions(IQDateTime fromDateTime, IQDateTime toDateTime)
 	{
-		return CQt.QTimeZone_Transitions(this.nativePtr, (fromDateTime == default) ? default : (void*)fromDateTime.NativePtr, (toDateTime == default) ? default : (void*)toDateTime.NativePtr);
+		return CQt.QTimeZone_Transitions(this.nativePtr, (fromDateTime == default || fromDateTime.NativePtr == default) ? default : fromDateTime.NativePtr, (toDateTime == default || toDateTime.NativePtr == default) ? default : toDateTime.NativePtr);
 	}
 	
 	public static libqt_string SystemTimeZoneId()
@@ -169,7 +174,7 @@ public class QTimeZone : IQTimeZone
 	
 	public static libqt_string[] AvailableTimeZoneIdsWithTerritory(int64 territory)
 	{
-		return CQt.QTimeZone_AvailableTimeZoneIdsWithTerritory(territory);
+		return CQt.QTimeZone_AvailableTimeZoneIdsWithTerritory((int64)territory);
 	}
 	
 	public static libqt_string[] AvailableTimeZoneIdsWithOffsetSeconds(int32 offsetSeconds)
@@ -189,7 +194,7 @@ public class QTimeZone : IQTimeZone
 	
 	public static libqt_string WindowsIdToDefaultIanaId2(String windowsId, int64 territory)
 	{
-		return CQt.QTimeZone_WindowsIdToDefaultIanaId2(libqt_string(windowsId), territory);
+		return CQt.QTimeZone_WindowsIdToDefaultIanaId2(libqt_string(windowsId), (int64)territory);
 	}
 	
 	public static libqt_string[] WindowsIdToIanaIds(String windowsId)
@@ -199,27 +204,227 @@ public class QTimeZone : IQTimeZone
 	
 	public static libqt_string[] WindowsIdToIanaIds2(String windowsId, int64 territory)
 	{
-		return CQt.QTimeZone_WindowsIdToIanaIds2(libqt_string(windowsId), territory);
+		return CQt.QTimeZone_WindowsIdToIanaIds2(libqt_string(windowsId), (int64)territory);
 	}
 	
 	public libqt_string DisplayName2(IQDateTime atDateTime, int64 nameType)
 	{
-		return CQt.QTimeZone_DisplayName2(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr, nameType);
+		return CQt.QTimeZone_DisplayName2(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr, (int64)nameType);
 	}
 	
 	public libqt_string DisplayName3(IQDateTime atDateTime, int64 nameType, IQLocale locale)
 	{
-		return CQt.QTimeZone_DisplayName3(this.nativePtr, (atDateTime == default) ? default : (void*)atDateTime.NativePtr, nameType, (locale == default) ? default : (void*)locale.NativePtr);
+		return CQt.QTimeZone_DisplayName3(this.nativePtr, (atDateTime == default || atDateTime.NativePtr == default) ? default : atDateTime.NativePtr, (int64)nameType, (locale == default || locale.NativePtr == default) ? default : locale.NativePtr);
 	}
 	
 	public libqt_string DisplayName22(int64 timeType, int64 nameType)
 	{
-		return CQt.QTimeZone_DisplayName22(this.nativePtr, timeType, nameType);
+		return CQt.QTimeZone_DisplayName22(this.nativePtr, (int64)timeType, (int64)nameType);
 	}
 	
 	public libqt_string DisplayName32(int64 timeType, int64 nameType, IQLocale locale)
 	{
-		return CQt.QTimeZone_DisplayName32(this.nativePtr, timeType, nameType, (locale == default) ? default : (void*)locale.NativePtr);
+		return CQt.QTimeZone_DisplayName32(this.nativePtr, (int64)timeType, (int64)nameType, (locale == default || locale.NativePtr == default) ? default : locale.NativePtr);
+	}
+	
+}
+public class QTimeZone
+{
+	public QTimeZonePtr handle;
+	
+	public static implicit operator QTimeZonePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTimeZonePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTimeZone other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQTimeZone other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public libqt_string Id()
+	{
+		return this.handle.Id();
+	}
+	
+	public int64 Territory()
+	{
+		return this.handle.Territory();
+	}
+	
+	public int64 Country()
+	{
+		return this.handle.Country();
+	}
+	
+	public libqt_string Comment()
+	{
+		return this.handle.Comment();
+	}
+	
+	public libqt_string DisplayName(IQDateTime atDateTime)
+	{
+		return this.handle.DisplayName(atDateTime);
+	}
+	
+	public libqt_string DisplayNameWithTimeType(int64 timeType)
+	{
+		return this.handle.DisplayNameWithTimeType(timeType);
+	}
+	
+	public libqt_string Abbreviation(IQDateTime atDateTime)
+	{
+		return this.handle.Abbreviation(atDateTime);
+	}
+	
+	public int32 OffsetFromUtc(IQDateTime atDateTime)
+	{
+		return this.handle.OffsetFromUtc(atDateTime);
+	}
+	
+	public int32 StandardTimeOffset(IQDateTime atDateTime)
+	{
+		return this.handle.StandardTimeOffset(atDateTime);
+	}
+	
+	public int32 DaylightTimeOffset(IQDateTime atDateTime)
+	{
+		return this.handle.DaylightTimeOffset(atDateTime);
+	}
+	
+	public bool HasDaylightTime()
+	{
+		return this.handle.HasDaylightTime();
+	}
+	
+	public bool IsDaylightTime(IQDateTime atDateTime)
+	{
+		return this.handle.IsDaylightTime(atDateTime);
+	}
+	
+	public void OffsetData(IQDateTime forDateTime)
+	{
+		this.handle.OffsetData(forDateTime);
+	}
+	
+	public bool HasTransitions()
+	{
+		return this.handle.HasTransitions();
+	}
+	
+	public void NextTransition(IQDateTime afterDateTime)
+	{
+		this.handle.NextTransition(afterDateTime);
+	}
+	
+	public void PreviousTransition(IQDateTime beforeDateTime)
+	{
+		this.handle.PreviousTransition(beforeDateTime);
+	}
+	
+	public void[] Transitions(IQDateTime fromDateTime, IQDateTime toDateTime)
+	{
+		return this.handle.Transitions(fromDateTime, toDateTime);
+	}
+	
+	public static libqt_string SystemTimeZoneId()
+	{
+		return QTimeZonePtr.SystemTimeZoneId();
+	}
+	
+	public static void SystemTimeZone()
+	{
+		QTimeZonePtr.SystemTimeZone();
+	}
+	
+	public static void Utc()
+	{
+		QTimeZonePtr.Utc();
+	}
+	
+	public static bool IsTimeZoneIdAvailable(String ianaId)
+	{
+		return QTimeZonePtr.IsTimeZoneIdAvailable(ianaId);
+	}
+	
+	public static libqt_string[] AvailableTimeZoneIds()
+	{
+		return QTimeZonePtr.AvailableTimeZoneIds();
+	}
+	
+	public static libqt_string[] AvailableTimeZoneIdsWithTerritory(int64 territory)
+	{
+		return QTimeZonePtr.AvailableTimeZoneIdsWithTerritory(territory);
+	}
+	
+	public static libqt_string[] AvailableTimeZoneIdsWithOffsetSeconds(int32 offsetSeconds)
+	{
+		return QTimeZonePtr.AvailableTimeZoneIdsWithOffsetSeconds(offsetSeconds);
+	}
+	
+	public static libqt_string IanaIdToWindowsId(String ianaId)
+	{
+		return QTimeZonePtr.IanaIdToWindowsId(ianaId);
+	}
+	
+	public static libqt_string WindowsIdToDefaultIanaId(String windowsId)
+	{
+		return QTimeZonePtr.WindowsIdToDefaultIanaId(windowsId);
+	}
+	
+	public static libqt_string WindowsIdToDefaultIanaId2(String windowsId, int64 territory)
+	{
+		return QTimeZonePtr.WindowsIdToDefaultIanaId2(windowsId, territory);
+	}
+	
+	public static libqt_string[] WindowsIdToIanaIds(String windowsId)
+	{
+		return QTimeZonePtr.WindowsIdToIanaIds(windowsId);
+	}
+	
+	public static libqt_string[] WindowsIdToIanaIds2(String windowsId, int64 territory)
+	{
+		return QTimeZonePtr.WindowsIdToIanaIds2(windowsId, territory);
+	}
+	
+	public libqt_string DisplayName2(IQDateTime atDateTime, int64 nameType)
+	{
+		return this.handle.DisplayName2(atDateTime, nameType);
+	}
+	
+	public libqt_string DisplayName3(IQDateTime atDateTime, int64 nameType, IQLocale locale)
+	{
+		return this.handle.DisplayName3(atDateTime, nameType, locale);
+	}
+	
+	public libqt_string DisplayName22(int64 timeType, int64 nameType)
+	{
+		return this.handle.DisplayName22(timeType, nameType);
+	}
+	
+	public libqt_string DisplayName32(int64 timeType, int64 nameType, IQLocale locale)
+	{
+		return this.handle.DisplayName32(timeType, nameType, locale);
 	}
 	
 }
@@ -319,24 +524,54 @@ public interface IQTimeZone__OffsetData
 {
 	void* NativePtr { get; }
 }
-public class QTimeZone__OffsetData : IQTimeZone__OffsetData
+public struct QTimeZone__OffsetDataPtr : IQTimeZone__OffsetData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QTimeZone__OffsetData param1)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTimeZone__OffsetData_new((param1 == default) ? default : (void*)param1.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QTimeZone__OffsetDataPtr param1)
+	{
+		return .(CQt.QTimeZone__OffsetData_new((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTimeZone__OffsetData_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QTimeZone__OffsetData param1)
+	public void OperatorAssign(QTimeZone__OffsetDataPtr param1)
 	{
-		CQt.QTimeZone__OffsetData_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QTimeZone__OffsetData_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QTimeZone__OffsetData
+{
+	public QTimeZone__OffsetDataPtr handle;
+	
+	public static implicit operator QTimeZone__OffsetDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QTimeZone__OffsetDataPtr param1)
+	{
+		this.handle = QTimeZone__OffsetDataPtr.New(param1);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(QTimeZone__OffsetDataPtr param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }

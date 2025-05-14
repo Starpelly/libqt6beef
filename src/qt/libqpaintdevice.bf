@@ -22,17 +22,22 @@ public interface IQPaintDevice
 {
 	void* NativePtr { get; }
 }
-public class QPaintDevice : IQPaintDevice
+public struct QPaintDevicePtr : IQPaintDevice, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPaintDevice_Delete(this.nativePtr);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QPaintDevice_DevType(this.nativePtr);
 	}
@@ -42,7 +47,7 @@ public class QPaintDevice : IQPaintDevice
 		return CQt.QPaintDevice_PaintingActive(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QPaintDevice_PaintEngine(this.nativePtr);
 	}
@@ -110,6 +115,101 @@ public class QPaintDevice : IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QPaintDevice
+{
+	public QPaintDevicePtr handle;
+	
+	public static implicit operator QPaintDevicePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QPaintDevicePtr.DevicePixelRatioFScale();
 	}
 	
 }

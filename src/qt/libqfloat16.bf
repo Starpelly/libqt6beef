@@ -6,17 +6,22 @@ public interface Iqfloat16
 {
 	void* NativePtr { get; }
 }
-public class qfloat16 : Iqfloat16
+public struct qfloat16Ptr : Iqfloat16, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.qfloat16_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.qfloat16_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.qfloat16_Delete(this.nativePtr);
 	}
@@ -49,6 +54,56 @@ public class qfloat16 : Iqfloat16
 	public bool IsNormal()
 	{
 		return CQt.qfloat16_IsNormal(this.nativePtr);
+	}
+	
+}
+public class qfloat16
+{
+	public qfloat16Ptr handle;
+	
+	public static implicit operator qfloat16Ptr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = qfloat16Ptr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public float ToFloat()
+	{
+		return this.handle.ToFloat();
+	}
+	
+	public bool IsInf()
+	{
+		return this.handle.IsInf();
+	}
+	
+	public bool IsNaN()
+	{
+		return this.handle.IsNaN();
+	}
+	
+	public bool IsFinite()
+	{
+		return this.handle.IsFinite();
+	}
+	
+	public int32 FpClassify()
+	{
+		return this.handle.FpClassify();
+	}
+	
+	public bool IsNormal()
+	{
+		return this.handle.IsNormal();
 	}
 	
 }

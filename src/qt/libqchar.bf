@@ -338,17 +338,22 @@ public interface IQLatin1Char
 {
 	void* NativePtr { get; }
 }
-public class QLatin1Char : IQLatin1Char
+public struct QLatin1CharPtr : IQLatin1Char, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQLatin1Char other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLatin1Char_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQLatin1Char other)
+	{
+		return .(CQt.QLatin1Char_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLatin1Char_Delete(this.nativePtr);
 	}
@@ -356,6 +361,31 @@ public class QLatin1Char : IQLatin1Char
 	public int8 ToLatin1()
 	{
 		return CQt.QLatin1Char_ToLatin1(this.nativePtr);
+	}
+	
+}
+public class QLatin1Char
+{
+	public QLatin1CharPtr handle;
+	
+	public static implicit operator QLatin1CharPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQLatin1Char other)
+	{
+		this.handle = QLatin1CharPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int8 ToLatin1()
+	{
+		return this.handle.ToLatin1();
 	}
 	
 }
@@ -379,17 +409,22 @@ public interface IQChar
 {
 	void* NativePtr { get; }
 }
-public class QChar : IQChar
+public struct QCharPtr : IQChar, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQChar other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QChar_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQChar other)
+	{
+		return .(CQt.QChar_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QChar_Delete(this.nativePtr);
 	}
@@ -587,6 +622,221 @@ public class QChar : IQChar
 	public static int64 CurrentUnicodeVersion()
 	{
 		return CQt.QChar_CurrentUnicodeVersion();
+	}
+	
+}
+public class QChar
+{
+	public QCharPtr handle;
+	
+	public static implicit operator QCharPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQChar other)
+	{
+		this.handle = QCharPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 Category()
+	{
+		return this.handle.Category();
+	}
+	
+	public int64 Direction()
+	{
+		return this.handle.Direction();
+	}
+	
+	public int64 JoiningType()
+	{
+		return this.handle.JoiningType();
+	}
+	
+	public uint8 CombiningClass()
+	{
+		return this.handle.CombiningClass();
+	}
+	
+	public void MirroredChar()
+	{
+		this.handle.MirroredChar();
+	}
+	
+	public bool HasMirrored()
+	{
+		return this.handle.HasMirrored();
+	}
+	
+	public libqt_string Decomposition()
+	{
+		return this.handle.Decomposition();
+	}
+	
+	public int64 DecompositionTag()
+	{
+		return this.handle.DecompositionTag();
+	}
+	
+	public int32 DigitValue()
+	{
+		return this.handle.DigitValue();
+	}
+	
+	public void ToLower()
+	{
+		this.handle.ToLower();
+	}
+	
+	public void ToUpper()
+	{
+		this.handle.ToUpper();
+	}
+	
+	public void ToTitleCase()
+	{
+		this.handle.ToTitleCase();
+	}
+	
+	public void ToCaseFolded()
+	{
+		this.handle.ToCaseFolded();
+	}
+	
+	public int64 Script()
+	{
+		return this.handle.Script();
+	}
+	
+	public int64 UnicodeVersion()
+	{
+		return this.handle.UnicodeVersion();
+	}
+	
+	public int8 ToLatin1()
+	{
+		return this.handle.ToLatin1();
+	}
+	
+	public static void FromLatin1(int8 c)
+	{
+		QCharPtr.FromLatin1(c);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsPrint()
+	{
+		return this.handle.IsPrint();
+	}
+	
+	public bool IsSpace()
+	{
+		return this.handle.IsSpace();
+	}
+	
+	public bool IsMark()
+	{
+		return this.handle.IsMark();
+	}
+	
+	public bool IsPunct()
+	{
+		return this.handle.IsPunct();
+	}
+	
+	public bool IsSymbol()
+	{
+		return this.handle.IsSymbol();
+	}
+	
+	public bool IsLetter()
+	{
+		return this.handle.IsLetter();
+	}
+	
+	public bool IsNumber()
+	{
+		return this.handle.IsNumber();
+	}
+	
+	public bool IsLetterOrNumber()
+	{
+		return this.handle.IsLetterOrNumber();
+	}
+	
+	public bool IsDigit()
+	{
+		return this.handle.IsDigit();
+	}
+	
+	public bool IsLower()
+	{
+		return this.handle.IsLower();
+	}
+	
+	public bool IsUpper()
+	{
+		return this.handle.IsUpper();
+	}
+	
+	public bool IsTitleCase()
+	{
+		return this.handle.IsTitleCase();
+	}
+	
+	public bool IsNonCharacter()
+	{
+		return this.handle.IsNonCharacter();
+	}
+	
+	public bool IsHighSurrogate()
+	{
+		return this.handle.IsHighSurrogate();
+	}
+	
+	public bool IsLowSurrogate()
+	{
+		return this.handle.IsLowSurrogate();
+	}
+	
+	public bool IsSurrogate()
+	{
+		return this.handle.IsSurrogate();
+	}
+	
+	public uint8 Cell()
+	{
+		return this.handle.Cell();
+	}
+	
+	public uint8 Row()
+	{
+		return this.handle.Row();
+	}
+	
+	public void SetCell(uint8 acell)
+	{
+		this.handle.SetCell(acell);
+	}
+	
+	public void SetRow(uint8 arow)
+	{
+		this.handle.SetRow(arow);
+	}
+	
+	public static int64 CurrentUnicodeVersion()
+	{
+		return QCharPtr.CurrentUnicodeVersion();
 	}
 	
 }

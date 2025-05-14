@@ -12,29 +12,34 @@ public interface IQStaticText
 {
 	void* NativePtr { get; }
 }
-public class QStaticText : IQStaticText
+public struct QStaticTextPtr : IQStaticText, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStaticText_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStaticText_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStaticText_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQStaticText param1)
 	{
-		CQt.QStaticText_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QStaticText_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQStaticText other)
 	{
-		CQt.QStaticText_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QStaticText_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetText(String text)
@@ -49,7 +54,7 @@ public class QStaticText : IQStaticText
 	
 	public void SetTextFormat(int64 textFormat)
 	{
-		CQt.QStaticText_SetTextFormat(this.nativePtr, textFormat);
+		CQt.QStaticText_SetTextFormat(this.nativePtr, (int64)textFormat);
 	}
 	
 	public int64 TextFormat()
@@ -69,7 +74,7 @@ public class QStaticText : IQStaticText
 	
 	public void SetTextOption(IQTextOption textOption)
 	{
-		CQt.QStaticText_SetTextOption(this.nativePtr, (textOption == default) ? default : (void*)textOption.NativePtr);
+		CQt.QStaticText_SetTextOption(this.nativePtr, (textOption == default || textOption.NativePtr == default) ? default : textOption.NativePtr);
 	}
 	
 	public void TextOption()
@@ -89,7 +94,7 @@ public class QStaticText : IQStaticText
 	
 	public void SetPerformanceHint(int64 performanceHint)
 	{
-		CQt.QStaticText_SetPerformanceHint(this.nativePtr, performanceHint);
+		CQt.QStaticText_SetPerformanceHint(this.nativePtr, (int64)performanceHint);
 	}
 	
 	public int64 PerformanceHint()
@@ -99,22 +104,132 @@ public class QStaticText : IQStaticText
 	
 	public bool OperatorEqual(IQStaticText param1)
 	{
-		return CQt.QStaticText_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QStaticText_OperatorEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQStaticText param1)
 	{
-		return CQt.QStaticText_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QStaticText_OperatorNotEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Prepare1(IQTransform matrix)
 	{
-		CQt.QStaticText_Prepare1(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
+		CQt.QStaticText_Prepare1(this.nativePtr, (matrix == default || matrix.NativePtr == default) ? default : matrix.NativePtr);
 	}
 	
 	public void Prepare2(IQTransform matrix, IQFont font)
 	{
-		CQt.QStaticText_Prepare2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QStaticText_Prepare2(this.nativePtr, (matrix == default || matrix.NativePtr == default) ? default : matrix.NativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
+	}
+	
+}
+public class QStaticText
+{
+	public QStaticTextPtr handle;
+	
+	public static implicit operator QStaticTextPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStaticTextPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQStaticText param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQStaticText other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void SetText(String text)
+	{
+		this.handle.SetText(text);
+	}
+	
+	public libqt_string Text()
+	{
+		return this.handle.Text();
+	}
+	
+	public void SetTextFormat(int64 textFormat)
+	{
+		this.handle.SetTextFormat(textFormat);
+	}
+	
+	public int64 TextFormat()
+	{
+		return this.handle.TextFormat();
+	}
+	
+	public void SetTextWidth(double textWidth)
+	{
+		this.handle.SetTextWidth(textWidth);
+	}
+	
+	public double TextWidth()
+	{
+		return this.handle.TextWidth();
+	}
+	
+	public void SetTextOption(IQTextOption textOption)
+	{
+		this.handle.SetTextOption(textOption);
+	}
+	
+	public void TextOption()
+	{
+		this.handle.TextOption();
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public void Prepare()
+	{
+		this.handle.Prepare();
+	}
+	
+	public void SetPerformanceHint(int64 performanceHint)
+	{
+		this.handle.SetPerformanceHint(performanceHint);
+	}
+	
+	public int64 PerformanceHint()
+	{
+		return this.handle.PerformanceHint();
+	}
+	
+	public bool OperatorEqual(IQStaticText param1)
+	{
+		return this.handle.OperatorEqual(param1);
+	}
+	
+	public bool OperatorNotEqual(IQStaticText param1)
+	{
+		return this.handle.OperatorNotEqual(param1);
+	}
+	
+	public void Prepare1(IQTransform matrix)
+	{
+		this.handle.Prepare1(matrix);
+	}
+	
+	public void Prepare2(IQTransform matrix, IQFont font)
+	{
+		this.handle.Prepare2(matrix, font);
 	}
 	
 }

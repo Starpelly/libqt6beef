@@ -6,29 +6,34 @@ public interface IQAudioBuffer
 {
 	void* NativePtr { get; }
 }
-public class QAudioBuffer : IQAudioBuffer
+public struct QAudioBufferPtr : IQAudioBuffer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAudioBuffer_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QAudioBuffer_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAudioBuffer_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAudioBuffer other)
 	{
-		CQt.QAudioBuffer_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QAudioBuffer_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQAudioBuffer other)
 	{
-		CQt.QAudioBuffer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QAudioBuffer_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -69,6 +74,76 @@ public class QAudioBuffer : IQAudioBuffer
 	public int64 StartTime()
 	{
 		return CQt.QAudioBuffer_StartTime(this.nativePtr);
+	}
+	
+}
+public class QAudioBuffer
+{
+	public QAudioBufferPtr handle;
+	
+	public static implicit operator QAudioBufferPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QAudioBufferPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQAudioBuffer other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQAudioBuffer other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public void Format()
+	{
+		this.handle.Format();
+	}
+	
+	public int32 FrameCount()
+	{
+		return this.handle.FrameCount();
+	}
+	
+	public int32 SampleCount()
+	{
+		return this.handle.SampleCount();
+	}
+	
+	public int32 ByteCount()
+	{
+		return this.handle.ByteCount();
+	}
+	
+	public int64 Duration()
+	{
+		return this.handle.Duration();
+	}
+	
+	public int64 StartTime()
+	{
+		return this.handle.StartTime();
 	}
 	
 }

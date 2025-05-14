@@ -6,24 +6,29 @@ public interface IQStringMatcher
 {
 	void* NativePtr { get; }
 }
-public class QStringMatcher : IQStringMatcher
+public struct QStringMatcherPtr : IQStringMatcher, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStringMatcher_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStringMatcher_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStringMatcher_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQStringMatcher other)
 	{
-		CQt.QStringMatcher_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QStringMatcher_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetPattern(String pattern)
@@ -33,7 +38,7 @@ public class QStringMatcher : IQStringMatcher
 	
 	public void SetCaseSensitivity(int64 cs)
 	{
-		CQt.QStringMatcher_SetCaseSensitivity(this.nativePtr, cs);
+		CQt.QStringMatcher_SetCaseSensitivity(this.nativePtr, (int64)cs);
 	}
 	
 	public int32 IndexIn(String str)
@@ -43,7 +48,7 @@ public class QStringMatcher : IQStringMatcher
 	
 	public int32 IndexIn2(IQChar str, int32 length)
 	{
-		return CQt.QStringMatcher_IndexIn2(this.nativePtr, (str == null) ? null : (void*)str.NativePtr, length);
+		return CQt.QStringMatcher_IndexIn2(this.nativePtr, (str == default || str.NativePtr == default) ? default : str.NativePtr, length);
 	}
 	
 	public libqt_string Pattern()
@@ -63,7 +68,72 @@ public class QStringMatcher : IQStringMatcher
 	
 	public int32 IndexIn3(IQChar str, int32 length, int32 from)
 	{
-		return CQt.QStringMatcher_IndexIn3(this.nativePtr, (str == null) ? null : (void*)str.NativePtr, length, from);
+		return CQt.QStringMatcher_IndexIn3(this.nativePtr, (str == default || str.NativePtr == default) ? default : str.NativePtr, length, from);
+	}
+	
+}
+public class QStringMatcher
+{
+	public QStringMatcherPtr handle;
+	
+	public static implicit operator QStringMatcherPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStringMatcherPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQStringMatcher other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void SetPattern(String pattern)
+	{
+		this.handle.SetPattern(pattern);
+	}
+	
+	public void SetCaseSensitivity(int64 cs)
+	{
+		this.handle.SetCaseSensitivity(cs);
+	}
+	
+	public int32 IndexIn(String str)
+	{
+		return this.handle.IndexIn(str);
+	}
+	
+	public int32 IndexIn2(IQChar str, int32 length)
+	{
+		return this.handle.IndexIn2(str, length);
+	}
+	
+	public libqt_string Pattern()
+	{
+		return this.handle.Pattern();
+	}
+	
+	public int64 CaseSensitivity()
+	{
+		return this.handle.CaseSensitivity();
+	}
+	
+	public int32 IndexIn22(String str, int32 from)
+	{
+		return this.handle.IndexIn22(str, from);
+	}
+	
+	public int32 IndexIn3(IQChar str, int32 length, int32 from)
+	{
+		return this.handle.IndexIn3(str, length, from);
 	}
 	
 }

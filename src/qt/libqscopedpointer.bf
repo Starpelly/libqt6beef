@@ -6,17 +6,22 @@ public interface IQScopedPointerPodDeleter
 {
 	void* NativePtr { get; }
 }
-public class QScopedPointerPodDeleter : IQScopedPointerPodDeleter
+public struct QScopedPointerPodDeleterPtr : IQScopedPointerPodDeleter, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQScopedPointerPodDeleter other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QScopedPointerPodDeleter_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQScopedPointerPodDeleter other)
+	{
+		return .(CQt.QScopedPointerPodDeleter_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QScopedPointerPodDeleter_Delete(this.nativePtr);
 	}
@@ -29,6 +34,36 @@ public class QScopedPointerPodDeleter : IQScopedPointerPodDeleter
 	public void OperatorCall(void* pointer)
 	{
 		CQt.QScopedPointerPodDeleter_OperatorCall(this.nativePtr, pointer);
+	}
+	
+}
+public class QScopedPointerPodDeleter
+{
+	public QScopedPointerPodDeleterPtr handle;
+	
+	public static implicit operator QScopedPointerPodDeleterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQScopedPointerPodDeleter other)
+	{
+		this.handle = QScopedPointerPodDeleterPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void Cleanup(void* pointer)
+	{
+		QScopedPointerPodDeleterPtr.Cleanup(pointer);
+	}
+	
+	public void OperatorCall(void* pointer)
+	{
+		this.handle.OperatorCall(pointer);
 	}
 	
 }

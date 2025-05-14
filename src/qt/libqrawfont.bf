@@ -19,29 +19,34 @@ public interface IQRawFont
 {
 	void* NativePtr { get; }
 }
-public class QRawFont : IQRawFont
+public struct QRawFontPtr : IQRawFont, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRawFont_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRawFont_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRawFont_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQRawFont other)
 	{
-		CQt.QRawFont_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRawFont_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQRawFont other)
 	{
-		CQt.QRawFont_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRawFont_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -51,12 +56,12 @@ public class QRawFont : IQRawFont
 	
 	public bool OperatorEqual(IQRawFont other)
 	{
-		return CQt.QRawFont_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QRawFont_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQRawFont other)
 	{
-		return CQt.QRawFont_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QRawFont_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string FamilyName()
@@ -96,17 +101,17 @@ public class QRawFont : IQRawFont
 	
 	public bool GlyphIndexesForChars(IQChar chars, int32 numChars, uint32* glyphIndexes, int32* numGlyphs)
 	{
-		return CQt.QRawFont_GlyphIndexesForChars(this.nativePtr, (chars == null) ? null : (void*)chars.NativePtr, numChars, glyphIndexes, numGlyphs);
+		return CQt.QRawFont_GlyphIndexesForChars(this.nativePtr, (chars == default || chars.NativePtr == default) ? default : chars.NativePtr, numChars, glyphIndexes, numGlyphs);
 	}
 	
 	public bool AdvancesForGlyphIndexes3(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes3(this.nativePtr, glyphIndexes, (advances == null) ? null : (void*)advances.NativePtr, numGlyphs);
+		return CQt.QRawFont_AdvancesForGlyphIndexes3(this.nativePtr, glyphIndexes, (advances == default || advances.NativePtr == default) ? default : advances.NativePtr, numGlyphs);
 	}
 	
 	public bool AdvancesForGlyphIndexes4(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs, int64 layoutFlags)
 	{
-		return CQt.QRawFont_AdvancesForGlyphIndexes4(this.nativePtr, glyphIndexes, (advances == null) ? null : (void*)advances.NativePtr, numGlyphs, layoutFlags);
+		return CQt.QRawFont_AdvancesForGlyphIndexes4(this.nativePtr, glyphIndexes, (advances == default || advances.NativePtr == default) ? default : advances.NativePtr, numGlyphs, layoutFlags);
 	}
 	
 	public void AlphaMapForGlyph(uint32 glyphIndex)
@@ -191,12 +196,12 @@ public class QRawFont : IQRawFont
 	
 	public void LoadFromFile(String fileName, double pixelSize, int64 hintingPreference)
 	{
-		CQt.QRawFont_LoadFromFile(this.nativePtr, libqt_string(fileName), pixelSize, hintingPreference);
+		CQt.QRawFont_LoadFromFile(this.nativePtr, libqt_string(fileName), pixelSize, (int64)hintingPreference);
 	}
 	
 	public void LoadFromData(String fontData, double pixelSize, int64 hintingPreference)
 	{
-		CQt.QRawFont_LoadFromData(this.nativePtr, libqt_string(fontData), pixelSize, hintingPreference);
+		CQt.QRawFont_LoadFromData(this.nativePtr, libqt_string(fontData), pixelSize, (int64)hintingPreference);
 	}
 	
 	public bool SupportsCharacter(uint32 ucs4)
@@ -206,7 +211,7 @@ public class QRawFont : IQRawFont
 	
 	public bool SupportsCharacterWithCharacter(IQChar character)
 	{
-		return CQt.QRawFont_SupportsCharacterWithCharacter(this.nativePtr, (character == default) ? default : (void)character.NativePtr);
+		return CQt.QRawFont_SupportsCharacterWithCharacter(this.nativePtr, default);
 	}
 	
 	public int64[] SupportedWritingSystems()
@@ -221,22 +226,247 @@ public class QRawFont : IQRawFont
 	
 	public static void FromFont(IQFont font)
 	{
-		CQt.QRawFont_FromFont((font == default) ? default : (void*)font.NativePtr);
+		CQt.QRawFont_FromFont((font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public void AlphaMapForGlyph2(uint32 glyphIndex, int64 antialiasingType)
 	{
-		CQt.QRawFont_AlphaMapForGlyph2(this.nativePtr, glyphIndex, antialiasingType);
+		CQt.QRawFont_AlphaMapForGlyph2(this.nativePtr, glyphIndex, (int64)antialiasingType);
 	}
 	
 	public void AlphaMapForGlyph3(uint32 glyphIndex, int64 antialiasingType, IQTransform transform)
 	{
-		CQt.QRawFont_AlphaMapForGlyph3(this.nativePtr, glyphIndex, antialiasingType, (transform == default) ? default : (void*)transform.NativePtr);
+		CQt.QRawFont_AlphaMapForGlyph3(this.nativePtr, glyphIndex, (int64)antialiasingType, (transform == default || transform.NativePtr == default) ? default : transform.NativePtr);
 	}
 	
 	public static void FromFont2(IQFont font, int64 writingSystem)
 	{
-		CQt.QRawFont_FromFont2((font == default) ? default : (void*)font.NativePtr, writingSystem);
+		CQt.QRawFont_FromFont2((font == default || font.NativePtr == default) ? default : font.NativePtr, (int64)writingSystem);
+	}
+	
+}
+public class QRawFont
+{
+	public QRawFontPtr handle;
+	
+	public static implicit operator QRawFontPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRawFontPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQRawFont other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQRawFont other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public bool OperatorEqual(IQRawFont other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQRawFont other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public libqt_string FamilyName()
+	{
+		return this.handle.FamilyName();
+	}
+	
+	public libqt_string StyleName()
+	{
+		return this.handle.StyleName();
+	}
+	
+	public int64 Style()
+	{
+		return this.handle.Style();
+	}
+	
+	public int32 Weight()
+	{
+		return this.handle.Weight();
+	}
+	
+	public uint32[] GlyphIndexesForString(String text)
+	{
+		return this.handle.GlyphIndexesForString(text);
+	}
+	
+	public void[] AdvancesForGlyphIndexes(uint32[] glyphIndexes)
+	{
+		return this.handle.AdvancesForGlyphIndexes(null);
+	}
+	
+	public void[] AdvancesForGlyphIndexes2(uint32[] glyphIndexes, int64 layoutFlags)
+	{
+		return this.handle.AdvancesForGlyphIndexes2(null, layoutFlags);
+	}
+	
+	public bool GlyphIndexesForChars(IQChar chars, int32 numChars, uint32* glyphIndexes, int32* numGlyphs)
+	{
+		return this.handle.GlyphIndexesForChars(chars, numChars, glyphIndexes, numGlyphs);
+	}
+	
+	public bool AdvancesForGlyphIndexes3(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs)
+	{
+		return this.handle.AdvancesForGlyphIndexes3(glyphIndexes, advances, numGlyphs);
+	}
+	
+	public bool AdvancesForGlyphIndexes4(uint32* glyphIndexes, IQPointF advances, int32 numGlyphs, int64 layoutFlags)
+	{
+		return this.handle.AdvancesForGlyphIndexes4(glyphIndexes, advances, numGlyphs, layoutFlags);
+	}
+	
+	public void AlphaMapForGlyph(uint32 glyphIndex)
+	{
+		this.handle.AlphaMapForGlyph(glyphIndex);
+	}
+	
+	public void PathForGlyph(uint32 glyphIndex)
+	{
+		this.handle.PathForGlyph(glyphIndex);
+	}
+	
+	public void BoundingRect(uint32 glyphIndex)
+	{
+		this.handle.BoundingRect(glyphIndex);
+	}
+	
+	public void SetPixelSize(double pixelSize)
+	{
+		this.handle.SetPixelSize(pixelSize);
+	}
+	
+	public double PixelSize()
+	{
+		return this.handle.PixelSize();
+	}
+	
+	public int64 HintingPreference()
+	{
+		return this.handle.HintingPreference();
+	}
+	
+	public double Ascent()
+	{
+		return this.handle.Ascent();
+	}
+	
+	public double CapHeight()
+	{
+		return this.handle.CapHeight();
+	}
+	
+	public double Descent()
+	{
+		return this.handle.Descent();
+	}
+	
+	public double Leading()
+	{
+		return this.handle.Leading();
+	}
+	
+	public double XHeight()
+	{
+		return this.handle.XHeight();
+	}
+	
+	public double AverageCharWidth()
+	{
+		return this.handle.AverageCharWidth();
+	}
+	
+	public double MaxCharWidth()
+	{
+		return this.handle.MaxCharWidth();
+	}
+	
+	public double LineThickness()
+	{
+		return this.handle.LineThickness();
+	}
+	
+	public double UnderlinePosition()
+	{
+		return this.handle.UnderlinePosition();
+	}
+	
+	public double UnitsPerEm()
+	{
+		return this.handle.UnitsPerEm();
+	}
+	
+	public void LoadFromFile(String fileName, double pixelSize, int64 hintingPreference)
+	{
+		this.handle.LoadFromFile(fileName, pixelSize, hintingPreference);
+	}
+	
+	public void LoadFromData(String fontData, double pixelSize, int64 hintingPreference)
+	{
+		this.handle.LoadFromData(fontData, pixelSize, hintingPreference);
+	}
+	
+	public bool SupportsCharacter(uint32 ucs4)
+	{
+		return this.handle.SupportsCharacter(ucs4);
+	}
+	
+	public bool SupportsCharacterWithCharacter(IQChar character)
+	{
+		return this.handle.SupportsCharacterWithCharacter(default);
+	}
+	
+	public int64[] SupportedWritingSystems()
+	{
+		return this.handle.SupportedWritingSystems();
+	}
+	
+	public libqt_string FontTable(char8* tagName)
+	{
+		return this.handle.FontTable(tagName);
+	}
+	
+	public static void FromFont(IQFont font)
+	{
+		QRawFontPtr.FromFont(font);
+	}
+	
+	public void AlphaMapForGlyph2(uint32 glyphIndex, int64 antialiasingType)
+	{
+		this.handle.AlphaMapForGlyph2(glyphIndex, antialiasingType);
+	}
+	
+	public void AlphaMapForGlyph3(uint32 glyphIndex, int64 antialiasingType, IQTransform transform)
+	{
+		this.handle.AlphaMapForGlyph3(glyphIndex, antialiasingType, transform);
+	}
+	
+	public static void FromFont2(IQFont font, int64 writingSystem)
+	{
+		QRawFontPtr.FromFont2(font, writingSystem);
 	}
 	
 }

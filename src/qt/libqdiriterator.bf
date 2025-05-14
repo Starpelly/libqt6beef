@@ -13,17 +13,22 @@ public interface IQDirIterator
 {
 	void* NativePtr { get; }
 }
-public class QDirIterator : IQDirIterator
+public struct QDirIteratorPtr : IQDirIterator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQDir dir)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDirIterator_new((dir == default) ? default : (void*)dir.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQDir dir)
+	{
+		return .(CQt.QDirIterator_new((dir == default || dir.NativePtr == default) ? default : dir.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDirIterator_Delete(this.nativePtr);
 	}
@@ -61,6 +66,61 @@ public class QDirIterator : IQDirIterator
 	public libqt_string Path()
 	{
 		return CQt.QDirIterator_Path(this.nativePtr);
+	}
+	
+}
+public class QDirIterator
+{
+	public QDirIteratorPtr handle;
+	
+	public static implicit operator QDirIteratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQDir dir)
+	{
+		this.handle = QDirIteratorPtr.New(dir);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string Next()
+	{
+		return this.handle.Next();
+	}
+	
+	public void NextFileInfo()
+	{
+		this.handle.NextFileInfo();
+	}
+	
+	public bool HasNext()
+	{
+		return this.handle.HasNext();
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public libqt_string FilePath()
+	{
+		return this.handle.FilePath();
+	}
+	
+	public void FileInfo()
+	{
+		this.handle.FileInfo();
+	}
+	
+	public libqt_string Path()
+	{
+		return this.handle.Path();
 	}
 	
 }

@@ -46,39 +46,44 @@ public interface IQScrollerProperties
 {
 	void* NativePtr { get; }
 }
-public class QScrollerProperties : IQScrollerProperties
+public struct QScrollerPropertiesPtr : IQScrollerProperties, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QScrollerProperties_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QScrollerProperties_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QScrollerProperties_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQScrollerProperties sp)
 	{
-		CQt.QScrollerProperties_OperatorAssign(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
+		CQt.QScrollerProperties_OperatorAssign(this.nativePtr, (sp == default || sp.NativePtr == default) ? default : sp.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQScrollerProperties sp)
 	{
-		return CQt.QScrollerProperties_OperatorEqual(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
+		return CQt.QScrollerProperties_OperatorEqual(this.nativePtr, (sp == default || sp.NativePtr == default) ? default : sp.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQScrollerProperties sp)
 	{
-		return CQt.QScrollerProperties_OperatorNotEqual(this.nativePtr, (sp == default) ? default : (void*)sp.NativePtr);
+		return CQt.QScrollerProperties_OperatorNotEqual(this.nativePtr, (sp == default || sp.NativePtr == default) ? default : sp.NativePtr);
 	}
 	
 	public static void SetDefaultScrollerProperties(IQScrollerProperties sp)
 	{
-		CQt.QScrollerProperties_SetDefaultScrollerProperties((sp == default) ? default : (void*)sp.NativePtr);
+		CQt.QScrollerProperties_SetDefaultScrollerProperties((sp == default || sp.NativePtr == default) ? default : sp.NativePtr);
 	}
 	
 	public static void UnsetDefaultScrollerProperties()
@@ -88,12 +93,67 @@ public class QScrollerProperties : IQScrollerProperties
 	
 	public void ScrollMetric(int64 metric)
 	{
-		CQt.QScrollerProperties_ScrollMetric(this.nativePtr, metric);
+		CQt.QScrollerProperties_ScrollMetric(this.nativePtr, (int64)metric);
 	}
 	
 	public void SetScrollMetric(int64 metric, IQVariant value)
 	{
-		CQt.QScrollerProperties_SetScrollMetric(this.nativePtr, metric, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QScrollerProperties_SetScrollMetric(this.nativePtr, (int64)metric, (value == default || value.NativePtr == default) ? default : value.NativePtr);
+	}
+	
+}
+public class QScrollerProperties
+{
+	public QScrollerPropertiesPtr handle;
+	
+	public static implicit operator QScrollerPropertiesPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QScrollerPropertiesPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQScrollerProperties sp)
+	{
+		this.handle.OperatorAssign(sp);
+	}
+	
+	public bool OperatorEqual(IQScrollerProperties sp)
+	{
+		return this.handle.OperatorEqual(sp);
+	}
+	
+	public bool OperatorNotEqual(IQScrollerProperties sp)
+	{
+		return this.handle.OperatorNotEqual(sp);
+	}
+	
+	public static void SetDefaultScrollerProperties(IQScrollerProperties sp)
+	{
+		QScrollerPropertiesPtr.SetDefaultScrollerProperties(sp);
+	}
+	
+	public static void UnsetDefaultScrollerProperties()
+	{
+		QScrollerPropertiesPtr.UnsetDefaultScrollerProperties();
+	}
+	
+	public void ScrollMetric(int64 metric)
+	{
+		this.handle.ScrollMetric(metric);
+	}
+	
+	public void SetScrollMetric(int64 metric, IQVariant value)
+	{
+		this.handle.SetScrollMetric(metric, value);
 	}
 	
 }

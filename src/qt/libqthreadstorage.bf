@@ -6,17 +6,22 @@ public interface IQThreadStorageData
 {
 	void* NativePtr { get; }
 }
-public class QThreadStorageData : IQThreadStorageData
+public struct QThreadStorageDataPtr : IQThreadStorageData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQThreadStorageData param1)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QThreadStorageData_new((param1 == default) ? default : (void*)param1.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQThreadStorageData param1)
+	{
+		return .(CQt.QThreadStorageData_new((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QThreadStorageData_Delete(this.nativePtr);
 	}
@@ -31,9 +36,44 @@ public class QThreadStorageData : IQThreadStorageData
 		return CQt.QThreadStorageData_Set(this.nativePtr, p);
 	}
 	
-	public static void Finish(void** param1)
+	public static void Finish(void* param1)
 	{
 		CQt.QThreadStorageData_Finish(param1);
+	}
+	
+}
+public class QThreadStorageData
+{
+	public QThreadStorageDataPtr handle;
+	
+	public static implicit operator QThreadStorageDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQThreadStorageData param1)
+	{
+		this.handle = QThreadStorageDataPtr.New(param1);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void* Get()
+	{
+		return this.handle.Get();
+	}
+	
+	public void* Set(void* p)
+	{
+		return this.handle.Set(p);
+	}
+	
+	public static void Finish(void* param1)
+	{
+		QThreadStorageDataPtr.Finish(param1);
 	}
 	
 }

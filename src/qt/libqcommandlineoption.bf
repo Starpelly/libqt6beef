@@ -12,29 +12,34 @@ public interface IQCommandLineOption
 {
 	void* NativePtr { get; }
 }
-public class QCommandLineOption : IQCommandLineOption
+public struct QCommandLineOptionPtr : IQCommandLineOption, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(String name)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCommandLineOption_new(libqt_string(name));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(String name)
+	{
+		return .(CQt.QCommandLineOption_new(libqt_string(name)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCommandLineOption_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCommandLineOption other)
 	{
-		CQt.QCommandLineOption_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCommandLineOption_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQCommandLineOption other)
 	{
-		CQt.QCommandLineOption_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCommandLineOption_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string[] Names()
@@ -85,6 +90,86 @@ public class QCommandLineOption : IQCommandLineOption
 	public void SetFlags(int64 aflags)
 	{
 		CQt.QCommandLineOption_SetFlags(this.nativePtr, aflags);
+	}
+	
+}
+public class QCommandLineOption
+{
+	public QCommandLineOptionPtr handle;
+	
+	public static implicit operator QCommandLineOptionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(String name)
+	{
+		this.handle = QCommandLineOptionPtr.New(name);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCommandLineOption other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQCommandLineOption other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public libqt_string[] Names()
+	{
+		return this.handle.Names();
+	}
+	
+	public void SetValueName(String name)
+	{
+		this.handle.SetValueName(name);
+	}
+	
+	public libqt_string ValueName()
+	{
+		return this.handle.ValueName();
+	}
+	
+	public void SetDescription(String description)
+	{
+		this.handle.SetDescription(description);
+	}
+	
+	public libqt_string Description()
+	{
+		return this.handle.Description();
+	}
+	
+	public void SetDefaultValue(String defaultValue)
+	{
+		this.handle.SetDefaultValue(defaultValue);
+	}
+	
+	public void SetDefaultValues(String[] defaultValues)
+	{
+		this.handle.SetDefaultValues(null);
+	}
+	
+	public libqt_string[] DefaultValues()
+	{
+		return this.handle.DefaultValues();
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void SetFlags(int64 aflags)
+	{
+		this.handle.SetFlags(aflags);
 	}
 	
 }

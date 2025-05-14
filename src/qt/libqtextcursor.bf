@@ -49,29 +49,34 @@ public interface IQTextCursor
 {
 	void* NativePtr { get; }
 }
-public class QTextCursor : IQTextCursor
+public struct QTextCursorPtr : IQTextCursor, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextCursor_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextCursor_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextCursor_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTextCursor other)
 	{
-		CQt.QTextCursor_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextCursor_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQTextCursor other)
 	{
-		CQt.QTextCursor_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextCursor_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -106,12 +111,12 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertText2(String text, IQTextCharFormat format)
 	{
-		CQt.QTextCursor_InsertText2(this.nativePtr, libqt_string(text), (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_InsertText2(this.nativePtr, libqt_string(text), (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public bool MovePosition(int64 op)
 	{
-		return CQt.QTextCursor_MovePosition(this.nativePtr, op);
+		return CQt.QTextCursor_MovePosition(this.nativePtr, (int64)op);
 	}
 	
 	public bool VisualNavigation()
@@ -156,7 +161,7 @@ public class QTextCursor : IQTextCursor
 	
 	public void Select(int64 selection)
 	{
-		CQt.QTextCursor_Select(this.nativePtr, selection);
+		CQt.QTextCursor_Select(this.nativePtr, (int64)selection);
 	}
 	
 	public bool HasSelection()
@@ -216,12 +221,12 @@ public class QTextCursor : IQTextCursor
 	
 	public void SetCharFormat(IQTextCharFormat format)
 	{
-		CQt.QTextCursor_SetCharFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_SetCharFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void MergeCharFormat(IQTextCharFormat modifier)
 	{
-		CQt.QTextCursor_MergeCharFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
+		CQt.QTextCursor_MergeCharFormat(this.nativePtr, (modifier == default || modifier.NativePtr == default) ? default : modifier.NativePtr);
 	}
 	
 	public void BlockFormat()
@@ -231,12 +236,12 @@ public class QTextCursor : IQTextCursor
 	
 	public void SetBlockFormat(IQTextBlockFormat format)
 	{
-		CQt.QTextCursor_SetBlockFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_SetBlockFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void MergeBlockFormat(IQTextBlockFormat modifier)
 	{
-		CQt.QTextCursor_MergeBlockFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
+		CQt.QTextCursor_MergeBlockFormat(this.nativePtr, (modifier == default || modifier.NativePtr == default) ? default : modifier.NativePtr);
 	}
 	
 	public void BlockCharFormat()
@@ -246,12 +251,12 @@ public class QTextCursor : IQTextCursor
 	
 	public void SetBlockCharFormat(IQTextCharFormat format)
 	{
-		CQt.QTextCursor_SetBlockCharFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_SetBlockCharFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void MergeBlockCharFormat(IQTextCharFormat modifier)
 	{
-		CQt.QTextCursor_MergeBlockCharFormat(this.nativePtr, (modifier == default) ? default : (void*)modifier.NativePtr);
+		CQt.QTextCursor_MergeBlockCharFormat(this.nativePtr, (modifier == default || modifier.NativePtr == default) ? default : modifier.NativePtr);
 	}
 	
 	public bool AtBlockStart()
@@ -281,32 +286,32 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertBlockWithFormat(IQTextBlockFormat format)
 	{
-		CQt.QTextCursor_InsertBlockWithFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_InsertBlockWithFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void InsertBlock2(IQTextBlockFormat format, IQTextCharFormat charFormat)
 	{
-		CQt.QTextCursor_InsertBlock2(this.nativePtr, (format == default) ? default : (void*)format.NativePtr, (charFormat == default) ? default : (void*)charFormat.NativePtr);
+		CQt.QTextCursor_InsertBlock2(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr, (charFormat == default || charFormat.NativePtr == default) ? default : charFormat.NativePtr);
 	}
 	
 	public void* InsertList(IQTextListFormat format)
 	{
-		return CQt.QTextCursor_InsertList(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QTextCursor_InsertList(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void* InsertListWithStyle(int64 style)
 	{
-		return CQt.QTextCursor_InsertListWithStyle(this.nativePtr, style);
+		return CQt.QTextCursor_InsertListWithStyle(this.nativePtr, (int64)style);
 	}
 	
 	public void* CreateList(IQTextListFormat format)
 	{
-		return CQt.QTextCursor_CreateList(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QTextCursor_CreateList(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void* CreateListWithStyle(int64 style)
 	{
-		return CQt.QTextCursor_CreateListWithStyle(this.nativePtr, style);
+		return CQt.QTextCursor_CreateListWithStyle(this.nativePtr, (int64)style);
 	}
 	
 	public void* CurrentList()
@@ -316,7 +321,7 @@ public class QTextCursor : IQTextCursor
 	
 	public void* InsertTable(int32 rows, int32 cols, IQTextTableFormat format)
 	{
-		return CQt.QTextCursor_InsertTable(this.nativePtr, rows, cols, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QTextCursor_InsertTable(this.nativePtr, rows, cols, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void* InsertTable2(int32 rows, int32 cols)
@@ -331,7 +336,7 @@ public class QTextCursor : IQTextCursor
 	
 	public void* InsertFrame(IQTextFrameFormat format)
 	{
-		return CQt.QTextCursor_InsertFrame(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QTextCursor_InsertFrame(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void* CurrentFrame()
@@ -341,7 +346,7 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertFragment(IQTextDocumentFragment fragment)
 	{
-		CQt.QTextCursor_InsertFragment(this.nativePtr, (fragment == default) ? default : (void*)fragment.NativePtr);
+		CQt.QTextCursor_InsertFragment(this.nativePtr, (fragment == default || fragment.NativePtr == default) ? default : fragment.NativePtr);
 	}
 	
 	public void InsertHtml(String html)
@@ -356,12 +361,12 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertImage(IQTextImageFormat format, int64 alignment)
 	{
-		CQt.QTextCursor_InsertImage(this.nativePtr, (format == default) ? default : (void*)format.NativePtr, alignment);
+		CQt.QTextCursor_InsertImage(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr, (int64)alignment);
 	}
 	
 	public void InsertImageWithFormat(IQTextImageFormat format)
 	{
-		CQt.QTextCursor_InsertImageWithFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QTextCursor_InsertImageWithFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public void InsertImageWithName(String name)
@@ -371,7 +376,7 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertImageWithImage(IQImage image)
 	{
-		CQt.QTextCursor_InsertImageWithImage(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
+		CQt.QTextCursor_InsertImageWithImage(this.nativePtr, (image == default || image.NativePtr == default) ? default : image.NativePtr);
 	}
 	
 	public void BeginEditBlock()
@@ -391,37 +396,37 @@ public class QTextCursor : IQTextCursor
 	
 	public bool OperatorNotEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorLesser(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorLesser(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorLesserOrEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorLesserOrEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorLesserOrEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorGreaterOrEqual(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorGreaterOrEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorGreaterOrEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorGreater(IQTextCursor rhs)
 	{
-		return CQt.QTextCursor_OperatorGreater(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextCursor_OperatorGreater(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool IsCopyOf(IQTextCursor other)
 	{
-		return CQt.QTextCursor_IsCopyOf(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QTextCursor_IsCopyOf(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int32 BlockNumber()
@@ -441,17 +446,17 @@ public class QTextCursor : IQTextCursor
 	
 	public void SetPosition2(int32 pos, int64 mode)
 	{
-		CQt.QTextCursor_SetPosition2(this.nativePtr, pos, mode);
+		CQt.QTextCursor_SetPosition2(this.nativePtr, pos, (int64)mode);
 	}
 	
 	public bool MovePosition2(int64 op, int64 param2)
 	{
-		return CQt.QTextCursor_MovePosition2(this.nativePtr, op, param2);
+		return CQt.QTextCursor_MovePosition2(this.nativePtr, (int64)op, (int64)param2);
 	}
 	
 	public bool MovePosition3(int64 op, int64 param2, int32 n)
 	{
-		return CQt.QTextCursor_MovePosition3(this.nativePtr, op, param2, n);
+		return CQt.QTextCursor_MovePosition3(this.nativePtr, (int64)op, (int64)param2, n);
 	}
 	
 	public void InsertMarkdown2(String markdown, int64 features)
@@ -461,7 +466,427 @@ public class QTextCursor : IQTextCursor
 	
 	public void InsertImage2(IQImage image, String name)
 	{
-		CQt.QTextCursor_InsertImage2(this.nativePtr, (image == default) ? default : (void*)image.NativePtr, libqt_string(name));
+		CQt.QTextCursor_InsertImage2(this.nativePtr, (image == default || image.NativePtr == default) ? default : image.NativePtr, libqt_string(name));
+	}
+	
+}
+public class QTextCursor
+{
+	public QTextCursorPtr handle;
+	
+	public static implicit operator QTextCursorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextCursorPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTextCursor other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQTextCursor other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void SetPosition(int32 pos)
+	{
+		this.handle.SetPosition(pos);
+	}
+	
+	public int32 Position()
+	{
+		return this.handle.Position();
+	}
+	
+	public int32 PositionInBlock()
+	{
+		return this.handle.PositionInBlock();
+	}
+	
+	public int32 Anchor()
+	{
+		return this.handle.Anchor();
+	}
+	
+	public void InsertText(String text)
+	{
+		this.handle.InsertText(text);
+	}
+	
+	public void InsertText2(String text, IQTextCharFormat format)
+	{
+		this.handle.InsertText2(text, format);
+	}
+	
+	public bool MovePosition(int64 op)
+	{
+		return this.handle.MovePosition(op);
+	}
+	
+	public bool VisualNavigation()
+	{
+		return this.handle.VisualNavigation();
+	}
+	
+	public void SetVisualNavigation(bool b)
+	{
+		this.handle.SetVisualNavigation(b);
+	}
+	
+	public void SetVerticalMovementX(int32 x)
+	{
+		this.handle.SetVerticalMovementX(x);
+	}
+	
+	public int32 VerticalMovementX()
+	{
+		return this.handle.VerticalMovementX();
+	}
+	
+	public void SetKeepPositionOnInsert(bool b)
+	{
+		this.handle.SetKeepPositionOnInsert(b);
+	}
+	
+	public bool KeepPositionOnInsert()
+	{
+		return this.handle.KeepPositionOnInsert();
+	}
+	
+	public void DeleteChar()
+	{
+		this.handle.DeleteChar();
+	}
+	
+	public void DeletePreviousChar()
+	{
+		this.handle.DeletePreviousChar();
+	}
+	
+	public void Select(int64 selection)
+	{
+		this.handle.Select(selection);
+	}
+	
+	public bool HasSelection()
+	{
+		return this.handle.HasSelection();
+	}
+	
+	public bool HasComplexSelection()
+	{
+		return this.handle.HasComplexSelection();
+	}
+	
+	public void RemoveSelectedText()
+	{
+		this.handle.RemoveSelectedText();
+	}
+	
+	public void ClearSelection()
+	{
+		this.handle.ClearSelection();
+	}
+	
+	public int32 SelectionStart()
+	{
+		return this.handle.SelectionStart();
+	}
+	
+	public int32 SelectionEnd()
+	{
+		return this.handle.SelectionEnd();
+	}
+	
+	public libqt_string SelectedText()
+	{
+		return this.handle.SelectedText();
+	}
+	
+	public void Selection()
+	{
+		this.handle.Selection();
+	}
+	
+	public void SelectedTableCells(int32* firstRow, int32* numRows, int32* firstColumn, int32* numColumns)
+	{
+		this.handle.SelectedTableCells(firstRow, numRows, firstColumn, numColumns);
+	}
+	
+	public void Block()
+	{
+		this.handle.Block();
+	}
+	
+	public void CharFormat()
+	{
+		this.handle.CharFormat();
+	}
+	
+	public void SetCharFormat(IQTextCharFormat format)
+	{
+		this.handle.SetCharFormat(format);
+	}
+	
+	public void MergeCharFormat(IQTextCharFormat modifier)
+	{
+		this.handle.MergeCharFormat(modifier);
+	}
+	
+	public void BlockFormat()
+	{
+		this.handle.BlockFormat();
+	}
+	
+	public void SetBlockFormat(IQTextBlockFormat format)
+	{
+		this.handle.SetBlockFormat(format);
+	}
+	
+	public void MergeBlockFormat(IQTextBlockFormat modifier)
+	{
+		this.handle.MergeBlockFormat(modifier);
+	}
+	
+	public void BlockCharFormat()
+	{
+		this.handle.BlockCharFormat();
+	}
+	
+	public void SetBlockCharFormat(IQTextCharFormat format)
+	{
+		this.handle.SetBlockCharFormat(format);
+	}
+	
+	public void MergeBlockCharFormat(IQTextCharFormat modifier)
+	{
+		this.handle.MergeBlockCharFormat(modifier);
+	}
+	
+	public bool AtBlockStart()
+	{
+		return this.handle.AtBlockStart();
+	}
+	
+	public bool AtBlockEnd()
+	{
+		return this.handle.AtBlockEnd();
+	}
+	
+	public bool AtStart()
+	{
+		return this.handle.AtStart();
+	}
+	
+	public bool AtEnd()
+	{
+		return this.handle.AtEnd();
+	}
+	
+	public void InsertBlock()
+	{
+		this.handle.InsertBlock();
+	}
+	
+	public void InsertBlockWithFormat(IQTextBlockFormat format)
+	{
+		this.handle.InsertBlockWithFormat(format);
+	}
+	
+	public void InsertBlock2(IQTextBlockFormat format, IQTextCharFormat charFormat)
+	{
+		this.handle.InsertBlock2(format, charFormat);
+	}
+	
+	public void* InsertList(IQTextListFormat format)
+	{
+		return this.handle.InsertList(format);
+	}
+	
+	public void* InsertListWithStyle(int64 style)
+	{
+		return this.handle.InsertListWithStyle(style);
+	}
+	
+	public void* CreateList(IQTextListFormat format)
+	{
+		return this.handle.CreateList(format);
+	}
+	
+	public void* CreateListWithStyle(int64 style)
+	{
+		return this.handle.CreateListWithStyle(style);
+	}
+	
+	public void* CurrentList()
+	{
+		return this.handle.CurrentList();
+	}
+	
+	public void* InsertTable(int32 rows, int32 cols, IQTextTableFormat format)
+	{
+		return this.handle.InsertTable(rows, cols, format);
+	}
+	
+	public void* InsertTable2(int32 rows, int32 cols)
+	{
+		return this.handle.InsertTable2(rows, cols);
+	}
+	
+	public void* CurrentTable()
+	{
+		return this.handle.CurrentTable();
+	}
+	
+	public void* InsertFrame(IQTextFrameFormat format)
+	{
+		return this.handle.InsertFrame(format);
+	}
+	
+	public void* CurrentFrame()
+	{
+		return this.handle.CurrentFrame();
+	}
+	
+	public void InsertFragment(IQTextDocumentFragment fragment)
+	{
+		this.handle.InsertFragment(fragment);
+	}
+	
+	public void InsertHtml(String html)
+	{
+		this.handle.InsertHtml(html);
+	}
+	
+	public void InsertMarkdown(String markdown)
+	{
+		this.handle.InsertMarkdown(markdown);
+	}
+	
+	public void InsertImage(IQTextImageFormat format, int64 alignment)
+	{
+		this.handle.InsertImage(format, alignment);
+	}
+	
+	public void InsertImageWithFormat(IQTextImageFormat format)
+	{
+		this.handle.InsertImageWithFormat(format);
+	}
+	
+	public void InsertImageWithName(String name)
+	{
+		this.handle.InsertImageWithName(name);
+	}
+	
+	public void InsertImageWithImage(IQImage image)
+	{
+		this.handle.InsertImageWithImage(image);
+	}
+	
+	public void BeginEditBlock()
+	{
+		this.handle.BeginEditBlock();
+	}
+	
+	public void JoinPreviousEditBlock()
+	{
+		this.handle.JoinPreviousEditBlock();
+	}
+	
+	public void EndEditBlock()
+	{
+		this.handle.EndEditBlock();
+	}
+	
+	public bool OperatorNotEqual(IQTextCursor rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public bool OperatorLesser(IQTextCursor rhs)
+	{
+		return this.handle.OperatorLesser(rhs);
+	}
+	
+	public bool OperatorLesserOrEqual(IQTextCursor rhs)
+	{
+		return this.handle.OperatorLesserOrEqual(rhs);
+	}
+	
+	public bool OperatorEqual(IQTextCursor rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorGreaterOrEqual(IQTextCursor rhs)
+	{
+		return this.handle.OperatorGreaterOrEqual(rhs);
+	}
+	
+	public bool OperatorGreater(IQTextCursor rhs)
+	{
+		return this.handle.OperatorGreater(rhs);
+	}
+	
+	public bool IsCopyOf(IQTextCursor other)
+	{
+		return this.handle.IsCopyOf(other);
+	}
+	
+	public int32 BlockNumber()
+	{
+		return this.handle.BlockNumber();
+	}
+	
+	public int32 ColumnNumber()
+	{
+		return this.handle.ColumnNumber();
+	}
+	
+	public void* Document()
+	{
+		return this.handle.Document();
+	}
+	
+	public void SetPosition2(int32 pos, int64 mode)
+	{
+		this.handle.SetPosition2(pos, mode);
+	}
+	
+	public bool MovePosition2(int64 op, int64 param2)
+	{
+		return this.handle.MovePosition2(op, param2);
+	}
+	
+	public bool MovePosition3(int64 op, int64 param2, int32 n)
+	{
+		return this.handle.MovePosition3(op, param2, n);
+	}
+	
+	public void InsertMarkdown2(String markdown, int64 features)
+	{
+		this.handle.InsertMarkdown2(markdown, features);
+	}
+	
+	public void InsertImage2(IQImage image, String name)
+	{
+		this.handle.InsertImage2(image, name);
 	}
 	
 }

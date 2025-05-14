@@ -12,29 +12,34 @@ public interface IQRegion
 {
 	void* NativePtr { get; }
 }
-public class QRegion : IQRegion
+public struct QRegionPtr : IQRegion, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRegion_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRegion_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRegion_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQRegion param1)
 	{
-		CQt.QRegion_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QRegion_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQRegion other)
 	{
-		CQt.QRegion_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRegion_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -69,12 +74,12 @@ public class QRegion : IQRegion
 	
 	public bool Contains(IQPoint p)
 	{
-		return CQt.QRegion_Contains(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QRegion_Contains(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public bool ContainsWithQRect(IQRect r)
 	{
-		return CQt.QRegion_ContainsWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_ContainsWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Translate(int32 dx, int32 dy)
@@ -84,7 +89,7 @@ public class QRegion : IQRegion
 	
 	public void TranslateWithQPoint(IQPoint p)
 	{
-		CQt.QRegion_TranslateWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRegion_TranslateWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translated(int32 dx, int32 dy)
@@ -94,47 +99,47 @@ public class QRegion : IQRegion
 	
 	public void TranslatedWithQPoint(IQPoint p)
 	{
-		CQt.QRegion_TranslatedWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRegion_TranslatedWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void United(IQRegion r)
 	{
-		CQt.QRegion_United(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_United(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void UnitedWithQRect(IQRect r)
 	{
-		CQt.QRegion_UnitedWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_UnitedWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Intersected(IQRegion r)
 	{
-		CQt.QRegion_Intersected(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_Intersected(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void IntersectedWithQRect(IQRect r)
 	{
-		CQt.QRegion_IntersectedWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_IntersectedWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Subtracted(IQRegion r)
 	{
-		CQt.QRegion_Subtracted(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_Subtracted(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Xored(IQRegion r)
 	{
-		CQt.QRegion_Xored(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_Xored(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool Intersects(IQRegion r)
 	{
-		return CQt.QRegion_Intersects(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_Intersects(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool IntersectsWithQRect(IQRect r)
 	{
-		return CQt.QRegion_IntersectsWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_IntersectsWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -144,7 +149,7 @@ public class QRegion : IQRegion
 	
 	public void SetRects(IQRect rect, int32 num)
 	{
-		CQt.QRegion_SetRects(this.nativePtr, (rect == null) ? null : (void*)rect.NativePtr, num);
+		CQt.QRegion_SetRects(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, num);
 	}
 	
 	public int32 RectCount()
@@ -154,87 +159,317 @@ public class QRegion : IQRegion
 	
 	public void OperatorBitwiseOr(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseOr(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseOr(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorPlus(IQRegion r)
 	{
-		CQt.QRegion_OperatorPlus(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorPlus(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorPlusWithQRect(IQRect r)
 	{
-		CQt.QRegion_OperatorPlusWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorPlusWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAnd(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseAnd(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseAnd(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndWithQRect(IQRect r)
 	{
-		CQt.QRegion_OperatorBitwiseAndWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseAndWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorMinus(IQRegion r)
 	{
-		CQt.QRegion_OperatorMinus(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorMinus(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseNot(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseNot(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseNot(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseOrAssign(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseOrAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseOrAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void* OperatorPlusAssign(IQRegion r)
 	{
-		return CQt.QRegion_OperatorPlusAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_OperatorPlusAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void* OperatorPlusAssignWithQRect(IQRect r)
 	{
-		return CQt.QRegion_OperatorPlusAssignWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_OperatorPlusAssignWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndAssign(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseAndAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseAndAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndAssignWithQRect(IQRect r)
 	{
-		CQt.QRegion_OperatorBitwiseAndAssignWithQRect(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseAndAssignWithQRect(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQRegion r)
 	{
-		return CQt.QRegion_OperatorMinusAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_OperatorMinusAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseNotAssign(IQRegion r)
 	{
-		CQt.QRegion_OperatorBitwiseNotAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRegion_OperatorBitwiseNotAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQRegion r)
 	{
-		return CQt.QRegion_OperatorEqual(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_OperatorEqual(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQRegion r)
 	{
-		return CQt.QRegion_OperatorNotEqual(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRegion_OperatorNotEqual(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void ToQVariant()
 	{
 		CQt.QRegion_ToQVariant(this.nativePtr);
+	}
+	
+}
+public class QRegion
+{
+	public QRegionPtr handle;
+	
+	public static implicit operator QRegionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRegionPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQRegion param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQRegion other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void* Begin()
+	{
+		return this.handle.Begin();
+	}
+	
+	public void* Cbegin()
+	{
+		return this.handle.Cbegin();
+	}
+	
+	public void* End()
+	{
+		return this.handle.End();
+	}
+	
+	public void* Cend()
+	{
+		return this.handle.Cend();
+	}
+	
+	public bool Contains(IQPoint p)
+	{
+		return this.handle.Contains(p);
+	}
+	
+	public bool ContainsWithQRect(IQRect r)
+	{
+		return this.handle.ContainsWithQRect(r);
+	}
+	
+	public void Translate(int32 dx, int32 dy)
+	{
+		this.handle.Translate(dx, dy);
+	}
+	
+	public void TranslateWithQPoint(IQPoint p)
+	{
+		this.handle.TranslateWithQPoint(p);
+	}
+	
+	public void Translated(int32 dx, int32 dy)
+	{
+		this.handle.Translated(dx, dy);
+	}
+	
+	public void TranslatedWithQPoint(IQPoint p)
+	{
+		this.handle.TranslatedWithQPoint(p);
+	}
+	
+	public void United(IQRegion r)
+	{
+		this.handle.United(r);
+	}
+	
+	public void UnitedWithQRect(IQRect r)
+	{
+		this.handle.UnitedWithQRect(r);
+	}
+	
+	public void Intersected(IQRegion r)
+	{
+		this.handle.Intersected(r);
+	}
+	
+	public void IntersectedWithQRect(IQRect r)
+	{
+		this.handle.IntersectedWithQRect(r);
+	}
+	
+	public void Subtracted(IQRegion r)
+	{
+		this.handle.Subtracted(r);
+	}
+	
+	public void Xored(IQRegion r)
+	{
+		this.handle.Xored(r);
+	}
+	
+	public bool Intersects(IQRegion r)
+	{
+		return this.handle.Intersects(r);
+	}
+	
+	public bool IntersectsWithQRect(IQRect r)
+	{
+		return this.handle.IntersectsWithQRect(r);
+	}
+	
+	public void BoundingRect()
+	{
+		this.handle.BoundingRect();
+	}
+	
+	public void SetRects(IQRect rect, int32 num)
+	{
+		this.handle.SetRects(rect, num);
+	}
+	
+	public int32 RectCount()
+	{
+		return this.handle.RectCount();
+	}
+	
+	public void OperatorBitwiseOr(IQRegion r)
+	{
+		this.handle.OperatorBitwiseOr(r);
+	}
+	
+	public void OperatorPlus(IQRegion r)
+	{
+		this.handle.OperatorPlus(r);
+	}
+	
+	public void OperatorPlusWithQRect(IQRect r)
+	{
+		this.handle.OperatorPlusWithQRect(r);
+	}
+	
+	public void OperatorBitwiseAnd(IQRegion r)
+	{
+		this.handle.OperatorBitwiseAnd(r);
+	}
+	
+	public void OperatorBitwiseAndWithQRect(IQRect r)
+	{
+		this.handle.OperatorBitwiseAndWithQRect(r);
+	}
+	
+	public void OperatorMinus(IQRegion r)
+	{
+		this.handle.OperatorMinus(r);
+	}
+	
+	public void OperatorBitwiseNot(IQRegion r)
+	{
+		this.handle.OperatorBitwiseNot(r);
+	}
+	
+	public void OperatorBitwiseOrAssign(IQRegion r)
+	{
+		this.handle.OperatorBitwiseOrAssign(r);
+	}
+	
+	public void* OperatorPlusAssign(IQRegion r)
+	{
+		return this.handle.OperatorPlusAssign(r);
+	}
+	
+	public void* OperatorPlusAssignWithQRect(IQRect r)
+	{
+		return this.handle.OperatorPlusAssignWithQRect(r);
+	}
+	
+	public void OperatorBitwiseAndAssign(IQRegion r)
+	{
+		this.handle.OperatorBitwiseAndAssign(r);
+	}
+	
+	public void OperatorBitwiseAndAssignWithQRect(IQRect r)
+	{
+		this.handle.OperatorBitwiseAndAssignWithQRect(r);
+	}
+	
+	public void* OperatorMinusAssign(IQRegion r)
+	{
+		return this.handle.OperatorMinusAssign(r);
+	}
+	
+	public void OperatorBitwiseNotAssign(IQRegion r)
+	{
+		this.handle.OperatorBitwiseNotAssign(r);
+	}
+	
+	public bool OperatorEqual(IQRegion r)
+	{
+		return this.handle.OperatorEqual(r);
+	}
+	
+	public bool OperatorNotEqual(IQRegion r)
+	{
+		return this.handle.OperatorNotEqual(r);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
 	}
 	
 }

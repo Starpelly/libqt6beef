@@ -28,17 +28,22 @@ public interface IQOperatingSystemVersionBase
 {
 	void* NativePtr { get; }
 }
-public class QOperatingSystemVersionBase : IQOperatingSystemVersionBase
+public struct QOperatingSystemVersionBasePtr : IQOperatingSystemVersionBase, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 osType, int32 vmajor)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QOperatingSystemVersionBase_new(osType, vmajor);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 osType, int32 vmajor)
+	{
+		return .(CQt.QOperatingSystemVersionBase_new((int64)osType, vmajor));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QOperatingSystemVersionBase_Delete(this.nativePtr);
 	}
@@ -50,7 +55,7 @@ public class QOperatingSystemVersionBase : IQOperatingSystemVersionBase
 	
 	public static libqt_string Name(IQOperatingSystemVersionBase osversion)
 	{
-		return CQt.QOperatingSystemVersionBase_Name((osversion == default) ? default : (void)osversion.NativePtr);
+		return CQt.QOperatingSystemVersionBase_Name(default);
 	}
 	
 	public static int64 CurrentType()
@@ -94,6 +99,76 @@ public class QOperatingSystemVersionBase : IQOperatingSystemVersionBase
 	}
 	
 }
+public class QOperatingSystemVersionBase
+{
+	public QOperatingSystemVersionBasePtr handle;
+	
+	public static implicit operator QOperatingSystemVersionBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 osType, int32 vmajor)
+	{
+		this.handle = QOperatingSystemVersionBasePtr.New(osType, vmajor);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void Current()
+	{
+		QOperatingSystemVersionBasePtr.Current();
+	}
+	
+	public static libqt_string Name(IQOperatingSystemVersionBase osversion)
+	{
+		return QOperatingSystemVersionBasePtr.Name(default);
+	}
+	
+	public static int64 CurrentType()
+	{
+		return QOperatingSystemVersionBasePtr.CurrentType();
+	}
+	
+	public void Version()
+	{
+		this.handle.Version();
+	}
+	
+	public int32 MajorVersion()
+	{
+		return this.handle.MajorVersion();
+	}
+	
+	public int32 MinorVersion()
+	{
+		return this.handle.MinorVersion();
+	}
+	
+	public int32 MicroVersion()
+	{
+		return this.handle.MicroVersion();
+	}
+	
+	public int32 SegmentCount()
+	{
+		return this.handle.SegmentCount();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public libqt_string Name2()
+	{
+		return this.handle.Name2();
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QOperatingSystemVersionBase_new")]
@@ -132,17 +207,22 @@ public interface IQOperatingSystemVersion
 {
 	void* NativePtr { get; }
 }
-public class QOperatingSystemVersion : IQOperatingSystemVersion, IQOperatingSystemVersionBase
+public struct QOperatingSystemVersionPtr : IQOperatingSystemVersion, IDisposable, IQOperatingSystemVersionBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQOperatingSystemVersionBase osversion)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QOperatingSystemVersion_new((osversion == default) ? default : (void*)osversion.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQOperatingSystemVersionBase osversion)
+	{
+		return .(CQt.QOperatingSystemVersion_new((osversion == default || osversion.NativePtr == default) ? default : osversion.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QOperatingSystemVersion_Delete(this.nativePtr);
 	}
@@ -195,6 +275,76 @@ public class QOperatingSystemVersion : IQOperatingSystemVersion, IQOperatingSyst
 	public libqt_string Name2()
 	{
 		return CQt.QOperatingSystemVersionBase_Name2(this.nativePtr);
+	}
+	
+}
+public class QOperatingSystemVersion
+{
+	public QOperatingSystemVersionPtr handle;
+	
+	public static implicit operator QOperatingSystemVersionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQOperatingSystemVersionBase osversion)
+	{
+		this.handle = QOperatingSystemVersionPtr.New(osversion);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void Current()
+	{
+		QOperatingSystemVersionPtr.Current();
+	}
+	
+	public static int64 CurrentType()
+	{
+		return QOperatingSystemVersionPtr.CurrentType();
+	}
+	
+	public void Version()
+	{
+		this.handle.Version();
+	}
+	
+	public int32 MajorVersion()
+	{
+		return this.handle.MajorVersion();
+	}
+	
+	public int32 MinorVersion()
+	{
+		return this.handle.MinorVersion();
+	}
+	
+	public int32 MicroVersion()
+	{
+		return this.handle.MicroVersion();
+	}
+	
+	public int32 SegmentCount()
+	{
+		return this.handle.SegmentCount();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public libqt_string Name2()
+	{
+		return this.handle.Name2();
 	}
 	
 }

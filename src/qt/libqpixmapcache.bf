@@ -6,17 +6,22 @@ public interface IQPixmapCache
 {
 	void* NativePtr { get; }
 }
-public class QPixmapCache : IQPixmapCache
+public struct QPixmapCachePtr : IQPixmapCache, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQPixmapCache other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPixmapCache_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQPixmapCache other)
+	{
+		return .(CQt.QPixmapCache_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPixmapCache_Delete(this.nativePtr);
 	}
@@ -33,27 +38,27 @@ public class QPixmapCache : IQPixmapCache
 	
 	public static bool Find(String key, IQPixmap pixmap)
 	{
-		return CQt.QPixmapCache_Find(libqt_string(key), (pixmap == null) ? null : (void*)pixmap.NativePtr);
+		return CQt.QPixmapCache_Find(libqt_string(key), (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
-	public static bool Find2(QPixmapCache__Key key, IQPixmap pixmap)
+	public static bool Find2(QPixmapCache__KeyPtr key, IQPixmap pixmap)
 	{
-		return CQt.QPixmapCache_Find2((key == default) ? default : (void*)key.NativePtr, (pixmap == null) ? null : (void*)pixmap.NativePtr);
+		return CQt.QPixmapCache_Find2((key == default || key.NativePtr == default) ? default : key.NativePtr, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
 	public static bool Insert(String key, IQPixmap pixmap)
 	{
-		return CQt.QPixmapCache_Insert(libqt_string(key), (pixmap == default) ? default : (void*)pixmap.NativePtr);
+		return CQt.QPixmapCache_Insert(libqt_string(key), (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
 	public static void InsertWithPixmap(IQPixmap pixmap)
 	{
-		CQt.QPixmapCache_InsertWithPixmap((pixmap == default) ? default : (void*)pixmap.NativePtr);
+		CQt.QPixmapCache_InsertWithPixmap((pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
-	public static bool Replace(QPixmapCache__Key key, IQPixmap pixmap)
+	public static bool Replace(QPixmapCache__KeyPtr key, IQPixmap pixmap)
 	{
-		return CQt.QPixmapCache_Replace((key == default) ? default : (void*)key.NativePtr, (pixmap == default) ? default : (void*)pixmap.NativePtr);
+		return CQt.QPixmapCache_Replace((key == default || key.NativePtr == default) ? default : key.NativePtr, (pixmap == default || pixmap.NativePtr == default) ? default : pixmap.NativePtr);
 	}
 	
 	public static void Remove(String key)
@@ -61,14 +66,84 @@ public class QPixmapCache : IQPixmapCache
 		CQt.QPixmapCache_Remove(libqt_string(key));
 	}
 	
-	public static void RemoveWithKey(QPixmapCache__Key key)
+	public static void RemoveWithKey(QPixmapCache__KeyPtr key)
 	{
-		CQt.QPixmapCache_RemoveWithKey((key == default) ? default : (void*)key.NativePtr);
+		CQt.QPixmapCache_RemoveWithKey((key == default || key.NativePtr == default) ? default : key.NativePtr);
 	}
 	
 	public static void Clear()
 	{
 		CQt.QPixmapCache_Clear();
+	}
+	
+}
+public class QPixmapCache
+{
+	public QPixmapCachePtr handle;
+	
+	public static implicit operator QPixmapCachePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQPixmapCache other)
+	{
+		this.handle = QPixmapCachePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static int32 CacheLimit()
+	{
+		return QPixmapCachePtr.CacheLimit();
+	}
+	
+	public static void SetCacheLimit(int32 cacheLimit)
+	{
+		QPixmapCachePtr.SetCacheLimit(cacheLimit);
+	}
+	
+	public static bool Find(String key, IQPixmap pixmap)
+	{
+		return QPixmapCachePtr.Find(key, pixmap);
+	}
+	
+	public static bool Find2(QPixmapCache__KeyPtr key, IQPixmap pixmap)
+	{
+		return QPixmapCachePtr.Find2(key, pixmap);
+	}
+	
+	public static bool Insert(String key, IQPixmap pixmap)
+	{
+		return QPixmapCachePtr.Insert(key, pixmap);
+	}
+	
+	public static void InsertWithPixmap(IQPixmap pixmap)
+	{
+		QPixmapCachePtr.InsertWithPixmap(pixmap);
+	}
+	
+	public static bool Replace(QPixmapCache__KeyPtr key, IQPixmap pixmap)
+	{
+		return QPixmapCachePtr.Replace(key, pixmap);
+	}
+	
+	public static void Remove(String key)
+	{
+		QPixmapCachePtr.Remove(key);
+	}
+	
+	public static void RemoveWithKey(QPixmapCache__KeyPtr key)
+	{
+		QPixmapCachePtr.RemoveWithKey(key);
+	}
+	
+	public static void Clear()
+	{
+		QPixmapCachePtr.Clear();
 	}
 	
 }
@@ -106,44 +181,94 @@ public interface IQPixmapCache__Key
 {
 	void* NativePtr { get; }
 }
-public class QPixmapCache__Key : IQPixmapCache__Key
+public struct QPixmapCache__KeyPtr : IQPixmapCache__Key, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPixmapCache__Key_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPixmapCache__Key_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPixmapCache__Key_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QPixmapCache__Key key)
+	public bool OperatorEqual(QPixmapCache__KeyPtr key)
 	{
-		return CQt.QPixmapCache__Key_OperatorEqual(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
+		return CQt.QPixmapCache__Key_OperatorEqual(this.nativePtr, (key == default || key.NativePtr == default) ? default : key.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QPixmapCache__Key key)
+	public bool OperatorNotEqual(QPixmapCache__KeyPtr key)
 	{
-		return CQt.QPixmapCache__Key_OperatorNotEqual(this.nativePtr, (key == default) ? default : (void*)key.NativePtr);
+		return CQt.QPixmapCache__Key_OperatorNotEqual(this.nativePtr, (key == default || key.NativePtr == default) ? default : key.NativePtr);
 	}
 	
-	public void OperatorAssign(QPixmapCache__Key other)
+	public void OperatorAssign(QPixmapCache__KeyPtr other)
 	{
-		CQt.QPixmapCache__Key_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPixmapCache__Key_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public void Swap(QPixmapCache__Key other)
+	public void Swap(QPixmapCache__KeyPtr other)
 	{
-		CQt.QPixmapCache__Key_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPixmapCache__Key_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
 	{
 		return CQt.QPixmapCache__Key_IsValid(this.nativePtr);
+	}
+	
+}
+public class QPixmapCache__Key
+{
+	public QPixmapCache__KeyPtr handle;
+	
+	public static implicit operator QPixmapCache__KeyPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPixmapCache__KeyPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool OperatorEqual(QPixmapCache__KeyPtr key)
+	{
+		return this.handle.OperatorEqual(key);
+	}
+	
+	public bool OperatorNotEqual(QPixmapCache__KeyPtr key)
+	{
+		return this.handle.OperatorNotEqual(key);
+	}
+	
+	public void OperatorAssign(QPixmapCache__KeyPtr other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(QPixmapCache__KeyPtr other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
 	}
 	
 }

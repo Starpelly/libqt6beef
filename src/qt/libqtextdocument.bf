@@ -44,29 +44,64 @@ public interface IQAbstractUndoItem
 {
 	void* NativePtr { get; }
 }
-public class QAbstractUndoItem : IQAbstractUndoItem
+public struct QAbstractUndoItemPtr : IQAbstractUndoItem, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAbstractUndoItem_Delete(this.nativePtr);
 	}
 	
-	public virtual void Undo()
+	public void Undo()
 	{
 		CQt.QAbstractUndoItem_Undo(this.nativePtr);
 	}
 	
-	public virtual void Redo()
+	public void Redo()
 	{
 		CQt.QAbstractUndoItem_Redo(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAbstractUndoItem param1)
 	{
-		CQt.QAbstractUndoItem_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAbstractUndoItem_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAbstractUndoItem
+{
+	public QAbstractUndoItemPtr handle;
+	
+	public static implicit operator QAbstractUndoItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void Undo()
+	{
+		this.handle.Undo();
+	}
+	
+	public virtual void Redo()
+	{
+		this.handle.Redo();
+	}
+	
+	public void OperatorAssign(IQAbstractUndoItem param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -86,34 +121,39 @@ public interface IQTextDocument
 {
 	void* NativePtr { get; }
 }
-public class QTextDocument : IQTextDocument, IQObject
+public struct QTextDocumentPtr : IQTextDocument, IDisposable, IQObject
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextDocument_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextDocument_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextDocument_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QTextDocument_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QTextDocument_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QTextDocument_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QTextDocument_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -131,7 +171,7 @@ public class QTextDocument : IQTextDocument, IQObject
 		return CQt.QTextDocument_IsEmpty(this.nativePtr);
 	}
 	
-	public virtual void Clear()
+	public void Clear()
 	{
 		CQt.QTextDocument_Clear(this.nativePtr);
 	}
@@ -173,7 +213,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetDocumentLayout(IQAbstractTextDocumentLayout layout)
 	{
-		CQt.QTextDocument_SetDocumentLayout(this.nativePtr, (layout == null) ? null : (void*)layout.NativePtr);
+		CQt.QTextDocument_SetDocumentLayout(this.nativePtr, (layout == default || layout.NativePtr == default) ? default : layout.NativePtr);
 	}
 	
 	public void* DocumentLayout()
@@ -183,12 +223,12 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetMetaInformation(int64 info, String param2)
 	{
-		CQt.QTextDocument_SetMetaInformation(this.nativePtr, info, libqt_string(param2));
+		CQt.QTextDocument_SetMetaInformation(this.nativePtr, (int64)info, libqt_string(param2));
 	}
 	
 	public libqt_string MetaInformation(int64 info)
 	{
-		return CQt.QTextDocument_MetaInformation(this.nativePtr, info);
+		return CQt.QTextDocument_MetaInformation(this.nativePtr, (int64)info);
 	}
 	
 	public libqt_string ToHtml()
@@ -238,17 +278,17 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void Find2(String subString, IQTextCursor cursor)
 	{
-		CQt.QTextDocument_Find2(this.nativePtr, libqt_string(subString), (cursor == default) ? default : (void*)cursor.NativePtr);
+		CQt.QTextDocument_Find2(this.nativePtr, libqt_string(subString), (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void FindWithExpr(IQRegularExpression expr)
 	{
-		CQt.QTextDocument_FindWithExpr(this.nativePtr, (expr == default) ? default : (void*)expr.NativePtr);
+		CQt.QTextDocument_FindWithExpr(this.nativePtr, (expr == default || expr.NativePtr == default) ? default : expr.NativePtr);
 	}
 	
 	public void Find3(IQRegularExpression expr, IQTextCursor cursor)
 	{
-		CQt.QTextDocument_Find3(this.nativePtr, (expr == default) ? default : (void*)expr.NativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
+		CQt.QTextDocument_Find3(this.nativePtr, (expr == default || expr.NativePtr == default) ? default : expr.NativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void* FrameAt(int32 pos)
@@ -268,7 +308,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void* ObjectForFormat(IQTextFormat param1)
 	{
-		return CQt.QTextDocument_ObjectForFormat(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QTextDocument_ObjectForFormat(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void FindBlock(int32 pos)
@@ -308,7 +348,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetPageSize(IQSizeF size)
 	{
-		CQt.QTextDocument_SetPageSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QTextDocument_SetPageSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void PageSize()
@@ -318,7 +358,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetDefaultFont(IQFont font)
 	{
-		CQt.QTextDocument_SetDefaultFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QTextDocument_SetDefaultFont(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public void DefaultFont()
@@ -368,17 +408,17 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void Print(IQPagedPaintDevice printer)
 	{
-		CQt.QTextDocument_Print(this.nativePtr, (printer == null) ? null : (void*)printer.NativePtr);
+		CQt.QTextDocument_Print(this.nativePtr, (printer == default || printer.NativePtr == default) ? default : printer.NativePtr);
 	}
 	
 	public void Resource(int32 typeVal, IQUrl name)
 	{
-		CQt.QTextDocument_Resource(this.nativePtr, typeVal, (name == default) ? default : (void*)name.NativePtr);
+		CQt.QTextDocument_Resource(this.nativePtr, typeVal, (name == default || name.NativePtr == default) ? default : name.NativePtr);
 	}
 	
 	public void AddResource(int32 typeVal, IQUrl name, IQVariant resource)
 	{
-		CQt.QTextDocument_AddResource(this.nativePtr, typeVal, (name == default) ? default : (void*)name.NativePtr, (resource == default) ? default : (void*)resource.NativePtr);
+		CQt.QTextDocument_AddResource(this.nativePtr, typeVal, (name == default || name.NativePtr == default) ? default : name.NativePtr, (resource == default || resource.NativePtr == default) ? default : resource.NativePtr);
 	}
 	
 	public void[] AllFormats()
@@ -413,7 +453,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void DrawContents(IQPainter painter)
 	{
-		CQt.QTextDocument_DrawContents(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr);
+		CQt.QTextDocument_DrawContents(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr);
 	}
 	
 	public void SetTextWidth(double width)
@@ -488,12 +528,12 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void Undo(IQTextCursor cursor)
 	{
-		CQt.QTextDocument_Undo(this.nativePtr, (cursor == null) ? null : (void*)cursor.NativePtr);
+		CQt.QTextDocument_Undo(this.nativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void Redo(IQTextCursor cursor)
 	{
-		CQt.QTextDocument_Redo(this.nativePtr, (cursor == null) ? null : (void*)cursor.NativePtr);
+		CQt.QTextDocument_Redo(this.nativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void ClearUndoRedoStacks()
@@ -518,7 +558,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetDefaultTextOption(IQTextOption option)
 	{
-		CQt.QTextDocument_SetDefaultTextOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
+		CQt.QTextDocument_SetDefaultTextOption(this.nativePtr, (option == default || option.NativePtr == default) ? default : option.NativePtr);
 	}
 	
 	public void BaseUrl()
@@ -528,7 +568,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetBaseUrl(IQUrl url)
 	{
-		CQt.QTextDocument_SetBaseUrl(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
+		CQt.QTextDocument_SetBaseUrl(this.nativePtr, (url == default || url.NativePtr == default) ? default : url.NativePtr);
 	}
 	
 	public int64 DefaultCursorMoveStyle()
@@ -538,7 +578,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetDefaultCursorMoveStyle(int64 style)
 	{
-		CQt.QTextDocument_SetDefaultCursorMoveStyle(this.nativePtr, style);
+		CQt.QTextDocument_SetDefaultCursorMoveStyle(this.nativePtr, (int64)style);
 	}
 	
 	public void Undo2()
@@ -553,7 +593,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void AppendUndoItem(IQAbstractUndoItem param1)
 	{
-		CQt.QTextDocument_AppendUndoItem(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		CQt.QTextDocument_AppendUndoItem(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void SetModified()
@@ -561,14 +601,14 @@ public class QTextDocument : IQTextDocument, IQObject
 		CQt.QTextDocument_SetModified(this.nativePtr);
 	}
 	
-	public virtual void* CreateObject(IQTextFormat f)
+	public void* CreateObject(IQTextFormat f)
 	{
-		return CQt.QTextDocument_CreateObject(this.nativePtr, (f == default) ? default : (void*)f.NativePtr);
+		return CQt.QTextDocument_CreateObject(this.nativePtr, (f == default || f.NativePtr == default) ? default : f.NativePtr);
 	}
 	
-	public virtual void LoadResource(int32 typeVal, IQUrl name)
+	public void LoadResource(int32 typeVal, IQUrl name)
 	{
-		CQt.QTextDocument_LoadResource(this.nativePtr, typeVal, (name == default) ? default : (void*)name.NativePtr);
+		CQt.QTextDocument_LoadResource(this.nativePtr, typeVal, (name == default || name.NativePtr == default) ? default : name.NativePtr);
 	}
 	
 	public static libqt_string Tr2(char8* s, char8* c)
@@ -583,7 +623,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void* Clone1(IQObject parent)
 	{
-		return CQt.QTextDocument_Clone1(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		return CQt.QTextDocument_Clone1(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public libqt_string ToMarkdown1(int64 features)
@@ -608,32 +648,32 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void Find33(String subString, IQTextCursor cursor, int64 options)
 	{
-		CQt.QTextDocument_Find33(this.nativePtr, libqt_string(subString), (cursor == default) ? default : (void*)cursor.NativePtr, options);
+		CQt.QTextDocument_Find33(this.nativePtr, libqt_string(subString), (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr, options);
 	}
 	
 	public void Find23(IQRegularExpression expr, int32 from)
 	{
-		CQt.QTextDocument_Find23(this.nativePtr, (expr == default) ? default : (void*)expr.NativePtr, from);
+		CQt.QTextDocument_Find23(this.nativePtr, (expr == default || expr.NativePtr == default) ? default : expr.NativePtr, from);
 	}
 	
 	public void Find34(IQRegularExpression expr, int32 from, int64 options)
 	{
-		CQt.QTextDocument_Find34(this.nativePtr, (expr == default) ? default : (void*)expr.NativePtr, from, options);
+		CQt.QTextDocument_Find34(this.nativePtr, (expr == default || expr.NativePtr == default) ? default : expr.NativePtr, from, options);
 	}
 	
 	public void Find35(IQRegularExpression expr, IQTextCursor cursor, int64 options)
 	{
-		CQt.QTextDocument_Find35(this.nativePtr, (expr == default) ? default : (void*)expr.NativePtr, (cursor == default) ? default : (void*)cursor.NativePtr, options);
+		CQt.QTextDocument_Find35(this.nativePtr, (expr == default || expr.NativePtr == default) ? default : expr.NativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr, options);
 	}
 	
 	public void DrawContents2(IQPainter painter, IQRectF rect)
 	{
-		CQt.QTextDocument_DrawContents2(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QTextDocument_DrawContents2(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void ClearUndoRedoStacks1(int64 historyToClear)
 	{
-		CQt.QTextDocument_ClearUndoRedoStacks1(this.nativePtr, historyToClear);
+		CQt.QTextDocument_ClearUndoRedoStacks1(this.nativePtr, (int64)historyToClear);
 	}
 	
 	public void SetModified1(bool m)
@@ -641,14 +681,14 @@ public class QTextDocument : IQTextDocument, IQObject
 		CQt.QTextDocument_SetModified1(this.nativePtr, m);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -656,9 +696,9 @@ public class QTextDocument : IQTextDocument, IQObject
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -693,7 +733,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -713,37 +753,37 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -758,7 +798,7 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -798,17 +838,747 @@ public class QTextDocument : IQTextDocument, IQObject
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QTextDocument
+{
+	public QTextDocumentPtr handle;
+	
+	public static implicit operator QTextDocumentPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextDocumentPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QTextDocumentPtr.Tr(s);
+	}
+	
+	public void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public virtual void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public void SetUndoRedoEnabled(bool enable)
+	{
+		this.handle.SetUndoRedoEnabled(enable);
+	}
+	
+	public bool IsUndoRedoEnabled()
+	{
+		return this.handle.IsUndoRedoEnabled();
+	}
+	
+	public bool IsUndoAvailable()
+	{
+		return this.handle.IsUndoAvailable();
+	}
+	
+	public bool IsRedoAvailable()
+	{
+		return this.handle.IsRedoAvailable();
+	}
+	
+	public int32 AvailableUndoSteps()
+	{
+		return this.handle.AvailableUndoSteps();
+	}
+	
+	public int32 AvailableRedoSteps()
+	{
+		return this.handle.AvailableRedoSteps();
+	}
+	
+	public int32 Revision()
+	{
+		return this.handle.Revision();
+	}
+	
+	public void SetDocumentLayout(IQAbstractTextDocumentLayout layout)
+	{
+		this.handle.SetDocumentLayout(layout);
+	}
+	
+	public void* DocumentLayout()
+	{
+		return this.handle.DocumentLayout();
+	}
+	
+	public void SetMetaInformation(int64 info, String param2)
+	{
+		this.handle.SetMetaInformation(info, param2);
+	}
+	
+	public libqt_string MetaInformation(int64 info)
+	{
+		return this.handle.MetaInformation(info);
+	}
+	
+	public libqt_string ToHtml()
+	{
+		return this.handle.ToHtml();
+	}
+	
+	public void SetHtml(String html)
+	{
+		this.handle.SetHtml(html);
+	}
+	
+	public libqt_string ToMarkdown()
+	{
+		return this.handle.ToMarkdown();
+	}
+	
+	public void SetMarkdown(String markdown)
+	{
+		this.handle.SetMarkdown(markdown);
+	}
+	
+	public libqt_string ToRawText()
+	{
+		return this.handle.ToRawText();
+	}
+	
+	public libqt_string ToPlainText()
+	{
+		return this.handle.ToPlainText();
+	}
+	
+	public void SetPlainText(String text)
+	{
+		this.handle.SetPlainText(text);
+	}
+	
+	public void CharacterAt(int32 pos)
+	{
+		this.handle.CharacterAt(pos);
+	}
+	
+	public void Find(String subString)
+	{
+		this.handle.Find(subString);
+	}
+	
+	public void Find2(String subString, IQTextCursor cursor)
+	{
+		this.handle.Find2(subString, cursor);
+	}
+	
+	public void FindWithExpr(IQRegularExpression expr)
+	{
+		this.handle.FindWithExpr(expr);
+	}
+	
+	public void Find3(IQRegularExpression expr, IQTextCursor cursor)
+	{
+		this.handle.Find3(expr, cursor);
+	}
+	
+	public void* FrameAt(int32 pos)
+	{
+		return this.handle.FrameAt(pos);
+	}
+	
+	public void* RootFrame()
+	{
+		return this.handle.RootFrame();
+	}
+	
+	public void* Object(int32 objectIndex)
+	{
+		return this.handle.Object(objectIndex);
+	}
+	
+	public void* ObjectForFormat(IQTextFormat param1)
+	{
+		return this.handle.ObjectForFormat(param1);
+	}
+	
+	public void FindBlock(int32 pos)
+	{
+		this.handle.FindBlock(pos);
+	}
+	
+	public void FindBlockByNumber(int32 blockNumber)
+	{
+		this.handle.FindBlockByNumber(blockNumber);
+	}
+	
+	public void FindBlockByLineNumber(int32 blockNumber)
+	{
+		this.handle.FindBlockByLineNumber(blockNumber);
+	}
+	
+	public void Begin()
+	{
+		this.handle.Begin();
+	}
+	
+	public void End()
+	{
+		this.handle.End();
+	}
+	
+	public void FirstBlock()
+	{
+		this.handle.FirstBlock();
+	}
+	
+	public void LastBlock()
+	{
+		this.handle.LastBlock();
+	}
+	
+	public void SetPageSize(IQSizeF size)
+	{
+		this.handle.SetPageSize(size);
+	}
+	
+	public void PageSize()
+	{
+		this.handle.PageSize();
+	}
+	
+	public void SetDefaultFont(IQFont font)
+	{
+		this.handle.SetDefaultFont(font);
+	}
+	
+	public void DefaultFont()
+	{
+		this.handle.DefaultFont();
+	}
+	
+	public void SetSuperScriptBaseline(double baseline)
+	{
+		this.handle.SetSuperScriptBaseline(baseline);
+	}
+	
+	public double SuperScriptBaseline()
+	{
+		return this.handle.SuperScriptBaseline();
+	}
+	
+	public void SetSubScriptBaseline(double baseline)
+	{
+		this.handle.SetSubScriptBaseline(baseline);
+	}
+	
+	public double SubScriptBaseline()
+	{
+		return this.handle.SubScriptBaseline();
+	}
+	
+	public void SetBaselineOffset(double baseline)
+	{
+		this.handle.SetBaselineOffset(baseline);
+	}
+	
+	public double BaselineOffset()
+	{
+		return this.handle.BaselineOffset();
+	}
+	
+	public int32 PageCount()
+	{
+		return this.handle.PageCount();
+	}
+	
+	public bool IsModified()
+	{
+		return this.handle.IsModified();
+	}
+	
+	public void Print(IQPagedPaintDevice printer)
+	{
+		this.handle.Print(printer);
+	}
+	
+	public void Resource(int32 typeVal, IQUrl name)
+	{
+		this.handle.Resource(typeVal, name);
+	}
+	
+	public void AddResource(int32 typeVal, IQUrl name, IQVariant resource)
+	{
+		this.handle.AddResource(typeVal, name, resource);
+	}
+	
+	public void[] AllFormats()
+	{
+		return this.handle.AllFormats();
+	}
+	
+	public void MarkContentsDirty(int32 from, int32 length)
+	{
+		this.handle.MarkContentsDirty(from, length);
+	}
+	
+	public void SetUseDesignMetrics(bool b)
+	{
+		this.handle.SetUseDesignMetrics(b);
+	}
+	
+	public bool UseDesignMetrics()
+	{
+		return this.handle.UseDesignMetrics();
+	}
+	
+	public void SetLayoutEnabled(bool b)
+	{
+		this.handle.SetLayoutEnabled(b);
+	}
+	
+	public bool IsLayoutEnabled()
+	{
+		return this.handle.IsLayoutEnabled();
+	}
+	
+	public void DrawContents(IQPainter painter)
+	{
+		this.handle.DrawContents(painter);
+	}
+	
+	public void SetTextWidth(double width)
+	{
+		this.handle.SetTextWidth(width);
+	}
+	
+	public double TextWidth()
+	{
+		return this.handle.TextWidth();
+	}
+	
+	public double IdealWidth()
+	{
+		return this.handle.IdealWidth();
+	}
+	
+	public double IndentWidth()
+	{
+		return this.handle.IndentWidth();
+	}
+	
+	public void SetIndentWidth(double width)
+	{
+		this.handle.SetIndentWidth(width);
+	}
+	
+	public double DocumentMargin()
+	{
+		return this.handle.DocumentMargin();
+	}
+	
+	public void SetDocumentMargin(double margin)
+	{
+		this.handle.SetDocumentMargin(margin);
+	}
+	
+	public void AdjustSize()
+	{
+		this.handle.AdjustSize();
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public int32 BlockCount()
+	{
+		return this.handle.BlockCount();
+	}
+	
+	public int32 LineCount()
+	{
+		return this.handle.LineCount();
+	}
+	
+	public int32 CharacterCount()
+	{
+		return this.handle.CharacterCount();
+	}
+	
+	public void SetDefaultStyleSheet(String sheet)
+	{
+		this.handle.SetDefaultStyleSheet(sheet);
+	}
+	
+	public libqt_string DefaultStyleSheet()
+	{
+		return this.handle.DefaultStyleSheet();
+	}
+	
+	public void Undo(IQTextCursor cursor)
+	{
+		this.handle.Undo(cursor);
+	}
+	
+	public void Redo(IQTextCursor cursor)
+	{
+		this.handle.Redo(cursor);
+	}
+	
+	public void ClearUndoRedoStacks()
+	{
+		this.handle.ClearUndoRedoStacks();
+	}
+	
+	public int32 MaximumBlockCount()
+	{
+		return this.handle.MaximumBlockCount();
+	}
+	
+	public void SetMaximumBlockCount(int32 maximum)
+	{
+		this.handle.SetMaximumBlockCount(maximum);
+	}
+	
+	public void DefaultTextOption()
+	{
+		this.handle.DefaultTextOption();
+	}
+	
+	public void SetDefaultTextOption(IQTextOption option)
+	{
+		this.handle.SetDefaultTextOption(option);
+	}
+	
+	public void BaseUrl()
+	{
+		this.handle.BaseUrl();
+	}
+	
+	public void SetBaseUrl(IQUrl url)
+	{
+		this.handle.SetBaseUrl(url);
+	}
+	
+	public int64 DefaultCursorMoveStyle()
+	{
+		return this.handle.DefaultCursorMoveStyle();
+	}
+	
+	public void SetDefaultCursorMoveStyle(int64 style)
+	{
+		this.handle.SetDefaultCursorMoveStyle(style);
+	}
+	
+	public void Undo2()
+	{
+		this.handle.Undo2();
+	}
+	
+	public void Redo2()
+	{
+		this.handle.Redo2();
+	}
+	
+	public void AppendUndoItem(IQAbstractUndoItem param1)
+	{
+		this.handle.AppendUndoItem(param1);
+	}
+	
+	public void SetModified()
+	{
+		this.handle.SetModified();
+	}
+	
+	public virtual void* CreateObject(IQTextFormat f)
+	{
+		return this.handle.CreateObject(f);
+	}
+	
+	public virtual void LoadResource(int32 typeVal, IQUrl name)
+	{
+		this.handle.LoadResource(typeVal, name);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QTextDocumentPtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QTextDocumentPtr.Tr3(s, c, n);
+	}
+	
+	public void* Clone1(IQObject parent)
+	{
+		return this.handle.Clone1(parent);
+	}
+	
+	public libqt_string ToMarkdown1(int64 features)
+	{
+		return this.handle.ToMarkdown1(features);
+	}
+	
+	public void SetMarkdown2(String markdown, int64 features)
+	{
+		this.handle.SetMarkdown2(markdown, features);
+	}
+	
+	public void Find22(String subString, int32 from)
+	{
+		this.handle.Find22(subString, from);
+	}
+	
+	public void Find32(String subString, int32 from, int64 options)
+	{
+		this.handle.Find32(subString, from, options);
+	}
+	
+	public void Find33(String subString, IQTextCursor cursor, int64 options)
+	{
+		this.handle.Find33(subString, cursor, options);
+	}
+	
+	public void Find23(IQRegularExpression expr, int32 from)
+	{
+		this.handle.Find23(expr, from);
+	}
+	
+	public void Find34(IQRegularExpression expr, int32 from, int64 options)
+	{
+		this.handle.Find34(expr, from, options);
+	}
+	
+	public void Find35(IQRegularExpression expr, IQTextCursor cursor, int64 options)
+	{
+		this.handle.Find35(expr, cursor, options);
+	}
+	
+	public void DrawContents2(IQPainter painter, IQRectF rect)
+	{
+		this.handle.DrawContents2(painter, rect);
+	}
+	
+	public void ClearUndoRedoStacks1(int64 historyToClear)
+	{
+		this.handle.ClearUndoRedoStacks1(historyToClear);
+	}
+	
+	public void SetModified1(bool m)
+	{
+		this.handle.SetModified1(m);
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QTextDocumentPtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QTextDocumentPtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QTextDocumentPtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QTextDocumentPtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }

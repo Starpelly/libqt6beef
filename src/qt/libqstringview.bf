@@ -6,17 +6,22 @@ public interface IQStringView
 {
 	void* NativePtr { get; }
 }
-public class QStringView : IQStringView
+public struct QStringViewPtr : IQStringView, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStringView_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStringView_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStringView_Delete(this.nativePtr);
 	}
@@ -83,77 +88,77 @@ public class QStringView : IQStringView
 	
 	public int32 CompareWithQChar(IQChar c)
 	{
-		return CQt.QStringView_CompareWithQChar(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_CompareWithQChar(this.nativePtr, default);
 	}
 	
 	public int32 Compare2(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_Compare2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_Compare2(this.nativePtr, default, (int64)cs);
 	}
 	
 	public bool StartsWithWithQChar(IQChar c)
 	{
-		return CQt.QStringView_StartsWithWithQChar(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_StartsWithWithQChar(this.nativePtr, default);
 	}
 	
 	public bool StartsWith2(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_StartsWith2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_StartsWith2(this.nativePtr, default, (int64)cs);
 	}
 	
 	public bool EndsWithWithQChar(IQChar c)
 	{
-		return CQt.QStringView_EndsWithWithQChar(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_EndsWithWithQChar(this.nativePtr, default);
 	}
 	
 	public bool EndsWith2(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_EndsWith2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_EndsWith2(this.nativePtr, default, (int64)cs);
 	}
 	
 	public int32 IndexOf(IQChar c)
 	{
-		return CQt.QStringView_IndexOf(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_IndexOf(this.nativePtr, default);
 	}
 	
 	public bool Contains(IQChar c)
 	{
-		return CQt.QStringView_Contains(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_Contains(this.nativePtr, default);
 	}
 	
 	public int32 Count(IQChar c)
 	{
-		return CQt.QStringView_Count(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_Count(this.nativePtr, default);
 	}
 	
 	public int32 LastIndexOf(IQChar c)
 	{
-		return CQt.QStringView_LastIndexOf(this.nativePtr, (c == default) ? default : (void)c.NativePtr);
+		return CQt.QStringView_LastIndexOf(this.nativePtr, default);
 	}
 	
 	public int32 LastIndexOf2(IQChar c, int32 from)
 	{
-		return CQt.QStringView_LastIndexOf2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, from);
+		return CQt.QStringView_LastIndexOf2(this.nativePtr, default, from);
 	}
 	
 	public int32 IndexOfWithRe(IQRegularExpression re)
 	{
-		return CQt.QStringView_IndexOfWithRe(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		return CQt.QStringView_IndexOfWithRe(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public int32 LastIndexOf5(IQRegularExpression re, int32 from)
 	{
-		return CQt.QStringView_LastIndexOf5(this.nativePtr, (re == default) ? default : (void*)re.NativePtr, from);
+		return CQt.QStringView_LastIndexOf5(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr, from);
 	}
 	
 	public bool ContainsWithRe(IQRegularExpression re)
 	{
-		return CQt.QStringView_ContainsWithRe(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		return CQt.QStringView_ContainsWithRe(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public int32 CountWithRe(IQRegularExpression re)
 	{
-		return CQt.QStringView_CountWithRe(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		return CQt.QStringView_CountWithRe(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public bool IsRightToLeft()
@@ -288,52 +293,52 @@ public class QStringView : IQStringView
 	
 	public int32 IndexOf2(IQChar c, int32 from)
 	{
-		return CQt.QStringView_IndexOf2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, from);
+		return CQt.QStringView_IndexOf2(this.nativePtr, default, from);
 	}
 	
 	public int32 IndexOf3(IQChar c, int32 from, int64 cs)
 	{
-		return CQt.QStringView_IndexOf3(this.nativePtr, (c == default) ? default : (void)c.NativePtr, from, cs);
+		return CQt.QStringView_IndexOf3(this.nativePtr, default, from, (int64)cs);
 	}
 	
 	public bool Contains2(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_Contains2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_Contains2(this.nativePtr, default, (int64)cs);
 	}
 	
 	public int32 Count2(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_Count2(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_Count2(this.nativePtr, default, (int64)cs);
 	}
 	
 	public int32 LastIndexOf22(IQChar c, int64 cs)
 	{
-		return CQt.QStringView_LastIndexOf22(this.nativePtr, (c == default) ? default : (void)c.NativePtr, cs);
+		return CQt.QStringView_LastIndexOf22(this.nativePtr, default, (int64)cs);
 	}
 	
 	public int32 LastIndexOf32(IQChar c, int32 from, int64 cs)
 	{
-		return CQt.QStringView_LastIndexOf32(this.nativePtr, (c == default) ? default : (void)c.NativePtr, from, cs);
+		return CQt.QStringView_LastIndexOf32(this.nativePtr, default, from, (int64)cs);
 	}
 	
 	public int32 IndexOf24(IQRegularExpression re, int32 from)
 	{
-		return CQt.QStringView_IndexOf24(this.nativePtr, (re == default) ? default : (void*)re.NativePtr, from);
+		return CQt.QStringView_IndexOf24(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr, from);
 	}
 	
 	public int32 IndexOf34(IQRegularExpression re, int32 from, IQRegularExpressionMatch rmatch)
 	{
-		return CQt.QStringView_IndexOf34(this.nativePtr, (re == default) ? default : (void*)re.NativePtr, from, (rmatch == null) ? null : (void*)rmatch.NativePtr);
+		return CQt.QStringView_IndexOf34(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr, from, (rmatch == default || rmatch.NativePtr == default) ? default : rmatch.NativePtr);
 	}
 	
 	public int32 LastIndexOf35(IQRegularExpression re, int32 from, IQRegularExpressionMatch rmatch)
 	{
-		return CQt.QStringView_LastIndexOf35(this.nativePtr, (re == default) ? default : (void*)re.NativePtr, from, (rmatch == null) ? null : (void*)rmatch.NativePtr);
+		return CQt.QStringView_LastIndexOf35(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr, from, (rmatch == default || rmatch.NativePtr == default) ? default : rmatch.NativePtr);
 	}
 	
 	public bool Contains24(IQRegularExpression re, IQRegularExpressionMatch rmatch)
 	{
-		return CQt.QStringView_Contains24(this.nativePtr, (re == default) ? default : (void*)re.NativePtr, (rmatch == null) ? null : (void*)rmatch.NativePtr);
+		return CQt.QStringView_Contains24(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr, (rmatch == default || rmatch.NativePtr == default) ? default : rmatch.NativePtr);
 	}
 	
 	public int16 ToShort1(bool* ok)
@@ -424,6 +429,431 @@ public class QStringView : IQStringView
 	public double ToDouble1(bool* ok)
 	{
 		return CQt.QStringView_ToDouble1(this.nativePtr, ok);
+	}
+	
+}
+public class QStringView
+{
+	public QStringViewPtr handle;
+	
+	public static implicit operator QStringViewPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStringViewPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public void* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public void* ConstData()
+	{
+		return this.handle.ConstData();
+	}
+	
+	public void OperatorSubscript(int32 n)
+	{
+		this.handle.OperatorSubscript(n);
+	}
+	
+	public libqt_string ToLatin1()
+	{
+		return this.handle.ToLatin1();
+	}
+	
+	public libqt_string ToUtf8()
+	{
+		return this.handle.ToUtf8();
+	}
+	
+	public libqt_string ToLocal8Bit()
+	{
+		return this.handle.ToLocal8Bit();
+	}
+	
+	public uint32[] ToUcs4()
+	{
+		return this.handle.ToUcs4();
+	}
+	
+	public void At(int32 n)
+	{
+		this.handle.At(n);
+	}
+	
+	public void Truncate(int32 n)
+	{
+		this.handle.Truncate(n);
+	}
+	
+	public void Chop(int32 n)
+	{
+		this.handle.Chop(n);
+	}
+	
+	public int32 CompareWithQChar(IQChar c)
+	{
+		return this.handle.CompareWithQChar(default);
+	}
+	
+	public int32 Compare2(IQChar c, int64 cs)
+	{
+		return this.handle.Compare2(default, cs);
+	}
+	
+	public bool StartsWithWithQChar(IQChar c)
+	{
+		return this.handle.StartsWithWithQChar(default);
+	}
+	
+	public bool StartsWith2(IQChar c, int64 cs)
+	{
+		return this.handle.StartsWith2(default, cs);
+	}
+	
+	public bool EndsWithWithQChar(IQChar c)
+	{
+		return this.handle.EndsWithWithQChar(default);
+	}
+	
+	public bool EndsWith2(IQChar c, int64 cs)
+	{
+		return this.handle.EndsWith2(default, cs);
+	}
+	
+	public int32 IndexOf(IQChar c)
+	{
+		return this.handle.IndexOf(default);
+	}
+	
+	public bool Contains(IQChar c)
+	{
+		return this.handle.Contains(default);
+	}
+	
+	public int32 Count(IQChar c)
+	{
+		return this.handle.Count(default);
+	}
+	
+	public int32 LastIndexOf(IQChar c)
+	{
+		return this.handle.LastIndexOf(default);
+	}
+	
+	public int32 LastIndexOf2(IQChar c, int32 from)
+	{
+		return this.handle.LastIndexOf2(default, from);
+	}
+	
+	public int32 IndexOfWithRe(IQRegularExpression re)
+	{
+		return this.handle.IndexOfWithRe(re);
+	}
+	
+	public int32 LastIndexOf5(IQRegularExpression re, int32 from)
+	{
+		return this.handle.LastIndexOf5(re, from);
+	}
+	
+	public bool ContainsWithRe(IQRegularExpression re)
+	{
+		return this.handle.ContainsWithRe(re);
+	}
+	
+	public int32 CountWithRe(IQRegularExpression re)
+	{
+		return this.handle.CountWithRe(re);
+	}
+	
+	public bool IsRightToLeft()
+	{
+		return this.handle.IsRightToLeft();
+	}
+	
+	public bool IsValidUtf16()
+	{
+		return this.handle.IsValidUtf16();
+	}
+	
+	public int16 ToShort()
+	{
+		return this.handle.ToShort();
+	}
+	
+	public uint16 ToUShort()
+	{
+		return this.handle.ToUShort();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public uint32 ToUInt()
+	{
+		return this.handle.ToUInt();
+	}
+	
+	public c_long ToLong()
+	{
+		return this.handle.ToLong();
+	}
+	
+	public c_ulong ToULong()
+	{
+		return this.handle.ToULong();
+	}
+	
+	public int64 ToLongLong()
+	{
+		return this.handle.ToLongLong();
+	}
+	
+	public uint64 ToULongLong()
+	{
+		return this.handle.ToULongLong();
+	}
+	
+	public float ToFloat()
+	{
+		return this.handle.ToFloat();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public void* Begin()
+	{
+		return this.handle.Begin();
+	}
+	
+	public void* End()
+	{
+		return this.handle.End();
+	}
+	
+	public void* Cbegin()
+	{
+		return this.handle.Cbegin();
+	}
+	
+	public void* Cend()
+	{
+		return this.handle.Cend();
+	}
+	
+	public bool Empty()
+	{
+		return this.handle.Empty();
+	}
+	
+	public void Front()
+	{
+		this.handle.Front();
+	}
+	
+	public void Back()
+	{
+		this.handle.Back();
+	}
+	
+	public void* ConstBegin()
+	{
+		return this.handle.ConstBegin();
+	}
+	
+	public void* ConstEnd()
+	{
+		return this.handle.ConstEnd();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public void First2()
+	{
+		this.handle.First2();
+	}
+	
+	public void Last2()
+	{
+		this.handle.Last2();
+	}
+	
+	public int32 IndexOf2(IQChar c, int32 from)
+	{
+		return this.handle.IndexOf2(default, from);
+	}
+	
+	public int32 IndexOf3(IQChar c, int32 from, int64 cs)
+	{
+		return this.handle.IndexOf3(default, from, cs);
+	}
+	
+	public bool Contains2(IQChar c, int64 cs)
+	{
+		return this.handle.Contains2(default, cs);
+	}
+	
+	public int32 Count2(IQChar c, int64 cs)
+	{
+		return this.handle.Count2(default, cs);
+	}
+	
+	public int32 LastIndexOf22(IQChar c, int64 cs)
+	{
+		return this.handle.LastIndexOf22(default, cs);
+	}
+	
+	public int32 LastIndexOf32(IQChar c, int32 from, int64 cs)
+	{
+		return this.handle.LastIndexOf32(default, from, cs);
+	}
+	
+	public int32 IndexOf24(IQRegularExpression re, int32 from)
+	{
+		return this.handle.IndexOf24(re, from);
+	}
+	
+	public int32 IndexOf34(IQRegularExpression re, int32 from, IQRegularExpressionMatch rmatch)
+	{
+		return this.handle.IndexOf34(re, from, rmatch);
+	}
+	
+	public int32 LastIndexOf35(IQRegularExpression re, int32 from, IQRegularExpressionMatch rmatch)
+	{
+		return this.handle.LastIndexOf35(re, from, rmatch);
+	}
+	
+	public bool Contains24(IQRegularExpression re, IQRegularExpressionMatch rmatch)
+	{
+		return this.handle.Contains24(re, rmatch);
+	}
+	
+	public int16 ToShort1(bool* ok)
+	{
+		return this.handle.ToShort1(ok);
+	}
+	
+	public int16 ToShort2(bool* ok, int32 _base)
+	{
+		return this.handle.ToShort2(ok, _base);
+	}
+	
+	public uint16 ToUShort1(bool* ok)
+	{
+		return this.handle.ToUShort1(ok);
+	}
+	
+	public uint16 ToUShort2(bool* ok, int32 _base)
+	{
+		return this.handle.ToUShort2(ok, _base);
+	}
+	
+	public int32 ToInt1(bool* ok)
+	{
+		return this.handle.ToInt1(ok);
+	}
+	
+	public int32 ToInt2(bool* ok, int32 _base)
+	{
+		return this.handle.ToInt2(ok, _base);
+	}
+	
+	public uint32 ToUInt1(bool* ok)
+	{
+		return this.handle.ToUInt1(ok);
+	}
+	
+	public uint32 ToUInt2(bool* ok, int32 _base)
+	{
+		return this.handle.ToUInt2(ok, _base);
+	}
+	
+	public c_long ToLong1(bool* ok)
+	{
+		return this.handle.ToLong1(ok);
+	}
+	
+	public c_long ToLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToLong2(ok, _base);
+	}
+	
+	public c_ulong ToULong1(bool* ok)
+	{
+		return this.handle.ToULong1(ok);
+	}
+	
+	public c_ulong ToULong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToULong2(ok, _base);
+	}
+	
+	public int64 ToLongLong1(bool* ok)
+	{
+		return this.handle.ToLongLong1(ok);
+	}
+	
+	public int64 ToLongLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToLongLong2(ok, _base);
+	}
+	
+	public uint64 ToULongLong1(bool* ok)
+	{
+		return this.handle.ToULongLong1(ok);
+	}
+	
+	public uint64 ToULongLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToULongLong2(ok, _base);
+	}
+	
+	public float ToFloat1(bool* ok)
+	{
+		return this.handle.ToFloat1(ok);
+	}
+	
+	public double ToDouble1(bool* ok)
+	{
+		return this.handle.ToDouble1(ok);
 	}
 	
 }

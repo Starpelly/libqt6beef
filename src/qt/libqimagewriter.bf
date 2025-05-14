@@ -14,17 +14,22 @@ public interface IQImageWriter
 {
 	void* NativePtr { get; }
 }
-public class QImageWriter : IQImageWriter
+public struct QImageWriterPtr : IQImageWriter, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QImageWriter_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QImageWriter_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QImageWriter_Delete(this.nativePtr);
 	}
@@ -46,7 +51,7 @@ public class QImageWriter : IQImageWriter
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QImageWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QImageWriter_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -141,7 +146,7 @@ public class QImageWriter : IQImageWriter
 	
 	public bool Write(IQImage image)
 	{
-		return CQt.QImageWriter_Write(this.nativePtr, (image == default) ? default : (void*)image.NativePtr);
+		return CQt.QImageWriter_Write(this.nativePtr, (image == default || image.NativePtr == default) ? default : image.NativePtr);
 	}
 	
 	public int64 Error()
@@ -156,7 +161,7 @@ public class QImageWriter : IQImageWriter
 	
 	public bool SupportsOption(int64 option)
 	{
-		return CQt.QImageWriter_SupportsOption(this.nativePtr, option);
+		return CQt.QImageWriter_SupportsOption(this.nativePtr, (int64)option);
 	}
 	
 	public static libqt_string[] SupportedImageFormats()
@@ -182,6 +187,181 @@ public class QImageWriter : IQImageWriter
 	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QImageWriter_Tr3(sourceText, disambiguation, n);
+	}
+	
+}
+public class QImageWriter
+{
+	public QImageWriterPtr handle;
+	
+	public static implicit operator QImageWriterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QImageWriterPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string Tr(char8* sourceText)
+	{
+		return QImageWriterPtr.Tr(sourceText);
+	}
+	
+	public void SetFormat(String format)
+	{
+		this.handle.SetFormat(format);
+	}
+	
+	public libqt_string Format()
+	{
+		return this.handle.Format();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void SetFileName(String fileName)
+	{
+		this.handle.SetFileName(fileName);
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public void SetQuality(int32 quality)
+	{
+		this.handle.SetQuality(quality);
+	}
+	
+	public int32 Quality()
+	{
+		return this.handle.Quality();
+	}
+	
+	public void SetCompression(int32 compression)
+	{
+		this.handle.SetCompression(compression);
+	}
+	
+	public int32 Compression()
+	{
+		return this.handle.Compression();
+	}
+	
+	public void SetSubType(String typeVal)
+	{
+		this.handle.SetSubType(typeVal);
+	}
+	
+	public libqt_string SubType()
+	{
+		return this.handle.SubType();
+	}
+	
+	public libqt_string[] SupportedSubTypes()
+	{
+		return this.handle.SupportedSubTypes();
+	}
+	
+	public void SetOptimizedWrite(bool optimize)
+	{
+		this.handle.SetOptimizedWrite(optimize);
+	}
+	
+	public bool OptimizedWrite()
+	{
+		return this.handle.OptimizedWrite();
+	}
+	
+	public void SetProgressiveScanWrite(bool progressive)
+	{
+		this.handle.SetProgressiveScanWrite(progressive);
+	}
+	
+	public bool ProgressiveScanWrite()
+	{
+		return this.handle.ProgressiveScanWrite();
+	}
+	
+	public int64 Transformation()
+	{
+		return this.handle.Transformation();
+	}
+	
+	public void SetTransformation(int64 orientation)
+	{
+		this.handle.SetTransformation(orientation);
+	}
+	
+	public void SetText(String key, String text)
+	{
+		this.handle.SetText(key, text);
+	}
+	
+	public bool CanWrite()
+	{
+		return this.handle.CanWrite();
+	}
+	
+	public bool Write(IQImage image)
+	{
+		return this.handle.Write(image);
+	}
+	
+	public int64 Error()
+	{
+		return this.handle.Error();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public bool SupportsOption(int64 option)
+	{
+		return this.handle.SupportsOption(option);
+	}
+	
+	public static libqt_string[] SupportedImageFormats()
+	{
+		return QImageWriterPtr.SupportedImageFormats();
+	}
+	
+	public static libqt_string[] SupportedMimeTypes()
+	{
+		return QImageWriterPtr.SupportedMimeTypes();
+	}
+	
+	public static libqt_string[] ImageFormatsForMimeType(String mimeType)
+	{
+		return QImageWriterPtr.ImageFormatsForMimeType(mimeType);
+	}
+	
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
+	{
+		return QImageWriterPtr.Tr2(sourceText, disambiguation);
+	}
+	
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
+	{
+		return QImageWriterPtr.Tr3(sourceText, disambiguation, n);
 	}
 	
 }

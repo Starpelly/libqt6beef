@@ -13,17 +13,22 @@ public interface IQColormap
 {
 	void* NativePtr { get; }
 }
-public class QColormap : IQColormap
+public struct QColormapPtr : IQColormap, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQColormap colormap)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QColormap_new((colormap == default) ? default : (void*)colormap.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQColormap colormap)
+	{
+		return .(CQt.QColormap_new((colormap == default || colormap.NativePtr == default) ? default : colormap.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QColormap_Delete(this.nativePtr);
 	}
@@ -45,7 +50,7 @@ public class QColormap : IQColormap
 	
 	public void OperatorAssign(IQColormap colormap)
 	{
-		CQt.QColormap_OperatorAssign(this.nativePtr, (colormap == default) ? default : (void*)colormap.NativePtr);
+		CQt.QColormap_OperatorAssign(this.nativePtr, (colormap == default || colormap.NativePtr == default) ? default : colormap.NativePtr);
 	}
 	
 	public int64 Mode()
@@ -65,7 +70,7 @@ public class QColormap : IQColormap
 	
 	public uint32 Pixel(IQColor color)
 	{
-		return CQt.QColormap_Pixel(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		return CQt.QColormap_Pixel(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void ColorAt(uint32 pixel)
@@ -81,6 +86,81 @@ public class QColormap : IQColormap
 	public static void Instance1(int32 screen)
 	{
 		CQt.QColormap_Instance1(screen);
+	}
+	
+}
+public class QColormap
+{
+	public QColormapPtr handle;
+	
+	public static implicit operator QColormapPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQColormap colormap)
+	{
+		this.handle = QColormapPtr.New(colormap);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void Initialize()
+	{
+		QColormapPtr.Initialize();
+	}
+	
+	public static void Cleanup()
+	{
+		QColormapPtr.Cleanup();
+	}
+	
+	public static void Instance()
+	{
+		QColormapPtr.Instance();
+	}
+	
+	public void OperatorAssign(IQColormap colormap)
+	{
+		this.handle.OperatorAssign(colormap);
+	}
+	
+	public int64 Mode()
+	{
+		return this.handle.Mode();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public uint32 Pixel(IQColor color)
+	{
+		return this.handle.Pixel(color);
+	}
+	
+	public void ColorAt(uint32 pixel)
+	{
+		this.handle.ColorAt(pixel);
+	}
+	
+	public void[] Colormap()
+	{
+		return this.handle.Colormap();
+	}
+	
+	public static void Instance1(int32 screen)
+	{
+		QColormapPtr.Instance1(screen);
 	}
 	
 }

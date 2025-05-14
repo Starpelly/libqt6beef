@@ -13,17 +13,22 @@ public interface IQMimeDatabase
 {
 	void* NativePtr { get; }
 }
-public class QMimeDatabase : IQMimeDatabase
+public struct QMimeDatabasePtr : IQMimeDatabase, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMimeDatabase_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QMimeDatabase_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMimeDatabase_Delete(this.nativePtr);
 	}
@@ -40,7 +45,7 @@ public class QMimeDatabase : IQMimeDatabase
 	
 	public void MimeTypeForFileWithFileInfo(IQFileInfo fileInfo)
 	{
-		CQt.QMimeDatabase_MimeTypeForFileWithFileInfo(this.nativePtr, (fileInfo == default) ? default : (void*)fileInfo.NativePtr);
+		CQt.QMimeDatabase_MimeTypeForFileWithFileInfo(this.nativePtr, (fileInfo == default || fileInfo.NativePtr == default) ? default : fileInfo.NativePtr);
 	}
 	
 	public void[] MimeTypesForFileName(String fileName)
@@ -55,17 +60,17 @@ public class QMimeDatabase : IQMimeDatabase
 	
 	public void MimeTypeForDataWithDevice(IQIODevice device)
 	{
-		CQt.QMimeDatabase_MimeTypeForDataWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QMimeDatabase_MimeTypeForDataWithDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void MimeTypeForUrl(IQUrl url)
 	{
-		CQt.QMimeDatabase_MimeTypeForUrl(this.nativePtr, (url == default) ? default : (void*)url.NativePtr);
+		CQt.QMimeDatabase_MimeTypeForUrl(this.nativePtr, (url == default || url.NativePtr == default) ? default : url.NativePtr);
 	}
 	
 	public void MimeTypeForFileNameAndData(String fileName, IQIODevice device)
 	{
-		CQt.QMimeDatabase_MimeTypeForFileNameAndData(this.nativePtr, libqt_string(fileName), (device == null) ? null : (void*)device.NativePtr);
+		CQt.QMimeDatabase_MimeTypeForFileNameAndData(this.nativePtr, libqt_string(fileName), (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void MimeTypeForFileNameAndData2(String fileName, String data)
@@ -85,12 +90,97 @@ public class QMimeDatabase : IQMimeDatabase
 	
 	public void MimeTypeForFile2(String fileName, int64 mode)
 	{
-		CQt.QMimeDatabase_MimeTypeForFile2(this.nativePtr, libqt_string(fileName), mode);
+		CQt.QMimeDatabase_MimeTypeForFile2(this.nativePtr, libqt_string(fileName), (int64)mode);
 	}
 	
 	public void MimeTypeForFile22(IQFileInfo fileInfo, int64 mode)
 	{
-		CQt.QMimeDatabase_MimeTypeForFile22(this.nativePtr, (fileInfo == default) ? default : (void*)fileInfo.NativePtr, mode);
+		CQt.QMimeDatabase_MimeTypeForFile22(this.nativePtr, (fileInfo == default || fileInfo.NativePtr == default) ? default : fileInfo.NativePtr, (int64)mode);
+	}
+	
+}
+public class QMimeDatabase
+{
+	public QMimeDatabasePtr handle;
+	
+	public static implicit operator QMimeDatabasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QMimeDatabasePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void MimeTypeForName(String nameOrAlias)
+	{
+		this.handle.MimeTypeForName(nameOrAlias);
+	}
+	
+	public void MimeTypeForFile(String fileName)
+	{
+		this.handle.MimeTypeForFile(fileName);
+	}
+	
+	public void MimeTypeForFileWithFileInfo(IQFileInfo fileInfo)
+	{
+		this.handle.MimeTypeForFileWithFileInfo(fileInfo);
+	}
+	
+	public void[] MimeTypesForFileName(String fileName)
+	{
+		return this.handle.MimeTypesForFileName(fileName);
+	}
+	
+	public void MimeTypeForData(String data)
+	{
+		this.handle.MimeTypeForData(data);
+	}
+	
+	public void MimeTypeForDataWithDevice(IQIODevice device)
+	{
+		this.handle.MimeTypeForDataWithDevice(device);
+	}
+	
+	public void MimeTypeForUrl(IQUrl url)
+	{
+		this.handle.MimeTypeForUrl(url);
+	}
+	
+	public void MimeTypeForFileNameAndData(String fileName, IQIODevice device)
+	{
+		this.handle.MimeTypeForFileNameAndData(fileName, device);
+	}
+	
+	public void MimeTypeForFileNameAndData2(String fileName, String data)
+	{
+		this.handle.MimeTypeForFileNameAndData2(fileName, data);
+	}
+	
+	public libqt_string SuffixForFileName(String fileName)
+	{
+		return this.handle.SuffixForFileName(fileName);
+	}
+	
+	public void[] AllMimeTypes()
+	{
+		return this.handle.AllMimeTypes();
+	}
+	
+	public void MimeTypeForFile2(String fileName, int64 mode)
+	{
+		this.handle.MimeTypeForFile2(fileName, mode);
+	}
+	
+	public void MimeTypeForFile22(IQFileInfo fileInfo, int64 mode)
+	{
+		this.handle.MimeTypeForFile22(fileInfo, mode);
 	}
 	
 }

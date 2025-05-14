@@ -46,29 +46,34 @@ public interface IQDir
 {
 	void* NativePtr { get; }
 }
-public class QDir : IQDir
+public struct QDirPtr : IQDir, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQDir param1)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDir_new((param1 == default) ? default : (void*)param1.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQDir param1)
+	{
+		return .(CQt.QDir_new((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDir_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQDir param1)
 	{
-		CQt.QDir_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QDir_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQDir other)
 	{
-		CQt.QDir_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDir_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetPath(String path)
@@ -288,12 +293,12 @@ public class QDir : IQDir
 	
 	public bool OperatorEqual(IQDir dir)
 	{
-		return CQt.QDir_OperatorEqual(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr);
+		return CQt.QDir_OperatorEqual(this.nativePtr, (dir == default || dir.NativePtr == default) ? default : dir.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQDir dir)
 	{
-		return CQt.QDir_OperatorNotEqual(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr);
+		return CQt.QDir_OperatorNotEqual(this.nativePtr, (dir == default || dir.NativePtr == default) ? default : dir.NativePtr);
 	}
 	
 	public bool Remove(String fileName)
@@ -434,6 +439,401 @@ public class QDir : IQDir
 	public void[] EntryInfoList3(String[] nameFilters, int64 filters, int64 sort)
 	{
 		return CQt.QDir_EntryInfoList3(this.nativePtr, null, filters, sort);
+	}
+	
+}
+public class QDir
+{
+	public QDirPtr handle;
+	
+	public static implicit operator QDirPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQDir param1)
+	{
+		this.handle = QDirPtr.New(param1);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQDir param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQDir other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void SetPath(String path)
+	{
+		this.handle.SetPath(path);
+	}
+	
+	public libqt_string Path()
+	{
+		return this.handle.Path();
+	}
+	
+	public libqt_string AbsolutePath()
+	{
+		return this.handle.AbsolutePath();
+	}
+	
+	public libqt_string CanonicalPath()
+	{
+		return this.handle.CanonicalPath();
+	}
+	
+	public static void SetSearchPaths(String prefix, String[] searchPaths)
+	{
+		QDirPtr.SetSearchPaths(prefix, null);
+	}
+	
+	public static void AddSearchPath(String prefix, String path)
+	{
+		QDirPtr.AddSearchPath(prefix, path);
+	}
+	
+	public static libqt_string[] SearchPaths(String prefix)
+	{
+		return QDirPtr.SearchPaths(prefix);
+	}
+	
+	public libqt_string DirName()
+	{
+		return this.handle.DirName();
+	}
+	
+	public libqt_string FilePath(String fileName)
+	{
+		return this.handle.FilePath(fileName);
+	}
+	
+	public libqt_string AbsoluteFilePath(String fileName)
+	{
+		return this.handle.AbsoluteFilePath(fileName);
+	}
+	
+	public libqt_string RelativeFilePath(String fileName)
+	{
+		return this.handle.RelativeFilePath(fileName);
+	}
+	
+	public static libqt_string ToNativeSeparators(String pathName)
+	{
+		return QDirPtr.ToNativeSeparators(pathName);
+	}
+	
+	public static libqt_string FromNativeSeparators(String pathName)
+	{
+		return QDirPtr.FromNativeSeparators(pathName);
+	}
+	
+	public bool Cd(String dirName)
+	{
+		return this.handle.Cd(dirName);
+	}
+	
+	public bool CdUp()
+	{
+		return this.handle.CdUp();
+	}
+	
+	public libqt_string[] NameFilters()
+	{
+		return this.handle.NameFilters();
+	}
+	
+	public void SetNameFilters(String[] nameFilters)
+	{
+		this.handle.SetNameFilters(null);
+	}
+	
+	public int64 Filter()
+	{
+		return this.handle.Filter();
+	}
+	
+	public void SetFilter(int64 filter)
+	{
+		this.handle.SetFilter(filter);
+	}
+	
+	public int64 Sorting()
+	{
+		return this.handle.Sorting();
+	}
+	
+	public void SetSorting(int64 sort)
+	{
+		this.handle.SetSorting(sort);
+	}
+	
+	public uint32 Count()
+	{
+		return this.handle.Count();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public libqt_string OperatorSubscript(int32 param1)
+	{
+		return this.handle.OperatorSubscript(param1);
+	}
+	
+	public static libqt_string[] NameFiltersFromString(String nameFilter)
+	{
+		return QDirPtr.NameFiltersFromString(nameFilter);
+	}
+	
+	public libqt_string[] EntryList()
+	{
+		return this.handle.EntryList();
+	}
+	
+	public libqt_string[] EntryListWithNameFilters(String[] nameFilters)
+	{
+		return this.handle.EntryListWithNameFilters(null);
+	}
+	
+	public void[] EntryInfoList()
+	{
+		return this.handle.EntryInfoList();
+	}
+	
+	public void[] EntryInfoListWithNameFilters(String[] nameFilters)
+	{
+		return this.handle.EntryInfoListWithNameFilters(null);
+	}
+	
+	public bool Mkdir(String dirName)
+	{
+		return this.handle.Mkdir(dirName);
+	}
+	
+	public bool Mkdir2(String dirName, int64 permissions)
+	{
+		return this.handle.Mkdir2(dirName, permissions);
+	}
+	
+	public bool Rmdir(String dirName)
+	{
+		return this.handle.Rmdir(dirName);
+	}
+	
+	public bool Mkpath(String dirPath)
+	{
+		return this.handle.Mkpath(dirPath);
+	}
+	
+	public bool Rmpath(String dirPath)
+	{
+		return this.handle.Rmpath(dirPath);
+	}
+	
+	public bool RemoveRecursively()
+	{
+		return this.handle.RemoveRecursively();
+	}
+	
+	public bool IsReadable()
+	{
+		return this.handle.IsReadable();
+	}
+	
+	public bool Exists()
+	{
+		return this.handle.Exists();
+	}
+	
+	public bool IsRoot()
+	{
+		return this.handle.IsRoot();
+	}
+	
+	public static bool IsRelativePath(String path)
+	{
+		return QDirPtr.IsRelativePath(path);
+	}
+	
+	public static bool IsAbsolutePath(String path)
+	{
+		return QDirPtr.IsAbsolutePath(path);
+	}
+	
+	public bool IsRelative()
+	{
+		return this.handle.IsRelative();
+	}
+	
+	public bool IsAbsolute()
+	{
+		return this.handle.IsAbsolute();
+	}
+	
+	public bool MakeAbsolute()
+	{
+		return this.handle.MakeAbsolute();
+	}
+	
+	public bool OperatorEqual(IQDir dir)
+	{
+		return this.handle.OperatorEqual(dir);
+	}
+	
+	public bool OperatorNotEqual(IQDir dir)
+	{
+		return this.handle.OperatorNotEqual(dir);
+	}
+	
+	public bool Remove(String fileName)
+	{
+		return this.handle.Remove(fileName);
+	}
+	
+	public bool Rename(String oldName, String newName)
+	{
+		return this.handle.Rename(oldName, newName);
+	}
+	
+	public bool ExistsWithName(String name)
+	{
+		return this.handle.ExistsWithName(name);
+	}
+	
+	public static void[] Drives()
+	{
+		return QDirPtr.Drives();
+	}
+	
+	public static void ListSeparator()
+	{
+		QDirPtr.ListSeparator();
+	}
+	
+	public static void Separator()
+	{
+		QDirPtr.Separator();
+	}
+	
+	public static bool SetCurrent(String path)
+	{
+		return QDirPtr.SetCurrent(path);
+	}
+	
+	public static void Current()
+	{
+		QDirPtr.Current();
+	}
+	
+	public static libqt_string CurrentPath()
+	{
+		return QDirPtr.CurrentPath();
+	}
+	
+	public static void Home()
+	{
+		QDirPtr.Home();
+	}
+	
+	public static libqt_string HomePath()
+	{
+		return QDirPtr.HomePath();
+	}
+	
+	public static void Root()
+	{
+		QDirPtr.Root();
+	}
+	
+	public static libqt_string RootPath()
+	{
+		return QDirPtr.RootPath();
+	}
+	
+	public static void Temp()
+	{
+		QDirPtr.Temp();
+	}
+	
+	public static libqt_string TempPath()
+	{
+		return QDirPtr.TempPath();
+	}
+	
+	public static bool Match(String[] filters, String fileName)
+	{
+		return QDirPtr.Match(null, fileName);
+	}
+	
+	public static bool Match2(String filter, String fileName)
+	{
+		return QDirPtr.Match2(filter, fileName);
+	}
+	
+	public static libqt_string CleanPath(String path)
+	{
+		return QDirPtr.CleanPath(path);
+	}
+	
+	public void Refresh()
+	{
+		this.handle.Refresh();
+	}
+	
+	public bool IsEmpty1(int64 filters)
+	{
+		return this.handle.IsEmpty1(filters);
+	}
+	
+	public libqt_string[] EntryList1(int64 filters)
+	{
+		return this.handle.EntryList1(filters);
+	}
+	
+	public libqt_string[] EntryList2(int64 filters, int64 sort)
+	{
+		return this.handle.EntryList2(filters, sort);
+	}
+	
+	public libqt_string[] EntryList22(String[] nameFilters, int64 filters)
+	{
+		return this.handle.EntryList22(null, filters);
+	}
+	
+	public libqt_string[] EntryList3(String[] nameFilters, int64 filters, int64 sort)
+	{
+		return this.handle.EntryList3(null, filters, sort);
+	}
+	
+	public void[] EntryInfoList1(int64 filters)
+	{
+		return this.handle.EntryInfoList1(filters);
+	}
+	
+	public void[] EntryInfoList2(int64 filters, int64 sort)
+	{
+		return this.handle.EntryInfoList2(filters, sort);
+	}
+	
+	public void[] EntryInfoList22(String[] nameFilters, int64 filters)
+	{
+		return this.handle.EntryInfoList22(null, filters);
+	}
+	
+	public void[] EntryInfoList3(String[] nameFilters, int64 filters, int64 sort)
+	{
+		return this.handle.EntryInfoList3(null, filters, sort);
 	}
 	
 }

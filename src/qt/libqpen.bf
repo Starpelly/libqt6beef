@@ -6,29 +6,34 @@ public interface IQPen
 {
 	void* NativePtr { get; }
 }
-public class QPen : IQPen
+public struct QPenPtr : IQPen, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPen_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPen_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPen_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQPen pen)
 	{
-		CQt.QPen_OperatorAssign(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
+		CQt.QPen_OperatorAssign(this.nativePtr, (pen == default || pen.NativePtr == default) ? default : pen.NativePtr);
 	}
 	
 	public void Swap(IQPen other)
 	{
-		CQt.QPen_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPen_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 Style()
@@ -38,7 +43,7 @@ public class QPen : IQPen
 	
 	public void SetStyle(int64 style)
 	{
-		CQt.QPen_SetStyle(this.nativePtr, style);
+		CQt.QPen_SetStyle(this.nativePtr, (int64)style);
 	}
 	
 	public double[] DashPattern()
@@ -98,7 +103,7 @@ public class QPen : IQPen
 	
 	public void SetColor(IQColor color)
 	{
-		CQt.QPen_SetColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QPen_SetColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void Brush()
@@ -108,7 +113,7 @@ public class QPen : IQPen
 	
 	public void SetBrush(IQBrush brush)
 	{
-		CQt.QPen_SetBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QPen_SetBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public bool IsSolid()
@@ -123,7 +128,7 @@ public class QPen : IQPen
 	
 	public void SetCapStyle(int64 pcs)
 	{
-		CQt.QPen_SetCapStyle(this.nativePtr, pcs);
+		CQt.QPen_SetCapStyle(this.nativePtr, (int64)pcs);
 	}
 	
 	public int64 JoinStyle()
@@ -133,7 +138,7 @@ public class QPen : IQPen
 	
 	public void SetJoinStyle(int64 pcs)
 	{
-		CQt.QPen_SetJoinStyle(this.nativePtr, pcs);
+		CQt.QPen_SetJoinStyle(this.nativePtr, (int64)pcs);
 	}
 	
 	public bool IsCosmetic()
@@ -148,12 +153,12 @@ public class QPen : IQPen
 	
 	public bool OperatorEqual(IQPen p)
 	{
-		return CQt.QPen_OperatorEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPen_OperatorEqual(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQPen p)
 	{
-		return CQt.QPen_OperatorNotEqual(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPen_OperatorNotEqual(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -164,6 +169,171 @@ public class QPen : IQPen
 	public bool IsDetached()
 	{
 		return CQt.QPen_IsDetached(this.nativePtr);
+	}
+	
+}
+public class QPen
+{
+	public QPenPtr handle;
+	
+	public static implicit operator QPenPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPenPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQPen pen)
+	{
+		this.handle.OperatorAssign(pen);
+	}
+	
+	public void Swap(IQPen other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int64 Style()
+	{
+		return this.handle.Style();
+	}
+	
+	public void SetStyle(int64 style)
+	{
+		this.handle.SetStyle(style);
+	}
+	
+	public double[] DashPattern()
+	{
+		return this.handle.DashPattern();
+	}
+	
+	public void SetDashPattern(double[] pattern)
+	{
+		this.handle.SetDashPattern(null);
+	}
+	
+	public double DashOffset()
+	{
+		return this.handle.DashOffset();
+	}
+	
+	public void SetDashOffset(double doffset)
+	{
+		this.handle.SetDashOffset(doffset);
+	}
+	
+	public double MiterLimit()
+	{
+		return this.handle.MiterLimit();
+	}
+	
+	public void SetMiterLimit(double limit)
+	{
+		this.handle.SetMiterLimit(limit);
+	}
+	
+	public double WidthF()
+	{
+		return this.handle.WidthF();
+	}
+	
+	public void SetWidthF(double width)
+	{
+		this.handle.SetWidthF(width);
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public void SetWidth(int32 width)
+	{
+		this.handle.SetWidth(width);
+	}
+	
+	public void Color()
+	{
+		this.handle.Color();
+	}
+	
+	public void SetColor(IQColor color)
+	{
+		this.handle.SetColor(color);
+	}
+	
+	public void Brush()
+	{
+		this.handle.Brush();
+	}
+	
+	public void SetBrush(IQBrush brush)
+	{
+		this.handle.SetBrush(brush);
+	}
+	
+	public bool IsSolid()
+	{
+		return this.handle.IsSolid();
+	}
+	
+	public int64 CapStyle()
+	{
+		return this.handle.CapStyle();
+	}
+	
+	public void SetCapStyle(int64 pcs)
+	{
+		this.handle.SetCapStyle(pcs);
+	}
+	
+	public int64 JoinStyle()
+	{
+		return this.handle.JoinStyle();
+	}
+	
+	public void SetJoinStyle(int64 pcs)
+	{
+		this.handle.SetJoinStyle(pcs);
+	}
+	
+	public bool IsCosmetic()
+	{
+		return this.handle.IsCosmetic();
+	}
+	
+	public void SetCosmetic(bool cosmetic)
+	{
+		this.handle.SetCosmetic(cosmetic);
+	}
+	
+	public bool OperatorEqual(IQPen p)
+	{
+		return this.handle.OperatorEqual(p);
+	}
+	
+	public bool OperatorNotEqual(IQPen p)
+	{
+		return this.handle.OperatorNotEqual(p);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
 	}
 	
 }

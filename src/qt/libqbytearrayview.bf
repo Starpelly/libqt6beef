@@ -6,17 +6,22 @@ public interface IQByteArrayView
 {
 	void* NativePtr { get; }
 }
-public class QByteArrayView : IQByteArrayView
+public struct QByteArrayViewPtr : IQByteArrayView, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQByteArrayView other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QByteArrayView_new((other == default) ? default : (char8*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(char8* other)
+	{
+		return .(CQt.QByteArrayView_new(other));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QByteArrayView_Delete(this.nativePtr);
 	}
@@ -141,9 +146,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_ToDouble(this.nativePtr);
 	}
 	
-	public bool StartsWith(IQByteArrayView other)
+	public bool StartsWith(char8* other)
 	{
-		return CQt.QByteArrayView_StartsWith(this.nativePtr, (other == default) ? default : (char8*)other.NativePtr);
+		return CQt.QByteArrayView_StartsWith(this.nativePtr, other);
 	}
 	
 	public bool StartsWithWithChar(int8 c)
@@ -151,9 +156,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_StartsWithWithChar(this.nativePtr, c);
 	}
 	
-	public bool EndsWith(IQByteArrayView other)
+	public bool EndsWith(char8* other)
 	{
-		return CQt.QByteArrayView_EndsWith(this.nativePtr, (other == default) ? default : (char8*)other.NativePtr);
+		return CQt.QByteArrayView_EndsWith(this.nativePtr, other);
 	}
 	
 	public bool EndsWithWithChar(int8 c)
@@ -161,9 +166,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_EndsWithWithChar(this.nativePtr, c);
 	}
 	
-	public int32 IndexOf(IQByteArrayView a)
+	public int32 IndexOf(char8* a)
 	{
-		return CQt.QByteArrayView_IndexOf(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
+		return CQt.QByteArrayView_IndexOf(this.nativePtr, a);
 	}
 	
 	public int32 IndexOfWithCh(int8 ch)
@@ -171,9 +176,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_IndexOfWithCh(this.nativePtr, ch);
 	}
 	
-	public bool Contains(IQByteArrayView a)
+	public bool Contains(char8* a)
 	{
-		return CQt.QByteArrayView_Contains(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
+		return CQt.QByteArrayView_Contains(this.nativePtr, a);
 	}
 	
 	public bool ContainsWithChar(int8 c)
@@ -181,14 +186,14 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_ContainsWithChar(this.nativePtr, c);
 	}
 	
-	public int32 LastIndexOf(IQByteArrayView a)
+	public int32 LastIndexOf(char8* a)
 	{
-		return CQt.QByteArrayView_LastIndexOf(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
+		return CQt.QByteArrayView_LastIndexOf(this.nativePtr, a);
 	}
 	
-	public int32 LastIndexOf2(IQByteArrayView a, int32 from)
+	public int32 LastIndexOf2(char8* a, int32 from)
 	{
-		return CQt.QByteArrayView_LastIndexOf2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, from);
+		return CQt.QByteArrayView_LastIndexOf2(this.nativePtr, a, from);
 	}
 	
 	public int32 LastIndexOfWithCh(int8 ch)
@@ -196,9 +201,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_LastIndexOfWithCh(this.nativePtr, ch);
 	}
 	
-	public int32 Count(IQByteArrayView a)
+	public int32 Count(char8* a)
 	{
-		return CQt.QByteArrayView_Count(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
+		return CQt.QByteArrayView_Count(this.nativePtr, a);
 	}
 	
 	public int32 CountWithCh(int8 ch)
@@ -206,9 +211,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_CountWithCh(this.nativePtr, ch);
 	}
 	
-	public int32 Compare(IQByteArrayView a)
+	public int32 Compare(char8* a)
 	{
-		return CQt.QByteArrayView_Compare(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr);
+		return CQt.QByteArrayView_Compare(this.nativePtr, a);
 	}
 	
 	public bool IsValidUtf8()
@@ -366,9 +371,9 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_ToDouble1(this.nativePtr, ok);
 	}
 	
-	public int32 IndexOf2(IQByteArrayView a, int32 from)
+	public int32 IndexOf2(char8* a, int32 from)
 	{
-		return CQt.QByteArrayView_IndexOf2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, from);
+		return CQt.QByteArrayView_IndexOf2(this.nativePtr, a, from);
 	}
 	
 	public int32 IndexOf22(int8 ch, int32 from)
@@ -381,9 +386,394 @@ public class QByteArrayView : IQByteArrayView
 		return CQt.QByteArrayView_LastIndexOf22(this.nativePtr, ch, from);
 	}
 	
-	public int32 Compare2(IQByteArrayView a, int64 cs)
+	public int32 Compare2(char8* a, int64 cs)
 	{
-		return CQt.QByteArrayView_Compare2(this.nativePtr, (a == default) ? default : (char8*)a.NativePtr, cs);
+		return CQt.QByteArrayView_Compare2(this.nativePtr, a, (int64)cs);
+	}
+	
+}
+public class QByteArrayView
+{
+	public QByteArrayViewPtr handle;
+	
+	public static implicit operator QByteArrayViewPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(char8* other)
+	{
+		this.handle = QByteArrayViewPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public char8* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public char8* ConstData()
+	{
+		return this.handle.ConstData();
+	}
+	
+	public int8 OperatorSubscript(int32 n)
+	{
+		return this.handle.OperatorSubscript(n);
+	}
+	
+	public int8 At(int32 n)
+	{
+		return this.handle.At(n);
+	}
+	
+	public char8* First(int32 n)
+	{
+		return this.handle.First(n);
+	}
+	
+	public char8* Last(int32 n)
+	{
+		return this.handle.Last(n);
+	}
+	
+	public char8* Sliced(int32 pos)
+	{
+		return this.handle.Sliced(pos);
+	}
+	
+	public char8* Sliced2(int32 pos, int32 n)
+	{
+		return this.handle.Sliced2(pos, n);
+	}
+	
+	public char8* Chopped(int32 lenVal)
+	{
+		return this.handle.Chopped(lenVal);
+	}
+	
+	public void Truncate(int32 n)
+	{
+		this.handle.Truncate(n);
+	}
+	
+	public void Chop(int32 n)
+	{
+		this.handle.Chop(n);
+	}
+	
+	public char8* Trimmed()
+	{
+		return this.handle.Trimmed();
+	}
+	
+	public int16 ToShort()
+	{
+		return this.handle.ToShort();
+	}
+	
+	public uint16 ToUShort()
+	{
+		return this.handle.ToUShort();
+	}
+	
+	public int32 ToInt()
+	{
+		return this.handle.ToInt();
+	}
+	
+	public uint32 ToUInt()
+	{
+		return this.handle.ToUInt();
+	}
+	
+	public c_long ToLong()
+	{
+		return this.handle.ToLong();
+	}
+	
+	public c_ulong ToULong()
+	{
+		return this.handle.ToULong();
+	}
+	
+	public int64 ToLongLong()
+	{
+		return this.handle.ToLongLong();
+	}
+	
+	public uint64 ToULongLong()
+	{
+		return this.handle.ToULongLong();
+	}
+	
+	public float ToFloat()
+	{
+		return this.handle.ToFloat();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public bool StartsWith(char8* other)
+	{
+		return this.handle.StartsWith(other);
+	}
+	
+	public bool StartsWithWithChar(int8 c)
+	{
+		return this.handle.StartsWithWithChar(c);
+	}
+	
+	public bool EndsWith(char8* other)
+	{
+		return this.handle.EndsWith(other);
+	}
+	
+	public bool EndsWithWithChar(int8 c)
+	{
+		return this.handle.EndsWithWithChar(c);
+	}
+	
+	public int32 IndexOf(char8* a)
+	{
+		return this.handle.IndexOf(a);
+	}
+	
+	public int32 IndexOfWithCh(int8 ch)
+	{
+		return this.handle.IndexOfWithCh(ch);
+	}
+	
+	public bool Contains(char8* a)
+	{
+		return this.handle.Contains(a);
+	}
+	
+	public bool ContainsWithChar(int8 c)
+	{
+		return this.handle.ContainsWithChar(c);
+	}
+	
+	public int32 LastIndexOf(char8* a)
+	{
+		return this.handle.LastIndexOf(a);
+	}
+	
+	public int32 LastIndexOf2(char8* a, int32 from)
+	{
+		return this.handle.LastIndexOf2(a, from);
+	}
+	
+	public int32 LastIndexOfWithCh(int8 ch)
+	{
+		return this.handle.LastIndexOfWithCh(ch);
+	}
+	
+	public int32 Count(char8* a)
+	{
+		return this.handle.Count(a);
+	}
+	
+	public int32 CountWithCh(int8 ch)
+	{
+		return this.handle.CountWithCh(ch);
+	}
+	
+	public int32 Compare(char8* a)
+	{
+		return this.handle.Compare(a);
+	}
+	
+	public bool IsValidUtf8()
+	{
+		return this.handle.IsValidUtf8();
+	}
+	
+	public char8* Begin()
+	{
+		return this.handle.Begin();
+	}
+	
+	public char8* End()
+	{
+		return this.handle.End();
+	}
+	
+	public char8* Cbegin()
+	{
+		return this.handle.Cbegin();
+	}
+	
+	public char8* Cend()
+	{
+		return this.handle.Cend();
+	}
+	
+	public bool Empty()
+	{
+		return this.handle.Empty();
+	}
+	
+	public int8 Front()
+	{
+		return this.handle.Front();
+	}
+	
+	public int8 Back()
+	{
+		return this.handle.Back();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public int8 First2()
+	{
+		return this.handle.First2();
+	}
+	
+	public int8 Last2()
+	{
+		return this.handle.Last2();
+	}
+	
+	public int16 ToShort1(bool* ok)
+	{
+		return this.handle.ToShort1(ok);
+	}
+	
+	public int16 ToShort2(bool* ok, int32 _base)
+	{
+		return this.handle.ToShort2(ok, _base);
+	}
+	
+	public uint16 ToUShort1(bool* ok)
+	{
+		return this.handle.ToUShort1(ok);
+	}
+	
+	public uint16 ToUShort2(bool* ok, int32 _base)
+	{
+		return this.handle.ToUShort2(ok, _base);
+	}
+	
+	public int32 ToInt1(bool* ok)
+	{
+		return this.handle.ToInt1(ok);
+	}
+	
+	public int32 ToInt2(bool* ok, int32 _base)
+	{
+		return this.handle.ToInt2(ok, _base);
+	}
+	
+	public uint32 ToUInt1(bool* ok)
+	{
+		return this.handle.ToUInt1(ok);
+	}
+	
+	public uint32 ToUInt2(bool* ok, int32 _base)
+	{
+		return this.handle.ToUInt2(ok, _base);
+	}
+	
+	public c_long ToLong1(bool* ok)
+	{
+		return this.handle.ToLong1(ok);
+	}
+	
+	public c_long ToLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToLong2(ok, _base);
+	}
+	
+	public c_ulong ToULong1(bool* ok)
+	{
+		return this.handle.ToULong1(ok);
+	}
+	
+	public c_ulong ToULong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToULong2(ok, _base);
+	}
+	
+	public int64 ToLongLong1(bool* ok)
+	{
+		return this.handle.ToLongLong1(ok);
+	}
+	
+	public int64 ToLongLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToLongLong2(ok, _base);
+	}
+	
+	public uint64 ToULongLong1(bool* ok)
+	{
+		return this.handle.ToULongLong1(ok);
+	}
+	
+	public uint64 ToULongLong2(bool* ok, int32 _base)
+	{
+		return this.handle.ToULongLong2(ok, _base);
+	}
+	
+	public float ToFloat1(bool* ok)
+	{
+		return this.handle.ToFloat1(ok);
+	}
+	
+	public double ToDouble1(bool* ok)
+	{
+		return this.handle.ToDouble1(ok);
+	}
+	
+	public int32 IndexOf2(char8* a, int32 from)
+	{
+		return this.handle.IndexOf2(a, from);
+	}
+	
+	public int32 IndexOf22(int8 ch, int32 from)
+	{
+		return this.handle.IndexOf22(ch, from);
+	}
+	
+	public int32 LastIndexOf22(int8 ch, int32 from)
+	{
+		return this.handle.LastIndexOf22(ch, from);
+	}
+	
+	public int32 Compare2(char8* a, int64 cs)
+	{
+		return this.handle.Compare2(a, cs);
 	}
 	
 }

@@ -7,6 +7,8 @@ import (
 // FUCK THIS SHITTY ASS LANGUAGE
 func UNUSED(x ...interface{}) {}
 
+const Beef_Handle_Str = "Ptr"
+
 func getPageNameBF(c string) string {
 	pageName := strings.ToLower(c)
 	if pageName == "qnamespace" {
@@ -85,7 +87,7 @@ func (p CppParameter) parameterTypeBeef() string {
 	return tmp
 }
 
-func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
+func (p CppParameter) RenderTypeBeef(cabi bool, bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
 	if p.Pointer && p.ParameterType == "char" {
 		return "char8*"
 	}
@@ -95,7 +97,11 @@ func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fu
 	}
 
 	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
-		return "libqt_string"
+		if cabi {
+			return "libqt_string"
+		} else {
+			return "String"
+		}
 	}
 
 	if p.ParameterType == "QAnyStringView" ||
@@ -112,7 +118,7 @@ func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fu
 	}
 
 	if t, ok := p.QListOf(); ok {
-		return t.RenderTypeBeefCABI(bfs, isReturnType, fullEnumName) + "[]"
+		return t.RenderTypeBeef(cabi, bfs, isReturnType, fullEnumName) + "[]"
 	}
 
 	if t, ok := p.QSetOf(); ok {
@@ -198,12 +204,25 @@ func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fu
 			}
 		} else if strings.Contains(p.ParameterType, `::`) {
 			// Inner class
-			// ret += cabiClassName(p.ParameterType)
-			ret += "void"
+			if cabi {
+				ret += "void"
+			} else {
+				ret += cabiClassName(p.ParameterType) + Beef_Handle_Str
+			}
 		} else {
 			// Do not transform this type
 			// ret += p.ParameterType + ".Ptr"
-			ret += "void"
+			if cabi {
+				ret += "void"
+			} else {
+				ret += "I" + p.ParameterType
+			}
+		}
+	}
+
+	if !cabi {
+		if p.QtClassType() {
+			return ret
 		}
 	}
 
@@ -226,194 +245,44 @@ func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fu
 	}
 
 	return ret
+}
+
+func (p CppParameter) RenderTypeBeefAPI(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
+	return p.RenderTypeBeef(false, bfs, isReturnType, fullEnumName)
+}
+
+func (p CppParameter) RenderTypeBeefCABI(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
+	return p.RenderTypeBeef(true, bfs, isReturnType, fullEnumName)
+}
+
+func (p CppParameter) RenderReturnTypeBeef(bfs *bfFileState, cabi bool) string {
+	ret := p.RenderTypeBeef(cabi, bfs, true, false)
+
+	if ret == "void" {
+		ret = "void"
+	}
+
+	if ret == "int" {
+		ret = "int32"
+	}
+
+	if ret == "quint8" {
+		ret = "int32"
+	}
+
+	if ret == "uint" {
+		ret = "uint32"
+	}
+
+	return ret
+}
+
+func (p CppParameter) RenderReturnTypeBeefAPI(bfs *bfFileState) string {
+	return p.RenderReturnTypeBeef(bfs, false)
 }
 
 func (p CppParameter) RenderReturnTypeBeefCABI(bfs *bfFileState) string {
-	ret := p.RenderTypeBeefCABI(bfs, true, false)
-
-	if ret == "void" {
-		ret = "void"
-	}
-
-	if ret == "int" {
-		ret = "int32"
-	}
-
-	if ret == "quint8" {
-		ret = "int32"
-	}
-
-	if ret == "uint" {
-		ret = "uint32"
-	}
-
-	return ret
-}
-
-func (p CppParameter) RenderTypeBeef(bfs *bfFileState, isReturnType bool, fullEnumName bool) string {
-	if p.Pointer && p.ParameterType == "char" {
-		return "char8*"
-	}
-
-	/*
-		if p.ParameterType == "QString" || p.ParameterType == "QAnyStringView" ||
-			p.ParameterType == "QByteArrayView" || p.ParameterType == "QStringView" {
-			return "char8[]"
-		}
-	*/
-
-	if p.ParameterType == "QString" || p.ParameterType == "QByteArray" {
-		return "String"
-	}
-
-	if p.ParameterType == "QByteArray" {
-		return "uint8[]"
-	}
-
-	if p.Pointer && p.ParameterType == "QByteArray" {
-		return "uint8[]"
-	}
-
-	if t, ok := p.QListOf(); ok {
-		return t.RenderTypeBeef(bfs, isReturnType, fullEnumName) + "[]"
-	}
-
-	if t, ok := p.QSetOf(); ok {
-		UNUSED(t)
-		return "void*" // Unknown
-	}
-
-	if t1, t2, ok := p.QMapOf(); ok {
-		UNUSED(t1, t2)
-		return "void*" // Unknown
-		// return "map[" + t1.RenderTypeBeefCABI(gfs) + "]" + t2.RenderTypeGo(gfs)
-	}
-
-	if t1, t2, ok := p.QPairOf(); ok {
-
-		UNUSED(t1, t2)
-		return "void*" // Unknown
-
-		// Design QPair using capital-named members, in case it gets passed
-		// across packages
-		// return "struct { First " + t1.RenderTypeGo(gfs) + " ; Second " + t2.RenderTypeGo(gfs) + " }"
-	}
-
-	ret := ""
-	switch p.ParameterType {
-	case "void":
-		ret += "void"
-	case "bool", "volatile bool": // What the fuck could the volatile be for? I hope it works???
-		ret += "bool"
-	case "unsigned char", "uchar", "quint8":
-		ret += "uint8"
-	case "char", "qint8", "signed char":
-		ret += "int8" // Signed
-	case "short", "qint16", "int16_t":
-		ret += "int16"
-	case "ushort", "quint16", "unsigned short", "uint16_t":
-		ret += "uint16"
-	case "long":
-		ret += "c_long"
-	case "ulong", "unsigned long":
-		ret += "c_ulong"
-	case "unsigned int", "quint32", "uint":
-		ret += "uint32"
-	case "qint32", "int":
-		ret += "int32"
-	case "qlonglong", "qint64", "long long":
-		ret += "int64"
-	case "qulonglong", "quint64", "unsigned long long":
-		ret += "uint64"
-	case "float":
-		ret += "float"
-	case "double", "qreal":
-		ret += "double"
-	case "size_t": // size_t is unsigned
-		ret += "uint"
-	case "qsizetype", "QIntegerForSizeof<std::size_t>::Signed", "qptrdiff", "ptrdiff_t": // all signed
-		ret += "int32"
-	case "qintptr", "uintptr_t", "intptr_t", "quintptr", "QIntegerForSizeof<void *>::Unsigned", "QIntegerForSizeof<void *>::Signed":
-		ret += "c_uintptr"
-	default:
-		if ft, ok := p.QFlagsOf(); ok {
-			if fullEnumName {
-				UNUSED(ft)
-				ret += "pelly"
-			} else {
-				ret += "int64"
-			}
-		} else if enumInfo, ok := KnownEnums[p.ParameterType]; ok {
-			UNUSED(enumInfo)
-
-			enumName := cabiEnumName(p.ParameterType)
-			if enumName == "" {
-				enumName = cabiClassName(p.ParameterType)
-			}
-
-			if strings.Contains(p.ParameterType, "::") {
-				if fullEnumName {
-					// ret += strings.Replace(enumName, `::`, `.`, -1)
-					ret += enumName
-				} else {
-					ret += "int64"
-				}
-			}
-		} else if strings.Contains(p.ParameterType, `::`) {
-			// Inner class
-			ret += cabiClassName(p.ParameterType)
-		} else {
-			// Do not transform this type
-			// ret += p.ParameterType + ".Ptr"
-			ret += "I" + p.ParameterType
-		}
-	}
-
-	if p.QtClassType() {
-		return ret
-	}
-
-	switch ret {
-	case "quint8":
-		ret = "uint8"
-	case "unsigned int", "quint32", "uint":
-		ret = "uint32"
-	case "int":
-		ret = "int32"
-	case "":
-		// ret = "BAD_VALUE!" // So the compiler catches it
-		ret = "void" // but for now becuase I'm lazy
-	}
-
-	if p.Pointer {
-		ret += strings.Repeat("*", p.PointerCount)
-	} else if p.ByRef {
-		ret += "*"
-	}
-
-	return ret
-}
-
-func (p CppParameter) RenderReturnTypeBeef(bfs *bfFileState) string {
-	ret := p.RenderTypeBeef(bfs, true, false)
-
-	if ret == "void" {
-		ret = "void"
-	}
-
-	if ret == "int" {
-		ret = "int32"
-	}
-
-	if ret == "quint8" {
-		ret = "int32"
-	}
-
-	if ret == "uint" {
-		ret = "uint32"
-	}
-
-	return ret
+	return p.RenderReturnTypeBeef(bfs, true)
 }
 
 func (bfs *bfFileState) emitCabiToBeef(assignExpr string, rt CppParameter, rvalue string) string {
@@ -481,14 +350,14 @@ func (bfs *bfFileState) emitParametersBeef2CABIForwarding(m CppMethod, isSlot bo
 	return strings.Join(tmp, ", ")
 }
 
-func (bfs *bfFileState) EmitParametersBeef(params []CppParameter, isSlot bool) string {
+func (bfs *bfFileState) EmitParametersBeefAPI(params []CppParameter, isSlot bool) string {
 	tmp := make([]string, 0, len(params))
 	// skipNext := false
 
 	for _, p := range params {
 		// Ordinary parameter
 		paramName := p.ParameterName
-		paramType := p.RenderTypeBeef(bfs, false, false)
+		paramType := p.RenderTypeBeefAPI(bfs, false, false)
 
 		if beefReservedWord(paramName) {
 			paramName = "_" + paramName
@@ -504,10 +373,10 @@ func (bfs *bfFileState) EmitParametersBeef(params []CppParameter, isSlot bool) s
 	return strings.Join(tmp, ", ")
 }
 
-func (bfs *bfFileState) EmitArgumentsBeef(m CppMethod) (forwarding string) {
+func (bfs *bfFileState) EmitArgumentsBeef(m CppMethod, forStructHandle bool) (forwarding string) {
 	tmp := make([]string, 0, len(m.Parameters)+2)
 
-	if !m.IsStatic {
+	if !m.IsStatic && forStructHandle {
 		tmp = append(tmp, "this.nativePtr")
 	}
 
@@ -524,30 +393,42 @@ func (bfs *bfFileState) EmitArgumentsBeef(m CppMethod) (forwarding string) {
 				paramName = "_" + paramName
 			}
 
-			beefType := p.RenderReturnTypeBeef(bfs)
-			beefAPIType := p.RenderReturnTypeBeefCABI(bfs)
+			beefType := p.RenderReturnTypeBeefAPI(bfs)
+			beefABIType := p.RenderReturnTypeBeefCABI(bfs)
 
-			if beefType == "String" {
+			if beefType == "String" && forStructHandle {
 				tmp = append(tmp, "libqt_string("+paramName+")")
+			} else if beefABIType == "void" {
+				tmp = append(tmp, "default")
 			} else {
-				if p.QtClassType() && beefType != "void*" && beefType != "String" {
-					var defaultVal string
-					if p.Pointer {
-						defaultVal = "null"
-					} else {
+				if p.QtClassType() && beefType != "void*" && beefType != "void**" && beefType != "char8*" && beefType != "String" {
+					if forStructHandle {
+						var defaultVal string
 						defaultVal = "default"
+
+						interfaceCheck := paramName + " == " + defaultVal
+
+						paramName += ".NativePtr"
+						nativePtrCheck := paramName + " == " + defaultVal
+						cast += "(" + interfaceCheck + " || " + nativePtrCheck + ")" + " ? " + defaultVal + " : "
+
+						paramName += ""
+
+						/*
+							if beefType != "void" {
+								cast += "("
+								cast += beefAPIType
+								// cast += strings.Repeat("*", p.PointerCount)
+								cast += ")"
+							}
+						*/
+
 					}
+				}
 
-					cast += "(" + paramName + " == " + defaultVal + ")" + " ? " + defaultVal + " : "
-
-					paramName += ".NativePtr"
-
-					if beefType != "void" {
-						cast += "("
-						cast += beefAPIType
-						// cast += strings.Repeat("*", p.PointerCount)
-						cast += ")"
-					}
+				// Is enum
+				if _, ok := KnownEnums[p.ParameterType]; ok && forStructHandle {
+					cast += "(" + "int64" + ")"
 				}
 
 				tmp = append(tmp, cast+paramName)
@@ -662,6 +543,316 @@ func beef_emitClassStruct(c *CppClass, ret *CodeBuilder, bfs *bfFileState) {
 	// End class body
 }
 
+func emitBeefClass(c *CppClass, ret *CodeBuilder, bfs *bfFileState, isHandle bool) {
+	if c.ClassName == "QWebEngineCookieStore::FilterRequest" {
+		return
+	}
+
+	isDisposable := c.CanDelete && (len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0)
+
+	virtualMethods := c.VirtualMethods()
+
+	baseMethods := c.Methods
+	protectedMethods := c.ProtectedMethods()
+	virtualEligible := AllowVirtualForClass(c.ClassName)
+
+	if virtualEligible && len(virtualMethods) > 0 {
+		virtualMethods = append(virtualMethods, protectedMethods...)
+	}
+
+	seenMethods := make(map[string]struct{})
+	var inheritedMethods []InheritedMethod
+	for _, base := range c.DirectInherits {
+		inherited := collectInheritedMethodsForBeef(base, seenMethods)
+		if inherited != nil {
+			inheritedMethods = append(inheritedMethods, inherited...)
+		}
+	}
+
+	for _, im := range inheritedMethods {
+		im.Method.InheritedFrom = im.SourceClass
+		baseMethods = append(baseMethods, im.Method)
+	}
+
+	// previousMethods := map[string]struct{}{}
+	seenMethodVariants := map[string]bool{}
+
+	if isHandle {
+		ret.WriteLine("public struct " + cabiClassName(c.ClassName) + Beef_Handle_Str)
+	} else {
+		ret.WriteLine("public class " + cabiClassName(c.ClassName))
+	}
+
+	// Inheritance string
+	if isHandle {
+		var inheritStr strings.Builder
+		var inheritCount int
+		{
+			for i, base := range c.DirectInherits {
+
+				if strings.HasPrefix(base, `QList<`) {
+
+					inheritStr.WriteString(" // Also inherits unprojectable " + base)
+
+				} else {
+					inheritStr.WriteString("I" + cabiClassName(base))
+					if i < len(c.DirectInherits)-1 {
+						inheritStr.WriteString(", ")
+					}
+					inheritCount++
+				}
+			}
+		}
+
+		ret.WriteString(" : " + "I" + cabiClassName(c.ClassName))
+
+		if isHandle && isDisposable {
+			ret.WriteString(", IDisposable")
+		}
+
+		if inheritCount > 0 {
+			ret.WriteString(", ")
+		}
+		ret.WriteString(inheritStr.String())
+	}
+
+	ret.WriteLine("{")
+	ret.IncreaseTab()
+	{
+		// Ptr member variable
+		if isHandle {
+			ret.WriteLine("protected void* nativePtr;")
+			ret.WriteLine("public void* NativePtr => nativePtr;")
+		} else {
+			ret.WriteLine("public " + cabiClassName(c.ClassName) + Beef_Handle_Str + " " + "handle;")
+		}
+		ret.WriteEmptyLine()
+
+		// ---------------------------------------------------------------------
+		// Methods
+		// ---------------------------------------------------------------------
+
+		UNUSED(baseMethods)
+		UNUSED(protectedMethods)
+		UNUSED(virtualEligible)
+
+		seenCtors := make(map[string]struct{})
+
+		if isHandle {
+			ret.WriteLine("public this(void* ptr)")
+			ret.WriteLine("{")
+			ret.IncreaseTab()
+			{
+				ret.WriteLine("this.nativePtr = ptr;")
+			}
+			ret.DecreaseTab()
+			ret.WriteLine("}")
+		} else {
+			ret.WriteLine("public static implicit operator " + cabiClassName(c.ClassName) + Beef_Handle_Str + "(Self self)")
+			ret.WriteLine("{")
+			ret.IncreaseTab()
+			{
+				ret.WriteLine("return self.handle;")
+			}
+			ret.DecreaseTab()
+			ret.WriteLine("}")
+		}
+
+		if len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0 {
+			ret.WriteEmptyLine()
+		}
+
+		for i, ctor := range c.Ctors {
+
+			_, ok := seenCtors[ctor.MethodName]
+			if ok {
+				continue
+			}
+
+			/*
+				cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
+
+				ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+				ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + ".Ptr*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
+			*/
+
+			cname := ""
+
+			if isHandle {
+				cname = "static Self New"
+			} else {
+				cname = "this"
+			}
+
+			ret.WriteLine("public " + cname + "(" + bfs.EmitParametersBeefAPI(ctor.Parameters, false) + ")")
+			ret.WriteLine("{")
+			ret.IncreaseTab()
+			{
+				args := bfs.EmitArgumentsBeef(ctor, isHandle)
+				if isHandle {
+					cqtCall := beefCtorName(c, i) + "(" + args + ")"
+					ret.WriteLine("return .(CQt." + cqtCall + ");")
+				} else {
+					// ret.WriteLine("this.nativePtr = *Ptr." + beefCtorName(&c, i) + "(" + args + ");")
+					// ret.WriteLine("this.nativePtr = CQt." + cqtCall + ";")
+
+					ret.WriteLine("this.handle = " + cabiClassName(c.ClassName) + Beef_Handle_Str + ".New(" + args + ");")
+
+					// New function?
+					/*
+						ret.WriteLine("return new Self()")
+						ret.WriteLine("{")
+						ret.IncreaseTab()
+						{
+							ret.WriteLine("nativePtr = Ptr." + beefCtorName(&c, i) + "(" + args + ")")
+						}
+						ret.DecreaseTab()
+						ret.WriteLine("};")
+					*/
+				}
+			}
+			ret.DecreaseTab()
+			ret.WriteLine("}")
+
+			if len(baseMethods) > 0 {
+				ret.WriteEmptyLine()
+			}
+
+			seenCtors[ctor.MethodName] = struct{}{}
+		}
+
+		if isDisposable {
+			if isHandle {
+				ret.WriteLine("public void Dispose()")
+			} else {
+				ret.WriteLine("public ~this()")
+			}
+			ret.WriteLine("{")
+			ret.IncreaseTab()
+			{
+				cMethodName := cabiClassName(c.ClassName) + "_Delete"
+				if isHandle {
+					ret.WriteLine("CQt." + cMethodName + "(this.nativePtr);")
+				} else {
+					ret.WriteLine("this.handle.Dispose();")
+				}
+			}
+			ret.DecreaseTab()
+			ret.WriteLine("}")
+
+			if len(baseMethods) > 0 {
+				ret.WriteEmptyLine()
+			}
+		}
+
+		for _, m := range baseMethods {
+
+			if m.IsProtected && m.InheritedFrom != "" {
+				continue
+			}
+
+			if m.IsProtected && !virtualEligible {
+				continue
+			}
+
+			if _, ok := privateAndSkippedMethods[c.ClassName+"_"+m.SafeMethodName()]; ok {
+				if m.InheritedFrom == "" {
+					continue
+				}
+			}
+
+			var showHiddenParams bool
+			if _, ok := seenMethodVariants[m.SafeMethodName()]; ok {
+				continue
+			}
+			if b, ok := seenMethodVariants[m.MethodName]; ok {
+				if b {
+					continue
+				} else {
+					showHiddenParams = true
+					seenMethodVariants[m.MethodName] = true
+				}
+			}
+			seenMethodVariants[m.MethodName] = false
+			seenMethodVariants[m.SafeMethodName()] = false
+
+			UNUSED(showHiddenParams)
+
+			writeEmptyLine := false
+
+			var methodPrefixName string
+			if m.InheritedFrom != "" {
+				methodPrefixName = cabiClassName(m.InheritedFrom)
+			} else {
+				methodPrefixName = cabiClassName(c.ClassName)
+			}
+			cMethodName := methodPrefixName + "_" + m.SafeMethodName()
+
+			if m.IsSignal {
+				/*
+					addConnect := true
+					if _, ok := noQtConnect[methodPrefixName]; ok {
+						addConnect = false
+					}
+					if addConnect {
+						cMethodName := methodPrefixName + "_Connect_" + m.SafeMethodName()
+
+						ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
+						ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(Self* c_this, c_intptr slot);")
+						// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
+						writeEmptyLine = true
+					}
+				*/
+			} else {
+
+				staticStr := ""
+				if m.IsStatic {
+					staticStr += "static "
+				}
+				if m.IsVirtual && !isHandle {
+					staticStr += "virtual "
+				}
+
+				// args
+				args := bfs.EmitArgumentsBeef(m, isHandle)
+				returnType := m.ReturnType.RenderReturnTypeBeefCABI(bfs)
+
+				ret.WriteLine("public " + staticStr + returnType + " " + m.SafeMethodName() + "(" + bfs.EmitParametersBeefAPI(m.Parameters, false) + ")")
+				ret.WriteLine("{")
+				ret.IncreaseTab()
+				{
+					ret.AppendNewLine()
+					ret.AppendTabs(ret.tabCount)
+					if returnType != "void" {
+						ret.WriteString("return ")
+					}
+					if isHandle {
+						ret.WriteString("CQt." + cMethodName + "(" + args + ");")
+					} else {
+						methodCall := m.SafeMethodName() + "(" + args + ")"
+						if m.IsStatic {
+							ret.WriteString(cabiClassName(c.ClassName) + Beef_Handle_Str + "." + methodCall + ";")
+						} else {
+							ret.WriteString("this.handle." + methodCall + ";")
+						}
+					}
+				}
+				ret.DecreaseTab()
+				ret.WriteLine("}")
+
+				writeEmptyLine = true
+			}
+
+			if writeEmptyLine {
+				ret.WriteEmptyLine()
+			}
+		}
+	}
+
+	ret.DecreaseTab()
+	ret.WriteLine("}")
+}
+
 func emitBeef(src *CppParsedHeader, headerName string, packageName string) (string, error) {
 	if len(src.Classes) == 0 && len(src.Enums) == 0 {
 		return "", nil
@@ -707,37 +898,6 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 	// Classes
 	// ---------------------------------------------------------------------
 	for _, c := range src.Classes {
-		if c.ClassName == "QWebEngineCookieStore::FilterRequest" {
-			continue
-		}
-
-		virtualMethods := c.VirtualMethods()
-
-		baseMethods := c.Methods
-		protectedMethods := c.ProtectedMethods()
-		virtualEligible := AllowVirtualForClass(c.ClassName)
-
-		if virtualEligible && len(virtualMethods) > 0 {
-			virtualMethods = append(virtualMethods, protectedMethods...)
-		}
-
-		seenMethods := make(map[string]struct{})
-		var inheritedMethods []InheritedMethod
-		for _, base := range c.DirectInherits {
-			inherited := collectInheritedMethodsForBeef(base, seenMethods)
-			if inherited != nil {
-				inheritedMethods = append(inheritedMethods, inherited...)
-			}
-		}
-
-		for _, im := range inheritedMethods {
-			im.Method.InheritedFrom = im.SourceClass
-			baseMethods = append(baseMethods, im.Method)
-		}
-
-		// previousMethods := map[string]struct{}{}
-		seenMethodVariants := map[string]bool{}
-
 		ret.WriteLine("public interface I" + cabiClassName(c.ClassName))
 		ret.WriteLine("{")
 		ret.IncreaseTab()
@@ -747,214 +907,8 @@ func emitBeef(src *CppParsedHeader, headerName string, packageName string) (stri
 		ret.DecreaseTab()
 		ret.WriteLine("}")
 
-		ret.WriteLine("public class " + cabiClassName(c.ClassName))
-
-		// Inheritance string
-		{
-			var inheritStr strings.Builder
-			var inheritCount int
-			{
-				for i, base := range c.DirectInherits {
-
-					if strings.HasPrefix(base, `QList<`) {
-
-						inheritStr.WriteString(" // Also inherits unprojectable " + base)
-
-					} else {
-						inheritStr.WriteString("I" + cabiClassName(base))
-						if i < len(c.DirectInherits)-1 {
-							inheritStr.WriteString(", ")
-						}
-						inheritCount++
-					}
-				}
-			}
-
-			ret.WriteString(" : " + "I" + cabiClassName(c.ClassName))
-			if inheritCount > 0 {
-				ret.WriteString(", ")
-			}
-			ret.WriteString(inheritStr.String())
-		}
-
-		ret.WriteLine("{")
-		ret.IncreaseTab()
-		{
-			// Ptr member variable
-			if true {
-				ret.WriteLine("protected void* nativePtr;")
-				ret.WriteLine("public void* NativePtr => nativePtr;")
-				if len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0 {
-					ret.WriteEmptyLine()
-				}
-			}
-
-			// ---------------------------------------------------------------------
-			// Methods
-			// ---------------------------------------------------------------------
-
-			UNUSED(baseMethods)
-			UNUSED(protectedMethods)
-			UNUSED(virtualEligible)
-
-			seenCtors := make(map[string]struct{})
-
-			for i, ctor := range c.Ctors {
-
-				_, ok := seenCtors[ctor.MethodName]
-				if ok {
-					continue
-				}
-
-				/*
-					cMethodName := methodPrefixName + "_new" + maybeSuffix(i)
-
-					ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-					ret.WriteLine("public static extern " + cabiClassName(c.ClassName) + ".Ptr*" + " " + cMethodName + "(" + bfs.emitParametersBeef2CABIForwarding(ctor, false) + ");")
-				*/
-
-				ret.WriteLine("public this" + "(" + bfs.EmitParametersBeef(ctor.Parameters, false) + ")")
-				ret.WriteLine("{")
-				ret.IncreaseTab()
-				{
-					// ret.WriteLine("this.nativePtr = *Ptr." + beefCtorName(&c, i) + "(" + args + ");")
-					ret.WriteLine("this.nativePtr = CQt." + beefCtorName(&c, i) + "(" + bfs.EmitArgumentsBeef(ctor) + ");")
-
-					// New function?
-					/*
-						ret.WriteLine("return new Self()")
-						ret.WriteLine("{")
-						ret.IncreaseTab()
-						{
-							ret.WriteLine("nativePtr = Ptr." + beefCtorName(&c, i) + "(" + args + ")")
-						}
-						ret.DecreaseTab()
-						ret.WriteLine("};")
-					*/
-				}
-				ret.DecreaseTab()
-				ret.WriteLine("}")
-
-				if len(baseMethods) > 0 {
-					ret.WriteEmptyLine()
-				}
-
-				seenCtors[ctor.MethodName] = struct{}{}
-			}
-
-			if c.CanDelete && (len(c.Methods) > 0 || len(c.VirtualMethods()) > 0 || len(c.Ctors) > 0) {
-				ret.WriteLine("public ~this()")
-				ret.WriteLine("{")
-				ret.IncreaseTab()
-				{
-					cMethodName := cabiClassName(c.ClassName) + "_Delete"
-					ret.WriteLine("CQt." + cMethodName + "(this.nativePtr);")
-				}
-				ret.DecreaseTab()
-				ret.WriteLine("}")
-
-				if len(baseMethods) > 0 {
-					ret.WriteEmptyLine()
-				}
-			}
-
-			for _, m := range baseMethods {
-
-				if m.IsProtected && m.InheritedFrom != "" {
-					continue
-				}
-
-				if m.IsProtected && !virtualEligible {
-					continue
-				}
-
-				if _, ok := privateAndSkippedMethods[c.ClassName+"_"+m.SafeMethodName()]; ok {
-					if m.InheritedFrom == "" {
-						continue
-					}
-				}
-
-				var showHiddenParams bool
-				if _, ok := seenMethodVariants[m.SafeMethodName()]; ok {
-					continue
-				}
-				if b, ok := seenMethodVariants[m.MethodName]; ok {
-					if b {
-						continue
-					} else {
-						showHiddenParams = true
-						seenMethodVariants[m.MethodName] = true
-					}
-				}
-				seenMethodVariants[m.MethodName] = false
-				seenMethodVariants[m.SafeMethodName()] = false
-
-				UNUSED(showHiddenParams)
-
-				writeEmptyLine := false
-
-				var methodPrefixName string
-				if m.InheritedFrom != "" {
-					methodPrefixName = cabiClassName(m.InheritedFrom)
-				} else {
-					methodPrefixName = cabiClassName(c.ClassName)
-				}
-				cMethodName := methodPrefixName + "_" + m.SafeMethodName()
-
-				if m.IsSignal {
-					/*
-						addConnect := true
-						if _, ok := noQtConnect[methodPrefixName]; ok {
-							addConnect = false
-						}
-						if addConnect {
-							cMethodName := methodPrefixName + "_Connect_" + m.SafeMethodName()
-
-							ret.WriteLine("[LinkName(" + `"` + cMethodName + `"` + ")]")
-							ret.WriteLine("public static extern " + m.ReturnType.renderReturnTypeBeef(&bfs) + " " + cMethodName + "(Self* c_this, c_intptr slot);")
-							// ret.WriteString(fmt.Sprintf("%s %s_Connect_%s(%s* self, intptr_t slot);\n", m.ReturnType.RenderTypeCabi(), methodPrefixName, m.SafeMethodName(), methodPrefixName))
-							writeEmptyLine = true
-						}
-					*/
-				} else {
-
-					staticStr := ""
-					if m.IsStatic {
-						staticStr += "static "
-					}
-					if m.IsVirtual {
-						staticStr += "virtual "
-					}
-
-					// args
-					args := bfs.EmitArgumentsBeef(m)
-					returnType := m.ReturnType.RenderReturnTypeBeefCABI(&bfs)
-
-					ret.WriteLine("public " + staticStr + returnType + " " + m.SafeMethodName() + "(" + bfs.EmitParametersBeef(m.Parameters, false) + ")")
-					ret.WriteLine("{")
-					ret.IncreaseTab()
-					{
-						ret.AppendNewLine()
-						ret.AppendTabs(ret.tabCount)
-						if returnType != "void" {
-							ret.WriteString("return ")
-						}
-						ret.WriteString("CQt." + cMethodName + "(" + args + ");")
-					}
-					ret.DecreaseTab()
-					ret.WriteLine("}")
-
-					writeEmptyLine = true
-				}
-
-				if writeEmptyLine {
-					ret.WriteEmptyLine()
-				}
-			}
-		}
-
-		ret.DecreaseTab()
-		ret.WriteLine("}")
+		emitBeefClass(&c, &ret, &bfs, true)
+		emitBeefClass(&c, &ret, &bfs, false)
 
 		// Ptr struct
 		beef_emitClassStruct(&c, &ret, &bfs)

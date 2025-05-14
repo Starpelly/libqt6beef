@@ -6,24 +6,29 @@ public interface IQRandomGenerator
 {
 	void* NativePtr { get; }
 }
-public class QRandomGenerator : IQRandomGenerator
+public struct QRandomGeneratorPtr : IQRandomGenerator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRandomGenerator_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRandomGenerator_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRandomGenerator_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQRandomGenerator other)
 	{
-		CQt.QRandomGenerator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRandomGenerator_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public uint32 Generate()
@@ -157,6 +162,161 @@ public class QRandomGenerator : IQRandomGenerator
 	}
 	
 }
+public class QRandomGenerator
+{
+	public QRandomGeneratorPtr handle;
+	
+	public static implicit operator QRandomGeneratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRandomGeneratorPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQRandomGenerator other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public uint32 Generate()
+	{
+		return this.handle.Generate();
+	}
+	
+	public uint64 Generate64()
+	{
+		return this.handle.Generate64();
+	}
+	
+	public double GenerateDouble()
+	{
+		return this.handle.GenerateDouble();
+	}
+	
+	public double Bounded(double highest)
+	{
+		return this.handle.Bounded(highest);
+	}
+	
+	public uint32 BoundedWithHighest(uint32 highest)
+	{
+		return this.handle.BoundedWithHighest(highest);
+	}
+	
+	public uint32 Bounded2(uint32 lowest, uint32 highest)
+	{
+		return this.handle.Bounded2(lowest, highest);
+	}
+	
+	public int32 Bounded3(int32 highest)
+	{
+		return this.handle.Bounded3(highest);
+	}
+	
+	public int32 Bounded4(int32 lowest, int32 highest)
+	{
+		return this.handle.Bounded4(lowest, highest);
+	}
+	
+	public uint64 Bounded5(uint64 highest)
+	{
+		return this.handle.Bounded5(highest);
+	}
+	
+	public uint64 Bounded6(uint64 lowest, uint64 highest)
+	{
+		return this.handle.Bounded6(lowest, highest);
+	}
+	
+	public int64 Bounded7(int64 highest)
+	{
+		return this.handle.Bounded7(highest);
+	}
+	
+	public int64 Bounded8(int64 lowest, int64 highest)
+	{
+		return this.handle.Bounded8(lowest, highest);
+	}
+	
+	public int64 Bounded9(int32 lowest, int64 highest)
+	{
+		return this.handle.Bounded9(lowest, highest);
+	}
+	
+	public int64 Bounded10(int64 lowest, int32 highest)
+	{
+		return this.handle.Bounded10(lowest, highest);
+	}
+	
+	public uint64 Bounded11(uint32 lowest, uint64 highest)
+	{
+		return this.handle.Bounded11(lowest, highest);
+	}
+	
+	public uint64 Bounded12(uint64 lowest, uint32 highest)
+	{
+		return this.handle.Bounded12(lowest, highest);
+	}
+	
+	public void Generate2(uint32* begin, uint32* end)
+	{
+		this.handle.Generate2(begin, end);
+	}
+	
+	public uint32 OperatorCall()
+	{
+		return this.handle.OperatorCall();
+	}
+	
+	public void Seed()
+	{
+		this.handle.Seed();
+	}
+	
+	public void Discard(uint64 z)
+	{
+		this.handle.Discard(z);
+	}
+	
+	public static uint32 Min()
+	{
+		return QRandomGeneratorPtr.Min();
+	}
+	
+	public static uint32 Max()
+	{
+		return QRandomGeneratorPtr.Max();
+	}
+	
+	public static void* System()
+	{
+		return QRandomGeneratorPtr.System();
+	}
+	
+	public static void* Global()
+	{
+		return QRandomGeneratorPtr.Global();
+	}
+	
+	public static void SecurelySeeded()
+	{
+		QRandomGeneratorPtr.SecurelySeeded();
+	}
+	
+	public void Seed1(uint32 s)
+	{
+		this.handle.Seed1(s);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QRandomGenerator_new")]
@@ -231,17 +391,22 @@ public interface IQRandomGenerator64
 {
 	void* NativePtr { get; }
 }
-public class QRandomGenerator64 : IQRandomGenerator64, IQRandomGenerator
+public struct QRandomGenerator64Ptr : IQRandomGenerator64, IDisposable, IQRandomGenerator
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRandomGenerator64_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRandomGenerator64_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRandomGenerator64_Delete(this.nativePtr);
 	}
@@ -288,7 +453,7 @@ public class QRandomGenerator64 : IQRandomGenerator64, IQRandomGenerator
 	
 	public void OperatorAssign(IQRandomGenerator64 param1)
 	{
-		CQt.QRandomGenerator64_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QRandomGenerator64_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public uint64 Generate64()
@@ -379,6 +544,161 @@ public class QRandomGenerator64 : IQRandomGenerator64, IQRandomGenerator
 	public void Seed1(uint32 s)
 	{
 		CQt.QRandomGenerator_Seed1(this.nativePtr, s);
+	}
+	
+}
+public class QRandomGenerator64
+{
+	public QRandomGenerator64Ptr handle;
+	
+	public static implicit operator QRandomGenerator64Ptr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRandomGenerator64Ptr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public uint64 Generate()
+	{
+		return this.handle.Generate();
+	}
+	
+	public uint64 OperatorCall()
+	{
+		return this.handle.OperatorCall();
+	}
+	
+	public void Discard(uint64 z)
+	{
+		this.handle.Discard(z);
+	}
+	
+	public static uint64 Min()
+	{
+		return QRandomGenerator64Ptr.Min();
+	}
+	
+	public static uint64 Max()
+	{
+		return QRandomGenerator64Ptr.Max();
+	}
+	
+	public static void* System()
+	{
+		return QRandomGenerator64Ptr.System();
+	}
+	
+	public static void* Global()
+	{
+		return QRandomGenerator64Ptr.Global();
+	}
+	
+	public static void SecurelySeeded()
+	{
+		QRandomGenerator64Ptr.SecurelySeeded();
+	}
+	
+	public void OperatorAssign(IQRandomGenerator64 param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public uint64 Generate64()
+	{
+		return this.handle.Generate64();
+	}
+	
+	public double GenerateDouble()
+	{
+		return this.handle.GenerateDouble();
+	}
+	
+	public double Bounded(double highest)
+	{
+		return this.handle.Bounded(highest);
+	}
+	
+	public uint32 BoundedWithHighest(uint32 highest)
+	{
+		return this.handle.BoundedWithHighest(highest);
+	}
+	
+	public uint32 Bounded2(uint32 lowest, uint32 highest)
+	{
+		return this.handle.Bounded2(lowest, highest);
+	}
+	
+	public int32 Bounded3(int32 highest)
+	{
+		return this.handle.Bounded3(highest);
+	}
+	
+	public int32 Bounded4(int32 lowest, int32 highest)
+	{
+		return this.handle.Bounded4(lowest, highest);
+	}
+	
+	public uint64 Bounded5(uint64 highest)
+	{
+		return this.handle.Bounded5(highest);
+	}
+	
+	public uint64 Bounded6(uint64 lowest, uint64 highest)
+	{
+		return this.handle.Bounded6(lowest, highest);
+	}
+	
+	public int64 Bounded7(int64 highest)
+	{
+		return this.handle.Bounded7(highest);
+	}
+	
+	public int64 Bounded8(int64 lowest, int64 highest)
+	{
+		return this.handle.Bounded8(lowest, highest);
+	}
+	
+	public int64 Bounded9(int32 lowest, int64 highest)
+	{
+		return this.handle.Bounded9(lowest, highest);
+	}
+	
+	public int64 Bounded10(int64 lowest, int32 highest)
+	{
+		return this.handle.Bounded10(lowest, highest);
+	}
+	
+	public uint64 Bounded11(uint32 lowest, uint64 highest)
+	{
+		return this.handle.Bounded11(lowest, highest);
+	}
+	
+	public uint64 Bounded12(uint64 lowest, uint32 highest)
+	{
+		return this.handle.Bounded12(lowest, highest);
+	}
+	
+	public void Generate2(uint32* begin, uint32* end)
+	{
+		this.handle.Generate2(begin, end);
+	}
+	
+	public void Seed()
+	{
+		this.handle.Seed();
+	}
+	
+	public void Seed1(uint32 s)
+	{
+		this.handle.Seed1(s);
 	}
 	
 }

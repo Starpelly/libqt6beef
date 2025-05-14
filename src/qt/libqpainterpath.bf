@@ -14,29 +14,34 @@ public interface IQPainterPath
 {
 	void* NativePtr { get; }
 }
-public class QPainterPath : IQPainterPath
+public struct QPainterPathPtr : IQPainterPath, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPainterPath_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPainterPath_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPainterPath_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQPainterPath other)
 	{
-		CQt.QPainterPath_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Clear()
@@ -61,7 +66,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void MoveTo(IQPointF p)
 	{
-		CQt.QPainterPath_MoveTo(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QPainterPath_MoveTo(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveTo2(double x, double y)
@@ -71,7 +76,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void LineTo(IQPointF p)
 	{
-		CQt.QPainterPath_LineTo(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QPainterPath_LineTo(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void LineTo2(double x, double y)
@@ -81,7 +86,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void ArcMoveTo(IQRectF rect, double angle)
 	{
-		CQt.QPainterPath_ArcMoveTo(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, angle);
+		CQt.QPainterPath_ArcMoveTo(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, angle);
 	}
 	
 	public void ArcMoveTo2(double x, double y, double w, double h, double angle)
@@ -91,7 +96,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void ArcTo(IQRectF rect, double startAngle, double arcLength)
 	{
-		CQt.QPainterPath_ArcTo(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, startAngle, arcLength);
+		CQt.QPainterPath_ArcTo(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, startAngle, arcLength);
 	}
 	
 	public void ArcTo2(double x, double y, double w, double h, double startAngle, double arcLength)
@@ -101,7 +106,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void CubicTo(IQPointF ctrlPt1, IQPointF ctrlPt2, IQPointF endPt)
 	{
-		CQt.QPainterPath_CubicTo(this.nativePtr, (ctrlPt1 == default) ? default : (void*)ctrlPt1.NativePtr, (ctrlPt2 == default) ? default : (void*)ctrlPt2.NativePtr, (endPt == default) ? default : (void*)endPt.NativePtr);
+		CQt.QPainterPath_CubicTo(this.nativePtr, (ctrlPt1 == default || ctrlPt1.NativePtr == default) ? default : ctrlPt1.NativePtr, (ctrlPt2 == default || ctrlPt2.NativePtr == default) ? default : ctrlPt2.NativePtr, (endPt == default || endPt.NativePtr == default) ? default : endPt.NativePtr);
 	}
 	
 	public void CubicTo2(double ctrlPt1x, double ctrlPt1y, double ctrlPt2x, double ctrlPt2y, double endPtx, double endPty)
@@ -111,7 +116,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void QuadTo(IQPointF ctrlPt, IQPointF endPt)
 	{
-		CQt.QPainterPath_QuadTo(this.nativePtr, (ctrlPt == default) ? default : (void*)ctrlPt.NativePtr, (endPt == default) ? default : (void*)endPt.NativePtr);
+		CQt.QPainterPath_QuadTo(this.nativePtr, (ctrlPt == default || ctrlPt.NativePtr == default) ? default : ctrlPt.NativePtr, (endPt == default || endPt.NativePtr == default) ? default : endPt.NativePtr);
 	}
 	
 	public void QuadTo2(double ctrlPtx, double ctrlPty, double endPtx, double endPty)
@@ -126,7 +131,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void AddRect(IQRectF rect)
 	{
-		CQt.QPainterPath_AddRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QPainterPath_AddRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void AddRect2(double x, double y, double w, double h)
@@ -136,7 +141,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void AddEllipse(IQRectF rect)
 	{
-		CQt.QPainterPath_AddEllipse(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QPainterPath_AddEllipse(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void AddEllipse2(double x, double y, double w, double h)
@@ -146,32 +151,32 @@ public class QPainterPath : IQPainterPath
 	
 	public void AddEllipse3(IQPointF center, double rx, double ry)
 	{
-		CQt.QPainterPath_AddEllipse3(this.nativePtr, (center == default) ? default : (void*)center.NativePtr, rx, ry);
+		CQt.QPainterPath_AddEllipse3(this.nativePtr, (center == default || center.NativePtr == default) ? default : center.NativePtr, rx, ry);
 	}
 	
 	public void AddText(IQPointF point, IQFont f, String text)
 	{
-		CQt.QPainterPath_AddText(this.nativePtr, (point == default) ? default : (void*)point.NativePtr, (f == default) ? default : (void*)f.NativePtr, libqt_string(text));
+		CQt.QPainterPath_AddText(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr, (f == default || f.NativePtr == default) ? default : f.NativePtr, libqt_string(text));
 	}
 	
 	public void AddText2(double x, double y, IQFont f, String text)
 	{
-		CQt.QPainterPath_AddText2(this.nativePtr, x, y, (f == default) ? default : (void*)f.NativePtr, libqt_string(text));
+		CQt.QPainterPath_AddText2(this.nativePtr, x, y, (f == default || f.NativePtr == default) ? default : f.NativePtr, libqt_string(text));
 	}
 	
 	public void AddPath(IQPainterPath path)
 	{
-		CQt.QPainterPath_AddPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
+		CQt.QPainterPath_AddPath(this.nativePtr, (path == default || path.NativePtr == default) ? default : path.NativePtr);
 	}
 	
 	public void AddRegion(IQRegion region)
 	{
-		CQt.QPainterPath_AddRegion(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
+		CQt.QPainterPath_AddRegion(this.nativePtr, (region == default || region.NativePtr == default) ? default : region.NativePtr);
 	}
 	
 	public void AddRoundedRect(IQRectF rect, double xRadius, double yRadius)
 	{
-		CQt.QPainterPath_AddRoundedRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xRadius, yRadius);
+		CQt.QPainterPath_AddRoundedRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, xRadius, yRadius);
 	}
 	
 	public void AddRoundedRect2(double x, double y, double w, double h, double xRadius, double yRadius)
@@ -181,22 +186,22 @@ public class QPainterPath : IQPainterPath
 	
 	public void ConnectPath(IQPainterPath path)
 	{
-		CQt.QPainterPath_ConnectPath(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
+		CQt.QPainterPath_ConnectPath(this.nativePtr, (path == default || path.NativePtr == default) ? default : path.NativePtr);
 	}
 	
 	public bool Contains(IQPointF pt)
 	{
-		return CQt.QPainterPath_Contains(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QPainterPath_Contains(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public bool ContainsWithRect(IQRectF rect)
 	{
-		return CQt.QPainterPath_ContainsWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		return CQt.QPainterPath_ContainsWithRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public bool Intersects(IQRectF rect)
 	{
-		return CQt.QPainterPath_Intersects(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		return CQt.QPainterPath_Intersects(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Translate(double dx, double dy)
@@ -206,7 +211,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void TranslateWithOffset(IQPointF offset)
 	{
-		CQt.QPainterPath_TranslateWithOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
+		CQt.QPainterPath_TranslateWithOffset(this.nativePtr, (offset == default || offset.NativePtr == default) ? default : offset.NativePtr);
 	}
 	
 	public void Translated(double dx, double dy)
@@ -216,7 +221,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void TranslatedWithOffset(IQPointF offset)
 	{
-		CQt.QPainterPath_TranslatedWithOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
+		CQt.QPainterPath_TranslatedWithOffset(this.nativePtr, (offset == default || offset.NativePtr == default) ? default : offset.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -236,7 +241,7 @@ public class QPainterPath : IQPainterPath
 	
 	public void SetFillRule(int64 fillRule)
 	{
-		CQt.QPainterPath_SetFillRule(this.nativePtr, fillRule);
+		CQt.QPainterPath_SetFillRule(this.nativePtr, (int64)fillRule);
 	}
 	
 	public bool IsEmpty()
@@ -291,27 +296,27 @@ public class QPainterPath : IQPainterPath
 	
 	public bool IntersectsWithQPainterPath(IQPainterPath p)
 	{
-		return CQt.QPainterPath_IntersectsWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPainterPath_IntersectsWithQPainterPath(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public bool ContainsWithQPainterPath(IQPainterPath p)
 	{
-		return CQt.QPainterPath_ContainsWithQPainterPath(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QPainterPath_ContainsWithQPainterPath(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void United(IQPainterPath r)
 	{
-		CQt.QPainterPath_United(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QPainterPath_United(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Intersected(IQPainterPath r)
 	{
-		CQt.QPainterPath_Intersected(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QPainterPath_Intersected(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Subtracted(IQPainterPath r)
 	{
-		CQt.QPainterPath_Subtracted(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QPainterPath_Subtracted(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void Simplified()
@@ -321,62 +326,432 @@ public class QPainterPath : IQPainterPath
 	
 	public bool OperatorEqual(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QPainterPath_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QPainterPath_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorBitwiseAnd(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseAnd(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorBitwiseAnd(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorBitwiseOr(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseOr(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorBitwiseOr(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorPlus(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorPlus(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorPlus(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorMinus(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorMinus(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorMinus(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseAndAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorBitwiseAndAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorBitwiseOrAssign(IQPainterPath other)
 	{
-		CQt.QPainterPath_OperatorBitwiseOrAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPainterPath_OperatorBitwiseOrAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorPlusAssign(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorPlusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QPainterPath_OperatorPlusAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQPainterPath other)
 	{
-		return CQt.QPainterPath_OperatorMinusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QPainterPath_OperatorMinusAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void AddRoundedRect4(IQRectF rect, double xRadius, double yRadius, int64 mode)
 	{
-		CQt.QPainterPath_AddRoundedRect4(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr, xRadius, yRadius, mode);
+		CQt.QPainterPath_AddRoundedRect4(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, xRadius, yRadius, (int64)mode);
 	}
 	
 	public void AddRoundedRect7(double x, double y, double w, double h, double xRadius, double yRadius, int64 mode)
 	{
-		CQt.QPainterPath_AddRoundedRect7(this.nativePtr, x, y, w, h, xRadius, yRadius, mode);
+		CQt.QPainterPath_AddRoundedRect7(this.nativePtr, x, y, w, h, xRadius, yRadius, (int64)mode);
+	}
+	
+}
+public class QPainterPath
+{
+	public QPainterPathPtr handle;
+	
+	public static implicit operator QPainterPathPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPainterPathPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQPainterPath other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQPainterPath other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public void Reserve(int32 size)
+	{
+		this.handle.Reserve(size);
+	}
+	
+	public int32 Capacity()
+	{
+		return this.handle.Capacity();
+	}
+	
+	public void CloseSubpath()
+	{
+		this.handle.CloseSubpath();
+	}
+	
+	public void MoveTo(IQPointF p)
+	{
+		this.handle.MoveTo(p);
+	}
+	
+	public void MoveTo2(double x, double y)
+	{
+		this.handle.MoveTo2(x, y);
+	}
+	
+	public void LineTo(IQPointF p)
+	{
+		this.handle.LineTo(p);
+	}
+	
+	public void LineTo2(double x, double y)
+	{
+		this.handle.LineTo2(x, y);
+	}
+	
+	public void ArcMoveTo(IQRectF rect, double angle)
+	{
+		this.handle.ArcMoveTo(rect, angle);
+	}
+	
+	public void ArcMoveTo2(double x, double y, double w, double h, double angle)
+	{
+		this.handle.ArcMoveTo2(x, y, w, h, angle);
+	}
+	
+	public void ArcTo(IQRectF rect, double startAngle, double arcLength)
+	{
+		this.handle.ArcTo(rect, startAngle, arcLength);
+	}
+	
+	public void ArcTo2(double x, double y, double w, double h, double startAngle, double arcLength)
+	{
+		this.handle.ArcTo2(x, y, w, h, startAngle, arcLength);
+	}
+	
+	public void CubicTo(IQPointF ctrlPt1, IQPointF ctrlPt2, IQPointF endPt)
+	{
+		this.handle.CubicTo(ctrlPt1, ctrlPt2, endPt);
+	}
+	
+	public void CubicTo2(double ctrlPt1x, double ctrlPt1y, double ctrlPt2x, double ctrlPt2y, double endPtx, double endPty)
+	{
+		this.handle.CubicTo2(ctrlPt1x, ctrlPt1y, ctrlPt2x, ctrlPt2y, endPtx, endPty);
+	}
+	
+	public void QuadTo(IQPointF ctrlPt, IQPointF endPt)
+	{
+		this.handle.QuadTo(ctrlPt, endPt);
+	}
+	
+	public void QuadTo2(double ctrlPtx, double ctrlPty, double endPtx, double endPty)
+	{
+		this.handle.QuadTo2(ctrlPtx, ctrlPty, endPtx, endPty);
+	}
+	
+	public void CurrentPosition()
+	{
+		this.handle.CurrentPosition();
+	}
+	
+	public void AddRect(IQRectF rect)
+	{
+		this.handle.AddRect(rect);
+	}
+	
+	public void AddRect2(double x, double y, double w, double h)
+	{
+		this.handle.AddRect2(x, y, w, h);
+	}
+	
+	public void AddEllipse(IQRectF rect)
+	{
+		this.handle.AddEllipse(rect);
+	}
+	
+	public void AddEllipse2(double x, double y, double w, double h)
+	{
+		this.handle.AddEllipse2(x, y, w, h);
+	}
+	
+	public void AddEllipse3(IQPointF center, double rx, double ry)
+	{
+		this.handle.AddEllipse3(center, rx, ry);
+	}
+	
+	public void AddText(IQPointF point, IQFont f, String text)
+	{
+		this.handle.AddText(point, f, text);
+	}
+	
+	public void AddText2(double x, double y, IQFont f, String text)
+	{
+		this.handle.AddText2(x, y, f, text);
+	}
+	
+	public void AddPath(IQPainterPath path)
+	{
+		this.handle.AddPath(path);
+	}
+	
+	public void AddRegion(IQRegion region)
+	{
+		this.handle.AddRegion(region);
+	}
+	
+	public void AddRoundedRect(IQRectF rect, double xRadius, double yRadius)
+	{
+		this.handle.AddRoundedRect(rect, xRadius, yRadius);
+	}
+	
+	public void AddRoundedRect2(double x, double y, double w, double h, double xRadius, double yRadius)
+	{
+		this.handle.AddRoundedRect2(x, y, w, h, xRadius, yRadius);
+	}
+	
+	public void ConnectPath(IQPainterPath path)
+	{
+		this.handle.ConnectPath(path);
+	}
+	
+	public bool Contains(IQPointF pt)
+	{
+		return this.handle.Contains(pt);
+	}
+	
+	public bool ContainsWithRect(IQRectF rect)
+	{
+		return this.handle.ContainsWithRect(rect);
+	}
+	
+	public bool Intersects(IQRectF rect)
+	{
+		return this.handle.Intersects(rect);
+	}
+	
+	public void Translate(double dx, double dy)
+	{
+		this.handle.Translate(dx, dy);
+	}
+	
+	public void TranslateWithOffset(IQPointF offset)
+	{
+		this.handle.TranslateWithOffset(offset);
+	}
+	
+	public void Translated(double dx, double dy)
+	{
+		this.handle.Translated(dx, dy);
+	}
+	
+	public void TranslatedWithOffset(IQPointF offset)
+	{
+		this.handle.TranslatedWithOffset(offset);
+	}
+	
+	public void BoundingRect()
+	{
+		this.handle.BoundingRect();
+	}
+	
+	public void ControlPointRect()
+	{
+		this.handle.ControlPointRect();
+	}
+	
+	public int64 FillRule()
+	{
+		return this.handle.FillRule();
+	}
+	
+	public void SetFillRule(int64 fillRule)
+	{
+		this.handle.SetFillRule(fillRule);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public void ToReversed()
+	{
+		this.handle.ToReversed();
+	}
+	
+	public int32 ElementCount()
+	{
+		return this.handle.ElementCount();
+	}
+	
+	public void ElementAt(int32 i)
+	{
+		this.handle.ElementAt(i);
+	}
+	
+	public void SetElementPositionAt(int32 i, double x, double y)
+	{
+		this.handle.SetElementPositionAt(i, x, y);
+	}
+	
+	public double Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public double PercentAtLength(double t)
+	{
+		return this.handle.PercentAtLength(t);
+	}
+	
+	public void PointAtPercent(double t)
+	{
+		this.handle.PointAtPercent(t);
+	}
+	
+	public double AngleAtPercent(double t)
+	{
+		return this.handle.AngleAtPercent(t);
+	}
+	
+	public double SlopeAtPercent(double t)
+	{
+		return this.handle.SlopeAtPercent(t);
+	}
+	
+	public bool IntersectsWithQPainterPath(IQPainterPath p)
+	{
+		return this.handle.IntersectsWithQPainterPath(p);
+	}
+	
+	public bool ContainsWithQPainterPath(IQPainterPath p)
+	{
+		return this.handle.ContainsWithQPainterPath(p);
+	}
+	
+	public void United(IQPainterPath r)
+	{
+		this.handle.United(r);
+	}
+	
+	public void Intersected(IQPainterPath r)
+	{
+		this.handle.Intersected(r);
+	}
+	
+	public void Subtracted(IQPainterPath r)
+	{
+		this.handle.Subtracted(r);
+	}
+	
+	public void Simplified()
+	{
+		this.handle.Simplified();
+	}
+	
+	public bool OperatorEqual(IQPainterPath other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQPainterPath other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void OperatorBitwiseAnd(IQPainterPath other)
+	{
+		this.handle.OperatorBitwiseAnd(other);
+	}
+	
+	public void OperatorBitwiseOr(IQPainterPath other)
+	{
+		this.handle.OperatorBitwiseOr(other);
+	}
+	
+	public void OperatorPlus(IQPainterPath other)
+	{
+		this.handle.OperatorPlus(other);
+	}
+	
+	public void OperatorMinus(IQPainterPath other)
+	{
+		this.handle.OperatorMinus(other);
+	}
+	
+	public void OperatorBitwiseAndAssign(IQPainterPath other)
+	{
+		this.handle.OperatorBitwiseAndAssign(other);
+	}
+	
+	public void OperatorBitwiseOrAssign(IQPainterPath other)
+	{
+		this.handle.OperatorBitwiseOrAssign(other);
+	}
+	
+	public void* OperatorPlusAssign(IQPainterPath other)
+	{
+		return this.handle.OperatorPlusAssign(other);
+	}
+	
+	public void* OperatorMinusAssign(IQPainterPath other)
+	{
+		return this.handle.OperatorMinusAssign(other);
+	}
+	
+	public void AddRoundedRect4(IQRectF rect, double xRadius, double yRadius, int64 mode)
+	{
+		this.handle.AddRoundedRect4(rect, xRadius, yRadius, mode);
+	}
+	
+	public void AddRoundedRect7(double x, double y, double w, double h, double xRadius, double yRadius, int64 mode)
+	{
+		this.handle.AddRoundedRect7(x, y, w, h, xRadius, yRadius, mode);
 	}
 	
 }
@@ -536,17 +911,22 @@ public interface IQPainterPathStroker
 {
 	void* NativePtr { get; }
 }
-public class QPainterPathStroker : IQPainterPathStroker
+public struct QPainterPathStrokerPtr : IQPainterPathStroker, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPainterPathStroker_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPainterPathStroker_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPainterPathStroker_Delete(this.nativePtr);
 	}
@@ -563,7 +943,7 @@ public class QPainterPathStroker : IQPainterPathStroker
 	
 	public void SetCapStyle(int64 style)
 	{
-		CQt.QPainterPathStroker_SetCapStyle(this.nativePtr, style);
+		CQt.QPainterPathStroker_SetCapStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 CapStyle()
@@ -573,7 +953,7 @@ public class QPainterPathStroker : IQPainterPathStroker
 	
 	public void SetJoinStyle(int64 style)
 	{
-		CQt.QPainterPathStroker_SetJoinStyle(this.nativePtr, style);
+		CQt.QPainterPathStroker_SetJoinStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 JoinStyle()
@@ -603,7 +983,7 @@ public class QPainterPathStroker : IQPainterPathStroker
 	
 	public void SetDashPattern(int64 dashPattern)
 	{
-		CQt.QPainterPathStroker_SetDashPattern(this.nativePtr, dashPattern);
+		CQt.QPainterPathStroker_SetDashPattern(this.nativePtr, (int64)dashPattern);
 	}
 	
 	public void SetDashPatternWithDashPattern(double[] dashPattern)
@@ -628,7 +1008,107 @@ public class QPainterPathStroker : IQPainterPathStroker
 	
 	public void CreateStroke(IQPainterPath path)
 	{
-		CQt.QPainterPathStroker_CreateStroke(this.nativePtr, (path == default) ? default : (void*)path.NativePtr);
+		CQt.QPainterPathStroker_CreateStroke(this.nativePtr, (path == default || path.NativePtr == default) ? default : path.NativePtr);
+	}
+	
+}
+public class QPainterPathStroker
+{
+	public QPainterPathStrokerPtr handle;
+	
+	public static implicit operator QPainterPathStrokerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPainterPathStrokerPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetWidth(double width)
+	{
+		this.handle.SetWidth(width);
+	}
+	
+	public double Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public void SetCapStyle(int64 style)
+	{
+		this.handle.SetCapStyle(style);
+	}
+	
+	public int64 CapStyle()
+	{
+		return this.handle.CapStyle();
+	}
+	
+	public void SetJoinStyle(int64 style)
+	{
+		this.handle.SetJoinStyle(style);
+	}
+	
+	public int64 JoinStyle()
+	{
+		return this.handle.JoinStyle();
+	}
+	
+	public void SetMiterLimit(double length)
+	{
+		this.handle.SetMiterLimit(length);
+	}
+	
+	public double MiterLimit()
+	{
+		return this.handle.MiterLimit();
+	}
+	
+	public void SetCurveThreshold(double threshold)
+	{
+		this.handle.SetCurveThreshold(threshold);
+	}
+	
+	public double CurveThreshold()
+	{
+		return this.handle.CurveThreshold();
+	}
+	
+	public void SetDashPattern(int64 dashPattern)
+	{
+		this.handle.SetDashPattern(dashPattern);
+	}
+	
+	public void SetDashPatternWithDashPattern(double[] dashPattern)
+	{
+		this.handle.SetDashPatternWithDashPattern(null);
+	}
+	
+	public double[] DashPattern()
+	{
+		return this.handle.DashPattern();
+	}
+	
+	public void SetDashOffset(double offset)
+	{
+		this.handle.SetDashOffset(offset);
+	}
+	
+	public double DashOffset()
+	{
+		return this.handle.DashOffset();
+	}
+	
+	public void CreateStroke(IQPainterPath path)
+	{
+		this.handle.CreateStroke(path);
 	}
 	
 }
@@ -678,12 +1158,17 @@ public interface IQPainterPath__Element
 {
 	void* NativePtr { get; }
 }
-public class QPainterPath__Element : IQPainterPath__Element
+public struct QPainterPath__ElementPtr : IQPainterPath__Element, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPainterPath__Element_Delete(this.nativePtr);
 	}
@@ -708,14 +1193,59 @@ public class QPainterPath__Element : IQPainterPath__Element
 		CQt.QPainterPath__Element_ToQPointF(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QPainterPath__Element e)
+	public bool OperatorEqual(QPainterPath__ElementPtr e)
 	{
-		return CQt.QPainterPath__Element_OperatorEqual(this.nativePtr, (e == default) ? default : (void*)e.NativePtr);
+		return CQt.QPainterPath__Element_OperatorEqual(this.nativePtr, (e == default || e.NativePtr == default) ? default : e.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QPainterPath__Element e)
+	public bool OperatorNotEqual(QPainterPath__ElementPtr e)
 	{
-		return CQt.QPainterPath__Element_OperatorNotEqual(this.nativePtr, (e == default) ? default : (void*)e.NativePtr);
+		return CQt.QPainterPath__Element_OperatorNotEqual(this.nativePtr, (e == default || e.NativePtr == default) ? default : e.NativePtr);
+	}
+	
+}
+public class QPainterPath__Element
+{
+	public QPainterPath__ElementPtr handle;
+	
+	public static implicit operator QPainterPath__ElementPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsMoveTo()
+	{
+		return this.handle.IsMoveTo();
+	}
+	
+	public bool IsLineTo()
+	{
+		return this.handle.IsLineTo();
+	}
+	
+	public bool IsCurveTo()
+	{
+		return this.handle.IsCurveTo();
+	}
+	
+	public void ToQPointF()
+	{
+		this.handle.ToQPointF();
+	}
+	
+	public bool OperatorEqual(QPainterPath__ElementPtr e)
+	{
+		return this.handle.OperatorEqual(e);
+	}
+	
+	public bool OperatorNotEqual(QPainterPath__ElementPtr e)
+	{
+		return this.handle.OperatorNotEqual(e);
 	}
 	
 }

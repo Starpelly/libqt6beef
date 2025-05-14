@@ -12,17 +12,22 @@ public interface IQDate
 {
 	void* NativePtr { get; }
 }
-public class QDate : IQDate
+public struct QDatePtr : IQDate, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQDate other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDate_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQDate other)
+	{
+		return .(CQt.QDate_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDate_Delete(this.nativePtr);
 	}
@@ -79,37 +84,37 @@ public class QDate : IQDate
 	
 	public int32 YearWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_YearWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_YearWithCal(this.nativePtr, default);
 	}
 	
 	public int32 MonthWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_MonthWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_MonthWithCal(this.nativePtr, default);
 	}
 	
 	public int32 DayWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_DayWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_DayWithCal(this.nativePtr, default);
 	}
 	
 	public int32 DayOfWeekWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_DayOfWeekWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_DayOfWeekWithCal(this.nativePtr, default);
 	}
 	
 	public int32 DayOfYearWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_DayOfYearWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_DayOfYearWithCal(this.nativePtr, default);
 	}
 	
 	public int32 DaysInMonthWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_DaysInMonthWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_DaysInMonthWithCal(this.nativePtr, default);
 	}
 	
 	public int32 DaysInYearWithCal(IQCalendar cal)
 	{
-		return CQt.QDate_DaysInYearWithCal(this.nativePtr, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_DaysInYearWithCal(this.nativePtr, default);
 	}
 	
 	public void StartOfDay()
@@ -124,12 +129,12 @@ public class QDate : IQDate
 	
 	public void StartOfDayWithZone(IQTimeZone zone)
 	{
-		CQt.QDate_StartOfDayWithZone(this.nativePtr, (zone == default) ? default : (void*)zone.NativePtr);
+		CQt.QDate_StartOfDayWithZone(this.nativePtr, (zone == default || zone.NativePtr == default) ? default : zone.NativePtr);
 	}
 	
 	public void EndOfDayWithZone(IQTimeZone zone)
 	{
-		CQt.QDate_EndOfDayWithZone(this.nativePtr, (zone == default) ? default : (void*)zone.NativePtr);
+		CQt.QDate_EndOfDayWithZone(this.nativePtr, (zone == default || zone.NativePtr == default) ? default : zone.NativePtr);
 	}
 	
 	public libqt_string ToString()
@@ -149,7 +154,7 @@ public class QDate : IQDate
 	
 	public bool SetDate2(int32 year, int32 month, int32 day, IQCalendar cal)
 	{
-		return CQt.QDate_SetDate2(this.nativePtr, year, month, day, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_SetDate2(this.nativePtr, year, month, day, default);
 	}
 	
 	public void GetDate(int32* year, int32* month, int32* day)
@@ -174,17 +179,17 @@ public class QDate : IQDate
 	
 	public void AddMonths2(int32 months, IQCalendar cal)
 	{
-		CQt.QDate_AddMonths2(this.nativePtr, months, (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QDate_AddMonths2(this.nativePtr, months, default);
 	}
 	
 	public void AddYears2(int32 years, IQCalendar cal)
 	{
-		CQt.QDate_AddYears2(this.nativePtr, years, (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QDate_AddYears2(this.nativePtr, years, default);
 	}
 	
 	public int64 DaysTo(IQDate d)
 	{
-		return CQt.QDate_DaysTo(this.nativePtr, (d == default) ? default : (void)d.NativePtr);
+		return CQt.QDate_DaysTo(this.nativePtr, default);
 	}
 	
 	public static void CurrentDate()
@@ -229,42 +234,302 @@ public class QDate : IQDate
 	
 	public void StartOfDay1(int64 spec)
 	{
-		CQt.QDate_StartOfDay1(this.nativePtr, spec);
+		CQt.QDate_StartOfDay1(this.nativePtr, (int64)spec);
 	}
 	
 	public void StartOfDay2(int64 spec, int32 offsetSeconds)
 	{
-		CQt.QDate_StartOfDay2(this.nativePtr, spec, offsetSeconds);
+		CQt.QDate_StartOfDay2(this.nativePtr, (int64)spec, offsetSeconds);
 	}
 	
 	public void EndOfDay1(int64 spec)
 	{
-		CQt.QDate_EndOfDay1(this.nativePtr, spec);
+		CQt.QDate_EndOfDay1(this.nativePtr, (int64)spec);
 	}
 	
 	public void EndOfDay2(int64 spec, int32 offsetSeconds)
 	{
-		CQt.QDate_EndOfDay2(this.nativePtr, spec, offsetSeconds);
+		CQt.QDate_EndOfDay2(this.nativePtr, (int64)spec, offsetSeconds);
 	}
 	
 	public libqt_string ToString1(int64 format)
 	{
-		return CQt.QDate_ToString1(this.nativePtr, format);
+		return CQt.QDate_ToString1(this.nativePtr, (int64)format);
 	}
 	
 	public libqt_string ToString22(String format, IQCalendar cal)
 	{
-		return CQt.QDate_ToString22(this.nativePtr, libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDate_ToString22(this.nativePtr, libqt_string(format), default);
 	}
 	
 	public static void FromString23(String stringVal, int64 format)
 	{
-		CQt.QDate_FromString23(libqt_string(stringVal), format);
+		CQt.QDate_FromString23(libqt_string(stringVal), (int64)format);
 	}
 	
 	public static void FromString34(String stringVal, String format, IQCalendar cal)
 	{
-		CQt.QDate_FromString34(libqt_string(stringVal), libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QDate_FromString34(libqt_string(stringVal), libqt_string(format), default);
+	}
+	
+}
+public class QDate
+{
+	public QDatePtr handle;
+	
+	public static implicit operator QDatePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQDate other)
+	{
+		this.handle = QDatePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 Year()
+	{
+		return this.handle.Year();
+	}
+	
+	public int32 Month()
+	{
+		return this.handle.Month();
+	}
+	
+	public int32 Day()
+	{
+		return this.handle.Day();
+	}
+	
+	public int32 DayOfWeek()
+	{
+		return this.handle.DayOfWeek();
+	}
+	
+	public int32 DayOfYear()
+	{
+		return this.handle.DayOfYear();
+	}
+	
+	public int32 DaysInMonth()
+	{
+		return this.handle.DaysInMonth();
+	}
+	
+	public int32 DaysInYear()
+	{
+		return this.handle.DaysInYear();
+	}
+	
+	public int32 WeekNumber()
+	{
+		return this.handle.WeekNumber();
+	}
+	
+	public int32 YearWithCal(IQCalendar cal)
+	{
+		return this.handle.YearWithCal(default);
+	}
+	
+	public int32 MonthWithCal(IQCalendar cal)
+	{
+		return this.handle.MonthWithCal(default);
+	}
+	
+	public int32 DayWithCal(IQCalendar cal)
+	{
+		return this.handle.DayWithCal(default);
+	}
+	
+	public int32 DayOfWeekWithCal(IQCalendar cal)
+	{
+		return this.handle.DayOfWeekWithCal(default);
+	}
+	
+	public int32 DayOfYearWithCal(IQCalendar cal)
+	{
+		return this.handle.DayOfYearWithCal(default);
+	}
+	
+	public int32 DaysInMonthWithCal(IQCalendar cal)
+	{
+		return this.handle.DaysInMonthWithCal(default);
+	}
+	
+	public int32 DaysInYearWithCal(IQCalendar cal)
+	{
+		return this.handle.DaysInYearWithCal(default);
+	}
+	
+	public void StartOfDay()
+	{
+		this.handle.StartOfDay();
+	}
+	
+	public void EndOfDay()
+	{
+		this.handle.EndOfDay();
+	}
+	
+	public void StartOfDayWithZone(IQTimeZone zone)
+	{
+		this.handle.StartOfDayWithZone(zone);
+	}
+	
+	public void EndOfDayWithZone(IQTimeZone zone)
+	{
+		this.handle.EndOfDayWithZone(zone);
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string ToStringWithFormat(String format)
+	{
+		return this.handle.ToStringWithFormat(format);
+	}
+	
+	public bool SetDate(int32 year, int32 month, int32 day)
+	{
+		return this.handle.SetDate(year, month, day);
+	}
+	
+	public bool SetDate2(int32 year, int32 month, int32 day, IQCalendar cal)
+	{
+		return this.handle.SetDate2(year, month, day, default);
+	}
+	
+	public void GetDate(int32* year, int32* month, int32* day)
+	{
+		this.handle.GetDate(year, month, day);
+	}
+	
+	public void AddDays(int64 days)
+	{
+		this.handle.AddDays(days);
+	}
+	
+	public void AddMonths(int32 months)
+	{
+		this.handle.AddMonths(months);
+	}
+	
+	public void AddYears(int32 years)
+	{
+		this.handle.AddYears(years);
+	}
+	
+	public void AddMonths2(int32 months, IQCalendar cal)
+	{
+		this.handle.AddMonths2(months, default);
+	}
+	
+	public void AddYears2(int32 years, IQCalendar cal)
+	{
+		this.handle.AddYears2(years, default);
+	}
+	
+	public int64 DaysTo(IQDate d)
+	{
+		return this.handle.DaysTo(default);
+	}
+	
+	public static void CurrentDate()
+	{
+		QDatePtr.CurrentDate();
+	}
+	
+	public static void FromStringWithStringVal(String stringVal)
+	{
+		QDatePtr.FromStringWithStringVal(stringVal);
+	}
+	
+	public static void FromString4(String stringVal, String format)
+	{
+		QDatePtr.FromString4(stringVal, format);
+	}
+	
+	public static bool IsValid2(int32 y, int32 m, int32 d)
+	{
+		return QDatePtr.IsValid2(y, m, d);
+	}
+	
+	public static bool IsLeapYear(int32 year)
+	{
+		return QDatePtr.IsLeapYear(year);
+	}
+	
+	public static void FromJulianDay(int64 jd_)
+	{
+		QDatePtr.FromJulianDay(jd_);
+	}
+	
+	public int64 ToJulianDay()
+	{
+		return this.handle.ToJulianDay();
+	}
+	
+	public int32 WeekNumber1(int32* yearNum)
+	{
+		return this.handle.WeekNumber1(yearNum);
+	}
+	
+	public void StartOfDay1(int64 spec)
+	{
+		this.handle.StartOfDay1(spec);
+	}
+	
+	public void StartOfDay2(int64 spec, int32 offsetSeconds)
+	{
+		this.handle.StartOfDay2(spec, offsetSeconds);
+	}
+	
+	public void EndOfDay1(int64 spec)
+	{
+		this.handle.EndOfDay1(spec);
+	}
+	
+	public void EndOfDay2(int64 spec, int32 offsetSeconds)
+	{
+		this.handle.EndOfDay2(spec, offsetSeconds);
+	}
+	
+	public libqt_string ToString1(int64 format)
+	{
+		return this.handle.ToString1(format);
+	}
+	
+	public libqt_string ToString22(String format, IQCalendar cal)
+	{
+		return this.handle.ToString22(format, default);
+	}
+	
+	public static void FromString23(String stringVal, int64 format)
+	{
+		QDatePtr.FromString23(stringVal, format);
+	}
+	
+	public static void FromString34(String stringVal, String format, IQCalendar cal)
+	{
+		QDatePtr.FromString34(stringVal, format, default);
 	}
 	
 }
@@ -386,17 +651,22 @@ public interface IQTime
 {
 	void* NativePtr { get; }
 }
-public class QTime : IQTime
+public struct QTimePtr : IQTime, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQTime other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTime_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQTime other)
+	{
+		return .(CQt.QTime_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTime_Delete(this.nativePtr);
 	}
@@ -453,7 +723,7 @@ public class QTime : IQTime
 	
 	public int32 SecsTo(IQTime t)
 	{
-		return CQt.QTime_SecsTo(this.nativePtr, (t == default) ? default : (void)t.NativePtr);
+		return CQt.QTime_SecsTo(this.nativePtr, default);
 	}
 	
 	public void AddMSecs(int32 ms)
@@ -463,7 +733,7 @@ public class QTime : IQTime
 	
 	public int32 MsecsTo(IQTime t)
 	{
-		return CQt.QTime_MsecsTo(this.nativePtr, (t == default) ? default : (void)t.NativePtr);
+		return CQt.QTime_MsecsTo(this.nativePtr, default);
 	}
 	
 	public static void FromMSecsSinceStartOfDay(int32 msecs)
@@ -498,7 +768,7 @@ public class QTime : IQTime
 	
 	public libqt_string ToString1(int64 f)
 	{
-		return CQt.QTime_ToString1(this.nativePtr, f);
+		return CQt.QTime_ToString1(this.nativePtr, (int64)f);
 	}
 	
 	public bool SetHMS4(int32 h, int32 m, int32 s, int32 ms)
@@ -508,12 +778,147 @@ public class QTime : IQTime
 	
 	public static void FromString23(String stringVal, int64 format)
 	{
-		CQt.QTime_FromString23(libqt_string(stringVal), format);
+		CQt.QTime_FromString23(libqt_string(stringVal), (int64)format);
 	}
 	
 	public static bool IsValid4(int32 h, int32 m, int32 s, int32 ms)
 	{
 		return CQt.QTime_IsValid4(h, m, s, ms);
+	}
+	
+}
+public class QTime
+{
+	public QTimePtr handle;
+	
+	public static implicit operator QTimePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQTime other)
+	{
+		this.handle = QTimePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 Hour()
+	{
+		return this.handle.Hour();
+	}
+	
+	public int32 Minute()
+	{
+		return this.handle.Minute();
+	}
+	
+	public int32 Second()
+	{
+		return this.handle.Second();
+	}
+	
+	public int32 Msec()
+	{
+		return this.handle.Msec();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string ToStringWithFormat(String format)
+	{
+		return this.handle.ToStringWithFormat(format);
+	}
+	
+	public bool SetHMS(int32 h, int32 m, int32 s)
+	{
+		return this.handle.SetHMS(h, m, s);
+	}
+	
+	public void AddSecs(int32 secs)
+	{
+		this.handle.AddSecs(secs);
+	}
+	
+	public int32 SecsTo(IQTime t)
+	{
+		return this.handle.SecsTo(default);
+	}
+	
+	public void AddMSecs(int32 ms)
+	{
+		this.handle.AddMSecs(ms);
+	}
+	
+	public int32 MsecsTo(IQTime t)
+	{
+		return this.handle.MsecsTo(default);
+	}
+	
+	public static void FromMSecsSinceStartOfDay(int32 msecs)
+	{
+		QTimePtr.FromMSecsSinceStartOfDay(msecs);
+	}
+	
+	public int32 MsecsSinceStartOfDay()
+	{
+		return this.handle.MsecsSinceStartOfDay();
+	}
+	
+	public static void CurrentTime()
+	{
+		QTimePtr.CurrentTime();
+	}
+	
+	public static void FromStringWithStringVal(String stringVal)
+	{
+		QTimePtr.FromStringWithStringVal(stringVal);
+	}
+	
+	public static void FromString4(String stringVal, String format)
+	{
+		QTimePtr.FromString4(stringVal, format);
+	}
+	
+	public static bool IsValid2(int32 h, int32 m, int32 s)
+	{
+		return QTimePtr.IsValid2(h, m, s);
+	}
+	
+	public libqt_string ToString1(int64 f)
+	{
+		return this.handle.ToString1(f);
+	}
+	
+	public bool SetHMS4(int32 h, int32 m, int32 s, int32 ms)
+	{
+		return this.handle.SetHMS4(h, m, s, ms);
+	}
+	
+	public static void FromString23(String stringVal, int64 format)
+	{
+		QTimePtr.FromString23(stringVal, format);
+	}
+	
+	public static bool IsValid4(int32 h, int32 m, int32 s, int32 ms)
+	{
+		return QTimePtr.IsValid4(h, m, s, ms);
 	}
 	
 }
@@ -587,29 +992,34 @@ public interface IQDateTime
 {
 	void* NativePtr { get; }
 }
-public class QDateTime : IQDateTime
+public struct QDateTimePtr : IQDateTime, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDateTime_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QDateTime_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDateTime_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQDateTime other)
 	{
-		CQt.QDateTime_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDateTime_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQDateTime other)
 	{
-		CQt.QDateTime_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDateTime_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -669,17 +1079,17 @@ public class QDateTime : IQDateTime
 	
 	public void SetDate(IQDate date)
 	{
-		CQt.QDateTime_SetDate(this.nativePtr, (date == default) ? default : (void)date.NativePtr);
+		CQt.QDateTime_SetDate(this.nativePtr, default);
 	}
 	
 	public void SetTime(IQTime time)
 	{
-		CQt.QDateTime_SetTime(this.nativePtr, (time == default) ? default : (void)time.NativePtr);
+		CQt.QDateTime_SetTime(this.nativePtr, default);
 	}
 	
 	public void SetTimeSpec(int64 spec)
 	{
-		CQt.QDateTime_SetTimeSpec(this.nativePtr, spec);
+		CQt.QDateTime_SetTimeSpec(this.nativePtr, (int64)spec);
 	}
 	
 	public void SetOffsetFromUtc(int32 offsetSeconds)
@@ -689,7 +1099,7 @@ public class QDateTime : IQDateTime
 	
 	public void SetTimeZone(IQTimeZone toZone)
 	{
-		CQt.QDateTime_SetTimeZone(this.nativePtr, (toZone == default) ? default : (void*)toZone.NativePtr);
+		CQt.QDateTime_SetTimeZone(this.nativePtr, (toZone == default || toZone.NativePtr == default) ? default : toZone.NativePtr);
 	}
 	
 	public void SetMSecsSinceEpoch(int64 msecs)
@@ -739,7 +1149,7 @@ public class QDateTime : IQDateTime
 	
 	public void ToTimeSpec(int64 spec)
 	{
-		CQt.QDateTime_ToTimeSpec(this.nativePtr, spec);
+		CQt.QDateTime_ToTimeSpec(this.nativePtr, (int64)spec);
 	}
 	
 	public void ToLocalTime()
@@ -759,22 +1169,22 @@ public class QDateTime : IQDateTime
 	
 	public void ToTimeZone(IQTimeZone toZone)
 	{
-		CQt.QDateTime_ToTimeZone(this.nativePtr, (toZone == default) ? default : (void*)toZone.NativePtr);
+		CQt.QDateTime_ToTimeZone(this.nativePtr, (toZone == default || toZone.NativePtr == default) ? default : toZone.NativePtr);
 	}
 	
 	public int64 DaysTo(IQDateTime param1)
 	{
-		return CQt.QDateTime_DaysTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QDateTime_DaysTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public int64 SecsTo(IQDateTime param1)
 	{
-		return CQt.QDateTime_SecsTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QDateTime_SecsTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public int64 MsecsTo(IQDateTime param1)
 	{
-		return CQt.QDateTime_MsecsTo(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QDateTime_MsecsTo(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public static void CurrentDateTime()
@@ -809,12 +1219,12 @@ public class QDateTime : IQDateTime
 	
 	public static void FromMSecsSinceEpoch2(int64 msecs, IQTimeZone timeZone)
 	{
-		CQt.QDateTime_FromMSecsSinceEpoch2(msecs, (timeZone == default) ? default : (void*)timeZone.NativePtr);
+		CQt.QDateTime_FromMSecsSinceEpoch2(msecs, (timeZone == default || timeZone.NativePtr == default) ? default : timeZone.NativePtr);
 	}
 	
 	public static void FromSecsSinceEpoch2(int64 secs, IQTimeZone timeZone)
 	{
-		CQt.QDateTime_FromSecsSinceEpoch2(secs, (timeZone == default) ? default : (void*)timeZone.NativePtr);
+		CQt.QDateTime_FromSecsSinceEpoch2(secs, (timeZone == default || timeZone.NativePtr == default) ? default : timeZone.NativePtr);
 	}
 	
 	public static int64 CurrentMSecsSinceEpoch()
@@ -829,42 +1239,327 @@ public class QDateTime : IQDateTime
 	
 	public libqt_string ToString1(int64 format)
 	{
-		return CQt.QDateTime_ToString1(this.nativePtr, format);
+		return CQt.QDateTime_ToString1(this.nativePtr, (int64)format);
 	}
 	
 	public libqt_string ToString22(String format, IQCalendar cal)
 	{
-		return CQt.QDateTime_ToString22(this.nativePtr, libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QDateTime_ToString22(this.nativePtr, libqt_string(format), default);
 	}
 	
 	public static void FromString23(String stringVal, int64 format)
 	{
-		CQt.QDateTime_FromString23(libqt_string(stringVal), format);
+		CQt.QDateTime_FromString23(libqt_string(stringVal), (int64)format);
 	}
 	
 	public static void FromString34(String stringVal, String format, IQCalendar cal)
 	{
-		CQt.QDateTime_FromString34(libqt_string(stringVal), libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QDateTime_FromString34(libqt_string(stringVal), libqt_string(format), default);
 	}
 	
 	public static void FromMSecsSinceEpoch22(int64 msecs, int64 spec)
 	{
-		CQt.QDateTime_FromMSecsSinceEpoch22(msecs, spec);
+		CQt.QDateTime_FromMSecsSinceEpoch22(msecs, (int64)spec);
 	}
 	
 	public static void FromMSecsSinceEpoch3(int64 msecs, int64 spec, int32 offsetFromUtc)
 	{
-		CQt.QDateTime_FromMSecsSinceEpoch3(msecs, spec, offsetFromUtc);
+		CQt.QDateTime_FromMSecsSinceEpoch3(msecs, (int64)spec, offsetFromUtc);
 	}
 	
 	public static void FromSecsSinceEpoch22(int64 secs, int64 spec)
 	{
-		CQt.QDateTime_FromSecsSinceEpoch22(secs, spec);
+		CQt.QDateTime_FromSecsSinceEpoch22(secs, (int64)spec);
 	}
 	
 	public static void FromSecsSinceEpoch3(int64 secs, int64 spec, int32 offsetFromUtc)
 	{
-		CQt.QDateTime_FromSecsSinceEpoch3(secs, spec, offsetFromUtc);
+		CQt.QDateTime_FromSecsSinceEpoch3(secs, (int64)spec, offsetFromUtc);
+	}
+	
+}
+public class QDateTime
+{
+	public QDateTimePtr handle;
+	
+	public static implicit operator QDateTimePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QDateTimePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQDateTime other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQDateTime other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void Date()
+	{
+		this.handle.Date();
+	}
+	
+	public void Time()
+	{
+		this.handle.Time();
+	}
+	
+	public int64 TimeSpec()
+	{
+		return this.handle.TimeSpec();
+	}
+	
+	public int32 OffsetFromUtc()
+	{
+		return this.handle.OffsetFromUtc();
+	}
+	
+	public void TimeZone()
+	{
+		this.handle.TimeZone();
+	}
+	
+	public libqt_string TimeZoneAbbreviation()
+	{
+		return this.handle.TimeZoneAbbreviation();
+	}
+	
+	public bool IsDaylightTime()
+	{
+		return this.handle.IsDaylightTime();
+	}
+	
+	public int64 ToMSecsSinceEpoch()
+	{
+		return this.handle.ToMSecsSinceEpoch();
+	}
+	
+	public int64 ToSecsSinceEpoch()
+	{
+		return this.handle.ToSecsSinceEpoch();
+	}
+	
+	public void SetDate(IQDate date)
+	{
+		this.handle.SetDate(default);
+	}
+	
+	public void SetTime(IQTime time)
+	{
+		this.handle.SetTime(default);
+	}
+	
+	public void SetTimeSpec(int64 spec)
+	{
+		this.handle.SetTimeSpec(spec);
+	}
+	
+	public void SetOffsetFromUtc(int32 offsetSeconds)
+	{
+		this.handle.SetOffsetFromUtc(offsetSeconds);
+	}
+	
+	public void SetTimeZone(IQTimeZone toZone)
+	{
+		this.handle.SetTimeZone(toZone);
+	}
+	
+	public void SetMSecsSinceEpoch(int64 msecs)
+	{
+		this.handle.SetMSecsSinceEpoch(msecs);
+	}
+	
+	public void SetSecsSinceEpoch(int64 secs)
+	{
+		this.handle.SetSecsSinceEpoch(secs);
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string ToStringWithFormat(String format)
+	{
+		return this.handle.ToStringWithFormat(format);
+	}
+	
+	public void AddDays(int64 days)
+	{
+		this.handle.AddDays(days);
+	}
+	
+	public void AddMonths(int32 months)
+	{
+		this.handle.AddMonths(months);
+	}
+	
+	public void AddYears(int32 years)
+	{
+		this.handle.AddYears(years);
+	}
+	
+	public void AddSecs(int64 secs)
+	{
+		this.handle.AddSecs(secs);
+	}
+	
+	public void AddMSecs(int64 msecs)
+	{
+		this.handle.AddMSecs(msecs);
+	}
+	
+	public void ToTimeSpec(int64 spec)
+	{
+		this.handle.ToTimeSpec(spec);
+	}
+	
+	public void ToLocalTime()
+	{
+		this.handle.ToLocalTime();
+	}
+	
+	public void ToUTC()
+	{
+		this.handle.ToUTC();
+	}
+	
+	public void ToOffsetFromUtc(int32 offsetSeconds)
+	{
+		this.handle.ToOffsetFromUtc(offsetSeconds);
+	}
+	
+	public void ToTimeZone(IQTimeZone toZone)
+	{
+		this.handle.ToTimeZone(toZone);
+	}
+	
+	public int64 DaysTo(IQDateTime param1)
+	{
+		return this.handle.DaysTo(param1);
+	}
+	
+	public int64 SecsTo(IQDateTime param1)
+	{
+		return this.handle.SecsTo(param1);
+	}
+	
+	public int64 MsecsTo(IQDateTime param1)
+	{
+		return this.handle.MsecsTo(param1);
+	}
+	
+	public static void CurrentDateTime()
+	{
+		QDateTimePtr.CurrentDateTime();
+	}
+	
+	public static void CurrentDateTimeUtc()
+	{
+		QDateTimePtr.CurrentDateTimeUtc();
+	}
+	
+	public static void FromStringWithStringVal(String stringVal)
+	{
+		QDateTimePtr.FromStringWithStringVal(stringVal);
+	}
+	
+	public static void FromString4(String stringVal, String format)
+	{
+		QDateTimePtr.FromString4(stringVal, format);
+	}
+	
+	public static void FromMSecsSinceEpoch(int64 msecs)
+	{
+		QDateTimePtr.FromMSecsSinceEpoch(msecs);
+	}
+	
+	public static void FromSecsSinceEpoch(int64 secs)
+	{
+		QDateTimePtr.FromSecsSinceEpoch(secs);
+	}
+	
+	public static void FromMSecsSinceEpoch2(int64 msecs, IQTimeZone timeZone)
+	{
+		QDateTimePtr.FromMSecsSinceEpoch2(msecs, timeZone);
+	}
+	
+	public static void FromSecsSinceEpoch2(int64 secs, IQTimeZone timeZone)
+	{
+		QDateTimePtr.FromSecsSinceEpoch2(secs, timeZone);
+	}
+	
+	public static int64 CurrentMSecsSinceEpoch()
+	{
+		return QDateTimePtr.CurrentMSecsSinceEpoch();
+	}
+	
+	public static int64 CurrentSecsSinceEpoch()
+	{
+		return QDateTimePtr.CurrentSecsSinceEpoch();
+	}
+	
+	public libqt_string ToString1(int64 format)
+	{
+		return this.handle.ToString1(format);
+	}
+	
+	public libqt_string ToString22(String format, IQCalendar cal)
+	{
+		return this.handle.ToString22(format, default);
+	}
+	
+	public static void FromString23(String stringVal, int64 format)
+	{
+		QDateTimePtr.FromString23(stringVal, format);
+	}
+	
+	public static void FromString34(String stringVal, String format, IQCalendar cal)
+	{
+		QDateTimePtr.FromString34(stringVal, format, default);
+	}
+	
+	public static void FromMSecsSinceEpoch22(int64 msecs, int64 spec)
+	{
+		QDateTimePtr.FromMSecsSinceEpoch22(msecs, spec);
+	}
+	
+	public static void FromMSecsSinceEpoch3(int64 msecs, int64 spec, int32 offsetFromUtc)
+	{
+		QDateTimePtr.FromMSecsSinceEpoch3(msecs, spec, offsetFromUtc);
+	}
+	
+	public static void FromSecsSinceEpoch22(int64 secs, int64 spec)
+	{
+		QDateTimePtr.FromSecsSinceEpoch22(secs, spec);
+	}
+	
+	public static void FromSecsSinceEpoch3(int64 secs, int64 spec, int32 offsetFromUtc)
+	{
+		QDateTimePtr.FromSecsSinceEpoch3(secs, spec, offsetFromUtc);
 	}
 	
 }

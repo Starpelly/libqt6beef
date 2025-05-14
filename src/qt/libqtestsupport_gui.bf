@@ -6,54 +6,114 @@ public interface IQTest__QTouchEventSequence
 {
 	void* NativePtr { get; }
 }
-public class QTest__QTouchEventSequence : IQTest__QTouchEventSequence
+public struct QTest__QTouchEventSequencePtr : IQTest__QTouchEventSequence, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTest__QTouchEventSequence_Delete(this.nativePtr);
 	}
 	
 	public void* Press(int32 touchId, IQPoint pt)
 	{
-		return CQt.QTest__QTouchEventSequence_Press(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Press(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public void* Move(int32 touchId, IQPoint pt)
 	{
-		return CQt.QTest__QTouchEventSequence_Move(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Move(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public void* Release(int32 touchId, IQPoint pt)
 	{
-		return CQt.QTest__QTouchEventSequence_Release(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Release(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
-	public virtual void* Stationary(int32 touchId)
+	public void* Stationary(int32 touchId)
 	{
 		return CQt.QTest__QTouchEventSequence_Stationary(this.nativePtr, touchId);
 	}
 	
-	public virtual bool Commit(bool processEvents)
+	public bool Commit(bool processEvents)
 	{
 		return CQt.QTest__QTouchEventSequence_Commit(this.nativePtr, processEvents);
 	}
 	
 	public void* Press3(int32 touchId, IQPoint pt, IQWindow window)
 	{
-		return CQt.QTest__QTouchEventSequence_Press3(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr, (window == null) ? null : (void*)window.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Press3(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr);
 	}
 	
 	public void* Move3(int32 touchId, IQPoint pt, IQWindow window)
 	{
-		return CQt.QTest__QTouchEventSequence_Move3(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr, (window == null) ? null : (void*)window.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Move3(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr);
 	}
 	
 	public void* Release3(int32 touchId, IQPoint pt, IQWindow window)
 	{
-		return CQt.QTest__QTouchEventSequence_Release3(this.nativePtr, touchId, (pt == default) ? default : (void*)pt.NativePtr, (window == null) ? null : (void*)window.NativePtr);
+		return CQt.QTest__QTouchEventSequence_Release3(this.nativePtr, touchId, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, (window == default || window.NativePtr == default) ? default : window.NativePtr);
+	}
+	
+}
+public class QTest__QTouchEventSequence
+{
+	public QTest__QTouchEventSequencePtr handle;
+	
+	public static implicit operator QTest__QTouchEventSequencePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void* Press(int32 touchId, IQPoint pt)
+	{
+		return this.handle.Press(touchId, pt);
+	}
+	
+	public void* Move(int32 touchId, IQPoint pt)
+	{
+		return this.handle.Move(touchId, pt);
+	}
+	
+	public void* Release(int32 touchId, IQPoint pt)
+	{
+		return this.handle.Release(touchId, pt);
+	}
+	
+	public virtual void* Stationary(int32 touchId)
+	{
+		return this.handle.Stationary(touchId);
+	}
+	
+	public virtual bool Commit(bool processEvents)
+	{
+		return this.handle.Commit(processEvents);
+	}
+	
+	public void* Press3(int32 touchId, IQPoint pt, IQWindow window)
+	{
+		return this.handle.Press3(touchId, pt, window);
+	}
+	
+	public void* Move3(int32 touchId, IQPoint pt, IQWindow window)
+	{
+		return this.handle.Move3(touchId, pt, window);
+	}
+	
+	public void* Release3(int32 touchId, IQPoint pt, IQWindow window)
+	{
+		return this.handle.Release3(touchId, pt, window);
 	}
 	
 }

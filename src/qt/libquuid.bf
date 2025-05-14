@@ -33,24 +33,29 @@ public interface IQUuid
 {
 	void* NativePtr { get; }
 }
-public class QUuid : IQUuid
+public struct QUuidPtr : IQUuid, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQUuid other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QUuid_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQUuid other)
+	{
+		return .(CQt.QUuid_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QUuid_Delete(this.nativePtr);
 	}
 	
-	public static void FromString(IQAnyStringView stringVal)
+	public static void FromString(char8* stringVal)
 	{
-		CQt.QUuid_FromString((stringVal == default) ? default : (char8*)stringVal.NativePtr);
+		CQt.QUuid_FromString(stringVal);
 	}
 	
 	public libqt_string ToString()
@@ -68,9 +73,9 @@ public class QUuid : IQUuid
 		return CQt.QUuid_ToRfc4122(this.nativePtr);
 	}
 	
-	public static void FromRfc4122(IQByteArrayView param1)
+	public static void FromRfc4122(char8* param1)
 	{
-		CQt.QUuid_FromRfc4122((param1 == default) ? default : (char8*)param1.NativePtr);
+		CQt.QUuid_FromRfc4122(param1);
 	}
 	
 	public bool IsNull()
@@ -80,22 +85,22 @@ public class QUuid : IQUuid
 	
 	public bool OperatorEqual(IQUuid orig)
 	{
-		return CQt.QUuid_OperatorEqual(this.nativePtr, (orig == default) ? default : (void*)orig.NativePtr);
+		return CQt.QUuid_OperatorEqual(this.nativePtr, (orig == default || orig.NativePtr == default) ? default : orig.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQUuid orig)
 	{
-		return CQt.QUuid_OperatorNotEqual(this.nativePtr, (orig == default) ? default : (void*)orig.NativePtr);
+		return CQt.QUuid_OperatorNotEqual(this.nativePtr, (orig == default || orig.NativePtr == default) ? default : orig.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQUuid other)
 	{
-		return CQt.QUuid_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QUuid_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorGreater(IQUuid other)
 	{
-		return CQt.QUuid_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QUuid_OperatorGreater(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public static void CreateUuid()
@@ -105,22 +110,22 @@ public class QUuid : IQUuid
 	
 	public static void CreateUuidV3(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV3((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
+		CQt.QUuid_CreateUuidV3((ns == default || ns.NativePtr == default) ? default : ns.NativePtr, libqt_string(baseData));
 	}
 	
 	public static void CreateUuidV5(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV5((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
+		CQt.QUuid_CreateUuidV5((ns == default || ns.NativePtr == default) ? default : ns.NativePtr, libqt_string(baseData));
 	}
 	
 	public static void CreateUuidV32(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV32((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
+		CQt.QUuid_CreateUuidV32((ns == default || ns.NativePtr == default) ? default : ns.NativePtr, libqt_string(baseData));
 	}
 	
 	public static void CreateUuidV52(IQUuid ns, String baseData)
 	{
-		CQt.QUuid_CreateUuidV52((ns == default) ? default : (void*)ns.NativePtr, libqt_string(baseData));
+		CQt.QUuid_CreateUuidV52((ns == default || ns.NativePtr == default) ? default : ns.NativePtr, libqt_string(baseData));
 	}
 	
 	public int64 Variant()
@@ -135,12 +140,127 @@ public class QUuid : IQUuid
 	
 	public libqt_string ToString1(int64 mode)
 	{
-		return CQt.QUuid_ToString1(this.nativePtr, mode);
+		return CQt.QUuid_ToString1(this.nativePtr, (int64)mode);
 	}
 	
 	public libqt_string ToByteArray1(int64 mode)
 	{
-		return CQt.QUuid_ToByteArray1(this.nativePtr, mode);
+		return CQt.QUuid_ToByteArray1(this.nativePtr, (int64)mode);
+	}
+	
+}
+public class QUuid
+{
+	public QUuidPtr handle;
+	
+	public static implicit operator QUuidPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQUuid other)
+	{
+		this.handle = QUuidPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void FromString(char8* stringVal)
+	{
+		QUuidPtr.FromString(stringVal);
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public libqt_string ToRfc4122()
+	{
+		return this.handle.ToRfc4122();
+	}
+	
+	public static void FromRfc4122(char8* param1)
+	{
+		QUuidPtr.FromRfc4122(param1);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool OperatorEqual(IQUuid orig)
+	{
+		return this.handle.OperatorEqual(orig);
+	}
+	
+	public bool OperatorNotEqual(IQUuid orig)
+	{
+		return this.handle.OperatorNotEqual(orig);
+	}
+	
+	public bool OperatorLesser(IQUuid other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public bool OperatorGreater(IQUuid other)
+	{
+		return this.handle.OperatorGreater(other);
+	}
+	
+	public static void CreateUuid()
+	{
+		QUuidPtr.CreateUuid();
+	}
+	
+	public static void CreateUuidV3(IQUuid ns, String baseData)
+	{
+		QUuidPtr.CreateUuidV3(ns, baseData);
+	}
+	
+	public static void CreateUuidV5(IQUuid ns, String baseData)
+	{
+		QUuidPtr.CreateUuidV5(ns, baseData);
+	}
+	
+	public static void CreateUuidV32(IQUuid ns, String baseData)
+	{
+		QUuidPtr.CreateUuidV32(ns, baseData);
+	}
+	
+	public static void CreateUuidV52(IQUuid ns, String baseData)
+	{
+		QUuidPtr.CreateUuidV52(ns, baseData);
+	}
+	
+	public int64 Variant()
+	{
+		return this.handle.Variant();
+	}
+	
+	public int64 Version()
+	{
+		return this.handle.Version();
+	}
+	
+	public libqt_string ToString1(int64 mode)
+	{
+		return this.handle.ToString1(mode);
+	}
+	
+	public libqt_string ToByteArray1(int64 mode)
+	{
+		return this.handle.ToByteArray1(mode);
 	}
 	
 }

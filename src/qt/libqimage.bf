@@ -53,29 +53,34 @@ public interface IQImage
 {
 	void* NativePtr { get; }
 }
-public class QImage : IQImage, IQPaintDevice
+public struct QImagePtr : IQImage, IDisposable, IQPaintDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QImage_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QImage_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QImage_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQImage param1)
 	{
-		CQt.QImage_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QImage_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQImage other)
 	{
-		CQt.QImage_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QImage_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -83,19 +88,19 @@ public class QImage : IQImage, IQPaintDevice
 		return CQt.QImage_IsNull(this.nativePtr);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QImage_DevType(this.nativePtr);
 	}
 	
 	public bool OperatorEqual(IQImage param1)
 	{
-		return CQt.QImage_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QImage_OperatorEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQImage param1)
 	{
-		return CQt.QImage_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QImage_OperatorNotEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -130,27 +135,27 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void ConvertToFormat(int64 f)
 	{
-		CQt.QImage_ConvertToFormat(this.nativePtr, f);
+		CQt.QImage_ConvertToFormat(this.nativePtr, (int64)f);
 	}
 	
 	public void ConvertToFormat2(int64 f, uint32[] colorTable)
 	{
-		CQt.QImage_ConvertToFormat2(this.nativePtr, f, null);
+		CQt.QImage_ConvertToFormat2(this.nativePtr, (int64)f, null);
 	}
 	
 	public bool ReinterpretAsFormat(int64 f)
 	{
-		return CQt.QImage_ReinterpretAsFormat(this.nativePtr, f);
+		return CQt.QImage_ReinterpretAsFormat(this.nativePtr, (int64)f);
 	}
 	
 	public void ConvertedTo(int64 f)
 	{
-		CQt.QImage_ConvertedTo(this.nativePtr, f);
+		CQt.QImage_ConvertedTo(this.nativePtr, (int64)f);
 	}
 	
 	public void ConvertTo(int64 f)
 	{
-		CQt.QImage_ConvertTo(this.nativePtr, f);
+		CQt.QImage_ConvertTo(this.nativePtr, (int64)f);
 	}
 	
 	public int32 Width()
@@ -260,7 +265,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public bool ValidWithPt(IQPoint pt)
 	{
-		return CQt.QImage_ValidWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QImage_ValidWithPt(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public int32 PixelIndex(int32 x, int32 y)
@@ -270,7 +275,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public int32 PixelIndexWithPt(IQPoint pt)
 	{
-		return CQt.QImage_PixelIndexWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QImage_PixelIndexWithPt(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public uint32 Pixel(int32 x, int32 y)
@@ -280,7 +285,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public uint32 PixelWithPt(IQPoint pt)
 	{
-		return CQt.QImage_PixelWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		return CQt.QImage_PixelWithPt(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public void SetPixel(int32 x, int32 y, uint32 index_or_rgb)
@@ -290,7 +295,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void SetPixel2(IQPoint pt, uint32 index_or_rgb)
 	{
-		CQt.QImage_SetPixel2(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr, index_or_rgb);
+		CQt.QImage_SetPixel2(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, index_or_rgb);
 	}
 	
 	public void PixelColor(int32 x, int32 y)
@@ -300,17 +305,17 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void PixelColorWithPt(IQPoint pt)
 	{
-		CQt.QImage_PixelColorWithPt(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		CQt.QImage_PixelColorWithPt(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public void SetPixelColor(int32 x, int32 y, IQColor c)
 	{
-		CQt.QImage_SetPixelColor(this.nativePtr, x, y, (c == default) ? default : (void*)c.NativePtr);
+		CQt.QImage_SetPixelColor(this.nativePtr, x, y, (c == default || c.NativePtr == default) ? default : c.NativePtr);
 	}
 	
 	public void SetPixelColor2(IQPoint pt, IQColor c)
 	{
-		CQt.QImage_SetPixelColor2(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr, (c == default) ? default : (void*)c.NativePtr);
+		CQt.QImage_SetPixelColor2(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr, (c == default || c.NativePtr == default) ? default : c.NativePtr);
 	}
 	
 	public uint32[] ColorTable()
@@ -345,12 +350,12 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void FillWithColor(IQColor color)
 	{
-		CQt.QImage_FillWithColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QImage_FillWithColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void Fill2(int64 color)
 	{
-		CQt.QImage_Fill2(this.nativePtr, color);
+		CQt.QImage_Fill2(this.nativePtr, (int64)color);
 	}
 	
 	public bool HasAlphaChannel()
@@ -360,7 +365,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void SetAlphaChannel(IQImage alphaChannel)
 	{
-		CQt.QImage_SetAlphaChannel(this.nativePtr, (alphaChannel == default) ? default : (void*)alphaChannel.NativePtr);
+		CQt.QImage_SetAlphaChannel(this.nativePtr, (alphaChannel == default || alphaChannel.NativePtr == default) ? default : alphaChannel.NativePtr);
 	}
 	
 	public void CreateAlphaMask()
@@ -385,7 +390,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void ScaledWithQSize(IQSize s)
 	{
-		CQt.QImage_ScaledWithQSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		CQt.QImage_ScaledWithQSize(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public void ScaledToWidth(int32 w)
@@ -400,12 +405,12 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void Transformed(IQTransform matrix)
 	{
-		CQt.QImage_Transformed(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr);
+		CQt.QImage_Transformed(this.nativePtr, (matrix == default || matrix.NativePtr == default) ? default : matrix.NativePtr);
 	}
 	
 	public static void TrueMatrix(IQTransform param1, int32 w, int32 h)
 	{
-		CQt.QImage_TrueMatrix((param1 == default) ? default : (void*)param1.NativePtr, w, h);
+		CQt.QImage_TrueMatrix((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr, w, h);
 	}
 	
 	public void Mirrored()
@@ -440,32 +445,32 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void ConvertedToColorSpace(IQColorSpace param1)
 	{
-		CQt.QImage_ConvertedToColorSpace(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QImage_ConvertedToColorSpace(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void ConvertToColorSpace(IQColorSpace param1)
 	{
-		CQt.QImage_ConvertToColorSpace(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QImage_ConvertToColorSpace(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void SetColorSpace(IQColorSpace colorSpace)
 	{
-		CQt.QImage_SetColorSpace(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
+		CQt.QImage_SetColorSpace(this.nativePtr, (colorSpace == default || colorSpace.NativePtr == default) ? default : colorSpace.NativePtr);
 	}
 	
 	public void ColorTransformed(IQColorTransform transform)
 	{
-		CQt.QImage_ColorTransformed(this.nativePtr, (transform == default) ? default : (void*)transform.NativePtr);
+		CQt.QImage_ColorTransformed(this.nativePtr, (transform == default || transform.NativePtr == default) ? default : transform.NativePtr);
 	}
 	
 	public void ApplyColorTransform(IQColorTransform transform)
 	{
-		CQt.QImage_ApplyColorTransform(this.nativePtr, (transform == default) ? default : (void*)transform.NativePtr);
+		CQt.QImage_ApplyColorTransform(this.nativePtr, (transform == default || transform.NativePtr == default) ? default : transform.NativePtr);
 	}
 	
 	public bool Load(IQIODevice device, char8* format)
 	{
-		return CQt.QImage_Load(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
+		return CQt.QImage_Load(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr, format);
 	}
 	
 	public bool LoadWithFileName(String fileName)
@@ -473,9 +478,9 @@ public class QImage : IQImage, IQPaintDevice
 		return CQt.QImage_LoadWithFileName(this.nativePtr, libqt_string(fileName));
 	}
 	
-	public bool LoadFromData(IQByteArrayView data)
+	public bool LoadFromData(char8* data)
 	{
-		return CQt.QImage_LoadFromData(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr);
+		return CQt.QImage_LoadFromData(this.nativePtr, data);
 	}
 	
 	public bool LoadFromData2(uint8* buf, int32 lenVal)
@@ -495,12 +500,12 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public bool SaveWithDevice(IQIODevice device)
 	{
-		return CQt.QImage_SaveWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		return CQt.QImage_SaveWithDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
-	public static void FromData(IQByteArrayView data)
+	public static void FromData(char8* data)
 	{
-		CQt.QImage_FromData((data == default) ? default : (char8*)data.NativePtr);
+		CQt.QImage_FromData(data);
 	}
 	
 	public static void FromData2(uint8* data, int32 size)
@@ -518,7 +523,7 @@ public class QImage : IQImage, IQPaintDevice
 		return CQt.QImage_CacheKey(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QImage_PaintEngine(this.nativePtr);
 	}
@@ -550,7 +555,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void SetOffset(IQPoint offset)
 	{
-		CQt.QImage_SetOffset(this.nativePtr, (offset == default) ? default : (void*)offset.NativePtr);
+		CQt.QImage_SetOffset(this.nativePtr, (offset == default || offset.NativePtr == default) ? default : offset.NativePtr);
 	}
 	
 	public libqt_string[] TextKeys()
@@ -575,17 +580,17 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public static void ToPixelFormat(int64 format)
 	{
-		CQt.QImage_ToPixelFormat(format);
+		CQt.QImage_ToPixelFormat((int64)format);
 	}
 	
 	public static int64 ToImageFormat(IQPixelFormat format)
 	{
-		return CQt.QImage_ToImageFormat((format == default) ? default : (void)format.NativePtr);
+		return CQt.QImage_ToImageFormat(default);
 	}
 	
-	public virtual int32 Metric(int64 metric)
+	public int32 Metric(int64 metric)
 	{
-		return CQt.QImage_Metric(this.nativePtr, metric);
+		return CQt.QImage_Metric(this.nativePtr, (int64)metric);
 	}
 	
 	public void MirroredHelper(bool horizontal, bool vertical)
@@ -610,12 +615,12 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void ConvertToFormatHelper(int64 format, int64 flags)
 	{
-		CQt.QImage_ConvertToFormatHelper(this.nativePtr, format, flags);
+		CQt.QImage_ConvertToFormatHelper(this.nativePtr, (int64)format, flags);
 	}
 	
 	public bool ConvertToFormatInplace(int64 format, int64 flags)
 	{
-		return CQt.QImage_ConvertToFormatInplace(this.nativePtr, format, flags);
+		return CQt.QImage_ConvertToFormatInplace(this.nativePtr, (int64)format, flags);
 	}
 	
 	public void SmoothScaled(int32 w, int32 h)
@@ -630,27 +635,27 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void Copy1(IQRect rect)
 	{
-		CQt.QImage_Copy1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QImage_Copy1(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void ConvertToFormat22(int64 f, int64 flags)
 	{
-		CQt.QImage_ConvertToFormat22(this.nativePtr, f, flags);
+		CQt.QImage_ConvertToFormat22(this.nativePtr, (int64)f, flags);
 	}
 	
 	public void ConvertToFormat3(int64 f, uint32[] colorTable, int64 flags)
 	{
-		CQt.QImage_ConvertToFormat3(this.nativePtr, f, null, flags);
+		CQt.QImage_ConvertToFormat3(this.nativePtr, (int64)f, null, flags);
 	}
 	
 	public void ConvertedTo2(int64 f, int64 flags)
 	{
-		CQt.QImage_ConvertedTo2(this.nativePtr, f, flags);
+		CQt.QImage_ConvertedTo2(this.nativePtr, (int64)f, flags);
 	}
 	
 	public void ConvertTo2(int64 f, int64 flags)
 	{
-		CQt.QImage_ConvertTo2(this.nativePtr, f, flags);
+		CQt.QImage_ConvertTo2(this.nativePtr, (int64)f, flags);
 	}
 	
 	public void CreateAlphaMask1(int64 flags)
@@ -665,42 +670,42 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void CreateMaskFromColor2(uint32 color, int64 mode)
 	{
-		CQt.QImage_CreateMaskFromColor2(this.nativePtr, color, mode);
+		CQt.QImage_CreateMaskFromColor2(this.nativePtr, color, (int64)mode);
 	}
 	
 	public void Scaled3(int32 w, int32 h, int64 aspectMode)
 	{
-		CQt.QImage_Scaled3(this.nativePtr, w, h, aspectMode);
+		CQt.QImage_Scaled3(this.nativePtr, w, h, (int64)aspectMode);
 	}
 	
 	public void Scaled4(int32 w, int32 h, int64 aspectMode, int64 mode)
 	{
-		CQt.QImage_Scaled4(this.nativePtr, w, h, aspectMode, mode);
+		CQt.QImage_Scaled4(this.nativePtr, w, h, (int64)aspectMode, (int64)mode);
 	}
 	
 	public void Scaled2(IQSize s, int64 aspectMode)
 	{
-		CQt.QImage_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode);
+		CQt.QImage_Scaled2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)aspectMode);
 	}
 	
 	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
 	{
-		CQt.QImage_Scaled32(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode, mode);
+		CQt.QImage_Scaled32(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)aspectMode, (int64)mode);
 	}
 	
 	public void ScaledToWidth2(int32 w, int64 mode)
 	{
-		CQt.QImage_ScaledToWidth2(this.nativePtr, w, mode);
+		CQt.QImage_ScaledToWidth2(this.nativePtr, w, (int64)mode);
 	}
 	
 	public void ScaledToHeight2(int32 h, int64 mode)
 	{
-		CQt.QImage_ScaledToHeight2(this.nativePtr, h, mode);
+		CQt.QImage_ScaledToHeight2(this.nativePtr, h, (int64)mode);
 	}
 	
 	public void Transformed2(IQTransform matrix, int64 mode)
 	{
-		CQt.QImage_Transformed2(this.nativePtr, (matrix == default) ? default : (void*)matrix.NativePtr, mode);
+		CQt.QImage_Transformed2(this.nativePtr, (matrix == default || matrix.NativePtr == default) ? default : matrix.NativePtr, (int64)mode);
 	}
 	
 	public void Mirrored1(bool horizontally)
@@ -725,7 +730,7 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public void InvertPixels1(int64 param1)
 	{
-		CQt.QImage_InvertPixels1(this.nativePtr, param1);
+		CQt.QImage_InvertPixels1(this.nativePtr, (int64)param1);
 	}
 	
 	public bool Load2(String fileName, char8* format)
@@ -733,9 +738,9 @@ public class QImage : IQImage, IQPaintDevice
 		return CQt.QImage_Load2(this.nativePtr, libqt_string(fileName), format);
 	}
 	
-	public bool LoadFromData22(IQByteArrayView data, char8* format)
+	public bool LoadFromData22(char8* data, char8* format)
 	{
-		return CQt.QImage_LoadFromData22(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr, format);
+		return CQt.QImage_LoadFromData22(this.nativePtr, data, format);
 	}
 	
 	public bool LoadFromData3(uint8* buf, int32 lenVal, char8* format)
@@ -760,17 +765,17 @@ public class QImage : IQImage, IQPaintDevice
 	
 	public bool Save22(IQIODevice device, char8* format)
 	{
-		return CQt.QImage_Save22(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
+		return CQt.QImage_Save22(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr, format);
 	}
 	
 	public bool Save32(IQIODevice device, char8* format, int32 quality)
 	{
-		return CQt.QImage_Save32(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format, quality);
+		return CQt.QImage_Save32(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr, format, quality);
 	}
 	
-	public static void FromData22(IQByteArrayView data, char8* format)
+	public static void FromData22(char8* data, char8* format)
 	{
-		CQt.QImage_FromData22((data == default) ? default : (char8*)data.NativePtr, format);
+		CQt.QImage_FromData22(data, format);
 	}
 	
 	public static void FromData3(uint8* data, int32 size, char8* format)
@@ -836,6 +841,796 @@ public class QImage : IQImage, IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QImage
+{
+	public QImagePtr handle;
+	
+	public static implicit operator QImagePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QImagePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQImage param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQImage other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public bool OperatorEqual(IQImage param1)
+	{
+		return this.handle.OperatorEqual(param1);
+	}
+	
+	public bool OperatorNotEqual(IQImage param1)
+	{
+		return this.handle.OperatorNotEqual(param1);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public void Copy()
+	{
+		this.handle.Copy();
+	}
+	
+	public void Copy2(int32 x, int32 y, int32 w, int32 h)
+	{
+		this.handle.Copy2(x, y, w, h);
+	}
+	
+	public int64 Format()
+	{
+		return this.handle.Format();
+	}
+	
+	public void ConvertToFormat(int64 f)
+	{
+		this.handle.ConvertToFormat(f);
+	}
+	
+	public void ConvertToFormat2(int64 f, uint32[] colorTable)
+	{
+		this.handle.ConvertToFormat2(f, null);
+	}
+	
+	public bool ReinterpretAsFormat(int64 f)
+	{
+		return this.handle.ReinterpretAsFormat(f);
+	}
+	
+	public void ConvertedTo(int64 f)
+	{
+		this.handle.ConvertedTo(f);
+	}
+	
+	public void ConvertTo(int64 f)
+	{
+		this.handle.ConvertTo(f);
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public void Rect()
+	{
+		this.handle.Rect();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public int32 BitPlaneCount()
+	{
+		return this.handle.BitPlaneCount();
+	}
+	
+	public uint32 Color(int32 i)
+	{
+		return this.handle.Color(i);
+	}
+	
+	public void SetColor(int32 i, uint32 c)
+	{
+		this.handle.SetColor(i, c);
+	}
+	
+	public void SetColorCount(int32 colorCount)
+	{
+		this.handle.SetColorCount(colorCount);
+	}
+	
+	public bool AllGray()
+	{
+		return this.handle.AllGray();
+	}
+	
+	public bool IsGrayscale()
+	{
+		return this.handle.IsGrayscale();
+	}
+	
+	public uint8* Bits()
+	{
+		return this.handle.Bits();
+	}
+	
+	public uint8* Bits2()
+	{
+		return this.handle.Bits2();
+	}
+	
+	public uint8* ConstBits()
+	{
+		return this.handle.ConstBits();
+	}
+	
+	public int32 SizeInBytes()
+	{
+		return this.handle.SizeInBytes();
+	}
+	
+	public uint8* ScanLine(int32 param1)
+	{
+		return this.handle.ScanLine(param1);
+	}
+	
+	public uint8* ScanLineWithInt(int32 param1)
+	{
+		return this.handle.ScanLineWithInt(param1);
+	}
+	
+	public uint8* ConstScanLine(int32 param1)
+	{
+		return this.handle.ConstScanLine(param1);
+	}
+	
+	public int32 BytesPerLine()
+	{
+		return this.handle.BytesPerLine();
+	}
+	
+	public bool Valid(int32 x, int32 y)
+	{
+		return this.handle.Valid(x, y);
+	}
+	
+	public bool ValidWithPt(IQPoint pt)
+	{
+		return this.handle.ValidWithPt(pt);
+	}
+	
+	public int32 PixelIndex(int32 x, int32 y)
+	{
+		return this.handle.PixelIndex(x, y);
+	}
+	
+	public int32 PixelIndexWithPt(IQPoint pt)
+	{
+		return this.handle.PixelIndexWithPt(pt);
+	}
+	
+	public uint32 Pixel(int32 x, int32 y)
+	{
+		return this.handle.Pixel(x, y);
+	}
+	
+	public uint32 PixelWithPt(IQPoint pt)
+	{
+		return this.handle.PixelWithPt(pt);
+	}
+	
+	public void SetPixel(int32 x, int32 y, uint32 index_or_rgb)
+	{
+		this.handle.SetPixel(x, y, index_or_rgb);
+	}
+	
+	public void SetPixel2(IQPoint pt, uint32 index_or_rgb)
+	{
+		this.handle.SetPixel2(pt, index_or_rgb);
+	}
+	
+	public void PixelColor(int32 x, int32 y)
+	{
+		this.handle.PixelColor(x, y);
+	}
+	
+	public void PixelColorWithPt(IQPoint pt)
+	{
+		this.handle.PixelColorWithPt(pt);
+	}
+	
+	public void SetPixelColor(int32 x, int32 y, IQColor c)
+	{
+		this.handle.SetPixelColor(x, y, c);
+	}
+	
+	public void SetPixelColor2(IQPoint pt, IQColor c)
+	{
+		this.handle.SetPixelColor2(pt, c);
+	}
+	
+	public uint32[] ColorTable()
+	{
+		return this.handle.ColorTable();
+	}
+	
+	public void SetColorTable(uint32[] colors)
+	{
+		this.handle.SetColorTable(null);
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public void SetDevicePixelRatio(double scaleFactor)
+	{
+		this.handle.SetDevicePixelRatio(scaleFactor);
+	}
+	
+	public void DeviceIndependentSize()
+	{
+		this.handle.DeviceIndependentSize();
+	}
+	
+	public void Fill(uint32 pixel)
+	{
+		this.handle.Fill(pixel);
+	}
+	
+	public void FillWithColor(IQColor color)
+	{
+		this.handle.FillWithColor(color);
+	}
+	
+	public void Fill2(int64 color)
+	{
+		this.handle.Fill2(color);
+	}
+	
+	public bool HasAlphaChannel()
+	{
+		return this.handle.HasAlphaChannel();
+	}
+	
+	public void SetAlphaChannel(IQImage alphaChannel)
+	{
+		this.handle.SetAlphaChannel(alphaChannel);
+	}
+	
+	public void CreateAlphaMask()
+	{
+		this.handle.CreateAlphaMask();
+	}
+	
+	public void CreateHeuristicMask()
+	{
+		this.handle.CreateHeuristicMask();
+	}
+	
+	public void CreateMaskFromColor(uint32 color)
+	{
+		this.handle.CreateMaskFromColor(color);
+	}
+	
+	public void Scaled(int32 w, int32 h)
+	{
+		this.handle.Scaled(w, h);
+	}
+	
+	public void ScaledWithQSize(IQSize s)
+	{
+		this.handle.ScaledWithQSize(s);
+	}
+	
+	public void ScaledToWidth(int32 w)
+	{
+		this.handle.ScaledToWidth(w);
+	}
+	
+	public void ScaledToHeight(int32 h)
+	{
+		this.handle.ScaledToHeight(h);
+	}
+	
+	public void Transformed(IQTransform matrix)
+	{
+		this.handle.Transformed(matrix);
+	}
+	
+	public static void TrueMatrix(IQTransform param1, int32 w, int32 h)
+	{
+		QImagePtr.TrueMatrix(param1, w, h);
+	}
+	
+	public void Mirrored()
+	{
+		this.handle.Mirrored();
+	}
+	
+	public void RgbSwapped()
+	{
+		this.handle.RgbSwapped();
+	}
+	
+	public void Mirror()
+	{
+		this.handle.Mirror();
+	}
+	
+	public void RgbSwap()
+	{
+		this.handle.RgbSwap();
+	}
+	
+	public void InvertPixels()
+	{
+		this.handle.InvertPixels();
+	}
+	
+	public void ColorSpace()
+	{
+		this.handle.ColorSpace();
+	}
+	
+	public void ConvertedToColorSpace(IQColorSpace param1)
+	{
+		this.handle.ConvertedToColorSpace(param1);
+	}
+	
+	public void ConvertToColorSpace(IQColorSpace param1)
+	{
+		this.handle.ConvertToColorSpace(param1);
+	}
+	
+	public void SetColorSpace(IQColorSpace colorSpace)
+	{
+		this.handle.SetColorSpace(colorSpace);
+	}
+	
+	public void ColorTransformed(IQColorTransform transform)
+	{
+		this.handle.ColorTransformed(transform);
+	}
+	
+	public void ApplyColorTransform(IQColorTransform transform)
+	{
+		this.handle.ApplyColorTransform(transform);
+	}
+	
+	public bool Load(IQIODevice device, char8* format)
+	{
+		return this.handle.Load(device, format);
+	}
+	
+	public bool LoadWithFileName(String fileName)
+	{
+		return this.handle.LoadWithFileName(fileName);
+	}
+	
+	public bool LoadFromData(char8* data)
+	{
+		return this.handle.LoadFromData(data);
+	}
+	
+	public bool LoadFromData2(uint8* buf, int32 lenVal)
+	{
+		return this.handle.LoadFromData2(buf, lenVal);
+	}
+	
+	public bool LoadFromDataWithData(String data)
+	{
+		return this.handle.LoadFromDataWithData(data);
+	}
+	
+	public bool Save(String fileName)
+	{
+		return this.handle.Save(fileName);
+	}
+	
+	public bool SaveWithDevice(IQIODevice device)
+	{
+		return this.handle.SaveWithDevice(device);
+	}
+	
+	public static void FromData(char8* data)
+	{
+		QImagePtr.FromData(data);
+	}
+	
+	public static void FromData2(uint8* data, int32 size)
+	{
+		QImagePtr.FromData2(data, size);
+	}
+	
+	public static void FromDataWithData(String data)
+	{
+		QImagePtr.FromDataWithData(data);
+	}
+	
+	public int64 CacheKey()
+	{
+		return this.handle.CacheKey();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public int32 DotsPerMeterX()
+	{
+		return this.handle.DotsPerMeterX();
+	}
+	
+	public int32 DotsPerMeterY()
+	{
+		return this.handle.DotsPerMeterY();
+	}
+	
+	public void SetDotsPerMeterX(int32 dotsPerMeterX)
+	{
+		this.handle.SetDotsPerMeterX(dotsPerMeterX);
+	}
+	
+	public void SetDotsPerMeterY(int32 dotsPerMeterY)
+	{
+		this.handle.SetDotsPerMeterY(dotsPerMeterY);
+	}
+	
+	public void Offset()
+	{
+		this.handle.Offset();
+	}
+	
+	public void SetOffset(IQPoint offset)
+	{
+		this.handle.SetOffset(offset);
+	}
+	
+	public libqt_string[] TextKeys()
+	{
+		return this.handle.TextKeys();
+	}
+	
+	public libqt_string Text()
+	{
+		return this.handle.Text();
+	}
+	
+	public void SetText(String key, String value)
+	{
+		this.handle.SetText(key, value);
+	}
+	
+	public void PixelFormat()
+	{
+		this.handle.PixelFormat();
+	}
+	
+	public static void ToPixelFormat(int64 format)
+	{
+		QImagePtr.ToPixelFormat(format);
+	}
+	
+	public static int64 ToImageFormat(IQPixelFormat format)
+	{
+		return QImagePtr.ToImageFormat(default);
+	}
+	
+	public virtual int32 Metric(int64 metric)
+	{
+		return this.handle.Metric(metric);
+	}
+	
+	public void MirroredHelper(bool horizontal, bool vertical)
+	{
+		this.handle.MirroredHelper(horizontal, vertical);
+	}
+	
+	public void RgbSwappedHelper()
+	{
+		this.handle.RgbSwappedHelper();
+	}
+	
+	public void MirroredInplace(bool horizontal, bool vertical)
+	{
+		this.handle.MirroredInplace(horizontal, vertical);
+	}
+	
+	public void RgbSwappedInplace()
+	{
+		this.handle.RgbSwappedInplace();
+	}
+	
+	public void ConvertToFormatHelper(int64 format, int64 flags)
+	{
+		this.handle.ConvertToFormatHelper(format, flags);
+	}
+	
+	public bool ConvertToFormatInplace(int64 format, int64 flags)
+	{
+		return this.handle.ConvertToFormatInplace(format, flags);
+	}
+	
+	public void SmoothScaled(int32 w, int32 h)
+	{
+		this.handle.SmoothScaled(w, h);
+	}
+	
+	public void DetachMetadata()
+	{
+		this.handle.DetachMetadata();
+	}
+	
+	public void Copy1(IQRect rect)
+	{
+		this.handle.Copy1(rect);
+	}
+	
+	public void ConvertToFormat22(int64 f, int64 flags)
+	{
+		this.handle.ConvertToFormat22(f, flags);
+	}
+	
+	public void ConvertToFormat3(int64 f, uint32[] colorTable, int64 flags)
+	{
+		this.handle.ConvertToFormat3(f, null, flags);
+	}
+	
+	public void ConvertedTo2(int64 f, int64 flags)
+	{
+		this.handle.ConvertedTo2(f, flags);
+	}
+	
+	public void ConvertTo2(int64 f, int64 flags)
+	{
+		this.handle.ConvertTo2(f, flags);
+	}
+	
+	public void CreateAlphaMask1(int64 flags)
+	{
+		this.handle.CreateAlphaMask1(flags);
+	}
+	
+	public void CreateHeuristicMask1(bool clipTight)
+	{
+		this.handle.CreateHeuristicMask1(clipTight);
+	}
+	
+	public void CreateMaskFromColor2(uint32 color, int64 mode)
+	{
+		this.handle.CreateMaskFromColor2(color, mode);
+	}
+	
+	public void Scaled3(int32 w, int32 h, int64 aspectMode)
+	{
+		this.handle.Scaled3(w, h, aspectMode);
+	}
+	
+	public void Scaled4(int32 w, int32 h, int64 aspectMode, int64 mode)
+	{
+		this.handle.Scaled4(w, h, aspectMode, mode);
+	}
+	
+	public void Scaled2(IQSize s, int64 aspectMode)
+	{
+		this.handle.Scaled2(s, aspectMode);
+	}
+	
+	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
+	{
+		this.handle.Scaled32(s, aspectMode, mode);
+	}
+	
+	public void ScaledToWidth2(int32 w, int64 mode)
+	{
+		this.handle.ScaledToWidth2(w, mode);
+	}
+	
+	public void ScaledToHeight2(int32 h, int64 mode)
+	{
+		this.handle.ScaledToHeight2(h, mode);
+	}
+	
+	public void Transformed2(IQTransform matrix, int64 mode)
+	{
+		this.handle.Transformed2(matrix, mode);
+	}
+	
+	public void Mirrored1(bool horizontally)
+	{
+		this.handle.Mirrored1(horizontally);
+	}
+	
+	public void Mirrored2(bool horizontally, bool vertically)
+	{
+		this.handle.Mirrored2(horizontally, vertically);
+	}
+	
+	public void Mirror1(bool horizontally)
+	{
+		this.handle.Mirror1(horizontally);
+	}
+	
+	public void Mirror2(bool horizontally, bool vertically)
+	{
+		this.handle.Mirror2(horizontally, vertically);
+	}
+	
+	public void InvertPixels1(int64 param1)
+	{
+		this.handle.InvertPixels1(param1);
+	}
+	
+	public bool Load2(String fileName, char8* format)
+	{
+		return this.handle.Load2(fileName, format);
+	}
+	
+	public bool LoadFromData22(char8* data, char8* format)
+	{
+		return this.handle.LoadFromData22(data, format);
+	}
+	
+	public bool LoadFromData3(uint8* buf, int32 lenVal, char8* format)
+	{
+		return this.handle.LoadFromData3(buf, lenVal, format);
+	}
+	
+	public bool LoadFromData23(String data, char8* format)
+	{
+		return this.handle.LoadFromData23(data, format);
+	}
+	
+	public bool Save2(String fileName, char8* format)
+	{
+		return this.handle.Save2(fileName, format);
+	}
+	
+	public bool Save3(String fileName, char8* format, int32 quality)
+	{
+		return this.handle.Save3(fileName, format, quality);
+	}
+	
+	public bool Save22(IQIODevice device, char8* format)
+	{
+		return this.handle.Save22(device, format);
+	}
+	
+	public bool Save32(IQIODevice device, char8* format, int32 quality)
+	{
+		return this.handle.Save32(device, format, quality);
+	}
+	
+	public static void FromData22(char8* data, char8* format)
+	{
+		QImagePtr.FromData22(data, format);
+	}
+	
+	public static void FromData3(uint8* data, int32 size, char8* format)
+	{
+		QImagePtr.FromData3(data, size, format);
+	}
+	
+	public static void FromData23(String data, char8* format)
+	{
+		QImagePtr.FromData23(data, format);
+	}
+	
+	public libqt_string Text1(String key)
+	{
+		return this.handle.Text1(key);
+	}
+	
+	public void DetachMetadata1(bool invalidateCache)
+	{
+		this.handle.DetachMetadata1(invalidateCache);
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QImagePtr.DevicePixelRatioFScale();
 	}
 	
 }

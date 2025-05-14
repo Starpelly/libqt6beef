@@ -15,39 +15,44 @@ public interface IQEventPoint
 {
 	void* NativePtr { get; }
 }
-public class QEventPoint : IQEventPoint
+public struct QEventPointPtr : IQEventPoint, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QEventPoint_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QEventPoint_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QEventPoint_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQEventPoint other)
 	{
-		CQt.QEventPoint_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QEventPoint_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQEventPoint other)
 	{
-		return CQt.QEventPoint_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QEventPoint_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQEventPoint other)
 	{
-		return CQt.QEventPoint_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QEventPoint_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQEventPoint other)
 	{
-		CQt.QEventPoint_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QEventPoint_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Position()
@@ -248,6 +253,246 @@ public class QEventPoint : IQEventPoint
 	public void SetAccepted1(bool accepted)
 	{
 		CQt.QEventPoint_SetAccepted1(this.nativePtr, accepted);
+	}
+	
+}
+public class QEventPoint
+{
+	public QEventPointPtr handle;
+	
+	public static implicit operator QEventPointPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QEventPointPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQEventPoint other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool OperatorEqual(IQEventPoint other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQEventPoint other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void Swap(IQEventPoint other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Position()
+	{
+		this.handle.Position();
+	}
+	
+	public void PressPosition()
+	{
+		this.handle.PressPosition();
+	}
+	
+	public void GrabPosition()
+	{
+		this.handle.GrabPosition();
+	}
+	
+	public void LastPosition()
+	{
+		this.handle.LastPosition();
+	}
+	
+	public void ScenePosition()
+	{
+		this.handle.ScenePosition();
+	}
+	
+	public void ScenePressPosition()
+	{
+		this.handle.ScenePressPosition();
+	}
+	
+	public void SceneGrabPosition()
+	{
+		this.handle.SceneGrabPosition();
+	}
+	
+	public void SceneLastPosition()
+	{
+		this.handle.SceneLastPosition();
+	}
+	
+	public void GlobalPosition()
+	{
+		this.handle.GlobalPosition();
+	}
+	
+	public void GlobalPressPosition()
+	{
+		this.handle.GlobalPressPosition();
+	}
+	
+	public void GlobalGrabPosition()
+	{
+		this.handle.GlobalGrabPosition();
+	}
+	
+	public void GlobalLastPosition()
+	{
+		this.handle.GlobalLastPosition();
+	}
+	
+	public void NormalizedPosition()
+	{
+		this.handle.NormalizedPosition();
+	}
+	
+	public void Pos()
+	{
+		this.handle.Pos();
+	}
+	
+	public void StartPos()
+	{
+		this.handle.StartPos();
+	}
+	
+	public void ScenePos()
+	{
+		this.handle.ScenePos();
+	}
+	
+	public void StartScenePos()
+	{
+		this.handle.StartScenePos();
+	}
+	
+	public void ScreenPos()
+	{
+		this.handle.ScreenPos();
+	}
+	
+	public void StartScreenPos()
+	{
+		this.handle.StartScreenPos();
+	}
+	
+	public void StartNormalizedPos()
+	{
+		this.handle.StartNormalizedPos();
+	}
+	
+	public void NormalizedPos()
+	{
+		this.handle.NormalizedPos();
+	}
+	
+	public void LastPos()
+	{
+		this.handle.LastPos();
+	}
+	
+	public void LastScenePos()
+	{
+		this.handle.LastScenePos();
+	}
+	
+	public void LastScreenPos()
+	{
+		this.handle.LastScreenPos();
+	}
+	
+	public void LastNormalizedPos()
+	{
+		this.handle.LastNormalizedPos();
+	}
+	
+	public void Velocity()
+	{
+		this.handle.Velocity();
+	}
+	
+	public int64 State()
+	{
+		return this.handle.State();
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public int32 Id()
+	{
+		return this.handle.Id();
+	}
+	
+	public void UniqueId()
+	{
+		this.handle.UniqueId();
+	}
+	
+	public c_ulong Timestamp()
+	{
+		return this.handle.Timestamp();
+	}
+	
+	public c_ulong LastTimestamp()
+	{
+		return this.handle.LastTimestamp();
+	}
+	
+	public c_ulong PressTimestamp()
+	{
+		return this.handle.PressTimestamp();
+	}
+	
+	public double TimeHeld()
+	{
+		return this.handle.TimeHeld();
+	}
+	
+	public double Pressure()
+	{
+		return this.handle.Pressure();
+	}
+	
+	public double Rotation()
+	{
+		return this.handle.Rotation();
+	}
+	
+	public void EllipseDiameters()
+	{
+		this.handle.EllipseDiameters();
+	}
+	
+	public bool IsAccepted()
+	{
+		return this.handle.IsAccepted();
+	}
+	
+	public void SetAccepted()
+	{
+		this.handle.SetAccepted();
+	}
+	
+	public void SetAccepted1(bool accepted)
+	{
+		this.handle.SetAccepted1(accepted);
 	}
 	
 }

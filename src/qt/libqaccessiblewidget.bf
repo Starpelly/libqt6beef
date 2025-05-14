@@ -6,117 +6,122 @@ public interface IQAccessibleWidget
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleWidget : IQAccessibleWidget, IQAccessibleObject, IQAccessibleActionInterface
+public struct QAccessibleWidgetPtr : IQAccessibleWidget, IQAccessibleObject, IQAccessibleActionInterface
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQWidget o)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleWidget_new((o == null) ? null : (void*)o.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public virtual bool IsValid()
+	public static Self New(IQWidget o)
+	{
+		return .(CQt.QAccessibleWidget_new((o == default || o.NativePtr == default) ? default : o.NativePtr));
+	}
+	
+	public bool IsValid()
 	{
 		return CQt.QAccessibleWidget_IsValid(this.nativePtr);
 	}
 	
-	public virtual void* Window()
+	public void* Window()
 	{
 		return CQt.QAccessibleWidget_Window(this.nativePtr);
 	}
 	
-	public virtual int32 ChildCount()
+	public int32 ChildCount()
 	{
 		return CQt.QAccessibleWidget_ChildCount(this.nativePtr);
 	}
 	
-	public virtual int32 IndexOfChild(IQAccessibleInterface child)
+	public int32 IndexOfChild(IQAccessibleInterface child)
 	{
-		return CQt.QAccessibleWidget_IndexOfChild(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
+		return CQt.QAccessibleWidget_IndexOfChild(this.nativePtr, (child == default || child.NativePtr == default) ? default : child.NativePtr);
 	}
 	
-	public virtual void*[] Relations(int64 match)
+	public void*[] Relations(int64 match)
 	{
 		return CQt.QAccessibleWidget_Relations(this.nativePtr, match);
 	}
 	
-	public virtual void* FocusChild()
+	public void* FocusChild()
 	{
 		return CQt.QAccessibleWidget_FocusChild(this.nativePtr);
 	}
 	
-	public virtual void Rect()
+	public void Rect()
 	{
 		CQt.QAccessibleWidget_Rect(this.nativePtr);
 	}
 	
-	public virtual void* Parent()
+	public void* Parent()
 	{
 		return CQt.QAccessibleWidget_Parent(this.nativePtr);
 	}
 	
-	public virtual void* Child(int32 index)
+	public void* Child(int32 index)
 	{
 		return CQt.QAccessibleWidget_Child(this.nativePtr, index);
 	}
 	
-	public virtual libqt_string Text(int64 t)
+	public libqt_string Text(int64 t)
 	{
-		return CQt.QAccessibleWidget_Text(this.nativePtr, t);
+		return CQt.QAccessibleWidget_Text(this.nativePtr, (int64)t);
 	}
 	
-	public virtual int64 Role()
+	public int64 Role()
 	{
 		return CQt.QAccessibleWidget_Role(this.nativePtr);
 	}
 	
-	public virtual void State()
+	public void State()
 	{
 		CQt.QAccessibleWidget_State(this.nativePtr);
 	}
 	
-	public virtual void ForegroundColor()
+	public void ForegroundColor()
 	{
 		CQt.QAccessibleWidget_ForegroundColor(this.nativePtr);
 	}
 	
-	public virtual void BackgroundColor()
+	public void BackgroundColor()
 	{
 		CQt.QAccessibleWidget_BackgroundColor(this.nativePtr);
 	}
 	
-	public virtual void* InterfaceCast(int64 t)
+	public void* InterfaceCast(int64 t)
 	{
-		return CQt.QAccessibleWidget_InterfaceCast(this.nativePtr, t);
+		return CQt.QAccessibleWidget_InterfaceCast(this.nativePtr, (int64)t);
 	}
 	
-	public virtual libqt_string[] ActionNames()
+	public libqt_string[] ActionNames()
 	{
 		return CQt.QAccessibleWidget_ActionNames(this.nativePtr);
 	}
 	
-	public virtual void DoAction(String actionName)
+	public void DoAction(String actionName)
 	{
 		CQt.QAccessibleWidget_DoAction(this.nativePtr, libqt_string(actionName));
 	}
 	
-	public virtual libqt_string[] KeyBindingsForAction(String actionName)
+	public libqt_string[] KeyBindingsForAction(String actionName)
 	{
 		return CQt.QAccessibleWidget_KeyBindingsForAction(this.nativePtr, libqt_string(actionName));
 	}
 	
-	public virtual void* Object()
+	public void* Object()
 	{
 		return CQt.QAccessibleObject_Object(this.nativePtr);
 	}
 	
-	public virtual void SetText(int64 t, String text)
+	public void SetText(int64 t, String text)
 	{
-		CQt.QAccessibleObject_SetText(this.nativePtr, t, libqt_string(text));
+		CQt.QAccessibleObject_SetText(this.nativePtr, (int64)t, libqt_string(text));
 	}
 	
-	public virtual void* ChildAt(int32 x, int32 y)
+	public void* ChildAt(int32 x, int32 y)
 	{
 		return CQt.QAccessibleObject_ChildAt(this.nativePtr, x, y);
 	}
@@ -161,7 +166,7 @@ public class QAccessibleWidget : IQAccessibleWidget, IQAccessibleObject, IQAcces
 		return CQt.QAccessibleInterface_HyperlinkInterface(this.nativePtr);
 	}
 	
-	public virtual void VirtualHook(int32 id, void* data)
+	public void VirtualHook(int32 id, void* data)
 	{
 		CQt.QAccessibleInterface_VirtualHook(this.nativePtr, id, data);
 	}
@@ -171,12 +176,12 @@ public class QAccessibleWidget : IQAccessibleWidget, IQAccessibleObject, IQAcces
 		return CQt.QAccessibleActionInterface_Tr(sourceText);
 	}
 	
-	public virtual libqt_string LocalizedActionName(String name)
+	public libqt_string LocalizedActionName(String name)
 	{
 		return CQt.QAccessibleActionInterface_LocalizedActionName(this.nativePtr, libqt_string(name));
 	}
 	
-	public virtual libqt_string LocalizedActionDescription(String name)
+	public libqt_string LocalizedActionDescription(String name)
 	{
 		return CQt.QAccessibleActionInterface_LocalizedActionDescription(this.nativePtr, libqt_string(name));
 	}
@@ -249,6 +254,256 @@ public class QAccessibleWidget : IQAccessibleWidget, IQAccessibleObject, IQAcces
 	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QAccessibleActionInterface_Tr3(sourceText, disambiguation, n);
+	}
+	
+}
+public class QAccessibleWidget
+{
+	public QAccessibleWidgetPtr handle;
+	
+	public static implicit operator QAccessibleWidgetPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQWidget o)
+	{
+		this.handle = QAccessibleWidgetPtr.New(o);
+	}
+	
+	public virtual bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public virtual void* Window()
+	{
+		return this.handle.Window();
+	}
+	
+	public virtual int32 ChildCount()
+	{
+		return this.handle.ChildCount();
+	}
+	
+	public virtual int32 IndexOfChild(IQAccessibleInterface child)
+	{
+		return this.handle.IndexOfChild(child);
+	}
+	
+	public virtual void*[] Relations(int64 match)
+	{
+		return this.handle.Relations(match);
+	}
+	
+	public virtual void* FocusChild()
+	{
+		return this.handle.FocusChild();
+	}
+	
+	public virtual void Rect()
+	{
+		this.handle.Rect();
+	}
+	
+	public virtual void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public virtual void* Child(int32 index)
+	{
+		return this.handle.Child(index);
+	}
+	
+	public virtual libqt_string Text(int64 t)
+	{
+		return this.handle.Text(t);
+	}
+	
+	public virtual int64 Role()
+	{
+		return this.handle.Role();
+	}
+	
+	public virtual void State()
+	{
+		this.handle.State();
+	}
+	
+	public virtual void ForegroundColor()
+	{
+		this.handle.ForegroundColor();
+	}
+	
+	public virtual void BackgroundColor()
+	{
+		this.handle.BackgroundColor();
+	}
+	
+	public virtual void* InterfaceCast(int64 t)
+	{
+		return this.handle.InterfaceCast(t);
+	}
+	
+	public virtual libqt_string[] ActionNames()
+	{
+		return this.handle.ActionNames();
+	}
+	
+	public virtual void DoAction(String actionName)
+	{
+		this.handle.DoAction(actionName);
+	}
+	
+	public virtual libqt_string[] KeyBindingsForAction(String actionName)
+	{
+		return this.handle.KeyBindingsForAction(actionName);
+	}
+	
+	public virtual void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public virtual void SetText(int64 t, String text)
+	{
+		this.handle.SetText(t, text);
+	}
+	
+	public virtual void* ChildAt(int32 x, int32 y)
+	{
+		return this.handle.ChildAt(x, y);
+	}
+	
+	public void* TextInterface()
+	{
+		return this.handle.TextInterface();
+	}
+	
+	public void* EditableTextInterface()
+	{
+		return this.handle.EditableTextInterface();
+	}
+	
+	public void* ValueInterface()
+	{
+		return this.handle.ValueInterface();
+	}
+	
+	public void* ActionInterface()
+	{
+		return this.handle.ActionInterface();
+	}
+	
+	public void* ImageInterface()
+	{
+		return this.handle.ImageInterface();
+	}
+	
+	public void* TableInterface()
+	{
+		return this.handle.TableInterface();
+	}
+	
+	public void* TableCellInterface()
+	{
+		return this.handle.TableCellInterface();
+	}
+	
+	public void* HyperlinkInterface()
+	{
+		return this.handle.HyperlinkInterface();
+	}
+	
+	public virtual void VirtualHook(int32 id, void* data)
+	{
+		this.handle.VirtualHook(id, data);
+	}
+	
+	public static libqt_string Tr(char8* sourceText)
+	{
+		return QAccessibleWidgetPtr.Tr(sourceText);
+	}
+	
+	public virtual libqt_string LocalizedActionName(String name)
+	{
+		return this.handle.LocalizedActionName(name);
+	}
+	
+	public virtual libqt_string LocalizedActionDescription(String name)
+	{
+		return this.handle.LocalizedActionDescription(name);
+	}
+	
+	public static libqt_string PressAction()
+	{
+		return QAccessibleWidgetPtr.PressAction();
+	}
+	
+	public static libqt_string IncreaseAction()
+	{
+		return QAccessibleWidgetPtr.IncreaseAction();
+	}
+	
+	public static libqt_string DecreaseAction()
+	{
+		return QAccessibleWidgetPtr.DecreaseAction();
+	}
+	
+	public static libqt_string ShowMenuAction()
+	{
+		return QAccessibleWidgetPtr.ShowMenuAction();
+	}
+	
+	public static libqt_string SetFocusAction()
+	{
+		return QAccessibleWidgetPtr.SetFocusAction();
+	}
+	
+	public static libqt_string ToggleAction()
+	{
+		return QAccessibleWidgetPtr.ToggleAction();
+	}
+	
+	public static libqt_string ScrollLeftAction()
+	{
+		return QAccessibleWidgetPtr.ScrollLeftAction();
+	}
+	
+	public static libqt_string ScrollRightAction()
+	{
+		return QAccessibleWidgetPtr.ScrollRightAction();
+	}
+	
+	public static libqt_string ScrollUpAction()
+	{
+		return QAccessibleWidgetPtr.ScrollUpAction();
+	}
+	
+	public static libqt_string ScrollDownAction()
+	{
+		return QAccessibleWidgetPtr.ScrollDownAction();
+	}
+	
+	public static libqt_string NextPageAction()
+	{
+		return QAccessibleWidgetPtr.NextPageAction();
+	}
+	
+	public static libqt_string PreviousPageAction()
+	{
+		return QAccessibleWidgetPtr.PreviousPageAction();
+	}
+	
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
+	{
+		return QAccessibleWidgetPtr.Tr2(sourceText, disambiguation);
+	}
+	
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
+	{
+		return QAccessibleWidgetPtr.Tr3(sourceText, disambiguation, n);
 	}
 	
 }

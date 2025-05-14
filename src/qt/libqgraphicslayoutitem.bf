@@ -6,29 +6,34 @@ public interface IQGraphicsLayoutItem
 {
 	void* NativePtr { get; }
 }
-public class QGraphicsLayoutItem : IQGraphicsLayoutItem
+public struct QGraphicsLayoutItemPtr : IQGraphicsLayoutItem, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGraphicsLayoutItem_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QGraphicsLayoutItem_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGraphicsLayoutItem_Delete(this.nativePtr);
 	}
 	
 	public void SetSizePolicy(IQSizePolicy policy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default) ? default : (void*)policy.NativePtr);
+		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default || policy.NativePtr == default) ? default : policy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy2(this.nativePtr, hPolicy, vPolicy);
+		CQt.QGraphicsLayoutItem_SetSizePolicy2(this.nativePtr, (int64)hPolicy, (int64)vPolicy);
 	}
 	
 	public void SizePolicy()
@@ -38,7 +43,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void SetMinimumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetMinimumSize2(double w, double h)
@@ -73,7 +78,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void SetPreferredSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetPreferredSize2(double w, double h)
@@ -108,7 +113,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void SetMaximumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetMaximumSize2(double w, double h)
@@ -141,9 +146,9 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 		return CQt.QGraphicsLayoutItem_MaximumHeight(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRectF rect)
+	public void SetGeometry(IQRectF rect)
 	{
-		CQt.QGraphicsLayoutItem_SetGeometry(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QGraphicsLayoutItem_SetGeometry(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Geometry()
@@ -151,7 +156,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_Geometry(this.nativePtr);
 	}
 	
-	public virtual void GetContentsMargins(double* left, double* top, double* right, double* bottom)
+	public void GetContentsMargins(double* left, double* top, double* right, double* bottom)
 	{
 		CQt.QGraphicsLayoutItem_GetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
@@ -163,15 +168,15 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void EffectiveSizeHint(int64 which)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint(this.nativePtr, which);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint(this.nativePtr, (int64)which);
 	}
 	
-	public virtual void UpdateGeometry()
+	public void UpdateGeometry()
 	{
 		CQt.QGraphicsLayoutItem_UpdateGeometry(this.nativePtr);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QGraphicsLayoutItem_IsEmpty(this.nativePtr);
 	}
@@ -183,7 +188,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
 	{
-		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool IsLayout()
@@ -203,7 +208,7 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 	
 	public void SetGraphicsItem(IQGraphicsItem item)
 	{
-		CQt.QGraphicsLayoutItem_SetGraphicsItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QGraphicsLayoutItem_SetGraphicsItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void SetOwnedByLayout(bool ownedByLayout)
@@ -211,19 +216,244 @@ public class QGraphicsLayoutItem : IQGraphicsLayoutItem
 		CQt.QGraphicsLayoutItem_SetOwnedByLayout(this.nativePtr, ownedByLayout);
 	}
 	
-	public virtual void SizeHint(int64 which, IQSizeF constraint)
+	public void SizeHint(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_SizeHint(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
+		CQt.QGraphicsLayoutItem_SizeHint(this.nativePtr, (int64)which, (constraint == default || constraint.NativePtr == default) ? default : constraint.NativePtr);
 	}
 	
 	public void SetSizePolicy3(int64 hPolicy, int64 vPolicy, int64 controlType)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, hPolicy, vPolicy, controlType);
+		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, (int64)hPolicy, (int64)vPolicy, (int64)controlType);
 	}
 	
 	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, (int64)which, (constraint == default || constraint.NativePtr == default) ? default : constraint.NativePtr);
+	}
+	
+}
+public class QGraphicsLayoutItem
+{
+	public QGraphicsLayoutItemPtr handle;
+	
+	public static implicit operator QGraphicsLayoutItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QGraphicsLayoutItemPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetSizePolicy(IQSizePolicy policy)
+	{
+		this.handle.SetSizePolicy(policy);
+	}
+	
+	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
+	{
+		this.handle.SetSizePolicy2(hPolicy, vPolicy);
+	}
+	
+	public void SizePolicy()
+	{
+		this.handle.SizePolicy();
+	}
+	
+	public void SetMinimumSize(IQSizeF size)
+	{
+		this.handle.SetMinimumSize(size);
+	}
+	
+	public void SetMinimumSize2(double w, double h)
+	{
+		this.handle.SetMinimumSize2(w, h);
+	}
+	
+	public void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public void SetMinimumWidth(double width)
+	{
+		this.handle.SetMinimumWidth(width);
+	}
+	
+	public double MinimumWidth()
+	{
+		return this.handle.MinimumWidth();
+	}
+	
+	public void SetMinimumHeight(double height)
+	{
+		this.handle.SetMinimumHeight(height);
+	}
+	
+	public double MinimumHeight()
+	{
+		return this.handle.MinimumHeight();
+	}
+	
+	public void SetPreferredSize(IQSizeF size)
+	{
+		this.handle.SetPreferredSize(size);
+	}
+	
+	public void SetPreferredSize2(double w, double h)
+	{
+		this.handle.SetPreferredSize2(w, h);
+	}
+	
+	public void PreferredSize()
+	{
+		this.handle.PreferredSize();
+	}
+	
+	public void SetPreferredWidth(double width)
+	{
+		this.handle.SetPreferredWidth(width);
+	}
+	
+	public double PreferredWidth()
+	{
+		return this.handle.PreferredWidth();
+	}
+	
+	public void SetPreferredHeight(double height)
+	{
+		this.handle.SetPreferredHeight(height);
+	}
+	
+	public double PreferredHeight()
+	{
+		return this.handle.PreferredHeight();
+	}
+	
+	public void SetMaximumSize(IQSizeF size)
+	{
+		this.handle.SetMaximumSize(size);
+	}
+	
+	public void SetMaximumSize2(double w, double h)
+	{
+		this.handle.SetMaximumSize2(w, h);
+	}
+	
+	public void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public void SetMaximumWidth(double width)
+	{
+		this.handle.SetMaximumWidth(width);
+	}
+	
+	public double MaximumWidth()
+	{
+		return this.handle.MaximumWidth();
+	}
+	
+	public void SetMaximumHeight(double height)
+	{
+		this.handle.SetMaximumHeight(height);
+	}
+	
+	public double MaximumHeight()
+	{
+		return this.handle.MaximumHeight();
+	}
+	
+	public virtual void SetGeometry(IQRectF rect)
+	{
+		this.handle.SetGeometry(rect);
+	}
+	
+	public void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public virtual void GetContentsMargins(double* left, double* top, double* right, double* bottom)
+	{
+		this.handle.GetContentsMargins(left, top, right, bottom);
+	}
+	
+	public void ContentsRect()
+	{
+		this.handle.ContentsRect();
+	}
+	
+	public void EffectiveSizeHint(int64 which)
+	{
+		this.handle.EffectiveSizeHint(which);
+	}
+	
+	public virtual void UpdateGeometry()
+	{
+		this.handle.UpdateGeometry();
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public void* ParentLayoutItem()
+	{
+		return this.handle.ParentLayoutItem();
+	}
+	
+	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
+	{
+		this.handle.SetParentLayoutItem(parent);
+	}
+	
+	public bool IsLayout()
+	{
+		return this.handle.IsLayout();
+	}
+	
+	public void* GraphicsItem()
+	{
+		return this.handle.GraphicsItem();
+	}
+	
+	public bool OwnedByLayout()
+	{
+		return this.handle.OwnedByLayout();
+	}
+	
+	public void SetGraphicsItem(IQGraphicsItem item)
+	{
+		this.handle.SetGraphicsItem(item);
+	}
+	
+	public void SetOwnedByLayout(bool ownedByLayout)
+	{
+		this.handle.SetOwnedByLayout(ownedByLayout);
+	}
+	
+	public virtual void SizeHint(int64 which, IQSizeF constraint)
+	{
+		this.handle.SizeHint(which, constraint);
+	}
+	
+	public void SetSizePolicy3(int64 hPolicy, int64 vPolicy, int64 controlType)
+	{
+		this.handle.SetSizePolicy3(hPolicy, vPolicy, controlType);
+	}
+	
+	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
+	{
+		this.handle.EffectiveSizeHint2(which, constraint);
 	}
 	
 }

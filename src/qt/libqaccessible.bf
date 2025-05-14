@@ -16,92 +16,97 @@ public interface IQAccessibleInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleInterface : IQAccessibleInterface
+public struct QAccessibleInterfacePtr : IQAccessibleInterface
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public virtual bool IsValid()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public bool IsValid()
 	{
 		return CQt.QAccessibleInterface_IsValid(this.nativePtr);
 	}
 	
-	public virtual void* Object()
+	public void* Object()
 	{
 		return CQt.QAccessibleInterface_Object(this.nativePtr);
 	}
 	
-	public virtual void* Window()
+	public void* Window()
 	{
 		return CQt.QAccessibleInterface_Window(this.nativePtr);
 	}
 	
-	public virtual void*[] Relations(int64 match)
+	public void*[] Relations(int64 match)
 	{
 		return CQt.QAccessibleInterface_Relations(this.nativePtr, match);
 	}
 	
-	public virtual void* FocusChild()
+	public void* FocusChild()
 	{
 		return CQt.QAccessibleInterface_FocusChild(this.nativePtr);
 	}
 	
-	public virtual void* ChildAt(int32 x, int32 y)
+	public void* ChildAt(int32 x, int32 y)
 	{
 		return CQt.QAccessibleInterface_ChildAt(this.nativePtr, x, y);
 	}
 	
-	public virtual void* Parent()
+	public void* Parent()
 	{
 		return CQt.QAccessibleInterface_Parent(this.nativePtr);
 	}
 	
-	public virtual void* Child(int32 index)
+	public void* Child(int32 index)
 	{
 		return CQt.QAccessibleInterface_Child(this.nativePtr, index);
 	}
 	
-	public virtual int32 ChildCount()
+	public int32 ChildCount()
 	{
 		return CQt.QAccessibleInterface_ChildCount(this.nativePtr);
 	}
 	
-	public virtual int32 IndexOfChild(IQAccessibleInterface param1)
+	public int32 IndexOfChild(IQAccessibleInterface param1)
 	{
-		return CQt.QAccessibleInterface_IndexOfChild(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		return CQt.QAccessibleInterface_IndexOfChild(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
-	public virtual libqt_string Text(int64 t)
+	public libqt_string Text(int64 t)
 	{
-		return CQt.QAccessibleInterface_Text(this.nativePtr, t);
+		return CQt.QAccessibleInterface_Text(this.nativePtr, (int64)t);
 	}
 	
-	public virtual void SetText(int64 t, String text)
+	public void SetText(int64 t, String text)
 	{
-		CQt.QAccessibleInterface_SetText(this.nativePtr, t, libqt_string(text));
+		CQt.QAccessibleInterface_SetText(this.nativePtr, (int64)t, libqt_string(text));
 	}
 	
-	public virtual void Rect()
+	public void Rect()
 	{
 		CQt.QAccessibleInterface_Rect(this.nativePtr);
 	}
 	
-	public virtual int64 Role()
+	public int64 Role()
 	{
 		return CQt.QAccessibleInterface_Role(this.nativePtr);
 	}
 	
-	public virtual void State()
+	public void State()
 	{
 		CQt.QAccessibleInterface_State(this.nativePtr);
 	}
 	
-	public virtual void ForegroundColor()
+	public void ForegroundColor()
 	{
 		CQt.QAccessibleInterface_ForegroundColor(this.nativePtr);
 	}
 	
-	public virtual void BackgroundColor()
+	public void BackgroundColor()
 	{
 		CQt.QAccessibleInterface_BackgroundColor(this.nativePtr);
 	}
@@ -146,14 +151,159 @@ public class QAccessibleInterface : IQAccessibleInterface
 		return CQt.QAccessibleInterface_HyperlinkInterface(this.nativePtr);
 	}
 	
-	public virtual void VirtualHook(int32 id, void* data)
+	public void VirtualHook(int32 id, void* data)
 	{
 		CQt.QAccessibleInterface_VirtualHook(this.nativePtr, id, data);
 	}
 	
+	public void* InterfaceCast(int64 param1)
+	{
+		return CQt.QAccessibleInterface_InterfaceCast(this.nativePtr, (int64)param1);
+	}
+	
+}
+public class QAccessibleInterface
+{
+	public QAccessibleInterfacePtr handle;
+	
+	public static implicit operator QAccessibleInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public virtual bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public virtual void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public virtual void* Window()
+	{
+		return this.handle.Window();
+	}
+	
+	public virtual void*[] Relations(int64 match)
+	{
+		return this.handle.Relations(match);
+	}
+	
+	public virtual void* FocusChild()
+	{
+		return this.handle.FocusChild();
+	}
+	
+	public virtual void* ChildAt(int32 x, int32 y)
+	{
+		return this.handle.ChildAt(x, y);
+	}
+	
+	public virtual void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public virtual void* Child(int32 index)
+	{
+		return this.handle.Child(index);
+	}
+	
+	public virtual int32 ChildCount()
+	{
+		return this.handle.ChildCount();
+	}
+	
+	public virtual int32 IndexOfChild(IQAccessibleInterface param1)
+	{
+		return this.handle.IndexOfChild(param1);
+	}
+	
+	public virtual libqt_string Text(int64 t)
+	{
+		return this.handle.Text(t);
+	}
+	
+	public virtual void SetText(int64 t, String text)
+	{
+		this.handle.SetText(t, text);
+	}
+	
+	public virtual void Rect()
+	{
+		this.handle.Rect();
+	}
+	
+	public virtual int64 Role()
+	{
+		return this.handle.Role();
+	}
+	
+	public virtual void State()
+	{
+		this.handle.State();
+	}
+	
+	public virtual void ForegroundColor()
+	{
+		this.handle.ForegroundColor();
+	}
+	
+	public virtual void BackgroundColor()
+	{
+		this.handle.BackgroundColor();
+	}
+	
+	public void* TextInterface()
+	{
+		return this.handle.TextInterface();
+	}
+	
+	public void* EditableTextInterface()
+	{
+		return this.handle.EditableTextInterface();
+	}
+	
+	public void* ValueInterface()
+	{
+		return this.handle.ValueInterface();
+	}
+	
+	public void* ActionInterface()
+	{
+		return this.handle.ActionInterface();
+	}
+	
+	public void* ImageInterface()
+	{
+		return this.handle.ImageInterface();
+	}
+	
+	public void* TableInterface()
+	{
+		return this.handle.TableInterface();
+	}
+	
+	public void* TableCellInterface()
+	{
+		return this.handle.TableCellInterface();
+	}
+	
+	public void* HyperlinkInterface()
+	{
+		return this.handle.HyperlinkInterface();
+	}
+	
+	public virtual void VirtualHook(int32 id, void* data)
+	{
+		this.handle.VirtualHook(id, data);
+	}
+	
 	public virtual void* InterfaceCast(int64 param1)
 	{
-		return CQt.QAccessibleInterface_InterfaceCast(this.nativePtr, param1);
+		return this.handle.InterfaceCast(param1);
 	}
 	
 }
@@ -220,99 +370,204 @@ public interface IQAccessibleTextInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextInterface : IQAccessibleTextInterface
+public struct QAccessibleTextInterfacePtr : IQAccessibleTextInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual void Selection(int32 selectionIndex, int32* startOffset, int32* endOffset)
+	public void Selection(int32 selectionIndex, int32* startOffset, int32* endOffset)
 	{
 		CQt.QAccessibleTextInterface_Selection(this.nativePtr, selectionIndex, startOffset, endOffset);
 	}
 	
-	public virtual int32 SelectionCount()
+	public int32 SelectionCount()
 	{
 		return CQt.QAccessibleTextInterface_SelectionCount(this.nativePtr);
 	}
 	
-	public virtual void AddSelection(int32 startOffset, int32 endOffset)
+	public void AddSelection(int32 startOffset, int32 endOffset)
 	{
 		CQt.QAccessibleTextInterface_AddSelection(this.nativePtr, startOffset, endOffset);
 	}
 	
-	public virtual void RemoveSelection(int32 selectionIndex)
+	public void RemoveSelection(int32 selectionIndex)
 	{
 		CQt.QAccessibleTextInterface_RemoveSelection(this.nativePtr, selectionIndex);
 	}
 	
-	public virtual void SetSelection(int32 selectionIndex, int32 startOffset, int32 endOffset)
+	public void SetSelection(int32 selectionIndex, int32 startOffset, int32 endOffset)
 	{
 		CQt.QAccessibleTextInterface_SetSelection(this.nativePtr, selectionIndex, startOffset, endOffset);
 	}
 	
-	public virtual int32 CursorPosition()
+	public int32 CursorPosition()
 	{
 		return CQt.QAccessibleTextInterface_CursorPosition(this.nativePtr);
 	}
 	
-	public virtual void SetCursorPosition(int32 position)
+	public void SetCursorPosition(int32 position)
 	{
 		CQt.QAccessibleTextInterface_SetCursorPosition(this.nativePtr, position);
 	}
 	
-	public virtual libqt_string Text(int32 startOffset, int32 endOffset)
+	public libqt_string Text(int32 startOffset, int32 endOffset)
 	{
 		return CQt.QAccessibleTextInterface_Text(this.nativePtr, startOffset, endOffset);
 	}
 	
-	public virtual libqt_string TextBeforeOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	public libqt_string TextBeforeOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
 	{
-		return CQt.QAccessibleTextInterface_TextBeforeOffset(this.nativePtr, offset, boundaryType, startOffset, endOffset);
+		return CQt.QAccessibleTextInterface_TextBeforeOffset(this.nativePtr, offset, (int64)boundaryType, startOffset, endOffset);
 	}
 	
-	public virtual libqt_string TextAfterOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	public libqt_string TextAfterOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
 	{
-		return CQt.QAccessibleTextInterface_TextAfterOffset(this.nativePtr, offset, boundaryType, startOffset, endOffset);
+		return CQt.QAccessibleTextInterface_TextAfterOffset(this.nativePtr, offset, (int64)boundaryType, startOffset, endOffset);
 	}
 	
-	public virtual libqt_string TextAtOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	public libqt_string TextAtOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
 	{
-		return CQt.QAccessibleTextInterface_TextAtOffset(this.nativePtr, offset, boundaryType, startOffset, endOffset);
+		return CQt.QAccessibleTextInterface_TextAtOffset(this.nativePtr, offset, (int64)boundaryType, startOffset, endOffset);
 	}
 	
-	public virtual int32 CharacterCount()
+	public int32 CharacterCount()
 	{
 		return CQt.QAccessibleTextInterface_CharacterCount(this.nativePtr);
 	}
 	
-	public virtual void CharacterRect(int32 offset)
+	public void CharacterRect(int32 offset)
 	{
 		CQt.QAccessibleTextInterface_CharacterRect(this.nativePtr, offset);
 	}
 	
-	public virtual int32 OffsetAtPoint(IQPoint point)
+	public int32 OffsetAtPoint(IQPoint point)
 	{
-		return CQt.QAccessibleTextInterface_OffsetAtPoint(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		return CQt.QAccessibleTextInterface_OffsetAtPoint(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
-	public virtual void ScrollToSubstring(int32 startIndex, int32 endIndex)
+	public void ScrollToSubstring(int32 startIndex, int32 endIndex)
 	{
 		CQt.QAccessibleTextInterface_ScrollToSubstring(this.nativePtr, startIndex, endIndex);
 	}
 	
-	public virtual libqt_string Attributes(int32 offset, int32* startOffset, int32* endOffset)
+	public libqt_string Attributes(int32 offset, int32* startOffset, int32* endOffset)
 	{
 		return CQt.QAccessibleTextInterface_Attributes(this.nativePtr, offset, startOffset, endOffset);
 	}
 	
 	public void OperatorAssign(IQAccessibleTextInterface param1)
 	{
-		CQt.QAccessibleTextInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleTextInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleTextInterface
+{
+	public QAccessibleTextInterfacePtr handle;
+	
+	public static implicit operator QAccessibleTextInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void Selection(int32 selectionIndex, int32* startOffset, int32* endOffset)
+	{
+		this.handle.Selection(selectionIndex, startOffset, endOffset);
+	}
+	
+	public virtual int32 SelectionCount()
+	{
+		return this.handle.SelectionCount();
+	}
+	
+	public virtual void AddSelection(int32 startOffset, int32 endOffset)
+	{
+		this.handle.AddSelection(startOffset, endOffset);
+	}
+	
+	public virtual void RemoveSelection(int32 selectionIndex)
+	{
+		this.handle.RemoveSelection(selectionIndex);
+	}
+	
+	public virtual void SetSelection(int32 selectionIndex, int32 startOffset, int32 endOffset)
+	{
+		this.handle.SetSelection(selectionIndex, startOffset, endOffset);
+	}
+	
+	public virtual int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public virtual void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public virtual libqt_string Text(int32 startOffset, int32 endOffset)
+	{
+		return this.handle.Text(startOffset, endOffset);
+	}
+	
+	public virtual libqt_string TextBeforeOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	{
+		return this.handle.TextBeforeOffset(offset, boundaryType, startOffset, endOffset);
+	}
+	
+	public virtual libqt_string TextAfterOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	{
+		return this.handle.TextAfterOffset(offset, boundaryType, startOffset, endOffset);
+	}
+	
+	public virtual libqt_string TextAtOffset(int32 offset, int64 boundaryType, int32* startOffset, int32* endOffset)
+	{
+		return this.handle.TextAtOffset(offset, boundaryType, startOffset, endOffset);
+	}
+	
+	public virtual int32 CharacterCount()
+	{
+		return this.handle.CharacterCount();
+	}
+	
+	public virtual void CharacterRect(int32 offset)
+	{
+		this.handle.CharacterRect(offset);
+	}
+	
+	public virtual int32 OffsetAtPoint(IQPoint point)
+	{
+		return this.handle.OffsetAtPoint(point);
+	}
+	
+	public virtual void ScrollToSubstring(int32 startIndex, int32 endIndex)
+	{
+		this.handle.ScrollToSubstring(startIndex, endIndex);
+	}
+	
+	public virtual libqt_string Attributes(int32 offset, int32* startOffset, int32* endOffset)
+	{
+		return this.handle.Attributes(offset, startOffset, endOffset);
+	}
+	
+	public void OperatorAssign(IQAccessibleTextInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -360,34 +615,74 @@ public interface IQAccessibleEditableTextInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleEditableTextInterface : IQAccessibleEditableTextInterface
+public struct QAccessibleEditableTextInterfacePtr : IQAccessibleEditableTextInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleEditableTextInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual void DeleteText(int32 startOffset, int32 endOffset)
+	public void DeleteText(int32 startOffset, int32 endOffset)
 	{
 		CQt.QAccessibleEditableTextInterface_DeleteText(this.nativePtr, startOffset, endOffset);
 	}
 	
-	public virtual void InsertText(int32 offset, String text)
+	public void InsertText(int32 offset, String text)
 	{
 		CQt.QAccessibleEditableTextInterface_InsertText(this.nativePtr, offset, libqt_string(text));
 	}
 	
-	public virtual void ReplaceText(int32 startOffset, int32 endOffset, String text)
+	public void ReplaceText(int32 startOffset, int32 endOffset, String text)
 	{
 		CQt.QAccessibleEditableTextInterface_ReplaceText(this.nativePtr, startOffset, endOffset, libqt_string(text));
 	}
 	
 	public void OperatorAssign(IQAccessibleEditableTextInterface param1)
 	{
-		CQt.QAccessibleEditableTextInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleEditableTextInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleEditableTextInterface
+{
+	public QAccessibleEditableTextInterfacePtr handle;
+	
+	public static implicit operator QAccessibleEditableTextInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void DeleteText(int32 startOffset, int32 endOffset)
+	{
+		this.handle.DeleteText(startOffset, endOffset);
+	}
+	
+	public virtual void InsertText(int32 offset, String text)
+	{
+		this.handle.InsertText(offset, text);
+	}
+	
+	public virtual void ReplaceText(int32 startOffset, int32 endOffset, String text)
+	{
+		this.handle.ReplaceText(startOffset, endOffset, text);
+	}
+	
+	public void OperatorAssign(IQAccessibleEditableTextInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -409,44 +704,94 @@ public interface IQAccessibleValueInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleValueInterface : IQAccessibleValueInterface
+public struct QAccessibleValueInterfacePtr : IQAccessibleValueInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleValueInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual void CurrentValue()
+	public void CurrentValue()
 	{
 		CQt.QAccessibleValueInterface_CurrentValue(this.nativePtr);
 	}
 	
-	public virtual void SetCurrentValue(IQVariant value)
+	public void SetCurrentValue(IQVariant value)
 	{
-		CQt.QAccessibleValueInterface_SetCurrentValue(this.nativePtr, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QAccessibleValueInterface_SetCurrentValue(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
-	public virtual void MaximumValue()
+	public void MaximumValue()
 	{
 		CQt.QAccessibleValueInterface_MaximumValue(this.nativePtr);
 	}
 	
-	public virtual void MinimumValue()
+	public void MinimumValue()
 	{
 		CQt.QAccessibleValueInterface_MinimumValue(this.nativePtr);
 	}
 	
-	public virtual void MinimumStepSize()
+	public void MinimumStepSize()
 	{
 		CQt.QAccessibleValueInterface_MinimumStepSize(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAccessibleValueInterface param1)
 	{
-		CQt.QAccessibleValueInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleValueInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleValueInterface
+{
+	public QAccessibleValueInterfacePtr handle;
+	
+	public static implicit operator QAccessibleValueInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void CurrentValue()
+	{
+		this.handle.CurrentValue();
+	}
+	
+	public virtual void SetCurrentValue(IQVariant value)
+	{
+		this.handle.SetCurrentValue(value);
+	}
+	
+	public virtual void MaximumValue()
+	{
+		this.handle.MaximumValue();
+	}
+	
+	public virtual void MinimumValue()
+	{
+		this.handle.MinimumValue();
+	}
+	
+	public virtual void MinimumStepSize()
+	{
+		this.handle.MinimumStepSize();
+	}
+	
+	public void OperatorAssign(IQAccessibleValueInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -472,59 +817,124 @@ public interface IQAccessibleTableCellInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTableCellInterface : IQAccessibleTableCellInterface
+public struct QAccessibleTableCellInterfacePtr : IQAccessibleTableCellInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTableCellInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual bool IsSelected()
+	public bool IsSelected()
 	{
 		return CQt.QAccessibleTableCellInterface_IsSelected(this.nativePtr);
 	}
 	
-	public virtual void*[] ColumnHeaderCells()
+	public void*[] ColumnHeaderCells()
 	{
 		return CQt.QAccessibleTableCellInterface_ColumnHeaderCells(this.nativePtr);
 	}
 	
-	public virtual void*[] RowHeaderCells()
+	public void*[] RowHeaderCells()
 	{
 		return CQt.QAccessibleTableCellInterface_RowHeaderCells(this.nativePtr);
 	}
 	
-	public virtual int32 ColumnIndex()
+	public int32 ColumnIndex()
 	{
 		return CQt.QAccessibleTableCellInterface_ColumnIndex(this.nativePtr);
 	}
 	
-	public virtual int32 RowIndex()
+	public int32 RowIndex()
 	{
 		return CQt.QAccessibleTableCellInterface_RowIndex(this.nativePtr);
 	}
 	
-	public virtual int32 ColumnExtent()
+	public int32 ColumnExtent()
 	{
 		return CQt.QAccessibleTableCellInterface_ColumnExtent(this.nativePtr);
 	}
 	
-	public virtual int32 RowExtent()
+	public int32 RowExtent()
 	{
 		return CQt.QAccessibleTableCellInterface_RowExtent(this.nativePtr);
 	}
 	
-	public virtual void* Table()
+	public void* Table()
 	{
 		return CQt.QAccessibleTableCellInterface_Table(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAccessibleTableCellInterface param1)
 	{
-		CQt.QAccessibleTableCellInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleTableCellInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleTableCellInterface
+{
+	public QAccessibleTableCellInterfacePtr handle;
+	
+	public static implicit operator QAccessibleTableCellInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual bool IsSelected()
+	{
+		return this.handle.IsSelected();
+	}
+	
+	public virtual void*[] ColumnHeaderCells()
+	{
+		return this.handle.ColumnHeaderCells();
+	}
+	
+	public virtual void*[] RowHeaderCells()
+	{
+		return this.handle.RowHeaderCells();
+	}
+	
+	public virtual int32 ColumnIndex()
+	{
+		return this.handle.ColumnIndex();
+	}
+	
+	public virtual int32 RowIndex()
+	{
+		return this.handle.RowIndex();
+	}
+	
+	public virtual int32 ColumnExtent()
+	{
+		return this.handle.ColumnExtent();
+	}
+	
+	public virtual int32 RowExtent()
+	{
+		return this.handle.RowExtent();
+	}
+	
+	public virtual void* Table()
+	{
+		return this.handle.Table();
+	}
+	
+	public void OperatorAssign(IQAccessibleTableCellInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -556,114 +966,234 @@ public interface IQAccessibleTableInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTableInterface : IQAccessibleTableInterface
+public struct QAccessibleTableInterfacePtr : IQAccessibleTableInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTableInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual void* Caption()
+	public void* Caption()
 	{
 		return CQt.QAccessibleTableInterface_Caption(this.nativePtr);
 	}
 	
-	public virtual void* Summary()
+	public void* Summary()
 	{
 		return CQt.QAccessibleTableInterface_Summary(this.nativePtr);
 	}
 	
-	public virtual void* CellAt(int32 row, int32 column)
+	public void* CellAt(int32 row, int32 column)
 	{
 		return CQt.QAccessibleTableInterface_CellAt(this.nativePtr, row, column);
 	}
 	
-	public virtual int32 SelectedCellCount()
+	public int32 SelectedCellCount()
 	{
 		return CQt.QAccessibleTableInterface_SelectedCellCount(this.nativePtr);
 	}
 	
-	public virtual void*[] SelectedCells()
+	public void*[] SelectedCells()
 	{
 		return CQt.QAccessibleTableInterface_SelectedCells(this.nativePtr);
 	}
 	
-	public virtual libqt_string ColumnDescription(int32 column)
+	public libqt_string ColumnDescription(int32 column)
 	{
 		return CQt.QAccessibleTableInterface_ColumnDescription(this.nativePtr, column);
 	}
 	
-	public virtual libqt_string RowDescription(int32 row)
+	public libqt_string RowDescription(int32 row)
 	{
 		return CQt.QAccessibleTableInterface_RowDescription(this.nativePtr, row);
 	}
 	
-	public virtual int32 SelectedColumnCount()
+	public int32 SelectedColumnCount()
 	{
 		return CQt.QAccessibleTableInterface_SelectedColumnCount(this.nativePtr);
 	}
 	
-	public virtual int32 SelectedRowCount()
+	public int32 SelectedRowCount()
 	{
 		return CQt.QAccessibleTableInterface_SelectedRowCount(this.nativePtr);
 	}
 	
-	public virtual int32 ColumnCount()
+	public int32 ColumnCount()
 	{
 		return CQt.QAccessibleTableInterface_ColumnCount(this.nativePtr);
 	}
 	
-	public virtual int32 RowCount()
+	public int32 RowCount()
 	{
 		return CQt.QAccessibleTableInterface_RowCount(this.nativePtr);
 	}
 	
-	public virtual int32[] SelectedColumns()
+	public int32[] SelectedColumns()
 	{
 		return CQt.QAccessibleTableInterface_SelectedColumns(this.nativePtr);
 	}
 	
-	public virtual int32[] SelectedRows()
+	public int32[] SelectedRows()
 	{
 		return CQt.QAccessibleTableInterface_SelectedRows(this.nativePtr);
 	}
 	
-	public virtual bool IsColumnSelected(int32 column)
+	public bool IsColumnSelected(int32 column)
 	{
 		return CQt.QAccessibleTableInterface_IsColumnSelected(this.nativePtr, column);
 	}
 	
-	public virtual bool IsRowSelected(int32 row)
+	public bool IsRowSelected(int32 row)
 	{
 		return CQt.QAccessibleTableInterface_IsRowSelected(this.nativePtr, row);
 	}
 	
-	public virtual bool SelectRow(int32 row)
+	public bool SelectRow(int32 row)
 	{
 		return CQt.QAccessibleTableInterface_SelectRow(this.nativePtr, row);
 	}
 	
-	public virtual bool SelectColumn(int32 column)
+	public bool SelectColumn(int32 column)
 	{
 		return CQt.QAccessibleTableInterface_SelectColumn(this.nativePtr, column);
 	}
 	
-	public virtual bool UnselectRow(int32 row)
+	public bool UnselectRow(int32 row)
 	{
 		return CQt.QAccessibleTableInterface_UnselectRow(this.nativePtr, row);
 	}
 	
-	public virtual bool UnselectColumn(int32 column)
+	public bool UnselectColumn(int32 column)
 	{
 		return CQt.QAccessibleTableInterface_UnselectColumn(this.nativePtr, column);
 	}
 	
+	public void ModelChange(IQAccessibleTableModelChangeEvent event)
+	{
+		CQt.QAccessibleTableInterface_ModelChange(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
+	}
+	
+}
+public class QAccessibleTableInterface
+{
+	public QAccessibleTableInterfacePtr handle;
+	
+	public static implicit operator QAccessibleTableInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* Caption()
+	{
+		return this.handle.Caption();
+	}
+	
+	public virtual void* Summary()
+	{
+		return this.handle.Summary();
+	}
+	
+	public virtual void* CellAt(int32 row, int32 column)
+	{
+		return this.handle.CellAt(row, column);
+	}
+	
+	public virtual int32 SelectedCellCount()
+	{
+		return this.handle.SelectedCellCount();
+	}
+	
+	public virtual void*[] SelectedCells()
+	{
+		return this.handle.SelectedCells();
+	}
+	
+	public virtual libqt_string ColumnDescription(int32 column)
+	{
+		return this.handle.ColumnDescription(column);
+	}
+	
+	public virtual libqt_string RowDescription(int32 row)
+	{
+		return this.handle.RowDescription(row);
+	}
+	
+	public virtual int32 SelectedColumnCount()
+	{
+		return this.handle.SelectedColumnCount();
+	}
+	
+	public virtual int32 SelectedRowCount()
+	{
+		return this.handle.SelectedRowCount();
+	}
+	
+	public virtual int32 ColumnCount()
+	{
+		return this.handle.ColumnCount();
+	}
+	
+	public virtual int32 RowCount()
+	{
+		return this.handle.RowCount();
+	}
+	
+	public virtual int32[] SelectedColumns()
+	{
+		return this.handle.SelectedColumns();
+	}
+	
+	public virtual int32[] SelectedRows()
+	{
+		return this.handle.SelectedRows();
+	}
+	
+	public virtual bool IsColumnSelected(int32 column)
+	{
+		return this.handle.IsColumnSelected(column);
+	}
+	
+	public virtual bool IsRowSelected(int32 row)
+	{
+		return this.handle.IsRowSelected(row);
+	}
+	
+	public virtual bool SelectRow(int32 row)
+	{
+		return this.handle.SelectRow(row);
+	}
+	
+	public virtual bool SelectColumn(int32 column)
+	{
+		return this.handle.SelectColumn(column);
+	}
+	
+	public virtual bool UnselectRow(int32 row)
+	{
+		return this.handle.UnselectRow(row);
+	}
+	
+	public virtual bool UnselectColumn(int32 column)
+	{
+		return this.handle.UnselectColumn(column);
+	}
+	
 	public virtual void ModelChange(IQAccessibleTableModelChangeEvent event)
 	{
-		CQt.QAccessibleTableInterface_ModelChange(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		this.handle.ModelChange(event);
 	}
 	
 }
@@ -719,12 +1249,17 @@ public interface IQAccessibleActionInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleActionInterface : IQAccessibleActionInterface
+public struct QAccessibleActionInterfacePtr : IQAccessibleActionInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleActionInterface_Delete(this.nativePtr);
 	}
@@ -734,27 +1269,27 @@ public class QAccessibleActionInterface : IQAccessibleActionInterface
 		return CQt.QAccessibleActionInterface_Tr(sourceText);
 	}
 	
-	public virtual libqt_string[] ActionNames()
+	public libqt_string[] ActionNames()
 	{
 		return CQt.QAccessibleActionInterface_ActionNames(this.nativePtr);
 	}
 	
-	public virtual libqt_string LocalizedActionName(String name)
+	public libqt_string LocalizedActionName(String name)
 	{
 		return CQt.QAccessibleActionInterface_LocalizedActionName(this.nativePtr, libqt_string(name));
 	}
 	
-	public virtual libqt_string LocalizedActionDescription(String name)
+	public libqt_string LocalizedActionDescription(String name)
 	{
 		return CQt.QAccessibleActionInterface_LocalizedActionDescription(this.nativePtr, libqt_string(name));
 	}
 	
-	public virtual void DoAction(String actionName)
+	public void DoAction(String actionName)
 	{
 		CQt.QAccessibleActionInterface_DoAction(this.nativePtr, libqt_string(actionName));
 	}
 	
-	public virtual libqt_string[] KeyBindingsForAction(String actionName)
+	public libqt_string[] KeyBindingsForAction(String actionName)
 	{
 		return CQt.QAccessibleActionInterface_KeyBindingsForAction(this.nativePtr, libqt_string(actionName));
 	}
@@ -821,7 +1356,7 @@ public class QAccessibleActionInterface : IQAccessibleActionInterface
 	
 	public void OperatorAssign(IQAccessibleActionInterface param1)
 	{
-		CQt.QAccessibleActionInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleActionInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
@@ -832,6 +1367,126 @@ public class QAccessibleActionInterface : IQAccessibleActionInterface
 	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
 	{
 		return CQt.QAccessibleActionInterface_Tr3(sourceText, disambiguation, n);
+	}
+	
+}
+public class QAccessibleActionInterface
+{
+	public QAccessibleActionInterfacePtr handle;
+	
+	public static implicit operator QAccessibleActionInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string Tr(char8* sourceText)
+	{
+		return QAccessibleActionInterfacePtr.Tr(sourceText);
+	}
+	
+	public virtual libqt_string[] ActionNames()
+	{
+		return this.handle.ActionNames();
+	}
+	
+	public virtual libqt_string LocalizedActionName(String name)
+	{
+		return this.handle.LocalizedActionName(name);
+	}
+	
+	public virtual libqt_string LocalizedActionDescription(String name)
+	{
+		return this.handle.LocalizedActionDescription(name);
+	}
+	
+	public virtual void DoAction(String actionName)
+	{
+		this.handle.DoAction(actionName);
+	}
+	
+	public virtual libqt_string[] KeyBindingsForAction(String actionName)
+	{
+		return this.handle.KeyBindingsForAction(actionName);
+	}
+	
+	public static libqt_string PressAction()
+	{
+		return QAccessibleActionInterfacePtr.PressAction();
+	}
+	
+	public static libqt_string IncreaseAction()
+	{
+		return QAccessibleActionInterfacePtr.IncreaseAction();
+	}
+	
+	public static libqt_string DecreaseAction()
+	{
+		return QAccessibleActionInterfacePtr.DecreaseAction();
+	}
+	
+	public static libqt_string ShowMenuAction()
+	{
+		return QAccessibleActionInterfacePtr.ShowMenuAction();
+	}
+	
+	public static libqt_string SetFocusAction()
+	{
+		return QAccessibleActionInterfacePtr.SetFocusAction();
+	}
+	
+	public static libqt_string ToggleAction()
+	{
+		return QAccessibleActionInterfacePtr.ToggleAction();
+	}
+	
+	public static libqt_string ScrollLeftAction()
+	{
+		return QAccessibleActionInterfacePtr.ScrollLeftAction();
+	}
+	
+	public static libqt_string ScrollRightAction()
+	{
+		return QAccessibleActionInterfacePtr.ScrollRightAction();
+	}
+	
+	public static libqt_string ScrollUpAction()
+	{
+		return QAccessibleActionInterfacePtr.ScrollUpAction();
+	}
+	
+	public static libqt_string ScrollDownAction()
+	{
+		return QAccessibleActionInterfacePtr.ScrollDownAction();
+	}
+	
+	public static libqt_string NextPageAction()
+	{
+		return QAccessibleActionInterfacePtr.NextPageAction();
+	}
+	
+	public static libqt_string PreviousPageAction()
+	{
+		return QAccessibleActionInterfacePtr.PreviousPageAction();
+	}
+	
+	public void OperatorAssign(IQAccessibleActionInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
+	{
+		return QAccessibleActionInterfacePtr.Tr2(sourceText, disambiguation);
+	}
+	
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
+	{
+		return QAccessibleActionInterfacePtr.Tr3(sourceText, disambiguation, n);
 	}
 	
 }
@@ -887,34 +1542,74 @@ public interface IQAccessibleImageInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleImageInterface : IQAccessibleImageInterface
+public struct QAccessibleImageInterfacePtr : IQAccessibleImageInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleImageInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual libqt_string ImageDescription()
+	public libqt_string ImageDescription()
 	{
 		return CQt.QAccessibleImageInterface_ImageDescription(this.nativePtr);
 	}
 	
-	public virtual void ImageSize()
+	public void ImageSize()
 	{
 		CQt.QAccessibleImageInterface_ImageSize(this.nativePtr);
 	}
 	
-	public virtual void ImagePosition()
+	public void ImagePosition()
 	{
 		CQt.QAccessibleImageInterface_ImagePosition(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAccessibleImageInterface param1)
 	{
-		CQt.QAccessibleImageInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleImageInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleImageInterface
+{
+	public QAccessibleImageInterfacePtr handle;
+	
+	public static implicit operator QAccessibleImageInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual libqt_string ImageDescription()
+	{
+		return this.handle.ImageDescription();
+	}
+	
+	public virtual void ImageSize()
+	{
+		this.handle.ImageSize();
+	}
+	
+	public virtual void ImagePosition()
+	{
+		this.handle.ImagePosition();
+	}
+	
+	public void OperatorAssign(IQAccessibleImageInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -936,44 +1631,94 @@ public interface IQAccessibleHyperlinkInterface
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleHyperlinkInterface : IQAccessibleHyperlinkInterface
+public struct QAccessibleHyperlinkInterfacePtr : IQAccessibleHyperlinkInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleHyperlinkInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual libqt_string Anchor()
+	public libqt_string Anchor()
 	{
 		return CQt.QAccessibleHyperlinkInterface_Anchor(this.nativePtr);
 	}
 	
-	public virtual libqt_string AnchorTarget()
+	public libqt_string AnchorTarget()
 	{
 		return CQt.QAccessibleHyperlinkInterface_AnchorTarget(this.nativePtr);
 	}
 	
-	public virtual int32 StartIndex()
+	public int32 StartIndex()
 	{
 		return CQt.QAccessibleHyperlinkInterface_StartIndex(this.nativePtr);
 	}
 	
-	public virtual int32 EndIndex()
+	public int32 EndIndex()
 	{
 		return CQt.QAccessibleHyperlinkInterface_EndIndex(this.nativePtr);
 	}
 	
-	public virtual bool IsValid()
+	public bool IsValid()
 	{
 		return CQt.QAccessibleHyperlinkInterface_IsValid(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQAccessibleHyperlinkInterface param1)
 	{
-		CQt.QAccessibleHyperlinkInterface_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QAccessibleHyperlinkInterface_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QAccessibleHyperlinkInterface
+{
+	public QAccessibleHyperlinkInterfacePtr handle;
+	
+	public static implicit operator QAccessibleHyperlinkInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual libqt_string Anchor()
+	{
+		return this.handle.Anchor();
+	}
+	
+	public virtual libqt_string AnchorTarget()
+	{
+		return this.handle.AnchorTarget();
+	}
+	
+	public virtual int32 StartIndex()
+	{
+		return this.handle.StartIndex();
+	}
+	
+	public virtual int32 EndIndex()
+	{
+		return this.handle.EndIndex();
+	}
+	
+	public virtual bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void OperatorAssign(IQAccessibleHyperlinkInterface param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -999,17 +1744,22 @@ public interface IQAccessibleEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleEvent : IQAccessibleEvent
+public struct QAccessibleEventPtr : IQAccessibleEvent, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int64 typ)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleEvent_new((obj == null) ? null : (void*)obj.NativePtr, typ);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int64 typ)
+	{
+		return .(CQt.QAccessibleEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, (int64)typ));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleEvent_Delete(this.nativePtr);
 	}
@@ -1039,9 +1789,59 @@ public class QAccessibleEvent : IQAccessibleEvent
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleEvent
+{
+	public QAccessibleEventPtr handle;
+	
+	public static implicit operator QAccessibleEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int64 typ)
+	{
+		this.handle = QAccessibleEventPtr.New(obj, typ);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1071,17 +1871,22 @@ public interface IQAccessibleStateChangeEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleStateChangeEvent : IQAccessibleStateChangeEvent, IQAccessibleEvent
+public struct QAccessibleStateChangeEventPtr : IQAccessibleStateChangeEvent, IDisposable, IQAccessibleEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, QAccessible__State state)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleStateChangeEvent_new((obj == null) ? null : (void*)obj.NativePtr, (state == default) ? default : (void)state.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, QAccessible__StatePtr state)
+	{
+		return .(CQt.QAccessibleStateChangeEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, default));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleStateChangeEvent_Delete(this.nativePtr);
 	}
@@ -1116,9 +1921,64 @@ public class QAccessibleStateChangeEvent : IQAccessibleStateChangeEvent, IQAcces
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleStateChangeEvent
+{
+	public QAccessibleStateChangeEventPtr handle;
+	
+	public static implicit operator QAccessibleStateChangeEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, QAccessible__StatePtr state)
+	{
+		this.handle = QAccessibleStateChangeEventPtr.New(obj, default);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void ChangedStates()
+	{
+		this.handle.ChangedStates();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1138,17 +1998,22 @@ public interface IQAccessibleTextCursorEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextCursorEvent : IQAccessibleTextCursorEvent, IQAccessibleEvent
+public struct QAccessibleTextCursorEventPtr : IQAccessibleTextCursorEvent, IDisposable, IQAccessibleEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int32 cursorPos)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTextCursorEvent_new((obj == null) ? null : (void*)obj.NativePtr, cursorPos);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int32 cursorPos)
+	{
+		return .(CQt.QAccessibleTextCursorEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, cursorPos));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextCursorEvent_Delete(this.nativePtr);
 	}
@@ -1188,9 +2053,69 @@ public class QAccessibleTextCursorEvent : IQAccessibleTextCursorEvent, IQAccessi
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTextCursorEvent
+{
+	public QAccessibleTextCursorEventPtr handle;
+	
+	public static implicit operator QAccessibleTextCursorEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int32 cursorPos)
+	{
+		this.handle = QAccessibleTextCursorEventPtr.New(obj, cursorPos);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1212,17 +2137,22 @@ public interface IQAccessibleTextSelectionEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextSelectionEvent : IQAccessibleTextSelectionEvent, IQAccessibleTextCursorEvent
+public struct QAccessibleTextSelectionEventPtr : IQAccessibleTextSelectionEvent, IDisposable, IQAccessibleTextCursorEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int32 start, int32 end)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTextSelectionEvent_new((obj == null) ? null : (void*)obj.NativePtr, start, end);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int32 start, int32 end)
+	{
+		return .(CQt.QAccessibleTextSelectionEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, start, end));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextSelectionEvent_Delete(this.nativePtr);
 	}
@@ -1277,9 +2207,84 @@ public class QAccessibleTextSelectionEvent : IQAccessibleTextSelectionEvent, IQA
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTextSelectionEvent
+{
+	public QAccessibleTextSelectionEventPtr handle;
+	
+	public static implicit operator QAccessibleTextSelectionEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int32 start, int32 end)
+	{
+		this.handle = QAccessibleTextSelectionEventPtr.New(obj, start, end);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetSelection(int32 start, int32 end)
+	{
+		this.handle.SetSelection(start, end);
+	}
+	
+	public int32 SelectionStart()
+	{
+		return this.handle.SelectionStart();
+	}
+	
+	public int32 SelectionEnd()
+	{
+		return this.handle.SelectionEnd();
+	}
+	
+	public void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1303,17 +2308,22 @@ public interface IQAccessibleTextInsertEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextInsertEvent : IQAccessibleTextInsertEvent, IQAccessibleTextCursorEvent
+public struct QAccessibleTextInsertEventPtr : IQAccessibleTextInsertEvent, IDisposable, IQAccessibleTextCursorEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int32 position, String text)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTextInsertEvent_new((obj == null) ? null : (void*)obj.NativePtr, position, libqt_string(text));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int32 position, String text)
+	{
+		return .(CQt.QAccessibleTextInsertEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, position, libqt_string(text)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextInsertEvent_Delete(this.nativePtr);
 	}
@@ -1363,9 +2373,79 @@ public class QAccessibleTextInsertEvent : IQAccessibleTextInsertEvent, IQAccessi
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTextInsertEvent
+{
+	public QAccessibleTextInsertEventPtr handle;
+	
+	public static implicit operator QAccessibleTextInsertEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int32 position, String text)
+	{
+		this.handle = QAccessibleTextInsertEventPtr.New(obj, position, text);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string TextInserted()
+	{
+		return this.handle.TextInserted();
+	}
+	
+	public int32 ChangePosition()
+	{
+		return this.handle.ChangePosition();
+	}
+	
+	public void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1387,17 +2467,22 @@ public interface IQAccessibleTextRemoveEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextRemoveEvent : IQAccessibleTextRemoveEvent, IQAccessibleTextCursorEvent
+public struct QAccessibleTextRemoveEventPtr : IQAccessibleTextRemoveEvent, IDisposable, IQAccessibleTextCursorEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int32 position, String text)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTextRemoveEvent_new((obj == null) ? null : (void*)obj.NativePtr, position, libqt_string(text));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int32 position, String text)
+	{
+		return .(CQt.QAccessibleTextRemoveEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, position, libqt_string(text)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextRemoveEvent_Delete(this.nativePtr);
 	}
@@ -1447,9 +2532,79 @@ public class QAccessibleTextRemoveEvent : IQAccessibleTextRemoveEvent, IQAccessi
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTextRemoveEvent
+{
+	public QAccessibleTextRemoveEventPtr handle;
+	
+	public static implicit operator QAccessibleTextRemoveEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int32 position, String text)
+	{
+		this.handle = QAccessibleTextRemoveEventPtr.New(obj, position, text);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string TextRemoved()
+	{
+		return this.handle.TextRemoved();
+	}
+	
+	public int32 ChangePosition()
+	{
+		return this.handle.ChangePosition();
+	}
+	
+	public void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1471,17 +2626,22 @@ public interface IQAccessibleTextUpdateEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTextUpdateEvent : IQAccessibleTextUpdateEvent, IQAccessibleTextCursorEvent
+public struct QAccessibleTextUpdateEventPtr : IQAccessibleTextUpdateEvent, IDisposable, IQAccessibleTextCursorEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int32 position, String oldText, String text)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTextUpdateEvent_new((obj == null) ? null : (void*)obj.NativePtr, position, libqt_string(oldText), libqt_string(text));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int32 position, String oldText, String text)
+	{
+		return .(CQt.QAccessibleTextUpdateEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, position, libqt_string(oldText), libqt_string(text)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTextUpdateEvent_Delete(this.nativePtr);
 	}
@@ -1536,9 +2696,84 @@ public class QAccessibleTextUpdateEvent : IQAccessibleTextUpdateEvent, IQAccessi
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTextUpdateEvent
+{
+	public QAccessibleTextUpdateEventPtr handle;
+	
+	public static implicit operator QAccessibleTextUpdateEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int32 position, String oldText, String text)
+	{
+		this.handle = QAccessibleTextUpdateEventPtr.New(obj, position, oldText, text);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string TextRemoved()
+	{
+		return this.handle.TextRemoved();
+	}
+	
+	public libqt_string TextInserted()
+	{
+		return this.handle.TextInserted();
+	}
+	
+	public int32 ChangePosition()
+	{
+		return this.handle.ChangePosition();
+	}
+	
+	public void SetCursorPosition(int32 position)
+	{
+		this.handle.SetCursorPosition(position);
+	}
+	
+	public int32 CursorPosition()
+	{
+		return this.handle.CursorPosition();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1562,24 +2797,29 @@ public interface IQAccessibleValueChangeEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleValueChangeEvent : IQAccessibleValueChangeEvent, IQAccessibleEvent
+public struct QAccessibleValueChangeEventPtr : IQAccessibleValueChangeEvent, IDisposable, IQAccessibleEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, IQVariant val)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleValueChangeEvent_new((obj == null) ? null : (void*)obj.NativePtr, (val == default) ? default : (void*)val.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, IQVariant val)
+	{
+		return .(CQt.QAccessibleValueChangeEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, (val == default || val.NativePtr == default) ? default : val.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleValueChangeEvent_Delete(this.nativePtr);
 	}
 	
 	public void SetValue(IQVariant val)
 	{
-		CQt.QAccessibleValueChangeEvent_SetValue(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
+		CQt.QAccessibleValueChangeEvent_SetValue(this.nativePtr, (val == default || val.NativePtr == default) ? default : val.NativePtr);
 	}
 	
 	public void Value()
@@ -1612,9 +2852,69 @@ public class QAccessibleValueChangeEvent : IQAccessibleValueChangeEvent, IQAcces
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleValueChangeEvent
+{
+	public QAccessibleValueChangeEventPtr handle;
+	
+	public static implicit operator QAccessibleValueChangeEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, IQVariant val)
+	{
+		this.handle = QAccessibleValueChangeEventPtr.New(obj, val);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetValue(IQVariant val)
+	{
+		this.handle.SetValue(val);
+	}
+	
+	public void Value()
+	{
+		this.handle.Value();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }
@@ -1636,24 +2936,29 @@ public interface IQAccessibleTableModelChangeEvent
 {
 	void* NativePtr { get; }
 }
-public class QAccessibleTableModelChangeEvent : IQAccessibleTableModelChangeEvent, IQAccessibleEvent
+public struct QAccessibleTableModelChangeEventPtr : IQAccessibleTableModelChangeEvent, IDisposable, IQAccessibleEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQObject obj, int64 changeType)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAccessibleTableModelChangeEvent_new((obj == null) ? null : (void*)obj.NativePtr, changeType);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQObject obj, int64 changeType)
+	{
+		return .(CQt.QAccessibleTableModelChangeEvent_new((obj == default || obj.NativePtr == default) ? default : obj.NativePtr, (int64)changeType));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAccessibleTableModelChangeEvent_Delete(this.nativePtr);
 	}
 	
 	public void SetModelChangeType(int64 changeType)
 	{
-		CQt.QAccessibleTableModelChangeEvent_SetModelChangeType(this.nativePtr, changeType);
+		CQt.QAccessibleTableModelChangeEvent_SetModelChangeType(this.nativePtr, (int64)changeType);
 	}
 	
 	public int64 ModelChangeType()
@@ -1726,9 +3031,109 @@ public class QAccessibleTableModelChangeEvent : IQAccessibleTableModelChangeEven
 		return CQt.QAccessibleEvent_Child(this.nativePtr);
 	}
 	
-	public virtual void* AccessibleInterface()
+	public void* AccessibleInterface()
 	{
 		return CQt.QAccessibleEvent_AccessibleInterface(this.nativePtr);
+	}
+	
+}
+public class QAccessibleTableModelChangeEvent
+{
+	public QAccessibleTableModelChangeEventPtr handle;
+	
+	public static implicit operator QAccessibleTableModelChangeEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQObject obj, int64 changeType)
+	{
+		this.handle = QAccessibleTableModelChangeEventPtr.New(obj, changeType);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetModelChangeType(int64 changeType)
+	{
+		this.handle.SetModelChangeType(changeType);
+	}
+	
+	public int64 ModelChangeType()
+	{
+		return this.handle.ModelChangeType();
+	}
+	
+	public void SetFirstRow(int32 row)
+	{
+		this.handle.SetFirstRow(row);
+	}
+	
+	public void SetFirstColumn(int32 col)
+	{
+		this.handle.SetFirstColumn(col);
+	}
+	
+	public void SetLastRow(int32 row)
+	{
+		this.handle.SetLastRow(row);
+	}
+	
+	public void SetLastColumn(int32 col)
+	{
+		this.handle.SetLastColumn(col);
+	}
+	
+	public int32 FirstRow()
+	{
+		return this.handle.FirstRow();
+	}
+	
+	public int32 FirstColumn()
+	{
+		return this.handle.FirstColumn();
+	}
+	
+	public int32 LastRow()
+	{
+		return this.handle.LastRow();
+	}
+	
+	public int32 LastColumn()
+	{
+		return this.handle.LastColumn();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void* Object()
+	{
+		return this.handle.Object();
+	}
+	
+	public uint32 UniqueId()
+	{
+		return this.handle.UniqueId();
+	}
+	
+	public void SetChild(int32 chld)
+	{
+		this.handle.SetChild(chld);
+	}
+	
+	public int32 Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public virtual void* AccessibleInterface()
+	{
+		return this.handle.AccessibleInterface();
 	}
 	
 }

@@ -6,18 +6,41 @@ public interface IQSharedData
 {
 	void* NativePtr { get; }
 }
-public class QSharedData : IQSharedData
+public struct QSharedDataPtr : IQSharedData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New()
+	{
+		return .(CQt.QSharedData_new());
+	}
+	public void Dispose()
+	{
+		CQt.QSharedData_Delete(this.nativePtr);
+	}
+}
+public class QSharedData
+{
+	public QSharedDataPtr handle;
+	
+	public static implicit operator QSharedDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this()
 	{
-		this.nativePtr = CQt.QSharedData_new();
+		this.handle = QSharedDataPtr.New();
 	}
 	public ~this()
 	{
-		CQt.QSharedData_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt
@@ -34,18 +57,41 @@ public interface IQAdoptSharedDataTag
 {
 	void* NativePtr { get; }
 }
-public class QAdoptSharedDataTag : IQAdoptSharedDataTag
+public struct QAdoptSharedDataTagPtr : IQAdoptSharedDataTag, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQAdoptSharedDataTag other)
+	{
+		return .(CQt.QAdoptSharedDataTag_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QAdoptSharedDataTag_Delete(this.nativePtr);
+	}
+}
+public class QAdoptSharedDataTag
+{
+	public QAdoptSharedDataTagPtr handle;
+	
+	public static implicit operator QAdoptSharedDataTagPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQAdoptSharedDataTag other)
 	{
-		this.nativePtr = CQt.QAdoptSharedDataTag_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QAdoptSharedDataTagPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QAdoptSharedDataTag_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt

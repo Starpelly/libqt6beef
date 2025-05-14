@@ -37,17 +37,22 @@ public interface IQCryptographicHash
 {
 	void* NativePtr { get; }
 }
-public class QCryptographicHash : IQCryptographicHash
+public struct QCryptographicHashPtr : IQCryptographicHash, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 method)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCryptographicHash_new(method);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 method)
+	{
+		return .(CQt.QCryptographicHash_new((int64)method));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCryptographicHash_Delete(this.nativePtr);
 	}
@@ -62,14 +67,14 @@ public class QCryptographicHash : IQCryptographicHash
 		CQt.QCryptographicHash_AddData(this.nativePtr, data, length);
 	}
 	
-	public void AddDataWithData(IQByteArrayView data)
+	public void AddDataWithData(char8* data)
 	{
-		CQt.QCryptographicHash_AddDataWithData(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr);
+		CQt.QCryptographicHash_AddDataWithData(this.nativePtr, data);
 	}
 	
 	public bool AddDataWithDevice(IQIODevice device)
 	{
-		return CQt.QCryptographicHash_AddDataWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		return CQt.QCryptographicHash_AddDataWithDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public libqt_string Result()
@@ -82,14 +87,74 @@ public class QCryptographicHash : IQCryptographicHash
 		return CQt.QCryptographicHash_ResultView(this.nativePtr);
 	}
 	
-	public static libqt_string Hash(IQByteArrayView data, int64 method)
+	public static libqt_string Hash(char8* data, int64 method)
 	{
-		return CQt.QCryptographicHash_Hash((data == default) ? default : (char8*)data.NativePtr, method);
+		return CQt.QCryptographicHash_Hash(data, (int64)method);
 	}
 	
 	public static int32 HashLength(int64 method)
 	{
-		return CQt.QCryptographicHash_HashLength(method);
+		return CQt.QCryptographicHash_HashLength((int64)method);
+	}
+	
+}
+public class QCryptographicHash
+{
+	public QCryptographicHashPtr handle;
+	
+	public static implicit operator QCryptographicHashPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 method)
+	{
+		this.handle = QCryptographicHashPtr.New(method);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
+	}
+	
+	public void AddData(char8* data, int32 length)
+	{
+		this.handle.AddData(data, length);
+	}
+	
+	public void AddDataWithData(char8* data)
+	{
+		this.handle.AddDataWithData(data);
+	}
+	
+	public bool AddDataWithDevice(IQIODevice device)
+	{
+		return this.handle.AddDataWithDevice(device);
+	}
+	
+	public libqt_string Result()
+	{
+		return this.handle.Result();
+	}
+	
+	public char8* ResultView()
+	{
+		return this.handle.ResultView();
+	}
+	
+	public static libqt_string Hash(char8* data, int64 method)
+	{
+		return QCryptographicHashPtr.Hash(data, method);
+	}
+	
+	public static int32 HashLength(int64 method)
+	{
+		return QCryptographicHashPtr.HashLength(method);
 	}
 	
 }

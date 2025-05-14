@@ -6,10 +6,15 @@ public interface IQVLABaseBase
 {
 	void* NativePtr { get; }
 }
-public class QVLABaseBase : IQVLABaseBase
+public struct QVLABaseBasePtr : IQVLABaseBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
+	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
 	
 	public int32 Capacity()
 	{
@@ -24,6 +29,31 @@ public class QVLABaseBase : IQVLABaseBase
 	public bool Empty()
 	{
 		return CQt.QVLABaseBase_Empty(this.nativePtr);
+	}
+	
+}
+public class QVLABaseBase
+{
+	public QVLABaseBasePtr handle;
+	
+	public static implicit operator QVLABaseBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public int32 Capacity()
+	{
+		return this.handle.Capacity();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public bool Empty()
+	{
+		return this.handle.Empty();
 	}
 	
 }

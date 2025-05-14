@@ -6,24 +6,29 @@ public interface IQBasicTimer
 {
 	void* NativePtr { get; }
 }
-public class QBasicTimer : IQBasicTimer
+public struct QBasicTimerPtr : IQBasicTimer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QBasicTimer_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QBasicTimer_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QBasicTimer_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQBasicTimer other)
 	{
-		CQt.QBasicTimer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QBasicTimer_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsActive()
@@ -38,17 +43,67 @@ public class QBasicTimer : IQBasicTimer
 	
 	public void Start(int32 msec, IQObject obj)
 	{
-		CQt.QBasicTimer_Start(this.nativePtr, msec, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QBasicTimer_Start(this.nativePtr, msec, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public void Start2(int32 msec, int64 timerType, IQObject obj)
 	{
-		CQt.QBasicTimer_Start2(this.nativePtr, msec, timerType, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QBasicTimer_Start2(this.nativePtr, msec, (int64)timerType, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public void Stop()
 	{
 		CQt.QBasicTimer_Stop(this.nativePtr);
+	}
+	
+}
+public class QBasicTimer
+{
+	public QBasicTimerPtr handle;
+	
+	public static implicit operator QBasicTimerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QBasicTimerPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQBasicTimer other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsActive()
+	{
+		return this.handle.IsActive();
+	}
+	
+	public int32 TimerId()
+	{
+		return this.handle.TimerId();
+	}
+	
+	public void Start(int32 msec, IQObject obj)
+	{
+		this.handle.Start(msec, obj);
+	}
+	
+	public void Start2(int32 msec, int64 timerType, IQObject obj)
+	{
+		this.handle.Start2(msec, timerType, obj);
+	}
+	
+	public void Stop()
+	{
+		this.handle.Stop();
 	}
 	
 }

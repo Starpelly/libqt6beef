@@ -22,29 +22,34 @@ public interface IQColor
 {
 	void* NativePtr { get; }
 }
-public class QColor : IQColor
+public struct QColorPtr : IQColor, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQColor other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QColor_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQColor other)
+	{
+		return .(CQt.QColor_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QColor_Delete(this.nativePtr);
 	}
 	
-	public static void FromString(IQAnyStringView name)
+	public static void FromString(char8* name)
 	{
-		CQt.QColor_FromString((name == default) ? default : (char8*)name.NativePtr);
+		CQt.QColor_FromString(name);
 	}
 	
 	public void OperatorAssign(int64 color)
 	{
-		CQt.QColor_OperatorAssign(this.nativePtr, color);
+		CQt.QColor_OperatorAssign(this.nativePtr, (int64)color);
 	}
 	
 	public bool IsValid()
@@ -179,7 +184,7 @@ public class QColor : IQColor
 	
 	public void SetRgba64(IQRgba64 rgba)
 	{
-		CQt.QColor_SetRgba64(this.nativePtr, (rgba == default) ? default : (void)rgba.NativePtr);
+		CQt.QColor_SetRgba64(this.nativePtr, default);
 	}
 	
 	public uint32 Rgba()
@@ -409,7 +414,7 @@ public class QColor : IQColor
 	
 	public void ConvertTo(int64 colorSpec)
 	{
-		CQt.QColor_ConvertTo(this.nativePtr, colorSpec);
+		CQt.QColor_ConvertTo(this.nativePtr, (int64)colorSpec);
 	}
 	
 	public static void FromRgb(uint32 rgb)
@@ -439,7 +444,7 @@ public class QColor : IQColor
 	
 	public static void FromRgba64WithRgba(IQRgba64 rgba)
 	{
-		CQt.QColor_FromRgba64WithRgba((rgba == default) ? default : (void)rgba.NativePtr);
+		CQt.QColor_FromRgba64WithRgba(default);
 	}
 	
 	public static void FromHsv(int32 h, int32 s, int32 v)
@@ -484,12 +489,12 @@ public class QColor : IQColor
 	
 	public bool OperatorEqual(IQColor c)
 	{
-		return CQt.QColor_OperatorEqual(this.nativePtr, (c == default) ? default : (void*)c.NativePtr);
+		return CQt.QColor_OperatorEqual(this.nativePtr, (c == default || c.NativePtr == default) ? default : c.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQColor c)
 	{
-		return CQt.QColor_OperatorNotEqual(this.nativePtr, (c == default) ? default : (void*)c.NativePtr);
+		return CQt.QColor_OperatorNotEqual(this.nativePtr, (c == default || c.NativePtr == default) ? default : c.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -502,14 +507,14 @@ public class QColor : IQColor
 		return CQt.QColor_IsValidColor(libqt_string(name));
 	}
 	
-	public static bool IsValidColorName(IQAnyStringView param1)
+	public static bool IsValidColorName(char8* param1)
 	{
-		return CQt.QColor_IsValidColorName((param1 == default) ? default : (char8*)param1.NativePtr);
+		return CQt.QColor_IsValidColorName(param1);
 	}
 	
 	public libqt_string Name1(int64 format)
 	{
-		return CQt.QColor_Name1(this.nativePtr, format);
+		return CQt.QColor_Name1(this.nativePtr, (int64)format);
 	}
 	
 	public void GetRgb4(int32* r, int32* g, int32* b, int32* a)
@@ -645,6 +650,636 @@ public class QColor : IQColor
 	public void Darker1(int32 f)
 	{
 		CQt.QColor_Darker1(this.nativePtr, f);
+	}
+	
+}
+public class QColor
+{
+	public QColorPtr handle;
+	
+	public static implicit operator QColorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQColor other)
+	{
+		this.handle = QColorPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void FromString(char8* name)
+	{
+		QColorPtr.FromString(name);
+	}
+	
+	public void OperatorAssign(int64 color)
+	{
+		this.handle.OperatorAssign(color);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public void SetNamedColor(String name)
+	{
+		this.handle.SetNamedColor(name);
+	}
+	
+	public static libqt_string[] ColorNames()
+	{
+		return QColorPtr.ColorNames();
+	}
+	
+	public int64 Spec()
+	{
+		return this.handle.Spec();
+	}
+	
+	public int32 Alpha()
+	{
+		return this.handle.Alpha();
+	}
+	
+	public void SetAlpha(int32 alpha)
+	{
+		this.handle.SetAlpha(alpha);
+	}
+	
+	public float AlphaF()
+	{
+		return this.handle.AlphaF();
+	}
+	
+	public void SetAlphaF(float alpha)
+	{
+		this.handle.SetAlphaF(alpha);
+	}
+	
+	public int32 Red()
+	{
+		return this.handle.Red();
+	}
+	
+	public int32 Green()
+	{
+		return this.handle.Green();
+	}
+	
+	public int32 Blue()
+	{
+		return this.handle.Blue();
+	}
+	
+	public void SetRed(int32 red)
+	{
+		this.handle.SetRed(red);
+	}
+	
+	public void SetGreen(int32 green)
+	{
+		this.handle.SetGreen(green);
+	}
+	
+	public void SetBlue(int32 blue)
+	{
+		this.handle.SetBlue(blue);
+	}
+	
+	public float RedF()
+	{
+		return this.handle.RedF();
+	}
+	
+	public float GreenF()
+	{
+		return this.handle.GreenF();
+	}
+	
+	public float BlueF()
+	{
+		return this.handle.BlueF();
+	}
+	
+	public void SetRedF(float red)
+	{
+		this.handle.SetRedF(red);
+	}
+	
+	public void SetGreenF(float green)
+	{
+		this.handle.SetGreenF(green);
+	}
+	
+	public void SetBlueF(float blue)
+	{
+		this.handle.SetBlueF(blue);
+	}
+	
+	public void GetRgb(int32* r, int32* g, int32* b)
+	{
+		this.handle.GetRgb(r, g, b);
+	}
+	
+	public void SetRgb(int32 r, int32 g, int32 b)
+	{
+		this.handle.SetRgb(r, g, b);
+	}
+	
+	public void GetRgbF(float* r, float* g, float* b)
+	{
+		this.handle.GetRgbF(r, g, b);
+	}
+	
+	public void SetRgbF(float r, float g, float b)
+	{
+		this.handle.SetRgbF(r, g, b);
+	}
+	
+	public void Rgba64()
+	{
+		this.handle.Rgba64();
+	}
+	
+	public void SetRgba64(IQRgba64 rgba)
+	{
+		this.handle.SetRgba64(default);
+	}
+	
+	public uint32 Rgba()
+	{
+		return this.handle.Rgba();
+	}
+	
+	public void SetRgba(uint32 rgba)
+	{
+		this.handle.SetRgba(rgba);
+	}
+	
+	public uint32 Rgb()
+	{
+		return this.handle.Rgb();
+	}
+	
+	public void SetRgbWithRgb(uint32 rgb)
+	{
+		this.handle.SetRgbWithRgb(rgb);
+	}
+	
+	public int32 Hue()
+	{
+		return this.handle.Hue();
+	}
+	
+	public int32 Saturation()
+	{
+		return this.handle.Saturation();
+	}
+	
+	public int32 HsvHue()
+	{
+		return this.handle.HsvHue();
+	}
+	
+	public int32 HsvSaturation()
+	{
+		return this.handle.HsvSaturation();
+	}
+	
+	public int32 Value()
+	{
+		return this.handle.Value();
+	}
+	
+	public float HueF()
+	{
+		return this.handle.HueF();
+	}
+	
+	public float SaturationF()
+	{
+		return this.handle.SaturationF();
+	}
+	
+	public float HsvHueF()
+	{
+		return this.handle.HsvHueF();
+	}
+	
+	public float HsvSaturationF()
+	{
+		return this.handle.HsvSaturationF();
+	}
+	
+	public float ValueF()
+	{
+		return this.handle.ValueF();
+	}
+	
+	public void GetHsv(int32* h, int32* s, int32* v)
+	{
+		this.handle.GetHsv(h, s, v);
+	}
+	
+	public void SetHsv(int32 h, int32 s, int32 v)
+	{
+		this.handle.SetHsv(h, s, v);
+	}
+	
+	public void GetHsvF(float* h, float* s, float* v)
+	{
+		this.handle.GetHsvF(h, s, v);
+	}
+	
+	public void SetHsvF(float h, float s, float v)
+	{
+		this.handle.SetHsvF(h, s, v);
+	}
+	
+	public int32 Cyan()
+	{
+		return this.handle.Cyan();
+	}
+	
+	public int32 Magenta()
+	{
+		return this.handle.Magenta();
+	}
+	
+	public int32 Yellow()
+	{
+		return this.handle.Yellow();
+	}
+	
+	public int32 Black()
+	{
+		return this.handle.Black();
+	}
+	
+	public float CyanF()
+	{
+		return this.handle.CyanF();
+	}
+	
+	public float MagentaF()
+	{
+		return this.handle.MagentaF();
+	}
+	
+	public float YellowF()
+	{
+		return this.handle.YellowF();
+	}
+	
+	public float BlackF()
+	{
+		return this.handle.BlackF();
+	}
+	
+	public void GetCmyk(int32* c, int32* m, int32* y, int32* k)
+	{
+		this.handle.GetCmyk(c, m, y, k);
+	}
+	
+	public void SetCmyk(int32 c, int32 m, int32 y, int32 k)
+	{
+		this.handle.SetCmyk(c, m, y, k);
+	}
+	
+	public void GetCmykF(float* c, float* m, float* y, float* k)
+	{
+		this.handle.GetCmykF(c, m, y, k);
+	}
+	
+	public void SetCmykF(float c, float m, float y, float k)
+	{
+		this.handle.SetCmykF(c, m, y, k);
+	}
+	
+	public int32 HslHue()
+	{
+		return this.handle.HslHue();
+	}
+	
+	public int32 HslSaturation()
+	{
+		return this.handle.HslSaturation();
+	}
+	
+	public int32 Lightness()
+	{
+		return this.handle.Lightness();
+	}
+	
+	public float HslHueF()
+	{
+		return this.handle.HslHueF();
+	}
+	
+	public float HslSaturationF()
+	{
+		return this.handle.HslSaturationF();
+	}
+	
+	public float LightnessF()
+	{
+		return this.handle.LightnessF();
+	}
+	
+	public void GetHsl(int32* h, int32* s, int32* l)
+	{
+		this.handle.GetHsl(h, s, l);
+	}
+	
+	public void SetHsl(int32 h, int32 s, int32 l)
+	{
+		this.handle.SetHsl(h, s, l);
+	}
+	
+	public void GetHslF(float* h, float* s, float* l)
+	{
+		this.handle.GetHslF(h, s, l);
+	}
+	
+	public void SetHslF(float h, float s, float l)
+	{
+		this.handle.SetHslF(h, s, l);
+	}
+	
+	public void ToRgb()
+	{
+		this.handle.ToRgb();
+	}
+	
+	public void ToHsv()
+	{
+		this.handle.ToHsv();
+	}
+	
+	public void ToCmyk()
+	{
+		this.handle.ToCmyk();
+	}
+	
+	public void ToHsl()
+	{
+		this.handle.ToHsl();
+	}
+	
+	public void ToExtendedRgb()
+	{
+		this.handle.ToExtendedRgb();
+	}
+	
+	public void ConvertTo(int64 colorSpec)
+	{
+		this.handle.ConvertTo(colorSpec);
+	}
+	
+	public static void FromRgb(uint32 rgb)
+	{
+		QColorPtr.FromRgb(rgb);
+	}
+	
+	public static void FromRgba(uint32 rgba)
+	{
+		QColorPtr.FromRgba(rgba);
+	}
+	
+	public static void FromRgb2(int32 r, int32 g, int32 b)
+	{
+		QColorPtr.FromRgb2(r, g, b);
+	}
+	
+	public static void FromRgbF(float r, float g, float b)
+	{
+		QColorPtr.FromRgbF(r, g, b);
+	}
+	
+	public static void FromRgba64(uint16 r, uint16 g, uint16 b)
+	{
+		QColorPtr.FromRgba64(r, g, b);
+	}
+	
+	public static void FromRgba64WithRgba(IQRgba64 rgba)
+	{
+		QColorPtr.FromRgba64WithRgba(default);
+	}
+	
+	public static void FromHsv(int32 h, int32 s, int32 v)
+	{
+		QColorPtr.FromHsv(h, s, v);
+	}
+	
+	public static void FromHsvF(float h, float s, float v)
+	{
+		QColorPtr.FromHsvF(h, s, v);
+	}
+	
+	public static void FromCmyk(int32 c, int32 m, int32 y, int32 k)
+	{
+		QColorPtr.FromCmyk(c, m, y, k);
+	}
+	
+	public static void FromCmykF(float c, float m, float y, float k)
+	{
+		QColorPtr.FromCmykF(c, m, y, k);
+	}
+	
+	public static void FromHsl(int32 h, int32 s, int32 l)
+	{
+		QColorPtr.FromHsl(h, s, l);
+	}
+	
+	public static void FromHslF(float h, float s, float l)
+	{
+		QColorPtr.FromHslF(h, s, l);
+	}
+	
+	public void Lighter()
+	{
+		this.handle.Lighter();
+	}
+	
+	public void Darker()
+	{
+		this.handle.Darker();
+	}
+	
+	public bool OperatorEqual(IQColor c)
+	{
+		return this.handle.OperatorEqual(c);
+	}
+	
+	public bool OperatorNotEqual(IQColor c)
+	{
+		return this.handle.OperatorNotEqual(c);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public static bool IsValidColor(String name)
+	{
+		return QColorPtr.IsValidColor(name);
+	}
+	
+	public static bool IsValidColorName(char8* param1)
+	{
+		return QColorPtr.IsValidColorName(param1);
+	}
+	
+	public libqt_string Name1(int64 format)
+	{
+		return this.handle.Name1(format);
+	}
+	
+	public void GetRgb4(int32* r, int32* g, int32* b, int32* a)
+	{
+		this.handle.GetRgb4(r, g, b, a);
+	}
+	
+	public void SetRgb4(int32 r, int32 g, int32 b, int32 a)
+	{
+		this.handle.SetRgb4(r, g, b, a);
+	}
+	
+	public void GetRgbF4(float* r, float* g, float* b, float* a)
+	{
+		this.handle.GetRgbF4(r, g, b, a);
+	}
+	
+	public void SetRgbF4(float r, float g, float b, float a)
+	{
+		this.handle.SetRgbF4(r, g, b, a);
+	}
+	
+	public void GetHsv4(int32* h, int32* s, int32* v, int32* a)
+	{
+		this.handle.GetHsv4(h, s, v, a);
+	}
+	
+	public void SetHsv4(int32 h, int32 s, int32 v, int32 a)
+	{
+		this.handle.SetHsv4(h, s, v, a);
+	}
+	
+	public void GetHsvF4(float* h, float* s, float* v, float* a)
+	{
+		this.handle.GetHsvF4(h, s, v, a);
+	}
+	
+	public void SetHsvF4(float h, float s, float v, float a)
+	{
+		this.handle.SetHsvF4(h, s, v, a);
+	}
+	
+	public void GetCmyk5(int32* c, int32* m, int32* y, int32* k, int32* a)
+	{
+		this.handle.GetCmyk5(c, m, y, k, a);
+	}
+	
+	public void SetCmyk5(int32 c, int32 m, int32 y, int32 k, int32 a)
+	{
+		this.handle.SetCmyk5(c, m, y, k, a);
+	}
+	
+	public void GetCmykF5(float* c, float* m, float* y, float* k, float* a)
+	{
+		this.handle.GetCmykF5(c, m, y, k, a);
+	}
+	
+	public void SetCmykF5(float c, float m, float y, float k, float a)
+	{
+		this.handle.SetCmykF5(c, m, y, k, a);
+	}
+	
+	public void GetHsl4(int32* h, int32* s, int32* l, int32* a)
+	{
+		this.handle.GetHsl4(h, s, l, a);
+	}
+	
+	public void SetHsl4(int32 h, int32 s, int32 l, int32 a)
+	{
+		this.handle.SetHsl4(h, s, l, a);
+	}
+	
+	public void GetHslF4(float* h, float* s, float* l, float* a)
+	{
+		this.handle.GetHslF4(h, s, l, a);
+	}
+	
+	public void SetHslF4(float h, float s, float l, float a)
+	{
+		this.handle.SetHslF4(h, s, l, a);
+	}
+	
+	public static void FromRgb4(int32 r, int32 g, int32 b, int32 a)
+	{
+		QColorPtr.FromRgb4(r, g, b, a);
+	}
+	
+	public static void FromRgbF4(float r, float g, float b, float a)
+	{
+		QColorPtr.FromRgbF4(r, g, b, a);
+	}
+	
+	public static void FromRgba644(uint16 r, uint16 g, uint16 b, uint16 a)
+	{
+		QColorPtr.FromRgba644(r, g, b, a);
+	}
+	
+	public static void FromHsv4(int32 h, int32 s, int32 v, int32 a)
+	{
+		QColorPtr.FromHsv4(h, s, v, a);
+	}
+	
+	public static void FromHsvF4(float h, float s, float v, float a)
+	{
+		QColorPtr.FromHsvF4(h, s, v, a);
+	}
+	
+	public static void FromCmyk5(int32 c, int32 m, int32 y, int32 k, int32 a)
+	{
+		QColorPtr.FromCmyk5(c, m, y, k, a);
+	}
+	
+	public static void FromCmykF5(float c, float m, float y, float k, float a)
+	{
+		QColorPtr.FromCmykF5(c, m, y, k, a);
+	}
+	
+	public static void FromHsl4(int32 h, int32 s, int32 l, int32 a)
+	{
+		QColorPtr.FromHsl4(h, s, l, a);
+	}
+	
+	public static void FromHslF4(float h, float s, float l, float a)
+	{
+		QColorPtr.FromHslF4(h, s, l, a);
+	}
+	
+	public void Lighter1(int32 f)
+	{
+		this.handle.Lighter1(f);
+	}
+	
+	public void Darker1(int32 f)
+	{
+		this.handle.Darker1(f);
 	}
 	
 }

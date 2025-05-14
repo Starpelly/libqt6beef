@@ -33,24 +33,29 @@ public interface IQTextOption
 {
 	void* NativePtr { get; }
 }
-public class QTextOption : IQTextOption
+public struct QTextOptionPtr : IQTextOption, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextOption_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextOption_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextOption_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTextOption o)
 	{
-		CQt.QTextOption_OperatorAssign(this.nativePtr, (o == default) ? default : (void*)o.NativePtr);
+		CQt.QTextOption_OperatorAssign(this.nativePtr, (o == default || o.NativePtr == default) ? default : o.NativePtr);
 	}
 	
 	public void SetAlignment(int64 alignment)
@@ -65,7 +70,7 @@ public class QTextOption : IQTextOption
 	
 	public void SetTextDirection(int64 aDirection)
 	{
-		CQt.QTextOption_SetTextDirection(this.nativePtr, aDirection);
+		CQt.QTextOption_SetTextDirection(this.nativePtr, (int64)aDirection);
 	}
 	
 	public int64 TextDirection()
@@ -75,7 +80,7 @@ public class QTextOption : IQTextOption
 	
 	public void SetWrapMode(int64 wrap)
 	{
-		CQt.QTextOption_SetWrapMode(this.nativePtr, wrap);
+		CQt.QTextOption_SetWrapMode(this.nativePtr, (int64)wrap);
 	}
 	
 	public int64 WrapMode()
@@ -113,7 +118,7 @@ public class QTextOption : IQTextOption
 		return CQt.QTextOption_TabArray(this.nativePtr);
 	}
 	
-	public void SetTabs(QTextOption__Tab[] tabStops)
+	public void SetTabs(QTextOption__TabPtr[] tabStops)
 	{
 		CQt.QTextOption_SetTabs(this.nativePtr, null);
 	}
@@ -131,6 +136,111 @@ public class QTextOption : IQTextOption
 	public bool UseDesignMetrics()
 	{
 		return CQt.QTextOption_UseDesignMetrics(this.nativePtr);
+	}
+	
+}
+public class QTextOption
+{
+	public QTextOptionPtr handle;
+	
+	public static implicit operator QTextOptionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextOptionPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTextOption o)
+	{
+		this.handle.OperatorAssign(o);
+	}
+	
+	public void SetAlignment(int64 alignment)
+	{
+		this.handle.SetAlignment(alignment);
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetTextDirection(int64 aDirection)
+	{
+		this.handle.SetTextDirection(aDirection);
+	}
+	
+	public int64 TextDirection()
+	{
+		return this.handle.TextDirection();
+	}
+	
+	public void SetWrapMode(int64 wrap)
+	{
+		this.handle.SetWrapMode(wrap);
+	}
+	
+	public int64 WrapMode()
+	{
+		return this.handle.WrapMode();
+	}
+	
+	public void SetFlags(int64 flags)
+	{
+		this.handle.SetFlags(flags);
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void SetTabStopDistance(double tabStopDistance)
+	{
+		this.handle.SetTabStopDistance(tabStopDistance);
+	}
+	
+	public double TabStopDistance()
+	{
+		return this.handle.TabStopDistance();
+	}
+	
+	public void SetTabArray(double[] tabStops)
+	{
+		this.handle.SetTabArray(null);
+	}
+	
+	public double[] TabArray()
+	{
+		return this.handle.TabArray();
+	}
+	
+	public void SetTabs(QTextOption__TabPtr[] tabStops)
+	{
+		this.handle.SetTabs(null);
+	}
+	
+	public void[] Tabs()
+	{
+		return this.handle.Tabs();
+	}
+	
+	public void SetUseDesignMetrics(bool b)
+	{
+		this.handle.SetUseDesignMetrics(b);
+	}
+	
+	public bool UseDesignMetrics()
+	{
+		return this.handle.UseDesignMetrics();
 	}
 	
 }
@@ -184,29 +294,64 @@ public interface IQTextOption__Tab
 {
 	void* NativePtr { get; }
 }
-public class QTextOption__Tab : IQTextOption__Tab
+public struct QTextOption__TabPtr : IQTextOption__Tab, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QTextOption__Tab other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextOption__Tab_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QTextOption__TabPtr other)
+	{
+		return .(CQt.QTextOption__Tab_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextOption__Tab_Delete(this.nativePtr);
 	}
 	
-	public bool OperatorEqual(QTextOption__Tab other)
+	public bool OperatorEqual(QTextOption__TabPtr other)
 	{
-		return CQt.QTextOption__Tab_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QTextOption__Tab_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QTextOption__Tab other)
+	public bool OperatorNotEqual(QTextOption__TabPtr other)
 	{
-		return CQt.QTextOption__Tab_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QTextOption__Tab_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QTextOption__Tab
+{
+	public QTextOption__TabPtr handle;
+	
+	public static implicit operator QTextOption__TabPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QTextOption__TabPtr other)
+	{
+		this.handle = QTextOption__TabPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool OperatorEqual(QTextOption__TabPtr other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(QTextOption__TabPtr other)
+	{
+		return this.handle.OperatorNotEqual(other);
 	}
 	
 }

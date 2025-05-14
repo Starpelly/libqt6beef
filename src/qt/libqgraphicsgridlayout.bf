@@ -6,29 +6,34 @@ public interface IQGraphicsGridLayout
 {
 	void* NativePtr { get; }
 }
-public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
+public struct QGraphicsGridLayoutPtr : IQGraphicsGridLayout, IDisposable, IQGraphicsLayout
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGraphicsGridLayout_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QGraphicsGridLayout_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGraphicsGridLayout_Delete(this.nativePtr);
 	}
 	
 	public void AddItem(IQGraphicsLayoutItem item, int32 row, int32 column, int32 rowSpan, int32 columnSpan)
 	{
-		CQt.QGraphicsGridLayout_AddItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, row, column, rowSpan, columnSpan);
+		CQt.QGraphicsGridLayout_AddItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr, row, column, rowSpan, columnSpan);
 	}
 	
 	public void AddItem2(IQGraphicsLayoutItem item, int32 row, int32 column)
 	{
-		CQt.QGraphicsGridLayout_AddItem2(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, row, column);
+		CQt.QGraphicsGridLayout_AddItem2(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr, row, column);
 	}
 	
 	public void SetHorizontalSpacing(double spacing)
@@ -188,12 +193,12 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetAlignment(IQGraphicsLayoutItem item, int64 alignment)
 	{
-		CQt.QGraphicsGridLayout_SetAlignment(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, alignment);
+		CQt.QGraphicsGridLayout_SetAlignment(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr, alignment);
 	}
 	
 	public int64 Alignment(IQGraphicsLayoutItem item)
 	{
-		return CQt.QGraphicsGridLayout_Alignment(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		return CQt.QGraphicsGridLayout_Alignment(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public int32 RowCount()
@@ -211,49 +216,49 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 		return CQt.QGraphicsGridLayout_ItemAt(this.nativePtr, row, column);
 	}
 	
-	public virtual int32 Count()
+	public int32 Count()
 	{
 		return CQt.QGraphicsGridLayout_Count(this.nativePtr);
 	}
 	
-	public virtual void* ItemAtWithIndex(int32 index)
+	public void* ItemAtWithIndex(int32 index)
 	{
 		return CQt.QGraphicsGridLayout_ItemAtWithIndex(this.nativePtr, index);
 	}
 	
-	public virtual void RemoveAt(int32 index)
+	public void RemoveAt(int32 index)
 	{
 		CQt.QGraphicsGridLayout_RemoveAt(this.nativePtr, index);
 	}
 	
 	public void RemoveItem(IQGraphicsLayoutItem item)
 	{
-		CQt.QGraphicsGridLayout_RemoveItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QGraphicsGridLayout_RemoveItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
-	public virtual void Invalidate()
+	public void Invalidate()
 	{
 		CQt.QGraphicsGridLayout_Invalidate(this.nativePtr);
 	}
 	
-	public virtual void SetGeometry(IQRectF rect)
+	public void SetGeometry(IQRectF rect)
 	{
-		CQt.QGraphicsGridLayout_SetGeometry(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QGraphicsGridLayout_SetGeometry(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
-	public virtual void SizeHint(int64 which, IQSizeF constraint)
+	public void SizeHint(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsGridLayout_SizeHint(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
+		CQt.QGraphicsGridLayout_SizeHint(this.nativePtr, (int64)which, (constraint == default || constraint.NativePtr == default) ? default : constraint.NativePtr);
 	}
 	
 	public void AddItem6(IQGraphicsLayoutItem item, int32 row, int32 column, int32 rowSpan, int32 columnSpan, int64 alignment)
 	{
-		CQt.QGraphicsGridLayout_AddItem6(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, row, column, rowSpan, columnSpan, alignment);
+		CQt.QGraphicsGridLayout_AddItem6(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr, row, column, rowSpan, columnSpan, alignment);
 	}
 	
 	public void AddItem4(IQGraphicsLayoutItem item, int32 row, int32 column, int64 alignment)
 	{
-		CQt.QGraphicsGridLayout_AddItem4(this.nativePtr, (item == null) ? null : (void*)item.NativePtr, row, column, alignment);
+		CQt.QGraphicsGridLayout_AddItem4(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr, row, column, alignment);
 	}
 	
 	public void SetContentsMargins(double left, double top, double right, double bottom)
@@ -261,7 +266,7 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 		CQt.QGraphicsLayout_SetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
 	
-	public virtual void GetContentsMargins(double* left, double* top, double* right, double* bottom)
+	public void GetContentsMargins(double* left, double* top, double* right, double* bottom)
 	{
 		CQt.QGraphicsLayout_GetContentsMargins(this.nativePtr, left, top, right, bottom);
 	}
@@ -276,14 +281,14 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 		return CQt.QGraphicsLayout_IsActivated(this.nativePtr);
 	}
 	
-	public virtual void UpdateGeometry()
+	public void UpdateGeometry()
 	{
 		CQt.QGraphicsLayout_UpdateGeometry(this.nativePtr);
 	}
 	
-	public virtual void WidgetEvent(IQEvent e)
+	public void WidgetEvent(IQEvent e)
 	{
-		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, (e == null) ? null : (void*)e.NativePtr);
+		CQt.QGraphicsLayout_WidgetEvent(this.nativePtr, (e == default || e.NativePtr == default) ? default : e.NativePtr);
 	}
 	
 	public static void SetInstantInvalidatePropagation(bool enable)
@@ -298,12 +303,12 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetSizePolicy(IQSizePolicy policy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default) ? default : (void*)policy.NativePtr);
+		CQt.QGraphicsLayoutItem_SetSizePolicy(this.nativePtr, (policy == default || policy.NativePtr == default) ? default : policy.NativePtr);
 	}
 	
 	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy2(this.nativePtr, hPolicy, vPolicy);
+		CQt.QGraphicsLayoutItem_SetSizePolicy2(this.nativePtr, (int64)hPolicy, (int64)vPolicy);
 	}
 	
 	public void SizePolicy()
@@ -313,7 +318,7 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetMinimumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetMinimumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetMinimumSize2(double w, double h)
@@ -348,7 +353,7 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetPreferredSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetPreferredSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetPreferredSize2(double w, double h)
@@ -383,7 +388,7 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetMaximumSize(IQSizeF size)
 	{
-		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QGraphicsLayoutItem_SetMaximumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetMaximumSize2(double w, double h)
@@ -428,10 +433,10 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void EffectiveSizeHint(int64 which)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint(this.nativePtr, which);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint(this.nativePtr, (int64)which);
 	}
 	
-	public virtual bool IsEmpty()
+	public bool IsEmpty()
 	{
 		return CQt.QGraphicsLayoutItem_IsEmpty(this.nativePtr);
 	}
@@ -443,7 +448,7 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
 	{
-		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QGraphicsLayoutItem_SetParentLayoutItem(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool IsLayout()
@@ -463,12 +468,482 @@ public class QGraphicsGridLayout : IQGraphicsGridLayout, IQGraphicsLayout
 	
 	public void SetSizePolicy3(int64 hPolicy, int64 vPolicy, int64 controlType)
 	{
-		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, hPolicy, vPolicy, controlType);
+		CQt.QGraphicsLayoutItem_SetSizePolicy3(this.nativePtr, (int64)hPolicy, (int64)vPolicy, (int64)controlType);
 	}
 	
 	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
 	{
-		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, which, (constraint == default) ? default : (void*)constraint.NativePtr);
+		CQt.QGraphicsLayoutItem_EffectiveSizeHint2(this.nativePtr, (int64)which, (constraint == default || constraint.NativePtr == default) ? default : constraint.NativePtr);
+	}
+	
+}
+public class QGraphicsGridLayout
+{
+	public QGraphicsGridLayoutPtr handle;
+	
+	public static implicit operator QGraphicsGridLayoutPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QGraphicsGridLayoutPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void AddItem(IQGraphicsLayoutItem item, int32 row, int32 column, int32 rowSpan, int32 columnSpan)
+	{
+		this.handle.AddItem(item, row, column, rowSpan, columnSpan);
+	}
+	
+	public void AddItem2(IQGraphicsLayoutItem item, int32 row, int32 column)
+	{
+		this.handle.AddItem2(item, row, column);
+	}
+	
+	public void SetHorizontalSpacing(double spacing)
+	{
+		this.handle.SetHorizontalSpacing(spacing);
+	}
+	
+	public double HorizontalSpacing()
+	{
+		return this.handle.HorizontalSpacing();
+	}
+	
+	public void SetVerticalSpacing(double spacing)
+	{
+		this.handle.SetVerticalSpacing(spacing);
+	}
+	
+	public double VerticalSpacing()
+	{
+		return this.handle.VerticalSpacing();
+	}
+	
+	public void SetSpacing(double spacing)
+	{
+		this.handle.SetSpacing(spacing);
+	}
+	
+	public void SetRowSpacing(int32 row, double spacing)
+	{
+		this.handle.SetRowSpacing(row, spacing);
+	}
+	
+	public double RowSpacing(int32 row)
+	{
+		return this.handle.RowSpacing(row);
+	}
+	
+	public void SetColumnSpacing(int32 column, double spacing)
+	{
+		this.handle.SetColumnSpacing(column, spacing);
+	}
+	
+	public double ColumnSpacing(int32 column)
+	{
+		return this.handle.ColumnSpacing(column);
+	}
+	
+	public void SetRowStretchFactor(int32 row, int32 stretch)
+	{
+		this.handle.SetRowStretchFactor(row, stretch);
+	}
+	
+	public int32 RowStretchFactor(int32 row)
+	{
+		return this.handle.RowStretchFactor(row);
+	}
+	
+	public void SetColumnStretchFactor(int32 column, int32 stretch)
+	{
+		this.handle.SetColumnStretchFactor(column, stretch);
+	}
+	
+	public int32 ColumnStretchFactor(int32 column)
+	{
+		return this.handle.ColumnStretchFactor(column);
+	}
+	
+	public void SetRowMinimumHeight(int32 row, double height)
+	{
+		this.handle.SetRowMinimumHeight(row, height);
+	}
+	
+	public double RowMinimumHeight(int32 row)
+	{
+		return this.handle.RowMinimumHeight(row);
+	}
+	
+	public void SetRowPreferredHeight(int32 row, double height)
+	{
+		this.handle.SetRowPreferredHeight(row, height);
+	}
+	
+	public double RowPreferredHeight(int32 row)
+	{
+		return this.handle.RowPreferredHeight(row);
+	}
+	
+	public void SetRowMaximumHeight(int32 row, double height)
+	{
+		this.handle.SetRowMaximumHeight(row, height);
+	}
+	
+	public double RowMaximumHeight(int32 row)
+	{
+		return this.handle.RowMaximumHeight(row);
+	}
+	
+	public void SetRowFixedHeight(int32 row, double height)
+	{
+		this.handle.SetRowFixedHeight(row, height);
+	}
+	
+	public void SetColumnMinimumWidth(int32 column, double width)
+	{
+		this.handle.SetColumnMinimumWidth(column, width);
+	}
+	
+	public double ColumnMinimumWidth(int32 column)
+	{
+		return this.handle.ColumnMinimumWidth(column);
+	}
+	
+	public void SetColumnPreferredWidth(int32 column, double width)
+	{
+		this.handle.SetColumnPreferredWidth(column, width);
+	}
+	
+	public double ColumnPreferredWidth(int32 column)
+	{
+		return this.handle.ColumnPreferredWidth(column);
+	}
+	
+	public void SetColumnMaximumWidth(int32 column, double width)
+	{
+		this.handle.SetColumnMaximumWidth(column, width);
+	}
+	
+	public double ColumnMaximumWidth(int32 column)
+	{
+		return this.handle.ColumnMaximumWidth(column);
+	}
+	
+	public void SetColumnFixedWidth(int32 column, double width)
+	{
+		this.handle.SetColumnFixedWidth(column, width);
+	}
+	
+	public void SetRowAlignment(int32 row, int64 alignment)
+	{
+		this.handle.SetRowAlignment(row, alignment);
+	}
+	
+	public int64 RowAlignment(int32 row)
+	{
+		return this.handle.RowAlignment(row);
+	}
+	
+	public void SetColumnAlignment(int32 column, int64 alignment)
+	{
+		this.handle.SetColumnAlignment(column, alignment);
+	}
+	
+	public int64 ColumnAlignment(int32 column)
+	{
+		return this.handle.ColumnAlignment(column);
+	}
+	
+	public void SetAlignment(IQGraphicsLayoutItem item, int64 alignment)
+	{
+		this.handle.SetAlignment(item, alignment);
+	}
+	
+	public int64 Alignment(IQGraphicsLayoutItem item)
+	{
+		return this.handle.Alignment(item);
+	}
+	
+	public int32 RowCount()
+	{
+		return this.handle.RowCount();
+	}
+	
+	public int32 ColumnCount()
+	{
+		return this.handle.ColumnCount();
+	}
+	
+	public void* ItemAt(int32 row, int32 column)
+	{
+		return this.handle.ItemAt(row, column);
+	}
+	
+	public virtual int32 Count()
+	{
+		return this.handle.Count();
+	}
+	
+	public virtual void* ItemAtWithIndex(int32 index)
+	{
+		return this.handle.ItemAtWithIndex(index);
+	}
+	
+	public virtual void RemoveAt(int32 index)
+	{
+		this.handle.RemoveAt(index);
+	}
+	
+	public void RemoveItem(IQGraphicsLayoutItem item)
+	{
+		this.handle.RemoveItem(item);
+	}
+	
+	public virtual void Invalidate()
+	{
+		this.handle.Invalidate();
+	}
+	
+	public virtual void SetGeometry(IQRectF rect)
+	{
+		this.handle.SetGeometry(rect);
+	}
+	
+	public virtual void SizeHint(int64 which, IQSizeF constraint)
+	{
+		this.handle.SizeHint(which, constraint);
+	}
+	
+	public void AddItem6(IQGraphicsLayoutItem item, int32 row, int32 column, int32 rowSpan, int32 columnSpan, int64 alignment)
+	{
+		this.handle.AddItem6(item, row, column, rowSpan, columnSpan, alignment);
+	}
+	
+	public void AddItem4(IQGraphicsLayoutItem item, int32 row, int32 column, int64 alignment)
+	{
+		this.handle.AddItem4(item, row, column, alignment);
+	}
+	
+	public void SetContentsMargins(double left, double top, double right, double bottom)
+	{
+		this.handle.SetContentsMargins(left, top, right, bottom);
+	}
+	
+	public virtual void GetContentsMargins(double* left, double* top, double* right, double* bottom)
+	{
+		this.handle.GetContentsMargins(left, top, right, bottom);
+	}
+	
+	public void Activate()
+	{
+		this.handle.Activate();
+	}
+	
+	public bool IsActivated()
+	{
+		return this.handle.IsActivated();
+	}
+	
+	public virtual void UpdateGeometry()
+	{
+		this.handle.UpdateGeometry();
+	}
+	
+	public virtual void WidgetEvent(IQEvent e)
+	{
+		this.handle.WidgetEvent(e);
+	}
+	
+	public static void SetInstantInvalidatePropagation(bool enable)
+	{
+		QGraphicsGridLayoutPtr.SetInstantInvalidatePropagation(enable);
+	}
+	
+	public static bool InstantInvalidatePropagation()
+	{
+		return QGraphicsGridLayoutPtr.InstantInvalidatePropagation();
+	}
+	
+	public void SetSizePolicy(IQSizePolicy policy)
+	{
+		this.handle.SetSizePolicy(policy);
+	}
+	
+	public void SetSizePolicy2(int64 hPolicy, int64 vPolicy)
+	{
+		this.handle.SetSizePolicy2(hPolicy, vPolicy);
+	}
+	
+	public void SizePolicy()
+	{
+		this.handle.SizePolicy();
+	}
+	
+	public void SetMinimumSize(IQSizeF size)
+	{
+		this.handle.SetMinimumSize(size);
+	}
+	
+	public void SetMinimumSize2(double w, double h)
+	{
+		this.handle.SetMinimumSize2(w, h);
+	}
+	
+	public void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public void SetMinimumWidth(double width)
+	{
+		this.handle.SetMinimumWidth(width);
+	}
+	
+	public double MinimumWidth()
+	{
+		return this.handle.MinimumWidth();
+	}
+	
+	public void SetMinimumHeight(double height)
+	{
+		this.handle.SetMinimumHeight(height);
+	}
+	
+	public double MinimumHeight()
+	{
+		return this.handle.MinimumHeight();
+	}
+	
+	public void SetPreferredSize(IQSizeF size)
+	{
+		this.handle.SetPreferredSize(size);
+	}
+	
+	public void SetPreferredSize2(double w, double h)
+	{
+		this.handle.SetPreferredSize2(w, h);
+	}
+	
+	public void PreferredSize()
+	{
+		this.handle.PreferredSize();
+	}
+	
+	public void SetPreferredWidth(double width)
+	{
+		this.handle.SetPreferredWidth(width);
+	}
+	
+	public double PreferredWidth()
+	{
+		return this.handle.PreferredWidth();
+	}
+	
+	public void SetPreferredHeight(double height)
+	{
+		this.handle.SetPreferredHeight(height);
+	}
+	
+	public double PreferredHeight()
+	{
+		return this.handle.PreferredHeight();
+	}
+	
+	public void SetMaximumSize(IQSizeF size)
+	{
+		this.handle.SetMaximumSize(size);
+	}
+	
+	public void SetMaximumSize2(double w, double h)
+	{
+		this.handle.SetMaximumSize2(w, h);
+	}
+	
+	public void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public void SetMaximumWidth(double width)
+	{
+		this.handle.SetMaximumWidth(width);
+	}
+	
+	public double MaximumWidth()
+	{
+		return this.handle.MaximumWidth();
+	}
+	
+	public void SetMaximumHeight(double height)
+	{
+		this.handle.SetMaximumHeight(height);
+	}
+	
+	public double MaximumHeight()
+	{
+		return this.handle.MaximumHeight();
+	}
+	
+	public void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public void ContentsRect()
+	{
+		this.handle.ContentsRect();
+	}
+	
+	public void EffectiveSizeHint(int64 which)
+	{
+		this.handle.EffectiveSizeHint(which);
+	}
+	
+	public virtual bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public void* ParentLayoutItem()
+	{
+		return this.handle.ParentLayoutItem();
+	}
+	
+	public void SetParentLayoutItem(IQGraphicsLayoutItem parent)
+	{
+		this.handle.SetParentLayoutItem(parent);
+	}
+	
+	public bool IsLayout()
+	{
+		return this.handle.IsLayout();
+	}
+	
+	public void* GraphicsItem()
+	{
+		return this.handle.GraphicsItem();
+	}
+	
+	public bool OwnedByLayout()
+	{
+		return this.handle.OwnedByLayout();
+	}
+	
+	public void SetSizePolicy3(int64 hPolicy, int64 vPolicy, int64 controlType)
+	{
+		this.handle.SetSizePolicy3(hPolicy, vPolicy, controlType);
+	}
+	
+	public void EffectiveSizeHint2(int64 which, IQSizeF constraint)
+	{
+		this.handle.EffectiveSizeHint2(which, constraint);
 	}
 	
 }

@@ -33,39 +33,44 @@ public interface IQVideoFrame
 {
 	void* NativePtr { get; }
 }
-public class QVideoFrame : IQVideoFrame
+public struct QVideoFramePtr : IQVideoFrame, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVideoFrame_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QVideoFrame_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QVideoFrame_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQVideoFrame other)
 	{
-		CQt.QVideoFrame_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QVideoFrame_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorAssign(IQVideoFrame other)
 	{
-		CQt.QVideoFrame_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QVideoFrame_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQVideoFrame other)
 	{
-		return CQt.QVideoFrame_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QVideoFrame_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQVideoFrame other)
 	{
-		return CQt.QVideoFrame_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QVideoFrame_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -125,7 +130,7 @@ public class QVideoFrame : IQVideoFrame
 	
 	public bool Map(int64 mode)
 	{
-		return CQt.QVideoFrame_Map(this.nativePtr, mode);
+		return CQt.QVideoFrame_Map(this.nativePtr, (int64)mode);
 	}
 	
 	public void Unmap()
@@ -180,7 +185,7 @@ public class QVideoFrame : IQVideoFrame
 	
 	public void SetRotationAngle(int64 rotationAngle)
 	{
-		CQt.QVideoFrame_SetRotationAngle(this.nativePtr, rotationAngle);
+		CQt.QVideoFrame_SetRotationAngle(this.nativePtr, (int64)rotationAngle);
 	}
 	
 	public int64 RotationAngle()
@@ -213,9 +218,199 @@ public class QVideoFrame : IQVideoFrame
 		CQt.QVideoFrame_SetSubtitleText(this.nativePtr, libqt_string(text));
 	}
 	
-	public void Paint(IQPainter painter, IQRectF rect, QVideoFrame__PaintOptions options)
+	public void Paint(IQPainter painter, IQRectF rect, QVideoFrame__PaintOptionsPtr options)
 	{
-		CQt.QVideoFrame_Paint(this.nativePtr, (painter == null) ? null : (void*)painter.NativePtr, (rect == default) ? default : (void*)rect.NativePtr, (options == default) ? default : (void*)options.NativePtr);
+		CQt.QVideoFrame_Paint(this.nativePtr, (painter == default || painter.NativePtr == default) ? default : painter.NativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, (options == default || options.NativePtr == default) ? default : options.NativePtr);
+	}
+	
+}
+public class QVideoFrame
+{
+	public QVideoFramePtr handle;
+	
+	public static implicit operator QVideoFramePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QVideoFramePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQVideoFrame other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void OperatorAssign(IQVideoFrame other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool OperatorEqual(IQVideoFrame other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQVideoFrame other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int64 PixelFormat()
+	{
+		return this.handle.PixelFormat();
+	}
+	
+	public void SurfaceFormat()
+	{
+		this.handle.SurfaceFormat();
+	}
+	
+	public int64 HandleType()
+	{
+		return this.handle.HandleType();
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public bool IsMapped()
+	{
+		return this.handle.IsMapped();
+	}
+	
+	public bool IsReadable()
+	{
+		return this.handle.IsReadable();
+	}
+	
+	public bool IsWritable()
+	{
+		return this.handle.IsWritable();
+	}
+	
+	public int64 MapMode()
+	{
+		return this.handle.MapMode();
+	}
+	
+	public bool Map(int64 mode)
+	{
+		return this.handle.Map(mode);
+	}
+	
+	public void Unmap()
+	{
+		this.handle.Unmap();
+	}
+	
+	public int32 BytesPerLine(int32 plane)
+	{
+		return this.handle.BytesPerLine(plane);
+	}
+	
+	public uint8* Bits(int32 plane)
+	{
+		return this.handle.Bits(plane);
+	}
+	
+	public uint8* BitsWithPlane(int32 plane)
+	{
+		return this.handle.BitsWithPlane(plane);
+	}
+	
+	public int32 MappedBytes(int32 plane)
+	{
+		return this.handle.MappedBytes(plane);
+	}
+	
+	public int32 PlaneCount()
+	{
+		return this.handle.PlaneCount();
+	}
+	
+	public int64 StartTime()
+	{
+		return this.handle.StartTime();
+	}
+	
+	public void SetStartTime(int64 time)
+	{
+		this.handle.SetStartTime(time);
+	}
+	
+	public int64 EndTime()
+	{
+		return this.handle.EndTime();
+	}
+	
+	public void SetEndTime(int64 time)
+	{
+		this.handle.SetEndTime(time);
+	}
+	
+	public void SetRotationAngle(int64 rotationAngle)
+	{
+		this.handle.SetRotationAngle(rotationAngle);
+	}
+	
+	public int64 RotationAngle()
+	{
+		return this.handle.RotationAngle();
+	}
+	
+	public void SetMirrored(bool mirrored)
+	{
+		this.handle.SetMirrored(mirrored);
+	}
+	
+	public bool Mirrored()
+	{
+		return this.handle.Mirrored();
+	}
+	
+	public void ToImage()
+	{
+		this.handle.ToImage();
+	}
+	
+	public libqt_string SubtitleText()
+	{
+		return this.handle.SubtitleText();
+	}
+	
+	public void SetSubtitleText(String text)
+	{
+		this.handle.SetSubtitleText(text);
+	}
+	
+	public void Paint(IQPainter painter, IQRectF rect, QVideoFrame__PaintOptionsPtr options)
+	{
+		this.handle.Paint(painter, rect, options);
 	}
 	
 }
@@ -303,18 +498,41 @@ public interface IQVideoFrame__PaintOptions
 {
 	void* NativePtr { get; }
 }
-public class QVideoFrame__PaintOptions : IQVideoFrame__PaintOptions
+public struct QVideoFrame__PaintOptionsPtr : IQVideoFrame__PaintOptions, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QVideoFrame__PaintOptions other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVideoFrame__PaintOptions_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(QVideoFrame__PaintOptionsPtr other)
+	{
+		return .(CQt.QVideoFrame__PaintOptions_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QVideoFrame__PaintOptions_Delete(this.nativePtr);
+	}
+}
+public class QVideoFrame__PaintOptions
+{
+	public QVideoFrame__PaintOptionsPtr handle;
+	
+	public static implicit operator QVideoFrame__PaintOptionsPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QVideoFrame__PaintOptionsPtr other)
+	{
+		this.handle = QVideoFrame__PaintOptionsPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QVideoFrame__PaintOptions_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt

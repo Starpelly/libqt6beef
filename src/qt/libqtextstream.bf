@@ -38,24 +38,29 @@ public interface IQTextStream
 {
 	void* NativePtr { get; }
 }
-public class QTextStream : IQTextStream, IQIODeviceBase
+public struct QTextStreamPtr : IQTextStream, IDisposable, IQIODeviceBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextStream_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextStream_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextStream_Delete(this.nativePtr);
 	}
 	
 	public void SetEncoding(int64 encoding)
 	{
-		CQt.QTextStream_SetEncoding(this.nativePtr, encoding);
+		CQt.QTextStream_SetEncoding(this.nativePtr, (int64)encoding);
 	}
 	
 	public int64 Encoding()
@@ -85,7 +90,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetLocale(IQLocale locale)
 	{
-		CQt.QTextStream_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
+		CQt.QTextStream_SetLocale(this.nativePtr, (locale == default || locale.NativePtr == default) ? default : locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -95,7 +100,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QTextStream_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QTextStream_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -115,7 +120,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetStatus(int64 status)
 	{
-		CQt.QTextStream_SetStatus(this.nativePtr, status);
+		CQt.QTextStream_SetStatus(this.nativePtr, (int64)status);
 	}
 	
 	public void ResetStatus()
@@ -170,7 +175,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetFieldAlignment(int64 alignment)
 	{
-		CQt.QTextStream_SetFieldAlignment(this.nativePtr, alignment);
+		CQt.QTextStream_SetFieldAlignment(this.nativePtr, (int64)alignment);
 	}
 	
 	public int64 FieldAlignment()
@@ -180,7 +185,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetPadChar(IQChar ch)
 	{
-		CQt.QTextStream_SetPadChar(this.nativePtr, (ch == default) ? default : (void)ch.NativePtr);
+		CQt.QTextStream_SetPadChar(this.nativePtr, default);
 	}
 	
 	public void PadChar()
@@ -220,7 +225,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void SetRealNumberNotation(int64 notation)
 	{
-		CQt.QTextStream_SetRealNumberNotation(this.nativePtr, notation);
+		CQt.QTextStream_SetRealNumberNotation(this.nativePtr, (int64)notation);
 	}
 	
 	public int64 RealNumberNotation()
@@ -240,7 +245,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void* OperatorShiftRight(IQChar ch)
 	{
-		return CQt.QTextStream_OperatorShiftRight(this.nativePtr, (ch == default) ? default : (void*)ch.NativePtr);
+		return CQt.QTextStream_OperatorShiftRight(this.nativePtr, (ch == default || ch.NativePtr == default) ? default : ch.NativePtr);
 	}
 	
 	public void* OperatorShiftRightWithCh(int8* ch)
@@ -315,7 +320,7 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	
 	public void* OperatorShiftLeft(IQChar ch)
 	{
-		return CQt.QTextStream_OperatorShiftLeft(this.nativePtr, (ch == default) ? default : (void)ch.NativePtr);
+		return CQt.QTextStream_OperatorShiftLeft(this.nativePtr, default);
 	}
 	
 	public void* OperatorShiftLeftWithCh(int8 ch)
@@ -396,6 +401,371 @@ public class QTextStream : IQTextStream, IQIODeviceBase
 	public libqt_string ReadLine1(int64 maxlen)
 	{
 		return CQt.QTextStream_ReadLine1(this.nativePtr, maxlen);
+	}
+	
+}
+public class QTextStream
+{
+	public QTextStreamPtr handle;
+	
+	public static implicit operator QTextStreamPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextStreamPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetEncoding(int64 encoding)
+	{
+		this.handle.SetEncoding(encoding);
+	}
+	
+	public int64 Encoding()
+	{
+		return this.handle.Encoding();
+	}
+	
+	public void SetAutoDetectUnicode(bool enabled)
+	{
+		this.handle.SetAutoDetectUnicode(enabled);
+	}
+	
+	public bool AutoDetectUnicode()
+	{
+		return this.handle.AutoDetectUnicode();
+	}
+	
+	public void SetGenerateByteOrderMark(bool generate)
+	{
+		this.handle.SetGenerateByteOrderMark(generate);
+	}
+	
+	public bool GenerateByteOrderMark()
+	{
+		return this.handle.GenerateByteOrderMark();
+	}
+	
+	public void SetLocale(IQLocale locale)
+	{
+		this.handle.SetLocale(locale);
+	}
+	
+	public void Locale()
+	{
+		this.handle.Locale();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public libqt_string String()
+	{
+		return this.handle.String();
+	}
+	
+	public int64 Status()
+	{
+		return this.handle.Status();
+	}
+	
+	public void SetStatus(int64 status)
+	{
+		this.handle.SetStatus(status);
+	}
+	
+	public void ResetStatus()
+	{
+		this.handle.ResetStatus();
+	}
+	
+	public bool AtEnd()
+	{
+		return this.handle.AtEnd();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
+	}
+	
+	public void Flush()
+	{
+		this.handle.Flush();
+	}
+	
+	public bool Seek(int64 pos)
+	{
+		return this.handle.Seek(pos);
+	}
+	
+	public int64 Pos()
+	{
+		return this.handle.Pos();
+	}
+	
+	public void SkipWhiteSpace()
+	{
+		this.handle.SkipWhiteSpace();
+	}
+	
+	public libqt_string ReadLine()
+	{
+		return this.handle.ReadLine();
+	}
+	
+	public libqt_string ReadAll()
+	{
+		return this.handle.ReadAll();
+	}
+	
+	public libqt_string Read(int64 maxlen)
+	{
+		return this.handle.Read(maxlen);
+	}
+	
+	public void SetFieldAlignment(int64 alignment)
+	{
+		this.handle.SetFieldAlignment(alignment);
+	}
+	
+	public int64 FieldAlignment()
+	{
+		return this.handle.FieldAlignment();
+	}
+	
+	public void SetPadChar(IQChar ch)
+	{
+		this.handle.SetPadChar(default);
+	}
+	
+	public void PadChar()
+	{
+		this.handle.PadChar();
+	}
+	
+	public void SetFieldWidth(int32 width)
+	{
+		this.handle.SetFieldWidth(width);
+	}
+	
+	public int32 FieldWidth()
+	{
+		return this.handle.FieldWidth();
+	}
+	
+	public void SetNumberFlags(int64 flags)
+	{
+		this.handle.SetNumberFlags(flags);
+	}
+	
+	public int64 NumberFlags()
+	{
+		return this.handle.NumberFlags();
+	}
+	
+	public void SetIntegerBase(int32 _base)
+	{
+		this.handle.SetIntegerBase(_base);
+	}
+	
+	public int32 IntegerBase()
+	{
+		return this.handle.IntegerBase();
+	}
+	
+	public void SetRealNumberNotation(int64 notation)
+	{
+		this.handle.SetRealNumberNotation(notation);
+	}
+	
+	public int64 RealNumberNotation()
+	{
+		return this.handle.RealNumberNotation();
+	}
+	
+	public void SetRealNumberPrecision(int32 precision)
+	{
+		this.handle.SetRealNumberPrecision(precision);
+	}
+	
+	public int32 RealNumberPrecision()
+	{
+		return this.handle.RealNumberPrecision();
+	}
+	
+	public void* OperatorShiftRight(IQChar ch)
+	{
+		return this.handle.OperatorShiftRight(ch);
+	}
+	
+	public void* OperatorShiftRightWithCh(int8* ch)
+	{
+		return this.handle.OperatorShiftRightWithCh(ch);
+	}
+	
+	public void* OperatorShiftRightWithShort(int16* i)
+	{
+		return this.handle.OperatorShiftRightWithShort(i);
+	}
+	
+	public void* OperatorShiftRightWithUnsignedshort(uint16* i)
+	{
+		return this.handle.OperatorShiftRightWithUnsignedshort(i);
+	}
+	
+	public void* OperatorShiftRightWithInt(int32* i)
+	{
+		return this.handle.OperatorShiftRightWithInt(i);
+	}
+	
+	public void* OperatorShiftRightWithUnsignedint(uint32* i)
+	{
+		return this.handle.OperatorShiftRightWithUnsignedint(i);
+	}
+	
+	public void* OperatorShiftRightWithLong(c_long* i)
+	{
+		return this.handle.OperatorShiftRightWithLong(i);
+	}
+	
+	public void* OperatorShiftRightWithUnsignedlong(c_ulong* i)
+	{
+		return this.handle.OperatorShiftRightWithUnsignedlong(i);
+	}
+	
+	public void* OperatorShiftRightWithQlonglong(int64* i)
+	{
+		return this.handle.OperatorShiftRightWithQlonglong(i);
+	}
+	
+	public void* OperatorShiftRightWithQulonglong(uint64* i)
+	{
+		return this.handle.OperatorShiftRightWithQulonglong(i);
+	}
+	
+	public void* OperatorShiftRightWithFloat(float* f)
+	{
+		return this.handle.OperatorShiftRightWithFloat(f);
+	}
+	
+	public void* OperatorShiftRightWithDouble(double* f)
+	{
+		return this.handle.OperatorShiftRightWithDouble(f);
+	}
+	
+	public void* OperatorShiftRightWithQString(String s)
+	{
+		return this.handle.OperatorShiftRightWithQString(s);
+	}
+	
+	public void* OperatorShiftRightWithArray(String array)
+	{
+		return this.handle.OperatorShiftRightWithArray(array);
+	}
+	
+	public void* OperatorShiftRightWithChar(char8* c)
+	{
+		return this.handle.OperatorShiftRightWithChar(c);
+	}
+	
+	public void* OperatorShiftLeft(IQChar ch)
+	{
+		return this.handle.OperatorShiftLeft(default);
+	}
+	
+	public void* OperatorShiftLeftWithCh(int8 ch)
+	{
+		return this.handle.OperatorShiftLeftWithCh(ch);
+	}
+	
+	public void* OperatorShiftLeftWithShort(int16 i)
+	{
+		return this.handle.OperatorShiftLeftWithShort(i);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedshort(uint16 i)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedshort(i);
+	}
+	
+	public void* OperatorShiftLeftWithInt(int32 i)
+	{
+		return this.handle.OperatorShiftLeftWithInt(i);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedint(uint32 i)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedint(i);
+	}
+	
+	public void* OperatorShiftLeftWithLong(c_long i)
+	{
+		return this.handle.OperatorShiftLeftWithLong(i);
+	}
+	
+	public void* OperatorShiftLeftWithUnsignedlong(c_ulong i)
+	{
+		return this.handle.OperatorShiftLeftWithUnsignedlong(i);
+	}
+	
+	public void* OperatorShiftLeftWithQlonglong(int64 i)
+	{
+		return this.handle.OperatorShiftLeftWithQlonglong(i);
+	}
+	
+	public void* OperatorShiftLeftWithQulonglong(uint64 i)
+	{
+		return this.handle.OperatorShiftLeftWithQulonglong(i);
+	}
+	
+	public void* OperatorShiftLeftWithFloat(float f)
+	{
+		return this.handle.OperatorShiftLeftWithFloat(f);
+	}
+	
+	public void* OperatorShiftLeftWithDouble(double f)
+	{
+		return this.handle.OperatorShiftLeftWithDouble(f);
+	}
+	
+	public void* OperatorShiftLeftWithQString(String s)
+	{
+		return this.handle.OperatorShiftLeftWithQString(s);
+	}
+	
+	public void* OperatorShiftLeftWithArray(String array)
+	{
+		return this.handle.OperatorShiftLeftWithArray(array);
+	}
+	
+	public void* OperatorShiftLeftWithChar(char8* c)
+	{
+		return this.handle.OperatorShiftLeftWithChar(c);
+	}
+	
+	public void* OperatorShiftLeftWithPtr(void* ptr)
+	{
+		return this.handle.OperatorShiftLeftWithPtr(ptr);
+	}
+	
+	public libqt_string ReadLine1(int64 maxlen)
+	{
+		return this.handle.ReadLine1(maxlen);
 	}
 	
 }

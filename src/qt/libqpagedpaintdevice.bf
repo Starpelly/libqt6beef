@@ -13,39 +13,44 @@ public interface IQPagedPaintDevice
 {
 	void* NativePtr { get; }
 }
-public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
+public struct QPagedPaintDevicePtr : IQPagedPaintDevice, IDisposable, IQPaintDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPagedPaintDevice_Delete(this.nativePtr);
 	}
 	
-	public virtual bool NewPage()
+	public bool NewPage()
 	{
 		return CQt.QPagedPaintDevice_NewPage(this.nativePtr);
 	}
 	
-	public virtual bool SetPageLayout(IQPageLayout pageLayout)
+	public bool SetPageLayout(IQPageLayout pageLayout)
 	{
-		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, (pageLayout == default) ? default : (void*)pageLayout.NativePtr);
+		return CQt.QPagedPaintDevice_SetPageLayout(this.nativePtr, (pageLayout == default || pageLayout.NativePtr == default) ? default : pageLayout.NativePtr);
 	}
 	
-	public virtual bool SetPageSize(IQPageSize pageSize)
+	public bool SetPageSize(IQPageSize pageSize)
 	{
-		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, (pageSize == default) ? default : (void*)pageSize.NativePtr);
+		return CQt.QPagedPaintDevice_SetPageSize(this.nativePtr, (pageSize == default || pageSize.NativePtr == default) ? default : pageSize.NativePtr);
 	}
 	
-	public virtual bool SetPageOrientation(int64 orientation)
+	public bool SetPageOrientation(int64 orientation)
 	{
-		return CQt.QPagedPaintDevice_SetPageOrientation(this.nativePtr, orientation);
+		return CQt.QPagedPaintDevice_SetPageOrientation(this.nativePtr, (int64)orientation);
 	}
 	
-	public virtual bool SetPageMargins(IQMarginsF margins, int64 units)
+	public bool SetPageMargins(IQMarginsF margins, int64 units)
 	{
-		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr, units);
+		return CQt.QPagedPaintDevice_SetPageMargins(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr, (int64)units);
 	}
 	
 	public void PageLayout()
@@ -53,9 +58,9 @@ public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
 		CQt.QPagedPaintDevice_PageLayout(this.nativePtr);
 	}
 	
-	public virtual void SetPageRanges(IQPageRanges ranges)
+	public void SetPageRanges(IQPageRanges ranges)
 	{
-		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, (ranges == default) ? default : (void*)ranges.NativePtr);
+		CQt.QPagedPaintDevice_SetPageRanges(this.nativePtr, (ranges == default || ranges.NativePtr == default) ? default : ranges.NativePtr);
 	}
 	
 	public void PageRanges()
@@ -63,7 +68,7 @@ public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
 		CQt.QPagedPaintDevice_PageRanges(this.nativePtr);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QPaintDevice_DevType(this.nativePtr);
 	}
@@ -73,7 +78,7 @@ public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
 		return CQt.QPaintDevice_PaintingActive(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QPaintDevice_PaintEngine(this.nativePtr);
 	}
@@ -141,6 +146,141 @@ public class QPagedPaintDevice : IQPagedPaintDevice, IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QPagedPaintDevice
+{
+	public QPagedPaintDevicePtr handle;
+	
+	public static implicit operator QPagedPaintDevicePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual bool NewPage()
+	{
+		return this.handle.NewPage();
+	}
+	
+	public virtual bool SetPageLayout(IQPageLayout pageLayout)
+	{
+		return this.handle.SetPageLayout(pageLayout);
+	}
+	
+	public virtual bool SetPageSize(IQPageSize pageSize)
+	{
+		return this.handle.SetPageSize(pageSize);
+	}
+	
+	public virtual bool SetPageOrientation(int64 orientation)
+	{
+		return this.handle.SetPageOrientation(orientation);
+	}
+	
+	public virtual bool SetPageMargins(IQMarginsF margins, int64 units)
+	{
+		return this.handle.SetPageMargins(margins, units);
+	}
+	
+	public void PageLayout()
+	{
+		this.handle.PageLayout();
+	}
+	
+	public virtual void SetPageRanges(IQPageRanges ranges)
+	{
+		this.handle.SetPageRanges(ranges);
+	}
+	
+	public void PageRanges()
+	{
+		this.handle.PageRanges();
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QPagedPaintDevicePtr.DevicePixelRatioFScale();
 	}
 	
 }

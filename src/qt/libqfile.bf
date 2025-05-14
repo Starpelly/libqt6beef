@@ -6,34 +6,39 @@ public interface IQFile
 {
 	void* NativePtr { get; }
 }
-public class QFile : IQFile, IQFileDevice
+public struct QFilePtr : IQFile, IDisposable, IQFileDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFile_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QFile_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFile_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QFile_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QFile_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QFile_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QFile_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -41,7 +46,7 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFile_Tr(s);
 	}
 	
-	public virtual libqt_string FileName()
+	public libqt_string FileName()
 	{
 		return CQt.QFile_FileName(this.nativePtr);
 	}
@@ -136,7 +141,7 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFile_Copy2(libqt_string(fileName), libqt_string(newName));
 	}
 	
-	public virtual bool Open(int64 flags)
+	public bool Open(int64 flags)
 	{
 		return CQt.QFile_Open(this.nativePtr, flags);
 	}
@@ -151,12 +156,12 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFile_Open4(this.nativePtr, fd, ioFlags);
 	}
 	
-	public virtual int64 Size()
+	public int64 Size()
 	{
 		return CQt.QFile_Size(this.nativePtr);
 	}
 	
-	public virtual bool Resize(int64 sz)
+	public bool Resize(int64 sz)
 	{
 		return CQt.QFile_Resize(this.nativePtr, sz);
 	}
@@ -166,7 +171,7 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFile_Resize2(libqt_string(filename), sz);
 	}
 	
-	public virtual int64 Permissions()
+	public int64 Permissions()
 	{
 		return CQt.QFile_Permissions(this.nativePtr);
 	}
@@ -176,7 +181,7 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFile_PermissionsWithFilename(libqt_string(filename));
 	}
 	
-	public virtual bool SetPermissions(int64 permissionSpec)
+	public bool SetPermissions(int64 permissionSpec)
 	{
 		return CQt.QFile_SetPermissions(this.nativePtr, permissionSpec);
 	}
@@ -211,12 +216,12 @@ public class QFile : IQFile, IQFileDevice
 		CQt.QFileDevice_UnsetError(this.nativePtr);
 	}
 	
-	public virtual void Close()
+	public void Close()
 	{
 		CQt.QFileDevice_Close(this.nativePtr);
 	}
 	
-	public virtual bool IsSequential()
+	public bool IsSequential()
 	{
 		return CQt.QFileDevice_IsSequential(this.nativePtr);
 	}
@@ -226,17 +231,17 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QFileDevice_Handle(this.nativePtr);
 	}
 	
-	public virtual int64 Pos()
+	public int64 Pos()
 	{
 		return CQt.QFileDevice_Pos(this.nativePtr);
 	}
 	
-	public virtual bool Seek(int64 offset)
+	public bool Seek(int64 offset)
 	{
 		return CQt.QFileDevice_Seek(this.nativePtr, offset);
 	}
 	
-	public virtual bool AtEnd()
+	public bool AtEnd()
 	{
 		return CQt.QFileDevice_AtEnd(this.nativePtr);
 	}
@@ -258,12 +263,12 @@ public class QFile : IQFile, IQFileDevice
 	
 	public void FileTime(int64 time)
 	{
-		CQt.QFileDevice_FileTime(this.nativePtr, time);
+		CQt.QFileDevice_FileTime(this.nativePtr, (int64)time);
 	}
 	
 	public bool SetFileTime(IQDateTime newDate, int64 fileTime)
 	{
-		return CQt.QFileDevice_SetFileTime(this.nativePtr, (newDate == default) ? default : (void*)newDate.NativePtr, fileTime);
+		return CQt.QFileDevice_SetFileTime(this.nativePtr, (newDate == default || newDate.NativePtr == default) ? default : newDate.NativePtr, (int64)fileTime);
 	}
 	
 	public uint8* Map3(int64 offset, int64 size, int64 flags)
@@ -331,17 +336,17 @@ public class QFile : IQFile, IQFileDevice
 		CQt.QIODevice_SetCurrentWriteChannel(this.nativePtr, channel);
 	}
 	
-	public virtual bool Reset()
+	public bool Reset()
 	{
 		return CQt.QIODevice_Reset(this.nativePtr);
 	}
 	
-	public virtual int64 BytesAvailable()
+	public int64 BytesAvailable()
 	{
 		return CQt.QIODevice_BytesAvailable(this.nativePtr);
 	}
 	
-	public virtual int64 BytesToWrite()
+	public int64 BytesToWrite()
 	{
 		return CQt.QIODevice_BytesToWrite(this.nativePtr);
 	}
@@ -371,7 +376,7 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QIODevice_ReadLine2(this.nativePtr);
 	}
 	
-	public virtual bool CanReadLine()
+	public bool CanReadLine()
 	{
 		return CQt.QIODevice_CanReadLine(this.nativePtr);
 	}
@@ -426,12 +431,12 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QIODevice_Skip(this.nativePtr, maxSize);
 	}
 	
-	public virtual bool WaitForReadyRead(int32 msecs)
+	public bool WaitForReadyRead(int32 msecs)
 	{
 		return CQt.QIODevice_WaitForReadyRead(this.nativePtr, msecs);
 	}
 	
-	public virtual bool WaitForBytesWritten(int32 msecs)
+	public bool WaitForBytesWritten(int32 msecs)
 	{
 		return CQt.QIODevice_WaitForBytesWritten(this.nativePtr, msecs);
 	}
@@ -461,14 +466,14 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QIODevice_ReadLine1(this.nativePtr, maxlen);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -476,9 +481,9 @@ public class QFile : IQFile, IQFileDevice
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -513,7 +518,7 @@ public class QFile : IQFile, IQFileDevice
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -533,37 +538,37 @@ public class QFile : IQFile, IQFileDevice
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -578,7 +583,7 @@ public class QFile : IQFile, IQFileDevice
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -618,17 +623,647 @@ public class QFile : IQFile, IQFileDevice
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QFile
+{
+	public QFilePtr handle;
+	
+	public static implicit operator QFilePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QFilePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QFilePtr.Tr(s);
+	}
+	
+	public virtual libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public void SetFileName(String name)
+	{
+		this.handle.SetFileName(name);
+	}
+	
+	public static libqt_string EncodeName(String fileName)
+	{
+		return QFilePtr.EncodeName(fileName);
+	}
+	
+	public static libqt_string DecodeName(String localFileName)
+	{
+		return QFilePtr.DecodeName(localFileName);
+	}
+	
+	public static libqt_string DecodeNameWithLocalFileName(char8* localFileName)
+	{
+		return QFilePtr.DecodeNameWithLocalFileName(localFileName);
+	}
+	
+	public bool Exists()
+	{
+		return this.handle.Exists();
+	}
+	
+	public static bool ExistsWithFileName(String fileName)
+	{
+		return QFilePtr.ExistsWithFileName(fileName);
+	}
+	
+	public libqt_string SymLinkTarget()
+	{
+		return this.handle.SymLinkTarget();
+	}
+	
+	public static libqt_string SymLinkTargetWithFileName(String fileName)
+	{
+		return QFilePtr.SymLinkTargetWithFileName(fileName);
+	}
+	
+	public bool Remove()
+	{
+		return this.handle.Remove();
+	}
+	
+	public static bool RemoveWithFileName(String fileName)
+	{
+		return QFilePtr.RemoveWithFileName(fileName);
+	}
+	
+	public bool MoveToTrash()
+	{
+		return this.handle.MoveToTrash();
+	}
+	
+	public static bool MoveToTrashWithFileName(String fileName)
+	{
+		return QFilePtr.MoveToTrashWithFileName(fileName);
+	}
+	
+	public bool Rename(String newName)
+	{
+		return this.handle.Rename(newName);
+	}
+	
+	public static bool Rename2(String oldName, String newName)
+	{
+		return QFilePtr.Rename2(oldName, newName);
+	}
+	
+	public bool Link(String newName)
+	{
+		return this.handle.Link(newName);
+	}
+	
+	public static bool Link2(String fileName, String newName)
+	{
+		return QFilePtr.Link2(fileName, newName);
+	}
+	
+	public bool Copy(String newName)
+	{
+		return this.handle.Copy(newName);
+	}
+	
+	public static bool Copy2(String fileName, String newName)
+	{
+		return QFilePtr.Copy2(fileName, newName);
+	}
+	
+	public virtual bool Open(int64 flags)
+	{
+		return this.handle.Open(flags);
+	}
+	
+	public bool Open2(int64 flags, int64 permissions)
+	{
+		return this.handle.Open2(flags, permissions);
+	}
+	
+	public bool Open4(int32 fd, int64 ioFlags)
+	{
+		return this.handle.Open4(fd, ioFlags);
+	}
+	
+	public virtual int64 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public virtual bool Resize(int64 sz)
+	{
+		return this.handle.Resize(sz);
+	}
+	
+	public static bool Resize2(String filename, int64 sz)
+	{
+		return QFilePtr.Resize2(filename, sz);
+	}
+	
+	public virtual int64 Permissions()
+	{
+		return this.handle.Permissions();
+	}
+	
+	public static int64 PermissionsWithFilename(String filename)
+	{
+		return QFilePtr.PermissionsWithFilename(filename);
+	}
+	
+	public virtual bool SetPermissions(int64 permissionSpec)
+	{
+		return this.handle.SetPermissions(permissionSpec);
+	}
+	
+	public static bool SetPermissions2(String filename, int64 permissionSpec)
+	{
+		return QFilePtr.SetPermissions2(filename, permissionSpec);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QFilePtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QFilePtr.Tr3(s, c, n);
+	}
+	
+	public bool Open33(int32 fd, int64 ioFlags, int64 handleFlags)
+	{
+		return this.handle.Open33(fd, ioFlags, handleFlags);
+	}
+	
+	public int64 Error()
+	{
+		return this.handle.Error();
+	}
+	
+	public void UnsetError()
+	{
+		this.handle.UnsetError();
+	}
+	
+	public virtual void Close()
+	{
+		this.handle.Close();
+	}
+	
+	public virtual bool IsSequential()
+	{
+		return this.handle.IsSequential();
+	}
+	
+	public int32 Handle()
+	{
+		return this.handle.Handle();
+	}
+	
+	public virtual int64 Pos()
+	{
+		return this.handle.Pos();
+	}
+	
+	public virtual bool Seek(int64 offset)
+	{
+		return this.handle.Seek(offset);
+	}
+	
+	public virtual bool AtEnd()
+	{
+		return this.handle.AtEnd();
+	}
+	
+	public bool Flush()
+	{
+		return this.handle.Flush();
+	}
+	
+	public uint8* Map(int64 offset, int64 size)
+	{
+		return this.handle.Map(offset, size);
+	}
+	
+	public bool Unmap(uint8* address)
+	{
+		return this.handle.Unmap(address);
+	}
+	
+	public void FileTime(int64 time)
+	{
+		this.handle.FileTime(time);
+	}
+	
+	public bool SetFileTime(IQDateTime newDate, int64 fileTime)
+	{
+		return this.handle.SetFileTime(newDate, fileTime);
+	}
+	
+	public uint8* Map3(int64 offset, int64 size, int64 flags)
+	{
+		return this.handle.Map3(offset, size, flags);
+	}
+	
+	public int64 OpenMode()
+	{
+		return this.handle.OpenMode();
+	}
+	
+	public void SetTextModeEnabled(bool enabled)
+	{
+		this.handle.SetTextModeEnabled(enabled);
+	}
+	
+	public bool IsTextModeEnabled()
+	{
+		return this.handle.IsTextModeEnabled();
+	}
+	
+	public bool IsOpen()
+	{
+		return this.handle.IsOpen();
+	}
+	
+	public bool IsReadable()
+	{
+		return this.handle.IsReadable();
+	}
+	
+	public bool IsWritable()
+	{
+		return this.handle.IsWritable();
+	}
+	
+	public int32 ReadChannelCount()
+	{
+		return this.handle.ReadChannelCount();
+	}
+	
+	public int32 WriteChannelCount()
+	{
+		return this.handle.WriteChannelCount();
+	}
+	
+	public int32 CurrentReadChannel()
+	{
+		return this.handle.CurrentReadChannel();
+	}
+	
+	public void SetCurrentReadChannel(int32 channel)
+	{
+		this.handle.SetCurrentReadChannel(channel);
+	}
+	
+	public int32 CurrentWriteChannel()
+	{
+		return this.handle.CurrentWriteChannel();
+	}
+	
+	public void SetCurrentWriteChannel(int32 channel)
+	{
+		this.handle.SetCurrentWriteChannel(channel);
+	}
+	
+	public virtual bool Reset()
+	{
+		return this.handle.Reset();
+	}
+	
+	public virtual int64 BytesAvailable()
+	{
+		return this.handle.BytesAvailable();
+	}
+	
+	public virtual int64 BytesToWrite()
+	{
+		return this.handle.BytesToWrite();
+	}
+	
+	public int64 Read(char8* data, int64 maxlen)
+	{
+		return this.handle.Read(data, maxlen);
+	}
+	
+	public libqt_string ReadWithMaxlen(int64 maxlen)
+	{
+		return this.handle.ReadWithMaxlen(maxlen);
+	}
+	
+	public libqt_string ReadAll()
+	{
+		return this.handle.ReadAll();
+	}
+	
+	public int64 ReadLine(char8* data, int64 maxlen)
+	{
+		return this.handle.ReadLine(data, maxlen);
+	}
+	
+	public libqt_string ReadLine2()
+	{
+		return this.handle.ReadLine2();
+	}
+	
+	public virtual bool CanReadLine()
+	{
+		return this.handle.CanReadLine();
+	}
+	
+	public void StartTransaction()
+	{
+		this.handle.StartTransaction();
+	}
+	
+	public void CommitTransaction()
+	{
+		this.handle.CommitTransaction();
+	}
+	
+	public void RollbackTransaction()
+	{
+		this.handle.RollbackTransaction();
+	}
+	
+	public bool IsTransactionStarted()
+	{
+		return this.handle.IsTransactionStarted();
+	}
+	
+	public int64 Write(char8* data, int64 lenVal)
+	{
+		return this.handle.Write(data, lenVal);
+	}
+	
+	public int64 WriteWithData(char8* data)
+	{
+		return this.handle.WriteWithData(data);
+	}
+	
+	public int64 Write2(String data)
+	{
+		return this.handle.Write2(data);
+	}
+	
+	public int64 Peek(char8* data, int64 maxlen)
+	{
+		return this.handle.Peek(data, maxlen);
+	}
+	
+	public libqt_string PeekWithMaxlen(int64 maxlen)
+	{
+		return this.handle.PeekWithMaxlen(maxlen);
+	}
+	
+	public int64 Skip(int64 maxSize)
+	{
+		return this.handle.Skip(maxSize);
+	}
+	
+	public virtual bool WaitForReadyRead(int32 msecs)
+	{
+		return this.handle.WaitForReadyRead(msecs);
+	}
+	
+	public virtual bool WaitForBytesWritten(int32 msecs)
+	{
+		return this.handle.WaitForBytesWritten(msecs);
+	}
+	
+	public void UngetChar(int8 c)
+	{
+		this.handle.UngetChar(c);
+	}
+	
+	public bool PutChar(int8 c)
+	{
+		return this.handle.PutChar(c);
+	}
+	
+	public bool GetChar(char8* c)
+	{
+		return this.handle.GetChar(c);
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public libqt_string ReadLine1(int64 maxlen)
+	{
+		return this.handle.ReadLine1(maxlen);
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QFilePtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QFilePtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QFilePtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QFilePtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }

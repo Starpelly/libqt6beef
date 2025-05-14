@@ -6,17 +6,22 @@ public interface IQSemaphore
 {
 	void* NativePtr { get; }
 }
-public class QSemaphore : IQSemaphore
+public struct QSemaphorePtr : IQSemaphore, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSemaphore_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QSemaphore_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSemaphore_Delete(this.nativePtr);
 	}
@@ -67,6 +72,71 @@ public class QSemaphore : IQSemaphore
 	}
 	
 }
+public class QSemaphore
+{
+	public QSemaphorePtr handle;
+	
+	public static implicit operator QSemaphorePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QSemaphorePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Acquire()
+	{
+		this.handle.Acquire();
+	}
+	
+	public bool TryAcquire()
+	{
+		return this.handle.TryAcquire();
+	}
+	
+	public bool TryAcquire2(int32 n, int32 timeout)
+	{
+		return this.handle.TryAcquire2(n, timeout);
+	}
+	
+	public void Release()
+	{
+		this.handle.Release();
+	}
+	
+	public int32 Available()
+	{
+		return this.handle.Available();
+	}
+	
+	public bool TryAcquire3()
+	{
+		return this.handle.TryAcquire3();
+	}
+	
+	public void Acquire1(int32 n)
+	{
+		this.handle.Acquire1(n);
+	}
+	
+	public bool TryAcquire1(int32 n)
+	{
+		return this.handle.TryAcquire1(n);
+	}
+	
+	public void Release1(int32 n)
+	{
+		this.handle.Release1(n);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QSemaphore_new")]
@@ -99,24 +169,29 @@ public interface IQSemaphoreReleaser
 {
 	void* NativePtr { get; }
 }
-public class QSemaphoreReleaser : IQSemaphoreReleaser
+public struct QSemaphoreReleaserPtr : IQSemaphoreReleaser, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSemaphoreReleaser_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QSemaphoreReleaser_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSemaphoreReleaser_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQSemaphoreReleaser other)
 	{
-		CQt.QSemaphoreReleaser_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QSemaphoreReleaser_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* Semaphore()
@@ -127,6 +202,41 @@ public class QSemaphoreReleaser : IQSemaphoreReleaser
 	public void* Cancel()
 	{
 		return CQt.QSemaphoreReleaser_Cancel(this.nativePtr);
+	}
+	
+}
+public class QSemaphoreReleaser
+{
+	public QSemaphoreReleaserPtr handle;
+	
+	public static implicit operator QSemaphoreReleaserPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QSemaphoreReleaserPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQSemaphoreReleaser other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void* Semaphore()
+	{
+		return this.handle.Semaphore();
+	}
+	
+	public void* Cancel()
+	{
+		return this.handle.Cancel();
 	}
 	
 }

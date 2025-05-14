@@ -6,17 +6,22 @@ public interface IQAnyStringView
 {
 	void* NativePtr { get; }
 }
-public class QAnyStringView : IQAnyStringView
+public struct QAnyStringViewPtr : IQAnyStringView, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQAnyStringView other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAnyStringView_new((other == default) ? default : (char8*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(char8* other)
+	{
+		return .(CQt.QAnyStringView_new(other));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAnyStringView_Delete(this.nativePtr);
 	}
@@ -36,14 +41,14 @@ public class QAnyStringView : IQAnyStringView
 		return CQt.QAnyStringView_Data(this.nativePtr);
 	}
 	
-	public static int32 Compare(IQAnyStringView lhs, IQAnyStringView rhs)
+	public static int32 Compare(char8* lhs, char8* rhs)
 	{
-		return CQt.QAnyStringView_Compare((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr);
+		return CQt.QAnyStringView_Compare(lhs, rhs);
 	}
 	
-	public static bool Equal(IQAnyStringView lhs, IQAnyStringView rhs)
+	public static bool Equal(char8* lhs, char8* rhs)
 	{
-		return CQt.QAnyStringView_Equal((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr);
+		return CQt.QAnyStringView_Equal(lhs, rhs);
 	}
 	
 	public void Front()
@@ -81,9 +86,94 @@ public class QAnyStringView : IQAnyStringView
 		return CQt.QAnyStringView_Length(this.nativePtr);
 	}
 	
-	public static int32 Compare3(IQAnyStringView lhs, IQAnyStringView rhs, int64 cs)
+	public static int32 Compare3(char8* lhs, char8* rhs, int64 cs)
 	{
-		return CQt.QAnyStringView_Compare3((lhs == default) ? default : (char8*)lhs.NativePtr, (rhs == default) ? default : (char8*)rhs.NativePtr, cs);
+		return CQt.QAnyStringView_Compare3(lhs, rhs, (int64)cs);
+	}
+	
+}
+public class QAnyStringView
+{
+	public QAnyStringViewPtr handle;
+	
+	public static implicit operator QAnyStringViewPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(char8* other)
+	{
+		this.handle = QAnyStringViewPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public void* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public static int32 Compare(char8* lhs, char8* rhs)
+	{
+		return QAnyStringViewPtr.Compare(lhs, rhs);
+	}
+	
+	public static bool Equal(char8* lhs, char8* rhs)
+	{
+		return QAnyStringViewPtr.Equal(lhs, rhs);
+	}
+	
+	public void Front()
+	{
+		this.handle.Front();
+	}
+	
+	public void Back()
+	{
+		this.handle.Back();
+	}
+	
+	public bool Empty()
+	{
+		return this.handle.Empty();
+	}
+	
+	public int32 SizeBytes()
+	{
+		return this.handle.SizeBytes();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public static int32 Compare3(char8* lhs, char8* rhs, int64 cs)
+	{
+		return QAnyStringViewPtr.Compare3(lhs, rhs, cs);
 	}
 	
 }

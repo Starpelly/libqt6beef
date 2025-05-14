@@ -6,34 +6,39 @@ public interface IQGuiApplication
 {
 	void* NativePtr { get; }
 }
-public class QGuiApplication : IQGuiApplication, IQCoreApplication
+public struct QGuiApplicationPtr : IQGuiApplication, IDisposable, IQCoreApplication
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int32* argc, char8* argv)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGuiApplication_new(argc, argv);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int32* argc, char8* argv)
+	{
+		return .(CQt.QGuiApplication_new(argc, argv));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGuiApplication_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QGuiApplication_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QGuiApplication_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QGuiApplication_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QGuiApplication_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -73,12 +78,12 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void* TopLevelAt(IQPoint pos)
 	{
-		return CQt.QGuiApplication_TopLevelAt((pos == default) ? default : (void*)pos.NativePtr);
+		return CQt.QGuiApplication_TopLevelAt((pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public static void SetWindowIcon(IQIcon icon)
 	{
-		CQt.QGuiApplication_SetWindowIcon((icon == default) ? default : (void*)icon.NativePtr);
+		CQt.QGuiApplication_SetWindowIcon((icon == default || icon.NativePtr == default) ? default : icon.NativePtr);
 	}
 	
 	public static void WindowIcon()
@@ -118,7 +123,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void* ScreenAt(IQPoint point)
 	{
-		return CQt.QGuiApplication_ScreenAt((point == default) ? default : (void*)point.NativePtr);
+		return CQt.QGuiApplication_ScreenAt((point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public double DevicePixelRatio()
@@ -133,12 +138,12 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetOverrideCursor(IQCursor overrideCursor)
 	{
-		CQt.QGuiApplication_SetOverrideCursor((overrideCursor == default) ? default : (void*)overrideCursor.NativePtr);
+		CQt.QGuiApplication_SetOverrideCursor((overrideCursor == default || overrideCursor.NativePtr == default) ? default : overrideCursor.NativePtr);
 	}
 	
 	public static void ChangeOverrideCursor(IQCursor param1)
 	{
-		CQt.QGuiApplication_ChangeOverrideCursor((param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QGuiApplication_ChangeOverrideCursor((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public static void RestoreOverrideCursor()
@@ -153,7 +158,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetFont(IQFont font)
 	{
-		CQt.QGuiApplication_SetFont((font == default) ? default : (void*)font.NativePtr);
+		CQt.QGuiApplication_SetFont((font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public static void* Clipboard()
@@ -168,7 +173,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetPalette(IQPalette pal)
 	{
-		CQt.QGuiApplication_SetPalette((pal == default) ? default : (void*)pal.NativePtr);
+		CQt.QGuiApplication_SetPalette((pal == default || pal.NativePtr == default) ? default : pal.NativePtr);
 	}
 	
 	public static int64 KeyboardModifiers()
@@ -188,7 +193,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetLayoutDirection(int64 direction)
 	{
-		CQt.QGuiApplication_SetLayoutDirection(direction);
+		CQt.QGuiApplication_SetLayoutDirection((int64)direction);
 	}
 	
 	public static int64 LayoutDirection()
@@ -243,7 +248,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetHighDpiScaleFactorRoundingPolicy(int64 policy)
 	{
-		CQt.QGuiApplication_SetHighDpiScaleFactorRoundingPolicy(policy);
+		CQt.QGuiApplication_SetHighDpiScaleFactorRoundingPolicy((int64)policy);
 	}
 	
 	public static int64 HighDpiScaleFactorRoundingPolicy()
@@ -256,9 +261,9 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 		return CQt.QGuiApplication_Exec();
 	}
 	
-	public virtual bool Notify(IQObject param1, IQEvent param2)
+	public bool Notify(IQObject param1, IQEvent param2)
 	{
-		return CQt.QGuiApplication_Notify(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr, (param2 == null) ? null : (void*)param2.NativePtr);
+		return CQt.QGuiApplication_Notify(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr, (param2 == default || param2.NativePtr == default) ? default : param2.NativePtr);
 	}
 	
 	public bool IsSessionRestored()
@@ -291,9 +296,9 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 		CQt.QGuiApplication_Sync();
 	}
 	
-	public virtual bool Event(IQEvent param1)
+	public bool Event(IQEvent param1)
 	{
-		return CQt.QGuiApplication_Event(this.nativePtr, (param1 == null) ? null : (void*)param1.NativePtr);
+		return CQt.QGuiApplication_Event(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public static libqt_string Tr2(char8* s, char8* c)
@@ -313,12 +318,12 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetAttribute(int64 attribute)
 	{
-		CQt.QCoreApplication_SetAttribute(attribute);
+		CQt.QCoreApplication_SetAttribute((int64)attribute);
 	}
 	
 	public static bool TestAttribute(int64 attribute)
 	{
-		return CQt.QCoreApplication_TestAttribute(attribute);
+		return CQt.QCoreApplication_TestAttribute((int64)attribute);
 	}
 	
 	public static void SetOrganizationDomain(String orgDomain)
@@ -388,12 +393,12 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static bool SendEvent(IQObject receiver, IQEvent event)
 	{
-		return CQt.QCoreApplication_SendEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QCoreApplication_SendEvent((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public static void PostEvent(IQObject receiver, IQEvent event)
 	{
-		CQt.QCoreApplication_PostEvent((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		CQt.QCoreApplication_PostEvent((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public static void SendPostedEvents()
@@ -403,7 +408,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void RemovePostedEvents(IQObject receiver)
 	{
-		CQt.QCoreApplication_RemovePostedEvents((receiver == null) ? null : (void*)receiver.NativePtr);
+		CQt.QCoreApplication_RemovePostedEvents((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr);
 	}
 	
 	public static void* EventDispatcher()
@@ -413,7 +418,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetEventDispatcher(IQAbstractEventDispatcher eventDispatcher)
 	{
-		CQt.QCoreApplication_SetEventDispatcher((eventDispatcher == null) ? null : (void*)eventDispatcher.NativePtr);
+		CQt.QCoreApplication_SetEventDispatcher((eventDispatcher == default || eventDispatcher.NativePtr == default) ? default : eventDispatcher.NativePtr);
 	}
 	
 	public static bool StartingUp()
@@ -463,12 +468,12 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static bool InstallTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_InstallTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
+		return CQt.QCoreApplication_InstallTranslator((messageFile == default || messageFile.NativePtr == default) ? default : messageFile.NativePtr);
 	}
 	
 	public static bool RemoveTranslator(IQTranslator messageFile)
 	{
-		return CQt.QCoreApplication_RemoveTranslator((messageFile == null) ? null : (void*)messageFile.NativePtr);
+		return CQt.QCoreApplication_RemoveTranslator((messageFile == default || messageFile.NativePtr == default) ? default : messageFile.NativePtr);
 	}
 	
 	public static libqt_string Translate(char8* context, char8* key)
@@ -498,7 +503,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void SetAttribute2(int64 attribute, bool on)
 	{
-		CQt.QCoreApplication_SetAttribute2(attribute, on);
+		CQt.QCoreApplication_SetAttribute2((int64)attribute, on);
 	}
 	
 	public static void ProcessEvents1(int64 flags)
@@ -508,22 +513,22 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public static void PostEvent3(IQObject receiver, IQEvent event, int32 priority)
 	{
-		CQt.QCoreApplication_PostEvent3((receiver == null) ? null : (void*)receiver.NativePtr, (event == null) ? null : (void*)event.NativePtr, priority);
+		CQt.QCoreApplication_PostEvent3((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr, priority);
 	}
 	
 	public static void SendPostedEvents1(IQObject receiver)
 	{
-		CQt.QCoreApplication_SendPostedEvents1((receiver == null) ? null : (void*)receiver.NativePtr);
+		CQt.QCoreApplication_SendPostedEvents1((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr);
 	}
 	
 	public static void SendPostedEvents2(IQObject receiver, int32 event_type)
 	{
-		CQt.QCoreApplication_SendPostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, event_type);
+		CQt.QCoreApplication_SendPostedEvents2((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, event_type);
 	}
 	
 	public static void RemovePostedEvents2(IQObject receiver, int32 eventType)
 	{
-		CQt.QCoreApplication_RemovePostedEvents2((receiver == null) ? null : (void*)receiver.NativePtr, eventType);
+		CQt.QCoreApplication_RemovePostedEvents2((receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, eventType);
 	}
 	
 	public static libqt_string Translate3(char8* context, char8* key, char8* disambiguation)
@@ -541,9 +546,9 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 		CQt.QCoreApplication_Exit1(retcode);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -551,9 +556,9 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -588,7 +593,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -608,37 +613,37 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -653,7 +658,7 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -693,17 +698,722 @@ public class QGuiApplication : IQGuiApplication, IQCoreApplication
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QGuiApplication
+{
+	public QGuiApplicationPtr handle;
+	
+	public static implicit operator QGuiApplicationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int32* argc, char8* argv)
+	{
+		this.handle = QGuiApplicationPtr.New(argc, argv);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QGuiApplicationPtr.Tr(s);
+	}
+	
+	public static void SetApplicationDisplayName(String name)
+	{
+		QGuiApplicationPtr.SetApplicationDisplayName(name);
+	}
+	
+	public static libqt_string ApplicationDisplayName()
+	{
+		return QGuiApplicationPtr.ApplicationDisplayName();
+	}
+	
+	public static void SetDesktopFileName(String name)
+	{
+		QGuiApplicationPtr.SetDesktopFileName(name);
+	}
+	
+	public static libqt_string DesktopFileName()
+	{
+		return QGuiApplicationPtr.DesktopFileName();
+	}
+	
+	public static void*[] AllWindows()
+	{
+		return QGuiApplicationPtr.AllWindows();
+	}
+	
+	public static void*[] TopLevelWindows()
+	{
+		return QGuiApplicationPtr.TopLevelWindows();
+	}
+	
+	public static void* TopLevelAt(IQPoint pos)
+	{
+		return QGuiApplicationPtr.TopLevelAt(pos);
+	}
+	
+	public static void SetWindowIcon(IQIcon icon)
+	{
+		QGuiApplicationPtr.SetWindowIcon(icon);
+	}
+	
+	public static void WindowIcon()
+	{
+		QGuiApplicationPtr.WindowIcon();
+	}
+	
+	public static libqt_string PlatformName()
+	{
+		return QGuiApplicationPtr.PlatformName();
+	}
+	
+	public static void* ModalWindow()
+	{
+		return QGuiApplicationPtr.ModalWindow();
+	}
+	
+	public static void* FocusWindow()
+	{
+		return QGuiApplicationPtr.FocusWindow();
+	}
+	
+	public static void* FocusObject()
+	{
+		return QGuiApplicationPtr.FocusObject();
+	}
+	
+	public static void* PrimaryScreen()
+	{
+		return QGuiApplicationPtr.PrimaryScreen();
+	}
+	
+	public static void*[] Screens()
+	{
+		return QGuiApplicationPtr.Screens();
+	}
+	
+	public static void* ScreenAt(IQPoint point)
+	{
+		return QGuiApplicationPtr.ScreenAt(point);
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public static void* OverrideCursor()
+	{
+		return QGuiApplicationPtr.OverrideCursor();
+	}
+	
+	public static void SetOverrideCursor(IQCursor overrideCursor)
+	{
+		QGuiApplicationPtr.SetOverrideCursor(overrideCursor);
+	}
+	
+	public static void ChangeOverrideCursor(IQCursor param1)
+	{
+		QGuiApplicationPtr.ChangeOverrideCursor(param1);
+	}
+	
+	public static void RestoreOverrideCursor()
+	{
+		QGuiApplicationPtr.RestoreOverrideCursor();
+	}
+	
+	public static void Font()
+	{
+		QGuiApplicationPtr.Font();
+	}
+	
+	public static void SetFont(IQFont font)
+	{
+		QGuiApplicationPtr.SetFont(font);
+	}
+	
+	public static void* Clipboard()
+	{
+		return QGuiApplicationPtr.Clipboard();
+	}
+	
+	public static void Palette()
+	{
+		QGuiApplicationPtr.Palette();
+	}
+	
+	public static void SetPalette(IQPalette pal)
+	{
+		QGuiApplicationPtr.SetPalette(pal);
+	}
+	
+	public static int64 KeyboardModifiers()
+	{
+		return QGuiApplicationPtr.KeyboardModifiers();
+	}
+	
+	public static int64 QueryKeyboardModifiers()
+	{
+		return QGuiApplicationPtr.QueryKeyboardModifiers();
+	}
+	
+	public static int64 MouseButtons()
+	{
+		return QGuiApplicationPtr.MouseButtons();
+	}
+	
+	public static void SetLayoutDirection(int64 direction)
+	{
+		QGuiApplicationPtr.SetLayoutDirection(direction);
+	}
+	
+	public static int64 LayoutDirection()
+	{
+		return QGuiApplicationPtr.LayoutDirection();
+	}
+	
+	public static bool IsRightToLeft()
+	{
+		return QGuiApplicationPtr.IsRightToLeft();
+	}
+	
+	public static bool IsLeftToRight()
+	{
+		return QGuiApplicationPtr.IsLeftToRight();
+	}
+	
+	public static void* StyleHints()
+	{
+		return QGuiApplicationPtr.StyleHints();
+	}
+	
+	public static void SetDesktopSettingsAware(bool on)
+	{
+		QGuiApplicationPtr.SetDesktopSettingsAware(on);
+	}
+	
+	public static bool DesktopSettingsAware()
+	{
+		return QGuiApplicationPtr.DesktopSettingsAware();
+	}
+	
+	public static void* InputMethod()
+	{
+		return QGuiApplicationPtr.InputMethod();
+	}
+	
+	public static void SetQuitOnLastWindowClosed(bool quit)
+	{
+		QGuiApplicationPtr.SetQuitOnLastWindowClosed(quit);
+	}
+	
+	public static bool QuitOnLastWindowClosed()
+	{
+		return QGuiApplicationPtr.QuitOnLastWindowClosed();
+	}
+	
+	public static int64 ApplicationState()
+	{
+		return QGuiApplicationPtr.ApplicationState();
+	}
+	
+	public static void SetHighDpiScaleFactorRoundingPolicy(int64 policy)
+	{
+		QGuiApplicationPtr.SetHighDpiScaleFactorRoundingPolicy(policy);
+	}
+	
+	public static int64 HighDpiScaleFactorRoundingPolicy()
+	{
+		return QGuiApplicationPtr.HighDpiScaleFactorRoundingPolicy();
+	}
+	
+	public static int32 Exec()
+	{
+		return QGuiApplicationPtr.Exec();
+	}
+	
+	public virtual bool Notify(IQObject param1, IQEvent param2)
+	{
+		return this.handle.Notify(param1, param2);
+	}
+	
+	public bool IsSessionRestored()
+	{
+		return this.handle.IsSessionRestored();
+	}
+	
+	public libqt_string SessionId()
+	{
+		return this.handle.SessionId();
+	}
+	
+	public libqt_string SessionKey()
+	{
+		return this.handle.SessionKey();
+	}
+	
+	public bool IsSavingSession()
+	{
+		return this.handle.IsSavingSession();
+	}
+	
+	public void* ResolveInterface(char8* name, int32 revision)
+	{
+		return this.handle.ResolveInterface(name, revision);
+	}
+	
+	public static void Sync()
+	{
+		QGuiApplicationPtr.Sync();
+	}
+	
+	public virtual bool Event(IQEvent param1)
+	{
+		return this.handle.Event(param1);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QGuiApplicationPtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QGuiApplicationPtr.Tr3(s, c, n);
+	}
+	
+	public static libqt_string[] Arguments()
+	{
+		return QGuiApplicationPtr.Arguments();
+	}
+	
+	public static void SetAttribute(int64 attribute)
+	{
+		QGuiApplicationPtr.SetAttribute(attribute);
+	}
+	
+	public static bool TestAttribute(int64 attribute)
+	{
+		return QGuiApplicationPtr.TestAttribute(attribute);
+	}
+	
+	public static void SetOrganizationDomain(String orgDomain)
+	{
+		QGuiApplicationPtr.SetOrganizationDomain(orgDomain);
+	}
+	
+	public static libqt_string OrganizationDomain()
+	{
+		return QGuiApplicationPtr.OrganizationDomain();
+	}
+	
+	public static void SetOrganizationName(String orgName)
+	{
+		QGuiApplicationPtr.SetOrganizationName(orgName);
+	}
+	
+	public static libqt_string OrganizationName()
+	{
+		return QGuiApplicationPtr.OrganizationName();
+	}
+	
+	public static void SetApplicationName(String application)
+	{
+		QGuiApplicationPtr.SetApplicationName(application);
+	}
+	
+	public static libqt_string ApplicationName()
+	{
+		return QGuiApplicationPtr.ApplicationName();
+	}
+	
+	public static void SetApplicationVersion(String version)
+	{
+		QGuiApplicationPtr.SetApplicationVersion(version);
+	}
+	
+	public static libqt_string ApplicationVersion()
+	{
+		return QGuiApplicationPtr.ApplicationVersion();
+	}
+	
+	public static void SetSetuidAllowed(bool allow)
+	{
+		QGuiApplicationPtr.SetSetuidAllowed(allow);
+	}
+	
+	public static bool IsSetuidAllowed()
+	{
+		return QGuiApplicationPtr.IsSetuidAllowed();
+	}
+	
+	public static void* Instance()
+	{
+		return QGuiApplicationPtr.Instance();
+	}
+	
+	public static void ProcessEvents()
+	{
+		QGuiApplicationPtr.ProcessEvents();
+	}
+	
+	public static void ProcessEvents2(int64 flags, int32 maxtime)
+	{
+		QGuiApplicationPtr.ProcessEvents2(flags, maxtime);
+	}
+	
+	public static bool SendEvent(IQObject receiver, IQEvent event)
+	{
+		return QGuiApplicationPtr.SendEvent(receiver, event);
+	}
+	
+	public static void PostEvent(IQObject receiver, IQEvent event)
+	{
+		QGuiApplicationPtr.PostEvent(receiver, event);
+	}
+	
+	public static void SendPostedEvents()
+	{
+		QGuiApplicationPtr.SendPostedEvents();
+	}
+	
+	public static void RemovePostedEvents(IQObject receiver)
+	{
+		QGuiApplicationPtr.RemovePostedEvents(receiver);
+	}
+	
+	public static void* EventDispatcher()
+	{
+		return QGuiApplicationPtr.EventDispatcher();
+	}
+	
+	public static void SetEventDispatcher(IQAbstractEventDispatcher eventDispatcher)
+	{
+		QGuiApplicationPtr.SetEventDispatcher(eventDispatcher);
+	}
+	
+	public static bool StartingUp()
+	{
+		return QGuiApplicationPtr.StartingUp();
+	}
+	
+	public static bool ClosingDown()
+	{
+		return QGuiApplicationPtr.ClosingDown();
+	}
+	
+	public static libqt_string ApplicationDirPath()
+	{
+		return QGuiApplicationPtr.ApplicationDirPath();
+	}
+	
+	public static libqt_string ApplicationFilePath()
+	{
+		return QGuiApplicationPtr.ApplicationFilePath();
+	}
+	
+	public static int64 ApplicationPid()
+	{
+		return QGuiApplicationPtr.ApplicationPid();
+	}
+	
+	public static void SetLibraryPaths(String[] libraryPaths)
+	{
+		QGuiApplicationPtr.SetLibraryPaths(null);
+	}
+	
+	public static libqt_string[] LibraryPaths()
+	{
+		return QGuiApplicationPtr.LibraryPaths();
+	}
+	
+	public static void AddLibraryPath(String param1)
+	{
+		QGuiApplicationPtr.AddLibraryPath(param1);
+	}
+	
+	public static void RemoveLibraryPath(String param1)
+	{
+		QGuiApplicationPtr.RemoveLibraryPath(param1);
+	}
+	
+	public static bool InstallTranslator(IQTranslator messageFile)
+	{
+		return QGuiApplicationPtr.InstallTranslator(messageFile);
+	}
+	
+	public static bool RemoveTranslator(IQTranslator messageFile)
+	{
+		return QGuiApplicationPtr.RemoveTranslator(messageFile);
+	}
+	
+	public static libqt_string Translate(char8* context, char8* key)
+	{
+		return QGuiApplicationPtr.Translate(context, key);
+	}
+	
+	public static bool IsQuitLockEnabled()
+	{
+		return QGuiApplicationPtr.IsQuitLockEnabled();
+	}
+	
+	public static void SetQuitLockEnabled(bool enabled)
+	{
+		QGuiApplicationPtr.SetQuitLockEnabled(enabled);
+	}
+	
+	public static void Quit()
+	{
+		QGuiApplicationPtr.Quit();
+	}
+	
+	public static void Exit()
+	{
+		QGuiApplicationPtr.Exit();
+	}
+	
+	public static void SetAttribute2(int64 attribute, bool on)
+	{
+		QGuiApplicationPtr.SetAttribute2(attribute, on);
+	}
+	
+	public static void ProcessEvents1(int64 flags)
+	{
+		QGuiApplicationPtr.ProcessEvents1(flags);
+	}
+	
+	public static void PostEvent3(IQObject receiver, IQEvent event, int32 priority)
+	{
+		QGuiApplicationPtr.PostEvent3(receiver, event, priority);
+	}
+	
+	public static void SendPostedEvents1(IQObject receiver)
+	{
+		QGuiApplicationPtr.SendPostedEvents1(receiver);
+	}
+	
+	public static void SendPostedEvents2(IQObject receiver, int32 event_type)
+	{
+		QGuiApplicationPtr.SendPostedEvents2(receiver, event_type);
+	}
+	
+	public static void RemovePostedEvents2(IQObject receiver, int32 eventType)
+	{
+		QGuiApplicationPtr.RemovePostedEvents2(receiver, eventType);
+	}
+	
+	public static libqt_string Translate3(char8* context, char8* key, char8* disambiguation)
+	{
+		return QGuiApplicationPtr.Translate3(context, key, disambiguation);
+	}
+	
+	public static libqt_string Translate4(char8* context, char8* key, char8* disambiguation, int32 n)
+	{
+		return QGuiApplicationPtr.Translate4(context, key, disambiguation, n);
+	}
+	
+	public static void Exit1(int32 retcode)
+	{
+		QGuiApplicationPtr.Exit1(retcode);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QGuiApplicationPtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QGuiApplicationPtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QGuiApplicationPtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QGuiApplicationPtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }

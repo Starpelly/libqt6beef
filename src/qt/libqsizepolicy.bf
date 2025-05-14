@@ -44,17 +44,22 @@ public interface IQSizePolicy
 {
 	void* NativePtr { get; }
 }
-public class QSizePolicy : IQSizePolicy
+public struct QSizePolicyPtr : IQSizePolicy, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQSizePolicy other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSizePolicy_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQSizePolicy other)
+	{
+		return .(CQt.QSizePolicy_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSizePolicy_Delete(this.nativePtr);
 	}
@@ -76,17 +81,17 @@ public class QSizePolicy : IQSizePolicy
 	
 	public void SetHorizontalPolicy(int64 d)
 	{
-		CQt.QSizePolicy_SetHorizontalPolicy(this.nativePtr, d);
+		CQt.QSizePolicy_SetHorizontalPolicy(this.nativePtr, (int64)d);
 	}
 	
 	public void SetVerticalPolicy(int64 d)
 	{
-		CQt.QSizePolicy_SetVerticalPolicy(this.nativePtr, d);
+		CQt.QSizePolicy_SetVerticalPolicy(this.nativePtr, (int64)d);
 	}
 	
 	public void SetControlType(int64 typeVal)
 	{
-		CQt.QSizePolicy_SetControlType(this.nativePtr, typeVal);
+		CQt.QSizePolicy_SetControlType(this.nativePtr, (int64)typeVal);
 	}
 	
 	public int64 ExpandingDirections()
@@ -116,12 +121,12 @@ public class QSizePolicy : IQSizePolicy
 	
 	public bool OperatorEqual(IQSizePolicy s)
 	{
-		return CQt.QSizePolicy_OperatorEqual(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		return CQt.QSizePolicy_OperatorEqual(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQSizePolicy s)
 	{
-		return CQt.QSizePolicy_OperatorNotEqual(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		return CQt.QSizePolicy_OperatorNotEqual(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -167,6 +172,136 @@ public class QSizePolicy : IQSizePolicy
 	public void Transposed()
 	{
 		CQt.QSizePolicy_Transposed(this.nativePtr);
+	}
+	
+}
+public class QSizePolicy
+{
+	public QSizePolicyPtr handle;
+	
+	public static implicit operator QSizePolicyPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQSizePolicy other)
+	{
+		this.handle = QSizePolicyPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 HorizontalPolicy()
+	{
+		return this.handle.HorizontalPolicy();
+	}
+	
+	public int64 VerticalPolicy()
+	{
+		return this.handle.VerticalPolicy();
+	}
+	
+	public int64 ControlType()
+	{
+		return this.handle.ControlType();
+	}
+	
+	public void SetHorizontalPolicy(int64 d)
+	{
+		this.handle.SetHorizontalPolicy(d);
+	}
+	
+	public void SetVerticalPolicy(int64 d)
+	{
+		this.handle.SetVerticalPolicy(d);
+	}
+	
+	public void SetControlType(int64 typeVal)
+	{
+		this.handle.SetControlType(typeVal);
+	}
+	
+	public int64 ExpandingDirections()
+	{
+		return this.handle.ExpandingDirections();
+	}
+	
+	public void SetHeightForWidth(bool b)
+	{
+		this.handle.SetHeightForWidth(b);
+	}
+	
+	public bool HasHeightForWidth()
+	{
+		return this.handle.HasHeightForWidth();
+	}
+	
+	public void SetWidthForHeight(bool b)
+	{
+		this.handle.SetWidthForHeight(b);
+	}
+	
+	public bool HasWidthForHeight()
+	{
+		return this.handle.HasWidthForHeight();
+	}
+	
+	public bool OperatorEqual(IQSizePolicy s)
+	{
+		return this.handle.OperatorEqual(s);
+	}
+	
+	public bool OperatorNotEqual(IQSizePolicy s)
+	{
+		return this.handle.OperatorNotEqual(s);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public int32 HorizontalStretch()
+	{
+		return this.handle.HorizontalStretch();
+	}
+	
+	public int32 VerticalStretch()
+	{
+		return this.handle.VerticalStretch();
+	}
+	
+	public void SetHorizontalStretch(int32 stretchFactor)
+	{
+		this.handle.SetHorizontalStretch(stretchFactor);
+	}
+	
+	public void SetVerticalStretch(int32 stretchFactor)
+	{
+		this.handle.SetVerticalStretch(stretchFactor);
+	}
+	
+	public bool RetainSizeWhenHidden()
+	{
+		return this.handle.RetainSizeWhenHidden();
+	}
+	
+	public void SetRetainSizeWhenHidden(bool retainSize)
+	{
+		this.handle.SetRetainSizeWhenHidden(retainSize);
+	}
+	
+	public void Transpose()
+	{
+		this.handle.Transpose();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
 	}
 	
 }

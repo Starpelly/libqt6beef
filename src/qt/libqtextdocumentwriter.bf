@@ -6,17 +6,22 @@ public interface IQTextDocumentWriter
 {
 	void* NativePtr { get; }
 }
-public class QTextDocumentWriter : IQTextDocumentWriter
+public struct QTextDocumentWriterPtr : IQTextDocumentWriter, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextDocumentWriter_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextDocumentWriter_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextDocumentWriter_Delete(this.nativePtr);
 	}
@@ -33,7 +38,7 @@ public class QTextDocumentWriter : IQTextDocumentWriter
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QTextDocumentWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QTextDocumentWriter_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -53,17 +58,82 @@ public class QTextDocumentWriter : IQTextDocumentWriter
 	
 	public bool Write(IQTextDocument document)
 	{
-		return CQt.QTextDocumentWriter_Write(this.nativePtr, (document == null) ? null : (void*)document.NativePtr);
+		return CQt.QTextDocumentWriter_Write(this.nativePtr, (document == default || document.NativePtr == default) ? default : document.NativePtr);
 	}
 	
 	public bool WriteWithFragment(IQTextDocumentFragment fragment)
 	{
-		return CQt.QTextDocumentWriter_WriteWithFragment(this.nativePtr, (fragment == default) ? default : (void*)fragment.NativePtr);
+		return CQt.QTextDocumentWriter_WriteWithFragment(this.nativePtr, (fragment == default || fragment.NativePtr == default) ? default : fragment.NativePtr);
 	}
 	
 	public static libqt_string[] SupportedDocumentFormats()
 	{
 		return CQt.QTextDocumentWriter_SupportedDocumentFormats();
+	}
+	
+}
+public class QTextDocumentWriter
+{
+	public QTextDocumentWriterPtr handle;
+	
+	public static implicit operator QTextDocumentWriterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextDocumentWriterPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetFormat(String format)
+	{
+		this.handle.SetFormat(format);
+	}
+	
+	public libqt_string Format()
+	{
+		return this.handle.Format();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void SetFileName(String fileName)
+	{
+		this.handle.SetFileName(fileName);
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public bool Write(IQTextDocument document)
+	{
+		return this.handle.Write(document);
+	}
+	
+	public bool WriteWithFragment(IQTextDocumentFragment fragment)
+	{
+		return this.handle.WriteWithFragment(fragment);
+	}
+	
+	public static libqt_string[] SupportedDocumentFormats()
+	{
+		return QTextDocumentWriterPtr.SupportedDocumentFormats();
 	}
 	
 }

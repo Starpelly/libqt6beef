@@ -6,29 +6,34 @@ public interface IQBitArray
 {
 	void* NativePtr { get; }
 }
-public class QBitArray : IQBitArray
+public struct QBitArrayPtr : IQBitArray, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QBitArray_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QBitArray_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QBitArray_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQBitArray other)
 	{
-		CQt.QBitArray_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QBitArray_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQBitArray other)
 	{
-		CQt.QBitArray_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QBitArray_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int32 Size()
@@ -118,27 +123,27 @@ public class QBitArray : IQBitArray
 	
 	public void OperatorBitwiseAndAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseAndAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QBitArray_OperatorBitwiseAndAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void OperatorBitwiseOrAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseOrAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QBitArray_OperatorBitwiseOrAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void OperatorBitwiseNotAssign(IQBitArray param1)
 	{
-		CQt.QBitArray_OperatorBitwiseNotAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QBitArray_OperatorBitwiseNotAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQBitArray other)
 	{
-		return CQt.QBitArray_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QBitArray_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQBitArray other)
 	{
-		return CQt.QBitArray_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QBitArray_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool Fill(bool val)
@@ -168,7 +173,7 @@ public class QBitArray : IQBitArray
 	
 	public uint32 ToUInt32(int64 endianness)
 	{
-		return CQt.QBitArray_ToUInt32(this.nativePtr, endianness);
+		return CQt.QBitArray_ToUInt32(this.nativePtr, (int64)endianness);
 	}
 	
 	public bool Fill22(bool val, int32 size)
@@ -178,7 +183,187 @@ public class QBitArray : IQBitArray
 	
 	public uint32 ToUInt322(int64 endianness, bool* ok)
 	{
-		return CQt.QBitArray_ToUInt322(this.nativePtr, endianness, ok);
+		return CQt.QBitArray_ToUInt322(this.nativePtr, (int64)endianness, ok);
+	}
+	
+}
+public class QBitArray
+{
+	public QBitArrayPtr handle;
+	
+	public static implicit operator QBitArrayPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QBitArrayPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQBitArray other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQBitArray other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public int32 Count()
+	{
+		return this.handle.Count();
+	}
+	
+	public int32 CountWithOn(bool on)
+	{
+		return this.handle.CountWithOn(on);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public void Resize(int32 size)
+	{
+		this.handle.Resize(size);
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public bool TestBit(int32 i)
+	{
+		return this.handle.TestBit(i);
+	}
+	
+	public void SetBit(int32 i)
+	{
+		this.handle.SetBit(i);
+	}
+	
+	public void SetBit2(int32 i, bool val)
+	{
+		this.handle.SetBit2(i, val);
+	}
+	
+	public void ClearBit(int32 i)
+	{
+		this.handle.ClearBit(i);
+	}
+	
+	public bool ToggleBit(int32 i)
+	{
+		return this.handle.ToggleBit(i);
+	}
+	
+	public bool At(int32 i)
+	{
+		return this.handle.At(i);
+	}
+	
+	public void OperatorSubscript(int32 i)
+	{
+		this.handle.OperatorSubscript(i);
+	}
+	
+	public bool OperatorSubscriptWithQsizetype(int32 i)
+	{
+		return this.handle.OperatorSubscriptWithQsizetype(i);
+	}
+	
+	public void OperatorBitwiseAndAssign(IQBitArray param1)
+	{
+		this.handle.OperatorBitwiseAndAssign(param1);
+	}
+	
+	public void OperatorBitwiseOrAssign(IQBitArray param1)
+	{
+		this.handle.OperatorBitwiseOrAssign(param1);
+	}
+	
+	public void OperatorBitwiseNotAssign(IQBitArray param1)
+	{
+		this.handle.OperatorBitwiseNotAssign(param1);
+	}
+	
+	public bool OperatorEqual(IQBitArray other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQBitArray other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool Fill(bool val)
+	{
+		return this.handle.Fill(val);
+	}
+	
+	public void Fill2(bool val, int32 first, int32 last)
+	{
+		this.handle.Fill2(val, first, last);
+	}
+	
+	public void Truncate(int32 pos)
+	{
+		this.handle.Truncate(pos);
+	}
+	
+	public char8* Bits()
+	{
+		return this.handle.Bits();
+	}
+	
+	public static void FromBits(char8* data, int32 lenVal)
+	{
+		QBitArrayPtr.FromBits(data, lenVal);
+	}
+	
+	public uint32 ToUInt32(int64 endianness)
+	{
+		return this.handle.ToUInt32(endianness);
+	}
+	
+	public bool Fill22(bool val, int32 size)
+	{
+		return this.handle.Fill22(val, size);
+	}
+	
+	public uint32 ToUInt322(int64 endianness, bool* ok)
+	{
+		return this.handle.ToUInt322(endianness, ok);
 	}
 	
 }
@@ -264,17 +449,22 @@ public interface IQBitRef
 {
 	void* NativePtr { get; }
 }
-public class QBitRef : IQBitRef
+public struct QBitRefPtr : IQBitRef, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQBitRef other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QBitRef_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQBitRef other)
+	{
+		return .(CQt.QBitRef_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QBitRef_Delete(this.nativePtr);
 	}
@@ -291,12 +481,52 @@ public class QBitRef : IQBitRef
 	
 	public void OperatorAssign(IQBitRef val)
 	{
-		CQt.QBitRef_OperatorAssign(this.nativePtr, (val == default) ? default : (void*)val.NativePtr);
+		CQt.QBitRef_OperatorAssign(this.nativePtr, (val == default || val.NativePtr == default) ? default : val.NativePtr);
 	}
 	
 	public void OperatorAssignWithVal(bool val)
 	{
 		CQt.QBitRef_OperatorAssignWithVal(this.nativePtr, val);
+	}
+	
+}
+public class QBitRef
+{
+	public QBitRefPtr handle;
+	
+	public static implicit operator QBitRefPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQBitRef other)
+	{
+		this.handle = QBitRefPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public bool OperatorNot()
+	{
+		return this.handle.OperatorNot();
+	}
+	
+	public void OperatorAssign(IQBitRef val)
+	{
+		this.handle.OperatorAssign(val);
+	}
+	
+	public void OperatorAssignWithVal(bool val)
+	{
+		this.handle.OperatorAssignWithVal(val);
 	}
 	
 }

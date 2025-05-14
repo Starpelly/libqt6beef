@@ -6,29 +6,34 @@ public interface IQColorTransform
 {
 	void* NativePtr { get; }
 }
-public class QColorTransform : IQColorTransform
+public struct QColorTransformPtr : IQColorTransform, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QColorTransform_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QColorTransform_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QColorTransform_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQColorTransform other)
 	{
-		CQt.QColorTransform_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QColorTransform_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQColorTransform other)
 	{
-		CQt.QColorTransform_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QColorTransform_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsIdentity()
@@ -43,12 +48,62 @@ public class QColorTransform : IQColorTransform
 	
 	public void MapWithRgba64(IQRgba64 rgba64)
 	{
-		CQt.QColorTransform_MapWithRgba64(this.nativePtr, (rgba64 == default) ? default : (void)rgba64.NativePtr);
+		CQt.QColorTransform_MapWithRgba64(this.nativePtr, default);
 	}
 	
 	public void MapWithColor(IQColor color)
 	{
-		CQt.QColorTransform_MapWithColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QColorTransform_MapWithColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
+	}
+	
+}
+public class QColorTransform
+{
+	public QColorTransformPtr handle;
+	
+	public static implicit operator QColorTransformPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QColorTransformPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQColorTransform other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQColorTransform other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsIdentity()
+	{
+		return this.handle.IsIdentity();
+	}
+	
+	public uint32 Map(uint32 argb)
+	{
+		return this.handle.Map(argb);
+	}
+	
+	public void MapWithRgba64(IQRgba64 rgba64)
+	{
+		this.handle.MapWithRgba64(default);
+	}
+	
+	public void MapWithColor(IQColor color)
+	{
+		this.handle.MapWithColor(color);
 	}
 	
 }

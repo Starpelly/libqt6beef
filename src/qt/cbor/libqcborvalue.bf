@@ -43,17 +43,22 @@ public interface IQCborParserError
 {
 	void* NativePtr { get; }
 }
-public class QCborParserError : IQCborParserError
+public struct QCborParserErrorPtr : IQCborParserError, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQCborParserError other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborParserError_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQCborParserError other)
+	{
+		return .(CQt.QCborParserError_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborParserError_Delete(this.nativePtr);
 	}
@@ -61,6 +66,31 @@ public class QCborParserError : IQCborParserError
 	public libqt_string ErrorString()
 	{
 		return CQt.QCborParserError_ErrorString(this.nativePtr);
+	}
+	
+}
+public class QCborParserError
+{
+	public QCborParserErrorPtr handle;
+	
+	public static implicit operator QCborParserErrorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQCborParserError other)
+	{
+		this.handle = QCborParserErrorPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
 	}
 	
 }
@@ -80,29 +110,34 @@ public interface IQCborValue
 {
 	void* NativePtr { get; }
 }
-public class QCborValue : IQCborValue
+public struct QCborValuePtr : IQCborValue, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborValue_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCborValue_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborValue_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCborValue other)
 	{
-		CQt.QCborValue_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCborValue_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQCborValue other)
 	{
-		CQt.QCborValue_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCborValue_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 Type()
@@ -207,7 +242,7 @@ public class QCborValue : IQCborValue
 	
 	public bool IsSimpleTypeWithSt(void st)
 	{
-		return CQt.QCborValue_IsSimpleTypeWithSt(this.nativePtr, st);
+		return CQt.QCborValue_IsSimpleTypeWithSt(this.nativePtr, default);
 	}
 	
 	public void ToSimpleType()
@@ -277,7 +312,7 @@ public class QCborValue : IQCborValue
 	
 	public void ToArrayWithDefaultValue(IQCborArray defaultValue)
 	{
-		CQt.QCborValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToArrayWithDefaultValue(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToMap()
@@ -287,7 +322,7 @@ public class QCborValue : IQCborValue
 	
 	public void ToMapWithDefaultValue(IQCborMap defaultValue)
 	{
-		CQt.QCborValue_ToMapWithDefaultValue(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToMapWithDefaultValue(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void OperatorSubscript(String key)
@@ -312,27 +347,27 @@ public class QCborValue : IQCborValue
 	
 	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValue_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValue_Compare(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValue_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValue_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValue_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValue_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public static void FromVariant(IQVariant variant)
 	{
-		CQt.QCborValue_FromVariant((variant == default) ? default : (void*)variant.NativePtr);
+		CQt.QCborValue_FromVariant((variant == default || variant.NativePtr == default) ? default : variant.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -342,7 +377,7 @@ public class QCborValue : IQCborValue
 	
 	public static void FromJsonValue(IQJsonValue v)
 	{
-		CQt.QCborValue_FromJsonValue((v == default) ? default : (void*)v.NativePtr);
+		CQt.QCborValue_FromJsonValue((v == default || v.NativePtr == default) ? default : v.NativePtr);
 	}
 	
 	public void ToJsonValue()
@@ -352,7 +387,7 @@ public class QCborValue : IQCborValue
 	
 	public static void FromCbor(IQCborStreamReader reader)
 	{
-		CQt.QCborValue_FromCbor((reader == default) ? default : (void*)reader.NativePtr);
+		CQt.QCborValue_FromCbor((reader == default || reader.NativePtr == default) ? default : reader.NativePtr);
 	}
 	
 	public static void FromCborWithBa(String ba)
@@ -377,7 +412,7 @@ public class QCborValue : IQCborValue
 	
 	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValue_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
+		CQt.QCborValue_ToCborWithWriter(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -387,7 +422,7 @@ public class QCborValue : IQCborValue
 	
 	public void ToSimpleType1(void defaultValue)
 	{
-		CQt.QCborValue_ToSimpleType1(this.nativePtr, defaultValue);
+		CQt.QCborValue_ToSimpleType1(this.nativePtr, default);
 	}
 	
 	public int64 ToInteger1(int64 defaultValue)
@@ -407,12 +442,12 @@ public class QCborValue : IQCborValue
 	
 	public void Tag1(void defaultValue)
 	{
-		CQt.QCborValue_Tag1(this.nativePtr, defaultValue);
+		CQt.QCborValue_Tag1(this.nativePtr, default);
 	}
 	
 	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValue_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_TaggedValue1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public libqt_string ToByteArray1(String defaultValue)
@@ -427,37 +462,37 @@ public class QCborValue : IQCborValue
 	
 	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValue_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToDateTime1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValue_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToUrl1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValue_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToRegularExpression1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValue_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValue_ToUuid1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public static void FromCbor22(String ba, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor22(libqt_string(ba), (errorVal == null) ? null : (void*)errorVal.NativePtr);
+		CQt.QCborValue_FromCbor22(libqt_string(ba), (errorVal == default || errorVal.NativePtr == default) ? default : errorVal.NativePtr);
 	}
 	
 	public static void FromCbor32(char8* data, int32 lenVal, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor32(data, lenVal, (errorVal == null) ? null : (void*)errorVal.NativePtr);
+		CQt.QCborValue_FromCbor32(data, lenVal, (errorVal == default || errorVal.NativePtr == default) ? default : errorVal.NativePtr);
 	}
 	
 	public static void FromCbor33(uint8* data, int32 lenVal, IQCborParserError errorVal)
 	{
-		CQt.QCborValue_FromCbor33(data, lenVal, (errorVal == null) ? null : (void*)errorVal.NativePtr);
+		CQt.QCborValue_FromCbor33(data, lenVal, (errorVal == default || errorVal.NativePtr == default) ? default : errorVal.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -467,12 +502,412 @@ public class QCborValue : IQCborValue
 	
 	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValue_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
+		CQt.QCborValue_ToCbor2(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opts)
 	{
 		return CQt.QCborValue_ToDiagnosticNotation1(this.nativePtr, opts);
+	}
+	
+}
+public class QCborValue
+{
+	public QCborValuePtr handle;
+	
+	public static implicit operator QCborValuePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCborValuePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCborValue other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQCborValue other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsInteger()
+	{
+		return this.handle.IsInteger();
+	}
+	
+	public bool IsByteArray()
+	{
+		return this.handle.IsByteArray();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsMap()
+	{
+		return this.handle.IsMap();
+	}
+	
+	public bool IsTag()
+	{
+		return this.handle.IsTag();
+	}
+	
+	public bool IsFalse()
+	{
+		return this.handle.IsFalse();
+	}
+	
+	public bool IsTrue()
+	{
+		return this.handle.IsTrue();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsDateTime()
+	{
+		return this.handle.IsDateTime();
+	}
+	
+	public bool IsUrl()
+	{
+		return this.handle.IsUrl();
+	}
+	
+	public bool IsRegularExpression()
+	{
+		return this.handle.IsRegularExpression();
+	}
+	
+	public bool IsUuid()
+	{
+		return this.handle.IsUuid();
+	}
+	
+	public bool IsInvalid()
+	{
+		return this.handle.IsInvalid();
+	}
+	
+	public bool IsContainer()
+	{
+		return this.handle.IsContainer();
+	}
+	
+	public bool IsSimpleType()
+	{
+		return this.handle.IsSimpleType();
+	}
+	
+	public bool IsSimpleTypeWithSt(void st)
+	{
+		return this.handle.IsSimpleTypeWithSt(default);
+	}
+	
+	public void ToSimpleType()
+	{
+		this.handle.ToSimpleType();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public void Tag()
+	{
+		this.handle.Tag();
+	}
+	
+	public void TaggedValue()
+	{
+		this.handle.TaggedValue();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void ToDateTime()
+	{
+		this.handle.ToDateTime();
+	}
+	
+	public void ToUrl()
+	{
+		this.handle.ToUrl();
+	}
+	
+	public void ToRegularExpression()
+	{
+		this.handle.ToRegularExpression();
+	}
+	
+	public void ToUuid()
+	{
+		this.handle.ToUuid();
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToArrayWithDefaultValue(IQCborArray defaultValue)
+	{
+		this.handle.ToArrayWithDefaultValue(defaultValue);
+	}
+	
+	public void ToMap()
+	{
+		this.handle.ToMap();
+	}
+	
+	public void ToMapWithDefaultValue(IQCborMap defaultValue)
+	{
+		this.handle.ToMapWithDefaultValue(defaultValue);
+	}
+	
+	public void OperatorSubscript(String key)
+	{
+		this.handle.OperatorSubscript(key);
+	}
+	
+	public void OperatorSubscript2(int64 key)
+	{
+		this.handle.OperatorSubscript2(key);
+	}
+	
+	public void OperatorSubscript3(int64 key)
+	{
+		this.handle.OperatorSubscript3(key);
+	}
+	
+	public void OperatorSubscript5(String key)
+	{
+		this.handle.OperatorSubscript5(key);
+	}
+	
+	public int32 Compare(IQCborValue other)
+	{
+		return this.handle.Compare(other);
+	}
+	
+	public bool OperatorEqual(IQCborValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQCborValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool OperatorLesser(IQCborValue other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public static void FromVariant(IQVariant variant)
+	{
+		QCborValuePtr.FromVariant(variant);
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public static void FromJsonValue(IQJsonValue v)
+	{
+		QCborValuePtr.FromJsonValue(v);
+	}
+	
+	public void ToJsonValue()
+	{
+		this.handle.ToJsonValue();
+	}
+	
+	public static void FromCbor(IQCborStreamReader reader)
+	{
+		QCborValuePtr.FromCbor(reader);
+	}
+	
+	public static void FromCborWithBa(String ba)
+	{
+		QCborValuePtr.FromCborWithBa(ba);
+	}
+	
+	public static void FromCbor2(char8* data, int32 lenVal)
+	{
+		QCborValuePtr.FromCbor2(data, lenVal);
+	}
+	
+	public static void FromCbor3(uint8* data, int32 lenVal)
+	{
+		QCborValuePtr.FromCbor3(data, lenVal);
+	}
+	
+	public libqt_string ToCbor()
+	{
+		return this.handle.ToCbor();
+	}
+	
+	public void ToCborWithWriter(IQCborStreamWriter writer)
+	{
+		this.handle.ToCborWithWriter(writer);
+	}
+	
+	public libqt_string ToDiagnosticNotation()
+	{
+		return this.handle.ToDiagnosticNotation();
+	}
+	
+	public void ToSimpleType1(void defaultValue)
+	{
+		this.handle.ToSimpleType1(default);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
+	}
+	
+	public void Tag1(void defaultValue)
+	{
+		this.handle.Tag1(default);
+	}
+	
+	public void TaggedValue1(IQCborValue defaultValue)
+	{
+		this.handle.TaggedValue1(defaultValue);
+	}
+	
+	public libqt_string ToByteArray1(String defaultValue)
+	{
+		return this.handle.ToByteArray1(defaultValue);
+	}
+	
+	public libqt_string ToString1(String defaultValue)
+	{
+		return this.handle.ToString1(defaultValue);
+	}
+	
+	public void ToDateTime1(IQDateTime defaultValue)
+	{
+		this.handle.ToDateTime1(defaultValue);
+	}
+	
+	public void ToUrl1(IQUrl defaultValue)
+	{
+		this.handle.ToUrl1(defaultValue);
+	}
+	
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
+	{
+		this.handle.ToRegularExpression1(defaultValue);
+	}
+	
+	public void ToUuid1(IQUuid defaultValue)
+	{
+		this.handle.ToUuid1(defaultValue);
+	}
+	
+	public static void FromCbor22(String ba, IQCborParserError errorVal)
+	{
+		QCborValuePtr.FromCbor22(ba, errorVal);
+	}
+	
+	public static void FromCbor32(char8* data, int32 lenVal, IQCborParserError errorVal)
+	{
+		QCborValuePtr.FromCbor32(data, lenVal, errorVal);
+	}
+	
+	public static void FromCbor33(uint8* data, int32 lenVal, IQCborParserError errorVal)
+	{
+		QCborValuePtr.FromCbor33(data, lenVal, errorVal);
+	}
+	
+	public libqt_string ToCbor1(int64 opt)
+	{
+		return this.handle.ToCbor1(opt);
+	}
+	
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
+	{
+		this.handle.ToCbor2(writer, opt);
+	}
+	
+	public libqt_string ToDiagnosticNotation1(int64 opts)
+	{
+		return this.handle.ToDiagnosticNotation1(opts);
 	}
 	
 }
@@ -682,17 +1117,22 @@ public interface IQCborValueConstRef
 {
 	void* NativePtr { get; }
 }
-public class QCborValueConstRef : IQCborValueConstRef
+public struct QCborValueConstRefPtr : IQCborValueConstRef, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQCborValueConstRef other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborValueConstRef_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQCborValueConstRef other)
+	{
+		return .(CQt.QCborValueConstRef_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborValueConstRef_Delete(this.nativePtr);
 	}
@@ -804,7 +1244,7 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public bool IsSimpleTypeWithSt(void st)
 	{
-		return CQt.QCborValueConstRef_IsSimpleTypeWithSt(this.nativePtr, st);
+		return CQt.QCborValueConstRef_IsSimpleTypeWithSt(this.nativePtr, default);
 	}
 	
 	public void ToSimpleType()
@@ -874,7 +1314,7 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToArrayWithQCborArray(IQCborArray a)
 	{
-		CQt.QCborValueConstRef_ToArrayWithQCborArray(this.nativePtr, (a == default) ? default : (void*)a.NativePtr);
+		CQt.QCborValueConstRef_ToArrayWithQCborArray(this.nativePtr, (a == default || a.NativePtr == default) ? default : a.NativePtr);
 	}
 	
 	public void ToMap()
@@ -884,7 +1324,7 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToMapWithQCborMap(IQCborMap m)
 	{
-		CQt.QCborValueConstRef_ToMapWithQCborMap(this.nativePtr, (m == default) ? default : (void*)m.NativePtr);
+		CQt.QCborValueConstRef_ToMapWithQCborMap(this.nativePtr, (m == default || m.NativePtr == default) ? default : m.NativePtr);
 	}
 	
 	public void OperatorSubscript(String key)
@@ -899,22 +1339,22 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueConstRef_Compare(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueConstRef_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueConstRef_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValueConstRef_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueConstRef_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -934,7 +1374,7 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValueConstRef_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
+		CQt.QCborValueConstRef_ToCborWithWriter(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -944,17 +1384,17 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToSimpleType1(void defaultValue)
 	{
-		CQt.QCborValueConstRef_ToSimpleType1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_ToSimpleType1(this.nativePtr, default);
 	}
 	
 	public void Tag1(void defaultValue)
 	{
-		CQt.QCborValueConstRef_Tag1(this.nativePtr, defaultValue);
+		CQt.QCborValueConstRef_Tag1(this.nativePtr, default);
 	}
 	
 	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValueConstRef_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueConstRef_TaggedValue1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public int64 ToInteger1(int64 defaultValue)
@@ -984,22 +1424,22 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValueConstRef_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueConstRef_ToDateTime1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValueConstRef_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueConstRef_ToUrl1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValueConstRef_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueConstRef_ToRegularExpression1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValueConstRef_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueConstRef_ToUuid1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -1009,12 +1449,352 @@ public class QCborValueConstRef : IQCborValueConstRef
 	
 	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValueConstRef_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
+		CQt.QCborValueConstRef_ToCbor2(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opt)
 	{
 		return CQt.QCborValueConstRef_ToDiagnosticNotation1(this.nativePtr, opt);
+	}
+	
+}
+public class QCborValueConstRef
+{
+	public QCborValueConstRefPtr handle;
+	
+	public static implicit operator QCborValueConstRefPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQCborValueConstRef other)
+	{
+		this.handle = QCborValueConstRefPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void ToQCborValue()
+	{
+		this.handle.ToQCborValue();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsInteger()
+	{
+		return this.handle.IsInteger();
+	}
+	
+	public bool IsByteArray()
+	{
+		return this.handle.IsByteArray();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsMap()
+	{
+		return this.handle.IsMap();
+	}
+	
+	public bool IsTag()
+	{
+		return this.handle.IsTag();
+	}
+	
+	public bool IsFalse()
+	{
+		return this.handle.IsFalse();
+	}
+	
+	public bool IsTrue()
+	{
+		return this.handle.IsTrue();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsDateTime()
+	{
+		return this.handle.IsDateTime();
+	}
+	
+	public bool IsUrl()
+	{
+		return this.handle.IsUrl();
+	}
+	
+	public bool IsRegularExpression()
+	{
+		return this.handle.IsRegularExpression();
+	}
+	
+	public bool IsUuid()
+	{
+		return this.handle.IsUuid();
+	}
+	
+	public bool IsInvalid()
+	{
+		return this.handle.IsInvalid();
+	}
+	
+	public bool IsContainer()
+	{
+		return this.handle.IsContainer();
+	}
+	
+	public bool IsSimpleType()
+	{
+		return this.handle.IsSimpleType();
+	}
+	
+	public bool IsSimpleTypeWithSt(void st)
+	{
+		return this.handle.IsSimpleTypeWithSt(default);
+	}
+	
+	public void ToSimpleType()
+	{
+		this.handle.ToSimpleType();
+	}
+	
+	public void Tag()
+	{
+		this.handle.Tag();
+	}
+	
+	public void TaggedValue()
+	{
+		this.handle.TaggedValue();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void ToDateTime()
+	{
+		this.handle.ToDateTime();
+	}
+	
+	public void ToUrl()
+	{
+		this.handle.ToUrl();
+	}
+	
+	public void ToRegularExpression()
+	{
+		this.handle.ToRegularExpression();
+	}
+	
+	public void ToUuid()
+	{
+		this.handle.ToUuid();
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToArrayWithQCborArray(IQCborArray a)
+	{
+		this.handle.ToArrayWithQCborArray(a);
+	}
+	
+	public void ToMap()
+	{
+		this.handle.ToMap();
+	}
+	
+	public void ToMapWithQCborMap(IQCborMap m)
+	{
+		this.handle.ToMapWithQCborMap(m);
+	}
+	
+	public void OperatorSubscript(String key)
+	{
+		this.handle.OperatorSubscript(key);
+	}
+	
+	public void OperatorSubscript2(int64 key)
+	{
+		this.handle.OperatorSubscript2(key);
+	}
+	
+	public int32 Compare(IQCborValue other)
+	{
+		return this.handle.Compare(other);
+	}
+	
+	public bool OperatorEqual(IQCborValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQCborValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool OperatorLesser(IQCborValue other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public void ToJsonValue()
+	{
+		this.handle.ToJsonValue();
+	}
+	
+	public libqt_string ToCbor()
+	{
+		return this.handle.ToCbor();
+	}
+	
+	public void ToCborWithWriter(IQCborStreamWriter writer)
+	{
+		this.handle.ToCborWithWriter(writer);
+	}
+	
+	public libqt_string ToDiagnosticNotation()
+	{
+		return this.handle.ToDiagnosticNotation();
+	}
+	
+	public void ToSimpleType1(void defaultValue)
+	{
+		this.handle.ToSimpleType1(default);
+	}
+	
+	public void Tag1(void defaultValue)
+	{
+		this.handle.Tag1(default);
+	}
+	
+	public void TaggedValue1(IQCborValue defaultValue)
+	{
+		this.handle.TaggedValue1(defaultValue);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
+	}
+	
+	public libqt_string ToByteArray1(String defaultValue)
+	{
+		return this.handle.ToByteArray1(defaultValue);
+	}
+	
+	public libqt_string ToString1(String defaultValue)
+	{
+		return this.handle.ToString1(defaultValue);
+	}
+	
+	public void ToDateTime1(IQDateTime defaultValue)
+	{
+		this.handle.ToDateTime1(defaultValue);
+	}
+	
+	public void ToUrl1(IQUrl defaultValue)
+	{
+		this.handle.ToUrl1(defaultValue);
+	}
+	
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
+	{
+		this.handle.ToRegularExpression1(defaultValue);
+	}
+	
+	public void ToUuid1(IQUuid defaultValue)
+	{
+		this.handle.ToUuid1(defaultValue);
+	}
+	
+	public libqt_string ToCbor1(int64 opt)
+	{
+		return this.handle.ToCbor1(opt);
+	}
+	
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
+	{
+		this.handle.ToCbor2(writer, opt);
+	}
+	
+	public libqt_string ToDiagnosticNotation1(int64 opt)
+	{
+		return this.handle.ToDiagnosticNotation1(opt);
 	}
 	
 }
@@ -1160,29 +1940,34 @@ public interface IQCborValueRef
 {
 	void* NativePtr { get; }
 }
-public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
+public struct QCborValueRefPtr : IQCborValueRef, IDisposable, IQCborValueConstRef
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQCborValueRef other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborValueRef_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQCborValueRef other)
+	{
+		return .(CQt.QCborValueRef_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborValueRef_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCborValue other)
 	{
-		CQt.QCborValueRef_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCborValueRef_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorAssignWithOther(IQCborValueRef other)
 	{
-		CQt.QCborValueRef_OperatorAssignWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCborValueRef_OperatorAssignWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorSubscript(int64 key)
@@ -1302,7 +2087,7 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public bool IsSimpleTypeWithSt(void st)
 	{
-		return CQt.QCborValueRef_IsSimpleTypeWithSt(this.nativePtr, st);
+		return CQt.QCborValueRef_IsSimpleTypeWithSt(this.nativePtr, default);
 	}
 	
 	public void ToSimpleType()
@@ -1372,7 +2157,7 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToArrayWithQCborArray(IQCborArray a)
 	{
-		CQt.QCborValueRef_ToArrayWithQCborArray(this.nativePtr, (a == default) ? default : (void*)a.NativePtr);
+		CQt.QCborValueRef_ToArrayWithQCborArray(this.nativePtr, (a == default || a.NativePtr == default) ? default : a.NativePtr);
 	}
 	
 	public void ToMap()
@@ -1382,7 +2167,7 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToMapWithQCborMap(IQCborMap m)
 	{
-		CQt.QCborValueRef_ToMapWithQCborMap(this.nativePtr, (m == default) ? default : (void*)m.NativePtr);
+		CQt.QCborValueRef_ToMapWithQCborMap(this.nativePtr, (m == default || m.NativePtr == default) ? default : m.NativePtr);
 	}
 	
 	public void OperatorSubscript3(String key)
@@ -1397,22 +2182,22 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public int32 Compare(IQCborValue other)
 	{
-		return CQt.QCborValueRef_Compare(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueRef_Compare(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueRef_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueRef_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQCborValue other)
 	{
-		return CQt.QCborValueRef_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCborValueRef_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToVariant()
@@ -1432,7 +2217,7 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToCborWithWriter(IQCborStreamWriter writer)
 	{
-		CQt.QCborValueRef_ToCborWithWriter(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr);
+		CQt.QCborValueRef_ToCborWithWriter(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr);
 	}
 	
 	public libqt_string ToDiagnosticNotation()
@@ -1442,17 +2227,17 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToSimpleType1(void defaultValue)
 	{
-		CQt.QCborValueRef_ToSimpleType1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_ToSimpleType1(this.nativePtr, default);
 	}
 	
 	public void Tag1(void defaultValue)
 	{
-		CQt.QCborValueRef_Tag1(this.nativePtr, defaultValue);
+		CQt.QCborValueRef_Tag1(this.nativePtr, default);
 	}
 	
 	public void TaggedValue1(IQCborValue defaultValue)
 	{
-		CQt.QCborValueRef_TaggedValue1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueRef_TaggedValue1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public int64 ToInteger1(int64 defaultValue)
@@ -1482,22 +2267,22 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToDateTime1(IQDateTime defaultValue)
 	{
-		CQt.QCborValueRef_ToDateTime1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueRef_ToDateTime1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUrl1(IQUrl defaultValue)
 	{
-		CQt.QCborValueRef_ToUrl1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueRef_ToUrl1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToRegularExpression1(IQRegularExpression defaultValue)
 	{
-		CQt.QCborValueRef_ToRegularExpression1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueRef_ToRegularExpression1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public void ToUuid1(IQUuid defaultValue)
 	{
-		CQt.QCborValueRef_ToUuid1(this.nativePtr, (defaultValue == default) ? default : (void*)defaultValue.NativePtr);
+		CQt.QCborValueRef_ToUuid1(this.nativePtr, (defaultValue == default || defaultValue.NativePtr == default) ? default : defaultValue.NativePtr);
 	}
 	
 	public libqt_string ToCbor1(int64 opt)
@@ -1507,12 +2292,372 @@ public class QCborValueRef : IQCborValueRef, IQCborValueConstRef
 	
 	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
 	{
-		CQt.QCborValueRef_ToCbor2(this.nativePtr, (writer == default) ? default : (void*)writer.NativePtr, opt);
+		CQt.QCborValueRef_ToCbor2(this.nativePtr, (writer == default || writer.NativePtr == default) ? default : writer.NativePtr, opt);
 	}
 	
 	public libqt_string ToDiagnosticNotation1(int64 opt)
 	{
 		return CQt.QCborValueRef_ToDiagnosticNotation1(this.nativePtr, opt);
+	}
+	
+}
+public class QCborValueRef
+{
+	public QCborValueRefPtr handle;
+	
+	public static implicit operator QCborValueRefPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQCborValueRef other)
+	{
+		this.handle = QCborValueRefPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCborValue other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void OperatorAssignWithOther(IQCborValueRef other)
+	{
+		this.handle.OperatorAssignWithOther(other);
+	}
+	
+	public void OperatorSubscript(int64 key)
+	{
+		this.handle.OperatorSubscript(key);
+	}
+	
+	public void OperatorSubscript2(String key)
+	{
+		this.handle.OperatorSubscript2(key);
+	}
+	
+	public void ToQCborValue()
+	{
+		this.handle.ToQCborValue();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool IsInteger()
+	{
+		return this.handle.IsInteger();
+	}
+	
+	public bool IsByteArray()
+	{
+		return this.handle.IsByteArray();
+	}
+	
+	public bool IsString()
+	{
+		return this.handle.IsString();
+	}
+	
+	public bool IsArray()
+	{
+		return this.handle.IsArray();
+	}
+	
+	public bool IsMap()
+	{
+		return this.handle.IsMap();
+	}
+	
+	public bool IsTag()
+	{
+		return this.handle.IsTag();
+	}
+	
+	public bool IsFalse()
+	{
+		return this.handle.IsFalse();
+	}
+	
+	public bool IsTrue()
+	{
+		return this.handle.IsTrue();
+	}
+	
+	public bool IsBool()
+	{
+		return this.handle.IsBool();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsUndefined()
+	{
+		return this.handle.IsUndefined();
+	}
+	
+	public bool IsDouble()
+	{
+		return this.handle.IsDouble();
+	}
+	
+	public bool IsDateTime()
+	{
+		return this.handle.IsDateTime();
+	}
+	
+	public bool IsUrl()
+	{
+		return this.handle.IsUrl();
+	}
+	
+	public bool IsRegularExpression()
+	{
+		return this.handle.IsRegularExpression();
+	}
+	
+	public bool IsUuid()
+	{
+		return this.handle.IsUuid();
+	}
+	
+	public bool IsInvalid()
+	{
+		return this.handle.IsInvalid();
+	}
+	
+	public bool IsContainer()
+	{
+		return this.handle.IsContainer();
+	}
+	
+	public bool IsSimpleType()
+	{
+		return this.handle.IsSimpleType();
+	}
+	
+	public bool IsSimpleTypeWithSt(void st)
+	{
+		return this.handle.IsSimpleTypeWithSt(default);
+	}
+	
+	public void ToSimpleType()
+	{
+		this.handle.ToSimpleType();
+	}
+	
+	public void Tag()
+	{
+		this.handle.Tag();
+	}
+	
+	public void TaggedValue()
+	{
+		this.handle.TaggedValue();
+	}
+	
+	public int64 ToInteger()
+	{
+		return this.handle.ToInteger();
+	}
+	
+	public bool ToBool()
+	{
+		return this.handle.ToBool();
+	}
+	
+	public double ToDouble()
+	{
+		return this.handle.ToDouble();
+	}
+	
+	public libqt_string ToByteArray()
+	{
+		return this.handle.ToByteArray();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void ToDateTime()
+	{
+		this.handle.ToDateTime();
+	}
+	
+	public void ToUrl()
+	{
+		this.handle.ToUrl();
+	}
+	
+	public void ToRegularExpression()
+	{
+		this.handle.ToRegularExpression();
+	}
+	
+	public void ToUuid()
+	{
+		this.handle.ToUuid();
+	}
+	
+	public void ToArray()
+	{
+		this.handle.ToArray();
+	}
+	
+	public void ToArrayWithQCborArray(IQCborArray a)
+	{
+		this.handle.ToArrayWithQCborArray(a);
+	}
+	
+	public void ToMap()
+	{
+		this.handle.ToMap();
+	}
+	
+	public void ToMapWithQCborMap(IQCborMap m)
+	{
+		this.handle.ToMapWithQCborMap(m);
+	}
+	
+	public void OperatorSubscript3(String key)
+	{
+		this.handle.OperatorSubscript3(key);
+	}
+	
+	public void OperatorSubscript5(int64 key)
+	{
+		this.handle.OperatorSubscript5(key);
+	}
+	
+	public int32 Compare(IQCborValue other)
+	{
+		return this.handle.Compare(other);
+	}
+	
+	public bool OperatorEqual(IQCborValue other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQCborValue other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool OperatorLesser(IQCborValue other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public void ToVariant()
+	{
+		this.handle.ToVariant();
+	}
+	
+	public void ToJsonValue()
+	{
+		this.handle.ToJsonValue();
+	}
+	
+	public libqt_string ToCbor()
+	{
+		return this.handle.ToCbor();
+	}
+	
+	public void ToCborWithWriter(IQCborStreamWriter writer)
+	{
+		this.handle.ToCborWithWriter(writer);
+	}
+	
+	public libqt_string ToDiagnosticNotation()
+	{
+		return this.handle.ToDiagnosticNotation();
+	}
+	
+	public void ToSimpleType1(void defaultValue)
+	{
+		this.handle.ToSimpleType1(default);
+	}
+	
+	public void Tag1(void defaultValue)
+	{
+		this.handle.Tag1(default);
+	}
+	
+	public void TaggedValue1(IQCborValue defaultValue)
+	{
+		this.handle.TaggedValue1(defaultValue);
+	}
+	
+	public int64 ToInteger1(int64 defaultValue)
+	{
+		return this.handle.ToInteger1(defaultValue);
+	}
+	
+	public bool ToBool1(bool defaultValue)
+	{
+		return this.handle.ToBool1(defaultValue);
+	}
+	
+	public double ToDouble1(double defaultValue)
+	{
+		return this.handle.ToDouble1(defaultValue);
+	}
+	
+	public libqt_string ToByteArray1(String defaultValue)
+	{
+		return this.handle.ToByteArray1(defaultValue);
+	}
+	
+	public libqt_string ToString1(String defaultValue)
+	{
+		return this.handle.ToString1(defaultValue);
+	}
+	
+	public void ToDateTime1(IQDateTime defaultValue)
+	{
+		this.handle.ToDateTime1(defaultValue);
+	}
+	
+	public void ToUrl1(IQUrl defaultValue)
+	{
+		this.handle.ToUrl1(defaultValue);
+	}
+	
+	public void ToRegularExpression1(IQRegularExpression defaultValue)
+	{
+		this.handle.ToRegularExpression1(defaultValue);
+	}
+	
+	public void ToUuid1(IQUuid defaultValue)
+	{
+		this.handle.ToUuid1(defaultValue);
+	}
+	
+	public libqt_string ToCbor1(int64 opt)
+	{
+		return this.handle.ToCbor1(opt);
+	}
+	
+	public void ToCbor2(IQCborStreamWriter writer, int64 opt)
+	{
+		this.handle.ToCbor2(writer, opt);
+	}
+	
+	public libqt_string ToDiagnosticNotation1(int64 opt)
+	{
+		return this.handle.ToDiagnosticNotation1(opt);
 	}
 	
 }

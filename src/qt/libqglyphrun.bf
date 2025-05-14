@@ -15,29 +15,34 @@ public interface IQGlyphRun
 {
 	void* NativePtr { get; }
 }
-public class QGlyphRun : IQGlyphRun
+public struct QGlyphRunPtr : IQGlyphRun, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QGlyphRun_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QGlyphRun_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QGlyphRun_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQGlyphRun other)
 	{
-		CQt.QGlyphRun_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QGlyphRun_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQGlyphRun other)
 	{
-		CQt.QGlyphRun_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QGlyphRun_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void RawFont()
@@ -47,12 +52,12 @@ public class QGlyphRun : IQGlyphRun
 	
 	public void SetRawFont(IQRawFont rawFont)
 	{
-		CQt.QGlyphRun_SetRawFont(this.nativePtr, (rawFont == default) ? default : (void*)rawFont.NativePtr);
+		CQt.QGlyphRun_SetRawFont(this.nativePtr, (rawFont == default || rawFont.NativePtr == default) ? default : rawFont.NativePtr);
 	}
 	
 	public void SetRawData(uint32* glyphIndexArray, IQPointF glyphPositionArray, int32 size)
 	{
-		CQt.QGlyphRun_SetRawData(this.nativePtr, glyphIndexArray, (glyphPositionArray == null) ? null : (void*)glyphPositionArray.NativePtr, size);
+		CQt.QGlyphRun_SetRawData(this.nativePtr, glyphIndexArray, (glyphPositionArray == default || glyphPositionArray.NativePtr == default) ? default : glyphPositionArray.NativePtr, size);
 	}
 	
 	public uint32[] GlyphIndexes()
@@ -82,12 +87,12 @@ public class QGlyphRun : IQGlyphRun
 	
 	public bool OperatorEqual(IQGlyphRun other)
 	{
-		return CQt.QGlyphRun_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QGlyphRun_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQGlyphRun other)
 	{
-		return CQt.QGlyphRun_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QGlyphRun_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetOverline(bool overline)
@@ -132,7 +137,7 @@ public class QGlyphRun : IQGlyphRun
 	
 	public void SetFlag(int64 flag)
 	{
-		CQt.QGlyphRun_SetFlag(this.nativePtr, flag);
+		CQt.QGlyphRun_SetFlag(this.nativePtr, (int64)flag);
 	}
 	
 	public void SetFlags(int64 flags)
@@ -147,7 +152,7 @@ public class QGlyphRun : IQGlyphRun
 	
 	public void SetBoundingRect(IQRectF boundingRect)
 	{
-		CQt.QGlyphRun_SetBoundingRect(this.nativePtr, (boundingRect == default) ? default : (void*)boundingRect.NativePtr);
+		CQt.QGlyphRun_SetBoundingRect(this.nativePtr, (boundingRect == default || boundingRect.NativePtr == default) ? default : boundingRect.NativePtr);
 	}
 	
 	public void BoundingRect()
@@ -162,7 +167,162 @@ public class QGlyphRun : IQGlyphRun
 	
 	public void SetFlag2(int64 flag, bool enabled)
 	{
-		CQt.QGlyphRun_SetFlag2(this.nativePtr, flag, enabled);
+		CQt.QGlyphRun_SetFlag2(this.nativePtr, (int64)flag, enabled);
+	}
+	
+}
+public class QGlyphRun
+{
+	public QGlyphRunPtr handle;
+	
+	public static implicit operator QGlyphRunPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QGlyphRunPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQGlyphRun other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQGlyphRun other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void RawFont()
+	{
+		this.handle.RawFont();
+	}
+	
+	public void SetRawFont(IQRawFont rawFont)
+	{
+		this.handle.SetRawFont(rawFont);
+	}
+	
+	public void SetRawData(uint32* glyphIndexArray, IQPointF glyphPositionArray, int32 size)
+	{
+		this.handle.SetRawData(glyphIndexArray, glyphPositionArray, size);
+	}
+	
+	public uint32[] GlyphIndexes()
+	{
+		return this.handle.GlyphIndexes();
+	}
+	
+	public void SetGlyphIndexes(uint32[] glyphIndexes)
+	{
+		this.handle.SetGlyphIndexes(null);
+	}
+	
+	public void[] Positions()
+	{
+		return this.handle.Positions();
+	}
+	
+	public void SetPositions(IQPointF[] positions)
+	{
+		this.handle.SetPositions(null);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public bool OperatorEqual(IQGlyphRun other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQGlyphRun other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void SetOverline(bool overline)
+	{
+		this.handle.SetOverline(overline);
+	}
+	
+	public bool Overline()
+	{
+		return this.handle.Overline();
+	}
+	
+	public void SetUnderline(bool underline)
+	{
+		this.handle.SetUnderline(underline);
+	}
+	
+	public bool Underline()
+	{
+		return this.handle.Underline();
+	}
+	
+	public void SetStrikeOut(bool strikeOut)
+	{
+		this.handle.SetStrikeOut(strikeOut);
+	}
+	
+	public bool StrikeOut()
+	{
+		return this.handle.StrikeOut();
+	}
+	
+	public void SetRightToLeft(bool on)
+	{
+		this.handle.SetRightToLeft(on);
+	}
+	
+	public bool IsRightToLeft()
+	{
+		return this.handle.IsRightToLeft();
+	}
+	
+	public void SetFlag(int64 flag)
+	{
+		this.handle.SetFlag(flag);
+	}
+	
+	public void SetFlags(int64 flags)
+	{
+		this.handle.SetFlags(flags);
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void SetBoundingRect(IQRectF boundingRect)
+	{
+		this.handle.SetBoundingRect(boundingRect);
+	}
+	
+	public void BoundingRect()
+	{
+		this.handle.BoundingRect();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public void SetFlag2(int64 flag, bool enabled)
+	{
+		this.handle.SetFlag2(flag, enabled);
 	}
 	
 }

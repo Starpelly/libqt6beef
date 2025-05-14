@@ -235,17 +235,22 @@ public interface IQTextLength
 {
 	void* NativePtr { get; }
 }
-public class QTextLength : IQTextLength
+public struct QTextLengthPtr : IQTextLength, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQTextLength other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextLength_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQTextLength other)
+	{
+		return .(CQt.QTextLength_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextLength_Delete(this.nativePtr);
 	}
@@ -267,17 +272,67 @@ public class QTextLength : IQTextLength
 	
 	public bool OperatorEqual(IQTextLength other)
 	{
-		return CQt.QTextLength_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QTextLength_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextLength other)
 	{
-		return CQt.QTextLength_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QTextLength_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToQVariant()
 	{
 		CQt.QTextLength_ToQVariant(this.nativePtr);
+	}
+	
+}
+public class QTextLength
+{
+	public QTextLengthPtr handle;
+	
+	public static implicit operator QTextLengthPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQTextLength other)
+	{
+		this.handle = QTextLengthPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public double Value(double maximumLength)
+	{
+		return this.handle.Value(maximumLength);
+	}
+	
+	public double RawValue()
+	{
+		return this.handle.RawValue();
+	}
+	
+	public bool OperatorEqual(IQTextLength other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQTextLength other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
 	}
 	
 }
@@ -313,34 +368,39 @@ public interface IQTextFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextFormat : IQTextFormat
+public struct QTextFormatPtr : IQTextFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextFormat_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -375,7 +435,7 @@ public class QTextFormat : IQTextFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -530,12 +590,12 @@ public class QTextFormat : IQTextFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -545,7 +605,7 @@ public class QTextFormat : IQTextFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -555,7 +615,7 @@ public class QTextFormat : IQTextFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -570,7 +630,7 @@ public class QTextFormat : IQTextFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -581,6 +641,281 @@ public class QTextFormat : IQTextFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextFormat
+{
+	public QTextFormatPtr handle;
+	
+	public static implicit operator QTextFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -702,17 +1037,22 @@ public interface IQTextCharFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextCharFormat : IQTextCharFormat, IQTextFormat
+public struct QTextCharFormatPtr : IQTextCharFormat, IDisposable, IQTextFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextCharFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextCharFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextCharFormat_Delete(this.nativePtr);
 	}
@@ -724,7 +1064,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public void Font()
@@ -794,7 +1134,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFontCapitalization(int64 capitalization)
 	{
-		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, capitalization);
+		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, (int64)capitalization);
 	}
 	
 	public int64 FontCapitalization()
@@ -804,7 +1144,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFontLetterSpacingType(int64 letterSpacingType)
 	{
-		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, letterSpacingType);
+		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, (int64)letterSpacingType);
 	}
 	
 	public int64 FontLetterSpacingType()
@@ -864,7 +1204,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -894,12 +1234,12 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFontStyleHint(int64 hint)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, hint);
+		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, (int64)hint);
 	}
 	
 	public void SetFontStyleStrategy(int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, strategy);
+		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, (int64)strategy);
 	}
 	
 	public int64 FontStyleHint()
@@ -914,7 +1254,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFontHintingPreference(int64 hintingPreference)
 	{
-		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, hintingPreference);
+		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, (int64)hintingPreference);
 	}
 	
 	public int64 FontHintingPreference()
@@ -934,7 +1274,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetUnderlineStyle(int64 style)
 	{
-		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, style);
+		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 UnderlineStyle()
@@ -944,7 +1284,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetVerticalAlignment(int64 alignment)
 	{
-		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, alignment);
+		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, (int64)alignment);
 	}
 	
 	public int64 VerticalAlignment()
@@ -954,7 +1294,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default || pen.NativePtr == default) ? default : pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -1054,27 +1394,27 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr, (int64)behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
+		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, (int64)hint, (int64)strategy);
 	}
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -1104,7 +1444,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -1259,12 +1599,12 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -1274,7 +1614,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -1284,7 +1624,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -1299,7 +1639,7 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -1310,6 +1650,621 @@ public class QTextCharFormat : IQTextCharFormat, IQTextFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextCharFormat
+{
+	public QTextCharFormatPtr handle;
+	
+	public static implicit operator QTextCharFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextCharFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetFont(IQFont font)
+	{
+		this.handle.SetFont(font);
+	}
+	
+	public void Font()
+	{
+		this.handle.Font();
+	}
+	
+	public void SetFontFamily(String family)
+	{
+		this.handle.SetFontFamily(family);
+	}
+	
+	public libqt_string FontFamily()
+	{
+		return this.handle.FontFamily();
+	}
+	
+	public void SetFontFamilies(String[] families)
+	{
+		this.handle.SetFontFamilies(null);
+	}
+	
+	public void FontFamilies()
+	{
+		this.handle.FontFamilies();
+	}
+	
+	public void SetFontStyleName(String styleName)
+	{
+		this.handle.SetFontStyleName(styleName);
+	}
+	
+	public void FontStyleName()
+	{
+		this.handle.FontStyleName();
+	}
+	
+	public void SetFontPointSize(double size)
+	{
+		this.handle.SetFontPointSize(size);
+	}
+	
+	public double FontPointSize()
+	{
+		return this.handle.FontPointSize();
+	}
+	
+	public void SetFontWeight(int32 weight)
+	{
+		this.handle.SetFontWeight(weight);
+	}
+	
+	public int32 FontWeight()
+	{
+		return this.handle.FontWeight();
+	}
+	
+	public void SetFontItalic(bool italic)
+	{
+		this.handle.SetFontItalic(italic);
+	}
+	
+	public bool FontItalic()
+	{
+		return this.handle.FontItalic();
+	}
+	
+	public void SetFontCapitalization(int64 capitalization)
+	{
+		this.handle.SetFontCapitalization(capitalization);
+	}
+	
+	public int64 FontCapitalization()
+	{
+		return this.handle.FontCapitalization();
+	}
+	
+	public void SetFontLetterSpacingType(int64 letterSpacingType)
+	{
+		this.handle.SetFontLetterSpacingType(letterSpacingType);
+	}
+	
+	public int64 FontLetterSpacingType()
+	{
+		return this.handle.FontLetterSpacingType();
+	}
+	
+	public void SetFontLetterSpacing(double spacing)
+	{
+		this.handle.SetFontLetterSpacing(spacing);
+	}
+	
+	public double FontLetterSpacing()
+	{
+		return this.handle.FontLetterSpacing();
+	}
+	
+	public void SetFontWordSpacing(double spacing)
+	{
+		this.handle.SetFontWordSpacing(spacing);
+	}
+	
+	public double FontWordSpacing()
+	{
+		return this.handle.FontWordSpacing();
+	}
+	
+	public void SetFontUnderline(bool underline)
+	{
+		this.handle.SetFontUnderline(underline);
+	}
+	
+	public bool FontUnderline()
+	{
+		return this.handle.FontUnderline();
+	}
+	
+	public void SetFontOverline(bool overline)
+	{
+		this.handle.SetFontOverline(overline);
+	}
+	
+	public bool FontOverline()
+	{
+		return this.handle.FontOverline();
+	}
+	
+	public void SetFontStrikeOut(bool strikeOut)
+	{
+		this.handle.SetFontStrikeOut(strikeOut);
+	}
+	
+	public bool FontStrikeOut()
+	{
+		return this.handle.FontStrikeOut();
+	}
+	
+	public void SetUnderlineColor(IQColor color)
+	{
+		this.handle.SetUnderlineColor(color);
+	}
+	
+	public void UnderlineColor()
+	{
+		this.handle.UnderlineColor();
+	}
+	
+	public void SetFontFixedPitch(bool fixedPitch)
+	{
+		this.handle.SetFontFixedPitch(fixedPitch);
+	}
+	
+	public bool FontFixedPitch()
+	{
+		return this.handle.FontFixedPitch();
+	}
+	
+	public void SetFontStretch(int32 factor)
+	{
+		this.handle.SetFontStretch(factor);
+	}
+	
+	public int32 FontStretch()
+	{
+		return this.handle.FontStretch();
+	}
+	
+	public void SetFontStyleHint(int64 hint)
+	{
+		this.handle.SetFontStyleHint(hint);
+	}
+	
+	public void SetFontStyleStrategy(int64 strategy)
+	{
+		this.handle.SetFontStyleStrategy(strategy);
+	}
+	
+	public int64 FontStyleHint()
+	{
+		return this.handle.FontStyleHint();
+	}
+	
+	public int64 FontStyleStrategy()
+	{
+		return this.handle.FontStyleStrategy();
+	}
+	
+	public void SetFontHintingPreference(int64 hintingPreference)
+	{
+		this.handle.SetFontHintingPreference(hintingPreference);
+	}
+	
+	public int64 FontHintingPreference()
+	{
+		return this.handle.FontHintingPreference();
+	}
+	
+	public void SetFontKerning(bool enable)
+	{
+		this.handle.SetFontKerning(enable);
+	}
+	
+	public bool FontKerning()
+	{
+		return this.handle.FontKerning();
+	}
+	
+	public void SetUnderlineStyle(int64 style)
+	{
+		this.handle.SetUnderlineStyle(style);
+	}
+	
+	public int64 UnderlineStyle()
+	{
+		return this.handle.UnderlineStyle();
+	}
+	
+	public void SetVerticalAlignment(int64 alignment)
+	{
+		this.handle.SetVerticalAlignment(alignment);
+	}
+	
+	public int64 VerticalAlignment()
+	{
+		return this.handle.VerticalAlignment();
+	}
+	
+	public void SetTextOutline(IQPen pen)
+	{
+		this.handle.SetTextOutline(pen);
+	}
+	
+	public void TextOutline()
+	{
+		this.handle.TextOutline();
+	}
+	
+	public void SetToolTip(String tip)
+	{
+		this.handle.SetToolTip(tip);
+	}
+	
+	public libqt_string ToolTip()
+	{
+		return this.handle.ToolTip();
+	}
+	
+	public void SetSuperScriptBaseline(double baseline)
+	{
+		this.handle.SetSuperScriptBaseline(baseline);
+	}
+	
+	public double SuperScriptBaseline()
+	{
+		return this.handle.SuperScriptBaseline();
+	}
+	
+	public void SetSubScriptBaseline(double baseline)
+	{
+		this.handle.SetSubScriptBaseline(baseline);
+	}
+	
+	public double SubScriptBaseline()
+	{
+		return this.handle.SubScriptBaseline();
+	}
+	
+	public void SetBaselineOffset(double baseline)
+	{
+		this.handle.SetBaselineOffset(baseline);
+	}
+	
+	public double BaselineOffset()
+	{
+		return this.handle.BaselineOffset();
+	}
+	
+	public void SetAnchor(bool anchor)
+	{
+		this.handle.SetAnchor(anchor);
+	}
+	
+	public bool IsAnchor()
+	{
+		return this.handle.IsAnchor();
+	}
+	
+	public void SetAnchorHref(String value)
+	{
+		this.handle.SetAnchorHref(value);
+	}
+	
+	public libqt_string AnchorHref()
+	{
+		return this.handle.AnchorHref();
+	}
+	
+	public void SetAnchorNames(String[] names)
+	{
+		this.handle.SetAnchorNames(null);
+	}
+	
+	public libqt_string[] AnchorNames()
+	{
+		return this.handle.AnchorNames();
+	}
+	
+	public void SetTableCellRowSpan(int32 tableCellRowSpan)
+	{
+		this.handle.SetTableCellRowSpan(tableCellRowSpan);
+	}
+	
+	public int32 TableCellRowSpan()
+	{
+		return this.handle.TableCellRowSpan();
+	}
+	
+	public void SetTableCellColumnSpan(int32 tableCellColumnSpan)
+	{
+		this.handle.SetTableCellColumnSpan(tableCellColumnSpan);
+	}
+	
+	public int32 TableCellColumnSpan()
+	{
+		return this.handle.TableCellColumnSpan();
+	}
+	
+	public void SetFont2(IQFont font, int64 behavior)
+	{
+		this.handle.SetFont2(font, behavior);
+	}
+	
+	public void SetFontStyleHint2(int64 hint, int64 strategy)
+	{
+		this.handle.SetFontStyleHint2(hint, strategy);
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -1465,17 +2420,22 @@ public interface IQTextBlockFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
+public struct QTextBlockFormatPtr : IQTextBlockFormat, IDisposable, IQTextFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextBlockFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextBlockFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextBlockFormat_Delete(this.nativePtr);
 	}
@@ -1605,7 +2565,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 		return CQt.QTextBlockFormat_PageBreakPolicy(this.nativePtr);
 	}
 	
-	public void SetTabPositions(QTextOption__Tab[] tabs)
+	public void SetTabPositions(QTextOption__TabPtr[] tabs)
 	{
 		CQt.QTextBlockFormat_SetTabPositions(this.nativePtr, null);
 	}
@@ -1617,7 +2577,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void SetMarker(int64 marker)
 	{
-		CQt.QTextBlockFormat_SetMarker(this.nativePtr, marker);
+		CQt.QTextBlockFormat_SetMarker(this.nativePtr, (int64)marker);
 	}
 	
 	public int64 Marker()
@@ -1627,17 +2587,17 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -1667,7 +2627,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -1822,12 +2782,12 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -1837,7 +2797,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -1847,7 +2807,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -1862,7 +2822,7 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -1873,6 +2833,421 @@ public class QTextBlockFormat : IQTextBlockFormat, IQTextFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextBlockFormat
+{
+	public QTextBlockFormatPtr handle;
+	
+	public static implicit operator QTextBlockFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextBlockFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetAlignment(int64 alignment)
+	{
+		this.handle.SetAlignment(alignment);
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetTopMargin(double margin)
+	{
+		this.handle.SetTopMargin(margin);
+	}
+	
+	public double TopMargin()
+	{
+		return this.handle.TopMargin();
+	}
+	
+	public void SetBottomMargin(double margin)
+	{
+		this.handle.SetBottomMargin(margin);
+	}
+	
+	public double BottomMargin()
+	{
+		return this.handle.BottomMargin();
+	}
+	
+	public void SetLeftMargin(double margin)
+	{
+		this.handle.SetLeftMargin(margin);
+	}
+	
+	public double LeftMargin()
+	{
+		return this.handle.LeftMargin();
+	}
+	
+	public void SetRightMargin(double margin)
+	{
+		this.handle.SetRightMargin(margin);
+	}
+	
+	public double RightMargin()
+	{
+		return this.handle.RightMargin();
+	}
+	
+	public void SetTextIndent(double aindent)
+	{
+		this.handle.SetTextIndent(aindent);
+	}
+	
+	public double TextIndent()
+	{
+		return this.handle.TextIndent();
+	}
+	
+	public void SetIndent(int32 indent)
+	{
+		this.handle.SetIndent(indent);
+	}
+	
+	public int32 Indent()
+	{
+		return this.handle.Indent();
+	}
+	
+	public void SetHeadingLevel(int32 alevel)
+	{
+		this.handle.SetHeadingLevel(alevel);
+	}
+	
+	public int32 HeadingLevel()
+	{
+		return this.handle.HeadingLevel();
+	}
+	
+	public void SetLineHeight(double height, int32 heightType)
+	{
+		this.handle.SetLineHeight(height, heightType);
+	}
+	
+	public double LineHeight(double scriptLineHeight, double scaling)
+	{
+		return this.handle.LineHeight(scriptLineHeight, scaling);
+	}
+	
+	public double LineHeight2()
+	{
+		return this.handle.LineHeight2();
+	}
+	
+	public int32 LineHeightType()
+	{
+		return this.handle.LineHeightType();
+	}
+	
+	public void SetNonBreakableLines(bool b)
+	{
+		this.handle.SetNonBreakableLines(b);
+	}
+	
+	public bool NonBreakableLines()
+	{
+		return this.handle.NonBreakableLines();
+	}
+	
+	public void SetPageBreakPolicy(int64 flags)
+	{
+		this.handle.SetPageBreakPolicy(flags);
+	}
+	
+	public int64 PageBreakPolicy()
+	{
+		return this.handle.PageBreakPolicy();
+	}
+	
+	public void SetTabPositions(QTextOption__TabPtr[] tabs)
+	{
+		this.handle.SetTabPositions(null);
+	}
+	
+	public void[] TabPositions()
+	{
+		return this.handle.TabPositions();
+	}
+	
+	public void SetMarker(int64 marker)
+	{
+		this.handle.SetMarker(marker);
+	}
+	
+	public int64 Marker()
+	{
+		return this.handle.Marker();
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -1948,17 +3323,22 @@ public interface IQTextListFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextListFormat : IQTextListFormat, IQTextFormat
+public struct QTextListFormatPtr : IQTextListFormat, IDisposable, IQTextFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextListFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextListFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextListFormat_Delete(this.nativePtr);
 	}
@@ -1970,7 +3350,7 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void SetStyle(int64 style)
 	{
-		CQt.QTextListFormat_SetStyle(this.nativePtr, style);
+		CQt.QTextListFormat_SetStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 Style()
@@ -2010,17 +3390,17 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -2050,7 +3430,7 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -2205,12 +3585,12 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -2220,7 +3600,7 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -2230,7 +3610,7 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -2245,7 +3625,7 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -2256,6 +3636,321 @@ public class QTextListFormat : IQTextListFormat, IQTextFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextListFormat
+{
+	public QTextListFormatPtr handle;
+	
+	public static implicit operator QTextListFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextListFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetStyle(int64 style)
+	{
+		this.handle.SetStyle(style);
+	}
+	
+	public int64 Style()
+	{
+		return this.handle.Style();
+	}
+	
+	public void SetIndent(int32 indent)
+	{
+		this.handle.SetIndent(indent);
+	}
+	
+	public int32 Indent()
+	{
+		return this.handle.Indent();
+	}
+	
+	public void SetNumberPrefix(String numberPrefix)
+	{
+		this.handle.SetNumberPrefix(numberPrefix);
+	}
+	
+	public libqt_string NumberPrefix()
+	{
+		return this.handle.NumberPrefix();
+	}
+	
+	public void SetNumberSuffix(String numberSuffix)
+	{
+		this.handle.SetNumberSuffix(numberSuffix);
+	}
+	
+	public libqt_string NumberSuffix()
+	{
+		return this.handle.NumberSuffix();
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -2291,17 +3986,22 @@ public interface IQTextImageFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
+public struct QTextImageFormatPtr : IQTextImageFormat, IDisposable, IQTextCharFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextImageFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextImageFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextImageFormat_Delete(this.nativePtr);
 	}
@@ -2358,7 +4058,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public void Font()
@@ -2428,7 +4128,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFontCapitalization(int64 capitalization)
 	{
-		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, capitalization);
+		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, (int64)capitalization);
 	}
 	
 	public int64 FontCapitalization()
@@ -2438,7 +4138,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFontLetterSpacingType(int64 letterSpacingType)
 	{
-		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, letterSpacingType);
+		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, (int64)letterSpacingType);
 	}
 	
 	public int64 FontLetterSpacingType()
@@ -2498,7 +4198,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -2528,12 +4228,12 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFontStyleHint(int64 hint)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, hint);
+		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, (int64)hint);
 	}
 	
 	public void SetFontStyleStrategy(int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, strategy);
+		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, (int64)strategy);
 	}
 	
 	public int64 FontStyleHint()
@@ -2548,7 +4248,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFontHintingPreference(int64 hintingPreference)
 	{
-		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, hintingPreference);
+		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, (int64)hintingPreference);
 	}
 	
 	public int64 FontHintingPreference()
@@ -2568,7 +4268,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetUnderlineStyle(int64 style)
 	{
-		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, style);
+		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 UnderlineStyle()
@@ -2578,7 +4278,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetVerticalAlignment(int64 alignment)
 	{
-		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, alignment);
+		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, (int64)alignment);
 	}
 	
 	public int64 VerticalAlignment()
@@ -2588,7 +4288,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default || pen.NativePtr == default) ? default : pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -2688,27 +4388,27 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr, (int64)behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
+		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, (int64)hint, (int64)strategy);
 	}
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -2738,7 +4438,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -2893,12 +4593,12 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -2908,7 +4608,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -2918,7 +4618,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -2933,7 +4633,7 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -2944,6 +4644,666 @@ public class QTextImageFormat : IQTextImageFormat, IQTextCharFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextImageFormat
+{
+	public QTextImageFormatPtr handle;
+	
+	public static implicit operator QTextImageFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextImageFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetName(String name)
+	{
+		this.handle.SetName(name);
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public void SetWidth(double width)
+	{
+		this.handle.SetWidth(width);
+	}
+	
+	public double Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public void SetHeight(double height)
+	{
+		this.handle.SetHeight(height);
+	}
+	
+	public double Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void SetQuality(int32 quality)
+	{
+		this.handle.SetQuality(quality);
+	}
+	
+	public void SetQuality2()
+	{
+		this.handle.SetQuality2();
+	}
+	
+	public int32 Quality()
+	{
+		return this.handle.Quality();
+	}
+	
+	public void SetFont(IQFont font)
+	{
+		this.handle.SetFont(font);
+	}
+	
+	public void Font()
+	{
+		this.handle.Font();
+	}
+	
+	public void SetFontFamily(String family)
+	{
+		this.handle.SetFontFamily(family);
+	}
+	
+	public libqt_string FontFamily()
+	{
+		return this.handle.FontFamily();
+	}
+	
+	public void SetFontFamilies(String[] families)
+	{
+		this.handle.SetFontFamilies(null);
+	}
+	
+	public void FontFamilies()
+	{
+		this.handle.FontFamilies();
+	}
+	
+	public void SetFontStyleName(String styleName)
+	{
+		this.handle.SetFontStyleName(styleName);
+	}
+	
+	public void FontStyleName()
+	{
+		this.handle.FontStyleName();
+	}
+	
+	public void SetFontPointSize(double size)
+	{
+		this.handle.SetFontPointSize(size);
+	}
+	
+	public double FontPointSize()
+	{
+		return this.handle.FontPointSize();
+	}
+	
+	public void SetFontWeight(int32 weight)
+	{
+		this.handle.SetFontWeight(weight);
+	}
+	
+	public int32 FontWeight()
+	{
+		return this.handle.FontWeight();
+	}
+	
+	public void SetFontItalic(bool italic)
+	{
+		this.handle.SetFontItalic(italic);
+	}
+	
+	public bool FontItalic()
+	{
+		return this.handle.FontItalic();
+	}
+	
+	public void SetFontCapitalization(int64 capitalization)
+	{
+		this.handle.SetFontCapitalization(capitalization);
+	}
+	
+	public int64 FontCapitalization()
+	{
+		return this.handle.FontCapitalization();
+	}
+	
+	public void SetFontLetterSpacingType(int64 letterSpacingType)
+	{
+		this.handle.SetFontLetterSpacingType(letterSpacingType);
+	}
+	
+	public int64 FontLetterSpacingType()
+	{
+		return this.handle.FontLetterSpacingType();
+	}
+	
+	public void SetFontLetterSpacing(double spacing)
+	{
+		this.handle.SetFontLetterSpacing(spacing);
+	}
+	
+	public double FontLetterSpacing()
+	{
+		return this.handle.FontLetterSpacing();
+	}
+	
+	public void SetFontWordSpacing(double spacing)
+	{
+		this.handle.SetFontWordSpacing(spacing);
+	}
+	
+	public double FontWordSpacing()
+	{
+		return this.handle.FontWordSpacing();
+	}
+	
+	public void SetFontUnderline(bool underline)
+	{
+		this.handle.SetFontUnderline(underline);
+	}
+	
+	public bool FontUnderline()
+	{
+		return this.handle.FontUnderline();
+	}
+	
+	public void SetFontOverline(bool overline)
+	{
+		this.handle.SetFontOverline(overline);
+	}
+	
+	public bool FontOverline()
+	{
+		return this.handle.FontOverline();
+	}
+	
+	public void SetFontStrikeOut(bool strikeOut)
+	{
+		this.handle.SetFontStrikeOut(strikeOut);
+	}
+	
+	public bool FontStrikeOut()
+	{
+		return this.handle.FontStrikeOut();
+	}
+	
+	public void SetUnderlineColor(IQColor color)
+	{
+		this.handle.SetUnderlineColor(color);
+	}
+	
+	public void UnderlineColor()
+	{
+		this.handle.UnderlineColor();
+	}
+	
+	public void SetFontFixedPitch(bool fixedPitch)
+	{
+		this.handle.SetFontFixedPitch(fixedPitch);
+	}
+	
+	public bool FontFixedPitch()
+	{
+		return this.handle.FontFixedPitch();
+	}
+	
+	public void SetFontStretch(int32 factor)
+	{
+		this.handle.SetFontStretch(factor);
+	}
+	
+	public int32 FontStretch()
+	{
+		return this.handle.FontStretch();
+	}
+	
+	public void SetFontStyleHint(int64 hint)
+	{
+		this.handle.SetFontStyleHint(hint);
+	}
+	
+	public void SetFontStyleStrategy(int64 strategy)
+	{
+		this.handle.SetFontStyleStrategy(strategy);
+	}
+	
+	public int64 FontStyleHint()
+	{
+		return this.handle.FontStyleHint();
+	}
+	
+	public int64 FontStyleStrategy()
+	{
+		return this.handle.FontStyleStrategy();
+	}
+	
+	public void SetFontHintingPreference(int64 hintingPreference)
+	{
+		this.handle.SetFontHintingPreference(hintingPreference);
+	}
+	
+	public int64 FontHintingPreference()
+	{
+		return this.handle.FontHintingPreference();
+	}
+	
+	public void SetFontKerning(bool enable)
+	{
+		this.handle.SetFontKerning(enable);
+	}
+	
+	public bool FontKerning()
+	{
+		return this.handle.FontKerning();
+	}
+	
+	public void SetUnderlineStyle(int64 style)
+	{
+		this.handle.SetUnderlineStyle(style);
+	}
+	
+	public int64 UnderlineStyle()
+	{
+		return this.handle.UnderlineStyle();
+	}
+	
+	public void SetVerticalAlignment(int64 alignment)
+	{
+		this.handle.SetVerticalAlignment(alignment);
+	}
+	
+	public int64 VerticalAlignment()
+	{
+		return this.handle.VerticalAlignment();
+	}
+	
+	public void SetTextOutline(IQPen pen)
+	{
+		this.handle.SetTextOutline(pen);
+	}
+	
+	public void TextOutline()
+	{
+		this.handle.TextOutline();
+	}
+	
+	public void SetToolTip(String tip)
+	{
+		this.handle.SetToolTip(tip);
+	}
+	
+	public libqt_string ToolTip()
+	{
+		return this.handle.ToolTip();
+	}
+	
+	public void SetSuperScriptBaseline(double baseline)
+	{
+		this.handle.SetSuperScriptBaseline(baseline);
+	}
+	
+	public double SuperScriptBaseline()
+	{
+		return this.handle.SuperScriptBaseline();
+	}
+	
+	public void SetSubScriptBaseline(double baseline)
+	{
+		this.handle.SetSubScriptBaseline(baseline);
+	}
+	
+	public double SubScriptBaseline()
+	{
+		return this.handle.SubScriptBaseline();
+	}
+	
+	public void SetBaselineOffset(double baseline)
+	{
+		this.handle.SetBaselineOffset(baseline);
+	}
+	
+	public double BaselineOffset()
+	{
+		return this.handle.BaselineOffset();
+	}
+	
+	public void SetAnchor(bool anchor)
+	{
+		this.handle.SetAnchor(anchor);
+	}
+	
+	public bool IsAnchor()
+	{
+		return this.handle.IsAnchor();
+	}
+	
+	public void SetAnchorHref(String value)
+	{
+		this.handle.SetAnchorHref(value);
+	}
+	
+	public libqt_string AnchorHref()
+	{
+		return this.handle.AnchorHref();
+	}
+	
+	public void SetAnchorNames(String[] names)
+	{
+		this.handle.SetAnchorNames(null);
+	}
+	
+	public libqt_string[] AnchorNames()
+	{
+		return this.handle.AnchorNames();
+	}
+	
+	public void SetTableCellRowSpan(int32 tableCellRowSpan)
+	{
+		this.handle.SetTableCellRowSpan(tableCellRowSpan);
+	}
+	
+	public int32 TableCellRowSpan()
+	{
+		return this.handle.TableCellRowSpan();
+	}
+	
+	public void SetTableCellColumnSpan(int32 tableCellColumnSpan)
+	{
+		this.handle.SetTableCellColumnSpan(tableCellColumnSpan);
+	}
+	
+	public int32 TableCellColumnSpan()
+	{
+		return this.handle.TableCellColumnSpan();
+	}
+	
+	public void SetFont2(IQFont font, int64 behavior)
+	{
+		this.handle.SetFont2(font, behavior);
+	}
+	
+	public void SetFontStyleHint2(int64 hint, int64 strategy)
+	{
+		this.handle.SetFontStyleHint2(hint, strategy);
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -2979,17 +5339,22 @@ public interface IQTextFrameFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
+public struct QTextFrameFormatPtr : IQTextFrameFormat, IDisposable, IQTextFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextFrameFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextFrameFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextFrameFormat_Delete(this.nativePtr);
 	}
@@ -3001,7 +5366,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetPosition(int64 f)
 	{
-		CQt.QTextFrameFormat_SetPosition(this.nativePtr, f);
+		CQt.QTextFrameFormat_SetPosition(this.nativePtr, (int64)f);
 	}
 	
 	public int64 Position()
@@ -3021,7 +5386,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void BorderBrush()
@@ -3031,7 +5396,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetBorderStyle(int64 style)
 	{
-		CQt.QTextFrameFormat_SetBorderStyle(this.nativePtr, style);
+		CQt.QTextFrameFormat_SetBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 BorderStyle()
@@ -3106,7 +5471,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetWidthWithLength(IQTextLength length)
 	{
-		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default) ? default : (void*)length.NativePtr);
+		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default || length.NativePtr == default) ? default : length.NativePtr);
 	}
 	
 	public void Width()
@@ -3121,7 +5486,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetHeightWithHeight(IQTextLength height)
 	{
-		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default) ? default : (void*)height.NativePtr);
+		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default || height.NativePtr == default) ? default : height.NativePtr);
 	}
 	
 	public void Height()
@@ -3141,17 +5506,17 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -3181,7 +5546,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -3336,12 +5701,12 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -3351,7 +5716,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -3361,7 +5726,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -3376,7 +5741,7 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -3387,6 +5752,421 @@ public class QTextFrameFormat : IQTextFrameFormat, IQTextFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextFrameFormat
+{
+	public QTextFrameFormatPtr handle;
+	
+	public static implicit operator QTextFrameFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextFrameFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetPosition(int64 f)
+	{
+		this.handle.SetPosition(f);
+	}
+	
+	public int64 Position()
+	{
+		return this.handle.Position();
+	}
+	
+	public void SetBorder(double border)
+	{
+		this.handle.SetBorder(border);
+	}
+	
+	public double Border()
+	{
+		return this.handle.Border();
+	}
+	
+	public void SetBorderBrush(IQBrush brush)
+	{
+		this.handle.SetBorderBrush(brush);
+	}
+	
+	public void BorderBrush()
+	{
+		this.handle.BorderBrush();
+	}
+	
+	public void SetBorderStyle(int64 style)
+	{
+		this.handle.SetBorderStyle(style);
+	}
+	
+	public int64 BorderStyle()
+	{
+		return this.handle.BorderStyle();
+	}
+	
+	public void SetMargin(double margin)
+	{
+		this.handle.SetMargin(margin);
+	}
+	
+	public double Margin()
+	{
+		return this.handle.Margin();
+	}
+	
+	public void SetTopMargin(double margin)
+	{
+		this.handle.SetTopMargin(margin);
+	}
+	
+	public double TopMargin()
+	{
+		return this.handle.TopMargin();
+	}
+	
+	public void SetBottomMargin(double margin)
+	{
+		this.handle.SetBottomMargin(margin);
+	}
+	
+	public double BottomMargin()
+	{
+		return this.handle.BottomMargin();
+	}
+	
+	public void SetLeftMargin(double margin)
+	{
+		this.handle.SetLeftMargin(margin);
+	}
+	
+	public double LeftMargin()
+	{
+		return this.handle.LeftMargin();
+	}
+	
+	public void SetRightMargin(double margin)
+	{
+		this.handle.SetRightMargin(margin);
+	}
+	
+	public double RightMargin()
+	{
+		return this.handle.RightMargin();
+	}
+	
+	public void SetPadding(double padding)
+	{
+		this.handle.SetPadding(padding);
+	}
+	
+	public double Padding()
+	{
+		return this.handle.Padding();
+	}
+	
+	public void SetWidth(double width)
+	{
+		this.handle.SetWidth(width);
+	}
+	
+	public void SetWidthWithLength(IQTextLength length)
+	{
+		this.handle.SetWidthWithLength(length);
+	}
+	
+	public void Width()
+	{
+		this.handle.Width();
+	}
+	
+	public void SetHeight(double height)
+	{
+		this.handle.SetHeight(height);
+	}
+	
+	public void SetHeightWithHeight(IQTextLength height)
+	{
+		this.handle.SetHeightWithHeight(height);
+	}
+	
+	public void Height()
+	{
+		this.handle.Height();
+	}
+	
+	public void SetPageBreakPolicy(int64 flags)
+	{
+		this.handle.SetPageBreakPolicy(flags);
+	}
+	
+	public int64 PageBreakPolicy()
+	{
+		return this.handle.PageBreakPolicy();
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -3462,17 +6242,22 @@ public interface IQTextTableFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
+public struct QTextTableFormatPtr : IQTextTableFormat, IDisposable, IQTextFrameFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextTableFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextTableFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextTableFormat_Delete(this.nativePtr);
 	}
@@ -3559,7 +6344,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetPosition(int64 f)
 	{
-		CQt.QTextFrameFormat_SetPosition(this.nativePtr, f);
+		CQt.QTextFrameFormat_SetPosition(this.nativePtr, (int64)f);
 	}
 	
 	public int64 Position()
@@ -3579,7 +6364,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFrameFormat_SetBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void BorderBrush()
@@ -3589,7 +6374,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetBorderStyle(int64 style)
 	{
-		CQt.QTextFrameFormat_SetBorderStyle(this.nativePtr, style);
+		CQt.QTextFrameFormat_SetBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 BorderStyle()
@@ -3664,7 +6449,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetWidthWithLength(IQTextLength length)
 	{
-		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default) ? default : (void*)length.NativePtr);
+		CQt.QTextFrameFormat_SetWidthWithLength(this.nativePtr, (length == default || length.NativePtr == default) ? default : length.NativePtr);
 	}
 	
 	public void Width()
@@ -3679,7 +6464,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetHeightWithHeight(IQTextLength height)
 	{
-		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default) ? default : (void*)height.NativePtr);
+		CQt.QTextFrameFormat_SetHeightWithHeight(this.nativePtr, (height == default || height.NativePtr == default) ? default : height.NativePtr);
 	}
 	
 	public void Height()
@@ -3699,17 +6484,17 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -3739,7 +6524,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -3894,12 +6679,12 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -3909,7 +6694,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -3919,7 +6704,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -3934,7 +6719,7 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -3945,6 +6730,496 @@ public class QTextTableFormat : IQTextTableFormat, IQTextFrameFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextTableFormat
+{
+	public QTextTableFormatPtr handle;
+	
+	public static implicit operator QTextTableFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextTableFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 Columns()
+	{
+		return this.handle.Columns();
+	}
+	
+	public void SetColumns(int32 columns)
+	{
+		this.handle.SetColumns(columns);
+	}
+	
+	public void SetColumnWidthConstraints(IQTextLength[] constraints)
+	{
+		this.handle.SetColumnWidthConstraints(null);
+	}
+	
+	public void[] ColumnWidthConstraints()
+	{
+		return this.handle.ColumnWidthConstraints();
+	}
+	
+	public void ClearColumnWidthConstraints()
+	{
+		this.handle.ClearColumnWidthConstraints();
+	}
+	
+	public double CellSpacing()
+	{
+		return this.handle.CellSpacing();
+	}
+	
+	public void SetCellSpacing(double spacing)
+	{
+		this.handle.SetCellSpacing(spacing);
+	}
+	
+	public double CellPadding()
+	{
+		return this.handle.CellPadding();
+	}
+	
+	public void SetCellPadding(double padding)
+	{
+		this.handle.SetCellPadding(padding);
+	}
+	
+	public void SetAlignment(int64 alignment)
+	{
+		this.handle.SetAlignment(alignment);
+	}
+	
+	public int64 Alignment()
+	{
+		return this.handle.Alignment();
+	}
+	
+	public void SetHeaderRowCount(int32 count)
+	{
+		this.handle.SetHeaderRowCount(count);
+	}
+	
+	public int32 HeaderRowCount()
+	{
+		return this.handle.HeaderRowCount();
+	}
+	
+	public void SetBorderCollapse(bool borderCollapse)
+	{
+		this.handle.SetBorderCollapse(borderCollapse);
+	}
+	
+	public bool BorderCollapse()
+	{
+		return this.handle.BorderCollapse();
+	}
+	
+	public void SetPosition(int64 f)
+	{
+		this.handle.SetPosition(f);
+	}
+	
+	public int64 Position()
+	{
+		return this.handle.Position();
+	}
+	
+	public void SetBorder(double border)
+	{
+		this.handle.SetBorder(border);
+	}
+	
+	public double Border()
+	{
+		return this.handle.Border();
+	}
+	
+	public void SetBorderBrush(IQBrush brush)
+	{
+		this.handle.SetBorderBrush(brush);
+	}
+	
+	public void BorderBrush()
+	{
+		this.handle.BorderBrush();
+	}
+	
+	public void SetBorderStyle(int64 style)
+	{
+		this.handle.SetBorderStyle(style);
+	}
+	
+	public int64 BorderStyle()
+	{
+		return this.handle.BorderStyle();
+	}
+	
+	public void SetMargin(double margin)
+	{
+		this.handle.SetMargin(margin);
+	}
+	
+	public double Margin()
+	{
+		return this.handle.Margin();
+	}
+	
+	public void SetTopMargin(double margin)
+	{
+		this.handle.SetTopMargin(margin);
+	}
+	
+	public double TopMargin()
+	{
+		return this.handle.TopMargin();
+	}
+	
+	public void SetBottomMargin(double margin)
+	{
+		this.handle.SetBottomMargin(margin);
+	}
+	
+	public double BottomMargin()
+	{
+		return this.handle.BottomMargin();
+	}
+	
+	public void SetLeftMargin(double margin)
+	{
+		this.handle.SetLeftMargin(margin);
+	}
+	
+	public double LeftMargin()
+	{
+		return this.handle.LeftMargin();
+	}
+	
+	public void SetRightMargin(double margin)
+	{
+		this.handle.SetRightMargin(margin);
+	}
+	
+	public double RightMargin()
+	{
+		return this.handle.RightMargin();
+	}
+	
+	public void SetPadding(double padding)
+	{
+		this.handle.SetPadding(padding);
+	}
+	
+	public double Padding()
+	{
+		return this.handle.Padding();
+	}
+	
+	public void SetWidth(double width)
+	{
+		this.handle.SetWidth(width);
+	}
+	
+	public void SetWidthWithLength(IQTextLength length)
+	{
+		this.handle.SetWidthWithLength(length);
+	}
+	
+	public void Width()
+	{
+		this.handle.Width();
+	}
+	
+	public void SetHeight(double height)
+	{
+		this.handle.SetHeight(height);
+	}
+	
+	public void SetHeightWithHeight(IQTextLength height)
+	{
+		this.handle.SetHeightWithHeight(height);
+	}
+	
+	public void Height()
+	{
+		this.handle.Height();
+	}
+	
+	public void SetPageBreakPolicy(int64 flags)
+	{
+		this.handle.SetPageBreakPolicy(flags);
+	}
+	
+	public int64 PageBreakPolicy()
+	{
+		return this.handle.PageBreakPolicy();
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }
@@ -3992,17 +7267,22 @@ public interface IQTextTableCellFormat
 {
 	void* NativePtr { get; }
 }
-public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
+public struct QTextTableCellFormatPtr : IQTextTableCellFormat, IDisposable, IQTextCharFormat
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTextTableCellFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QTextTableCellFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTextTableCellFormat_Delete(this.nativePtr);
 	}
@@ -4104,7 +7384,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetTopBorderStyle(int64 style)
 	{
-		CQt.QTextTableCellFormat_SetTopBorderStyle(this.nativePtr, style);
+		CQt.QTextTableCellFormat_SetTopBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 TopBorderStyle()
@@ -4114,7 +7394,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetBottomBorderStyle(int64 style)
 	{
-		CQt.QTextTableCellFormat_SetBottomBorderStyle(this.nativePtr, style);
+		CQt.QTextTableCellFormat_SetBottomBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 BottomBorderStyle()
@@ -4124,7 +7404,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetLeftBorderStyle(int64 style)
 	{
-		CQt.QTextTableCellFormat_SetLeftBorderStyle(this.nativePtr, style);
+		CQt.QTextTableCellFormat_SetLeftBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 LeftBorderStyle()
@@ -4134,7 +7414,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetRightBorderStyle(int64 style)
 	{
-		CQt.QTextTableCellFormat_SetRightBorderStyle(this.nativePtr, style);
+		CQt.QTextTableCellFormat_SetRightBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 RightBorderStyle()
@@ -4144,12 +7424,12 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetBorderStyle(int64 style)
 	{
-		CQt.QTextTableCellFormat_SetBorderStyle(this.nativePtr, style);
+		CQt.QTextTableCellFormat_SetBorderStyle(this.nativePtr, (int64)style);
 	}
 	
 	public void SetTopBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetTopBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextTableCellFormat_SetTopBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void TopBorderBrush()
@@ -4159,7 +7439,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetBottomBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetBottomBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextTableCellFormat_SetBottomBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void BottomBorderBrush()
@@ -4169,7 +7449,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetLeftBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetLeftBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextTableCellFormat_SetLeftBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void LeftBorderBrush()
@@ -4179,7 +7459,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetRightBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetRightBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextTableCellFormat_SetRightBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void RightBorderBrush()
@@ -4189,12 +7469,12 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetBorderBrush(IQBrush brush)
 	{
-		CQt.QTextTableCellFormat_SetBorderBrush(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextTableCellFormat_SetBorderBrush(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void SetFont(IQFont font)
 	{
-		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QTextCharFormat_SetFont(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public void Font()
@@ -4264,7 +7544,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetFontCapitalization(int64 capitalization)
 	{
-		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, capitalization);
+		CQt.QTextCharFormat_SetFontCapitalization(this.nativePtr, (int64)capitalization);
 	}
 	
 	public int64 FontCapitalization()
@@ -4274,7 +7554,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetFontLetterSpacingType(int64 letterSpacingType)
 	{
-		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, letterSpacingType);
+		CQt.QTextCharFormat_SetFontLetterSpacingType(this.nativePtr, (int64)letterSpacingType);
 	}
 	
 	public int64 FontLetterSpacingType()
@@ -4334,7 +7614,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetUnderlineColor(IQColor color)
 	{
-		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default) ? default : (void*)color.NativePtr);
+		CQt.QTextCharFormat_SetUnderlineColor(this.nativePtr, (color == default || color.NativePtr == default) ? default : color.NativePtr);
 	}
 	
 	public void UnderlineColor()
@@ -4364,12 +7644,12 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetFontStyleHint(int64 hint)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, hint);
+		CQt.QTextCharFormat_SetFontStyleHint(this.nativePtr, (int64)hint);
 	}
 	
 	public void SetFontStyleStrategy(int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, strategy);
+		CQt.QTextCharFormat_SetFontStyleStrategy(this.nativePtr, (int64)strategy);
 	}
 	
 	public int64 FontStyleHint()
@@ -4384,7 +7664,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetFontHintingPreference(int64 hintingPreference)
 	{
-		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, hintingPreference);
+		CQt.QTextCharFormat_SetFontHintingPreference(this.nativePtr, (int64)hintingPreference);
 	}
 	
 	public int64 FontHintingPreference()
@@ -4404,7 +7684,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetUnderlineStyle(int64 style)
 	{
-		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, style);
+		CQt.QTextCharFormat_SetUnderlineStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 UnderlineStyle()
@@ -4414,7 +7694,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetVerticalAlignment(int64 alignment)
 	{
-		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, alignment);
+		CQt.QTextCharFormat_SetVerticalAlignment(this.nativePtr, (int64)alignment);
 	}
 	
 	public int64 VerticalAlignment()
@@ -4424,7 +7704,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetTextOutline(IQPen pen)
 	{
-		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default) ? default : (void*)pen.NativePtr);
+		CQt.QTextCharFormat_SetTextOutline(this.nativePtr, (pen == default || pen.NativePtr == default) ? default : pen.NativePtr);
 	}
 	
 	public void TextOutline()
@@ -4524,27 +7804,27 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetFont2(IQFont font, int64 behavior)
 	{
-		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default) ? default : (void*)font.NativePtr, behavior);
+		CQt.QTextCharFormat_SetFont2(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr, (int64)behavior);
 	}
 	
 	public void SetFontStyleHint2(int64 hint, int64 strategy)
 	{
-		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, hint, strategy);
+		CQt.QTextCharFormat_SetFontStyleHint2(this.nativePtr, (int64)hint, (int64)strategy);
 	}
 	
 	public void OperatorAssign(IQTextFormat rhs)
 	{
-		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		CQt.QTextFormat_OperatorAssign(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void Swap(IQTextFormat other)
 	{
-		CQt.QTextFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Merge(IQTextFormat other)
 	{
-		CQt.QTextFormat_Merge(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QTextFormat_Merge(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -4574,7 +7854,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetProperty(int32 propertyId, IQVariant value)
 	{
-		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QTextFormat_SetProperty(this.nativePtr, propertyId, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void ClearProperty(int32 propertyId)
@@ -4729,12 +8009,12 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public bool OperatorEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQTextFormat rhs)
 	{
-		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default) ? default : (void*)rhs.NativePtr);
+		return CQt.QTextFormat_OperatorNotEqual(this.nativePtr, (rhs == default || rhs.NativePtr == default) ? default : rhs.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -4744,7 +8024,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetLayoutDirection(int64 direction)
 	{
-		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, direction);
+		CQt.QTextFormat_SetLayoutDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public int64 LayoutDirection()
@@ -4754,7 +8034,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Background()
@@ -4769,7 +8049,7 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QTextFormat_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -4780,6 +8060,801 @@ public class QTextTableCellFormat : IQTextTableCellFormat, IQTextCharFormat
 	public void ClearForeground()
 	{
 		CQt.QTextFormat_ClearForeground(this.nativePtr);
+	}
+	
+}
+public class QTextTableCellFormat
+{
+	public QTextTableCellFormatPtr handle;
+	
+	public static implicit operator QTextTableCellFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QTextTableCellFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetTopPadding(double padding)
+	{
+		this.handle.SetTopPadding(padding);
+	}
+	
+	public double TopPadding()
+	{
+		return this.handle.TopPadding();
+	}
+	
+	public void SetBottomPadding(double padding)
+	{
+		this.handle.SetBottomPadding(padding);
+	}
+	
+	public double BottomPadding()
+	{
+		return this.handle.BottomPadding();
+	}
+	
+	public void SetLeftPadding(double padding)
+	{
+		this.handle.SetLeftPadding(padding);
+	}
+	
+	public double LeftPadding()
+	{
+		return this.handle.LeftPadding();
+	}
+	
+	public void SetRightPadding(double padding)
+	{
+		this.handle.SetRightPadding(padding);
+	}
+	
+	public double RightPadding()
+	{
+		return this.handle.RightPadding();
+	}
+	
+	public void SetPadding(double padding)
+	{
+		this.handle.SetPadding(padding);
+	}
+	
+	public void SetTopBorder(double width)
+	{
+		this.handle.SetTopBorder(width);
+	}
+	
+	public double TopBorder()
+	{
+		return this.handle.TopBorder();
+	}
+	
+	public void SetBottomBorder(double width)
+	{
+		this.handle.SetBottomBorder(width);
+	}
+	
+	public double BottomBorder()
+	{
+		return this.handle.BottomBorder();
+	}
+	
+	public void SetLeftBorder(double width)
+	{
+		this.handle.SetLeftBorder(width);
+	}
+	
+	public double LeftBorder()
+	{
+		return this.handle.LeftBorder();
+	}
+	
+	public void SetRightBorder(double width)
+	{
+		this.handle.SetRightBorder(width);
+	}
+	
+	public double RightBorder()
+	{
+		return this.handle.RightBorder();
+	}
+	
+	public void SetBorder(double width)
+	{
+		this.handle.SetBorder(width);
+	}
+	
+	public void SetTopBorderStyle(int64 style)
+	{
+		this.handle.SetTopBorderStyle(style);
+	}
+	
+	public int64 TopBorderStyle()
+	{
+		return this.handle.TopBorderStyle();
+	}
+	
+	public void SetBottomBorderStyle(int64 style)
+	{
+		this.handle.SetBottomBorderStyle(style);
+	}
+	
+	public int64 BottomBorderStyle()
+	{
+		return this.handle.BottomBorderStyle();
+	}
+	
+	public void SetLeftBorderStyle(int64 style)
+	{
+		this.handle.SetLeftBorderStyle(style);
+	}
+	
+	public int64 LeftBorderStyle()
+	{
+		return this.handle.LeftBorderStyle();
+	}
+	
+	public void SetRightBorderStyle(int64 style)
+	{
+		this.handle.SetRightBorderStyle(style);
+	}
+	
+	public int64 RightBorderStyle()
+	{
+		return this.handle.RightBorderStyle();
+	}
+	
+	public void SetBorderStyle(int64 style)
+	{
+		this.handle.SetBorderStyle(style);
+	}
+	
+	public void SetTopBorderBrush(IQBrush brush)
+	{
+		this.handle.SetTopBorderBrush(brush);
+	}
+	
+	public void TopBorderBrush()
+	{
+		this.handle.TopBorderBrush();
+	}
+	
+	public void SetBottomBorderBrush(IQBrush brush)
+	{
+		this.handle.SetBottomBorderBrush(brush);
+	}
+	
+	public void BottomBorderBrush()
+	{
+		this.handle.BottomBorderBrush();
+	}
+	
+	public void SetLeftBorderBrush(IQBrush brush)
+	{
+		this.handle.SetLeftBorderBrush(brush);
+	}
+	
+	public void LeftBorderBrush()
+	{
+		this.handle.LeftBorderBrush();
+	}
+	
+	public void SetRightBorderBrush(IQBrush brush)
+	{
+		this.handle.SetRightBorderBrush(brush);
+	}
+	
+	public void RightBorderBrush()
+	{
+		this.handle.RightBorderBrush();
+	}
+	
+	public void SetBorderBrush(IQBrush brush)
+	{
+		this.handle.SetBorderBrush(brush);
+	}
+	
+	public void SetFont(IQFont font)
+	{
+		this.handle.SetFont(font);
+	}
+	
+	public void Font()
+	{
+		this.handle.Font();
+	}
+	
+	public void SetFontFamily(String family)
+	{
+		this.handle.SetFontFamily(family);
+	}
+	
+	public libqt_string FontFamily()
+	{
+		return this.handle.FontFamily();
+	}
+	
+	public void SetFontFamilies(String[] families)
+	{
+		this.handle.SetFontFamilies(null);
+	}
+	
+	public void FontFamilies()
+	{
+		this.handle.FontFamilies();
+	}
+	
+	public void SetFontStyleName(String styleName)
+	{
+		this.handle.SetFontStyleName(styleName);
+	}
+	
+	public void FontStyleName()
+	{
+		this.handle.FontStyleName();
+	}
+	
+	public void SetFontPointSize(double size)
+	{
+		this.handle.SetFontPointSize(size);
+	}
+	
+	public double FontPointSize()
+	{
+		return this.handle.FontPointSize();
+	}
+	
+	public void SetFontWeight(int32 weight)
+	{
+		this.handle.SetFontWeight(weight);
+	}
+	
+	public int32 FontWeight()
+	{
+		return this.handle.FontWeight();
+	}
+	
+	public void SetFontItalic(bool italic)
+	{
+		this.handle.SetFontItalic(italic);
+	}
+	
+	public bool FontItalic()
+	{
+		return this.handle.FontItalic();
+	}
+	
+	public void SetFontCapitalization(int64 capitalization)
+	{
+		this.handle.SetFontCapitalization(capitalization);
+	}
+	
+	public int64 FontCapitalization()
+	{
+		return this.handle.FontCapitalization();
+	}
+	
+	public void SetFontLetterSpacingType(int64 letterSpacingType)
+	{
+		this.handle.SetFontLetterSpacingType(letterSpacingType);
+	}
+	
+	public int64 FontLetterSpacingType()
+	{
+		return this.handle.FontLetterSpacingType();
+	}
+	
+	public void SetFontLetterSpacing(double spacing)
+	{
+		this.handle.SetFontLetterSpacing(spacing);
+	}
+	
+	public double FontLetterSpacing()
+	{
+		return this.handle.FontLetterSpacing();
+	}
+	
+	public void SetFontWordSpacing(double spacing)
+	{
+		this.handle.SetFontWordSpacing(spacing);
+	}
+	
+	public double FontWordSpacing()
+	{
+		return this.handle.FontWordSpacing();
+	}
+	
+	public void SetFontUnderline(bool underline)
+	{
+		this.handle.SetFontUnderline(underline);
+	}
+	
+	public bool FontUnderline()
+	{
+		return this.handle.FontUnderline();
+	}
+	
+	public void SetFontOverline(bool overline)
+	{
+		this.handle.SetFontOverline(overline);
+	}
+	
+	public bool FontOverline()
+	{
+		return this.handle.FontOverline();
+	}
+	
+	public void SetFontStrikeOut(bool strikeOut)
+	{
+		this.handle.SetFontStrikeOut(strikeOut);
+	}
+	
+	public bool FontStrikeOut()
+	{
+		return this.handle.FontStrikeOut();
+	}
+	
+	public void SetUnderlineColor(IQColor color)
+	{
+		this.handle.SetUnderlineColor(color);
+	}
+	
+	public void UnderlineColor()
+	{
+		this.handle.UnderlineColor();
+	}
+	
+	public void SetFontFixedPitch(bool fixedPitch)
+	{
+		this.handle.SetFontFixedPitch(fixedPitch);
+	}
+	
+	public bool FontFixedPitch()
+	{
+		return this.handle.FontFixedPitch();
+	}
+	
+	public void SetFontStretch(int32 factor)
+	{
+		this.handle.SetFontStretch(factor);
+	}
+	
+	public int32 FontStretch()
+	{
+		return this.handle.FontStretch();
+	}
+	
+	public void SetFontStyleHint(int64 hint)
+	{
+		this.handle.SetFontStyleHint(hint);
+	}
+	
+	public void SetFontStyleStrategy(int64 strategy)
+	{
+		this.handle.SetFontStyleStrategy(strategy);
+	}
+	
+	public int64 FontStyleHint()
+	{
+		return this.handle.FontStyleHint();
+	}
+	
+	public int64 FontStyleStrategy()
+	{
+		return this.handle.FontStyleStrategy();
+	}
+	
+	public void SetFontHintingPreference(int64 hintingPreference)
+	{
+		this.handle.SetFontHintingPreference(hintingPreference);
+	}
+	
+	public int64 FontHintingPreference()
+	{
+		return this.handle.FontHintingPreference();
+	}
+	
+	public void SetFontKerning(bool enable)
+	{
+		this.handle.SetFontKerning(enable);
+	}
+	
+	public bool FontKerning()
+	{
+		return this.handle.FontKerning();
+	}
+	
+	public void SetUnderlineStyle(int64 style)
+	{
+		this.handle.SetUnderlineStyle(style);
+	}
+	
+	public int64 UnderlineStyle()
+	{
+		return this.handle.UnderlineStyle();
+	}
+	
+	public void SetVerticalAlignment(int64 alignment)
+	{
+		this.handle.SetVerticalAlignment(alignment);
+	}
+	
+	public int64 VerticalAlignment()
+	{
+		return this.handle.VerticalAlignment();
+	}
+	
+	public void SetTextOutline(IQPen pen)
+	{
+		this.handle.SetTextOutline(pen);
+	}
+	
+	public void TextOutline()
+	{
+		this.handle.TextOutline();
+	}
+	
+	public void SetToolTip(String tip)
+	{
+		this.handle.SetToolTip(tip);
+	}
+	
+	public libqt_string ToolTip()
+	{
+		return this.handle.ToolTip();
+	}
+	
+	public void SetSuperScriptBaseline(double baseline)
+	{
+		this.handle.SetSuperScriptBaseline(baseline);
+	}
+	
+	public double SuperScriptBaseline()
+	{
+		return this.handle.SuperScriptBaseline();
+	}
+	
+	public void SetSubScriptBaseline(double baseline)
+	{
+		this.handle.SetSubScriptBaseline(baseline);
+	}
+	
+	public double SubScriptBaseline()
+	{
+		return this.handle.SubScriptBaseline();
+	}
+	
+	public void SetBaselineOffset(double baseline)
+	{
+		this.handle.SetBaselineOffset(baseline);
+	}
+	
+	public double BaselineOffset()
+	{
+		return this.handle.BaselineOffset();
+	}
+	
+	public void SetAnchor(bool anchor)
+	{
+		this.handle.SetAnchor(anchor);
+	}
+	
+	public bool IsAnchor()
+	{
+		return this.handle.IsAnchor();
+	}
+	
+	public void SetAnchorHref(String value)
+	{
+		this.handle.SetAnchorHref(value);
+	}
+	
+	public libqt_string AnchorHref()
+	{
+		return this.handle.AnchorHref();
+	}
+	
+	public void SetAnchorNames(String[] names)
+	{
+		this.handle.SetAnchorNames(null);
+	}
+	
+	public libqt_string[] AnchorNames()
+	{
+		return this.handle.AnchorNames();
+	}
+	
+	public void SetTableCellRowSpan(int32 tableCellRowSpan)
+	{
+		this.handle.SetTableCellRowSpan(tableCellRowSpan);
+	}
+	
+	public int32 TableCellRowSpan()
+	{
+		return this.handle.TableCellRowSpan();
+	}
+	
+	public void SetTableCellColumnSpan(int32 tableCellColumnSpan)
+	{
+		this.handle.SetTableCellColumnSpan(tableCellColumnSpan);
+	}
+	
+	public int32 TableCellColumnSpan()
+	{
+		return this.handle.TableCellColumnSpan();
+	}
+	
+	public void SetFont2(IQFont font, int64 behavior)
+	{
+		this.handle.SetFont2(font, behavior);
+	}
+	
+	public void SetFontStyleHint2(int64 hint, int64 strategy)
+	{
+		this.handle.SetFontStyleHint2(hint, strategy);
+	}
+	
+	public void OperatorAssign(IQTextFormat rhs)
+	{
+		this.handle.OperatorAssign(rhs);
+	}
+	
+	public void Swap(IQTextFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Merge(IQTextFormat other)
+	{
+		this.handle.Merge(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public int32 ObjectIndex()
+	{
+		return this.handle.ObjectIndex();
+	}
+	
+	public void SetObjectIndex(int32 object)
+	{
+		this.handle.SetObjectIndex(object);
+	}
+	
+	public void Property(int32 propertyId)
+	{
+		this.handle.Property(propertyId);
+	}
+	
+	public void SetProperty(int32 propertyId, IQVariant value)
+	{
+		this.handle.SetProperty(propertyId, value);
+	}
+	
+	public void ClearProperty(int32 propertyId)
+	{
+		this.handle.ClearProperty(propertyId);
+	}
+	
+	public bool HasProperty(int32 propertyId)
+	{
+		return this.handle.HasProperty(propertyId);
+	}
+	
+	public bool BoolProperty(int32 propertyId)
+	{
+		return this.handle.BoolProperty(propertyId);
+	}
+	
+	public int32 IntProperty(int32 propertyId)
+	{
+		return this.handle.IntProperty(propertyId);
+	}
+	
+	public double DoubleProperty(int32 propertyId)
+	{
+		return this.handle.DoubleProperty(propertyId);
+	}
+	
+	public libqt_string StringProperty(int32 propertyId)
+	{
+		return this.handle.StringProperty(propertyId);
+	}
+	
+	public void ColorProperty(int32 propertyId)
+	{
+		this.handle.ColorProperty(propertyId);
+	}
+	
+	public void PenProperty(int32 propertyId)
+	{
+		this.handle.PenProperty(propertyId);
+	}
+	
+	public void BrushProperty(int32 propertyId)
+	{
+		this.handle.BrushProperty(propertyId);
+	}
+	
+	public void LengthProperty(int32 propertyId)
+	{
+		this.handle.LengthProperty(propertyId);
+	}
+	
+	public void[] LengthVectorProperty(int32 propertyId)
+	{
+		return this.handle.LengthVectorProperty(propertyId);
+	}
+	
+	public void SetProperty2(int32 propertyId, IQTextLength[] lengths)
+	{
+		this.handle.SetProperty2(propertyId, null);
+	}
+	
+	public void* Properties()
+	{
+		return this.handle.Properties();
+	}
+	
+	public int32 PropertyCount()
+	{
+		return this.handle.PropertyCount();
+	}
+	
+	public void SetObjectType(int32 typeVal)
+	{
+		this.handle.SetObjectType(typeVal);
+	}
+	
+	public int32 ObjectType()
+	{
+		return this.handle.ObjectType();
+	}
+	
+	public bool IsCharFormat()
+	{
+		return this.handle.IsCharFormat();
+	}
+	
+	public bool IsBlockFormat()
+	{
+		return this.handle.IsBlockFormat();
+	}
+	
+	public bool IsListFormat()
+	{
+		return this.handle.IsListFormat();
+	}
+	
+	public bool IsFrameFormat()
+	{
+		return this.handle.IsFrameFormat();
+	}
+	
+	public bool IsImageFormat()
+	{
+		return this.handle.IsImageFormat();
+	}
+	
+	public bool IsTableFormat()
+	{
+		return this.handle.IsTableFormat();
+	}
+	
+	public bool IsTableCellFormat()
+	{
+		return this.handle.IsTableCellFormat();
+	}
+	
+	public void ToBlockFormat()
+	{
+		this.handle.ToBlockFormat();
+	}
+	
+	public void ToCharFormat()
+	{
+		this.handle.ToCharFormat();
+	}
+	
+	public void ToListFormat()
+	{
+		this.handle.ToListFormat();
+	}
+	
+	public void ToTableFormat()
+	{
+		this.handle.ToTableFormat();
+	}
+	
+	public void ToFrameFormat()
+	{
+		this.handle.ToFrameFormat();
+	}
+	
+	public void ToImageFormat()
+	{
+		this.handle.ToImageFormat();
+	}
+	
+	public void ToTableCellFormat()
+	{
+		this.handle.ToTableCellFormat();
+	}
+	
+	public bool OperatorEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorEqual(rhs);
+	}
+	
+	public bool OperatorNotEqual(IQTextFormat rhs)
+	{
+		return this.handle.OperatorNotEqual(rhs);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void SetLayoutDirection(int64 direction)
+	{
+		this.handle.SetLayoutDirection(direction);
+	}
+	
+	public int64 LayoutDirection()
+	{
+		return this.handle.LayoutDirection();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void ClearBackground()
+	{
+		this.handle.ClearBackground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void ClearForeground()
+	{
+		this.handle.ClearForeground();
 	}
 	
 }

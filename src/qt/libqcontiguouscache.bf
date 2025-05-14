@@ -6,12 +6,17 @@ public interface IQContiguousCacheData
 {
 	void* NativePtr { get; }
 }
-public class QContiguousCacheData : IQContiguousCacheData
+public struct QContiguousCacheDataPtr : IQContiguousCacheData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QContiguousCacheData_Delete(this.nativePtr);
 	}
@@ -23,7 +28,32 @@ public class QContiguousCacheData : IQContiguousCacheData
 	
 	public static void FreeData(IQContiguousCacheData data)
 	{
-		CQt.QContiguousCacheData_FreeData((data == null) ? null : (void*)data.NativePtr);
+		CQt.QContiguousCacheData_FreeData((data == default || data.NativePtr == default) ? default : data.NativePtr);
+	}
+	
+}
+public class QContiguousCacheData
+{
+	public QContiguousCacheDataPtr handle;
+	
+	public static implicit operator QContiguousCacheDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void* AllocateData(int32 size, int32 alignment)
+	{
+		return QContiguousCacheDataPtr.AllocateData(size, alignment);
+	}
+	
+	public static void FreeData(IQContiguousCacheData data)
+	{
+		QContiguousCacheDataPtr.FreeData(data);
 	}
 	
 }

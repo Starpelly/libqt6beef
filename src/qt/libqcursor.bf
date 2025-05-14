@@ -6,29 +6,34 @@ public interface IQCursor
 {
 	void* NativePtr { get; }
 }
-public class QCursor : IQCursor
+public struct QCursorPtr : IQCursor, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCursor_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCursor_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCursor_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCursor cursor)
 	{
-		CQt.QCursor_OperatorAssign(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
+		CQt.QCursor_OperatorAssign(this.nativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void Swap(IQCursor other)
 	{
-		CQt.QCursor_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCursor_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -43,17 +48,17 @@ public class QCursor : IQCursor
 	
 	public void SetShape(int64 newShape)
 	{
-		CQt.QCursor_SetShape(this.nativePtr, newShape);
+		CQt.QCursor_SetShape(this.nativePtr, (int64)newShape);
 	}
 	
 	public void Bitmap(int64 param1)
 	{
-		CQt.QCursor_Bitmap(this.nativePtr, param1);
+		CQt.QCursor_Bitmap(this.nativePtr, (int64)param1);
 	}
 	
 	public void Mask(int64 param1)
 	{
-		CQt.QCursor_Mask(this.nativePtr, param1);
+		CQt.QCursor_Mask(this.nativePtr, (int64)param1);
 	}
 	
 	public void Bitmap2()
@@ -83,7 +88,7 @@ public class QCursor : IQCursor
 	
 	public static void PosWithScreen(IQScreen screen)
 	{
-		CQt.QCursor_PosWithScreen((screen == null) ? null : (void*)screen.NativePtr);
+		CQt.QCursor_PosWithScreen((screen == default || screen.NativePtr == default) ? default : screen.NativePtr);
 	}
 	
 	public static void SetPos(int32 x, int32 y)
@@ -93,17 +98,122 @@ public class QCursor : IQCursor
 	
 	public static void SetPos2(IQScreen screen, int32 x, int32 y)
 	{
-		CQt.QCursor_SetPos2((screen == null) ? null : (void*)screen.NativePtr, x, y);
+		CQt.QCursor_SetPos2((screen == default || screen.NativePtr == default) ? default : screen.NativePtr, x, y);
 	}
 	
 	public static void SetPosWithQPoint(IQPoint p)
 	{
-		CQt.QCursor_SetPosWithQPoint((p == default) ? default : (void*)p.NativePtr);
+		CQt.QCursor_SetPosWithQPoint((p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public static void SetPos3(IQScreen screen, IQPoint p)
 	{
-		CQt.QCursor_SetPos3((screen == null) ? null : (void*)screen.NativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QCursor_SetPos3((screen == default || screen.NativePtr == default) ? default : screen.NativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
+	}
+	
+}
+public class QCursor
+{
+	public QCursorPtr handle;
+	
+	public static implicit operator QCursorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCursorPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCursor cursor)
+	{
+		this.handle.OperatorAssign(cursor);
+	}
+	
+	public void Swap(IQCursor other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public int64 Shape()
+	{
+		return this.handle.Shape();
+	}
+	
+	public void SetShape(int64 newShape)
+	{
+		this.handle.SetShape(newShape);
+	}
+	
+	public void Bitmap(int64 param1)
+	{
+		this.handle.Bitmap(param1);
+	}
+	
+	public void Mask(int64 param1)
+	{
+		this.handle.Mask(param1);
+	}
+	
+	public void Bitmap2()
+	{
+		this.handle.Bitmap2();
+	}
+	
+	public void Mask2()
+	{
+		this.handle.Mask2();
+	}
+	
+	public void Pixmap()
+	{
+		this.handle.Pixmap();
+	}
+	
+	public void HotSpot()
+	{
+		this.handle.HotSpot();
+	}
+	
+	public static void Pos()
+	{
+		QCursorPtr.Pos();
+	}
+	
+	public static void PosWithScreen(IQScreen screen)
+	{
+		QCursorPtr.PosWithScreen(screen);
+	}
+	
+	public static void SetPos(int32 x, int32 y)
+	{
+		QCursorPtr.SetPos(x, y);
+	}
+	
+	public static void SetPos2(IQScreen screen, int32 x, int32 y)
+	{
+		QCursorPtr.SetPos2(screen, x, y);
+	}
+	
+	public static void SetPosWithQPoint(IQPoint p)
+	{
+		QCursorPtr.SetPosWithQPoint(p);
+	}
+	
+	public static void SetPos3(IQScreen screen, IQPoint p)
+	{
+		QCursorPtr.SetPos3(screen, p);
 	}
 	
 }

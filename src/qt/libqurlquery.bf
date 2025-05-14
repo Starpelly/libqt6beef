@@ -6,39 +6,44 @@ public interface IQUrlQuery
 {
 	void* NativePtr { get; }
 }
-public class QUrlQuery : IQUrlQuery
+public struct QUrlQueryPtr : IQUrlQuery, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QUrlQuery_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QUrlQuery_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QUrlQuery_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQUrlQuery other)
 	{
-		CQt.QUrlQuery_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QUrlQuery_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQUrlQuery other)
 	{
-		return CQt.QUrlQuery_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QUrlQuery_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQUrlQuery other)
 	{
-		return CQt.QUrlQuery_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QUrlQuery_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQUrlQuery other)
 	{
-		CQt.QUrlQuery_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QUrlQuery_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsEmpty()
@@ -73,7 +78,7 @@ public class QUrlQuery : IQUrlQuery
 	
 	public void SetQueryDelimiters(IQChar valueDelimiter, IQChar pairDelimiter)
 	{
-		CQt.QUrlQuery_SetQueryDelimiters(this.nativePtr, (valueDelimiter == default) ? default : (void)valueDelimiter.NativePtr, (pairDelimiter == default) ? default : (void)pairDelimiter.NativePtr);
+		CQt.QUrlQuery_SetQueryDelimiters(this.nativePtr, default, default);
 	}
 	
 	public void QueryValueDelimiter()
@@ -149,6 +154,156 @@ public class QUrlQuery : IQUrlQuery
 	public libqt_string[] AllQueryItemValues2(String key, int64 encoding)
 	{
 		return CQt.QUrlQuery_AllQueryItemValues2(this.nativePtr, libqt_string(key), encoding);
+	}
+	
+}
+public class QUrlQuery
+{
+	public QUrlQueryPtr handle;
+	
+	public static implicit operator QUrlQueryPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QUrlQueryPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQUrlQuery other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool OperatorEqual(IQUrlQuery other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQUrlQuery other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void Swap(IQUrlQuery other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public libqt_string Query()
+	{
+		return this.handle.Query();
+	}
+	
+	public void SetQuery(String queryString)
+	{
+		this.handle.SetQuery(queryString);
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public void SetQueryDelimiters(IQChar valueDelimiter, IQChar pairDelimiter)
+	{
+		this.handle.SetQueryDelimiters(default, default);
+	}
+	
+	public void QueryValueDelimiter()
+	{
+		this.handle.QueryValueDelimiter();
+	}
+	
+	public void QueryPairDelimiter()
+	{
+		this.handle.QueryPairDelimiter();
+	}
+	
+	public void SetQueryItems(void*[] query)
+	{
+		this.handle.SetQueryItems(null);
+	}
+	
+	public void*[] QueryItems()
+	{
+		return this.handle.QueryItems();
+	}
+	
+	public bool HasQueryItem(String key)
+	{
+		return this.handle.HasQueryItem(key);
+	}
+	
+	public void AddQueryItem(String key, String value)
+	{
+		this.handle.AddQueryItem(key, value);
+	}
+	
+	public void RemoveQueryItem(String key)
+	{
+		this.handle.RemoveQueryItem(key);
+	}
+	
+	public libqt_string QueryItemValue(String key)
+	{
+		return this.handle.QueryItemValue(key);
+	}
+	
+	public libqt_string[] AllQueryItemValues(String key)
+	{
+		return this.handle.AllQueryItemValues(key);
+	}
+	
+	public void RemoveAllQueryItems(String key)
+	{
+		this.handle.RemoveAllQueryItems(key);
+	}
+	
+	public libqt_string Query1(int64 encoding)
+	{
+		return this.handle.Query1(encoding);
+	}
+	
+	public libqt_string ToString1(int64 encoding)
+	{
+		return this.handle.ToString1(encoding);
+	}
+	
+	public void*[] QueryItems1(int64 encoding)
+	{
+		return this.handle.QueryItems1(encoding);
+	}
+	
+	public libqt_string QueryItemValue2(String key, int64 encoding)
+	{
+		return this.handle.QueryItemValue2(key, encoding);
+	}
+	
+	public libqt_string[] AllQueryItemValues2(String key, int64 encoding)
+	{
+		return this.handle.AllQueryItemValues2(key, encoding);
 	}
 	
 }

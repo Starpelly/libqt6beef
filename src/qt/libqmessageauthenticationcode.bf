@@ -6,17 +6,22 @@ public interface IQMessageAuthenticationCode
 {
 	void* NativePtr { get; }
 }
-public class QMessageAuthenticationCode : IQMessageAuthenticationCode
+public struct QMessageAuthenticationCodePtr : IQMessageAuthenticationCode, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 method)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMessageAuthenticationCode_new(method);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 method)
+	{
+		return .(CQt.QMessageAuthenticationCode_new((int64)method));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMessageAuthenticationCode_Delete(this.nativePtr);
 	}
@@ -43,7 +48,7 @@ public class QMessageAuthenticationCode : IQMessageAuthenticationCode
 	
 	public bool AddDataWithDevice(IQIODevice device)
 	{
-		return CQt.QMessageAuthenticationCode_AddDataWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		return CQt.QMessageAuthenticationCode_AddDataWithDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public libqt_string Result()
@@ -53,7 +58,62 @@ public class QMessageAuthenticationCode : IQMessageAuthenticationCode
 	
 	public static libqt_string Hash(String message, String key, int64 method)
 	{
-		return CQt.QMessageAuthenticationCode_Hash(libqt_string(message), libqt_string(key), method);
+		return CQt.QMessageAuthenticationCode_Hash(libqt_string(message), libqt_string(key), (int64)method);
+	}
+	
+}
+public class QMessageAuthenticationCode
+{
+	public QMessageAuthenticationCodePtr handle;
+	
+	public static implicit operator QMessageAuthenticationCodePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 method)
+	{
+		this.handle = QMessageAuthenticationCodePtr.New(method);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Reset()
+	{
+		this.handle.Reset();
+	}
+	
+	public void SetKey(String key)
+	{
+		this.handle.SetKey(key);
+	}
+	
+	public void AddData(char8* data, int32 length)
+	{
+		this.handle.AddData(data, length);
+	}
+	
+	public void AddDataWithData(String data)
+	{
+		this.handle.AddDataWithData(data);
+	}
+	
+	public bool AddDataWithDevice(IQIODevice device)
+	{
+		return this.handle.AddDataWithDevice(device);
+	}
+	
+	public libqt_string Result()
+	{
+		return this.handle.Result();
+	}
+	
+	public static libqt_string Hash(String message, String key, int64 method)
+	{
+		return QMessageAuthenticationCodePtr.Hash(message, key, method);
 	}
 	
 }

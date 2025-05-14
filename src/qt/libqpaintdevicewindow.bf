@@ -6,29 +6,34 @@ public interface IQPaintDeviceWindow
 {
 	void* NativePtr { get; }
 }
-public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
+public struct QPaintDeviceWindowPtr : IQPaintDeviceWindow, IDisposable, IQWindow, IQPaintDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPaintDeviceWindow_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QPaintDeviceWindow_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QPaintDeviceWindow_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QPaintDeviceWindow_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QPaintDeviceWindow_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -38,12 +43,12 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void Update(IQRect rect)
 	{
-		CQt.QPaintDeviceWindow_Update(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QPaintDeviceWindow_Update(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void UpdateWithRegion(IQRegion region)
 	{
-		CQt.QPaintDeviceWindow_UpdateWithRegion(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
+		CQt.QPaintDeviceWindow_UpdateWithRegion(this.nativePtr, (region == default || region.NativePtr == default) ? default : region.NativePtr);
 	}
 	
 	public void Update2()
@@ -63,10 +68,10 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetSurfaceType(int64 surfaceType)
 	{
-		CQt.QWindow_SetSurfaceType(this.nativePtr, surfaceType);
+		CQt.QWindow_SetSurfaceType(this.nativePtr, (int64)surfaceType);
 	}
 	
-	public virtual int64 SurfaceType()
+	public int64 SurfaceType()
 	{
 		return CQt.QWindow_SurfaceType(this.nativePtr);
 	}
@@ -83,7 +88,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetVisibility(int64 v)
 	{
-		CQt.QWindow_SetVisibility(this.nativePtr, v);
+		CQt.QWindow_SetVisibility(this.nativePtr, (int64)v);
 	}
 	
 	public void Create()
@@ -103,7 +108,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetParent(IQWindow parent)
 	{
-		CQt.QWindow_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QWindow_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool IsTopLevel()
@@ -123,15 +128,15 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetModality(int64 modality)
 	{
-		CQt.QWindow_SetModality(this.nativePtr, modality);
+		CQt.QWindow_SetModality(this.nativePtr, (int64)modality);
 	}
 	
 	public void SetFormat(IQSurfaceFormat format)
 	{
-		CQt.QWindow_SetFormat(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QWindow_SetFormat(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
-	public virtual void Format()
+	public void Format()
 	{
 		CQt.QWindow_Format(this.nativePtr);
 	}
@@ -153,7 +158,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetFlag(int64 param1)
 	{
-		CQt.QWindow_SetFlag(this.nativePtr, param1);
+		CQt.QWindow_SetFlag(this.nativePtr, (int64)param1);
 	}
 	
 	public int64 Type()
@@ -178,7 +183,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetMask(IQRegion region)
 	{
-		CQt.QWindow_SetMask(this.nativePtr, (region == default) ? default : (void*)region.NativePtr);
+		CQt.QWindow_SetMask(this.nativePtr, (region == default || region.NativePtr == default) ? default : region.NativePtr);
 	}
 	
 	public void Mask()
@@ -193,7 +198,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void ReportContentOrientationChange(int64 orientation)
 	{
-		CQt.QWindow_ReportContentOrientationChange(this.nativePtr, orientation);
+		CQt.QWindow_ReportContentOrientationChange(this.nativePtr, (int64)orientation);
 	}
 	
 	public int64 ContentOrientation()
@@ -218,7 +223,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetWindowState(int64 state)
 	{
-		CQt.QWindow_SetWindowState(this.nativePtr, state);
+		CQt.QWindow_SetWindowState(this.nativePtr, (int64)state);
 	}
 	
 	public void SetWindowStates(int64 states)
@@ -228,7 +233,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetTransientParent(IQWindow parent)
 	{
-		CQt.QWindow_SetTransientParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QWindow_SetTransientParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void* TransientParent()
@@ -238,7 +243,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public bool IsAncestorOf(IQWindow child)
 	{
-		return CQt.QWindow_IsAncestorOf(this.nativePtr, (child == null) ? null : (void*)child.NativePtr);
+		return CQt.QWindow_IsAncestorOf(this.nativePtr, (child == default || child.NativePtr == default) ? default : child.NativePtr);
 	}
 	
 	public bool IsExposed()
@@ -288,22 +293,22 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetMinimumSize(IQSize size)
 	{
-		CQt.QWindow_SetMinimumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QWindow_SetMinimumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetMaximumSize(IQSize size)
 	{
-		CQt.QWindow_SetMaximumSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QWindow_SetMaximumSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetBaseSize(IQSize size)
 	{
-		CQt.QWindow_SetBaseSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QWindow_SetBaseSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetSizeIncrement(IQSize size)
 	{
-		CQt.QWindow_SetSizeIncrement(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QWindow_SetSizeIncrement(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void Geometry()
@@ -328,7 +333,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetFramePosition(IQPoint point)
 	{
-		CQt.QWindow_SetFramePosition(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		CQt.QWindow_SetFramePosition(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public int32 Width()
@@ -351,7 +356,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 		return CQt.QWindow_Y(this.nativePtr);
 	}
 	
-	public virtual void Size()
+	public void Size()
 	{
 		CQt.QWindow_Size(this.nativePtr);
 	}
@@ -363,7 +368,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetPosition(IQPoint pt)
 	{
-		CQt.QWindow_SetPosition(this.nativePtr, (pt == default) ? default : (void*)pt.NativePtr);
+		CQt.QWindow_SetPosition(this.nativePtr, (pt == default || pt.NativePtr == default) ? default : pt.NativePtr);
 	}
 	
 	public void SetPosition2(int32 posx, int32 posy)
@@ -373,7 +378,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void Resize(IQSize newSize)
 	{
-		CQt.QWindow_Resize(this.nativePtr, (newSize == default) ? default : (void*)newSize.NativePtr);
+		CQt.QWindow_Resize(this.nativePtr, (newSize == default || newSize.NativePtr == default) ? default : newSize.NativePtr);
 	}
 	
 	public void Resize2(int32 w, int32 h)
@@ -393,7 +398,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetIcon(IQIcon icon)
 	{
-		CQt.QWindow_SetIcon(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr);
+		CQt.QWindow_SetIcon(this.nativePtr, (icon == default || icon.NativePtr == default) ? default : icon.NativePtr);
 	}
 	
 	public void Icon()
@@ -423,37 +428,37 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetScreen(IQScreen screen)
 	{
-		CQt.QWindow_SetScreen(this.nativePtr, (screen == null) ? null : (void*)screen.NativePtr);
+		CQt.QWindow_SetScreen(this.nativePtr, (screen == default || screen.NativePtr == default) ? default : screen.NativePtr);
 	}
 	
-	public virtual void* AccessibleRoot()
+	public void* AccessibleRoot()
 	{
 		return CQt.QWindow_AccessibleRoot(this.nativePtr);
 	}
 	
-	public virtual void* FocusObject()
+	public void* FocusObject()
 	{
 		return CQt.QWindow_FocusObject(this.nativePtr);
 	}
 	
 	public void MapToGlobal(IQPointF pos)
 	{
-		CQt.QWindow_MapToGlobal(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QWindow_MapToGlobal(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public void MapFromGlobal(IQPointF pos)
 	{
-		CQt.QWindow_MapFromGlobal(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QWindow_MapFromGlobal(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public void MapToGlobalWithPos(IQPoint pos)
 	{
-		CQt.QWindow_MapToGlobalWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QWindow_MapToGlobalWithPos(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public void MapFromGlobalWithPos(IQPoint pos)
 	{
-		CQt.QWindow_MapFromGlobalWithPos(this.nativePtr, (pos == default) ? default : (void*)pos.NativePtr);
+		CQt.QWindow_MapFromGlobalWithPos(this.nativePtr, (pos == default || pos.NativePtr == default) ? default : pos.NativePtr);
 	}
 	
 	public void Cursor()
@@ -463,7 +468,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetCursor(IQCursor cursor)
 	{
-		CQt.QWindow_SetCursor(this.nativePtr, (cursor == default) ? default : (void*)cursor.NativePtr);
+		CQt.QWindow_SetCursor(this.nativePtr, (cursor == default || cursor.NativePtr == default) ? default : cursor.NativePtr);
 	}
 	
 	public void UnsetCursor()
@@ -573,7 +578,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void SetGeometryWithRect(IQRect rect)
 	{
-		CQt.QWindow_SetGeometryWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QWindow_SetGeometryWithRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void SetMinimumWidth(int32 w)
@@ -608,22 +613,22 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void* Parent1(int64 mode)
 	{
-		return CQt.QWindow_Parent1(this.nativePtr, mode);
+		return CQt.QWindow_Parent1(this.nativePtr, (int64)mode);
 	}
 	
 	public void SetFlag2(int64 param1, bool on)
 	{
-		CQt.QWindow_SetFlag2(this.nativePtr, param1, on);
+		CQt.QWindow_SetFlag2(this.nativePtr, (int64)param1, on);
 	}
 	
 	public bool IsAncestorOf2(IQWindow child, int64 mode)
 	{
-		return CQt.QWindow_IsAncestorOf2(this.nativePtr, (child == null) ? null : (void*)child.NativePtr, mode);
+		return CQt.QWindow_IsAncestorOf2(this.nativePtr, (child == default || child.NativePtr == default) ? default : child.NativePtr, (int64)mode);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -631,9 +636,9 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -668,7 +673,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -688,32 +693,32 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -728,7 +733,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -763,17 +768,17 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
 	}
 	
 	public int64 SurfaceClass()
@@ -786,7 +791,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 		return CQt.QSurface_SupportsOpenGL(this.nativePtr);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QPaintDevice_DevType(this.nativePtr);
 	}
@@ -796,7 +801,7 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 		return CQt.QPaintDevice_PaintingActive(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QPaintDevice_PaintEngine(this.nativePtr);
 	}
@@ -849,6 +854,856 @@ public class QPaintDeviceWindow : IQPaintDeviceWindow, IQWindow, IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QPaintDeviceWindow
+{
+	public QPaintDeviceWindowPtr handle;
+	
+	public static implicit operator QPaintDeviceWindowPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QPaintDeviceWindowPtr.Tr(s);
+	}
+	
+	public void Update(IQRect rect)
+	{
+		this.handle.Update(rect);
+	}
+	
+	public void UpdateWithRegion(IQRegion region)
+	{
+		this.handle.UpdateWithRegion(region);
+	}
+	
+	public void Update2()
+	{
+		this.handle.Update2();
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QPaintDeviceWindowPtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QPaintDeviceWindowPtr.Tr3(s, c, n);
+	}
+	
+	public void SetSurfaceType(int64 surfaceType)
+	{
+		this.handle.SetSurfaceType(surfaceType);
+	}
+	
+	public virtual int64 SurfaceType()
+	{
+		return this.handle.SurfaceType();
+	}
+	
+	public bool IsVisible()
+	{
+		return this.handle.IsVisible();
+	}
+	
+	public int64 Visibility()
+	{
+		return this.handle.Visibility();
+	}
+	
+	public void SetVisibility(int64 v)
+	{
+		this.handle.SetVisibility(v);
+	}
+	
+	public void Create()
+	{
+		this.handle.Create();
+	}
+	
+	public c_uintptr WinId()
+	{
+		return this.handle.WinId();
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public void SetParent(IQWindow parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public bool IsTopLevel()
+	{
+		return this.handle.IsTopLevel();
+	}
+	
+	public bool IsModal()
+	{
+		return this.handle.IsModal();
+	}
+	
+	public int64 Modality()
+	{
+		return this.handle.Modality();
+	}
+	
+	public void SetModality(int64 modality)
+	{
+		this.handle.SetModality(modality);
+	}
+	
+	public void SetFormat(IQSurfaceFormat format)
+	{
+		this.handle.SetFormat(format);
+	}
+	
+	public virtual void Format()
+	{
+		this.handle.Format();
+	}
+	
+	public void RequestedFormat()
+	{
+		this.handle.RequestedFormat();
+	}
+	
+	public void SetFlags(int64 flags)
+	{
+		this.handle.SetFlags(flags);
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void SetFlag(int64 param1)
+	{
+		this.handle.SetFlag(param1);
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public libqt_string Title()
+	{
+		return this.handle.Title();
+	}
+	
+	public void SetOpacity(double level)
+	{
+		this.handle.SetOpacity(level);
+	}
+	
+	public double Opacity()
+	{
+		return this.handle.Opacity();
+	}
+	
+	public void SetMask(IQRegion region)
+	{
+		this.handle.SetMask(region);
+	}
+	
+	public void Mask()
+	{
+		this.handle.Mask();
+	}
+	
+	public bool IsActive()
+	{
+		return this.handle.IsActive();
+	}
+	
+	public void ReportContentOrientationChange(int64 orientation)
+	{
+		this.handle.ReportContentOrientationChange(orientation);
+	}
+	
+	public int64 ContentOrientation()
+	{
+		return this.handle.ContentOrientation();
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public int64 WindowState()
+	{
+		return this.handle.WindowState();
+	}
+	
+	public int64 WindowStates()
+	{
+		return this.handle.WindowStates();
+	}
+	
+	public void SetWindowState(int64 state)
+	{
+		this.handle.SetWindowState(state);
+	}
+	
+	public void SetWindowStates(int64 states)
+	{
+		this.handle.SetWindowStates(states);
+	}
+	
+	public void SetTransientParent(IQWindow parent)
+	{
+		this.handle.SetTransientParent(parent);
+	}
+	
+	public void* TransientParent()
+	{
+		return this.handle.TransientParent();
+	}
+	
+	public bool IsAncestorOf(IQWindow child)
+	{
+		return this.handle.IsAncestorOf(child);
+	}
+	
+	public bool IsExposed()
+	{
+		return this.handle.IsExposed();
+	}
+	
+	public int32 MinimumWidth()
+	{
+		return this.handle.MinimumWidth();
+	}
+	
+	public int32 MinimumHeight()
+	{
+		return this.handle.MinimumHeight();
+	}
+	
+	public int32 MaximumWidth()
+	{
+		return this.handle.MaximumWidth();
+	}
+	
+	public int32 MaximumHeight()
+	{
+		return this.handle.MaximumHeight();
+	}
+	
+	public void MinimumSize()
+	{
+		this.handle.MinimumSize();
+	}
+	
+	public void MaximumSize()
+	{
+		this.handle.MaximumSize();
+	}
+	
+	public void BaseSize()
+	{
+		this.handle.BaseSize();
+	}
+	
+	public void SizeIncrement()
+	{
+		this.handle.SizeIncrement();
+	}
+	
+	public void SetMinimumSize(IQSize size)
+	{
+		this.handle.SetMinimumSize(size);
+	}
+	
+	public void SetMaximumSize(IQSize size)
+	{
+		this.handle.SetMaximumSize(size);
+	}
+	
+	public void SetBaseSize(IQSize size)
+	{
+		this.handle.SetBaseSize(size);
+	}
+	
+	public void SetSizeIncrement(IQSize size)
+	{
+		this.handle.SetSizeIncrement(size);
+	}
+	
+	public void Geometry()
+	{
+		this.handle.Geometry();
+	}
+	
+	public void FrameMargins()
+	{
+		this.handle.FrameMargins();
+	}
+	
+	public void FrameGeometry()
+	{
+		this.handle.FrameGeometry();
+	}
+	
+	public void FramePosition()
+	{
+		this.handle.FramePosition();
+	}
+	
+	public void SetFramePosition(IQPoint point)
+	{
+		this.handle.SetFramePosition(point);
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public int32 X()
+	{
+		return this.handle.X();
+	}
+	
+	public int32 Y()
+	{
+		return this.handle.Y();
+	}
+	
+	public virtual void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public void Position()
+	{
+		this.handle.Position();
+	}
+	
+	public void SetPosition(IQPoint pt)
+	{
+		this.handle.SetPosition(pt);
+	}
+	
+	public void SetPosition2(int32 posx, int32 posy)
+	{
+		this.handle.SetPosition2(posx, posy);
+	}
+	
+	public void Resize(IQSize newSize)
+	{
+		this.handle.Resize(newSize);
+	}
+	
+	public void Resize2(int32 w, int32 h)
+	{
+		this.handle.Resize2(w, h);
+	}
+	
+	public void SetFilePath(String filePath)
+	{
+		this.handle.SetFilePath(filePath);
+	}
+	
+	public libqt_string FilePath()
+	{
+		return this.handle.FilePath();
+	}
+	
+	public void SetIcon(IQIcon icon)
+	{
+		this.handle.SetIcon(icon);
+	}
+	
+	public void Icon()
+	{
+		this.handle.Icon();
+	}
+	
+	public void Destroy()
+	{
+		this.handle.Destroy();
+	}
+	
+	public bool SetKeyboardGrabEnabled(bool grab)
+	{
+		return this.handle.SetKeyboardGrabEnabled(grab);
+	}
+	
+	public bool SetMouseGrabEnabled(bool grab)
+	{
+		return this.handle.SetMouseGrabEnabled(grab);
+	}
+	
+	public void* Screen()
+	{
+		return this.handle.Screen();
+	}
+	
+	public void SetScreen(IQScreen screen)
+	{
+		this.handle.SetScreen(screen);
+	}
+	
+	public virtual void* AccessibleRoot()
+	{
+		return this.handle.AccessibleRoot();
+	}
+	
+	public virtual void* FocusObject()
+	{
+		return this.handle.FocusObject();
+	}
+	
+	public void MapToGlobal(IQPointF pos)
+	{
+		this.handle.MapToGlobal(pos);
+	}
+	
+	public void MapFromGlobal(IQPointF pos)
+	{
+		this.handle.MapFromGlobal(pos);
+	}
+	
+	public void MapToGlobalWithPos(IQPoint pos)
+	{
+		this.handle.MapToGlobalWithPos(pos);
+	}
+	
+	public void MapFromGlobalWithPos(IQPoint pos)
+	{
+		this.handle.MapFromGlobalWithPos(pos);
+	}
+	
+	public void Cursor()
+	{
+		this.handle.Cursor();
+	}
+	
+	public void SetCursor(IQCursor cursor)
+	{
+		this.handle.SetCursor(cursor);
+	}
+	
+	public void UnsetCursor()
+	{
+		this.handle.UnsetCursor();
+	}
+	
+	public static void* FromWinId(c_uintptr id)
+	{
+		return QPaintDeviceWindowPtr.FromWinId(id);
+	}
+	
+	public void RequestActivate()
+	{
+		this.handle.RequestActivate();
+	}
+	
+	public void SetVisible(bool visible)
+	{
+		this.handle.SetVisible(visible);
+	}
+	
+	public void Show()
+	{
+		this.handle.Show();
+	}
+	
+	public void Hide()
+	{
+		this.handle.Hide();
+	}
+	
+	public void ShowMinimized()
+	{
+		this.handle.ShowMinimized();
+	}
+	
+	public void ShowMaximized()
+	{
+		this.handle.ShowMaximized();
+	}
+	
+	public void ShowFullScreen()
+	{
+		this.handle.ShowFullScreen();
+	}
+	
+	public void ShowNormal()
+	{
+		this.handle.ShowNormal();
+	}
+	
+	public bool Close()
+	{
+		return this.handle.Close();
+	}
+	
+	public void Raise()
+	{
+		this.handle.Raise();
+	}
+	
+	public void Lower()
+	{
+		this.handle.Lower();
+	}
+	
+	public bool StartSystemResize(int64 edges)
+	{
+		return this.handle.StartSystemResize(edges);
+	}
+	
+	public bool StartSystemMove()
+	{
+		return this.handle.StartSystemMove();
+	}
+	
+	public void SetTitle(String title)
+	{
+		this.handle.SetTitle(title);
+	}
+	
+	public void SetX(int32 arg)
+	{
+		this.handle.SetX(arg);
+	}
+	
+	public void SetY(int32 arg)
+	{
+		this.handle.SetY(arg);
+	}
+	
+	public void SetWidth(int32 arg)
+	{
+		this.handle.SetWidth(arg);
+	}
+	
+	public void SetHeight(int32 arg)
+	{
+		this.handle.SetHeight(arg);
+	}
+	
+	public void SetGeometry(int32 posx, int32 posy, int32 w, int32 h)
+	{
+		this.handle.SetGeometry(posx, posy, w, h);
+	}
+	
+	public void SetGeometryWithRect(IQRect rect)
+	{
+		this.handle.SetGeometryWithRect(rect);
+	}
+	
+	public void SetMinimumWidth(int32 w)
+	{
+		this.handle.SetMinimumWidth(w);
+	}
+	
+	public void SetMinimumHeight(int32 h)
+	{
+		this.handle.SetMinimumHeight(h);
+	}
+	
+	public void SetMaximumWidth(int32 w)
+	{
+		this.handle.SetMaximumWidth(w);
+	}
+	
+	public void SetMaximumHeight(int32 h)
+	{
+		this.handle.SetMaximumHeight(h);
+	}
+	
+	public void Alert(int32 msec)
+	{
+		this.handle.Alert(msec);
+	}
+	
+	public void RequestUpdate()
+	{
+		this.handle.RequestUpdate();
+	}
+	
+	public void* Parent1(int64 mode)
+	{
+		return this.handle.Parent1(mode);
+	}
+	
+	public void SetFlag2(int64 param1, bool on)
+	{
+		this.handle.SetFlag2(param1, on);
+	}
+	
+	public bool IsAncestorOf2(IQWindow child, int64 mode)
+	{
+		return this.handle.IsAncestorOf2(child, mode);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QPaintDeviceWindowPtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QPaintDeviceWindowPtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QPaintDeviceWindowPtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QPaintDeviceWindowPtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
+	}
+	
+	public int64 SurfaceClass()
+	{
+		return this.handle.SurfaceClass();
+	}
+	
+	public bool SupportsOpenGL()
+	{
+		return this.handle.SupportsOpenGL();
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QPaintDeviceWindowPtr.DevicePixelRatioFScale();
 	}
 	
 }

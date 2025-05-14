@@ -44,24 +44,29 @@ public interface IQSurfaceFormat
 {
 	void* NativePtr { get; }
 }
-public class QSurfaceFormat : IQSurfaceFormat
+public struct QSurfaceFormatPtr : IQSurfaceFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSurfaceFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QSurfaceFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSurfaceFormat_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQSurfaceFormat other)
 	{
-		CQt.QSurfaceFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QSurfaceFormat_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetDepthBufferSize(int32 size)
@@ -136,7 +141,7 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetSwapBehavior(int64 behavior)
 	{
-		CQt.QSurfaceFormat_SetSwapBehavior(this.nativePtr, behavior);
+		CQt.QSurfaceFormat_SetSwapBehavior(this.nativePtr, (int64)behavior);
 	}
 	
 	public int64 SwapBehavior()
@@ -151,7 +156,7 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetProfile(int64 profile)
 	{
-		CQt.QSurfaceFormat_SetProfile(this.nativePtr, profile);
+		CQt.QSurfaceFormat_SetProfile(this.nativePtr, (int64)profile);
 	}
 	
 	public int64 Profile()
@@ -161,7 +166,7 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetRenderableType(int64 typeVal)
 	{
-		CQt.QSurfaceFormat_SetRenderableType(this.nativePtr, typeVal);
+		CQt.QSurfaceFormat_SetRenderableType(this.nativePtr, (int64)typeVal);
 	}
 	
 	public int64 RenderableType()
@@ -216,12 +221,12 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetOption(int64 option)
 	{
-		CQt.QSurfaceFormat_SetOption(this.nativePtr, option);
+		CQt.QSurfaceFormat_SetOption(this.nativePtr, (int64)option);
 	}
 	
 	public bool TestOption(int64 option)
 	{
-		return CQt.QSurfaceFormat_TestOption(this.nativePtr, option);
+		return CQt.QSurfaceFormat_TestOption(this.nativePtr, (int64)option);
 	}
 	
 	public int64 Options()
@@ -246,17 +251,17 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetColorSpace(IQColorSpace colorSpace)
 	{
-		CQt.QSurfaceFormat_SetColorSpace(this.nativePtr, (colorSpace == default) ? default : (void*)colorSpace.NativePtr);
+		CQt.QSurfaceFormat_SetColorSpace(this.nativePtr, (colorSpace == default || colorSpace.NativePtr == default) ? default : colorSpace.NativePtr);
 	}
 	
 	public void SetColorSpaceWithColorSpace(int64 colorSpace)
 	{
-		CQt.QSurfaceFormat_SetColorSpaceWithColorSpace(this.nativePtr, colorSpace);
+		CQt.QSurfaceFormat_SetColorSpaceWithColorSpace(this.nativePtr, (int64)colorSpace);
 	}
 	
 	public static void SetDefaultFormat(IQSurfaceFormat format)
 	{
-		CQt.QSurfaceFormat_SetDefaultFormat((format == default) ? default : (void*)format.NativePtr);
+		CQt.QSurfaceFormat_SetDefaultFormat((format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public static void DefaultFormat()
@@ -266,7 +271,237 @@ public class QSurfaceFormat : IQSurfaceFormat
 	
 	public void SetOption2(int64 option, bool on)
 	{
-		CQt.QSurfaceFormat_SetOption2(this.nativePtr, option, on);
+		CQt.QSurfaceFormat_SetOption2(this.nativePtr, (int64)option, on);
+	}
+	
+}
+public class QSurfaceFormat
+{
+	public QSurfaceFormatPtr handle;
+	
+	public static implicit operator QSurfaceFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QSurfaceFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQSurfaceFormat other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void SetDepthBufferSize(int32 size)
+	{
+		this.handle.SetDepthBufferSize(size);
+	}
+	
+	public int32 DepthBufferSize()
+	{
+		return this.handle.DepthBufferSize();
+	}
+	
+	public void SetStencilBufferSize(int32 size)
+	{
+		this.handle.SetStencilBufferSize(size);
+	}
+	
+	public int32 StencilBufferSize()
+	{
+		return this.handle.StencilBufferSize();
+	}
+	
+	public void SetRedBufferSize(int32 size)
+	{
+		this.handle.SetRedBufferSize(size);
+	}
+	
+	public int32 RedBufferSize()
+	{
+		return this.handle.RedBufferSize();
+	}
+	
+	public void SetGreenBufferSize(int32 size)
+	{
+		this.handle.SetGreenBufferSize(size);
+	}
+	
+	public int32 GreenBufferSize()
+	{
+		return this.handle.GreenBufferSize();
+	}
+	
+	public void SetBlueBufferSize(int32 size)
+	{
+		this.handle.SetBlueBufferSize(size);
+	}
+	
+	public int32 BlueBufferSize()
+	{
+		return this.handle.BlueBufferSize();
+	}
+	
+	public void SetAlphaBufferSize(int32 size)
+	{
+		this.handle.SetAlphaBufferSize(size);
+	}
+	
+	public int32 AlphaBufferSize()
+	{
+		return this.handle.AlphaBufferSize();
+	}
+	
+	public void SetSamples(int32 numSamples)
+	{
+		this.handle.SetSamples(numSamples);
+	}
+	
+	public int32 Samples()
+	{
+		return this.handle.Samples();
+	}
+	
+	public void SetSwapBehavior(int64 behavior)
+	{
+		this.handle.SetSwapBehavior(behavior);
+	}
+	
+	public int64 SwapBehavior()
+	{
+		return this.handle.SwapBehavior();
+	}
+	
+	public bool HasAlpha()
+	{
+		return this.handle.HasAlpha();
+	}
+	
+	public void SetProfile(int64 profile)
+	{
+		this.handle.SetProfile(profile);
+	}
+	
+	public int64 Profile()
+	{
+		return this.handle.Profile();
+	}
+	
+	public void SetRenderableType(int64 typeVal)
+	{
+		this.handle.SetRenderableType(typeVal);
+	}
+	
+	public int64 RenderableType()
+	{
+		return this.handle.RenderableType();
+	}
+	
+	public void SetMajorVersion(int32 majorVersion)
+	{
+		this.handle.SetMajorVersion(majorVersion);
+	}
+	
+	public int32 MajorVersion()
+	{
+		return this.handle.MajorVersion();
+	}
+	
+	public void SetMinorVersion(int32 minorVersion)
+	{
+		this.handle.SetMinorVersion(minorVersion);
+	}
+	
+	public int32 MinorVersion()
+	{
+		return this.handle.MinorVersion();
+	}
+	
+	public void* Version()
+	{
+		return this.handle.Version();
+	}
+	
+	public void SetVersion(int32 major, int32 minor)
+	{
+		this.handle.SetVersion(major, minor);
+	}
+	
+	public bool Stereo()
+	{
+		return this.handle.Stereo();
+	}
+	
+	public void SetStereo(bool enable)
+	{
+		this.handle.SetStereo(enable);
+	}
+	
+	public void SetOptions(int64 options)
+	{
+		this.handle.SetOptions(options);
+	}
+	
+	public void SetOption(int64 option)
+	{
+		this.handle.SetOption(option);
+	}
+	
+	public bool TestOption(int64 option)
+	{
+		return this.handle.TestOption(option);
+	}
+	
+	public int64 Options()
+	{
+		return this.handle.Options();
+	}
+	
+	public int32 SwapInterval()
+	{
+		return this.handle.SwapInterval();
+	}
+	
+	public void SetSwapInterval(int32 interval)
+	{
+		this.handle.SetSwapInterval(interval);
+	}
+	
+	public void* ColorSpace()
+	{
+		return this.handle.ColorSpace();
+	}
+	
+	public void SetColorSpace(IQColorSpace colorSpace)
+	{
+		this.handle.SetColorSpace(colorSpace);
+	}
+	
+	public void SetColorSpaceWithColorSpace(int64 colorSpace)
+	{
+		this.handle.SetColorSpaceWithColorSpace(colorSpace);
+	}
+	
+	public static void SetDefaultFormat(IQSurfaceFormat format)
+	{
+		QSurfaceFormatPtr.SetDefaultFormat(format);
+	}
+	
+	public static void DefaultFormat()
+	{
+		QSurfaceFormatPtr.DefaultFormat();
+	}
+	
+	public void SetOption2(int64 option, bool on)
+	{
+		this.handle.SetOption2(option, on);
 	}
 	
 }

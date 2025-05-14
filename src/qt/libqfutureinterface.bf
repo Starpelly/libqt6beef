@@ -25,24 +25,29 @@ public interface IQFutureInterfaceBase
 {
 	void* NativePtr { get; }
 }
-public class QFutureInterfaceBase : IQFutureInterfaceBase
+public struct QFutureInterfaceBasePtr : IQFutureInterfaceBase, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFutureInterfaceBase_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QFutureInterfaceBase_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFutureInterfaceBase_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQFutureInterfaceBase other)
 	{
-		CQt.QFutureInterfaceBase_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QFutureInterfaceBase_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ReportStarted()
@@ -67,12 +72,12 @@ public class QFutureInterfaceBase : IQFutureInterfaceBase
 	
 	public void SetRunnable(IQRunnable runnable)
 	{
-		CQt.QFutureInterfaceBase_SetRunnable(this.nativePtr, (runnable == null) ? null : (void*)runnable.NativePtr);
+		CQt.QFutureInterfaceBase_SetRunnable(this.nativePtr, (runnable == default || runnable.NativePtr == default) ? default : runnable.NativePtr);
 	}
 	
 	public void SetThreadPool(IQThreadPool pool)
 	{
-		CQt.QFutureInterfaceBase_SetThreadPool(this.nativePtr, (pool == null) ? null : (void*)pool.NativePtr);
+		CQt.QFutureInterfaceBase_SetThreadPool(this.nativePtr, (pool == default || pool.NativePtr == default) ? default : pool.NativePtr);
 	}
 	
 	public void* ThreadPool()
@@ -142,7 +147,7 @@ public class QFutureInterfaceBase : IQFutureInterfaceBase
 	
 	public bool QueryState(int64 state)
 	{
-		return CQt.QFutureInterfaceBase_QueryState(this.nativePtr, state);
+		return CQt.QFutureInterfaceBase_QueryState(this.nativePtr, (int64)state);
 	}
 	
 	public bool IsRunning()
@@ -277,22 +282,297 @@ public class QFutureInterfaceBase : IQFutureInterfaceBase
 	
 	public bool OperatorEqual(IQFutureInterfaceBase other)
 	{
-		return CQt.QFutureInterfaceBase_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QFutureInterfaceBase_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQFutureInterfaceBase other)
 	{
-		return CQt.QFutureInterfaceBase_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QFutureInterfaceBase_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQFutureInterfaceBase other)
 	{
-		CQt.QFutureInterfaceBase_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QFutureInterfaceBase_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsChainCanceled()
 	{
 		return CQt.QFutureInterfaceBase_IsChainCanceled(this.nativePtr);
+	}
+	
+}
+public class QFutureInterfaceBase
+{
+	public QFutureInterfaceBasePtr handle;
+	
+	public static implicit operator QFutureInterfaceBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QFutureInterfaceBasePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQFutureInterfaceBase other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void ReportStarted()
+	{
+		this.handle.ReportStarted();
+	}
+	
+	public void ReportFinished()
+	{
+		this.handle.ReportFinished();
+	}
+	
+	public void ReportCanceled()
+	{
+		this.handle.ReportCanceled();
+	}
+	
+	public void ReportResultsReady(int32 beginIndex, int32 endIndex)
+	{
+		this.handle.ReportResultsReady(beginIndex, endIndex);
+	}
+	
+	public void SetRunnable(IQRunnable runnable)
+	{
+		this.handle.SetRunnable(runnable);
+	}
+	
+	public void SetThreadPool(IQThreadPool pool)
+	{
+		this.handle.SetThreadPool(pool);
+	}
+	
+	public void* ThreadPool()
+	{
+		return this.handle.ThreadPool();
+	}
+	
+	public void SetFilterMode(bool enable)
+	{
+		this.handle.SetFilterMode(enable);
+	}
+	
+	public void SetProgressRange(int32 minimum, int32 maximum)
+	{
+		this.handle.SetProgressRange(minimum, maximum);
+	}
+	
+	public int32 ProgressMinimum()
+	{
+		return this.handle.ProgressMinimum();
+	}
+	
+	public int32 ProgressMaximum()
+	{
+		return this.handle.ProgressMaximum();
+	}
+	
+	public bool IsProgressUpdateNeeded()
+	{
+		return this.handle.IsProgressUpdateNeeded();
+	}
+	
+	public void SetProgressValue(int32 progressValue)
+	{
+		this.handle.SetProgressValue(progressValue);
+	}
+	
+	public int32 ProgressValue()
+	{
+		return this.handle.ProgressValue();
+	}
+	
+	public void SetProgressValueAndText(int32 progressValue, String progressText)
+	{
+		this.handle.SetProgressValueAndText(progressValue, progressText);
+	}
+	
+	public libqt_string ProgressText()
+	{
+		return this.handle.ProgressText();
+	}
+	
+	public void SetExpectedResultCount(int32 resultCount)
+	{
+		this.handle.SetExpectedResultCount(resultCount);
+	}
+	
+	public int32 ExpectedResultCount()
+	{
+		return this.handle.ExpectedResultCount();
+	}
+	
+	public int32 ResultCount()
+	{
+		return this.handle.ResultCount();
+	}
+	
+	public bool QueryState(int64 state)
+	{
+		return this.handle.QueryState(state);
+	}
+	
+	public bool IsRunning()
+	{
+		return this.handle.IsRunning();
+	}
+	
+	public bool IsStarted()
+	{
+		return this.handle.IsStarted();
+	}
+	
+	public bool IsCanceled()
+	{
+		return this.handle.IsCanceled();
+	}
+	
+	public bool IsFinished()
+	{
+		return this.handle.IsFinished();
+	}
+	
+	public bool IsPaused()
+	{
+		return this.handle.IsPaused();
+	}
+	
+	public void SetPaused(bool paused)
+	{
+		this.handle.SetPaused(paused);
+	}
+	
+	public void TogglePaused()
+	{
+		this.handle.TogglePaused();
+	}
+	
+	public bool IsSuspending()
+	{
+		return this.handle.IsSuspending();
+	}
+	
+	public bool IsSuspended()
+	{
+		return this.handle.IsSuspended();
+	}
+	
+	public bool IsThrottled()
+	{
+		return this.handle.IsThrottled();
+	}
+	
+	public bool IsResultReadyAt(int32 index)
+	{
+		return this.handle.IsResultReadyAt(index);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 LoadState()
+	{
+		return this.handle.LoadState();
+	}
+	
+	public void Cancel()
+	{
+		this.handle.Cancel();
+	}
+	
+	public void CancelAndFinish()
+	{
+		this.handle.CancelAndFinish();
+	}
+	
+	public void SetSuspended(bool suspendVal)
+	{
+		this.handle.SetSuspended(suspendVal);
+	}
+	
+	public void ToggleSuspended()
+	{
+		this.handle.ToggleSuspended();
+	}
+	
+	public void ReportSuspended()
+	{
+		this.handle.ReportSuspended();
+	}
+	
+	public void SetThrottled(bool enable)
+	{
+		this.handle.SetThrottled(enable);
+	}
+	
+	public void WaitForFinished()
+	{
+		this.handle.WaitForFinished();
+	}
+	
+	public bool WaitForNextResult()
+	{
+		return this.handle.WaitForNextResult();
+	}
+	
+	public void WaitForResult(int32 resultIndex)
+	{
+		this.handle.WaitForResult(resultIndex);
+	}
+	
+	public void WaitForResume()
+	{
+		this.handle.WaitForResume();
+	}
+	
+	public void SuspendIfRequested()
+	{
+		this.handle.SuspendIfRequested();
+	}
+	
+	public void* Mutex()
+	{
+		return this.handle.Mutex();
+	}
+	
+	public bool HasException()
+	{
+		return this.handle.HasException();
+	}
+	
+	public bool OperatorEqual(IQFutureInterfaceBase other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQFutureInterfaceBase other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void Swap(IQFutureInterfaceBase other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsChainCanceled()
+	{
+		return this.handle.IsChainCanceled();
 	}
 	
 }

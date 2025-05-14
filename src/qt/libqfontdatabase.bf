@@ -54,17 +54,22 @@ public interface IQFontDatabase
 {
 	void* NativePtr { get; }
 }
-public class QFontDatabase : IQFontDatabase
+public struct QFontDatabasePtr : IQFontDatabase, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQFontDatabase other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFontDatabase_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQFontDatabase other)
+	{
+		return .(CQt.QFontDatabase_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFontDatabase_Delete(this.nativePtr);
 	}
@@ -106,12 +111,12 @@ public class QFontDatabase : IQFontDatabase
 	
 	public static libqt_string StyleString(IQFont font)
 	{
-		return CQt.QFontDatabase_StyleString((font == default) ? default : (void*)font.NativePtr);
+		return CQt.QFontDatabase_StyleString((font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public static libqt_string StyleStringWithFontInfo(IQFontInfo fontInfo)
 	{
-		return CQt.QFontDatabase_StyleStringWithFontInfo((fontInfo == default) ? default : (void*)fontInfo.NativePtr);
+		return CQt.QFontDatabase_StyleStringWithFontInfo((fontInfo == default || fontInfo.NativePtr == default) ? default : fontInfo.NativePtr);
 	}
 	
 	public static void Font(String family, String style, int32 pointSize)
@@ -166,12 +171,12 @@ public class QFontDatabase : IQFontDatabase
 	
 	public static libqt_string WritingSystemName(int64 writingSystem)
 	{
-		return CQt.QFontDatabase_WritingSystemName(writingSystem);
+		return CQt.QFontDatabase_WritingSystemName((int64)writingSystem);
 	}
 	
 	public static libqt_string WritingSystemSample(int64 writingSystem)
 	{
-		return CQt.QFontDatabase_WritingSystemSample(writingSystem);
+		return CQt.QFontDatabase_WritingSystemSample((int64)writingSystem);
 	}
 	
 	public static int32 AddApplicationFont(String fileName)
@@ -201,12 +206,12 @@ public class QFontDatabase : IQFontDatabase
 	
 	public static void SystemFont(int64 typeVal)
 	{
-		CQt.QFontDatabase_SystemFont(typeVal);
+		CQt.QFontDatabase_SystemFont((int64)typeVal);
 	}
 	
 	public static libqt_string[] Families1(int64 writingSystem)
 	{
-		return CQt.QFontDatabase_Families1(writingSystem);
+		return CQt.QFontDatabase_Families1((int64)writingSystem);
 	}
 	
 	public static int32[] PointSizes2(String family, String style)
@@ -232,6 +237,191 @@ public class QFontDatabase : IQFontDatabase
 	public static bool IsFixedPitch2(String family, String style)
 	{
 		return CQt.QFontDatabase_IsFixedPitch2(libqt_string(family), libqt_string(style));
+	}
+	
+}
+public class QFontDatabase
+{
+	public QFontDatabasePtr handle;
+	
+	public static implicit operator QFontDatabasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQFontDatabase other)
+	{
+		this.handle = QFontDatabasePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static int32[] StandardSizes()
+	{
+		return QFontDatabasePtr.StandardSizes();
+	}
+	
+	public static int64[] WritingSystems()
+	{
+		return QFontDatabasePtr.WritingSystems();
+	}
+	
+	public static int64[] WritingSystemsWithFamily(String family)
+	{
+		return QFontDatabasePtr.WritingSystemsWithFamily(family);
+	}
+	
+	public static libqt_string[] Families()
+	{
+		return QFontDatabasePtr.Families();
+	}
+	
+	public static libqt_string[] Styles(String family)
+	{
+		return QFontDatabasePtr.Styles(family);
+	}
+	
+	public static int32[] PointSizes(String family)
+	{
+		return QFontDatabasePtr.PointSizes(family);
+	}
+	
+	public static int32[] SmoothSizes(String family, String style)
+	{
+		return QFontDatabasePtr.SmoothSizes(family, style);
+	}
+	
+	public static libqt_string StyleString(IQFont font)
+	{
+		return QFontDatabasePtr.StyleString(font);
+	}
+	
+	public static libqt_string StyleStringWithFontInfo(IQFontInfo fontInfo)
+	{
+		return QFontDatabasePtr.StyleStringWithFontInfo(fontInfo);
+	}
+	
+	public static void Font(String family, String style, int32 pointSize)
+	{
+		QFontDatabasePtr.Font(family, style, pointSize);
+	}
+	
+	public static bool IsBitmapScalable(String family)
+	{
+		return QFontDatabasePtr.IsBitmapScalable(family);
+	}
+	
+	public static bool IsSmoothlyScalable(String family)
+	{
+		return QFontDatabasePtr.IsSmoothlyScalable(family);
+	}
+	
+	public static bool IsScalable(String family)
+	{
+		return QFontDatabasePtr.IsScalable(family);
+	}
+	
+	public static bool IsFixedPitch(String family)
+	{
+		return QFontDatabasePtr.IsFixedPitch(family);
+	}
+	
+	public static bool Italic(String family, String style)
+	{
+		return QFontDatabasePtr.Italic(family, style);
+	}
+	
+	public static bool Bold(String family, String style)
+	{
+		return QFontDatabasePtr.Bold(family, style);
+	}
+	
+	public static int32 Weight(String family, String style)
+	{
+		return QFontDatabasePtr.Weight(family, style);
+	}
+	
+	public static bool HasFamily(String family)
+	{
+		return QFontDatabasePtr.HasFamily(family);
+	}
+	
+	public static bool IsPrivateFamily(String family)
+	{
+		return QFontDatabasePtr.IsPrivateFamily(family);
+	}
+	
+	public static libqt_string WritingSystemName(int64 writingSystem)
+	{
+		return QFontDatabasePtr.WritingSystemName(writingSystem);
+	}
+	
+	public static libqt_string WritingSystemSample(int64 writingSystem)
+	{
+		return QFontDatabasePtr.WritingSystemSample(writingSystem);
+	}
+	
+	public static int32 AddApplicationFont(String fileName)
+	{
+		return QFontDatabasePtr.AddApplicationFont(fileName);
+	}
+	
+	public static int32 AddApplicationFontFromData(String fontData)
+	{
+		return QFontDatabasePtr.AddApplicationFontFromData(fontData);
+	}
+	
+	public static libqt_string[] ApplicationFontFamilies(int32 id)
+	{
+		return QFontDatabasePtr.ApplicationFontFamilies(id);
+	}
+	
+	public static bool RemoveApplicationFont(int32 id)
+	{
+		return QFontDatabasePtr.RemoveApplicationFont(id);
+	}
+	
+	public static bool RemoveAllApplicationFonts()
+	{
+		return QFontDatabasePtr.RemoveAllApplicationFonts();
+	}
+	
+	public static void SystemFont(int64 typeVal)
+	{
+		QFontDatabasePtr.SystemFont(typeVal);
+	}
+	
+	public static libqt_string[] Families1(int64 writingSystem)
+	{
+		return QFontDatabasePtr.Families1(writingSystem);
+	}
+	
+	public static int32[] PointSizes2(String family, String style)
+	{
+		return QFontDatabasePtr.PointSizes2(family, style);
+	}
+	
+	public static bool IsBitmapScalable2(String family, String style)
+	{
+		return QFontDatabasePtr.IsBitmapScalable2(family, style);
+	}
+	
+	public static bool IsSmoothlyScalable2(String family, String style)
+	{
+		return QFontDatabasePtr.IsSmoothlyScalable2(family, style);
+	}
+	
+	public static bool IsScalable2(String family, String style)
+	{
+		return QFontDatabasePtr.IsScalable2(family, style);
+	}
+	
+	public static bool IsFixedPitch2(String family, String style)
+	{
+		return QFontDatabasePtr.IsFixedPitch2(family, style);
 	}
 	
 }

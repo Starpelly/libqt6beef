@@ -6,17 +6,22 @@ public interface IQWhatsThis
 {
 	void* NativePtr { get; }
 }
-public class QWhatsThis : IQWhatsThis
+public struct QWhatsThisPtr : IQWhatsThis, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQWhatsThis other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QWhatsThis_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQWhatsThis other)
+	{
+		return .(CQt.QWhatsThis_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QWhatsThis_Delete(this.nativePtr);
 	}
@@ -38,7 +43,7 @@ public class QWhatsThis : IQWhatsThis
 	
 	public static void ShowText(IQPoint pos, String text)
 	{
-		CQt.QWhatsThis_ShowText((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text));
+		CQt.QWhatsThis_ShowText((pos == default || pos.NativePtr == default) ? default : pos.NativePtr, libqt_string(text));
 	}
 	
 	public static void HideText()
@@ -53,12 +58,72 @@ public class QWhatsThis : IQWhatsThis
 	
 	public static void ShowText3(IQPoint pos, String text, IQWidget w)
 	{
-		CQt.QWhatsThis_ShowText3((pos == default) ? default : (void*)pos.NativePtr, libqt_string(text), (w == null) ? null : (void*)w.NativePtr);
+		CQt.QWhatsThis_ShowText3((pos == default || pos.NativePtr == default) ? default : pos.NativePtr, libqt_string(text), (w == default || w.NativePtr == default) ? default : w.NativePtr);
 	}
 	
 	public static void* CreateAction1(IQObject parent)
 	{
-		return CQt.QWhatsThis_CreateAction1((parent == null) ? null : (void*)parent.NativePtr);
+		return CQt.QWhatsThis_CreateAction1((parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
+	}
+	
+}
+public class QWhatsThis
+{
+	public QWhatsThisPtr handle;
+	
+	public static implicit operator QWhatsThisPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQWhatsThis other)
+	{
+		this.handle = QWhatsThisPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static void EnterWhatsThisMode()
+	{
+		QWhatsThisPtr.EnterWhatsThisMode();
+	}
+	
+	public static bool InWhatsThisMode()
+	{
+		return QWhatsThisPtr.InWhatsThisMode();
+	}
+	
+	public static void LeaveWhatsThisMode()
+	{
+		QWhatsThisPtr.LeaveWhatsThisMode();
+	}
+	
+	public static void ShowText(IQPoint pos, String text)
+	{
+		QWhatsThisPtr.ShowText(pos, text);
+	}
+	
+	public static void HideText()
+	{
+		QWhatsThisPtr.HideText();
+	}
+	
+	public static void* CreateAction()
+	{
+		return QWhatsThisPtr.CreateAction();
+	}
+	
+	public static void ShowText3(IQPoint pos, String text, IQWidget w)
+	{
+		QWhatsThisPtr.ShowText3(pos, text, w);
+	}
+	
+	public static void* CreateAction1(IQObject parent)
+	{
+		return QWhatsThisPtr.CreateAction1(parent);
 	}
 	
 }

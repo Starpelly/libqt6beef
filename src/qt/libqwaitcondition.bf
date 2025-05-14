@@ -6,39 +6,44 @@ public interface IQWaitCondition
 {
 	void* NativePtr { get; }
 }
-public class QWaitCondition : IQWaitCondition
+public struct QWaitConditionPtr : IQWaitCondition, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QWaitCondition_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QWaitCondition_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QWaitCondition_Delete(this.nativePtr);
 	}
 	
 	public bool Wait(IQMutex lockedMutex)
 	{
-		return CQt.QWaitCondition_Wait(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr);
+		return CQt.QWaitCondition_Wait(this.nativePtr, (lockedMutex == default || lockedMutex.NativePtr == default) ? default : lockedMutex.NativePtr);
 	}
 	
 	public bool Wait2(IQMutex lockedMutex, c_ulong time)
 	{
-		return CQt.QWaitCondition_Wait2(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr, time);
+		return CQt.QWaitCondition_Wait2(this.nativePtr, (lockedMutex == default || lockedMutex.NativePtr == default) ? default : lockedMutex.NativePtr, time);
 	}
 	
 	public bool WaitWithLockedReadWriteLock(IQReadWriteLock lockedReadWriteLock)
 	{
-		return CQt.QWaitCondition_WaitWithLockedReadWriteLock(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr);
+		return CQt.QWaitCondition_WaitWithLockedReadWriteLock(this.nativePtr, (lockedReadWriteLock == default || lockedReadWriteLock.NativePtr == default) ? default : lockedReadWriteLock.NativePtr);
 	}
 	
 	public bool Wait3(IQReadWriteLock lockedReadWriteLock, c_ulong time)
 	{
-		return CQt.QWaitCondition_Wait3(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr, time);
+		return CQt.QWaitCondition_Wait3(this.nativePtr, (lockedReadWriteLock == default || lockedReadWriteLock.NativePtr == default) ? default : lockedReadWriteLock.NativePtr, time);
 	}
 	
 	public void WakeOne()
@@ -63,12 +68,82 @@ public class QWaitCondition : IQWaitCondition
 	
 	public bool Wait22(IQMutex lockedMutex, IQDeadlineTimer deadline)
 	{
-		return CQt.QWaitCondition_Wait22(this.nativePtr, (lockedMutex == null) ? null : (void*)lockedMutex.NativePtr, (deadline == default) ? default : (void)deadline.NativePtr);
+		return CQt.QWaitCondition_Wait22(this.nativePtr, (lockedMutex == default || lockedMutex.NativePtr == default) ? default : lockedMutex.NativePtr, default);
 	}
 	
 	public bool Wait23(IQReadWriteLock lockedReadWriteLock, IQDeadlineTimer deadline)
 	{
-		return CQt.QWaitCondition_Wait23(this.nativePtr, (lockedReadWriteLock == null) ? null : (void*)lockedReadWriteLock.NativePtr, (deadline == default) ? default : (void)deadline.NativePtr);
+		return CQt.QWaitCondition_Wait23(this.nativePtr, (lockedReadWriteLock == default || lockedReadWriteLock.NativePtr == default) ? default : lockedReadWriteLock.NativePtr, default);
+	}
+	
+}
+public class QWaitCondition
+{
+	public QWaitConditionPtr handle;
+	
+	public static implicit operator QWaitConditionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QWaitConditionPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool Wait(IQMutex lockedMutex)
+	{
+		return this.handle.Wait(lockedMutex);
+	}
+	
+	public bool Wait2(IQMutex lockedMutex, c_ulong time)
+	{
+		return this.handle.Wait2(lockedMutex, time);
+	}
+	
+	public bool WaitWithLockedReadWriteLock(IQReadWriteLock lockedReadWriteLock)
+	{
+		return this.handle.WaitWithLockedReadWriteLock(lockedReadWriteLock);
+	}
+	
+	public bool Wait3(IQReadWriteLock lockedReadWriteLock, c_ulong time)
+	{
+		return this.handle.Wait3(lockedReadWriteLock, time);
+	}
+	
+	public void WakeOne()
+	{
+		this.handle.WakeOne();
+	}
+	
+	public void WakeAll()
+	{
+		this.handle.WakeAll();
+	}
+	
+	public void NotifyOne()
+	{
+		this.handle.NotifyOne();
+	}
+	
+	public void NotifyAll()
+	{
+		this.handle.NotifyAll();
+	}
+	
+	public bool Wait22(IQMutex lockedMutex, IQDeadlineTimer deadline)
+	{
+		return this.handle.Wait22(lockedMutex, default);
+	}
+	
+	public bool Wait23(IQReadWriteLock lockedReadWriteLock, IQDeadlineTimer deadline)
+	{
+		return this.handle.Wait23(lockedReadWriteLock, default);
 	}
 	
 }

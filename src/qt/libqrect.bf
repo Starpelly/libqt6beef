@@ -6,17 +6,22 @@ public interface IQRect
 {
 	void* NativePtr { get; }
 }
-public class QRect : IQRect
+public struct QRectPtr : IQRect, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQRect other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRect_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQRect other)
+	{
+		return .(CQt.QRect_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRect_Delete(this.nativePtr);
 	}
@@ -103,22 +108,22 @@ public class QRect : IQRect
 	
 	public void SetTopLeft(IQPoint p)
 	{
-		CQt.QRect_SetTopLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_SetTopLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetBottomRight(IQPoint p)
 	{
-		CQt.QRect_SetBottomRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_SetBottomRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetTopRight(IQPoint p)
 	{
-		CQt.QRect_SetTopRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_SetTopRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetBottomLeft(IQPoint p)
 	{
-		CQt.QRect_SetBottomLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_SetBottomLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void TopLeft()
@@ -168,27 +173,27 @@ public class QRect : IQRect
 	
 	public void MoveTopLeft(IQPoint p)
 	{
-		CQt.QRect_MoveTopLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveTopLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveBottomRight(IQPoint p)
 	{
-		CQt.QRect_MoveBottomRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveBottomRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveTopRight(IQPoint p)
 	{
-		CQt.QRect_MoveTopRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveTopRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveBottomLeft(IQPoint p)
 	{
-		CQt.QRect_MoveBottomLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveBottomLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveCenter(IQPoint p)
 	{
-		CQt.QRect_MoveCenter(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveCenter(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translate(int32 dx, int32 dy)
@@ -198,7 +203,7 @@ public class QRect : IQRect
 	
 	public void TranslateWithQPoint(IQPoint p)
 	{
-		CQt.QRect_TranslateWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_TranslateWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translated(int32 dx, int32 dy)
@@ -208,7 +213,7 @@ public class QRect : IQRect
 	
 	public void TranslatedWithQPoint(IQPoint p)
 	{
-		CQt.QRect_TranslatedWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_TranslatedWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Transposed()
@@ -223,7 +228,7 @@ public class QRect : IQRect
 	
 	public void MoveToWithQPoint(IQPoint p)
 	{
-		CQt.QRect_MoveToWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRect_MoveToWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetRect(int32 x, int32 y, int32 w, int32 h)
@@ -283,37 +288,37 @@ public class QRect : IQRect
 	
 	public void SetSize(IQSize s)
 	{
-		CQt.QRect_SetSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		CQt.QRect_SetSize(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public void OperatorBitwiseOr(IQRect r)
 	{
-		CQt.QRect_OperatorBitwiseOr(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRect_OperatorBitwiseOr(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAnd(IQRect r)
 	{
-		CQt.QRect_OperatorBitwiseAnd(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRect_OperatorBitwiseAnd(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseOrAssign(IQRect r)
 	{
-		CQt.QRect_OperatorBitwiseOrAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRect_OperatorBitwiseOrAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndAssign(IQRect r)
 	{
-		CQt.QRect_OperatorBitwiseAndAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRect_OperatorBitwiseAndAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool Contains(IQRect r)
 	{
-		return CQt.QRect_Contains(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRect_Contains(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool ContainsWithQPoint(IQPoint p)
 	{
-		return CQt.QRect_ContainsWithQPoint(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QRect_ContainsWithQPoint(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public bool Contains2(int32 x, int32 y)
@@ -328,42 +333,42 @@ public class QRect : IQRect
 	
 	public void United(IQRect other)
 	{
-		CQt.QRect_United(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRect_United(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Intersected(IQRect other)
 	{
-		CQt.QRect_Intersected(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRect_Intersected(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool Intersects(IQRect r)
 	{
-		return CQt.QRect_Intersects(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRect_Intersects(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void MarginsAdded(IQMargins margins)
 	{
-		CQt.QRect_MarginsAdded(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		CQt.QRect_MarginsAdded(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void MarginsRemoved(IQMargins margins)
 	{
-		CQt.QRect_MarginsRemoved(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		CQt.QRect_MarginsRemoved(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssign(IQMargins margins)
 	{
-		return CQt.QRect_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QRect_OperatorPlusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMargins margins)
 	{
-		return CQt.QRect_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QRect_OperatorMinusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public static void Span(IQPoint p1, IQPoint p2)
 	{
-		CQt.QRect_Span((p1 == default) ? default : (void*)p1.NativePtr, (p2 == default) ? default : (void*)p2.NativePtr);
+		CQt.QRect_Span((p1 == default || p1.NativePtr == default) ? default : p1.NativePtr, (p2 == default || p2.NativePtr == default) ? default : p2.NativePtr);
 	}
 	
 	public void ToRectF()
@@ -373,12 +378,392 @@ public class QRect : IQRect
 	
 	public bool Contains22(IQRect r, bool proper)
 	{
-		return CQt.QRect_Contains22(this.nativePtr, (r == default) ? default : (void*)r.NativePtr, proper);
+		return CQt.QRect_Contains22(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr, proper);
 	}
 	
 	public bool Contains23(IQPoint p, bool proper)
 	{
-		return CQt.QRect_Contains23(this.nativePtr, (p == default) ? default : (void*)p.NativePtr, proper);
+		return CQt.QRect_Contains23(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr, proper);
+	}
+	
+}
+public class QRect
+{
+	public QRectPtr handle;
+	
+	public static implicit operator QRectPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQRect other)
+	{
+		this.handle = QRectPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 Left()
+	{
+		return this.handle.Left();
+	}
+	
+	public int32 Top()
+	{
+		return this.handle.Top();
+	}
+	
+	public int32 Right()
+	{
+		return this.handle.Right();
+	}
+	
+	public int32 Bottom()
+	{
+		return this.handle.Bottom();
+	}
+	
+	public void Normalized()
+	{
+		this.handle.Normalized();
+	}
+	
+	public int32 X()
+	{
+		return this.handle.X();
+	}
+	
+	public int32 Y()
+	{
+		return this.handle.Y();
+	}
+	
+	public void SetLeft(int32 pos)
+	{
+		this.handle.SetLeft(pos);
+	}
+	
+	public void SetTop(int32 pos)
+	{
+		this.handle.SetTop(pos);
+	}
+	
+	public void SetRight(int32 pos)
+	{
+		this.handle.SetRight(pos);
+	}
+	
+	public void SetBottom(int32 pos)
+	{
+		this.handle.SetBottom(pos);
+	}
+	
+	public void SetX(int32 x)
+	{
+		this.handle.SetX(x);
+	}
+	
+	public void SetY(int32 y)
+	{
+		this.handle.SetY(y);
+	}
+	
+	public void SetTopLeft(IQPoint p)
+	{
+		this.handle.SetTopLeft(p);
+	}
+	
+	public void SetBottomRight(IQPoint p)
+	{
+		this.handle.SetBottomRight(p);
+	}
+	
+	public void SetTopRight(IQPoint p)
+	{
+		this.handle.SetTopRight(p);
+	}
+	
+	public void SetBottomLeft(IQPoint p)
+	{
+		this.handle.SetBottomLeft(p);
+	}
+	
+	public void TopLeft()
+	{
+		this.handle.TopLeft();
+	}
+	
+	public void BottomRight()
+	{
+		this.handle.BottomRight();
+	}
+	
+	public void TopRight()
+	{
+		this.handle.TopRight();
+	}
+	
+	public void BottomLeft()
+	{
+		this.handle.BottomLeft();
+	}
+	
+	public void Center()
+	{
+		this.handle.Center();
+	}
+	
+	public void MoveLeft(int32 pos)
+	{
+		this.handle.MoveLeft(pos);
+	}
+	
+	public void MoveTop(int32 pos)
+	{
+		this.handle.MoveTop(pos);
+	}
+	
+	public void MoveRight(int32 pos)
+	{
+		this.handle.MoveRight(pos);
+	}
+	
+	public void MoveBottom(int32 pos)
+	{
+		this.handle.MoveBottom(pos);
+	}
+	
+	public void MoveTopLeft(IQPoint p)
+	{
+		this.handle.MoveTopLeft(p);
+	}
+	
+	public void MoveBottomRight(IQPoint p)
+	{
+		this.handle.MoveBottomRight(p);
+	}
+	
+	public void MoveTopRight(IQPoint p)
+	{
+		this.handle.MoveTopRight(p);
+	}
+	
+	public void MoveBottomLeft(IQPoint p)
+	{
+		this.handle.MoveBottomLeft(p);
+	}
+	
+	public void MoveCenter(IQPoint p)
+	{
+		this.handle.MoveCenter(p);
+	}
+	
+	public void Translate(int32 dx, int32 dy)
+	{
+		this.handle.Translate(dx, dy);
+	}
+	
+	public void TranslateWithQPoint(IQPoint p)
+	{
+		this.handle.TranslateWithQPoint(p);
+	}
+	
+	public void Translated(int32 dx, int32 dy)
+	{
+		this.handle.Translated(dx, dy);
+	}
+	
+	public void TranslatedWithQPoint(IQPoint p)
+	{
+		this.handle.TranslatedWithQPoint(p);
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void MoveTo(int32 x, int32 t)
+	{
+		this.handle.MoveTo(x, t);
+	}
+	
+	public void MoveToWithQPoint(IQPoint p)
+	{
+		this.handle.MoveToWithQPoint(p);
+	}
+	
+	public void SetRect(int32 x, int32 y, int32 w, int32 h)
+	{
+		this.handle.SetRect(x, y, w, h);
+	}
+	
+	public void GetRect(int32* x, int32* y, int32* w, int32* h)
+	{
+		this.handle.GetRect(x, y, w, h);
+	}
+	
+	public void SetCoords(int32 x1, int32 y1, int32 x2, int32 y2)
+	{
+		this.handle.SetCoords(x1, y1, x2, y2);
+	}
+	
+	public void GetCoords(int32* x1, int32* y1, int32* x2, int32* y2)
+	{
+		this.handle.GetCoords(x1, y1, x2, y2);
+	}
+	
+	public void Adjust(int32 x1, int32 y1, int32 x2, int32 y2)
+	{
+		this.handle.Adjust(x1, y1, x2, y2);
+	}
+	
+	public void Adjusted(int32 x1, int32 y1, int32 x2, int32 y2)
+	{
+		this.handle.Adjusted(x1, y1, x2, y2);
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void SetWidth(int32 w)
+	{
+		this.handle.SetWidth(w);
+	}
+	
+	public void SetHeight(int32 h)
+	{
+		this.handle.SetHeight(h);
+	}
+	
+	public void SetSize(IQSize s)
+	{
+		this.handle.SetSize(s);
+	}
+	
+	public void OperatorBitwiseOr(IQRect r)
+	{
+		this.handle.OperatorBitwiseOr(r);
+	}
+	
+	public void OperatorBitwiseAnd(IQRect r)
+	{
+		this.handle.OperatorBitwiseAnd(r);
+	}
+	
+	public void OperatorBitwiseOrAssign(IQRect r)
+	{
+		this.handle.OperatorBitwiseOrAssign(r);
+	}
+	
+	public void OperatorBitwiseAndAssign(IQRect r)
+	{
+		this.handle.OperatorBitwiseAndAssign(r);
+	}
+	
+	public bool Contains(IQRect r)
+	{
+		return this.handle.Contains(r);
+	}
+	
+	public bool ContainsWithQPoint(IQPoint p)
+	{
+		return this.handle.ContainsWithQPoint(p);
+	}
+	
+	public bool Contains2(int32 x, int32 y)
+	{
+		return this.handle.Contains2(x, y);
+	}
+	
+	public bool Contains3(int32 x, int32 y, bool proper)
+	{
+		return this.handle.Contains3(x, y, proper);
+	}
+	
+	public void United(IQRect other)
+	{
+		this.handle.United(other);
+	}
+	
+	public void Intersected(IQRect other)
+	{
+		this.handle.Intersected(other);
+	}
+	
+	public bool Intersects(IQRect r)
+	{
+		return this.handle.Intersects(r);
+	}
+	
+	public void MarginsAdded(IQMargins margins)
+	{
+		this.handle.MarginsAdded(margins);
+	}
+	
+	public void MarginsRemoved(IQMargins margins)
+	{
+		this.handle.MarginsRemoved(margins);
+	}
+	
+	public void* OperatorPlusAssign(IQMargins margins)
+	{
+		return this.handle.OperatorPlusAssign(margins);
+	}
+	
+	public void* OperatorMinusAssign(IQMargins margins)
+	{
+		return this.handle.OperatorMinusAssign(margins);
+	}
+	
+	public static void Span(IQPoint p1, IQPoint p2)
+	{
+		QRectPtr.Span(p1, p2);
+	}
+	
+	public void ToRectF()
+	{
+		this.handle.ToRectF();
+	}
+	
+	public bool Contains22(IQRect r, bool proper)
+	{
+		return this.handle.Contains22(r, proper);
+	}
+	
+	public bool Contains23(IQPoint p, bool proper)
+	{
+		return this.handle.Contains23(p, proper);
 	}
 	
 }
@@ -550,17 +935,22 @@ public interface IQRectF
 {
 	void* NativePtr { get; }
 }
-public class QRectF : IQRectF
+public struct QRectFPtr : IQRectF, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQRectF other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRectF_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQRectF other)
+	{
+		return .(CQt.QRectF_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRectF_Delete(this.nativePtr);
 	}
@@ -672,22 +1062,22 @@ public class QRectF : IQRectF
 	
 	public void SetTopLeft(IQPointF p)
 	{
-		CQt.QRectF_SetTopLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_SetTopLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetBottomRight(IQPointF p)
 	{
-		CQt.QRectF_SetBottomRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_SetBottomRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetTopRight(IQPointF p)
 	{
-		CQt.QRectF_SetTopRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_SetTopRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetBottomLeft(IQPointF p)
 	{
-		CQt.QRectF_SetBottomLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_SetBottomLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveLeft(double pos)
@@ -712,27 +1102,27 @@ public class QRectF : IQRectF
 	
 	public void MoveTopLeft(IQPointF p)
 	{
-		CQt.QRectF_MoveTopLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveTopLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveBottomRight(IQPointF p)
 	{
-		CQt.QRectF_MoveBottomRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveBottomRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveTopRight(IQPointF p)
 	{
-		CQt.QRectF_MoveTopRight(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveTopRight(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveBottomLeft(IQPointF p)
 	{
-		CQt.QRectF_MoveBottomLeft(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveBottomLeft(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void MoveCenter(IQPointF p)
 	{
-		CQt.QRectF_MoveCenter(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveCenter(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translate(double dx, double dy)
@@ -742,7 +1132,7 @@ public class QRectF : IQRectF
 	
 	public void TranslateWithQPointF(IQPointF p)
 	{
-		CQt.QRectF_TranslateWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_TranslateWithQPointF(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Translated(double dx, double dy)
@@ -752,7 +1142,7 @@ public class QRectF : IQRectF
 	
 	public void TranslatedWithQPointF(IQPointF p)
 	{
-		CQt.QRectF_TranslatedWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_TranslatedWithQPointF(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void Transposed()
@@ -767,7 +1157,7 @@ public class QRectF : IQRectF
 	
 	public void MoveToWithQPointF(IQPointF p)
 	{
-		CQt.QRectF_MoveToWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		CQt.QRectF_MoveToWithQPointF(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public void SetRect(double x, double y, double w, double h)
@@ -827,37 +1217,37 @@ public class QRectF : IQRectF
 	
 	public void SetSize(IQSizeF s)
 	{
-		CQt.QRectF_SetSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		CQt.QRectF_SetSize(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public void OperatorBitwiseOr(IQRectF r)
 	{
-		CQt.QRectF_OperatorBitwiseOr(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRectF_OperatorBitwiseOr(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAnd(IQRectF r)
 	{
-		CQt.QRectF_OperatorBitwiseAnd(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRectF_OperatorBitwiseAnd(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseOrAssign(IQRectF r)
 	{
-		CQt.QRectF_OperatorBitwiseOrAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRectF_OperatorBitwiseOrAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void OperatorBitwiseAndAssign(IQRectF r)
 	{
-		CQt.QRectF_OperatorBitwiseAndAssign(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		CQt.QRectF_OperatorBitwiseAndAssign(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool Contains(IQRectF r)
 	{
-		return CQt.QRectF_Contains(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRectF_Contains(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public bool ContainsWithQPointF(IQPointF p)
 	{
-		return CQt.QRectF_ContainsWithQPointF(this.nativePtr, (p == default) ? default : (void*)p.NativePtr);
+		return CQt.QRectF_ContainsWithQPointF(this.nativePtr, (p == default || p.NativePtr == default) ? default : p.NativePtr);
 	}
 	
 	public bool Contains2(double x, double y)
@@ -867,37 +1257,37 @@ public class QRectF : IQRectF
 	
 	public void United(IQRectF other)
 	{
-		CQt.QRectF_United(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRectF_United(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Intersected(IQRectF other)
 	{
-		CQt.QRectF_Intersected(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRectF_Intersected(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool Intersects(IQRectF r)
 	{
-		return CQt.QRectF_Intersects(this.nativePtr, (r == default) ? default : (void*)r.NativePtr);
+		return CQt.QRectF_Intersects(this.nativePtr, (r == default || r.NativePtr == default) ? default : r.NativePtr);
 	}
 	
 	public void MarginsAdded(IQMarginsF margins)
 	{
-		CQt.QRectF_MarginsAdded(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		CQt.QRectF_MarginsAdded(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void MarginsRemoved(IQMarginsF margins)
 	{
-		CQt.QRectF_MarginsRemoved(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		CQt.QRectF_MarginsRemoved(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorPlusAssign(IQMarginsF margins)
 	{
-		return CQt.QRectF_OperatorPlusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QRectF_OperatorPlusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMarginsF margins)
 	{
-		return CQt.QRectF_OperatorMinusAssign(this.nativePtr, (margins == default) ? default : (void*)margins.NativePtr);
+		return CQt.QRectF_OperatorMinusAssign(this.nativePtr, (margins == default || margins.NativePtr == default) ? default : margins.NativePtr);
 	}
 	
 	public void ToRect()
@@ -908,6 +1298,371 @@ public class QRectF : IQRectF
 	public void ToAlignedRect()
 	{
 		CQt.QRectF_ToAlignedRect(this.nativePtr);
+	}
+	
+}
+public class QRectF
+{
+	public QRectFPtr handle;
+	
+	public static implicit operator QRectFPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQRectF other)
+	{
+		this.handle = QRectFPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void Normalized()
+	{
+		this.handle.Normalized();
+	}
+	
+	public double Left()
+	{
+		return this.handle.Left();
+	}
+	
+	public double Top()
+	{
+		return this.handle.Top();
+	}
+	
+	public double Right()
+	{
+		return this.handle.Right();
+	}
+	
+	public double Bottom()
+	{
+		return this.handle.Bottom();
+	}
+	
+	public double X()
+	{
+		return this.handle.X();
+	}
+	
+	public double Y()
+	{
+		return this.handle.Y();
+	}
+	
+	public void SetLeft(double pos)
+	{
+		this.handle.SetLeft(pos);
+	}
+	
+	public void SetTop(double pos)
+	{
+		this.handle.SetTop(pos);
+	}
+	
+	public void SetRight(double pos)
+	{
+		this.handle.SetRight(pos);
+	}
+	
+	public void SetBottom(double pos)
+	{
+		this.handle.SetBottom(pos);
+	}
+	
+	public void SetX(double pos)
+	{
+		this.handle.SetX(pos);
+	}
+	
+	public void SetY(double pos)
+	{
+		this.handle.SetY(pos);
+	}
+	
+	public void TopLeft()
+	{
+		this.handle.TopLeft();
+	}
+	
+	public void BottomRight()
+	{
+		this.handle.BottomRight();
+	}
+	
+	public void TopRight()
+	{
+		this.handle.TopRight();
+	}
+	
+	public void BottomLeft()
+	{
+		this.handle.BottomLeft();
+	}
+	
+	public void Center()
+	{
+		this.handle.Center();
+	}
+	
+	public void SetTopLeft(IQPointF p)
+	{
+		this.handle.SetTopLeft(p);
+	}
+	
+	public void SetBottomRight(IQPointF p)
+	{
+		this.handle.SetBottomRight(p);
+	}
+	
+	public void SetTopRight(IQPointF p)
+	{
+		this.handle.SetTopRight(p);
+	}
+	
+	public void SetBottomLeft(IQPointF p)
+	{
+		this.handle.SetBottomLeft(p);
+	}
+	
+	public void MoveLeft(double pos)
+	{
+		this.handle.MoveLeft(pos);
+	}
+	
+	public void MoveTop(double pos)
+	{
+		this.handle.MoveTop(pos);
+	}
+	
+	public void MoveRight(double pos)
+	{
+		this.handle.MoveRight(pos);
+	}
+	
+	public void MoveBottom(double pos)
+	{
+		this.handle.MoveBottom(pos);
+	}
+	
+	public void MoveTopLeft(IQPointF p)
+	{
+		this.handle.MoveTopLeft(p);
+	}
+	
+	public void MoveBottomRight(IQPointF p)
+	{
+		this.handle.MoveBottomRight(p);
+	}
+	
+	public void MoveTopRight(IQPointF p)
+	{
+		this.handle.MoveTopRight(p);
+	}
+	
+	public void MoveBottomLeft(IQPointF p)
+	{
+		this.handle.MoveBottomLeft(p);
+	}
+	
+	public void MoveCenter(IQPointF p)
+	{
+		this.handle.MoveCenter(p);
+	}
+	
+	public void Translate(double dx, double dy)
+	{
+		this.handle.Translate(dx, dy);
+	}
+	
+	public void TranslateWithQPointF(IQPointF p)
+	{
+		this.handle.TranslateWithQPointF(p);
+	}
+	
+	public void Translated(double dx, double dy)
+	{
+		this.handle.Translated(dx, dy);
+	}
+	
+	public void TranslatedWithQPointF(IQPointF p)
+	{
+		this.handle.TranslatedWithQPointF(p);
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void MoveTo(double x, double y)
+	{
+		this.handle.MoveTo(x, y);
+	}
+	
+	public void MoveToWithQPointF(IQPointF p)
+	{
+		this.handle.MoveToWithQPointF(p);
+	}
+	
+	public void SetRect(double x, double y, double w, double h)
+	{
+		this.handle.SetRect(x, y, w, h);
+	}
+	
+	public void GetRect(double* x, double* y, double* w, double* h)
+	{
+		this.handle.GetRect(x, y, w, h);
+	}
+	
+	public void SetCoords(double x1, double y1, double x2, double y2)
+	{
+		this.handle.SetCoords(x1, y1, x2, y2);
+	}
+	
+	public void GetCoords(double* x1, double* y1, double* x2, double* y2)
+	{
+		this.handle.GetCoords(x1, y1, x2, y2);
+	}
+	
+	public void Adjust(double x1, double y1, double x2, double y2)
+	{
+		this.handle.Adjust(x1, y1, x2, y2);
+	}
+	
+	public void Adjusted(double x1, double y1, double x2, double y2)
+	{
+		this.handle.Adjusted(x1, y1, x2, y2);
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public double Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public double Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void SetWidth(double w)
+	{
+		this.handle.SetWidth(w);
+	}
+	
+	public void SetHeight(double h)
+	{
+		this.handle.SetHeight(h);
+	}
+	
+	public void SetSize(IQSizeF s)
+	{
+		this.handle.SetSize(s);
+	}
+	
+	public void OperatorBitwiseOr(IQRectF r)
+	{
+		this.handle.OperatorBitwiseOr(r);
+	}
+	
+	public void OperatorBitwiseAnd(IQRectF r)
+	{
+		this.handle.OperatorBitwiseAnd(r);
+	}
+	
+	public void OperatorBitwiseOrAssign(IQRectF r)
+	{
+		this.handle.OperatorBitwiseOrAssign(r);
+	}
+	
+	public void OperatorBitwiseAndAssign(IQRectF r)
+	{
+		this.handle.OperatorBitwiseAndAssign(r);
+	}
+	
+	public bool Contains(IQRectF r)
+	{
+		return this.handle.Contains(r);
+	}
+	
+	public bool ContainsWithQPointF(IQPointF p)
+	{
+		return this.handle.ContainsWithQPointF(p);
+	}
+	
+	public bool Contains2(double x, double y)
+	{
+		return this.handle.Contains2(x, y);
+	}
+	
+	public void United(IQRectF other)
+	{
+		this.handle.United(other);
+	}
+	
+	public void Intersected(IQRectF other)
+	{
+		this.handle.Intersected(other);
+	}
+	
+	public bool Intersects(IQRectF r)
+	{
+		return this.handle.Intersects(r);
+	}
+	
+	public void MarginsAdded(IQMarginsF margins)
+	{
+		this.handle.MarginsAdded(margins);
+	}
+	
+	public void MarginsRemoved(IQMarginsF margins)
+	{
+		this.handle.MarginsRemoved(margins);
+	}
+	
+	public void* OperatorPlusAssign(IQMarginsF margins)
+	{
+		return this.handle.OperatorPlusAssign(margins);
+	}
+	
+	public void* OperatorMinusAssign(IQMarginsF margins)
+	{
+		return this.handle.OperatorMinusAssign(margins);
+	}
+	
+	public void ToRect()
+	{
+		this.handle.ToRect();
+	}
+	
+	public void ToAlignedRect()
+	{
+		this.handle.ToAlignedRect();
 	}
 	
 }

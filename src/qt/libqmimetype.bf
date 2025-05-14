@@ -6,39 +6,44 @@ public interface IQMimeType
 {
 	void* NativePtr { get; }
 }
-public class QMimeType : IQMimeType
+public struct QMimeTypePtr : IQMimeType, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMimeType_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QMimeType_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMimeType_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQMimeType other)
 	{
-		CQt.QMimeType_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QMimeType_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQMimeType other)
 	{
-		CQt.QMimeType_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QMimeType_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQMimeType other)
 	{
-		return CQt.QMimeType_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMimeType_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQMimeType other)
 	{
-		return CQt.QMimeType_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMimeType_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -109,6 +114,116 @@ public class QMimeType : IQMimeType
 	public libqt_string FilterString()
 	{
 		return CQt.QMimeType_FilterString(this.nativePtr);
+	}
+	
+}
+public class QMimeType
+{
+	public QMimeTypePtr handle;
+	
+	public static implicit operator QMimeTypePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QMimeTypePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQMimeType other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQMimeType other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool OperatorEqual(IQMimeType other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQMimeType other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public bool IsDefault()
+	{
+		return this.handle.IsDefault();
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public libqt_string Comment()
+	{
+		return this.handle.Comment();
+	}
+	
+	public libqt_string GenericIconName()
+	{
+		return this.handle.GenericIconName();
+	}
+	
+	public libqt_string IconName()
+	{
+		return this.handle.IconName();
+	}
+	
+	public libqt_string[] GlobPatterns()
+	{
+		return this.handle.GlobPatterns();
+	}
+	
+	public libqt_string[] ParentMimeTypes()
+	{
+		return this.handle.ParentMimeTypes();
+	}
+	
+	public libqt_string[] AllAncestors()
+	{
+		return this.handle.AllAncestors();
+	}
+	
+	public libqt_string[] Aliases()
+	{
+		return this.handle.Aliases();
+	}
+	
+	public libqt_string[] Suffixes()
+	{
+		return this.handle.Suffixes();
+	}
+	
+	public libqt_string PreferredSuffix()
+	{
+		return this.handle.PreferredSuffix();
+	}
+	
+	public bool Inherits(String mimeTypeName)
+	{
+		return this.handle.Inherits(mimeTypeName);
+	}
+	
+	public libqt_string FilterString()
+	{
+		return this.handle.FilterString();
 	}
 	
 }

@@ -6,24 +6,29 @@ public interface IQCborStreamWriter
 {
 	void* NativePtr { get; }
 }
-public class QCborStreamWriter : IQCborStreamWriter
+public struct QCborStreamWriterPtr : IQCborStreamWriter, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQIODevice device)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCborStreamWriter_new((device == null) ? null : (void*)device.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQIODevice device)
+	{
+		return .(CQt.QCborStreamWriter_new((device == default || device.NativePtr == default) ? default : device.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborStreamWriter_Delete(this.nativePtr);
 	}
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QCborStreamWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QCborStreamWriter_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -43,7 +48,7 @@ public class QCborStreamWriter : IQCborStreamWriter
 	
 	public void AppendWithQCborNegativeInteger(void n)
 	{
-		CQt.QCborStreamWriter_AppendWithQCborNegativeInteger(this.nativePtr, n);
+		CQt.QCborStreamWriter_AppendWithQCborNegativeInteger(this.nativePtr, default);
 	}
 	
 	public void AppendWithBa(String ba)
@@ -53,17 +58,17 @@ public class QCborStreamWriter : IQCborStreamWriter
 	
 	public void AppendWithTag(void tag)
 	{
-		CQt.QCborStreamWriter_AppendWithTag(this.nativePtr, tag);
+		CQt.QCborStreamWriter_AppendWithTag(this.nativePtr, default);
 	}
 	
 	public void Append3(void tag)
 	{
-		CQt.QCborStreamWriter_Append3(this.nativePtr, tag);
+		CQt.QCborStreamWriter_Append3(this.nativePtr, default);
 	}
 	
 	public void AppendWithSt(void st)
 	{
-		CQt.QCborStreamWriter_AppendWithSt(this.nativePtr, st);
+		CQt.QCborStreamWriter_AppendWithSt(this.nativePtr, default);
 	}
 	
 	public void AppendWithFloat(float f)
@@ -149,6 +154,156 @@ public class QCborStreamWriter : IQCborStreamWriter
 	public void Append22(char8* str, int32 size)
 	{
 		CQt.QCborStreamWriter_Append22(this.nativePtr, str, size);
+	}
+	
+}
+public class QCborStreamWriter
+{
+	public QCborStreamWriterPtr handle;
+	
+	public static implicit operator QCborStreamWriterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQIODevice device)
+	{
+		this.handle = QCborStreamWriterPtr.New(device);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void Append(uint64 u)
+	{
+		this.handle.Append(u);
+	}
+	
+	public void AppendWithQint64(int64 i)
+	{
+		this.handle.AppendWithQint64(i);
+	}
+	
+	public void AppendWithQCborNegativeInteger(void n)
+	{
+		this.handle.AppendWithQCborNegativeInteger(default);
+	}
+	
+	public void AppendWithBa(String ba)
+	{
+		this.handle.AppendWithBa(ba);
+	}
+	
+	public void AppendWithTag(void tag)
+	{
+		this.handle.AppendWithTag(default);
+	}
+	
+	public void Append3(void tag)
+	{
+		this.handle.Append3(default);
+	}
+	
+	public void AppendWithSt(void st)
+	{
+		this.handle.AppendWithSt(default);
+	}
+	
+	public void AppendWithFloat(float f)
+	{
+		this.handle.AppendWithFloat(f);
+	}
+	
+	public void AppendWithDouble(double d)
+	{
+		this.handle.AppendWithDouble(d);
+	}
+	
+	public void AppendByteString(char8* data, int32 lenVal)
+	{
+		this.handle.AppendByteString(data, lenVal);
+	}
+	
+	public void AppendTextString(char8* utf8, int32 lenVal)
+	{
+		this.handle.AppendTextString(utf8, lenVal);
+	}
+	
+	public void AppendWithBool(bool b)
+	{
+		this.handle.AppendWithBool(b);
+	}
+	
+	public void AppendNull()
+	{
+		this.handle.AppendNull();
+	}
+	
+	public void AppendUndefined()
+	{
+		this.handle.AppendUndefined();
+	}
+	
+	public void AppendWithInt(int32 i)
+	{
+		this.handle.AppendWithInt(i);
+	}
+	
+	public void AppendWithUint(uint32 u)
+	{
+		this.handle.AppendWithUint(u);
+	}
+	
+	public void Append4(char8* str)
+	{
+		this.handle.Append4(str);
+	}
+	
+	public void StartArray()
+	{
+		this.handle.StartArray();
+	}
+	
+	public void StartArrayWithCount(uint64 count)
+	{
+		this.handle.StartArrayWithCount(count);
+	}
+	
+	public bool EndArray()
+	{
+		return this.handle.EndArray();
+	}
+	
+	public void StartMap()
+	{
+		this.handle.StartMap();
+	}
+	
+	public void StartMapWithCount(uint64 count)
+	{
+		this.handle.StartMapWithCount(count);
+	}
+	
+	public bool EndMap()
+	{
+		return this.handle.EndMap();
+	}
+	
+	public void Append22(char8* str, int32 size)
+	{
+		this.handle.Append22(str, size);
 	}
 	
 }

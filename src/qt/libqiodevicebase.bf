@@ -20,14 +20,33 @@ public interface IQIODeviceBase
 {
 	void* NativePtr { get; }
 }
-public class QIODeviceBase : IQIODeviceBase
+public struct QIODeviceBasePtr : IQIODeviceBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQIODeviceBase other)
+	{
+		return .(CQt.QIODeviceBase_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+}
+public class QIODeviceBase
+{
+	public QIODeviceBasePtr handle;
+	
+	public static implicit operator QIODeviceBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQIODeviceBase other)
 	{
-		this.nativePtr = CQt.QIODeviceBase_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QIODeviceBasePtr.New(other);
 	}
 }
 extension CQt

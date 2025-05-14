@@ -6,17 +6,22 @@ public interface IQHashSeed
 {
 	void* NativePtr { get; }
 }
-public class QHashSeed : IQHashSeed
+public struct QHashSeedPtr : IQHashSeed, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQHashSeed other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QHashSeed_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQHashSeed other)
+	{
+		return .(CQt.QHashSeed_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QHashSeed_Delete(this.nativePtr);
 	}
@@ -39,6 +44,46 @@ public class QHashSeed : IQHashSeed
 	public static void ResetRandomGlobalSeed()
 	{
 		CQt.QHashSeed_ResetRandomGlobalSeed();
+	}
+	
+}
+public class QHashSeed
+{
+	public QHashSeedPtr handle;
+	
+	public static implicit operator QHashSeedPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQHashSeed other)
+	{
+		this.handle = QHashSeedPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public uint32 ToUnsignedLong()
+	{
+		return this.handle.ToUnsignedLong();
+	}
+	
+	public static void GlobalSeed()
+	{
+		QHashSeedPtr.GlobalSeed();
+	}
+	
+	public static void SetDeterministicGlobalSeed()
+	{
+		QHashSeedPtr.SetDeterministicGlobalSeed();
+	}
+	
+	public static void ResetRandomGlobalSeed()
+	{
+		QHashSeedPtr.ResetRandomGlobalSeed();
 	}
 	
 }

@@ -87,24 +87,29 @@ public interface IQVideoFrameFormat
 {
 	void* NativePtr { get; }
 }
-public class QVideoFrameFormat : IQVideoFrameFormat
+public struct QVideoFrameFormatPtr : IQVideoFrameFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QVideoFrameFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QVideoFrameFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QVideoFrameFormat_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQVideoFrameFormat other)
 	{
-		CQt.QVideoFrameFormat_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QVideoFrameFormat_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Detach()
@@ -114,17 +119,17 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void OperatorAssign(IQVideoFrameFormat format)
 	{
-		CQt.QVideoFrameFormat_OperatorAssign(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		CQt.QVideoFrameFormat_OperatorAssign(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQVideoFrameFormat format)
 	{
-		return CQt.QVideoFrameFormat_OperatorEqual(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QVideoFrameFormat_OperatorEqual(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQVideoFrameFormat format)
 	{
-		return CQt.QVideoFrameFormat_OperatorNotEqual(this.nativePtr, (format == default) ? default : (void*)format.NativePtr);
+		return CQt.QVideoFrameFormat_OperatorNotEqual(this.nativePtr, (format == default || format.NativePtr == default) ? default : format.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -144,7 +149,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetFrameSize(IQSize size)
 	{
-		CQt.QVideoFrameFormat_SetFrameSize(this.nativePtr, (size == default) ? default : (void*)size.NativePtr);
+		CQt.QVideoFrameFormat_SetFrameSize(this.nativePtr, (size == default || size.NativePtr == default) ? default : size.NativePtr);
 	}
 	
 	public void SetFrameSize2(int32 width, int32 height)
@@ -174,7 +179,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetViewport(IQRect viewport)
 	{
-		CQt.QVideoFrameFormat_SetViewport(this.nativePtr, (viewport == default) ? default : (void*)viewport.NativePtr);
+		CQt.QVideoFrameFormat_SetViewport(this.nativePtr, (viewport == default || viewport.NativePtr == default) ? default : viewport.NativePtr);
 	}
 	
 	public int64 ScanLineDirection()
@@ -184,7 +189,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetScanLineDirection(int64 direction)
 	{
-		CQt.QVideoFrameFormat_SetScanLineDirection(this.nativePtr, direction);
+		CQt.QVideoFrameFormat_SetScanLineDirection(this.nativePtr, (int64)direction);
 	}
 	
 	public double FrameRate()
@@ -204,7 +209,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetYCbCrColorSpace(int64 colorSpace)
 	{
-		CQt.QVideoFrameFormat_SetYCbCrColorSpace(this.nativePtr, colorSpace);
+		CQt.QVideoFrameFormat_SetYCbCrColorSpace(this.nativePtr, (int64)colorSpace);
 	}
 	
 	public int64 ColorSpace()
@@ -214,7 +219,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetColorSpace(int64 colorSpace)
 	{
-		CQt.QVideoFrameFormat_SetColorSpace(this.nativePtr, colorSpace);
+		CQt.QVideoFrameFormat_SetColorSpace(this.nativePtr, (int64)colorSpace);
 	}
 	
 	public int64 ColorTransfer()
@@ -224,7 +229,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetColorTransfer(int64 colorTransfer)
 	{
-		CQt.QVideoFrameFormat_SetColorTransfer(this.nativePtr, colorTransfer);
+		CQt.QVideoFrameFormat_SetColorTransfer(this.nativePtr, (int64)colorTransfer);
 	}
 	
 	public int64 ColorRange()
@@ -234,7 +239,7 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public void SetColorRange(int64 range)
 	{
-		CQt.QVideoFrameFormat_SetColorRange(this.nativePtr, range);
+		CQt.QVideoFrameFormat_SetColorRange(this.nativePtr, (int64)range);
 	}
 	
 	public bool IsMirrored()
@@ -269,17 +274,217 @@ public class QVideoFrameFormat : IQVideoFrameFormat
 	
 	public static int64 PixelFormatFromImageFormat(int64 format)
 	{
-		return CQt.QVideoFrameFormat_PixelFormatFromImageFormat(format);
+		return CQt.QVideoFrameFormat_PixelFormatFromImageFormat((int64)format);
 	}
 	
 	public static int64 ImageFormatFromPixelFormat(int64 format)
 	{
-		return CQt.QVideoFrameFormat_ImageFormatFromPixelFormat(format);
+		return CQt.QVideoFrameFormat_ImageFormatFromPixelFormat((int64)format);
 	}
 	
 	public static libqt_string PixelFormatToString(int64 pixelFormat)
 	{
-		return CQt.QVideoFrameFormat_PixelFormatToString(pixelFormat);
+		return CQt.QVideoFrameFormat_PixelFormatToString((int64)pixelFormat);
+	}
+	
+}
+public class QVideoFrameFormat
+{
+	public QVideoFrameFormatPtr handle;
+	
+	public static implicit operator QVideoFrameFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QVideoFrameFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQVideoFrameFormat other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public void OperatorAssign(IQVideoFrameFormat format)
+	{
+		this.handle.OperatorAssign(format);
+	}
+	
+	public bool OperatorEqual(IQVideoFrameFormat format)
+	{
+		return this.handle.OperatorEqual(format);
+	}
+	
+	public bool OperatorNotEqual(IQVideoFrameFormat format)
+	{
+		return this.handle.OperatorNotEqual(format);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int64 PixelFormat()
+	{
+		return this.handle.PixelFormat();
+	}
+	
+	public void FrameSize()
+	{
+		this.handle.FrameSize();
+	}
+	
+	public void SetFrameSize(IQSize size)
+	{
+		this.handle.SetFrameSize(size);
+	}
+	
+	public void SetFrameSize2(int32 width, int32 height)
+	{
+		this.handle.SetFrameSize2(width, height);
+	}
+	
+	public int32 FrameWidth()
+	{
+		return this.handle.FrameWidth();
+	}
+	
+	public int32 FrameHeight()
+	{
+		return this.handle.FrameHeight();
+	}
+	
+	public int32 PlaneCount()
+	{
+		return this.handle.PlaneCount();
+	}
+	
+	public void Viewport()
+	{
+		this.handle.Viewport();
+	}
+	
+	public void SetViewport(IQRect viewport)
+	{
+		this.handle.SetViewport(viewport);
+	}
+	
+	public int64 ScanLineDirection()
+	{
+		return this.handle.ScanLineDirection();
+	}
+	
+	public void SetScanLineDirection(int64 direction)
+	{
+		this.handle.SetScanLineDirection(direction);
+	}
+	
+	public double FrameRate()
+	{
+		return this.handle.FrameRate();
+	}
+	
+	public void SetFrameRate(double rate)
+	{
+		this.handle.SetFrameRate(rate);
+	}
+	
+	public int64 YCbCrColorSpace()
+	{
+		return this.handle.YCbCrColorSpace();
+	}
+	
+	public void SetYCbCrColorSpace(int64 colorSpace)
+	{
+		this.handle.SetYCbCrColorSpace(colorSpace);
+	}
+	
+	public int64 ColorSpace()
+	{
+		return this.handle.ColorSpace();
+	}
+	
+	public void SetColorSpace(int64 colorSpace)
+	{
+		this.handle.SetColorSpace(colorSpace);
+	}
+	
+	public int64 ColorTransfer()
+	{
+		return this.handle.ColorTransfer();
+	}
+	
+	public void SetColorTransfer(int64 colorTransfer)
+	{
+		this.handle.SetColorTransfer(colorTransfer);
+	}
+	
+	public int64 ColorRange()
+	{
+		return this.handle.ColorRange();
+	}
+	
+	public void SetColorRange(int64 range)
+	{
+		this.handle.SetColorRange(range);
+	}
+	
+	public bool IsMirrored()
+	{
+		return this.handle.IsMirrored();
+	}
+	
+	public void SetMirrored(bool mirrored)
+	{
+		this.handle.SetMirrored(mirrored);
+	}
+	
+	public libqt_string VertexShaderFileName()
+	{
+		return this.handle.VertexShaderFileName();
+	}
+	
+	public libqt_string FragmentShaderFileName()
+	{
+		return this.handle.FragmentShaderFileName();
+	}
+	
+	public float MaxLuminance()
+	{
+		return this.handle.MaxLuminance();
+	}
+	
+	public void SetMaxLuminance(float lum)
+	{
+		this.handle.SetMaxLuminance(lum);
+	}
+	
+	public static int64 PixelFormatFromImageFormat(int64 format)
+	{
+		return QVideoFrameFormatPtr.PixelFormatFromImageFormat(format);
+	}
+	
+	public static int64 ImageFormatFromPixelFormat(int64 format)
+	{
+		return QVideoFrameFormatPtr.ImageFormatFromPixelFormat(format);
+	}
+	
+	public static libqt_string PixelFormatToString(int64 pixelFormat)
+	{
+		return QVideoFrameFormatPtr.PixelFormatToString(pixelFormat);
 	}
 	
 }

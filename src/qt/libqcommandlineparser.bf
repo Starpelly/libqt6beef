@@ -18,17 +18,22 @@ public interface IQCommandLineParser
 {
 	void* NativePtr { get; }
 }
-public class QCommandLineParser : IQCommandLineParser
+public struct QCommandLineParserPtr : IQCommandLineParser, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCommandLineParser_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCommandLineParser_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCommandLineParser_Delete(this.nativePtr);
 	}
@@ -40,17 +45,17 @@ public class QCommandLineParser : IQCommandLineParser
 	
 	public void SetSingleDashWordOptionMode(int64 parsingMode)
 	{
-		CQt.QCommandLineParser_SetSingleDashWordOptionMode(this.nativePtr, parsingMode);
+		CQt.QCommandLineParser_SetSingleDashWordOptionMode(this.nativePtr, (int64)parsingMode);
 	}
 	
 	public void SetOptionsAfterPositionalArgumentsMode(int64 mode)
 	{
-		CQt.QCommandLineParser_SetOptionsAfterPositionalArgumentsMode(this.nativePtr, mode);
+		CQt.QCommandLineParser_SetOptionsAfterPositionalArgumentsMode(this.nativePtr, (int64)mode);
 	}
 	
 	public bool AddOption(IQCommandLineOption commandLineOption)
 	{
-		return CQt.QCommandLineParser_AddOption(this.nativePtr, (commandLineOption == default) ? default : (void*)commandLineOption.NativePtr);
+		return CQt.QCommandLineParser_AddOption(this.nativePtr, (commandLineOption == default || commandLineOption.NativePtr == default) ? default : commandLineOption.NativePtr);
 	}
 	
 	public bool AddOptions(IQCommandLineOption[] options)
@@ -95,7 +100,7 @@ public class QCommandLineParser : IQCommandLineParser
 	
 	public void ProcessWithApp(IQCoreApplication app)
 	{
-		CQt.QCommandLineParser_ProcessWithApp(this.nativePtr, (app == default) ? default : (void*)app.NativePtr);
+		CQt.QCommandLineParser_ProcessWithApp(this.nativePtr, (app == default || app.NativePtr == default) ? default : app.NativePtr);
 	}
 	
 	public bool Parse(String[] arguments)
@@ -125,17 +130,17 @@ public class QCommandLineParser : IQCommandLineParser
 	
 	public bool IsSetWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_IsSetWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
+		return CQt.QCommandLineParser_IsSetWithOption(this.nativePtr, (option == default || option.NativePtr == default) ? default : option.NativePtr);
 	}
 	
 	public libqt_string ValueWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_ValueWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
+		return CQt.QCommandLineParser_ValueWithOption(this.nativePtr, (option == default || option.NativePtr == default) ? default : option.NativePtr);
 	}
 	
 	public libqt_string[] ValuesWithOption(IQCommandLineOption option)
 	{
-		return CQt.QCommandLineParser_ValuesWithOption(this.nativePtr, (option == default) ? default : (void*)option.NativePtr);
+		return CQt.QCommandLineParser_ValuesWithOption(this.nativePtr, (option == default || option.NativePtr == default) ? default : option.NativePtr);
 	}
 	
 	public libqt_string[] PositionalArguments()
@@ -186,6 +191,181 @@ public class QCommandLineParser : IQCommandLineParser
 	public void ShowHelp1(int32 exitCode)
 	{
 		CQt.QCommandLineParser_ShowHelp1(this.nativePtr, exitCode);
+	}
+	
+}
+public class QCommandLineParser
+{
+	public QCommandLineParserPtr handle;
+	
+	public static implicit operator QCommandLineParserPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCommandLineParserPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string Tr(char8* sourceText)
+	{
+		return QCommandLineParserPtr.Tr(sourceText);
+	}
+	
+	public void SetSingleDashWordOptionMode(int64 parsingMode)
+	{
+		this.handle.SetSingleDashWordOptionMode(parsingMode);
+	}
+	
+	public void SetOptionsAfterPositionalArgumentsMode(int64 mode)
+	{
+		this.handle.SetOptionsAfterPositionalArgumentsMode(mode);
+	}
+	
+	public bool AddOption(IQCommandLineOption commandLineOption)
+	{
+		return this.handle.AddOption(commandLineOption);
+	}
+	
+	public bool AddOptions(IQCommandLineOption[] options)
+	{
+		return this.handle.AddOptions(null);
+	}
+	
+	public void AddVersionOption()
+	{
+		this.handle.AddVersionOption();
+	}
+	
+	public void AddHelpOption()
+	{
+		this.handle.AddHelpOption();
+	}
+	
+	public void SetApplicationDescription(String description)
+	{
+		this.handle.SetApplicationDescription(description);
+	}
+	
+	public libqt_string ApplicationDescription()
+	{
+		return this.handle.ApplicationDescription();
+	}
+	
+	public void AddPositionalArgument(String name, String description)
+	{
+		this.handle.AddPositionalArgument(name, description);
+	}
+	
+	public void ClearPositionalArguments()
+	{
+		this.handle.ClearPositionalArguments();
+	}
+	
+	public void Process(String[] arguments)
+	{
+		this.handle.Process(null);
+	}
+	
+	public void ProcessWithApp(IQCoreApplication app)
+	{
+		this.handle.ProcessWithApp(app);
+	}
+	
+	public bool Parse(String[] arguments)
+	{
+		return this.handle.Parse(null);
+	}
+	
+	public libqt_string ErrorText()
+	{
+		return this.handle.ErrorText();
+	}
+	
+	public bool IsSet(String name)
+	{
+		return this.handle.IsSet(name);
+	}
+	
+	public libqt_string Value(String name)
+	{
+		return this.handle.Value(name);
+	}
+	
+	public libqt_string[] Values(String name)
+	{
+		return this.handle.Values(name);
+	}
+	
+	public bool IsSetWithOption(IQCommandLineOption option)
+	{
+		return this.handle.IsSetWithOption(option);
+	}
+	
+	public libqt_string ValueWithOption(IQCommandLineOption option)
+	{
+		return this.handle.ValueWithOption(option);
+	}
+	
+	public libqt_string[] ValuesWithOption(IQCommandLineOption option)
+	{
+		return this.handle.ValuesWithOption(option);
+	}
+	
+	public libqt_string[] PositionalArguments()
+	{
+		return this.handle.PositionalArguments();
+	}
+	
+	public libqt_string[] OptionNames()
+	{
+		return this.handle.OptionNames();
+	}
+	
+	public libqt_string[] UnknownOptionNames()
+	{
+		return this.handle.UnknownOptionNames();
+	}
+	
+	public void ShowVersion()
+	{
+		this.handle.ShowVersion();
+	}
+	
+	public void ShowHelp()
+	{
+		this.handle.ShowHelp();
+	}
+	
+	public libqt_string HelpText()
+	{
+		return this.handle.HelpText();
+	}
+	
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
+	{
+		return QCommandLineParserPtr.Tr2(sourceText, disambiguation);
+	}
+	
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
+	{
+		return QCommandLineParserPtr.Tr3(sourceText, disambiguation, n);
+	}
+	
+	public void AddPositionalArgument3(String name, String description, String syntax)
+	{
+		this.handle.AddPositionalArgument3(name, description, syntax);
+	}
+	
+	public void ShowHelp1(int32 exitCode)
+	{
+		this.handle.ShowHelp1(exitCode);
 	}
 	
 }

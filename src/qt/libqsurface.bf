@@ -23,12 +23,17 @@ public interface IQSurface
 {
 	void* NativePtr { get; }
 }
-public class QSurface : IQSurface
+public struct QSurfacePtr : IQSurface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSurface_Delete(this.nativePtr);
 	}
@@ -38,12 +43,12 @@ public class QSurface : IQSurface
 		return CQt.QSurface_SurfaceClass(this.nativePtr);
 	}
 	
-	public virtual void Format()
+	public void Format()
 	{
 		CQt.QSurface_Format(this.nativePtr);
 	}
 	
-	public virtual int64 SurfaceType()
+	public int64 SurfaceType()
 	{
 		return CQt.QSurface_SurfaceType(this.nativePtr);
 	}
@@ -53,9 +58,49 @@ public class QSurface : IQSurface
 		return CQt.QSurface_SupportsOpenGL(this.nativePtr);
 	}
 	
-	public virtual void Size()
+	public void Size()
 	{
 		CQt.QSurface_Size(this.nativePtr);
+	}
+	
+}
+public class QSurface
+{
+	public QSurfacePtr handle;
+	
+	public static implicit operator QSurfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 SurfaceClass()
+	{
+		return this.handle.SurfaceClass();
+	}
+	
+	public virtual void Format()
+	{
+		this.handle.Format();
+	}
+	
+	public virtual int64 SurfaceType()
+	{
+		return this.handle.SurfaceType();
+	}
+	
+	public bool SupportsOpenGL()
+	{
+		return this.handle.SupportsOpenGL();
+	}
+	
+	public virtual void Size()
+	{
+		this.handle.Size();
 	}
 	
 }

@@ -72,17 +72,22 @@ public interface IQPixelFormat
 {
 	void* NativePtr { get; }
 }
-public class QPixelFormat : IQPixelFormat
+public struct QPixelFormatPtr : IQPixelFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQPixelFormat other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPixelFormat_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQPixelFormat other)
+	{
+		return .(CQt.QPixelFormat_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPixelFormat_Delete(this.nativePtr);
 	}
@@ -195,6 +200,136 @@ public class QPixelFormat : IQPixelFormat
 	public uint8 SubEnum()
 	{
 		return CQt.QPixelFormat_SubEnum(this.nativePtr);
+	}
+	
+}
+public class QPixelFormat
+{
+	public QPixelFormatPtr handle;
+	
+	public static implicit operator QPixelFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQPixelFormat other)
+	{
+		this.handle = QPixelFormatPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 ColorModel()
+	{
+		return this.handle.ColorModel();
+	}
+	
+	public uint8 ChannelCount()
+	{
+		return this.handle.ChannelCount();
+	}
+	
+	public uint8 RedSize()
+	{
+		return this.handle.RedSize();
+	}
+	
+	public uint8 GreenSize()
+	{
+		return this.handle.GreenSize();
+	}
+	
+	public uint8 BlueSize()
+	{
+		return this.handle.BlueSize();
+	}
+	
+	public uint8 CyanSize()
+	{
+		return this.handle.CyanSize();
+	}
+	
+	public uint8 MagentaSize()
+	{
+		return this.handle.MagentaSize();
+	}
+	
+	public uint8 YellowSize()
+	{
+		return this.handle.YellowSize();
+	}
+	
+	public uint8 BlackSize()
+	{
+		return this.handle.BlackSize();
+	}
+	
+	public uint8 HueSize()
+	{
+		return this.handle.HueSize();
+	}
+	
+	public uint8 SaturationSize()
+	{
+		return this.handle.SaturationSize();
+	}
+	
+	public uint8 LightnessSize()
+	{
+		return this.handle.LightnessSize();
+	}
+	
+	public uint8 BrightnessSize()
+	{
+		return this.handle.BrightnessSize();
+	}
+	
+	public uint8 AlphaSize()
+	{
+		return this.handle.AlphaSize();
+	}
+	
+	public uint8 BitsPerPixel()
+	{
+		return this.handle.BitsPerPixel();
+	}
+	
+	public int64 AlphaUsage()
+	{
+		return this.handle.AlphaUsage();
+	}
+	
+	public int64 AlphaPosition()
+	{
+		return this.handle.AlphaPosition();
+	}
+	
+	public int64 Premultiplied()
+	{
+		return this.handle.Premultiplied();
+	}
+	
+	public int64 TypeInterpretation()
+	{
+		return this.handle.TypeInterpretation();
+	}
+	
+	public int64 ByteOrder()
+	{
+		return this.handle.ByteOrder();
+	}
+	
+	public int64 YuvLayout()
+	{
+		return this.handle.YuvLayout();
+	}
+	
+	public uint8 SubEnum()
+	{
+		return this.handle.SubEnum();
 	}
 	
 }

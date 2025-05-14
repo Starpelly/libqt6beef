@@ -40,17 +40,22 @@ public interface IQRegularExpression
 {
 	void* NativePtr { get; }
 }
-public class QRegularExpression : IQRegularExpression
+public struct QRegularExpressionPtr : IQRegularExpression, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRegularExpression_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRegularExpression_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRegularExpression_Delete(this.nativePtr);
 	}
@@ -67,12 +72,12 @@ public class QRegularExpression : IQRegularExpression
 	
 	public void OperatorAssign(IQRegularExpression re)
 	{
-		CQt.QRegularExpression_OperatorAssign(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		CQt.QRegularExpression_OperatorAssign(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public void Swap(IQRegularExpression other)
 	{
-		CQt.QRegularExpression_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRegularExpression_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string Pattern()
@@ -142,12 +147,12 @@ public class QRegularExpression : IQRegularExpression
 	
 	public bool OperatorEqual(IQRegularExpression re)
 	{
-		return CQt.QRegularExpression_OperatorEqual(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		return CQt.QRegularExpression_OperatorEqual(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQRegularExpression re)
 	{
-		return CQt.QRegularExpression_OperatorNotEqual(this.nativePtr, (re == default) ? default : (void*)re.NativePtr);
+		return CQt.QRegularExpression_OperatorNotEqual(this.nativePtr, (re == default || re.NativePtr == default) ? default : re.NativePtr);
 	}
 	
 	public void Match2(String subject, int32 offset)
@@ -157,12 +162,12 @@ public class QRegularExpression : IQRegularExpression
 	
 	public void Match3(String subject, int32 offset, int64 matchType)
 	{
-		CQt.QRegularExpression_Match3(this.nativePtr, libqt_string(subject), offset, matchType);
+		CQt.QRegularExpression_Match3(this.nativePtr, libqt_string(subject), offset, (int64)matchType);
 	}
 	
 	public void Match4(String subject, int32 offset, int64 matchType, int64 matchOptions)
 	{
-		CQt.QRegularExpression_Match4(this.nativePtr, libqt_string(subject), offset, matchType, matchOptions);
+		CQt.QRegularExpression_Match4(this.nativePtr, libqt_string(subject), offset, (int64)matchType, matchOptions);
 	}
 	
 	public void GlobalMatch2(String subject, int32 offset)
@@ -172,17 +177,167 @@ public class QRegularExpression : IQRegularExpression
 	
 	public void GlobalMatch3(String subject, int32 offset, int64 matchType)
 	{
-		CQt.QRegularExpression_GlobalMatch3(this.nativePtr, libqt_string(subject), offset, matchType);
+		CQt.QRegularExpression_GlobalMatch3(this.nativePtr, libqt_string(subject), offset, (int64)matchType);
 	}
 	
 	public void GlobalMatch4(String subject, int32 offset, int64 matchType, int64 matchOptions)
 	{
-		CQt.QRegularExpression_GlobalMatch4(this.nativePtr, libqt_string(subject), offset, matchType, matchOptions);
+		CQt.QRegularExpression_GlobalMatch4(this.nativePtr, libqt_string(subject), offset, (int64)matchType, matchOptions);
 	}
 	
 	public static libqt_string WildcardToRegularExpression2(String str, int64 options)
 	{
 		return CQt.QRegularExpression_WildcardToRegularExpression2(libqt_string(str), options);
+	}
+	
+}
+public class QRegularExpression
+{
+	public QRegularExpressionPtr handle;
+	
+	public static implicit operator QRegularExpressionPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRegularExpressionPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 PatternOptions()
+	{
+		return this.handle.PatternOptions();
+	}
+	
+	public void SetPatternOptions(int64 options)
+	{
+		this.handle.SetPatternOptions(options);
+	}
+	
+	public void OperatorAssign(IQRegularExpression re)
+	{
+		this.handle.OperatorAssign(re);
+	}
+	
+	public void Swap(IQRegularExpression other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public libqt_string Pattern()
+	{
+		return this.handle.Pattern();
+	}
+	
+	public void SetPattern(String pattern)
+	{
+		this.handle.SetPattern(pattern);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 PatternErrorOffset()
+	{
+		return this.handle.PatternErrorOffset();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public int32 CaptureCount()
+	{
+		return this.handle.CaptureCount();
+	}
+	
+	public libqt_string[] NamedCaptureGroups()
+	{
+		return this.handle.NamedCaptureGroups();
+	}
+	
+	public void Match(String subject)
+	{
+		this.handle.Match(subject);
+	}
+	
+	public void GlobalMatch(String subject)
+	{
+		this.handle.GlobalMatch(subject);
+	}
+	
+	public void Optimize()
+	{
+		this.handle.Optimize();
+	}
+	
+	public static libqt_string Escape(String str)
+	{
+		return QRegularExpressionPtr.Escape(str);
+	}
+	
+	public static libqt_string WildcardToRegularExpression(String str)
+	{
+		return QRegularExpressionPtr.WildcardToRegularExpression(str);
+	}
+	
+	public static libqt_string AnchoredPattern(String expression)
+	{
+		return QRegularExpressionPtr.AnchoredPattern(expression);
+	}
+	
+	public bool OperatorEqual(IQRegularExpression re)
+	{
+		return this.handle.OperatorEqual(re);
+	}
+	
+	public bool OperatorNotEqual(IQRegularExpression re)
+	{
+		return this.handle.OperatorNotEqual(re);
+	}
+	
+	public void Match2(String subject, int32 offset)
+	{
+		this.handle.Match2(subject, offset);
+	}
+	
+	public void Match3(String subject, int32 offset, int64 matchType)
+	{
+		this.handle.Match3(subject, offset, matchType);
+	}
+	
+	public void Match4(String subject, int32 offset, int64 matchType, int64 matchOptions)
+	{
+		this.handle.Match4(subject, offset, matchType, matchOptions);
+	}
+	
+	public void GlobalMatch2(String subject, int32 offset)
+	{
+		this.handle.GlobalMatch2(subject, offset);
+	}
+	
+	public void GlobalMatch3(String subject, int32 offset, int64 matchType)
+	{
+		this.handle.GlobalMatch3(subject, offset, matchType);
+	}
+	
+	public void GlobalMatch4(String subject, int32 offset, int64 matchType, int64 matchOptions)
+	{
+		this.handle.GlobalMatch4(subject, offset, matchType, matchOptions);
+	}
+	
+	public static libqt_string WildcardToRegularExpression2(String str, int64 options)
+	{
+		return QRegularExpressionPtr.WildcardToRegularExpression2(str, options);
 	}
 	
 }
@@ -256,29 +411,34 @@ public interface IQRegularExpressionMatch
 {
 	void* NativePtr { get; }
 }
-public class QRegularExpressionMatch : IQRegularExpressionMatch
+public struct QRegularExpressionMatchPtr : IQRegularExpressionMatch, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRegularExpressionMatch_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRegularExpressionMatch_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRegularExpressionMatch_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQRegularExpressionMatch match)
 	{
-		CQt.QRegularExpressionMatch_OperatorAssign(this.nativePtr, (match == default) ? default : (void*)match.NativePtr);
+		CQt.QRegularExpressionMatch_OperatorAssign(this.nativePtr, (match == default || match.NativePtr == default) ? default : match.NativePtr);
 	}
 	
 	public void Swap(IQRegularExpressionMatch other)
 	{
-		CQt.QRegularExpressionMatch_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRegularExpressionMatch_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void RegularExpression()
@@ -392,6 +552,146 @@ public class QRegularExpressionMatch : IQRegularExpressionMatch
 	}
 	
 }
+public class QRegularExpressionMatch
+{
+	public QRegularExpressionMatchPtr handle;
+	
+	public static implicit operator QRegularExpressionMatchPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRegularExpressionMatchPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQRegularExpressionMatch match)
+	{
+		this.handle.OperatorAssign(match);
+	}
+	
+	public void Swap(IQRegularExpressionMatch other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void RegularExpression()
+	{
+		this.handle.RegularExpression();
+	}
+	
+	public int64 MatchType()
+	{
+		return this.handle.MatchType();
+	}
+	
+	public int64 MatchOptions()
+	{
+		return this.handle.MatchOptions();
+	}
+	
+	public bool HasMatch()
+	{
+		return this.handle.HasMatch();
+	}
+	
+	public bool HasPartialMatch()
+	{
+		return this.handle.HasPartialMatch();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int32 LastCapturedIndex()
+	{
+		return this.handle.LastCapturedIndex();
+	}
+	
+	public bool HasCaptured(String name)
+	{
+		return this.handle.HasCaptured(name);
+	}
+	
+	public bool HasCapturedWithNth(int32 nth)
+	{
+		return this.handle.HasCapturedWithNth(nth);
+	}
+	
+	public libqt_string Captured()
+	{
+		return this.handle.Captured();
+	}
+	
+	public libqt_string CapturedWithName(String name)
+	{
+		return this.handle.CapturedWithName(name);
+	}
+	
+	public libqt_string[] CapturedTexts()
+	{
+		return this.handle.CapturedTexts();
+	}
+	
+	public int32 CapturedStart()
+	{
+		return this.handle.CapturedStart();
+	}
+	
+	public int32 CapturedLength()
+	{
+		return this.handle.CapturedLength();
+	}
+	
+	public int32 CapturedEnd()
+	{
+		return this.handle.CapturedEnd();
+	}
+	
+	public int32 CapturedStartWithName(String name)
+	{
+		return this.handle.CapturedStartWithName(name);
+	}
+	
+	public int32 CapturedLengthWithName(String name)
+	{
+		return this.handle.CapturedLengthWithName(name);
+	}
+	
+	public int32 CapturedEndWithName(String name)
+	{
+		return this.handle.CapturedEndWithName(name);
+	}
+	
+	public libqt_string Captured1(int32 nth)
+	{
+		return this.handle.Captured1(nth);
+	}
+	
+	public int32 CapturedStart1(int32 nth)
+	{
+		return this.handle.CapturedStart1(nth);
+	}
+	
+	public int32 CapturedLength1(int32 nth)
+	{
+		return this.handle.CapturedLength1(nth);
+	}
+	
+	public int32 CapturedEnd1(int32 nth)
+	{
+		return this.handle.CapturedEnd1(nth);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QRegularExpressionMatch_new")]
@@ -454,29 +754,34 @@ public interface IQRegularExpressionMatchIterator
 {
 	void* NativePtr { get; }
 }
-public class QRegularExpressionMatchIterator : IQRegularExpressionMatchIterator
+public struct QRegularExpressionMatchIteratorPtr : IQRegularExpressionMatchIterator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRegularExpressionMatchIterator_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRegularExpressionMatchIterator_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRegularExpressionMatchIterator_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQRegularExpressionMatchIterator iterator)
 	{
-		CQt.QRegularExpressionMatchIterator_OperatorAssign(this.nativePtr, (iterator == default) ? default : (void*)iterator.NativePtr);
+		CQt.QRegularExpressionMatchIterator_OperatorAssign(this.nativePtr, (iterator == default || iterator.NativePtr == default) ? default : iterator.NativePtr);
 	}
 	
 	public void Swap(IQRegularExpressionMatchIterator other)
 	{
-		CQt.QRegularExpressionMatchIterator_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QRegularExpressionMatchIterator_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsValid()
@@ -512,6 +817,71 @@ public class QRegularExpressionMatchIterator : IQRegularExpressionMatchIterator
 	public int64 MatchOptions()
 	{
 		return CQt.QRegularExpressionMatchIterator_MatchOptions(this.nativePtr);
+	}
+	
+}
+public class QRegularExpressionMatchIterator
+{
+	public QRegularExpressionMatchIteratorPtr handle;
+	
+	public static implicit operator QRegularExpressionMatchIteratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRegularExpressionMatchIteratorPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQRegularExpressionMatchIterator iterator)
+	{
+		this.handle.OperatorAssign(iterator);
+	}
+	
+	public void Swap(IQRegularExpressionMatchIterator other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public bool HasNext()
+	{
+		return this.handle.HasNext();
+	}
+	
+	public void Next()
+	{
+		this.handle.Next();
+	}
+	
+	public void PeekNext()
+	{
+		this.handle.PeekNext();
+	}
+	
+	public void RegularExpression()
+	{
+		this.handle.RegularExpression();
+	}
+	
+	public int64 MatchType()
+	{
+		return this.handle.MatchType();
+	}
+	
+	public int64 MatchOptions()
+	{
+		return this.handle.MatchOptions();
 	}
 	
 }

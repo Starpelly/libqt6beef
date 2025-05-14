@@ -32,12 +32,17 @@ public interface IQArrayData
 {
 	void* NativePtr { get; }
 }
-public class QArrayData : IQArrayData
+public struct QArrayDataPtr : IQArrayData, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QArrayData_Delete(this.nativePtr);
 	}
@@ -79,12 +84,72 @@ public class QArrayData : IQArrayData
 	
 	public static void* ReallocateUnaligned(IQArrayData data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option)
 	{
-		return CQt.QArrayData_ReallocateUnaligned((data == null) ? null : (void*)data.NativePtr, dataPointer, objectSize, newCapacity, option);
+		return CQt.QArrayData_ReallocateUnaligned((data == default || data.NativePtr == default) ? default : data.NativePtr, dataPointer, objectSize, newCapacity, (int64)option);
 	}
 	
 	public static void Deallocate(IQArrayData data, int32 objectSize, int32 alignment)
 	{
-		CQt.QArrayData_Deallocate((data == null) ? null : (void*)data.NativePtr, objectSize, alignment);
+		CQt.QArrayData_Deallocate((data == default || data.NativePtr == default) ? default : data.NativePtr, objectSize, alignment);
+	}
+	
+}
+public class QArrayData
+{
+	public QArrayDataPtr handle;
+	
+	public static implicit operator QArrayDataPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int32 AllocatedCapacity()
+	{
+		return this.handle.AllocatedCapacity();
+	}
+	
+	public int32 ConstAllocatedCapacity()
+	{
+		return this.handle.ConstAllocatedCapacity();
+	}
+	
+	public bool Ref()
+	{
+		return this.handle.Ref();
+	}
+	
+	public bool Deref()
+	{
+		return this.handle.Deref();
+	}
+	
+	public bool IsShared()
+	{
+		return this.handle.IsShared();
+	}
+	
+	public bool NeedsDetach()
+	{
+		return this.handle.NeedsDetach();
+	}
+	
+	public int32 DetachCapacity(int32 newSize)
+	{
+		return this.handle.DetachCapacity(newSize);
+	}
+	
+	public static void* ReallocateUnaligned(IQArrayData data, void* dataPointer, int32 objectSize, int32 newCapacity, int64 option)
+	{
+		return QArrayDataPtr.ReallocateUnaligned(data, dataPointer, objectSize, newCapacity, option);
+	}
+	
+	public static void Deallocate(IQArrayData data, int32 objectSize, int32 alignment)
+	{
+		QArrayDataPtr.Deallocate(data, objectSize, alignment);
 	}
 	
 }

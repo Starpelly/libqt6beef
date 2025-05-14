@@ -12,34 +12,39 @@ public interface IQStandardItem
 {
 	void* NativePtr { get; }
 }
-public class QStandardItem : IQStandardItem
+public struct QStandardItemPtr : IQStandardItem, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStandardItem_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStandardItem_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStandardItem_Delete(this.nativePtr);
 	}
 	
-	public virtual void Data(int32 role)
+	public void Data(int32 role)
 	{
 		CQt.QStandardItem_Data(this.nativePtr, role);
 	}
 	
-	public virtual void MultiData(IQModelRoleDataSpan roleDataSpan)
+	public void MultiData(IQModelRoleDataSpan roleDataSpan)
 	{
-		CQt.QStandardItem_MultiData(this.nativePtr, (roleDataSpan == default) ? default : (void)roleDataSpan.NativePtr);
+		CQt.QStandardItem_MultiData(this.nativePtr, default);
 	}
 	
-	public virtual void SetData(IQVariant value, int32 role)
+	public void SetData(IQVariant value, int32 role)
 	{
-		CQt.QStandardItem_SetData(this.nativePtr, (value == default) ? default : (void*)value.NativePtr, role);
+		CQt.QStandardItem_SetData(this.nativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr, role);
 	}
 	
 	public void ClearData()
@@ -64,7 +69,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetIcon(IQIcon icon)
 	{
-		CQt.QStandardItem_SetIcon(this.nativePtr, (icon == default) ? default : (void*)icon.NativePtr);
+		CQt.QStandardItem_SetIcon(this.nativePtr, (icon == default || icon.NativePtr == default) ? default : icon.NativePtr);
 	}
 	
 	public libqt_string ToolTip()
@@ -104,7 +109,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetSizeHint(IQSize sizeHint)
 	{
-		CQt.QStandardItem_SetSizeHint(this.nativePtr, (sizeHint == default) ? default : (void*)sizeHint.NativePtr);
+		CQt.QStandardItem_SetSizeHint(this.nativePtr, (sizeHint == default || sizeHint.NativePtr == default) ? default : sizeHint.NativePtr);
 	}
 	
 	public void Font()
@@ -114,7 +119,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetFont(IQFont font)
 	{
-		CQt.QStandardItem_SetFont(this.nativePtr, (font == default) ? default : (void*)font.NativePtr);
+		CQt.QStandardItem_SetFont(this.nativePtr, (font == default || font.NativePtr == default) ? default : font.NativePtr);
 	}
 	
 	public int64 TextAlignment()
@@ -134,7 +139,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetBackground(IQBrush brush)
 	{
-		CQt.QStandardItem_SetBackground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QStandardItem_SetBackground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public void Foreground()
@@ -144,7 +149,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetForeground(IQBrush brush)
 	{
-		CQt.QStandardItem_SetForeground(this.nativePtr, (brush == default) ? default : (void*)brush.NativePtr);
+		CQt.QStandardItem_SetForeground(this.nativePtr, (brush == default || brush.NativePtr == default) ? default : brush.NativePtr);
 	}
 	
 	public int64 CheckState()
@@ -154,7 +159,7 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetCheckState(int64 checkState)
 	{
-		CQt.QStandardItem_SetCheckState(this.nativePtr, checkState);
+		CQt.QStandardItem_SetCheckState(this.nativePtr, (int64)checkState);
 	}
 	
 	public libqt_string AccessibleText()
@@ -324,12 +329,12 @@ public class QStandardItem : IQStandardItem
 	
 	public void SetChild(int32 row, int32 column, IQStandardItem item)
 	{
-		CQt.QStandardItem_SetChild(this.nativePtr, row, column, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItem_SetChild(this.nativePtr, row, column, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void SetChild2(int32 row, IQStandardItem item)
 	{
-		CQt.QStandardItem_SetChild2(this.nativePtr, row, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItem_SetChild2(this.nativePtr, row, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void InsertRow(int32 row, IQStandardItem[] items)
@@ -394,12 +399,12 @@ public class QStandardItem : IQStandardItem
 	
 	public void InsertRow2(int32 row, IQStandardItem item)
 	{
-		CQt.QStandardItem_InsertRow2(this.nativePtr, row, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItem_InsertRow2(this.nativePtr, row, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void AppendRowWithItem(IQStandardItem item)
 	{
-		CQt.QStandardItem_AppendRowWithItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItem_AppendRowWithItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void* TakeChild(int32 row)
@@ -422,34 +427,34 @@ public class QStandardItem : IQStandardItem
 		CQt.QStandardItem_SortChildren(this.nativePtr, column);
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QStandardItem_Clone(this.nativePtr);
 	}
 	
-	public virtual int32 Type()
+	public int32 Type()
 	{
 		return CQt.QStandardItem_Type(this.nativePtr);
 	}
 	
-	public virtual void Read(IQDataStream _in)
+	public void Read(IQDataStream _in)
 	{
-		CQt.QStandardItem_Read(this.nativePtr, (_in == default) ? default : (void*)_in.NativePtr);
+		CQt.QStandardItem_Read(this.nativePtr, (_in == default || _in.NativePtr == default) ? default : _in.NativePtr);
 	}
 	
-	public virtual void Write(IQDataStream _out)
+	public void Write(IQDataStream _out)
 	{
-		CQt.QStandardItem_Write(this.nativePtr, (_out == default) ? default : (void*)_out.NativePtr);
+		CQt.QStandardItem_Write(this.nativePtr, (_out == default || _out.NativePtr == default) ? default : _out.NativePtr);
 	}
 	
-	public virtual bool OperatorLesser(IQStandardItem other)
+	public bool OperatorLesser(IQStandardItem other)
 	{
-		return CQt.QStandardItem_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QStandardItem_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorAssign(IQStandardItem other)
 	{
-		CQt.QStandardItem_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QStandardItem_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void EmitDataChanged()
@@ -469,7 +474,472 @@ public class QStandardItem : IQStandardItem
 	
 	public void SortChildren2(int32 column, int64 order)
 	{
-		CQt.QStandardItem_SortChildren2(this.nativePtr, column, order);
+		CQt.QStandardItem_SortChildren2(this.nativePtr, column, (int64)order);
+	}
+	
+}
+public class QStandardItem
+{
+	public QStandardItemPtr handle;
+	
+	public static implicit operator QStandardItemPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStandardItemPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void Data(int32 role)
+	{
+		this.handle.Data(role);
+	}
+	
+	public virtual void MultiData(IQModelRoleDataSpan roleDataSpan)
+	{
+		this.handle.MultiData(default);
+	}
+	
+	public virtual void SetData(IQVariant value, int32 role)
+	{
+		this.handle.SetData(value, role);
+	}
+	
+	public void ClearData()
+	{
+		this.handle.ClearData();
+	}
+	
+	public libqt_string Text()
+	{
+		return this.handle.Text();
+	}
+	
+	public void SetText(String text)
+	{
+		this.handle.SetText(text);
+	}
+	
+	public void Icon()
+	{
+		this.handle.Icon();
+	}
+	
+	public void SetIcon(IQIcon icon)
+	{
+		this.handle.SetIcon(icon);
+	}
+	
+	public libqt_string ToolTip()
+	{
+		return this.handle.ToolTip();
+	}
+	
+	public void SetToolTip(String toolTip)
+	{
+		this.handle.SetToolTip(toolTip);
+	}
+	
+	public libqt_string StatusTip()
+	{
+		return this.handle.StatusTip();
+	}
+	
+	public void SetStatusTip(String statusTip)
+	{
+		this.handle.SetStatusTip(statusTip);
+	}
+	
+	public libqt_string WhatsThis()
+	{
+		return this.handle.WhatsThis();
+	}
+	
+	public void SetWhatsThis(String whatsThis)
+	{
+		this.handle.SetWhatsThis(whatsThis);
+	}
+	
+	public void SizeHint()
+	{
+		this.handle.SizeHint();
+	}
+	
+	public void SetSizeHint(IQSize sizeHint)
+	{
+		this.handle.SetSizeHint(sizeHint);
+	}
+	
+	public void Font()
+	{
+		this.handle.Font();
+	}
+	
+	public void SetFont(IQFont font)
+	{
+		this.handle.SetFont(font);
+	}
+	
+	public int64 TextAlignment()
+	{
+		return this.handle.TextAlignment();
+	}
+	
+	public void SetTextAlignment(int64 textAlignment)
+	{
+		this.handle.SetTextAlignment(textAlignment);
+	}
+	
+	public void Background()
+	{
+		this.handle.Background();
+	}
+	
+	public void SetBackground(IQBrush brush)
+	{
+		this.handle.SetBackground(brush);
+	}
+	
+	public void Foreground()
+	{
+		this.handle.Foreground();
+	}
+	
+	public void SetForeground(IQBrush brush)
+	{
+		this.handle.SetForeground(brush);
+	}
+	
+	public int64 CheckState()
+	{
+		return this.handle.CheckState();
+	}
+	
+	public void SetCheckState(int64 checkState)
+	{
+		this.handle.SetCheckState(checkState);
+	}
+	
+	public libqt_string AccessibleText()
+	{
+		return this.handle.AccessibleText();
+	}
+	
+	public void SetAccessibleText(String accessibleText)
+	{
+		this.handle.SetAccessibleText(accessibleText);
+	}
+	
+	public libqt_string AccessibleDescription()
+	{
+		return this.handle.AccessibleDescription();
+	}
+	
+	public void SetAccessibleDescription(String accessibleDescription)
+	{
+		this.handle.SetAccessibleDescription(accessibleDescription);
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void SetFlags(int64 flags)
+	{
+		this.handle.SetFlags(flags);
+	}
+	
+	public bool IsEnabled()
+	{
+		return this.handle.IsEnabled();
+	}
+	
+	public void SetEnabled(bool enabled)
+	{
+		this.handle.SetEnabled(enabled);
+	}
+	
+	public bool IsEditable()
+	{
+		return this.handle.IsEditable();
+	}
+	
+	public void SetEditable(bool editable)
+	{
+		this.handle.SetEditable(editable);
+	}
+	
+	public bool IsSelectable()
+	{
+		return this.handle.IsSelectable();
+	}
+	
+	public void SetSelectable(bool selectable)
+	{
+		this.handle.SetSelectable(selectable);
+	}
+	
+	public bool IsCheckable()
+	{
+		return this.handle.IsCheckable();
+	}
+	
+	public void SetCheckable(bool checkable)
+	{
+		this.handle.SetCheckable(checkable);
+	}
+	
+	public bool IsAutoTristate()
+	{
+		return this.handle.IsAutoTristate();
+	}
+	
+	public void SetAutoTristate(bool tristate)
+	{
+		this.handle.SetAutoTristate(tristate);
+	}
+	
+	public bool IsUserTristate()
+	{
+		return this.handle.IsUserTristate();
+	}
+	
+	public void SetUserTristate(bool tristate)
+	{
+		this.handle.SetUserTristate(tristate);
+	}
+	
+	public bool IsDragEnabled()
+	{
+		return this.handle.IsDragEnabled();
+	}
+	
+	public void SetDragEnabled(bool dragEnabled)
+	{
+		this.handle.SetDragEnabled(dragEnabled);
+	}
+	
+	public bool IsDropEnabled()
+	{
+		return this.handle.IsDropEnabled();
+	}
+	
+	public void SetDropEnabled(bool dropEnabled)
+	{
+		this.handle.SetDropEnabled(dropEnabled);
+	}
+	
+	public void* Parent()
+	{
+		return this.handle.Parent();
+	}
+	
+	public int32 Row()
+	{
+		return this.handle.Row();
+	}
+	
+	public int32 Column()
+	{
+		return this.handle.Column();
+	}
+	
+	public void Index()
+	{
+		this.handle.Index();
+	}
+	
+	public void* Model()
+	{
+		return this.handle.Model();
+	}
+	
+	public int32 RowCount()
+	{
+		return this.handle.RowCount();
+	}
+	
+	public void SetRowCount(int32 rows)
+	{
+		this.handle.SetRowCount(rows);
+	}
+	
+	public int32 ColumnCount()
+	{
+		return this.handle.ColumnCount();
+	}
+	
+	public void SetColumnCount(int32 columns)
+	{
+		this.handle.SetColumnCount(columns);
+	}
+	
+	public bool HasChildren()
+	{
+		return this.handle.HasChildren();
+	}
+	
+	public void* Child(int32 row)
+	{
+		return this.handle.Child(row);
+	}
+	
+	public void SetChild(int32 row, int32 column, IQStandardItem item)
+	{
+		this.handle.SetChild(row, column, item);
+	}
+	
+	public void SetChild2(int32 row, IQStandardItem item)
+	{
+		this.handle.SetChild2(row, item);
+	}
+	
+	public void InsertRow(int32 row, IQStandardItem[] items)
+	{
+		this.handle.InsertRow(row, null);
+	}
+	
+	public void InsertColumn(int32 column, IQStandardItem[] items)
+	{
+		this.handle.InsertColumn(column, null);
+	}
+	
+	public void InsertRows(int32 row, IQStandardItem[] items)
+	{
+		this.handle.InsertRows(row, null);
+	}
+	
+	public void InsertRows2(int32 row, int32 count)
+	{
+		this.handle.InsertRows2(row, count);
+	}
+	
+	public void InsertColumns(int32 column, int32 count)
+	{
+		this.handle.InsertColumns(column, count);
+	}
+	
+	public void RemoveRow(int32 row)
+	{
+		this.handle.RemoveRow(row);
+	}
+	
+	public void RemoveColumn(int32 column)
+	{
+		this.handle.RemoveColumn(column);
+	}
+	
+	public void RemoveRows(int32 row, int32 count)
+	{
+		this.handle.RemoveRows(row, count);
+	}
+	
+	public void RemoveColumns(int32 column, int32 count)
+	{
+		this.handle.RemoveColumns(column, count);
+	}
+	
+	public void AppendRow(IQStandardItem[] items)
+	{
+		this.handle.AppendRow(null);
+	}
+	
+	public void AppendRows(IQStandardItem[] items)
+	{
+		this.handle.AppendRows(null);
+	}
+	
+	public void AppendColumn(IQStandardItem[] items)
+	{
+		this.handle.AppendColumn(null);
+	}
+	
+	public void InsertRow2(int32 row, IQStandardItem item)
+	{
+		this.handle.InsertRow2(row, item);
+	}
+	
+	public void AppendRowWithItem(IQStandardItem item)
+	{
+		this.handle.AppendRowWithItem(item);
+	}
+	
+	public void* TakeChild(int32 row)
+	{
+		return this.handle.TakeChild(row);
+	}
+	
+	public void*[] TakeRow(int32 row)
+	{
+		return this.handle.TakeRow(row);
+	}
+	
+	public void*[] TakeColumn(int32 column)
+	{
+		return this.handle.TakeColumn(column);
+	}
+	
+	public void SortChildren(int32 column)
+	{
+		this.handle.SortChildren(column);
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public virtual int32 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public virtual void Read(IQDataStream _in)
+	{
+		this.handle.Read(_in);
+	}
+	
+	public virtual void Write(IQDataStream _out)
+	{
+		this.handle.Write(_out);
+	}
+	
+	public virtual bool OperatorLesser(IQStandardItem other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public void OperatorAssign(IQStandardItem other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void EmitDataChanged()
+	{
+		this.handle.EmitDataChanged();
+	}
+	
+	public void* Child2(int32 row, int32 column)
+	{
+		return this.handle.Child2(row, column);
+	}
+	
+	public void* TakeChild2(int32 row, int32 column)
+	{
+		return this.handle.TakeChild2(row, column);
+	}
+	
+	public void SortChildren2(int32 column, int64 order)
+	{
+		this.handle.SortChildren2(column, order);
 	}
 	
 }
@@ -671,34 +1141,39 @@ public interface IQStandardItemModel
 {
 	void* NativePtr { get; }
 }
-public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
+public struct QStandardItemModelPtr : IQStandardItemModel, IDisposable, IQAbstractItemModel
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStandardItemModel_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStandardItemModel_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStandardItemModel_Delete(this.nativePtr);
 	}
 	
-	public virtual void* MetaObject()
+	public void* MetaObject()
 	{
 		return CQt.QStandardItemModel_MetaObject(this.nativePtr);
 	}
 	
-	public virtual void* Metacast(char8* param1)
+	public void* Metacast(char8* param1)
 	{
 		return CQt.QStandardItemModel_Metacast(this.nativePtr, param1);
 	}
 	
-	public virtual int32 Metacall(int64 param1, int32 param2, void** param3)
+	public int32 Metacall(int64 param1, int32 param2, void* param3)
 	{
-		return CQt.QStandardItemModel_Metacall(this.nativePtr, param1, param2, param3);
+		return CQt.QStandardItemModel_Metacall(this.nativePtr, (int64)param1, param2, param3);
 	}
 	
 	public static libqt_string Tr(char8* s)
@@ -711,104 +1186,104 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 		CQt.QStandardItemModel_SetItemRoleNames(this.nativePtr, roleNames);
 	}
 	
-	public virtual void* RoleNames()
+	public void* RoleNames()
 	{
 		return CQt.QStandardItemModel_RoleNames(this.nativePtr);
 	}
 	
-	public virtual void Index(int32 row, int32 column, IQModelIndex parent)
+	public void Index(int32 row, int32 column, IQModelIndex parent)
 	{
-		CQt.QStandardItemModel_Index(this.nativePtr, row, column, (parent == default) ? default : (void*)parent.NativePtr);
+		CQt.QStandardItemModel_Index(this.nativePtr, row, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual void Parent(IQModelIndex child)
+	public void Parent(IQModelIndex child)
 	{
-		CQt.QStandardItemModel_Parent(this.nativePtr, (child == default) ? default : (void*)child.NativePtr);
+		CQt.QStandardItemModel_Parent(this.nativePtr, (child == default || child.NativePtr == default) ? default : child.NativePtr);
 	}
 	
-	public virtual int32 RowCount(IQModelIndex parent)
+	public int32 RowCount(IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_RowCount(this.nativePtr, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_RowCount(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual int32 ColumnCount(IQModelIndex parent)
+	public int32 ColumnCount(IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_ColumnCount(this.nativePtr, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_ColumnCount(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual bool HasChildren(IQModelIndex parent)
+	public bool HasChildren(IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_HasChildren(this.nativePtr, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_HasChildren(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual void Data(IQModelIndex index, int32 role)
+	public void Data(IQModelIndex index, int32 role)
 	{
-		CQt.QStandardItemModel_Data(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, role);
+		CQt.QStandardItemModel_Data(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr, role);
 	}
 	
-	public virtual void MultiData(IQModelIndex index, IQModelRoleDataSpan roleDataSpan)
+	public void MultiData(IQModelIndex index, IQModelRoleDataSpan roleDataSpan)
 	{
-		CQt.QStandardItemModel_MultiData(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, (roleDataSpan == default) ? default : (void)roleDataSpan.NativePtr);
+		CQt.QStandardItemModel_MultiData(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr, default);
 	}
 	
-	public virtual bool SetData(IQModelIndex index, IQVariant value, int32 role)
+	public bool SetData(IQModelIndex index, IQVariant value, int32 role)
 	{
-		return CQt.QStandardItemModel_SetData(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, (value == default) ? default : (void*)value.NativePtr, role);
+		return CQt.QStandardItemModel_SetData(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr, (value == default || value.NativePtr == default) ? default : value.NativePtr, role);
 	}
 	
-	public virtual bool ClearItemData(IQModelIndex index)
+	public bool ClearItemData(IQModelIndex index)
 	{
-		return CQt.QStandardItemModel_ClearItemData(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		return CQt.QStandardItemModel_ClearItemData(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
-	public virtual void HeaderData(int32 section, int64 orientation, int32 role)
+	public void HeaderData(int32 section, int64 orientation, int32 role)
 	{
-		CQt.QStandardItemModel_HeaderData(this.nativePtr, section, orientation, role);
+		CQt.QStandardItemModel_HeaderData(this.nativePtr, section, (int64)orientation, role);
 	}
 	
-	public virtual bool SetHeaderData(int32 section, int64 orientation, IQVariant value, int32 role)
+	public bool SetHeaderData(int32 section, int64 orientation, IQVariant value, int32 role)
 	{
-		return CQt.QStandardItemModel_SetHeaderData(this.nativePtr, section, orientation, (value == default) ? default : (void*)value.NativePtr, role);
+		return CQt.QStandardItemModel_SetHeaderData(this.nativePtr, section, (int64)orientation, (value == default || value.NativePtr == default) ? default : value.NativePtr, role);
 	}
 	
-	public virtual bool InsertRows(int32 row, int32 count, IQModelIndex parent)
+	public bool InsertRows(int32 row, int32 count, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_InsertRows(this.nativePtr, row, count, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_InsertRows(this.nativePtr, row, count, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual bool InsertColumns(int32 column, int32 count, IQModelIndex parent)
+	public bool InsertColumns(int32 column, int32 count, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_InsertColumns(this.nativePtr, column, count, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_InsertColumns(this.nativePtr, column, count, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual bool RemoveRows(int32 row, int32 count, IQModelIndex parent)
+	public bool RemoveRows(int32 row, int32 count, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_RemoveRows(this.nativePtr, row, count, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_RemoveRows(this.nativePtr, row, count, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual bool RemoveColumns(int32 column, int32 count, IQModelIndex parent)
+	public bool RemoveColumns(int32 column, int32 count, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_RemoveColumns(this.nativePtr, column, count, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_RemoveColumns(this.nativePtr, column, count, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual int64 Flags(IQModelIndex index)
+	public int64 Flags(IQModelIndex index)
 	{
-		return CQt.QStandardItemModel_Flags(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		return CQt.QStandardItemModel_Flags(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
-	public virtual int64 SupportedDropActions()
+	public int64 SupportedDropActions()
 	{
 		return CQt.QStandardItemModel_SupportedDropActions(this.nativePtr);
 	}
 	
-	public virtual void* ItemData(IQModelIndex index)
+	public void* ItemData(IQModelIndex index)
 	{
-		return CQt.QStandardItemModel_ItemData(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		return CQt.QStandardItemModel_ItemData(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
-	public virtual bool SetItemData(IQModelIndex index, void* roles)
+	public bool SetItemData(IQModelIndex index, void* roles)
 	{
-		return CQt.QStandardItemModel_SetItemData(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, roles);
+		return CQt.QStandardItemModel_SetItemData(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr, roles);
 	}
 	
 	public void Clear()
@@ -816,19 +1291,19 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 		CQt.QStandardItemModel_Clear(this.nativePtr);
 	}
 	
-	public virtual void Sort(int32 column, int64 order)
+	public void Sort(int32 column, int64 order)
 	{
-		CQt.QStandardItemModel_Sort(this.nativePtr, column, order);
+		CQt.QStandardItemModel_Sort(this.nativePtr, column, (int64)order);
 	}
 	
 	public void* ItemFromIndex(IQModelIndex index)
 	{
-		return CQt.QStandardItemModel_ItemFromIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		return CQt.QStandardItemModel_ItemFromIndex(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
 	public void IndexFromItem(IQStandardItem item)
 	{
-		CQt.QStandardItemModel_IndexFromItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_IndexFromItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void* Item(int32 row)
@@ -838,12 +1313,12 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void SetItem(int32 row, int32 column, IQStandardItem item)
 	{
-		CQt.QStandardItemModel_SetItem(this.nativePtr, row, column, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_SetItem(this.nativePtr, row, column, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void SetItem2(int32 row, IQStandardItem item)
 	{
-		CQt.QStandardItemModel_SetItem2(this.nativePtr, row, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_SetItem2(this.nativePtr, row, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void* InvisibleRootItem()
@@ -858,7 +1333,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void SetHorizontalHeaderItem(int32 column, IQStandardItem item)
 	{
-		CQt.QStandardItemModel_SetHorizontalHeaderItem(this.nativePtr, column, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_SetHorizontalHeaderItem(this.nativePtr, column, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void* VerticalHeaderItem(int32 row)
@@ -868,7 +1343,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void SetVerticalHeaderItem(int32 row, IQStandardItem item)
 	{
-		CQt.QStandardItemModel_SetVerticalHeaderItem(this.nativePtr, row, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_SetVerticalHeaderItem(this.nativePtr, row, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void SetHorizontalHeaderLabels(String[] labels)
@@ -903,7 +1378,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void AppendRowWithItem(IQStandardItem item)
 	{
-		CQt.QStandardItemModel_AppendRowWithItem(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_AppendRowWithItem(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void InsertRow(int32 row, IQStandardItem[] items)
@@ -918,7 +1393,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void InsertRow2(int32 row, IQStandardItem item)
 	{
-		CQt.QStandardItemModel_InsertRow2(this.nativePtr, row, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_InsertRow2(this.nativePtr, row, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public bool InsertRowWithRow(int32 row)
@@ -963,7 +1438,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void SetItemPrototype(IQStandardItem item)
 	{
-		CQt.QStandardItemModel_SetItemPrototype(this.nativePtr, (item == null) ? null : (void*)item.NativePtr);
+		CQt.QStandardItemModel_SetItemPrototype(this.nativePtr, (item == default || item.NativePtr == default) ? default : item.NativePtr);
 	}
 	
 	public void*[] FindItems(String text)
@@ -981,19 +1456,19 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 		CQt.QStandardItemModel_SetSortRole(this.nativePtr, role);
 	}
 	
-	public virtual libqt_string[] MimeTypes()
+	public libqt_string[] MimeTypes()
 	{
 		return CQt.QStandardItemModel_MimeTypes(this.nativePtr);
 	}
 	
-	public virtual void* MimeData(IQModelIndex[] indexes)
+	public void* MimeData(IQModelIndex[] indexes)
 	{
 		return CQt.QStandardItemModel_MimeData(this.nativePtr, null);
 	}
 	
-	public virtual bool DropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
+	public bool DropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_DropMimeData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr, action, row, column, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_DropMimeData(this.nativePtr, (data == default || data.NativePtr == default) ? default : data.NativePtr, (int64)action, row, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public static libqt_string Tr2(char8* s, char8* c)
@@ -1013,12 +1488,12 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public bool InsertRow22(int32 row, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_InsertRow22(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_InsertRow22(this.nativePtr, row, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool InsertColumn2(int32 column, IQModelIndex parent)
 	{
-		return CQt.QStandardItemModel_InsertColumn2(this.nativePtr, column, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QStandardItemModel_InsertColumn2(this.nativePtr, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void* TakeItem2(int32 row, int32 column)
@@ -1041,29 +1516,29 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 		return CQt.QAbstractItemModel_HasIndex(this.nativePtr, row, column);
 	}
 	
-	public virtual void Sibling(int32 row, int32 column, IQModelIndex idx)
+	public void Sibling(int32 row, int32 column, IQModelIndex idx)
 	{
-		CQt.QAbstractItemModel_Sibling(this.nativePtr, row, column, (idx == default) ? default : (void*)idx.NativePtr);
+		CQt.QAbstractItemModel_Sibling(this.nativePtr, row, column, (idx == default || idx.NativePtr == default) ? default : idx.NativePtr);
 	}
 	
-	public virtual bool CanDropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
+	public bool CanDropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
 	{
-		return CQt.QAbstractItemModel_CanDropMimeData(this.nativePtr, (data == null) ? null : (void*)data.NativePtr, action, row, column, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QAbstractItemModel_CanDropMimeData(this.nativePtr, (data == default || data.NativePtr == default) ? default : data.NativePtr, (int64)action, row, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual int64 SupportedDragActions()
+	public int64 SupportedDragActions()
 	{
 		return CQt.QAbstractItemModel_SupportedDragActions(this.nativePtr);
 	}
 	
-	public virtual bool MoveRows(IQModelIndex sourceParent, int32 sourceRow, int32 count, IQModelIndex destinationParent, int32 destinationChild)
+	public bool MoveRows(IQModelIndex sourceParent, int32 sourceRow, int32 count, IQModelIndex destinationParent, int32 destinationChild)
 	{
-		return CQt.QAbstractItemModel_MoveRows(this.nativePtr, (sourceParent == default) ? default : (void*)sourceParent.NativePtr, sourceRow, count, (destinationParent == default) ? default : (void*)destinationParent.NativePtr, destinationChild);
+		return CQt.QAbstractItemModel_MoveRows(this.nativePtr, (sourceParent == default || sourceParent.NativePtr == default) ? default : sourceParent.NativePtr, sourceRow, count, (destinationParent == default || destinationParent.NativePtr == default) ? default : destinationParent.NativePtr, destinationChild);
 	}
 	
-	public virtual bool MoveColumns(IQModelIndex sourceParent, int32 sourceColumn, int32 count, IQModelIndex destinationParent, int32 destinationChild)
+	public bool MoveColumns(IQModelIndex sourceParent, int32 sourceColumn, int32 count, IQModelIndex destinationParent, int32 destinationChild)
 	{
-		return CQt.QAbstractItemModel_MoveColumns(this.nativePtr, (sourceParent == default) ? default : (void*)sourceParent.NativePtr, sourceColumn, count, (destinationParent == default) ? default : (void*)destinationParent.NativePtr, destinationChild);
+		return CQt.QAbstractItemModel_MoveColumns(this.nativePtr, (sourceParent == default || sourceParent.NativePtr == default) ? default : sourceParent.NativePtr, sourceColumn, count, (destinationParent == default || destinationParent.NativePtr == default) ? default : destinationParent.NativePtr, destinationChild);
 	}
 	
 	public bool RemoveRow(int32 row)
@@ -1078,82 +1553,82 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public bool MoveRow(IQModelIndex sourceParent, int32 sourceRow, IQModelIndex destinationParent, int32 destinationChild)
 	{
-		return CQt.QAbstractItemModel_MoveRow(this.nativePtr, (sourceParent == default) ? default : (void*)sourceParent.NativePtr, sourceRow, (destinationParent == default) ? default : (void*)destinationParent.NativePtr, destinationChild);
+		return CQt.QAbstractItemModel_MoveRow(this.nativePtr, (sourceParent == default || sourceParent.NativePtr == default) ? default : sourceParent.NativePtr, sourceRow, (destinationParent == default || destinationParent.NativePtr == default) ? default : destinationParent.NativePtr, destinationChild);
 	}
 	
 	public bool MoveColumn(IQModelIndex sourceParent, int32 sourceColumn, IQModelIndex destinationParent, int32 destinationChild)
 	{
-		return CQt.QAbstractItemModel_MoveColumn(this.nativePtr, (sourceParent == default) ? default : (void*)sourceParent.NativePtr, sourceColumn, (destinationParent == default) ? default : (void*)destinationParent.NativePtr, destinationChild);
+		return CQt.QAbstractItemModel_MoveColumn(this.nativePtr, (sourceParent == default || sourceParent.NativePtr == default) ? default : sourceParent.NativePtr, sourceColumn, (destinationParent == default || destinationParent.NativePtr == default) ? default : destinationParent.NativePtr, destinationChild);
 	}
 	
-	public virtual void FetchMore(IQModelIndex parent)
+	public void FetchMore(IQModelIndex parent)
 	{
-		CQt.QAbstractItemModel_FetchMore(this.nativePtr, (parent == default) ? default : (void*)parent.NativePtr);
+		CQt.QAbstractItemModel_FetchMore(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual bool CanFetchMore(IQModelIndex parent)
+	public bool CanFetchMore(IQModelIndex parent)
 	{
-		return CQt.QAbstractItemModel_CanFetchMore(this.nativePtr, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QAbstractItemModel_CanFetchMore(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
-	public virtual void Buddy(IQModelIndex index)
+	public void Buddy(IQModelIndex index)
 	{
-		CQt.QAbstractItemModel_Buddy(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		CQt.QAbstractItemModel_Buddy(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
-	public virtual void[] Match(IQModelIndex start, int32 role, IQVariant value, int32 hits, int64 flags)
+	public void[] Match(IQModelIndex start, int32 role, IQVariant value, int32 hits, int64 flags)
 	{
-		return CQt.QAbstractItemModel_Match(this.nativePtr, (start == default) ? default : (void*)start.NativePtr, role, (value == default) ? default : (void*)value.NativePtr, hits, flags);
+		return CQt.QAbstractItemModel_Match(this.nativePtr, (start == default || start.NativePtr == default) ? default : start.NativePtr, role, (value == default || value.NativePtr == default) ? default : value.NativePtr, hits, flags);
 	}
 	
-	public virtual void Span(IQModelIndex index)
+	public void Span(IQModelIndex index)
 	{
-		CQt.QAbstractItemModel_Span(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		CQt.QAbstractItemModel_Span(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
 	public bool CheckIndex(IQModelIndex index)
 	{
-		return CQt.QAbstractItemModel_CheckIndex(this.nativePtr, (index == default) ? default : (void*)index.NativePtr);
+		return CQt.QAbstractItemModel_CheckIndex(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr);
 	}
 	
-	public virtual bool Submit()
+	public bool Submit()
 	{
 		return CQt.QAbstractItemModel_Submit(this.nativePtr);
 	}
 	
-	public virtual void Revert()
+	public void Revert()
 	{
 		CQt.QAbstractItemModel_Revert(this.nativePtr);
 	}
 	
 	public bool HasIndex3(int32 row, int32 column, IQModelIndex parent)
 	{
-		return CQt.QAbstractItemModel_HasIndex3(this.nativePtr, row, column, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QAbstractItemModel_HasIndex3(this.nativePtr, row, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool RemoveRow2(int32 row, IQModelIndex parent)
 	{
-		return CQt.QAbstractItemModel_RemoveRow2(this.nativePtr, row, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QAbstractItemModel_RemoveRow2(this.nativePtr, row, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool RemoveColumn2(int32 column, IQModelIndex parent)
 	{
-		return CQt.QAbstractItemModel_RemoveColumn2(this.nativePtr, column, (parent == default) ? default : (void*)parent.NativePtr);
+		return CQt.QAbstractItemModel_RemoveColumn2(this.nativePtr, column, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public bool CheckIndex2(IQModelIndex index, int64 options)
 	{
-		return CQt.QAbstractItemModel_CheckIndex2(this.nativePtr, (index == default) ? default : (void*)index.NativePtr, options);
+		return CQt.QAbstractItemModel_CheckIndex2(this.nativePtr, (index == default || index.NativePtr == default) ? default : index.NativePtr, options);
 	}
 	
-	public virtual bool Event(IQEvent event)
+	public bool Event(IQEvent event)
 	{
-		return CQt.QObject_Event(this.nativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_Event(this.nativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
-	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	public bool EventFilter(IQObject watched, IQEvent event)
 	{
-		return CQt.QObject_EventFilter(this.nativePtr, (watched == null) ? null : (void*)watched.NativePtr, (event == null) ? null : (void*)event.NativePtr);
+		return CQt.QObject_EventFilter(this.nativePtr, (watched == default || watched.NativePtr == default) ? default : watched.NativePtr, (event == default || event.NativePtr == default) ? default : event.NativePtr);
 	}
 	
 	public libqt_string ObjectName()
@@ -1161,9 +1636,9 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 		return CQt.QObject_ObjectName(this.nativePtr);
 	}
 	
-	public void SetObjectName(IQAnyStringView name)
+	public void SetObjectName(char8* name)
 	{
-		CQt.QObject_SetObjectName(this.nativePtr, (name == default) ? default : (char8*)name.NativePtr);
+		CQt.QObject_SetObjectName(this.nativePtr, name);
 	}
 	
 	public bool IsWidgetType()
@@ -1198,7 +1673,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void MoveToThread(IQThread thread)
 	{
-		CQt.QObject_MoveToThread(this.nativePtr, (thread == null) ? null : (void*)thread.NativePtr);
+		CQt.QObject_MoveToThread(this.nativePtr, (thread == default || thread.NativePtr == default) ? default : thread.NativePtr);
 	}
 	
 	public int32 StartTimer(int32 interval)
@@ -1218,37 +1693,37 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public void SetParent(IQObject parent)
 	{
-		CQt.QObject_SetParent(this.nativePtr, (parent == null) ? null : (void*)parent.NativePtr);
+		CQt.QObject_SetParent(this.nativePtr, (parent == default || parent.NativePtr == default) ? default : parent.NativePtr);
 	}
 	
 	public void InstallEventFilter(IQObject filterObj)
 	{
-		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == null) ? null : (void*)filterObj.NativePtr);
+		CQt.QObject_InstallEventFilter(this.nativePtr, (filterObj == default || filterObj.NativePtr == default) ? default : filterObj.NativePtr);
 	}
 	
 	public void RemoveEventFilter(IQObject obj)
 	{
-		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == null) ? null : (void*)obj.NativePtr);
+		CQt.QObject_RemoveEventFilter(this.nativePtr, (obj == default || obj.NativePtr == default) ? default : obj.NativePtr);
 	}
 	
 	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
 	{
-		CQt.QObject_Connect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr);
+		CQt.QObject_Connect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr);
 	}
 	
 	public void Connect2(IQObject sender, char8* signal, char8* member)
 	{
-		CQt.QObject_Connect2(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member);
+		CQt.QObject_Connect2(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member);
 	}
 	
 	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
 	{
-		return CQt.QObject_Disconnect((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (member == default) ? default : (void*)member.NativePtr);
+		return CQt.QObject_Disconnect((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (member == default || member.NativePtr == default) ? default : member.NativePtr);
 	}
 	
-	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__Connection param1)
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
 	{
-		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QObject_DisconnectWithQMetaObjectConnection((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void DumpObjectTree()
@@ -1263,7 +1738,7 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public bool SetProperty(char8* name, IQVariant value)
 	{
-		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default) ? default : (void*)value.NativePtr);
+		return CQt.QObject_SetProperty(this.nativePtr, name, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Property(char8* name)
@@ -1298,17 +1773,662 @@ public class QStandardItemModel : IQStandardItemModel, IQAbstractItemModel
 	
 	public int32 StartTimer2(int32 interval, int64 timerType)
 	{
-		return CQt.QObject_StartTimer2(this.nativePtr, interval, timerType);
+		return CQt.QObject_StartTimer2(this.nativePtr, interval, (int64)timerType);
 	}
 	
 	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
 	{
-		CQt.QObject_Connect5((sender == null) ? null : (void*)sender.NativePtr, (signal == default) ? default : (void*)signal.NativePtr, (receiver == null) ? null : (void*)receiver.NativePtr, (method == default) ? default : (void*)method.NativePtr, typeVal);
+		CQt.QObject_Connect5((sender == default || sender.NativePtr == default) ? default : sender.NativePtr, (signal == default || signal.NativePtr == default) ? default : signal.NativePtr, (receiver == default || receiver.NativePtr == default) ? default : receiver.NativePtr, (method == default || method.NativePtr == default) ? default : method.NativePtr, (int64)typeVal);
 	}
 	
 	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
 	{
-		CQt.QObject_Connect4(this.nativePtr, (sender == null) ? null : (void*)sender.NativePtr, signal, member, typeVal);
+		CQt.QObject_Connect4(this.nativePtr, (sender == default || sender.NativePtr == default) ? default : sender.NativePtr, signal, member, (int64)typeVal);
+	}
+	
+}
+public class QStandardItemModel
+{
+	public QStandardItemModelPtr handle;
+	
+	public static implicit operator QStandardItemModelPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStandardItemModelPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* MetaObject()
+	{
+		return this.handle.MetaObject();
+	}
+	
+	public virtual void* Metacast(char8* param1)
+	{
+		return this.handle.Metacast(param1);
+	}
+	
+	public virtual int32 Metacall(int64 param1, int32 param2, void* param3)
+	{
+		return this.handle.Metacall(param1, param2, param3);
+	}
+	
+	public static libqt_string Tr(char8* s)
+	{
+		return QStandardItemModelPtr.Tr(s);
+	}
+	
+	public void SetItemRoleNames(void* roleNames)
+	{
+		this.handle.SetItemRoleNames(roleNames);
+	}
+	
+	public virtual void* RoleNames()
+	{
+		return this.handle.RoleNames();
+	}
+	
+	public virtual void Index(int32 row, int32 column, IQModelIndex parent)
+	{
+		this.handle.Index(row, column, parent);
+	}
+	
+	public virtual void Parent(IQModelIndex child)
+	{
+		this.handle.Parent(child);
+	}
+	
+	public virtual int32 RowCount(IQModelIndex parent)
+	{
+		return this.handle.RowCount(parent);
+	}
+	
+	public virtual int32 ColumnCount(IQModelIndex parent)
+	{
+		return this.handle.ColumnCount(parent);
+	}
+	
+	public virtual bool HasChildren(IQModelIndex parent)
+	{
+		return this.handle.HasChildren(parent);
+	}
+	
+	public virtual void Data(IQModelIndex index, int32 role)
+	{
+		this.handle.Data(index, role);
+	}
+	
+	public virtual void MultiData(IQModelIndex index, IQModelRoleDataSpan roleDataSpan)
+	{
+		this.handle.MultiData(index, default);
+	}
+	
+	public virtual bool SetData(IQModelIndex index, IQVariant value, int32 role)
+	{
+		return this.handle.SetData(index, value, role);
+	}
+	
+	public virtual bool ClearItemData(IQModelIndex index)
+	{
+		return this.handle.ClearItemData(index);
+	}
+	
+	public virtual void HeaderData(int32 section, int64 orientation, int32 role)
+	{
+		this.handle.HeaderData(section, orientation, role);
+	}
+	
+	public virtual bool SetHeaderData(int32 section, int64 orientation, IQVariant value, int32 role)
+	{
+		return this.handle.SetHeaderData(section, orientation, value, role);
+	}
+	
+	public virtual bool InsertRows(int32 row, int32 count, IQModelIndex parent)
+	{
+		return this.handle.InsertRows(row, count, parent);
+	}
+	
+	public virtual bool InsertColumns(int32 column, int32 count, IQModelIndex parent)
+	{
+		return this.handle.InsertColumns(column, count, parent);
+	}
+	
+	public virtual bool RemoveRows(int32 row, int32 count, IQModelIndex parent)
+	{
+		return this.handle.RemoveRows(row, count, parent);
+	}
+	
+	public virtual bool RemoveColumns(int32 column, int32 count, IQModelIndex parent)
+	{
+		return this.handle.RemoveColumns(column, count, parent);
+	}
+	
+	public virtual int64 Flags(IQModelIndex index)
+	{
+		return this.handle.Flags(index);
+	}
+	
+	public virtual int64 SupportedDropActions()
+	{
+		return this.handle.SupportedDropActions();
+	}
+	
+	public virtual void* ItemData(IQModelIndex index)
+	{
+		return this.handle.ItemData(index);
+	}
+	
+	public virtual bool SetItemData(IQModelIndex index, void* roles)
+	{
+		return this.handle.SetItemData(index, roles);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public virtual void Sort(int32 column, int64 order)
+	{
+		this.handle.Sort(column, order);
+	}
+	
+	public void* ItemFromIndex(IQModelIndex index)
+	{
+		return this.handle.ItemFromIndex(index);
+	}
+	
+	public void IndexFromItem(IQStandardItem item)
+	{
+		this.handle.IndexFromItem(item);
+	}
+	
+	public void* Item(int32 row)
+	{
+		return this.handle.Item(row);
+	}
+	
+	public void SetItem(int32 row, int32 column, IQStandardItem item)
+	{
+		this.handle.SetItem(row, column, item);
+	}
+	
+	public void SetItem2(int32 row, IQStandardItem item)
+	{
+		this.handle.SetItem2(row, item);
+	}
+	
+	public void* InvisibleRootItem()
+	{
+		return this.handle.InvisibleRootItem();
+	}
+	
+	public void* HorizontalHeaderItem(int32 column)
+	{
+		return this.handle.HorizontalHeaderItem(column);
+	}
+	
+	public void SetHorizontalHeaderItem(int32 column, IQStandardItem item)
+	{
+		this.handle.SetHorizontalHeaderItem(column, item);
+	}
+	
+	public void* VerticalHeaderItem(int32 row)
+	{
+		return this.handle.VerticalHeaderItem(row);
+	}
+	
+	public void SetVerticalHeaderItem(int32 row, IQStandardItem item)
+	{
+		this.handle.SetVerticalHeaderItem(row, item);
+	}
+	
+	public void SetHorizontalHeaderLabels(String[] labels)
+	{
+		this.handle.SetHorizontalHeaderLabels(null);
+	}
+	
+	public void SetVerticalHeaderLabels(String[] labels)
+	{
+		this.handle.SetVerticalHeaderLabels(null);
+	}
+	
+	public void SetRowCount(int32 rows)
+	{
+		this.handle.SetRowCount(rows);
+	}
+	
+	public void SetColumnCount(int32 columns)
+	{
+		this.handle.SetColumnCount(columns);
+	}
+	
+	public void AppendRow(IQStandardItem[] items)
+	{
+		this.handle.AppendRow(null);
+	}
+	
+	public void AppendColumn(IQStandardItem[] items)
+	{
+		this.handle.AppendColumn(null);
+	}
+	
+	public void AppendRowWithItem(IQStandardItem item)
+	{
+		this.handle.AppendRowWithItem(item);
+	}
+	
+	public void InsertRow(int32 row, IQStandardItem[] items)
+	{
+		this.handle.InsertRow(row, null);
+	}
+	
+	public void InsertColumn(int32 column, IQStandardItem[] items)
+	{
+		this.handle.InsertColumn(column, null);
+	}
+	
+	public void InsertRow2(int32 row, IQStandardItem item)
+	{
+		this.handle.InsertRow2(row, item);
+	}
+	
+	public bool InsertRowWithRow(int32 row)
+	{
+		return this.handle.InsertRowWithRow(row);
+	}
+	
+	public bool InsertColumnWithColumn(int32 column)
+	{
+		return this.handle.InsertColumnWithColumn(column);
+	}
+	
+	public void* TakeItem(int32 row)
+	{
+		return this.handle.TakeItem(row);
+	}
+	
+	public void*[] TakeRow(int32 row)
+	{
+		return this.handle.TakeRow(row);
+	}
+	
+	public void*[] TakeColumn(int32 column)
+	{
+		return this.handle.TakeColumn(column);
+	}
+	
+	public void* TakeHorizontalHeaderItem(int32 column)
+	{
+		return this.handle.TakeHorizontalHeaderItem(column);
+	}
+	
+	public void* TakeVerticalHeaderItem(int32 row)
+	{
+		return this.handle.TakeVerticalHeaderItem(row);
+	}
+	
+	public void* ItemPrototype()
+	{
+		return this.handle.ItemPrototype();
+	}
+	
+	public void SetItemPrototype(IQStandardItem item)
+	{
+		this.handle.SetItemPrototype(item);
+	}
+	
+	public void*[] FindItems(String text)
+	{
+		return this.handle.FindItems(text);
+	}
+	
+	public int32 SortRole()
+	{
+		return this.handle.SortRole();
+	}
+	
+	public void SetSortRole(int32 role)
+	{
+		this.handle.SetSortRole(role);
+	}
+	
+	public virtual libqt_string[] MimeTypes()
+	{
+		return this.handle.MimeTypes();
+	}
+	
+	public virtual void* MimeData(IQModelIndex[] indexes)
+	{
+		return this.handle.MimeData(null);
+	}
+	
+	public virtual bool DropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
+	{
+		return this.handle.DropMimeData(data, action, row, column, parent);
+	}
+	
+	public static libqt_string Tr2(char8* s, char8* c)
+	{
+		return QStandardItemModelPtr.Tr2(s, c);
+	}
+	
+	public static libqt_string Tr3(char8* s, char8* c, int32 n)
+	{
+		return QStandardItemModelPtr.Tr3(s, c, n);
+	}
+	
+	public void* Item2(int32 row, int32 column)
+	{
+		return this.handle.Item2(row, column);
+	}
+	
+	public bool InsertRow22(int32 row, IQModelIndex parent)
+	{
+		return this.handle.InsertRow22(row, parent);
+	}
+	
+	public bool InsertColumn2(int32 column, IQModelIndex parent)
+	{
+		return this.handle.InsertColumn2(column, parent);
+	}
+	
+	public void* TakeItem2(int32 row, int32 column)
+	{
+		return this.handle.TakeItem2(row, column);
+	}
+	
+	public void*[] FindItems2(String text, int64 flags)
+	{
+		return this.handle.FindItems2(text, flags);
+	}
+	
+	public void*[] FindItems3(String text, int64 flags, int32 column)
+	{
+		return this.handle.FindItems3(text, flags, column);
+	}
+	
+	public bool HasIndex(int32 row, int32 column)
+	{
+		return this.handle.HasIndex(row, column);
+	}
+	
+	public virtual void Sibling(int32 row, int32 column, IQModelIndex idx)
+	{
+		this.handle.Sibling(row, column, idx);
+	}
+	
+	public virtual bool CanDropMimeData(IQMimeData data, int64 action, int32 row, int32 column, IQModelIndex parent)
+	{
+		return this.handle.CanDropMimeData(data, action, row, column, parent);
+	}
+	
+	public virtual int64 SupportedDragActions()
+	{
+		return this.handle.SupportedDragActions();
+	}
+	
+	public virtual bool MoveRows(IQModelIndex sourceParent, int32 sourceRow, int32 count, IQModelIndex destinationParent, int32 destinationChild)
+	{
+		return this.handle.MoveRows(sourceParent, sourceRow, count, destinationParent, destinationChild);
+	}
+	
+	public virtual bool MoveColumns(IQModelIndex sourceParent, int32 sourceColumn, int32 count, IQModelIndex destinationParent, int32 destinationChild)
+	{
+		return this.handle.MoveColumns(sourceParent, sourceColumn, count, destinationParent, destinationChild);
+	}
+	
+	public bool RemoveRow(int32 row)
+	{
+		return this.handle.RemoveRow(row);
+	}
+	
+	public bool RemoveColumn(int32 column)
+	{
+		return this.handle.RemoveColumn(column);
+	}
+	
+	public bool MoveRow(IQModelIndex sourceParent, int32 sourceRow, IQModelIndex destinationParent, int32 destinationChild)
+	{
+		return this.handle.MoveRow(sourceParent, sourceRow, destinationParent, destinationChild);
+	}
+	
+	public bool MoveColumn(IQModelIndex sourceParent, int32 sourceColumn, IQModelIndex destinationParent, int32 destinationChild)
+	{
+		return this.handle.MoveColumn(sourceParent, sourceColumn, destinationParent, destinationChild);
+	}
+	
+	public virtual void FetchMore(IQModelIndex parent)
+	{
+		this.handle.FetchMore(parent);
+	}
+	
+	public virtual bool CanFetchMore(IQModelIndex parent)
+	{
+		return this.handle.CanFetchMore(parent);
+	}
+	
+	public virtual void Buddy(IQModelIndex index)
+	{
+		this.handle.Buddy(index);
+	}
+	
+	public virtual void[] Match(IQModelIndex start, int32 role, IQVariant value, int32 hits, int64 flags)
+	{
+		return this.handle.Match(start, role, value, hits, flags);
+	}
+	
+	public virtual void Span(IQModelIndex index)
+	{
+		this.handle.Span(index);
+	}
+	
+	public bool CheckIndex(IQModelIndex index)
+	{
+		return this.handle.CheckIndex(index);
+	}
+	
+	public virtual bool Submit()
+	{
+		return this.handle.Submit();
+	}
+	
+	public virtual void Revert()
+	{
+		this.handle.Revert();
+	}
+	
+	public bool HasIndex3(int32 row, int32 column, IQModelIndex parent)
+	{
+		return this.handle.HasIndex3(row, column, parent);
+	}
+	
+	public bool RemoveRow2(int32 row, IQModelIndex parent)
+	{
+		return this.handle.RemoveRow2(row, parent);
+	}
+	
+	public bool RemoveColumn2(int32 column, IQModelIndex parent)
+	{
+		return this.handle.RemoveColumn2(column, parent);
+	}
+	
+	public bool CheckIndex2(IQModelIndex index, int64 options)
+	{
+		return this.handle.CheckIndex2(index, options);
+	}
+	
+	public virtual bool Event(IQEvent event)
+	{
+		return this.handle.Event(event);
+	}
+	
+	public virtual bool EventFilter(IQObject watched, IQEvent event)
+	{
+		return this.handle.EventFilter(watched, event);
+	}
+	
+	public libqt_string ObjectName()
+	{
+		return this.handle.ObjectName();
+	}
+	
+	public void SetObjectName(char8* name)
+	{
+		this.handle.SetObjectName(name);
+	}
+	
+	public bool IsWidgetType()
+	{
+		return this.handle.IsWidgetType();
+	}
+	
+	public bool IsWindowType()
+	{
+		return this.handle.IsWindowType();
+	}
+	
+	public bool IsQuickItemType()
+	{
+		return this.handle.IsQuickItemType();
+	}
+	
+	public bool SignalsBlocked()
+	{
+		return this.handle.SignalsBlocked();
+	}
+	
+	public bool BlockSignals(bool b)
+	{
+		return this.handle.BlockSignals(b);
+	}
+	
+	public void* Thread()
+	{
+		return this.handle.Thread();
+	}
+	
+	public void MoveToThread(IQThread thread)
+	{
+		this.handle.MoveToThread(thread);
+	}
+	
+	public int32 StartTimer(int32 interval)
+	{
+		return this.handle.StartTimer(interval);
+	}
+	
+	public void KillTimer(int32 id)
+	{
+		this.handle.KillTimer(id);
+	}
+	
+	public void*[] Children()
+	{
+		return this.handle.Children();
+	}
+	
+	public void SetParent(IQObject parent)
+	{
+		this.handle.SetParent(parent);
+	}
+	
+	public void InstallEventFilter(IQObject filterObj)
+	{
+		this.handle.InstallEventFilter(filterObj);
+	}
+	
+	public void RemoveEventFilter(IQObject obj)
+	{
+		this.handle.RemoveEventFilter(obj);
+	}
+	
+	public static void Connect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method)
+	{
+		QStandardItemModelPtr.Connect(sender, signal, receiver, method);
+	}
+	
+	public void Connect2(IQObject sender, char8* signal, char8* member)
+	{
+		this.handle.Connect2(sender, signal, member);
+	}
+	
+	public static bool Disconnect(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod member)
+	{
+		return QStandardItemModelPtr.Disconnect(sender, signal, receiver, member);
+	}
+	
+	public static bool DisconnectWithQMetaObjectConnection(QMetaObject__ConnectionPtr param1)
+	{
+		return QStandardItemModelPtr.DisconnectWithQMetaObjectConnection(param1);
+	}
+	
+	public void DumpObjectTree()
+	{
+		this.handle.DumpObjectTree();
+	}
+	
+	public void DumpObjectInfo()
+	{
+		this.handle.DumpObjectInfo();
+	}
+	
+	public bool SetProperty(char8* name, IQVariant value)
+	{
+		return this.handle.SetProperty(name, value);
+	}
+	
+	public void Property(char8* name)
+	{
+		this.handle.Property(name);
+	}
+	
+	public libqt_string[] DynamicPropertyNames()
+	{
+		return this.handle.DynamicPropertyNames();
+	}
+	
+	public void* BindingStorage()
+	{
+		return this.handle.BindingStorage();
+	}
+	
+	public void* BindingStorage2()
+	{
+		return this.handle.BindingStorage2();
+	}
+	
+	public bool Inherits(char8* classname)
+	{
+		return this.handle.Inherits(classname);
+	}
+	
+	public void DeleteLater()
+	{
+		this.handle.DeleteLater();
+	}
+	
+	public int32 StartTimer2(int32 interval, int64 timerType)
+	{
+		return this.handle.StartTimer2(interval, timerType);
+	}
+	
+	public static void Connect5(IQObject sender, IQMetaMethod signal, IQObject receiver, IQMetaMethod method, int64 typeVal)
+	{
+		QStandardItemModelPtr.Connect5(sender, signal, receiver, method, typeVal);
+	}
+	
+	public void Connect4(IQObject sender, char8* signal, char8* member, int64 typeVal)
+	{
+		this.handle.Connect4(sender, signal, member, typeVal);
 	}
 	
 }

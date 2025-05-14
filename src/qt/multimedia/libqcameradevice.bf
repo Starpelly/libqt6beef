@@ -13,24 +13,29 @@ public interface IQCameraFormat
 {
 	void* NativePtr { get; }
 }
-public class QCameraFormat : IQCameraFormat
+public struct QCameraFormatPtr : IQCameraFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCameraFormat_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCameraFormat_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCameraFormat_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCameraFormat other)
 	{
-		CQt.QCameraFormat_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCameraFormat_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 PixelFormat()
@@ -60,12 +65,72 @@ public class QCameraFormat : IQCameraFormat
 	
 	public bool OperatorEqual(IQCameraFormat other)
 	{
-		return CQt.QCameraFormat_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCameraFormat_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQCameraFormat other)
 	{
-		return CQt.QCameraFormat_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCameraFormat_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QCameraFormat
+{
+	public QCameraFormatPtr handle;
+	
+	public static implicit operator QCameraFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCameraFormatPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCameraFormat other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public int64 PixelFormat()
+	{
+		return this.handle.PixelFormat();
+	}
+	
+	public void Resolution()
+	{
+		this.handle.Resolution();
+	}
+	
+	public float MinFrameRate()
+	{
+		return this.handle.MinFrameRate();
+	}
+	
+	public float MaxFrameRate()
+	{
+		return this.handle.MaxFrameRate();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public bool OperatorEqual(IQCameraFormat other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQCameraFormat other)
+	{
+		return this.handle.OperatorNotEqual(other);
 	}
 	
 }
@@ -99,34 +164,39 @@ public interface IQCameraDevice
 {
 	void* NativePtr { get; }
 }
-public class QCameraDevice : IQCameraDevice
+public struct QCameraDevicePtr : IQCameraDevice, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QCameraDevice_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QCameraDevice_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCameraDevice_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQCameraDevice other)
 	{
-		CQt.QCameraDevice_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QCameraDevice_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQCameraDevice other)
 	{
-		return CQt.QCameraDevice_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCameraDevice_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQCameraDevice other)
 	{
-		return CQt.QCameraDevice_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QCameraDevice_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsNull()
@@ -162,6 +232,76 @@ public class QCameraDevice : IQCameraDevice
 	public void[] VideoFormats()
 	{
 		return CQt.QCameraDevice_VideoFormats(this.nativePtr);
+	}
+	
+}
+public class QCameraDevice
+{
+	public QCameraDevicePtr handle;
+	
+	public static implicit operator QCameraDevicePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QCameraDevicePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQCameraDevice other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public bool OperatorEqual(IQCameraDevice other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQCameraDevice other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public libqt_string Id()
+	{
+		return this.handle.Id();
+	}
+	
+	public libqt_string Description()
+	{
+		return this.handle.Description();
+	}
+	
+	public bool IsDefault()
+	{
+		return this.handle.IsDefault();
+	}
+	
+	public int64 Position()
+	{
+		return this.handle.Position();
+	}
+	
+	public void[] PhotoResolutions()
+	{
+		return this.handle.PhotoResolutions();
+	}
+	
+	public void[] VideoFormats()
+	{
+		return this.handle.VideoFormats();
 	}
 	
 }

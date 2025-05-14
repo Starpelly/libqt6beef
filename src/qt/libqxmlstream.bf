@@ -37,17 +37,22 @@ public interface IQXmlStreamAttribute
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamAttribute : IQXmlStreamAttribute
+public struct QXmlStreamAttributePtr : IQXmlStreamAttribute, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamAttribute_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamAttribute_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamAttribute_Delete(this.nativePtr);
 	}
@@ -59,17 +64,57 @@ public class QXmlStreamAttribute : IQXmlStreamAttribute
 	
 	public bool OperatorEqual(IQXmlStreamAttribute other)
 	{
-		return CQt.QXmlStreamAttribute_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamAttribute_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQXmlStreamAttribute other)
 	{
-		return CQt.QXmlStreamAttribute_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamAttribute_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void OperatorAssign(IQXmlStreamAttribute param1)
 	{
-		CQt.QXmlStreamAttribute_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QXmlStreamAttribute_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
+	}
+	
+}
+public class QXmlStreamAttribute
+{
+	public QXmlStreamAttributePtr handle;
+	
+	public static implicit operator QXmlStreamAttributePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamAttributePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsDefault()
+	{
+		return this.handle.IsDefault();
+	}
+	
+	public bool OperatorEqual(IQXmlStreamAttribute other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQXmlStreamAttribute other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void OperatorAssign(IQXmlStreamAttribute param1)
+	{
+		this.handle.OperatorAssign(param1);
 	}
 	
 }
@@ -99,29 +144,64 @@ public interface IQXmlStreamNamespaceDeclaration
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamNamespaceDeclaration : IQXmlStreamNamespaceDeclaration
+public struct QXmlStreamNamespaceDeclarationPtr : IQXmlStreamNamespaceDeclaration, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamNamespaceDeclaration_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamNamespaceDeclaration_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamNamespaceDeclaration_Delete(this.nativePtr);
 	}
 	
 	public bool OperatorEqual(IQXmlStreamNamespaceDeclaration other)
 	{
-		return CQt.QXmlStreamNamespaceDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamNamespaceDeclaration_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQXmlStreamNamespaceDeclaration other)
 	{
-		return CQt.QXmlStreamNamespaceDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamNamespaceDeclaration_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QXmlStreamNamespaceDeclaration
+{
+	public QXmlStreamNamespaceDeclarationPtr handle;
+	
+	public static implicit operator QXmlStreamNamespaceDeclarationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamNamespaceDeclarationPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool OperatorEqual(IQXmlStreamNamespaceDeclaration other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQXmlStreamNamespaceDeclaration other)
+	{
+		return this.handle.OperatorNotEqual(other);
 	}
 	
 }
@@ -143,29 +223,64 @@ public interface IQXmlStreamNotationDeclaration
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamNotationDeclaration : IQXmlStreamNotationDeclaration
+public struct QXmlStreamNotationDeclarationPtr : IQXmlStreamNotationDeclaration, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamNotationDeclaration_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamNotationDeclaration_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamNotationDeclaration_Delete(this.nativePtr);
 	}
 	
 	public bool OperatorEqual(IQXmlStreamNotationDeclaration other)
 	{
-		return CQt.QXmlStreamNotationDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamNotationDeclaration_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQXmlStreamNotationDeclaration other)
 	{
-		return CQt.QXmlStreamNotationDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamNotationDeclaration_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QXmlStreamNotationDeclaration
+{
+	public QXmlStreamNotationDeclarationPtr handle;
+	
+	public static implicit operator QXmlStreamNotationDeclarationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamNotationDeclarationPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool OperatorEqual(IQXmlStreamNotationDeclaration other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQXmlStreamNotationDeclaration other)
+	{
+		return this.handle.OperatorNotEqual(other);
 	}
 	
 }
@@ -185,29 +300,64 @@ public interface IQXmlStreamEntityDeclaration
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamEntityDeclaration : IQXmlStreamEntityDeclaration
+public struct QXmlStreamEntityDeclarationPtr : IQXmlStreamEntityDeclaration, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamEntityDeclaration_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamEntityDeclaration_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamEntityDeclaration_Delete(this.nativePtr);
 	}
 	
 	public bool OperatorEqual(IQXmlStreamEntityDeclaration other)
 	{
-		return CQt.QXmlStreamEntityDeclaration_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamEntityDeclaration_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQXmlStreamEntityDeclaration other)
 	{
-		return CQt.QXmlStreamEntityDeclaration_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QXmlStreamEntityDeclaration_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QXmlStreamEntityDeclaration
+{
+	public QXmlStreamEntityDeclarationPtr handle;
+	
+	public static implicit operator QXmlStreamEntityDeclarationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamEntityDeclarationPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool OperatorEqual(IQXmlStreamEntityDeclaration other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQXmlStreamEntityDeclaration other)
+	{
+		return this.handle.OperatorNotEqual(other);
 	}
 	
 }
@@ -227,24 +377,54 @@ public interface IQXmlStreamEntityResolver
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamEntityResolver : IQXmlStreamEntityResolver
+public struct QXmlStreamEntityResolverPtr : IQXmlStreamEntityResolver, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamEntityResolver_Delete(this.nativePtr);
 	}
 	
-	public virtual libqt_string ResolveEntity(String publicId, String systemId)
+	public libqt_string ResolveEntity(String publicId, String systemId)
 	{
 		return CQt.QXmlStreamEntityResolver_ResolveEntity(this.nativePtr, libqt_string(publicId), libqt_string(systemId));
 	}
 	
-	public virtual libqt_string ResolveUndeclaredEntity(String name)
+	public libqt_string ResolveUndeclaredEntity(String name)
 	{
 		return CQt.QXmlStreamEntityResolver_ResolveUndeclaredEntity(this.nativePtr, libqt_string(name));
+	}
+	
+}
+public class QXmlStreamEntityResolver
+{
+	public QXmlStreamEntityResolverPtr handle;
+	
+	public static implicit operator QXmlStreamEntityResolverPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual libqt_string ResolveEntity(String publicId, String systemId)
+	{
+		return this.handle.ResolveEntity(publicId, systemId);
+	}
+	
+	public virtual libqt_string ResolveUndeclaredEntity(String name)
+	{
+		return this.handle.ResolveUndeclaredEntity(name);
 	}
 	
 }
@@ -262,24 +442,29 @@ public interface IQXmlStreamReader
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamReader : IQXmlStreamReader
+public struct QXmlStreamReaderPtr : IQXmlStreamReader, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamReader_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamReader_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamReader_Delete(this.nativePtr);
 	}
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QXmlStreamReader_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QXmlStreamReader_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -434,7 +619,7 @@ public class QXmlStreamReader : IQXmlStreamReader
 	
 	public void AddExtraNamespaceDeclaration(IQXmlStreamNamespaceDeclaration extraNamespaceDeclaraction)
 	{
-		CQt.QXmlStreamReader_AddExtraNamespaceDeclaration(this.nativePtr, (extraNamespaceDeclaraction == default) ? default : (void*)extraNamespaceDeclaraction.NativePtr);
+		CQt.QXmlStreamReader_AddExtraNamespaceDeclaration(this.nativePtr, (extraNamespaceDeclaraction == default || extraNamespaceDeclaraction.NativePtr == default) ? default : extraNamespaceDeclaraction.NativePtr);
 	}
 	
 	public void AddExtraNamespaceDeclarations(IQXmlStreamNamespaceDeclaration[] extraNamespaceDeclaractions)
@@ -484,7 +669,7 @@ public class QXmlStreamReader : IQXmlStreamReader
 	
 	public void SetEntityResolver(IQXmlStreamEntityResolver resolver)
 	{
-		CQt.QXmlStreamReader_SetEntityResolver(this.nativePtr, (resolver == null) ? null : (void*)resolver.NativePtr);
+		CQt.QXmlStreamReader_SetEntityResolver(this.nativePtr, (resolver == default || resolver.NativePtr == default) ? default : resolver.NativePtr);
 	}
 	
 	public void* EntityResolver()
@@ -494,12 +679,257 @@ public class QXmlStreamReader : IQXmlStreamReader
 	
 	public libqt_string ReadElementText1(int64 behaviour)
 	{
-		return CQt.QXmlStreamReader_ReadElementText1(this.nativePtr, behaviour);
+		return CQt.QXmlStreamReader_ReadElementText1(this.nativePtr, (int64)behaviour);
 	}
 	
 	public void RaiseError1(String message)
 	{
 		CQt.QXmlStreamReader_RaiseError1(this.nativePtr, libqt_string(message));
+	}
+	
+}
+public class QXmlStreamReader
+{
+	public QXmlStreamReaderPtr handle;
+	
+	public static implicit operator QXmlStreamReaderPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamReaderPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void AddData(String data)
+	{
+		this.handle.AddData(data);
+	}
+	
+	public void AddDataWithData(String data)
+	{
+		this.handle.AddDataWithData(data);
+	}
+	
+	public void AddData2(char8* data)
+	{
+		this.handle.AddData2(data);
+	}
+	
+	public void Clear()
+	{
+		this.handle.Clear();
+	}
+	
+	public bool AtEnd()
+	{
+		return this.handle.AtEnd();
+	}
+	
+	public int64 ReadNext()
+	{
+		return this.handle.ReadNext();
+	}
+	
+	public bool ReadNextStartElement()
+	{
+		return this.handle.ReadNextStartElement();
+	}
+	
+	public void SkipCurrentElement()
+	{
+		this.handle.SkipCurrentElement();
+	}
+	
+	public int64 TokenType()
+	{
+		return this.handle.TokenType();
+	}
+	
+	public libqt_string TokenString()
+	{
+		return this.handle.TokenString();
+	}
+	
+	public void SetNamespaceProcessing(bool namespaceProcessing)
+	{
+		this.handle.SetNamespaceProcessing(namespaceProcessing);
+	}
+	
+	public bool NamespaceProcessing()
+	{
+		return this.handle.NamespaceProcessing();
+	}
+	
+	public bool IsStartDocument()
+	{
+		return this.handle.IsStartDocument();
+	}
+	
+	public bool IsEndDocument()
+	{
+		return this.handle.IsEndDocument();
+	}
+	
+	public bool IsStartElement()
+	{
+		return this.handle.IsStartElement();
+	}
+	
+	public bool IsEndElement()
+	{
+		return this.handle.IsEndElement();
+	}
+	
+	public bool IsCharacters()
+	{
+		return this.handle.IsCharacters();
+	}
+	
+	public bool IsWhitespace()
+	{
+		return this.handle.IsWhitespace();
+	}
+	
+	public bool IsCDATA()
+	{
+		return this.handle.IsCDATA();
+	}
+	
+	public bool IsComment()
+	{
+		return this.handle.IsComment();
+	}
+	
+	public bool IsDTD()
+	{
+		return this.handle.IsDTD();
+	}
+	
+	public bool IsEntityReference()
+	{
+		return this.handle.IsEntityReference();
+	}
+	
+	public bool IsProcessingInstruction()
+	{
+		return this.handle.IsProcessingInstruction();
+	}
+	
+	public bool IsStandaloneDocument()
+	{
+		return this.handle.IsStandaloneDocument();
+	}
+	
+	public int64 LineNumber()
+	{
+		return this.handle.LineNumber();
+	}
+	
+	public int64 ColumnNumber()
+	{
+		return this.handle.ColumnNumber();
+	}
+	
+	public int64 CharacterOffset()
+	{
+		return this.handle.CharacterOffset();
+	}
+	
+	public libqt_string ReadElementText()
+	{
+		return this.handle.ReadElementText();
+	}
+	
+	public void[] NamespaceDeclarations()
+	{
+		return this.handle.NamespaceDeclarations();
+	}
+	
+	public void AddExtraNamespaceDeclaration(IQXmlStreamNamespaceDeclaration extraNamespaceDeclaraction)
+	{
+		this.handle.AddExtraNamespaceDeclaration(extraNamespaceDeclaraction);
+	}
+	
+	public void AddExtraNamespaceDeclarations(IQXmlStreamNamespaceDeclaration[] extraNamespaceDeclaractions)
+	{
+		this.handle.AddExtraNamespaceDeclarations(null);
+	}
+	
+	public void[] NotationDeclarations()
+	{
+		return this.handle.NotationDeclarations();
+	}
+	
+	public void[] EntityDeclarations()
+	{
+		return this.handle.EntityDeclarations();
+	}
+	
+	public int32 EntityExpansionLimit()
+	{
+		return this.handle.EntityExpansionLimit();
+	}
+	
+	public void SetEntityExpansionLimit(int32 limit)
+	{
+		this.handle.SetEntityExpansionLimit(limit);
+	}
+	
+	public void RaiseError()
+	{
+		this.handle.RaiseError();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public int64 Error()
+	{
+		return this.handle.Error();
+	}
+	
+	public bool HasError()
+	{
+		return this.handle.HasError();
+	}
+	
+	public void SetEntityResolver(IQXmlStreamEntityResolver resolver)
+	{
+		this.handle.SetEntityResolver(resolver);
+	}
+	
+	public void* EntityResolver()
+	{
+		return this.handle.EntityResolver();
+	}
+	
+	public libqt_string ReadElementText1(int64 behaviour)
+	{
+		return this.handle.ReadElementText1(behaviour);
+	}
+	
+	public void RaiseError1(String message)
+	{
+		this.handle.RaiseError1(message);
 	}
 	
 }
@@ -613,24 +1043,29 @@ public interface IQXmlStreamWriter
 {
 	void* NativePtr { get; }
 }
-public class QXmlStreamWriter : IQXmlStreamWriter
+public struct QXmlStreamWriterPtr : IQXmlStreamWriter, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QXmlStreamWriter_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QXmlStreamWriter_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QXmlStreamWriter_Delete(this.nativePtr);
 	}
 	
 	public void SetDevice(IQIODevice device)
 	{
-		CQt.QXmlStreamWriter_SetDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		CQt.QXmlStreamWriter_SetDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public void* Device()
@@ -670,7 +1105,7 @@ public class QXmlStreamWriter : IQXmlStreamWriter
 	
 	public void WriteAttributeWithAttribute(IQXmlStreamAttribute attribute)
 	{
-		CQt.QXmlStreamWriter_WriteAttributeWithAttribute(this.nativePtr, (attribute == default) ? default : (void*)attribute.NativePtr);
+		CQt.QXmlStreamWriter_WriteAttributeWithAttribute(this.nativePtr, (attribute == default || attribute.NativePtr == default) ? default : attribute.NativePtr);
 	}
 	
 	public void WriteCDATA(String text)
@@ -770,7 +1205,7 @@ public class QXmlStreamWriter : IQXmlStreamWriter
 	
 	public void WriteCurrentToken(IQXmlStreamReader reader)
 	{
-		CQt.QXmlStreamWriter_WriteCurrentToken(this.nativePtr, (reader == default) ? default : (void*)reader.NativePtr);
+		CQt.QXmlStreamWriter_WriteCurrentToken(this.nativePtr, (reader == default || reader.NativePtr == default) ? default : reader.NativePtr);
 	}
 	
 	public bool HasError()
@@ -786,6 +1221,186 @@ public class QXmlStreamWriter : IQXmlStreamWriter
 	public void WriteProcessingInstruction2(String target, String data)
 	{
 		CQt.QXmlStreamWriter_WriteProcessingInstruction2(this.nativePtr, libqt_string(target), libqt_string(data));
+	}
+	
+}
+public class QXmlStreamWriter
+{
+	public QXmlStreamWriterPtr handle;
+	
+	public static implicit operator QXmlStreamWriterPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QXmlStreamWriterPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetDevice(IQIODevice device)
+	{
+		this.handle.SetDevice(device);
+	}
+	
+	public void* Device()
+	{
+		return this.handle.Device();
+	}
+	
+	public void SetAutoFormatting(bool autoFormatting)
+	{
+		this.handle.SetAutoFormatting(autoFormatting);
+	}
+	
+	public bool AutoFormatting()
+	{
+		return this.handle.AutoFormatting();
+	}
+	
+	public void SetAutoFormattingIndent(int32 spacesOrTabs)
+	{
+		this.handle.SetAutoFormattingIndent(spacesOrTabs);
+	}
+	
+	public int32 AutoFormattingIndent()
+	{
+		return this.handle.AutoFormattingIndent();
+	}
+	
+	public void WriteAttribute(String qualifiedName, String value)
+	{
+		this.handle.WriteAttribute(qualifiedName, value);
+	}
+	
+	public void WriteAttribute2(String namespaceUri, String name, String value)
+	{
+		this.handle.WriteAttribute2(namespaceUri, name, value);
+	}
+	
+	public void WriteAttributeWithAttribute(IQXmlStreamAttribute attribute)
+	{
+		this.handle.WriteAttributeWithAttribute(attribute);
+	}
+	
+	public void WriteCDATA(String text)
+	{
+		this.handle.WriteCDATA(text);
+	}
+	
+	public void WriteCharacters(String text)
+	{
+		this.handle.WriteCharacters(text);
+	}
+	
+	public void WriteComment(String text)
+	{
+		this.handle.WriteComment(text);
+	}
+	
+	public void WriteDTD(String dtd)
+	{
+		this.handle.WriteDTD(dtd);
+	}
+	
+	public void WriteEmptyElement(String qualifiedName)
+	{
+		this.handle.WriteEmptyElement(qualifiedName);
+	}
+	
+	public void WriteEmptyElement2(String namespaceUri, String name)
+	{
+		this.handle.WriteEmptyElement2(namespaceUri, name);
+	}
+	
+	public void WriteTextElement(String qualifiedName, String text)
+	{
+		this.handle.WriteTextElement(qualifiedName, text);
+	}
+	
+	public void WriteTextElement2(String namespaceUri, String name, String text)
+	{
+		this.handle.WriteTextElement2(namespaceUri, name, text);
+	}
+	
+	public void WriteEndDocument()
+	{
+		this.handle.WriteEndDocument();
+	}
+	
+	public void WriteEndElement()
+	{
+		this.handle.WriteEndElement();
+	}
+	
+	public void WriteEntityReference(String name)
+	{
+		this.handle.WriteEntityReference(name);
+	}
+	
+	public void WriteNamespace(String namespaceUri)
+	{
+		this.handle.WriteNamespace(namespaceUri);
+	}
+	
+	public void WriteDefaultNamespace(String namespaceUri)
+	{
+		this.handle.WriteDefaultNamespace(namespaceUri);
+	}
+	
+	public void WriteProcessingInstruction(String target)
+	{
+		this.handle.WriteProcessingInstruction(target);
+	}
+	
+	public void WriteStartDocument()
+	{
+		this.handle.WriteStartDocument();
+	}
+	
+	public void WriteStartDocumentWithVersion(String version)
+	{
+		this.handle.WriteStartDocumentWithVersion(version);
+	}
+	
+	public void WriteStartDocument2(String version, bool standalone)
+	{
+		this.handle.WriteStartDocument2(version, standalone);
+	}
+	
+	public void WriteStartElement(String qualifiedName)
+	{
+		this.handle.WriteStartElement(qualifiedName);
+	}
+	
+	public void WriteStartElement2(String namespaceUri, String name)
+	{
+		this.handle.WriteStartElement2(namespaceUri, name);
+	}
+	
+	public void WriteCurrentToken(IQXmlStreamReader reader)
+	{
+		this.handle.WriteCurrentToken(reader);
+	}
+	
+	public bool HasError()
+	{
+		return this.handle.HasError();
+	}
+	
+	public void WriteNamespace2(String namespaceUri, String prefix)
+	{
+		this.handle.WriteNamespace2(namespaceUri, prefix);
+	}
+	
+	public void WriteProcessingInstruction2(String target, String data)
+	{
+		this.handle.WriteProcessingInstruction2(target, data);
 	}
 	
 }

@@ -183,17 +183,22 @@ public interface IQEvent
 {
 	void* NativePtr { get; }
 }
-public class QEvent : IQEvent
+public struct QEventPtr : IQEvent, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QEvent_new(typeVal);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 typeVal)
+	{
+		return .(CQt.QEvent_new((int64)typeVal));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QEvent_Delete(this.nativePtr);
 	}
@@ -208,7 +213,7 @@ public class QEvent : IQEvent
 		return CQt.QEvent_Spontaneous(this.nativePtr);
 	}
 	
-	public virtual void SetAccepted(bool accepted)
+	public void SetAccepted(bool accepted)
 	{
 		CQt.QEvent_SetAccepted(this.nativePtr, accepted);
 	}
@@ -248,7 +253,7 @@ public class QEvent : IQEvent
 		return CQt.QEvent_RegisterEventType();
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QEvent_Clone(this.nativePtr);
 	}
@@ -256,6 +261,86 @@ public class QEvent : IQEvent
 	public static int32 RegisterEventType1(int32 hint)
 	{
 		return CQt.QEvent_RegisterEventType1(hint);
+	}
+	
+}
+public class QEvent
+{
+	public QEventPtr handle;
+	
+	public static implicit operator QEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 typeVal)
+	{
+		this.handle = QEventPtr.New(typeVal);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool Spontaneous()
+	{
+		return this.handle.Spontaneous();
+	}
+	
+	public virtual void SetAccepted(bool accepted)
+	{
+		this.handle.SetAccepted(accepted);
+	}
+	
+	public bool IsAccepted()
+	{
+		return this.handle.IsAccepted();
+	}
+	
+	public void Accept()
+	{
+		this.handle.Accept();
+	}
+	
+	public void Ignore()
+	{
+		this.handle.Ignore();
+	}
+	
+	public bool IsInputEvent()
+	{
+		return this.handle.IsInputEvent();
+	}
+	
+	public bool IsPointerEvent()
+	{
+		return this.handle.IsPointerEvent();
+	}
+	
+	public bool IsSinglePointEvent()
+	{
+		return this.handle.IsSinglePointEvent();
+	}
+	
+	public static int32 RegisterEventType()
+	{
+		return QEventPtr.RegisterEventType();
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public static int32 RegisterEventType1(int32 hint)
+	{
+		return QEventPtr.RegisterEventType1(hint);
 	}
 	
 }
@@ -295,22 +380,27 @@ public interface IQTimerEvent
 {
 	void* NativePtr { get; }
 }
-public class QTimerEvent : IQTimerEvent, IQEvent
+public struct QTimerEventPtr : IQTimerEvent, IDisposable, IQEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int32 timerId)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTimerEvent_new(timerId);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int32 timerId)
+	{
+		return .(CQt.QTimerEvent_new(timerId));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTimerEvent_Delete(this.nativePtr);
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QTimerEvent_Clone(this.nativePtr);
 	}
@@ -330,7 +420,7 @@ public class QTimerEvent : IQTimerEvent, IQEvent
 		return CQt.QEvent_Spontaneous(this.nativePtr);
 	}
 	
-	public virtual void SetAccepted(bool accepted)
+	public void SetAccepted(bool accepted)
 	{
 		CQt.QEvent_SetAccepted(this.nativePtr, accepted);
 	}
@@ -376,6 +466,91 @@ public class QTimerEvent : IQTimerEvent, IQEvent
 	}
 	
 }
+public class QTimerEvent
+{
+	public QTimerEventPtr handle;
+	
+	public static implicit operator QTimerEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int32 timerId)
+	{
+		this.handle = QTimerEventPtr.New(timerId);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public int32 TimerId()
+	{
+		return this.handle.TimerId();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool Spontaneous()
+	{
+		return this.handle.Spontaneous();
+	}
+	
+	public virtual void SetAccepted(bool accepted)
+	{
+		this.handle.SetAccepted(accepted);
+	}
+	
+	public bool IsAccepted()
+	{
+		return this.handle.IsAccepted();
+	}
+	
+	public void Accept()
+	{
+		this.handle.Accept();
+	}
+	
+	public void Ignore()
+	{
+		this.handle.Ignore();
+	}
+	
+	public bool IsInputEvent()
+	{
+		return this.handle.IsInputEvent();
+	}
+	
+	public bool IsPointerEvent()
+	{
+		return this.handle.IsPointerEvent();
+	}
+	
+	public bool IsSinglePointEvent()
+	{
+		return this.handle.IsSinglePointEvent();
+	}
+	
+	public static int32 RegisterEventType()
+	{
+		return QTimerEventPtr.RegisterEventType();
+	}
+	
+	public static int32 RegisterEventType1(int32 hint)
+	{
+		return QTimerEventPtr.RegisterEventType1(hint);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QTimerEvent_new")]
@@ -392,22 +567,27 @@ public interface IQChildEvent
 {
 	void* NativePtr { get; }
 }
-public class QChildEvent : IQChildEvent, IQEvent
+public struct QChildEventPtr : IQChildEvent, IDisposable, IQEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 typeVal, IQObject child)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QChildEvent_new(typeVal, (child == null) ? null : (void*)child.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 typeVal, IQObject child)
+	{
+		return .(CQt.QChildEvent_new((int64)typeVal, (child == default || child.NativePtr == default) ? default : child.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QChildEvent_Delete(this.nativePtr);
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QChildEvent_Clone(this.nativePtr);
 	}
@@ -442,7 +622,7 @@ public class QChildEvent : IQChildEvent, IQEvent
 		return CQt.QEvent_Spontaneous(this.nativePtr);
 	}
 	
-	public virtual void SetAccepted(bool accepted)
+	public void SetAccepted(bool accepted)
 	{
 		CQt.QEvent_SetAccepted(this.nativePtr, accepted);
 	}
@@ -485,6 +665,106 @@ public class QChildEvent : IQChildEvent, IQEvent
 	public static int32 RegisterEventType1(int32 hint)
 	{
 		return CQt.QEvent_RegisterEventType1(hint);
+	}
+	
+}
+public class QChildEvent
+{
+	public QChildEventPtr handle;
+	
+	public static implicit operator QChildEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 typeVal, IQObject child)
+	{
+		this.handle = QChildEventPtr.New(typeVal, child);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public void* Child()
+	{
+		return this.handle.Child();
+	}
+	
+	public bool Added()
+	{
+		return this.handle.Added();
+	}
+	
+	public bool Polished()
+	{
+		return this.handle.Polished();
+	}
+	
+	public bool Removed()
+	{
+		return this.handle.Removed();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool Spontaneous()
+	{
+		return this.handle.Spontaneous();
+	}
+	
+	public virtual void SetAccepted(bool accepted)
+	{
+		this.handle.SetAccepted(accepted);
+	}
+	
+	public bool IsAccepted()
+	{
+		return this.handle.IsAccepted();
+	}
+	
+	public void Accept()
+	{
+		this.handle.Accept();
+	}
+	
+	public void Ignore()
+	{
+		this.handle.Ignore();
+	}
+	
+	public bool IsInputEvent()
+	{
+		return this.handle.IsInputEvent();
+	}
+	
+	public bool IsPointerEvent()
+	{
+		return this.handle.IsPointerEvent();
+	}
+	
+	public bool IsSinglePointEvent()
+	{
+		return this.handle.IsSinglePointEvent();
+	}
+	
+	public static int32 RegisterEventType()
+	{
+		return QChildEventPtr.RegisterEventType();
+	}
+	
+	public static int32 RegisterEventType1(int32 hint)
+	{
+		return QChildEventPtr.RegisterEventType1(hint);
 	}
 	
 }
@@ -510,22 +790,27 @@ public interface IQDynamicPropertyChangeEvent
 {
 	void* NativePtr { get; }
 }
-public class QDynamicPropertyChangeEvent : IQDynamicPropertyChangeEvent, IQEvent
+public struct QDynamicPropertyChangeEventPtr : IQDynamicPropertyChangeEvent, IDisposable, IQEvent
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(String name)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDynamicPropertyChangeEvent_new(libqt_string(name));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(String name)
+	{
+		return .(CQt.QDynamicPropertyChangeEvent_new(libqt_string(name)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDynamicPropertyChangeEvent_Delete(this.nativePtr);
 	}
 	
-	public virtual void* Clone()
+	public void* Clone()
 	{
 		return CQt.QDynamicPropertyChangeEvent_Clone(this.nativePtr);
 	}
@@ -545,7 +830,7 @@ public class QDynamicPropertyChangeEvent : IQDynamicPropertyChangeEvent, IQEvent
 		return CQt.QEvent_Spontaneous(this.nativePtr);
 	}
 	
-	public virtual void SetAccepted(bool accepted)
+	public void SetAccepted(bool accepted)
 	{
 		CQt.QEvent_SetAccepted(this.nativePtr, accepted);
 	}
@@ -588,6 +873,91 @@ public class QDynamicPropertyChangeEvent : IQDynamicPropertyChangeEvent, IQEvent
 	public static int32 RegisterEventType1(int32 hint)
 	{
 		return CQt.QEvent_RegisterEventType1(hint);
+	}
+	
+}
+public class QDynamicPropertyChangeEvent
+{
+	public QDynamicPropertyChangeEventPtr handle;
+	
+	public static implicit operator QDynamicPropertyChangeEventPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(String name)
+	{
+		this.handle = QDynamicPropertyChangeEventPtr.New(name);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void* Clone()
+	{
+		return this.handle.Clone();
+	}
+	
+	public libqt_string PropertyName()
+	{
+		return this.handle.PropertyName();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public bool Spontaneous()
+	{
+		return this.handle.Spontaneous();
+	}
+	
+	public virtual void SetAccepted(bool accepted)
+	{
+		this.handle.SetAccepted(accepted);
+	}
+	
+	public bool IsAccepted()
+	{
+		return this.handle.IsAccepted();
+	}
+	
+	public void Accept()
+	{
+		this.handle.Accept();
+	}
+	
+	public void Ignore()
+	{
+		this.handle.Ignore();
+	}
+	
+	public bool IsInputEvent()
+	{
+		return this.handle.IsInputEvent();
+	}
+	
+	public bool IsPointerEvent()
+	{
+		return this.handle.IsPointerEvent();
+	}
+	
+	public bool IsSinglePointEvent()
+	{
+		return this.handle.IsSinglePointEvent();
+	}
+	
+	public static int32 RegisterEventType()
+	{
+		return QDynamicPropertyChangeEventPtr.RegisterEventType();
+	}
+	
+	public static int32 RegisterEventType1(int32 hint)
+	{
+		return QDynamicPropertyChangeEventPtr.RegisterEventType1(hint);
 	}
 	
 }

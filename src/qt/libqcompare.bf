@@ -19,18 +19,41 @@ public interface IQPartialOrdering
 {
 	void* NativePtr { get; }
 }
-public class QPartialOrdering : IQPartialOrdering
+public struct QPartialOrderingPtr : IQPartialOrdering, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQPartialOrdering other)
+	{
+		return .(CQt.QPartialOrdering_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QPartialOrdering_Delete(this.nativePtr);
+	}
+}
+public class QPartialOrdering
+{
+	public QPartialOrderingPtr handle;
+	
+	public static implicit operator QPartialOrderingPtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQPartialOrdering other)
 	{
-		this.nativePtr = CQt.QPartialOrdering_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QPartialOrderingPtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QPartialOrdering_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt

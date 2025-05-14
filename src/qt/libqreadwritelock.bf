@@ -12,17 +12,22 @@ public interface IQReadWriteLock
 {
 	void* NativePtr { get; }
 }
-public class QReadWriteLock : IQReadWriteLock
+public struct QReadWriteLockPtr : IQReadWriteLock, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QReadWriteLock_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QReadWriteLock_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QReadWriteLock_Delete(this.nativePtr);
 	}
@@ -63,6 +68,61 @@ public class QReadWriteLock : IQReadWriteLock
 	}
 	
 }
+public class QReadWriteLock
+{
+	public QReadWriteLockPtr handle;
+	
+	public static implicit operator QReadWriteLockPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QReadWriteLockPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void LockForRead()
+	{
+		this.handle.LockForRead();
+	}
+	
+	public bool TryLockForRead()
+	{
+		return this.handle.TryLockForRead();
+	}
+	
+	public bool TryLockForReadWithTimeout(int32 timeout)
+	{
+		return this.handle.TryLockForReadWithTimeout(timeout);
+	}
+	
+	public void LockForWrite()
+	{
+		this.handle.LockForWrite();
+	}
+	
+	public bool TryLockForWrite()
+	{
+		return this.handle.TryLockForWrite();
+	}
+	
+	public bool TryLockForWriteWithTimeout(int32 timeout)
+	{
+		return this.handle.TryLockForWriteWithTimeout(timeout);
+	}
+	
+	public void Unlock()
+	{
+		this.handle.Unlock();
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QReadWriteLock_new")]
@@ -91,17 +151,22 @@ public interface IQReadLocker
 {
 	void* NativePtr { get; }
 }
-public class QReadLocker : IQReadLocker
+public struct QReadLockerPtr : IQReadLocker, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQReadWriteLock readWriteLock)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QReadLocker_new((readWriteLock == null) ? null : (void*)readWriteLock.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQReadWriteLock readWriteLock)
+	{
+		return .(CQt.QReadLocker_new((readWriteLock == default || readWriteLock.NativePtr == default) ? default : readWriteLock.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QReadLocker_Delete(this.nativePtr);
 	}
@@ -119,6 +184,41 @@ public class QReadLocker : IQReadLocker
 	public void* ReadWriteLock()
 	{
 		return CQt.QReadLocker_ReadWriteLock(this.nativePtr);
+	}
+	
+}
+public class QReadLocker
+{
+	public QReadLockerPtr handle;
+	
+	public static implicit operator QReadLockerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQReadWriteLock readWriteLock)
+	{
+		this.handle = QReadLockerPtr.New(readWriteLock);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Unlock()
+	{
+		this.handle.Unlock();
+	}
+	
+	public void Relock()
+	{
+		this.handle.Relock();
+	}
+	
+	public void* ReadWriteLock()
+	{
+		return this.handle.ReadWriteLock();
 	}
 	
 }
@@ -140,17 +240,22 @@ public interface IQWriteLocker
 {
 	void* NativePtr { get; }
 }
-public class QWriteLocker : IQWriteLocker
+public struct QWriteLockerPtr : IQWriteLocker, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQReadWriteLock readWriteLock)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QWriteLocker_new((readWriteLock == null) ? null : (void*)readWriteLock.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQReadWriteLock readWriteLock)
+	{
+		return .(CQt.QWriteLocker_new((readWriteLock == default || readWriteLock.NativePtr == default) ? default : readWriteLock.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QWriteLocker_Delete(this.nativePtr);
 	}
@@ -168,6 +273,41 @@ public class QWriteLocker : IQWriteLocker
 	public void* ReadWriteLock()
 	{
 		return CQt.QWriteLocker_ReadWriteLock(this.nativePtr);
+	}
+	
+}
+public class QWriteLocker
+{
+	public QWriteLockerPtr handle;
+	
+	public static implicit operator QWriteLockerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQReadWriteLock readWriteLock)
+	{
+		this.handle = QWriteLockerPtr.New(readWriteLock);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Unlock()
+	{
+		this.handle.Unlock();
+	}
+	
+	public void Relock()
+	{
+		this.handle.Relock();
+	}
+	
+	public void* ReadWriteLock()
+	{
+		return this.handle.ReadWriteLock();
 	}
 	
 }

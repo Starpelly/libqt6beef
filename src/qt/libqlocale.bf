@@ -871,29 +871,34 @@ public interface IQLocale
 {
 	void* NativePtr { get; }
 }
-public class QLocale : IQLocale
+public struct QLocalePtr : IQLocale, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QLocale_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QLocale_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QLocale_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQLocale other)
 	{
-		CQt.QLocale_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QLocale_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQLocale other)
 	{
-		CQt.QLocale_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QLocale_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public int64 Language()
@@ -1043,42 +1048,42 @@ public class QLocale : IQLocale
 	
 	public libqt_string ToString2(IQDate date, String format)
 	{
-		return CQt.QLocale_ToString2(this.nativePtr, (date == default) ? default : (void)date.NativePtr, libqt_string(format));
+		return CQt.QLocale_ToString2(this.nativePtr, default, libqt_string(format));
 	}
 	
 	public libqt_string ToString3(IQTime time, String format)
 	{
-		return CQt.QLocale_ToString3(this.nativePtr, (time == default) ? default : (void)time.NativePtr, libqt_string(format));
+		return CQt.QLocale_ToString3(this.nativePtr, default, libqt_string(format));
 	}
 	
 	public libqt_string ToString4(IQDateTime dateTime, String format)
 	{
-		return CQt.QLocale_ToString4(this.nativePtr, (dateTime == default) ? default : (void*)dateTime.NativePtr, libqt_string(format));
+		return CQt.QLocale_ToString4(this.nativePtr, (dateTime == default || dateTime.NativePtr == default) ? default : dateTime.NativePtr, libqt_string(format));
 	}
 	
 	public libqt_string ToStringWithDate(IQDate date)
 	{
-		return CQt.QLocale_ToStringWithDate(this.nativePtr, (date == default) ? default : (void)date.NativePtr);
+		return CQt.QLocale_ToStringWithDate(this.nativePtr, default);
 	}
 	
 	public libqt_string ToStringWithTime(IQTime time)
 	{
-		return CQt.QLocale_ToStringWithTime(this.nativePtr, (time == default) ? default : (void)time.NativePtr);
+		return CQt.QLocale_ToStringWithTime(this.nativePtr, default);
 	}
 	
 	public libqt_string ToStringWithDateTime(IQDateTime dateTime)
 	{
-		return CQt.QLocale_ToStringWithDateTime(this.nativePtr, (dateTime == default) ? default : (void*)dateTime.NativePtr);
+		return CQt.QLocale_ToStringWithDateTime(this.nativePtr, (dateTime == default || dateTime.NativePtr == default) ? default : dateTime.NativePtr);
 	}
 	
 	public libqt_string ToString9(IQDate date, int64 format, IQCalendar cal)
 	{
-		return CQt.QLocale_ToString9(this.nativePtr, (date == default) ? default : (void)date.NativePtr, format, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QLocale_ToString9(this.nativePtr, default, (int64)format, default);
 	}
 	
 	public libqt_string ToString10(IQDateTime dateTime, int64 format, IQCalendar cal)
 	{
-		return CQt.QLocale_ToString10(this.nativePtr, (dateTime == default) ? default : (void*)dateTime.NativePtr, format, (cal == default) ? default : (void)cal.NativePtr);
+		return CQt.QLocale_ToString10(this.nativePtr, (dateTime == default || dateTime.NativePtr == default) ? default : dateTime.NativePtr, (int64)format, default);
 	}
 	
 	public libqt_string DateFormat()
@@ -1128,22 +1133,22 @@ public class QLocale : IQLocale
 	
 	public void ToDate3(String stringVal, int64 format, IQCalendar cal)
 	{
-		CQt.QLocale_ToDate3(this.nativePtr, libqt_string(stringVal), format, (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QLocale_ToDate3(this.nativePtr, libqt_string(stringVal), (int64)format, default);
 	}
 	
 	public void ToDateTime3(String stringVal, int64 format, IQCalendar cal)
 	{
-		CQt.QLocale_ToDateTime3(this.nativePtr, libqt_string(stringVal), format, (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QLocale_ToDateTime3(this.nativePtr, libqt_string(stringVal), (int64)format, default);
 	}
 	
 	public void ToDate4(String stringVal, String format, IQCalendar cal)
 	{
-		CQt.QLocale_ToDate4(this.nativePtr, libqt_string(stringVal), libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QLocale_ToDate4(this.nativePtr, libqt_string(stringVal), libqt_string(format), default);
 	}
 	
 	public void ToDateTime4(String stringVal, String format, IQCalendar cal)
 	{
-		CQt.QLocale_ToDateTime4(this.nativePtr, libqt_string(stringVal), libqt_string(format), (cal == default) ? default : (void)cal.NativePtr);
+		CQt.QLocale_ToDateTime4(this.nativePtr, libqt_string(stringVal), libqt_string(format), default);
 	}
 	
 	public libqt_string DecimalPoint()
@@ -1303,47 +1308,47 @@ public class QLocale : IQLocale
 	
 	public static libqt_string LanguageToCode(int64 language)
 	{
-		return CQt.QLocale_LanguageToCode(language);
+		return CQt.QLocale_LanguageToCode((int64)language);
 	}
 	
 	public static libqt_string TerritoryToCode(int64 territory)
 	{
-		return CQt.QLocale_TerritoryToCode(territory);
+		return CQt.QLocale_TerritoryToCode((int64)territory);
 	}
 	
 	public static libqt_string CountryToCode(int64 country)
 	{
-		return CQt.QLocale_CountryToCode(country);
+		return CQt.QLocale_CountryToCode((int64)country);
 	}
 	
 	public static libqt_string ScriptToCode(int64 script)
 	{
-		return CQt.QLocale_ScriptToCode(script);
+		return CQt.QLocale_ScriptToCode((int64)script);
 	}
 	
 	public static libqt_string LanguageToString(int64 language)
 	{
-		return CQt.QLocale_LanguageToString(language);
+		return CQt.QLocale_LanguageToString((int64)language);
 	}
 	
 	public static libqt_string TerritoryToString(int64 territory)
 	{
-		return CQt.QLocale_TerritoryToString(territory);
+		return CQt.QLocale_TerritoryToString((int64)territory);
 	}
 	
 	public static libqt_string CountryToString(int64 country)
 	{
-		return CQt.QLocale_CountryToString(country);
+		return CQt.QLocale_CountryToString((int64)country);
 	}
 	
 	public static libqt_string ScriptToString(int64 script)
 	{
-		return CQt.QLocale_ScriptToString(script);
+		return CQt.QLocale_ScriptToString((int64)script);
 	}
 	
 	public static void SetDefault(IQLocale locale)
 	{
-		CQt.QLocale_SetDefault((locale == default) ? default : (void*)locale.NativePtr);
+		CQt.QLocale_SetDefault((locale == default || locale.NativePtr == default) ? default : locale.NativePtr);
 	}
 	
 	public static void C()
@@ -1358,12 +1363,12 @@ public class QLocale : IQLocale
 	
 	public static void[] MatchingLocales(int64 language, int64 script, int64 territory)
 	{
-		return CQt.QLocale_MatchingLocales(language, script, territory);
+		return CQt.QLocale_MatchingLocales((int64)language, (int64)script, (int64)territory);
 	}
 	
 	public static int64[] CountriesForLanguage(int64 lang)
 	{
-		return CQt.QLocale_CountriesForLanguage(lang);
+		return CQt.QLocale_CountriesForLanguage((int64)lang);
 	}
 	
 	public void SetNumberOptions(int64 options)
@@ -1458,72 +1463,72 @@ public class QLocale : IQLocale
 	
 	public libqt_string ToString24(IQDate date, int64 format)
 	{
-		return CQt.QLocale_ToString24(this.nativePtr, (date == default) ? default : (void)date.NativePtr, format);
+		return CQt.QLocale_ToString24(this.nativePtr, default, (int64)format);
 	}
 	
 	public libqt_string ToString25(IQTime time, int64 format)
 	{
-		return CQt.QLocale_ToString25(this.nativePtr, (time == default) ? default : (void)time.NativePtr, format);
+		return CQt.QLocale_ToString25(this.nativePtr, default, (int64)format);
 	}
 	
 	public libqt_string ToString26(IQDateTime dateTime, int64 format)
 	{
-		return CQt.QLocale_ToString26(this.nativePtr, (dateTime == default) ? default : (void*)dateTime.NativePtr, format);
+		return CQt.QLocale_ToString26(this.nativePtr, (dateTime == default || dateTime.NativePtr == default) ? default : dateTime.NativePtr, (int64)format);
 	}
 	
 	public libqt_string DateFormat1(int64 format)
 	{
-		return CQt.QLocale_DateFormat1(this.nativePtr, format);
+		return CQt.QLocale_DateFormat1(this.nativePtr, (int64)format);
 	}
 	
 	public libqt_string TimeFormat1(int64 format)
 	{
-		return CQt.QLocale_TimeFormat1(this.nativePtr, format);
+		return CQt.QLocale_TimeFormat1(this.nativePtr, (int64)format);
 	}
 	
 	public libqt_string DateTimeFormat1(int64 format)
 	{
-		return CQt.QLocale_DateTimeFormat1(this.nativePtr, format);
+		return CQt.QLocale_DateTimeFormat1(this.nativePtr, (int64)format);
 	}
 	
 	public void ToDate22(String stringVal, int64 param2)
 	{
-		CQt.QLocale_ToDate22(this.nativePtr, libqt_string(stringVal), param2);
+		CQt.QLocale_ToDate22(this.nativePtr, libqt_string(stringVal), (int64)param2);
 	}
 	
 	public void ToTime22(String stringVal, int64 param2)
 	{
-		CQt.QLocale_ToTime22(this.nativePtr, libqt_string(stringVal), param2);
+		CQt.QLocale_ToTime22(this.nativePtr, libqt_string(stringVal), (int64)param2);
 	}
 	
 	public void ToDateTime22(String stringVal, int64 format)
 	{
-		CQt.QLocale_ToDateTime22(this.nativePtr, libqt_string(stringVal), format);
+		CQt.QLocale_ToDateTime22(this.nativePtr, libqt_string(stringVal), (int64)format);
 	}
 	
 	public libqt_string MonthName2(int32 param1, int64 format)
 	{
-		return CQt.QLocale_MonthName2(this.nativePtr, param1, format);
+		return CQt.QLocale_MonthName2(this.nativePtr, param1, (int64)format);
 	}
 	
 	public libqt_string StandaloneMonthName2(int32 param1, int64 format)
 	{
-		return CQt.QLocale_StandaloneMonthName2(this.nativePtr, param1, format);
+		return CQt.QLocale_StandaloneMonthName2(this.nativePtr, param1, (int64)format);
 	}
 	
 	public libqt_string DayName2(int32 param1, int64 format)
 	{
-		return CQt.QLocale_DayName2(this.nativePtr, param1, format);
+		return CQt.QLocale_DayName2(this.nativePtr, param1, (int64)format);
 	}
 	
 	public libqt_string StandaloneDayName2(int32 param1, int64 format)
 	{
-		return CQt.QLocale_StandaloneDayName2(this.nativePtr, param1, format);
+		return CQt.QLocale_StandaloneDayName2(this.nativePtr, param1, (int64)format);
 	}
 	
 	public libqt_string CurrencySymbol1(int64 param1)
 	{
-		return CQt.QLocale_CurrencySymbol1(this.nativePtr, param1);
+		return CQt.QLocale_CurrencySymbol1(this.nativePtr, (int64)param1);
 	}
 	
 	public libqt_string ToCurrencyString2(int64 param1, String symbol)
@@ -1588,12 +1593,742 @@ public class QLocale : IQLocale
 	
 	public static libqt_string LanguageToCode2(int64 language, int64 codeTypes)
 	{
-		return CQt.QLocale_LanguageToCode2(language, codeTypes);
+		return CQt.QLocale_LanguageToCode2((int64)language, codeTypes);
 	}
 	
 	public libqt_string QuoteString2(String str, int64 style)
 	{
-		return CQt.QLocale_QuoteString2(this.nativePtr, libqt_string(str), style);
+		return CQt.QLocale_QuoteString2(this.nativePtr, libqt_string(str), (int64)style);
+	}
+	
+}
+public class QLocale
+{
+	public QLocalePtr handle;
+	
+	public static implicit operator QLocalePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QLocalePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQLocale other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQLocale other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public int64 Language()
+	{
+		return this.handle.Language();
+	}
+	
+	public int64 Script()
+	{
+		return this.handle.Script();
+	}
+	
+	public int64 Territory()
+	{
+		return this.handle.Territory();
+	}
+	
+	public int64 Country()
+	{
+		return this.handle.Country();
+	}
+	
+	public libqt_string Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public libqt_string Bcp47Name()
+	{
+		return this.handle.Bcp47Name();
+	}
+	
+	public libqt_string NativeLanguageName()
+	{
+		return this.handle.NativeLanguageName();
+	}
+	
+	public libqt_string NativeTerritoryName()
+	{
+		return this.handle.NativeTerritoryName();
+	}
+	
+	public libqt_string NativeCountryName()
+	{
+		return this.handle.NativeCountryName();
+	}
+	
+	public int16 ToShort(String s)
+	{
+		return this.handle.ToShort(s);
+	}
+	
+	public uint16 ToUShort(String s)
+	{
+		return this.handle.ToUShort(s);
+	}
+	
+	public int32 ToInt(String s)
+	{
+		return this.handle.ToInt(s);
+	}
+	
+	public uint32 ToUInt(String s)
+	{
+		return this.handle.ToUInt(s);
+	}
+	
+	public c_long ToLong(String s)
+	{
+		return this.handle.ToLong(s);
+	}
+	
+	public c_ulong ToULong(String s)
+	{
+		return this.handle.ToULong(s);
+	}
+	
+	public int64 ToLongLong(String s)
+	{
+		return this.handle.ToLongLong(s);
+	}
+	
+	public uint64 ToULongLong(String s)
+	{
+		return this.handle.ToULongLong(s);
+	}
+	
+	public float ToFloat(String s)
+	{
+		return this.handle.ToFloat(s);
+	}
+	
+	public double ToDouble(String s)
+	{
+		return this.handle.ToDouble(s);
+	}
+	
+	public libqt_string ToString(int64 i)
+	{
+		return this.handle.ToString(i);
+	}
+	
+	public libqt_string ToStringWithQulonglong(uint64 i)
+	{
+		return this.handle.ToStringWithQulonglong(i);
+	}
+	
+	public libqt_string ToStringWithLong(c_long i)
+	{
+		return this.handle.ToStringWithLong(i);
+	}
+	
+	public libqt_string ToStringWithUlong(c_ulong i)
+	{
+		return this.handle.ToStringWithUlong(i);
+	}
+	
+	public libqt_string ToStringWithShort(int16 i)
+	{
+		return this.handle.ToStringWithShort(i);
+	}
+	
+	public libqt_string ToStringWithUshort(uint16 i)
+	{
+		return this.handle.ToStringWithUshort(i);
+	}
+	
+	public libqt_string ToStringWithInt(int32 i)
+	{
+		return this.handle.ToStringWithInt(i);
+	}
+	
+	public libqt_string ToStringWithUint(uint32 i)
+	{
+		return this.handle.ToStringWithUint(i);
+	}
+	
+	public libqt_string ToStringWithDouble(double f)
+	{
+		return this.handle.ToStringWithDouble(f);
+	}
+	
+	public libqt_string ToStringWithFloat(float f)
+	{
+		return this.handle.ToStringWithFloat(f);
+	}
+	
+	public libqt_string ToString2(IQDate date, String format)
+	{
+		return this.handle.ToString2(default, format);
+	}
+	
+	public libqt_string ToString3(IQTime time, String format)
+	{
+		return this.handle.ToString3(default, format);
+	}
+	
+	public libqt_string ToString4(IQDateTime dateTime, String format)
+	{
+		return this.handle.ToString4(dateTime, format);
+	}
+	
+	public libqt_string ToStringWithDate(IQDate date)
+	{
+		return this.handle.ToStringWithDate(default);
+	}
+	
+	public libqt_string ToStringWithTime(IQTime time)
+	{
+		return this.handle.ToStringWithTime(default);
+	}
+	
+	public libqt_string ToStringWithDateTime(IQDateTime dateTime)
+	{
+		return this.handle.ToStringWithDateTime(dateTime);
+	}
+	
+	public libqt_string ToString9(IQDate date, int64 format, IQCalendar cal)
+	{
+		return this.handle.ToString9(default, format, default);
+	}
+	
+	public libqt_string ToString10(IQDateTime dateTime, int64 format, IQCalendar cal)
+	{
+		return this.handle.ToString10(dateTime, format, default);
+	}
+	
+	public libqt_string DateFormat()
+	{
+		return this.handle.DateFormat();
+	}
+	
+	public libqt_string TimeFormat()
+	{
+		return this.handle.TimeFormat();
+	}
+	
+	public libqt_string DateTimeFormat()
+	{
+		return this.handle.DateTimeFormat();
+	}
+	
+	public void ToDate(String stringVal)
+	{
+		this.handle.ToDate(stringVal);
+	}
+	
+	public void ToTime(String stringVal)
+	{
+		this.handle.ToTime(stringVal);
+	}
+	
+	public void ToDateTime(String stringVal)
+	{
+		this.handle.ToDateTime(stringVal);
+	}
+	
+	public void ToDate2(String stringVal, String format)
+	{
+		this.handle.ToDate2(stringVal, format);
+	}
+	
+	public void ToTime2(String stringVal, String format)
+	{
+		this.handle.ToTime2(stringVal, format);
+	}
+	
+	public void ToDateTime2(String stringVal, String format)
+	{
+		this.handle.ToDateTime2(stringVal, format);
+	}
+	
+	public void ToDate3(String stringVal, int64 format, IQCalendar cal)
+	{
+		this.handle.ToDate3(stringVal, format, default);
+	}
+	
+	public void ToDateTime3(String stringVal, int64 format, IQCalendar cal)
+	{
+		this.handle.ToDateTime3(stringVal, format, default);
+	}
+	
+	public void ToDate4(String stringVal, String format, IQCalendar cal)
+	{
+		this.handle.ToDate4(stringVal, format, default);
+	}
+	
+	public void ToDateTime4(String stringVal, String format, IQCalendar cal)
+	{
+		this.handle.ToDateTime4(stringVal, format, default);
+	}
+	
+	public libqt_string DecimalPoint()
+	{
+		return this.handle.DecimalPoint();
+	}
+	
+	public libqt_string GroupSeparator()
+	{
+		return this.handle.GroupSeparator();
+	}
+	
+	public libqt_string Percent()
+	{
+		return this.handle.Percent();
+	}
+	
+	public libqt_string ZeroDigit()
+	{
+		return this.handle.ZeroDigit();
+	}
+	
+	public libqt_string NegativeSign()
+	{
+		return this.handle.NegativeSign();
+	}
+	
+	public libqt_string PositiveSign()
+	{
+		return this.handle.PositiveSign();
+	}
+	
+	public libqt_string Exponential()
+	{
+		return this.handle.Exponential();
+	}
+	
+	public libqt_string MonthName(int32 param1)
+	{
+		return this.handle.MonthName(param1);
+	}
+	
+	public libqt_string StandaloneMonthName(int32 param1)
+	{
+		return this.handle.StandaloneMonthName(param1);
+	}
+	
+	public libqt_string DayName(int32 param1)
+	{
+		return this.handle.DayName(param1);
+	}
+	
+	public libqt_string StandaloneDayName(int32 param1)
+	{
+		return this.handle.StandaloneDayName(param1);
+	}
+	
+	public int64 FirstDayOfWeek()
+	{
+		return this.handle.FirstDayOfWeek();
+	}
+	
+	public int64[] Weekdays()
+	{
+		return this.handle.Weekdays();
+	}
+	
+	public libqt_string AmText()
+	{
+		return this.handle.AmText();
+	}
+	
+	public libqt_string PmText()
+	{
+		return this.handle.PmText();
+	}
+	
+	public int64 MeasurementSystem()
+	{
+		return this.handle.MeasurementSystem();
+	}
+	
+	public void Collation()
+	{
+		this.handle.Collation();
+	}
+	
+	public int64 TextDirection()
+	{
+		return this.handle.TextDirection();
+	}
+	
+	public libqt_string ToUpper(String str)
+	{
+		return this.handle.ToUpper(str);
+	}
+	
+	public libqt_string ToLower(String str)
+	{
+		return this.handle.ToLower(str);
+	}
+	
+	public libqt_string CurrencySymbol()
+	{
+		return this.handle.CurrencySymbol();
+	}
+	
+	public libqt_string ToCurrencyString(int64 param1)
+	{
+		return this.handle.ToCurrencyString(param1);
+	}
+	
+	public libqt_string ToCurrencyStringWithUnsignedlonglong(uint64 param1)
+	{
+		return this.handle.ToCurrencyStringWithUnsignedlonglong(param1);
+	}
+	
+	public libqt_string ToCurrencyStringWithShort(int16 i)
+	{
+		return this.handle.ToCurrencyStringWithShort(i);
+	}
+	
+	public libqt_string ToCurrencyStringWithUshort(uint16 i)
+	{
+		return this.handle.ToCurrencyStringWithUshort(i);
+	}
+	
+	public libqt_string ToCurrencyStringWithInt(int32 i)
+	{
+		return this.handle.ToCurrencyStringWithInt(i);
+	}
+	
+	public libqt_string ToCurrencyStringWithUint(uint32 i)
+	{
+		return this.handle.ToCurrencyStringWithUint(i);
+	}
+	
+	public libqt_string ToCurrencyStringWithDouble(double param1)
+	{
+		return this.handle.ToCurrencyStringWithDouble(param1);
+	}
+	
+	public libqt_string ToCurrencyStringWithFloat(float i)
+	{
+		return this.handle.ToCurrencyStringWithFloat(i);
+	}
+	
+	public libqt_string FormattedDataSize(int64 bytes)
+	{
+		return this.handle.FormattedDataSize(bytes);
+	}
+	
+	public libqt_string[] UiLanguages()
+	{
+		return this.handle.UiLanguages();
+	}
+	
+	public static libqt_string LanguageToCode(int64 language)
+	{
+		return QLocalePtr.LanguageToCode(language);
+	}
+	
+	public static libqt_string TerritoryToCode(int64 territory)
+	{
+		return QLocalePtr.TerritoryToCode(territory);
+	}
+	
+	public static libqt_string CountryToCode(int64 country)
+	{
+		return QLocalePtr.CountryToCode(country);
+	}
+	
+	public static libqt_string ScriptToCode(int64 script)
+	{
+		return QLocalePtr.ScriptToCode(script);
+	}
+	
+	public static libqt_string LanguageToString(int64 language)
+	{
+		return QLocalePtr.LanguageToString(language);
+	}
+	
+	public static libqt_string TerritoryToString(int64 territory)
+	{
+		return QLocalePtr.TerritoryToString(territory);
+	}
+	
+	public static libqt_string CountryToString(int64 country)
+	{
+		return QLocalePtr.CountryToString(country);
+	}
+	
+	public static libqt_string ScriptToString(int64 script)
+	{
+		return QLocalePtr.ScriptToString(script);
+	}
+	
+	public static void SetDefault(IQLocale locale)
+	{
+		QLocalePtr.SetDefault(locale);
+	}
+	
+	public static void C()
+	{
+		QLocalePtr.C();
+	}
+	
+	public static void System()
+	{
+		QLocalePtr.System();
+	}
+	
+	public static void[] MatchingLocales(int64 language, int64 script, int64 territory)
+	{
+		return QLocalePtr.MatchingLocales(language, script, territory);
+	}
+	
+	public static int64[] CountriesForLanguage(int64 lang)
+	{
+		return QLocalePtr.CountriesForLanguage(lang);
+	}
+	
+	public void SetNumberOptions(int64 options)
+	{
+		this.handle.SetNumberOptions(options);
+	}
+	
+	public int64 NumberOptions()
+	{
+		return this.handle.NumberOptions();
+	}
+	
+	public libqt_string QuoteString(String str)
+	{
+		return this.handle.QuoteString(str);
+	}
+	
+	public libqt_string CreateSeparatedList(String[] strl)
+	{
+		return this.handle.CreateSeparatedList(null);
+	}
+	
+	public int16 ToShort2(String s, bool* ok)
+	{
+		return this.handle.ToShort2(s, ok);
+	}
+	
+	public uint16 ToUShort2(String s, bool* ok)
+	{
+		return this.handle.ToUShort2(s, ok);
+	}
+	
+	public int32 ToInt2(String s, bool* ok)
+	{
+		return this.handle.ToInt2(s, ok);
+	}
+	
+	public uint32 ToUInt2(String s, bool* ok)
+	{
+		return this.handle.ToUInt2(s, ok);
+	}
+	
+	public c_long ToLong2(String s, bool* ok)
+	{
+		return this.handle.ToLong2(s, ok);
+	}
+	
+	public c_ulong ToULong2(String s, bool* ok)
+	{
+		return this.handle.ToULong2(s, ok);
+	}
+	
+	public int64 ToLongLong2(String s, bool* ok)
+	{
+		return this.handle.ToLongLong2(s, ok);
+	}
+	
+	public uint64 ToULongLong2(String s, bool* ok)
+	{
+		return this.handle.ToULongLong2(s, ok);
+	}
+	
+	public float ToFloat2(String s, bool* ok)
+	{
+		return this.handle.ToFloat2(s, ok);
+	}
+	
+	public double ToDouble2(String s, bool* ok)
+	{
+		return this.handle.ToDouble2(s, ok);
+	}
+	
+	public libqt_string ToString22(double f, int8 format)
+	{
+		return this.handle.ToString22(f, format);
+	}
+	
+	public libqt_string ToString32(double f, int8 format, int32 precision)
+	{
+		return this.handle.ToString32(f, format, precision);
+	}
+	
+	public libqt_string ToString23(float f, int8 format)
+	{
+		return this.handle.ToString23(f, format);
+	}
+	
+	public libqt_string ToString33(float f, int8 format, int32 precision)
+	{
+		return this.handle.ToString33(f, format, precision);
+	}
+	
+	public libqt_string ToString24(IQDate date, int64 format)
+	{
+		return this.handle.ToString24(default, format);
+	}
+	
+	public libqt_string ToString25(IQTime time, int64 format)
+	{
+		return this.handle.ToString25(default, format);
+	}
+	
+	public libqt_string ToString26(IQDateTime dateTime, int64 format)
+	{
+		return this.handle.ToString26(dateTime, format);
+	}
+	
+	public libqt_string DateFormat1(int64 format)
+	{
+		return this.handle.DateFormat1(format);
+	}
+	
+	public libqt_string TimeFormat1(int64 format)
+	{
+		return this.handle.TimeFormat1(format);
+	}
+	
+	public libqt_string DateTimeFormat1(int64 format)
+	{
+		return this.handle.DateTimeFormat1(format);
+	}
+	
+	public void ToDate22(String stringVal, int64 param2)
+	{
+		this.handle.ToDate22(stringVal, param2);
+	}
+	
+	public void ToTime22(String stringVal, int64 param2)
+	{
+		this.handle.ToTime22(stringVal, param2);
+	}
+	
+	public void ToDateTime22(String stringVal, int64 format)
+	{
+		this.handle.ToDateTime22(stringVal, format);
+	}
+	
+	public libqt_string MonthName2(int32 param1, int64 format)
+	{
+		return this.handle.MonthName2(param1, format);
+	}
+	
+	public libqt_string StandaloneMonthName2(int32 param1, int64 format)
+	{
+		return this.handle.StandaloneMonthName2(param1, format);
+	}
+	
+	public libqt_string DayName2(int32 param1, int64 format)
+	{
+		return this.handle.DayName2(param1, format);
+	}
+	
+	public libqt_string StandaloneDayName2(int32 param1, int64 format)
+	{
+		return this.handle.StandaloneDayName2(param1, format);
+	}
+	
+	public libqt_string CurrencySymbol1(int64 param1)
+	{
+		return this.handle.CurrencySymbol1(param1);
+	}
+	
+	public libqt_string ToCurrencyString2(int64 param1, String symbol)
+	{
+		return this.handle.ToCurrencyString2(param1, symbol);
+	}
+	
+	public libqt_string ToCurrencyString22(uint64 param1, String symbol)
+	{
+		return this.handle.ToCurrencyString22(param1, symbol);
+	}
+	
+	public libqt_string ToCurrencyString23(int16 i, String symbol)
+	{
+		return this.handle.ToCurrencyString23(i, symbol);
+	}
+	
+	public libqt_string ToCurrencyString24(uint16 i, String symbol)
+	{
+		return this.handle.ToCurrencyString24(i, symbol);
+	}
+	
+	public libqt_string ToCurrencyString25(int32 i, String symbol)
+	{
+		return this.handle.ToCurrencyString25(i, symbol);
+	}
+	
+	public libqt_string ToCurrencyString26(uint32 i, String symbol)
+	{
+		return this.handle.ToCurrencyString26(i, symbol);
+	}
+	
+	public libqt_string ToCurrencyString27(double param1, String symbol)
+	{
+		return this.handle.ToCurrencyString27(param1, symbol);
+	}
+	
+	public libqt_string ToCurrencyString3(double param1, String symbol, int32 precision)
+	{
+		return this.handle.ToCurrencyString3(param1, symbol, precision);
+	}
+	
+	public libqt_string ToCurrencyString28(float i, String symbol)
+	{
+		return this.handle.ToCurrencyString28(i, symbol);
+	}
+	
+	public libqt_string ToCurrencyString32(float i, String symbol, int32 precision)
+	{
+		return this.handle.ToCurrencyString32(i, symbol, precision);
+	}
+	
+	public libqt_string FormattedDataSize2(int64 bytes, int32 precision)
+	{
+		return this.handle.FormattedDataSize2(bytes, precision);
+	}
+	
+	public libqt_string FormattedDataSize3(int64 bytes, int32 precision, int64 format)
+	{
+		return this.handle.FormattedDataSize3(bytes, precision, format);
+	}
+	
+	public static libqt_string LanguageToCode2(int64 language, int64 codeTypes)
+	{
+		return QLocalePtr.LanguageToCode2(language, codeTypes);
+	}
+	
+	public libqt_string QuoteString2(String str, int64 style)
+	{
+		return this.handle.QuoteString2(str, style);
 	}
 	
 }

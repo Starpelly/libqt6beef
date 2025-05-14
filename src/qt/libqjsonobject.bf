@@ -6,29 +6,34 @@ public interface IQJsonObject
 {
 	void* NativePtr { get; }
 }
-public class QJsonObject : IQJsonObject
+public struct QJsonObjectPtr : IQJsonObject, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonObject_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QJsonObject_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonObject_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQJsonObject other)
 	{
-		CQt.QJsonObject_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonObject_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQJsonObject other)
 	{
-		CQt.QJsonObject_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonObject_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public static void FromVariantMap(void* mapVal)
@@ -108,12 +113,12 @@ public class QJsonObject : IQJsonObject
 	
 	public bool OperatorEqual(IQJsonObject other)
 	{
-		return CQt.QJsonObject_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQJsonObject other)
 	{
-		return CQt.QJsonObject_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Begin()
@@ -146,9 +151,9 @@ public class QJsonObject : IQJsonObject
 		CQt.QJsonObject_ConstEnd(this.nativePtr);
 	}
 	
-	public void Erase(QJsonObject__iterator it)
+	public void Erase(QJsonObject__iteratorPtr it)
 	{
-		CQt.QJsonObject_Erase(this.nativePtr, (it == default) ? default : (void)it.NativePtr);
+		CQt.QJsonObject_Erase(this.nativePtr, default);
 	}
 	
 	public void Find(String key)
@@ -168,12 +173,187 @@ public class QJsonObject : IQJsonObject
 	
 	public void Insert(String key, IQJsonValue value)
 	{
-		CQt.QJsonObject_Insert(this.nativePtr, libqt_string(key), (value == default) ? default : (void*)value.NativePtr);
+		CQt.QJsonObject_Insert(this.nativePtr, libqt_string(key), (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool Empty()
 	{
 		return CQt.QJsonObject_Empty(this.nativePtr);
+	}
+	
+}
+public class QJsonObject
+{
+	public QJsonObjectPtr handle;
+	
+	public static implicit operator QJsonObjectPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QJsonObjectPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQJsonObject other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQJsonObject other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public static void FromVariantMap(void* mapVal)
+	{
+		QJsonObjectPtr.FromVariantMap(mapVal);
+	}
+	
+	public void* ToVariantMap()
+	{
+		return this.handle.ToVariantMap();
+	}
+	
+	public static void FromVariantHash(void* mapVal)
+	{
+		QJsonObjectPtr.FromVariantHash(mapVal);
+	}
+	
+	public void* ToVariantHash()
+	{
+		return this.handle.ToVariantHash();
+	}
+	
+	public libqt_string[] Keys()
+	{
+		return this.handle.Keys();
+	}
+	
+	public int32 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public int32 Count()
+	{
+		return this.handle.Count();
+	}
+	
+	public int32 Length()
+	{
+		return this.handle.Length();
+	}
+	
+	public bool IsEmpty()
+	{
+		return this.handle.IsEmpty();
+	}
+	
+	public void Value(String key)
+	{
+		this.handle.Value(key);
+	}
+	
+	public void OperatorSubscript(String key)
+	{
+		this.handle.OperatorSubscript(key);
+	}
+	
+	public void OperatorSubscriptWithKey(String key)
+	{
+		this.handle.OperatorSubscriptWithKey(key);
+	}
+	
+	public void Remove(String key)
+	{
+		this.handle.Remove(key);
+	}
+	
+	public void Take(String key)
+	{
+		this.handle.Take(key);
+	}
+	
+	public bool Contains(String key)
+	{
+		return this.handle.Contains(key);
+	}
+	
+	public bool OperatorEqual(IQJsonObject other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQJsonObject other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void Begin()
+	{
+		this.handle.Begin();
+	}
+	
+	public void Begin2()
+	{
+		this.handle.Begin2();
+	}
+	
+	public void ConstBegin()
+	{
+		this.handle.ConstBegin();
+	}
+	
+	public void End()
+	{
+		this.handle.End();
+	}
+	
+	public void End2()
+	{
+		this.handle.End2();
+	}
+	
+	public void ConstEnd()
+	{
+		this.handle.ConstEnd();
+	}
+	
+	public void Erase(QJsonObject__iteratorPtr it)
+	{
+		this.handle.Erase(default);
+	}
+	
+	public void Find(String key)
+	{
+		this.handle.Find(key);
+	}
+	
+	public void FindWithKey(String key)
+	{
+		this.handle.FindWithKey(key);
+	}
+	
+	public void ConstFind(String key)
+	{
+		this.handle.ConstFind(key);
+	}
+	
+	public void Insert(String key, IQJsonValue value)
+	{
+		this.handle.Insert(key, value);
+	}
+	
+	public bool Empty()
+	{
+		return this.handle.Empty();
 	}
 	
 }
@@ -253,24 +433,29 @@ public interface IQJsonObject__iterator
 {
 	void* NativePtr { get; }
 }
-public class QJsonObject__iterator : IQJsonObject__iterator
+public struct QJsonObject__iteratorPtr : IQJsonObject__iterator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QJsonObject__iterator other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonObject__iterator_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QJsonObject__iteratorPtr other)
+	{
+		return .(CQt.QJsonObject__iterator_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonObject__iterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QJsonObject__iterator other)
+	public void OperatorAssign(QJsonObject__iteratorPtr other)
 	{
-		CQt.QJsonObject__iterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonObject__iterator_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -303,34 +488,34 @@ public class QJsonObject__iterator : IQJsonObject__iterator
 		CQt.QJsonObject__iterator_OperatorSubscript(this.nativePtr, j);
 	}
 	
-	public bool OperatorEqual(QJsonObject__iterator other)
+	public bool OperatorEqual(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QJsonObject__iterator other)
+	public bool OperatorNotEqual(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesser(QJsonObject__iterator other)
+	public bool OperatorLesser(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QJsonObject__iterator other)
+	public bool OperatorLesserOrEqual(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorLesserOrEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QJsonObject__iterator other)
+	public bool OperatorGreater(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorGreater(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QJsonObject__iterator other)
+	public bool OperatorGreaterOrEqual(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorPlusPlus()
@@ -373,39 +558,199 @@ public class QJsonObject__iterator : IQJsonObject__iterator
 		return CQt.QJsonObject__iterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
-	public int32 OperatorMinusWithQJsonObjectiterator(QJsonObject__iterator j)
+	public int32 OperatorMinusWithQJsonObjectiterator(QJsonObject__iteratorPtr j)
 	{
-		return CQt.QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorMinusWithQJsonObjectiterator(this.nativePtr, default);
 	}
 	
-	public bool OperatorEqualWithOther(QJsonObject__const_iterator other)
+	public bool OperatorEqualWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithOther(QJsonObject__const_iterator other)
+	public bool OperatorNotEqualWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QJsonObject__const_iterator other)
+	public bool OperatorLesserWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorLesserWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QJsonObject__const_iterator other)
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QJsonObject__const_iterator other)
+	public bool OperatorGreaterWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorGreaterWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QJsonObject__const_iterator other)
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QJsonObject__iterator
+{
+	public QJsonObject__iteratorPtr handle;
+	
+	public static implicit operator QJsonObject__iteratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QJsonObject__iteratorPtr other)
+	{
+		this.handle = QJsonObject__iteratorPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(QJsonObject__iteratorPtr other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public libqt_string Key()
+	{
+		return this.handle.Key();
+	}
+	
+	public void Value()
+	{
+		this.handle.Value();
+	}
+	
+	public void OperatorMultiply()
+	{
+		this.handle.OperatorMultiply();
+	}
+	
+	public void* OperatorMinusGreater()
+	{
+		return this.handle.OperatorMinusGreater();
+	}
+	
+	public void* OperatorMinusGreater2()
+	{
+		return this.handle.OperatorMinusGreater2();
+	}
+	
+	public void OperatorSubscript(int32 j)
+	{
+		this.handle.OperatorSubscript(j);
+	}
+	
+	public bool OperatorEqual(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool OperatorLesser(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public bool OperatorLesserOrEqual(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorLesserOrEqual(other);
+	}
+	
+	public bool OperatorGreater(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorGreater(other);
+	}
+	
+	public bool OperatorGreaterOrEqual(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterOrEqual(other);
+	}
+	
+	public void* OperatorPlusPlus()
+	{
+		return this.handle.OperatorPlusPlus();
+	}
+	
+	public void OperatorPlusPlusWithInt(int32 param1)
+	{
+		this.handle.OperatorPlusPlusWithInt(param1);
+	}
+	
+	public void* OperatorMinusMinus()
+	{
+		return this.handle.OperatorMinusMinus();
+	}
+	
+	public void OperatorMinusMinusWithInt(int32 param1)
+	{
+		this.handle.OperatorMinusMinusWithInt(param1);
+	}
+	
+	public void OperatorPlus(int32 j)
+	{
+		this.handle.OperatorPlus(j);
+	}
+	
+	public void OperatorMinus(int32 j)
+	{
+		this.handle.OperatorMinus(j);
+	}
+	
+	public void* OperatorPlusAssign(int32 j)
+	{
+		return this.handle.OperatorPlusAssign(j);
+	}
+	
+	public void* OperatorMinusAssign(int32 j)
+	{
+		return this.handle.OperatorMinusAssign(j);
+	}
+	
+	public int32 OperatorMinusWithQJsonObjectiterator(QJsonObject__iteratorPtr j)
+	{
+		return this.handle.OperatorMinusWithQJsonObjectiterator(default);
+	}
+	
+	public bool OperatorEqualWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorEqualWithOther(other);
+	}
+	
+	public bool OperatorNotEqualWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorNotEqualWithOther(other);
+	}
+	
+	public bool OperatorLesserWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorLesserWithOther(other);
+	}
+	
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorLesserOrEqualWithOther(other);
+	}
+	
+	public bool OperatorGreaterWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterWithOther(other);
+	}
+	
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterOrEqualWithOther(other);
 	}
 	
 }
@@ -483,24 +828,29 @@ public interface IQJsonObject__const_iterator
 {
 	void* NativePtr { get; }
 }
-public class QJsonObject__const_iterator : IQJsonObject__const_iterator
+public struct QJsonObject__const_iteratorPtr : IQJsonObject__const_iterator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(QJsonObject__const_iterator other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QJsonObject__const_iterator_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(QJsonObject__const_iteratorPtr other)
+	{
+		return .(CQt.QJsonObject__const_iterator_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QJsonObject__const_iterator_Delete(this.nativePtr);
 	}
 	
-	public void OperatorAssign(QJsonObject__const_iterator other)
+	public void OperatorAssign(QJsonObject__const_iteratorPtr other)
 	{
-		CQt.QJsonObject__const_iterator_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QJsonObject__const_iterator_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -528,34 +878,34 @@ public class QJsonObject__const_iterator : IQJsonObject__const_iterator
 		CQt.QJsonObject__const_iterator_OperatorSubscript(this.nativePtr, j);
 	}
 	
-	public bool OperatorEqual(QJsonObject__const_iterator other)
+	public bool OperatorEqual(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorNotEqual(QJsonObject__const_iterator other)
+	public bool OperatorNotEqual(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesser(QJsonObject__const_iterator other)
+	public bool OperatorLesser(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesser(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorLesser(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqual(QJsonObject__const_iterator other)
+	public bool OperatorLesserOrEqual(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreater(QJsonObject__const_iterator other)
+	public bool OperatorGreater(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreater(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorGreater(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqual(QJsonObject__const_iterator other)
+	public bool OperatorGreaterOrEqual(QJsonObject__const_iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorPlusPlus()
@@ -598,39 +948,194 @@ public class QJsonObject__const_iterator : IQJsonObject__const_iterator
 		return CQt.QJsonObject__const_iterator_OperatorMinusAssign(this.nativePtr, j);
 	}
 	
-	public int32 OperatorMinusWithQJsonObjectconstIterator(QJsonObject__const_iterator j)
+	public int32 OperatorMinusWithQJsonObjectconstIterator(QJsonObject__const_iteratorPtr j)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(this.nativePtr, (j == default) ? default : (void)j.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorMinusWithQJsonObjectconstIterator(this.nativePtr, default);
 	}
 	
-	public bool OperatorEqualWithOther(QJsonObject__iterator other)
+	public bool OperatorEqualWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorNotEqualWithOther(QJsonObject__iterator other)
+	public bool OperatorNotEqualWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorNotEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserWithOther(QJsonObject__iterator other)
+	public bool OperatorLesserWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorLesserWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorLesserOrEqualWithOther(QJsonObject__iterator other)
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorLesserOrEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterWithOther(QJsonObject__iterator other)
+	public bool OperatorGreaterWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
-	public bool OperatorGreaterOrEqualWithOther(QJsonObject__iterator other)
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__iteratorPtr other)
 	{
-		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QJsonObject__const_iterator_OperatorGreaterOrEqualWithOther(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
+	}
+	
+}
+public class QJsonObject__const_iterator
+{
+	public QJsonObject__const_iteratorPtr handle;
+	
+	public static implicit operator QJsonObject__const_iteratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(QJsonObject__const_iteratorPtr other)
+	{
+		this.handle = QJsonObject__const_iteratorPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(QJsonObject__const_iteratorPtr other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public libqt_string Key()
+	{
+		return this.handle.Key();
+	}
+	
+	public void Value()
+	{
+		this.handle.Value();
+	}
+	
+	public void OperatorMultiply()
+	{
+		this.handle.OperatorMultiply();
+	}
+	
+	public void* OperatorMinusGreater()
+	{
+		return this.handle.OperatorMinusGreater();
+	}
+	
+	public void OperatorSubscript(int32 j)
+	{
+		this.handle.OperatorSubscript(j);
+	}
+	
+	public bool OperatorEqual(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public bool OperatorLesser(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorLesser(other);
+	}
+	
+	public bool OperatorLesserOrEqual(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorLesserOrEqual(other);
+	}
+	
+	public bool OperatorGreater(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorGreater(other);
+	}
+	
+	public bool OperatorGreaterOrEqual(QJsonObject__const_iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterOrEqual(other);
+	}
+	
+	public void* OperatorPlusPlus()
+	{
+		return this.handle.OperatorPlusPlus();
+	}
+	
+	public void OperatorPlusPlusWithInt(int32 param1)
+	{
+		this.handle.OperatorPlusPlusWithInt(param1);
+	}
+	
+	public void* OperatorMinusMinus()
+	{
+		return this.handle.OperatorMinusMinus();
+	}
+	
+	public void OperatorMinusMinusWithInt(int32 param1)
+	{
+		this.handle.OperatorMinusMinusWithInt(param1);
+	}
+	
+	public void OperatorPlus(int32 j)
+	{
+		this.handle.OperatorPlus(j);
+	}
+	
+	public void OperatorMinus(int32 j)
+	{
+		this.handle.OperatorMinus(j);
+	}
+	
+	public void* OperatorPlusAssign(int32 j)
+	{
+		return this.handle.OperatorPlusAssign(j);
+	}
+	
+	public void* OperatorMinusAssign(int32 j)
+	{
+		return this.handle.OperatorMinusAssign(j);
+	}
+	
+	public int32 OperatorMinusWithQJsonObjectconstIterator(QJsonObject__const_iteratorPtr j)
+	{
+		return this.handle.OperatorMinusWithQJsonObjectconstIterator(default);
+	}
+	
+	public bool OperatorEqualWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorEqualWithOther(other);
+	}
+	
+	public bool OperatorNotEqualWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorNotEqualWithOther(other);
+	}
+	
+	public bool OperatorLesserWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorLesserWithOther(other);
+	}
+	
+	public bool OperatorLesserOrEqualWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorLesserOrEqualWithOther(other);
+	}
+	
+	public bool OperatorGreaterWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterWithOther(other);
+	}
+	
+	public bool OperatorGreaterOrEqualWithOther(QJsonObject__iteratorPtr other)
+	{
+		return this.handle.OperatorGreaterOrEqualWithOther(other);
 	}
 	
 }

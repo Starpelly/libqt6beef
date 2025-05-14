@@ -6,29 +6,34 @@ public interface IQFontInfo
 {
 	void* NativePtr { get; }
 }
-public class QFontInfo : IQFontInfo
+public struct QFontInfoPtr : IQFontInfo, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQFont param1)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFontInfo_new((param1 == default) ? default : (void*)param1.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQFont param1)
+	{
+		return .(CQt.QFontInfo_new((param1 == default || param1.NativePtr == default) ? default : param1.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFontInfo_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQFontInfo param1)
 	{
-		CQt.QFontInfo_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QFontInfo_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQFontInfo other)
 	{
-		CQt.QFontInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QFontInfo_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string Family()
@@ -109,6 +114,116 @@ public class QFontInfo : IQFontInfo
 	public bool ExactMatch()
 	{
 		return CQt.QFontInfo_ExactMatch(this.nativePtr);
+	}
+	
+}
+public class QFontInfo
+{
+	public QFontInfoPtr handle;
+	
+	public static implicit operator QFontInfoPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQFont param1)
+	{
+		this.handle = QFontInfoPtr.New(param1);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQFontInfo param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQFontInfo other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public libqt_string Family()
+	{
+		return this.handle.Family();
+	}
+	
+	public libqt_string StyleName()
+	{
+		return this.handle.StyleName();
+	}
+	
+	public int32 PixelSize()
+	{
+		return this.handle.PixelSize();
+	}
+	
+	public int32 PointSize()
+	{
+		return this.handle.PointSize();
+	}
+	
+	public double PointSizeF()
+	{
+		return this.handle.PointSizeF();
+	}
+	
+	public bool Italic()
+	{
+		return this.handle.Italic();
+	}
+	
+	public int64 Style()
+	{
+		return this.handle.Style();
+	}
+	
+	public int32 Weight()
+	{
+		return this.handle.Weight();
+	}
+	
+	public bool Bold()
+	{
+		return this.handle.Bold();
+	}
+	
+	public bool Underline()
+	{
+		return this.handle.Underline();
+	}
+	
+	public bool Overline()
+	{
+		return this.handle.Overline();
+	}
+	
+	public bool StrikeOut()
+	{
+		return this.handle.StrikeOut();
+	}
+	
+	public bool FixedPitch()
+	{
+		return this.handle.FixedPitch();
+	}
+	
+	public int64 StyleHint()
+	{
+		return this.handle.StyleHint();
+	}
+	
+	public int32 LegacyWeight()
+	{
+		return this.handle.LegacyWeight();
+	}
+	
+	public bool ExactMatch()
+	{
+		return this.handle.ExactMatch();
 	}
 	
 }

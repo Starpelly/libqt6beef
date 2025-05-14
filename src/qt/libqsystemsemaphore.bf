@@ -23,17 +23,22 @@ public interface IQSystemSemaphore
 {
 	void* NativePtr { get; }
 }
-public class QSystemSemaphore : IQSystemSemaphore
+public struct QSystemSemaphorePtr : IQSystemSemaphore, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(String key)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QSystemSemaphore_new(libqt_string(key));
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(String key)
+	{
+		return .(CQt.QSystemSemaphore_new(libqt_string(key)));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QSystemSemaphore_Delete(this.nativePtr);
 	}
@@ -90,12 +95,92 @@ public class QSystemSemaphore : IQSystemSemaphore
 	
 	public void SetKey3(String key, int32 initialValue, int64 mode)
 	{
-		CQt.QSystemSemaphore_SetKey3(this.nativePtr, libqt_string(key), initialValue, mode);
+		CQt.QSystemSemaphore_SetKey3(this.nativePtr, libqt_string(key), initialValue, (int64)mode);
 	}
 	
 	public bool Release1(int32 n)
 	{
 		return CQt.QSystemSemaphore_Release1(this.nativePtr, n);
+	}
+	
+}
+public class QSystemSemaphore
+{
+	public QSystemSemaphorePtr handle;
+	
+	public static implicit operator QSystemSemaphorePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(String key)
+	{
+		this.handle = QSystemSemaphorePtr.New(key);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public static libqt_string Tr(char8* sourceText)
+	{
+		return QSystemSemaphorePtr.Tr(sourceText);
+	}
+	
+	public void SetKey(String key)
+	{
+		this.handle.SetKey(key);
+	}
+	
+	public libqt_string Key()
+	{
+		return this.handle.Key();
+	}
+	
+	public bool Acquire()
+	{
+		return this.handle.Acquire();
+	}
+	
+	public bool Release()
+	{
+		return this.handle.Release();
+	}
+	
+	public int64 Error()
+	{
+		return this.handle.Error();
+	}
+	
+	public libqt_string ErrorString()
+	{
+		return this.handle.ErrorString();
+	}
+	
+	public static libqt_string Tr2(char8* sourceText, char8* disambiguation)
+	{
+		return QSystemSemaphorePtr.Tr2(sourceText, disambiguation);
+	}
+	
+	public static libqt_string Tr3(char8* sourceText, char8* disambiguation, int32 n)
+	{
+		return QSystemSemaphorePtr.Tr3(sourceText, disambiguation, n);
+	}
+	
+	public void SetKey2(String key, int32 initialValue)
+	{
+		this.handle.SetKey2(key, initialValue);
+	}
+	
+	public void SetKey3(String key, int32 initialValue, int64 mode)
+	{
+		this.handle.SetKey3(key, initialValue, mode);
+	}
+	
+	public bool Release1(int32 n)
+	{
+		return this.handle.Release1(n);
 	}
 	
 }

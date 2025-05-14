@@ -30,24 +30,29 @@ public interface IQTreeWidgetItemIterator
 {
 	void* NativePtr { get; }
 }
-public class QTreeWidgetItemIterator : IQTreeWidgetItemIterator
+public struct QTreeWidgetItemIteratorPtr : IQTreeWidgetItemIterator, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQTreeWidgetItemIterator it)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QTreeWidgetItemIterator_new((it == default) ? default : (void*)it.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQTreeWidgetItemIterator it)
+	{
+		return .(CQt.QTreeWidgetItemIterator_new((it == default || it.NativePtr == default) ? default : it.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QTreeWidgetItemIterator_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQTreeWidgetItemIterator it)
 	{
-		CQt.QTreeWidgetItemIterator_OperatorAssign(this.nativePtr, (it == default) ? default : (void*)it.NativePtr);
+		CQt.QTreeWidgetItemIterator_OperatorAssign(this.nativePtr, (it == default || it.NativePtr == default) ? default : it.NativePtr);
 	}
 	
 	public void* OperatorPlusPlus()
@@ -83,6 +88,66 @@ public class QTreeWidgetItemIterator : IQTreeWidgetItemIterator
 	public void* OperatorMultiply()
 	{
 		return CQt.QTreeWidgetItemIterator_OperatorMultiply(this.nativePtr);
+	}
+	
+}
+public class QTreeWidgetItemIterator
+{
+	public QTreeWidgetItemIteratorPtr handle;
+	
+	public static implicit operator QTreeWidgetItemIteratorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQTreeWidgetItemIterator it)
+	{
+		this.handle = QTreeWidgetItemIteratorPtr.New(it);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQTreeWidgetItemIterator it)
+	{
+		this.handle.OperatorAssign(it);
+	}
+	
+	public void* OperatorPlusPlus()
+	{
+		return this.handle.OperatorPlusPlus();
+	}
+	
+	public void OperatorPlusPlusWithInt(int32 param1)
+	{
+		this.handle.OperatorPlusPlusWithInt(param1);
+	}
+	
+	public void* OperatorPlusAssign(int32 n)
+	{
+		return this.handle.OperatorPlusAssign(n);
+	}
+	
+	public void* OperatorMinusMinus()
+	{
+		return this.handle.OperatorMinusMinus();
+	}
+	
+	public void OperatorMinusMinusWithInt(int32 param1)
+	{
+		this.handle.OperatorMinusMinusWithInt(param1);
+	}
+	
+	public void* OperatorMinusAssign(int32 n)
+	{
+		return this.handle.OperatorMinusAssign(n);
+	}
+	
+	public void* OperatorMultiply()
+	{
+		return this.handle.OperatorMultiply();
 	}
 	
 }

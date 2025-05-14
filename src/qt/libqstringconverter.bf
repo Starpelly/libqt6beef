@@ -6,17 +6,22 @@ public interface IQStringEncoder
 {
 	void* NativePtr { get; }
 }
-public class QStringEncoder : IQStringEncoder, IQStringConverter
+public struct QStringEncoderPtr : IQStringEncoder, IDisposable, IQStringConverter
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStringEncoder_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QStringEncoder_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStringEncoder_Delete(this.nativePtr);
 	}
@@ -48,7 +53,57 @@ public class QStringEncoder : IQStringEncoder, IQStringConverter
 	
 	public static char8* NameForEncoding(int64 e)
 	{
-		return CQt.QStringConverter_NameForEncoding(e);
+		return CQt.QStringConverter_NameForEncoding((int64)e);
+	}
+	
+}
+public class QStringEncoder
+{
+	public QStringEncoderPtr handle;
+	
+	public static implicit operator QStringEncoderPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QStringEncoderPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int32 RequiredSpace(int32 inputLength)
+	{
+		return this.handle.RequiredSpace(inputLength);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void ResetState()
+	{
+		this.handle.ResetState();
+	}
+	
+	public bool HasError()
+	{
+		return this.handle.HasError();
+	}
+	
+	public char8* Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public static char8* NameForEncoding(int64 e)
+	{
+		return QStringEncoderPtr.NameForEncoding(e);
 	}
 	
 }
@@ -74,17 +129,22 @@ public interface IQStringDecoder
 {
 	void* NativePtr { get; }
 }
-public class QStringDecoder : IQStringDecoder, IQStringConverter
+public struct QStringDecoderPtr : IQStringDecoder, IDisposable, IQStringConverter
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(int64 encoding)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QStringDecoder_new(encoding);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(int64 encoding)
+	{
+		return .(CQt.QStringDecoder_new((int64)encoding));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QStringDecoder_Delete(this.nativePtr);
 	}
@@ -94,14 +154,14 @@ public class QStringDecoder : IQStringDecoder, IQStringConverter
 		return CQt.QStringDecoder_RequiredSpace(this.nativePtr, inputLength);
 	}
 	
-	public void* AppendToBuffer(IQChar _out, IQByteArrayView ba)
+	public void* AppendToBuffer(IQChar _out, char8* ba)
 	{
-		return CQt.QStringDecoder_AppendToBuffer(this.nativePtr, (_out == null) ? null : (void*)_out.NativePtr, (ba == default) ? default : (char8*)ba.NativePtr);
+		return CQt.QStringDecoder_AppendToBuffer(this.nativePtr, (_out == default || _out.NativePtr == default) ? default : _out.NativePtr, ba);
 	}
 	
-	public static void DecoderForHtml(IQByteArrayView data)
+	public static void DecoderForHtml(char8* data)
 	{
-		CQt.QStringDecoder_DecoderForHtml((data == default) ? default : (char8*)data.NativePtr);
+		CQt.QStringDecoder_DecoderForHtml(data);
 	}
 	
 	public bool IsValid()
@@ -126,7 +186,67 @@ public class QStringDecoder : IQStringDecoder, IQStringConverter
 	
 	public static char8* NameForEncoding(int64 e)
 	{
-		return CQt.QStringConverter_NameForEncoding(e);
+		return CQt.QStringConverter_NameForEncoding((int64)e);
+	}
+	
+}
+public class QStringDecoder
+{
+	public QStringDecoderPtr handle;
+	
+	public static implicit operator QStringDecoderPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(int64 encoding)
+	{
+		this.handle = QStringDecoderPtr.New(encoding);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int32 RequiredSpace(int32 inputLength)
+	{
+		return this.handle.RequiredSpace(inputLength);
+	}
+	
+	public void* AppendToBuffer(IQChar _out, char8* ba)
+	{
+		return this.handle.AppendToBuffer(_out, ba);
+	}
+	
+	public static void DecoderForHtml(char8* data)
+	{
+		QStringDecoderPtr.DecoderForHtml(data);
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void ResetState()
+	{
+		this.handle.ResetState();
+	}
+	
+	public bool HasError()
+	{
+		return this.handle.HasError();
+	}
+	
+	public char8* Name()
+	{
+		return this.handle.Name();
+	}
+	
+	public static char8* NameForEncoding(int64 e)
+	{
+		return QStringDecoderPtr.NameForEncoding(e);
 	}
 	
 }

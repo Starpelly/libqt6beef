@@ -120,24 +120,29 @@ public interface IQFont
 {
 	void* NativePtr { get; }
 }
-public class QFont : IQFont
+public struct QFontPtr : IQFont, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFont_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QFont_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFont_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQFont other)
 	{
-		CQt.QFont_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QFont_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public libqt_string Family()
@@ -207,7 +212,7 @@ public class QFont : IQFont
 	
 	public void SetWeight(int64 weight)
 	{
-		CQt.QFont_SetWeight(this.nativePtr, weight);
+		CQt.QFont_SetWeight(this.nativePtr, (int64)weight);
 	}
 	
 	public bool Bold()
@@ -222,7 +227,7 @@ public class QFont : IQFont
 	
 	public void SetStyle(int64 style)
 	{
-		CQt.QFont_SetStyle(this.nativePtr, style);
+		CQt.QFont_SetStyle(this.nativePtr, (int64)style);
 	}
 	
 	public int64 Style()
@@ -302,12 +307,12 @@ public class QFont : IQFont
 	
 	public void SetStyleHint(int64 param1)
 	{
-		CQt.QFont_SetStyleHint(this.nativePtr, param1);
+		CQt.QFont_SetStyleHint(this.nativePtr, (int64)param1);
 	}
 	
 	public void SetStyleStrategy(int64 s)
 	{
-		CQt.QFont_SetStyleStrategy(this.nativePtr, s);
+		CQt.QFont_SetStyleStrategy(this.nativePtr, (int64)s);
 	}
 	
 	public int32 Stretch()
@@ -332,7 +337,7 @@ public class QFont : IQFont
 	
 	public void SetLetterSpacing(int64 typeVal, double spacing)
 	{
-		CQt.QFont_SetLetterSpacing(this.nativePtr, typeVal, spacing);
+		CQt.QFont_SetLetterSpacing(this.nativePtr, (int64)typeVal, spacing);
 	}
 	
 	public double WordSpacing()
@@ -347,7 +352,7 @@ public class QFont : IQFont
 	
 	public void SetCapitalization(int64 capitalization)
 	{
-		CQt.QFont_SetCapitalization(this.nativePtr, capitalization);
+		CQt.QFont_SetCapitalization(this.nativePtr, (int64)capitalization);
 	}
 	
 	public int64 Capitalization()
@@ -357,7 +362,7 @@ public class QFont : IQFont
 	
 	public void SetHintingPreference(int64 hintingPreference)
 	{
-		CQt.QFont_SetHintingPreference(this.nativePtr, hintingPreference);
+		CQt.QFont_SetHintingPreference(this.nativePtr, (int64)hintingPreference);
 	}
 	
 	public int64 HintingPreference()
@@ -372,22 +377,22 @@ public class QFont : IQFont
 	
 	public void OperatorAssign(IQFont param1)
 	{
-		CQt.QFont_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QFont_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQFont param1)
 	{
-		return CQt.QFont_OperatorEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QFont_OperatorEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQFont param1)
 	{
-		return CQt.QFont_OperatorNotEqual(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QFont_OperatorNotEqual(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public bool OperatorLesser(IQFont param1)
 	{
-		return CQt.QFont_OperatorLesser(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QFont_OperatorLesser(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -397,7 +402,7 @@ public class QFont : IQFont
 	
 	public bool IsCopyOf(IQFont param1)
 	{
-		return CQt.QFont_IsCopyOf(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		return CQt.QFont_IsCopyOf(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public libqt_string Key()
@@ -467,7 +472,7 @@ public class QFont : IQFont
 	
 	public void Resolve(IQFont param1)
 	{
-		CQt.QFont_Resolve(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QFont_Resolve(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public uint32 ResolveMask()
@@ -492,7 +497,387 @@ public class QFont : IQFont
 	
 	public void SetStyleHint2(int64 param1, int64 param2)
 	{
-		CQt.QFont_SetStyleHint2(this.nativePtr, param1, param2);
+		CQt.QFont_SetStyleHint2(this.nativePtr, (int64)param1, (int64)param2);
+	}
+	
+}
+public class QFont
+{
+	public QFontPtr handle;
+	
+	public static implicit operator QFontPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QFontPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQFont other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public libqt_string Family()
+	{
+		return this.handle.Family();
+	}
+	
+	public void SetFamily(String family)
+	{
+		this.handle.SetFamily(family);
+	}
+	
+	public libqt_string[] Families()
+	{
+		return this.handle.Families();
+	}
+	
+	public void SetFamilies(String[] families)
+	{
+		this.handle.SetFamilies(null);
+	}
+	
+	public libqt_string StyleName()
+	{
+		return this.handle.StyleName();
+	}
+	
+	public void SetStyleName(String styleName)
+	{
+		this.handle.SetStyleName(styleName);
+	}
+	
+	public int32 PointSize()
+	{
+		return this.handle.PointSize();
+	}
+	
+	public void SetPointSize(int32 pointSize)
+	{
+		this.handle.SetPointSize(pointSize);
+	}
+	
+	public double PointSizeF()
+	{
+		return this.handle.PointSizeF();
+	}
+	
+	public void SetPointSizeF(double pointSizeF)
+	{
+		this.handle.SetPointSizeF(pointSizeF);
+	}
+	
+	public int32 PixelSize()
+	{
+		return this.handle.PixelSize();
+	}
+	
+	public void SetPixelSize(int32 pixelSize)
+	{
+		this.handle.SetPixelSize(pixelSize);
+	}
+	
+	public int64 Weight()
+	{
+		return this.handle.Weight();
+	}
+	
+	public void SetWeight(int64 weight)
+	{
+		this.handle.SetWeight(weight);
+	}
+	
+	public bool Bold()
+	{
+		return this.handle.Bold();
+	}
+	
+	public void SetBold(bool bold)
+	{
+		this.handle.SetBold(bold);
+	}
+	
+	public void SetStyle(int64 style)
+	{
+		this.handle.SetStyle(style);
+	}
+	
+	public int64 Style()
+	{
+		return this.handle.Style();
+	}
+	
+	public bool Italic()
+	{
+		return this.handle.Italic();
+	}
+	
+	public void SetItalic(bool b)
+	{
+		this.handle.SetItalic(b);
+	}
+	
+	public bool Underline()
+	{
+		return this.handle.Underline();
+	}
+	
+	public void SetUnderline(bool underline)
+	{
+		this.handle.SetUnderline(underline);
+	}
+	
+	public bool Overline()
+	{
+		return this.handle.Overline();
+	}
+	
+	public void SetOverline(bool overline)
+	{
+		this.handle.SetOverline(overline);
+	}
+	
+	public bool StrikeOut()
+	{
+		return this.handle.StrikeOut();
+	}
+	
+	public void SetStrikeOut(bool strikeOut)
+	{
+		this.handle.SetStrikeOut(strikeOut);
+	}
+	
+	public bool FixedPitch()
+	{
+		return this.handle.FixedPitch();
+	}
+	
+	public void SetFixedPitch(bool fixedPitch)
+	{
+		this.handle.SetFixedPitch(fixedPitch);
+	}
+	
+	public bool Kerning()
+	{
+		return this.handle.Kerning();
+	}
+	
+	public void SetKerning(bool kerning)
+	{
+		this.handle.SetKerning(kerning);
+	}
+	
+	public int64 StyleHint()
+	{
+		return this.handle.StyleHint();
+	}
+	
+	public int64 StyleStrategy()
+	{
+		return this.handle.StyleStrategy();
+	}
+	
+	public void SetStyleHint(int64 param1)
+	{
+		this.handle.SetStyleHint(param1);
+	}
+	
+	public void SetStyleStrategy(int64 s)
+	{
+		this.handle.SetStyleStrategy(s);
+	}
+	
+	public int32 Stretch()
+	{
+		return this.handle.Stretch();
+	}
+	
+	public void SetStretch(int32 stretch)
+	{
+		this.handle.SetStretch(stretch);
+	}
+	
+	public double LetterSpacing()
+	{
+		return this.handle.LetterSpacing();
+	}
+	
+	public int64 LetterSpacingType()
+	{
+		return this.handle.LetterSpacingType();
+	}
+	
+	public void SetLetterSpacing(int64 typeVal, double spacing)
+	{
+		this.handle.SetLetterSpacing(typeVal, spacing);
+	}
+	
+	public double WordSpacing()
+	{
+		return this.handle.WordSpacing();
+	}
+	
+	public void SetWordSpacing(double spacing)
+	{
+		this.handle.SetWordSpacing(spacing);
+	}
+	
+	public void SetCapitalization(int64 capitalization)
+	{
+		this.handle.SetCapitalization(capitalization);
+	}
+	
+	public int64 Capitalization()
+	{
+		return this.handle.Capitalization();
+	}
+	
+	public void SetHintingPreference(int64 hintingPreference)
+	{
+		this.handle.SetHintingPreference(hintingPreference);
+	}
+	
+	public int64 HintingPreference()
+	{
+		return this.handle.HintingPreference();
+	}
+	
+	public bool ExactMatch()
+	{
+		return this.handle.ExactMatch();
+	}
+	
+	public void OperatorAssign(IQFont param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public bool OperatorEqual(IQFont param1)
+	{
+		return this.handle.OperatorEqual(param1);
+	}
+	
+	public bool OperatorNotEqual(IQFont param1)
+	{
+		return this.handle.OperatorNotEqual(param1);
+	}
+	
+	public bool OperatorLesser(IQFont param1)
+	{
+		return this.handle.OperatorLesser(param1);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public bool IsCopyOf(IQFont param1)
+	{
+		return this.handle.IsCopyOf(param1);
+	}
+	
+	public libqt_string Key()
+	{
+		return this.handle.Key();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
+	}
+	
+	public bool FromString(String param1)
+	{
+		return this.handle.FromString(param1);
+	}
+	
+	public static libqt_string Substitute(String param1)
+	{
+		return QFontPtr.Substitute(param1);
+	}
+	
+	public static libqt_string[] Substitutes(String param1)
+	{
+		return QFontPtr.Substitutes(param1);
+	}
+	
+	public static libqt_string[] Substitutions()
+	{
+		return QFontPtr.Substitutions();
+	}
+	
+	public static void InsertSubstitution(String param1, String param2)
+	{
+		QFontPtr.InsertSubstitution(param1, param2);
+	}
+	
+	public static void InsertSubstitutions(String param1, String[] param2)
+	{
+		QFontPtr.InsertSubstitutions(param1, null);
+	}
+	
+	public static void RemoveSubstitutions(String param1)
+	{
+		QFontPtr.RemoveSubstitutions(param1);
+	}
+	
+	public static void Initialize()
+	{
+		QFontPtr.Initialize();
+	}
+	
+	public static void Cleanup()
+	{
+		QFontPtr.Cleanup();
+	}
+	
+	public static void CacheStatistics()
+	{
+		QFontPtr.CacheStatistics();
+	}
+	
+	public libqt_string DefaultFamily()
+	{
+		return this.handle.DefaultFamily();
+	}
+	
+	public void Resolve(IQFont param1)
+	{
+		this.handle.Resolve(param1);
+	}
+	
+	public uint32 ResolveMask()
+	{
+		return this.handle.ResolveMask();
+	}
+	
+	public void SetResolveMask(uint32 mask)
+	{
+		this.handle.SetResolveMask(mask);
+	}
+	
+	public void SetLegacyWeight(int32 legacyWeight)
+	{
+		this.handle.SetLegacyWeight(legacyWeight);
+	}
+	
+	public int32 LegacyWeight()
+	{
+		return this.handle.LegacyWeight();
+	}
+	
+	public void SetStyleHint2(int64 param1, int64 param2)
+	{
+		this.handle.SetStyleHint2(param1, param2);
 	}
 	
 }

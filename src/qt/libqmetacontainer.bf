@@ -29,17 +29,22 @@ public interface IQMetaContainer
 {
 	void* NativePtr { get; }
 }
-public class QMetaContainer : IQMetaContainer
+public struct QMetaContainerPtr : IQMetaContainer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMetaContainer other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMetaContainer_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMetaContainer other)
+	{
+		return .(CQt.QMetaContainer_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMetaContainer_Delete(this.nativePtr);
 	}
@@ -165,6 +170,146 @@ public class QMetaContainer : IQMetaContainer
 	}
 	
 }
+public class QMetaContainer
+{
+	public QMetaContainerPtr handle;
+	
+	public static implicit operator QMetaContainerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMetaContainer other)
+	{
+		this.handle = QMetaContainerPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool HasInputIterator()
+	{
+		return this.handle.HasInputIterator();
+	}
+	
+	public bool HasForwardIterator()
+	{
+		return this.handle.HasForwardIterator();
+	}
+	
+	public bool HasBidirectionalIterator()
+	{
+		return this.handle.HasBidirectionalIterator();
+	}
+	
+	public bool HasRandomAccessIterator()
+	{
+		return this.handle.HasRandomAccessIterator();
+	}
+	
+	public bool HasSize()
+	{
+		return this.handle.HasSize();
+	}
+	
+	public int32 Size(void* container)
+	{
+		return this.handle.Size(container);
+	}
+	
+	public bool CanClear()
+	{
+		return this.handle.CanClear();
+	}
+	
+	public void Clear(void* container)
+	{
+		this.handle.Clear(container);
+	}
+	
+	public bool HasIterator()
+	{
+		return this.handle.HasIterator();
+	}
+	
+	public void* Begin(void* container)
+	{
+		return this.handle.Begin(container);
+	}
+	
+	public void* End(void* container)
+	{
+		return this.handle.End(container);
+	}
+	
+	public void DestroyIterator(void* iterator)
+	{
+		this.handle.DestroyIterator(iterator);
+	}
+	
+	public bool CompareIterator(void* i, void* j)
+	{
+		return this.handle.CompareIterator(i, j);
+	}
+	
+	public void CopyIterator(void* target, void* source)
+	{
+		this.handle.CopyIterator(target, source);
+	}
+	
+	public void AdvanceIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceIterator(iterator, step);
+	}
+	
+	public int32 DiffIterator(void* i, void* j)
+	{
+		return this.handle.DiffIterator(i, j);
+	}
+	
+	public bool HasConstIterator()
+	{
+		return this.handle.HasConstIterator();
+	}
+	
+	public void* ConstBegin(void* container)
+	{
+		return this.handle.ConstBegin(container);
+	}
+	
+	public void* ConstEnd(void* container)
+	{
+		return this.handle.ConstEnd(container);
+	}
+	
+	public void DestroyConstIterator(void* iterator)
+	{
+		this.handle.DestroyConstIterator(iterator);
+	}
+	
+	public bool CompareConstIterator(void* i, void* j)
+	{
+		return this.handle.CompareConstIterator(i, j);
+	}
+	
+	public void CopyConstIterator(void* target, void* source)
+	{
+		this.handle.CopyConstIterator(target, source);
+	}
+	
+	public void AdvanceConstIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceConstIterator(iterator, step);
+	}
+	
+	public int32 DiffConstIterator(void* i, void* j)
+	{
+		return this.handle.DiffConstIterator(i, j);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QMetaContainer_new")]
@@ -231,17 +376,22 @@ public interface IQMetaSequence
 {
 	void* NativePtr { get; }
 }
-public class QMetaSequence : IQMetaSequence, IQMetaContainer
+public struct QMetaSequencePtr : IQMetaSequence, IDisposable, IQMetaContainer
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMetaSequence other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMetaSequence_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMetaSequence other)
+	{
+		return .(CQt.QMetaSequence_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMetaSequence_Delete(this.nativePtr);
 	}
@@ -517,6 +667,296 @@ public class QMetaSequence : IQMetaSequence, IQMetaContainer
 	}
 	
 }
+public class QMetaSequence
+{
+	public QMetaSequencePtr handle;
+	
+	public static implicit operator QMetaSequencePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMetaSequence other)
+	{
+		this.handle = QMetaSequencePtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void ValueMetaType()
+	{
+		this.handle.ValueMetaType();
+	}
+	
+	public bool IsSortable()
+	{
+		return this.handle.IsSortable();
+	}
+	
+	public bool CanAddValueAtBegin()
+	{
+		return this.handle.CanAddValueAtBegin();
+	}
+	
+	public void AddValueAtBegin(void* container, void* value)
+	{
+		this.handle.AddValueAtBegin(container, value);
+	}
+	
+	public bool CanAddValueAtEnd()
+	{
+		return this.handle.CanAddValueAtEnd();
+	}
+	
+	public void AddValueAtEnd(void* container, void* value)
+	{
+		this.handle.AddValueAtEnd(container, value);
+	}
+	
+	public bool CanRemoveValueAtBegin()
+	{
+		return this.handle.CanRemoveValueAtBegin();
+	}
+	
+	public void RemoveValueAtBegin(void* container)
+	{
+		this.handle.RemoveValueAtBegin(container);
+	}
+	
+	public bool CanRemoveValueAtEnd()
+	{
+		return this.handle.CanRemoveValueAtEnd();
+	}
+	
+	public void RemoveValueAtEnd(void* container)
+	{
+		this.handle.RemoveValueAtEnd(container);
+	}
+	
+	public bool CanGetValueAtIndex()
+	{
+		return this.handle.CanGetValueAtIndex();
+	}
+	
+	public void ValueAtIndex(void* container, int32 index, void* result)
+	{
+		this.handle.ValueAtIndex(container, index, result);
+	}
+	
+	public bool CanSetValueAtIndex()
+	{
+		return this.handle.CanSetValueAtIndex();
+	}
+	
+	public void SetValueAtIndex(void* container, int32 index, void* value)
+	{
+		this.handle.SetValueAtIndex(container, index, value);
+	}
+	
+	public bool CanAddValue()
+	{
+		return this.handle.CanAddValue();
+	}
+	
+	public void AddValue(void* container, void* value)
+	{
+		this.handle.AddValue(container, value);
+	}
+	
+	public bool CanRemoveValue()
+	{
+		return this.handle.CanRemoveValue();
+	}
+	
+	public void RemoveValue(void* container)
+	{
+		this.handle.RemoveValue(container);
+	}
+	
+	public bool CanGetValueAtIterator()
+	{
+		return this.handle.CanGetValueAtIterator();
+	}
+	
+	public void ValueAtIterator(void* iterator, void* result)
+	{
+		this.handle.ValueAtIterator(iterator, result);
+	}
+	
+	public bool CanSetValueAtIterator()
+	{
+		return this.handle.CanSetValueAtIterator();
+	}
+	
+	public void SetValueAtIterator(void* iterator, void* value)
+	{
+		this.handle.SetValueAtIterator(iterator, value);
+	}
+	
+	public bool CanInsertValueAtIterator()
+	{
+		return this.handle.CanInsertValueAtIterator();
+	}
+	
+	public void InsertValueAtIterator(void* container, void* iterator, void* value)
+	{
+		this.handle.InsertValueAtIterator(container, iterator, value);
+	}
+	
+	public bool CanEraseValueAtIterator()
+	{
+		return this.handle.CanEraseValueAtIterator();
+	}
+	
+	public void EraseValueAtIterator(void* container, void* iterator)
+	{
+		this.handle.EraseValueAtIterator(container, iterator);
+	}
+	
+	public bool CanEraseRangeAtIterator()
+	{
+		return this.handle.CanEraseRangeAtIterator();
+	}
+	
+	public void EraseRangeAtIterator(void* container, void* iterator1, void* iterator2)
+	{
+		this.handle.EraseRangeAtIterator(container, iterator1, iterator2);
+	}
+	
+	public bool CanGetValueAtConstIterator()
+	{
+		return this.handle.CanGetValueAtConstIterator();
+	}
+	
+	public void ValueAtConstIterator(void* iterator, void* result)
+	{
+		this.handle.ValueAtConstIterator(iterator, result);
+	}
+	
+	public bool HasInputIterator()
+	{
+		return this.handle.HasInputIterator();
+	}
+	
+	public bool HasForwardIterator()
+	{
+		return this.handle.HasForwardIterator();
+	}
+	
+	public bool HasBidirectionalIterator()
+	{
+		return this.handle.HasBidirectionalIterator();
+	}
+	
+	public bool HasRandomAccessIterator()
+	{
+		return this.handle.HasRandomAccessIterator();
+	}
+	
+	public bool HasSize()
+	{
+		return this.handle.HasSize();
+	}
+	
+	public int32 Size(void* container)
+	{
+		return this.handle.Size(container);
+	}
+	
+	public bool CanClear()
+	{
+		return this.handle.CanClear();
+	}
+	
+	public void Clear(void* container)
+	{
+		this.handle.Clear(container);
+	}
+	
+	public bool HasIterator()
+	{
+		return this.handle.HasIterator();
+	}
+	
+	public void* Begin(void* container)
+	{
+		return this.handle.Begin(container);
+	}
+	
+	public void* End(void* container)
+	{
+		return this.handle.End(container);
+	}
+	
+	public void DestroyIterator(void* iterator)
+	{
+		this.handle.DestroyIterator(iterator);
+	}
+	
+	public bool CompareIterator(void* i, void* j)
+	{
+		return this.handle.CompareIterator(i, j);
+	}
+	
+	public void CopyIterator(void* target, void* source)
+	{
+		this.handle.CopyIterator(target, source);
+	}
+	
+	public void AdvanceIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceIterator(iterator, step);
+	}
+	
+	public int32 DiffIterator(void* i, void* j)
+	{
+		return this.handle.DiffIterator(i, j);
+	}
+	
+	public bool HasConstIterator()
+	{
+		return this.handle.HasConstIterator();
+	}
+	
+	public void* ConstBegin(void* container)
+	{
+		return this.handle.ConstBegin(container);
+	}
+	
+	public void* ConstEnd(void* container)
+	{
+		return this.handle.ConstEnd(container);
+	}
+	
+	public void DestroyConstIterator(void* iterator)
+	{
+		this.handle.DestroyConstIterator(iterator);
+	}
+	
+	public bool CompareConstIterator(void* i, void* j)
+	{
+		return this.handle.CompareConstIterator(i, j);
+	}
+	
+	public void CopyConstIterator(void* target, void* source)
+	{
+		this.handle.CopyConstIterator(target, source);
+	}
+	
+	public void AdvanceConstIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceConstIterator(iterator, step);
+	}
+	
+	public int32 DiffConstIterator(void* i, void* j)
+	{
+		return this.handle.DiffConstIterator(i, j);
+	}
+	
+}
 extension CQt
 {
 	[LinkName("QMetaSequence_new")]
@@ -593,17 +1033,22 @@ public interface IQMetaAssociation
 {
 	void* NativePtr { get; }
 }
-public class QMetaAssociation : IQMetaAssociation, IQMetaContainer
+public struct QMetaAssociationPtr : IQMetaAssociation, IDisposable, IQMetaContainer
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMetaAssociation other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMetaAssociation_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMetaAssociation other)
+	{
+		return .(CQt.QMetaAssociation_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMetaAssociation_Delete(this.nativePtr);
 	}
@@ -856,6 +1301,276 @@ public class QMetaAssociation : IQMetaAssociation, IQMetaContainer
 	public int32 DiffConstIterator(void* i, void* j)
 	{
 		return CQt.QMetaContainer_DiffConstIterator(this.nativePtr, i, j);
+	}
+	
+}
+public class QMetaAssociation
+{
+	public QMetaAssociationPtr handle;
+	
+	public static implicit operator QMetaAssociationPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMetaAssociation other)
+	{
+		this.handle = QMetaAssociationPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void KeyMetaType()
+	{
+		this.handle.KeyMetaType();
+	}
+	
+	public void MappedMetaType()
+	{
+		this.handle.MappedMetaType();
+	}
+	
+	public bool CanInsertKey()
+	{
+		return this.handle.CanInsertKey();
+	}
+	
+	public void InsertKey(void* container, void* key)
+	{
+		this.handle.InsertKey(container, key);
+	}
+	
+	public bool CanRemoveKey()
+	{
+		return this.handle.CanRemoveKey();
+	}
+	
+	public void RemoveKey(void* container, void* key)
+	{
+		this.handle.RemoveKey(container, key);
+	}
+	
+	public bool CanContainsKey()
+	{
+		return this.handle.CanContainsKey();
+	}
+	
+	public bool ContainsKey(void* container, void* key)
+	{
+		return this.handle.ContainsKey(container, key);
+	}
+	
+	public bool CanGetMappedAtKey()
+	{
+		return this.handle.CanGetMappedAtKey();
+	}
+	
+	public void MappedAtKey(void* container, void* key, void* mapped)
+	{
+		this.handle.MappedAtKey(container, key, mapped);
+	}
+	
+	public bool CanSetMappedAtKey()
+	{
+		return this.handle.CanSetMappedAtKey();
+	}
+	
+	public void SetMappedAtKey(void* container, void* key, void* mapped)
+	{
+		this.handle.SetMappedAtKey(container, key, mapped);
+	}
+	
+	public bool CanGetKeyAtIterator()
+	{
+		return this.handle.CanGetKeyAtIterator();
+	}
+	
+	public void KeyAtIterator(void* iterator, void* key)
+	{
+		this.handle.KeyAtIterator(iterator, key);
+	}
+	
+	public bool CanGetKeyAtConstIterator()
+	{
+		return this.handle.CanGetKeyAtConstIterator();
+	}
+	
+	public void KeyAtConstIterator(void* iterator, void* key)
+	{
+		this.handle.KeyAtConstIterator(iterator, key);
+	}
+	
+	public bool CanGetMappedAtIterator()
+	{
+		return this.handle.CanGetMappedAtIterator();
+	}
+	
+	public void MappedAtIterator(void* iterator, void* mapped)
+	{
+		this.handle.MappedAtIterator(iterator, mapped);
+	}
+	
+	public bool CanGetMappedAtConstIterator()
+	{
+		return this.handle.CanGetMappedAtConstIterator();
+	}
+	
+	public void MappedAtConstIterator(void* iterator, void* mapped)
+	{
+		this.handle.MappedAtConstIterator(iterator, mapped);
+	}
+	
+	public bool CanSetMappedAtIterator()
+	{
+		return this.handle.CanSetMappedAtIterator();
+	}
+	
+	public void SetMappedAtIterator(void* iterator, void* mapped)
+	{
+		this.handle.SetMappedAtIterator(iterator, mapped);
+	}
+	
+	public bool CanCreateIteratorAtKey()
+	{
+		return this.handle.CanCreateIteratorAtKey();
+	}
+	
+	public void* CreateIteratorAtKey(void* container, void* key)
+	{
+		return this.handle.CreateIteratorAtKey(container, key);
+	}
+	
+	public bool CanCreateConstIteratorAtKey()
+	{
+		return this.handle.CanCreateConstIteratorAtKey();
+	}
+	
+	public void* CreateConstIteratorAtKey(void* container, void* key)
+	{
+		return this.handle.CreateConstIteratorAtKey(container, key);
+	}
+	
+	public bool HasInputIterator()
+	{
+		return this.handle.HasInputIterator();
+	}
+	
+	public bool HasForwardIterator()
+	{
+		return this.handle.HasForwardIterator();
+	}
+	
+	public bool HasBidirectionalIterator()
+	{
+		return this.handle.HasBidirectionalIterator();
+	}
+	
+	public bool HasRandomAccessIterator()
+	{
+		return this.handle.HasRandomAccessIterator();
+	}
+	
+	public bool HasSize()
+	{
+		return this.handle.HasSize();
+	}
+	
+	public int32 Size(void* container)
+	{
+		return this.handle.Size(container);
+	}
+	
+	public bool CanClear()
+	{
+		return this.handle.CanClear();
+	}
+	
+	public void Clear(void* container)
+	{
+		this.handle.Clear(container);
+	}
+	
+	public bool HasIterator()
+	{
+		return this.handle.HasIterator();
+	}
+	
+	public void* Begin(void* container)
+	{
+		return this.handle.Begin(container);
+	}
+	
+	public void* End(void* container)
+	{
+		return this.handle.End(container);
+	}
+	
+	public void DestroyIterator(void* iterator)
+	{
+		this.handle.DestroyIterator(iterator);
+	}
+	
+	public bool CompareIterator(void* i, void* j)
+	{
+		return this.handle.CompareIterator(i, j);
+	}
+	
+	public void CopyIterator(void* target, void* source)
+	{
+		this.handle.CopyIterator(target, source);
+	}
+	
+	public void AdvanceIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceIterator(iterator, step);
+	}
+	
+	public int32 DiffIterator(void* i, void* j)
+	{
+		return this.handle.DiffIterator(i, j);
+	}
+	
+	public bool HasConstIterator()
+	{
+		return this.handle.HasConstIterator();
+	}
+	
+	public void* ConstBegin(void* container)
+	{
+		return this.handle.ConstBegin(container);
+	}
+	
+	public void* ConstEnd(void* container)
+	{
+		return this.handle.ConstEnd(container);
+	}
+	
+	public void DestroyConstIterator(void* iterator)
+	{
+		this.handle.DestroyConstIterator(iterator);
+	}
+	
+	public bool CompareConstIterator(void* i, void* j)
+	{
+		return this.handle.CompareConstIterator(i, j);
+	}
+	
+	public void CopyConstIterator(void* target, void* source)
+	{
+		this.handle.CopyConstIterator(target, source);
+	}
+	
+	public void AdvanceConstIterator(void* iterator, int32 step)
+	{
+		this.handle.AdvanceConstIterator(iterator, step);
+	}
+	
+	public int32 DiffConstIterator(void* i, void* j)
+	{
+		return this.handle.DiffConstIterator(i, j);
 	}
 	
 }

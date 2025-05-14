@@ -13,17 +13,22 @@ public interface IQResource
 {
 	void* NativePtr { get; }
 }
-public class QResource : IQResource
+public struct QResourcePtr : IQResource, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QResource_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QResource_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QResource_Delete(this.nativePtr);
 	}
@@ -45,7 +50,7 @@ public class QResource : IQResource
 	
 	public void SetLocale(IQLocale locale)
 	{
-		CQt.QResource_SetLocale(this.nativePtr, (locale == default) ? default : (void*)locale.NativePtr);
+		CQt.QResource_SetLocale(this.nativePtr, (locale == default || locale.NativePtr == default) ? default : locale.NativePtr);
 	}
 	
 	public void Locale()
@@ -126,6 +131,126 @@ public class QResource : IQResource
 	public static bool UnregisterResource22(uint8* rccData, String resourceRoot)
 	{
 		return CQt.QResource_UnregisterResource22(rccData, libqt_string(resourceRoot));
+	}
+	
+}
+public class QResource
+{
+	public QResourcePtr handle;
+	
+	public static implicit operator QResourcePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QResourcePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void SetFileName(String file)
+	{
+		this.handle.SetFileName(file);
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public libqt_string AbsoluteFilePath()
+	{
+		return this.handle.AbsoluteFilePath();
+	}
+	
+	public void SetLocale(IQLocale locale)
+	{
+		this.handle.SetLocale(locale);
+	}
+	
+	public void Locale()
+	{
+		this.handle.Locale();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public int64 CompressionAlgorithm()
+	{
+		return this.handle.CompressionAlgorithm();
+	}
+	
+	public int64 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public uint8* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public int64 UncompressedSize()
+	{
+		return this.handle.UncompressedSize();
+	}
+	
+	public libqt_string UncompressedData()
+	{
+		return this.handle.UncompressedData();
+	}
+	
+	public void LastModified()
+	{
+		this.handle.LastModified();
+	}
+	
+	public static bool RegisterResource(String rccFilename)
+	{
+		return QResourcePtr.RegisterResource(rccFilename);
+	}
+	
+	public static bool UnregisterResource(String rccFilename)
+	{
+		return QResourcePtr.UnregisterResource(rccFilename);
+	}
+	
+	public static bool RegisterResourceWithRccData(uint8* rccData)
+	{
+		return QResourcePtr.RegisterResourceWithRccData(rccData);
+	}
+	
+	public static bool UnregisterResourceWithRccData(uint8* rccData)
+	{
+		return QResourcePtr.UnregisterResourceWithRccData(rccData);
+	}
+	
+	public static bool RegisterResource2(String rccFilename, String resourceRoot)
+	{
+		return QResourcePtr.RegisterResource2(rccFilename, resourceRoot);
+	}
+	
+	public static bool UnregisterResource2(String rccFilename, String resourceRoot)
+	{
+		return QResourcePtr.UnregisterResource2(rccFilename, resourceRoot);
+	}
+	
+	public static bool RegisterResource22(uint8* rccData, String resourceRoot)
+	{
+		return QResourcePtr.RegisterResource22(rccData, resourceRoot);
+	}
+	
+	public static bool UnregisterResource22(uint8* rccData, String resourceRoot)
+	{
+		return QResourcePtr.UnregisterResource22(rccData, resourceRoot);
 	}
 	
 }

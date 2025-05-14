@@ -11,24 +11,29 @@ public interface IQDeadlineTimer
 {
 	void* NativePtr { get; }
 }
-public class QDeadlineTimer : IQDeadlineTimer
+public struct QDeadlineTimerPtr : IQDeadlineTimer, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQDeadlineTimer other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QDeadlineTimer_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQDeadlineTimer other)
+	{
+		return .(CQt.QDeadlineTimer_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QDeadlineTimer_Delete(this.nativePtr);
 	}
 	
 	public void Swap(IQDeadlineTimer other)
 	{
-		CQt.QDeadlineTimer_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QDeadlineTimer_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool IsForever()
@@ -48,7 +53,7 @@ public class QDeadlineTimer : IQDeadlineTimer
 	
 	public void SetTimerType(int64 typeVal)
 	{
-		CQt.QDeadlineTimer_SetTimerType(this.nativePtr, typeVal);
+		CQt.QDeadlineTimer_SetTimerType(this.nativePtr, (int64)typeVal);
 	}
 	
 	public int64 RemainingTime()
@@ -93,7 +98,7 @@ public class QDeadlineTimer : IQDeadlineTimer
 	
 	public static void AddNSecs(IQDeadlineTimer dt, int64 nsecs)
 	{
-		CQt.QDeadlineTimer_AddNSecs((dt == default) ? default : (void)dt.NativePtr, nsecs);
+		CQt.QDeadlineTimer_AddNSecs(default, nsecs);
 	}
 	
 	public static void Current()
@@ -113,12 +118,12 @@ public class QDeadlineTimer : IQDeadlineTimer
 	
 	public void OperatorAssign(IQDeadlineTimer param1)
 	{
-		CQt.QDeadlineTimer_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QDeadlineTimer_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void SetRemainingTime2(int64 msecs, int64 typeVal)
 	{
-		CQt.QDeadlineTimer_SetRemainingTime2(this.nativePtr, msecs, typeVal);
+		CQt.QDeadlineTimer_SetRemainingTime2(this.nativePtr, msecs, (int64)typeVal);
 	}
 	
 	public void SetPreciseRemainingTime2(int64 secs, int64 nsecs)
@@ -128,12 +133,12 @@ public class QDeadlineTimer : IQDeadlineTimer
 	
 	public void SetPreciseRemainingTime3(int64 secs, int64 nsecs, int64 typeVal)
 	{
-		CQt.QDeadlineTimer_SetPreciseRemainingTime3(this.nativePtr, secs, nsecs, typeVal);
+		CQt.QDeadlineTimer_SetPreciseRemainingTime3(this.nativePtr, secs, nsecs, (int64)typeVal);
 	}
 	
 	public void SetDeadline2(int64 msecs, int64 timerType)
 	{
-		CQt.QDeadlineTimer_SetDeadline2(this.nativePtr, msecs, timerType);
+		CQt.QDeadlineTimer_SetDeadline2(this.nativePtr, msecs, (int64)timerType);
 	}
 	
 	public void SetPreciseDeadline2(int64 secs, int64 nsecs)
@@ -143,12 +148,157 @@ public class QDeadlineTimer : IQDeadlineTimer
 	
 	public void SetPreciseDeadline3(int64 secs, int64 nsecs, int64 typeVal)
 	{
-		CQt.QDeadlineTimer_SetPreciseDeadline3(this.nativePtr, secs, nsecs, typeVal);
+		CQt.QDeadlineTimer_SetPreciseDeadline3(this.nativePtr, secs, nsecs, (int64)typeVal);
 	}
 	
 	public static void Current1(int64 timerType)
 	{
-		CQt.QDeadlineTimer_Current1(timerType);
+		CQt.QDeadlineTimer_Current1((int64)timerType);
+	}
+	
+}
+public class QDeadlineTimer
+{
+	public QDeadlineTimerPtr handle;
+	
+	public static implicit operator QDeadlineTimerPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQDeadlineTimer other)
+	{
+		this.handle = QDeadlineTimerPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Swap(IQDeadlineTimer other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool IsForever()
+	{
+		return this.handle.IsForever();
+	}
+	
+	public bool HasExpired()
+	{
+		return this.handle.HasExpired();
+	}
+	
+	public int64 TimerType()
+	{
+		return this.handle.TimerType();
+	}
+	
+	public void SetTimerType(int64 typeVal)
+	{
+		this.handle.SetTimerType(typeVal);
+	}
+	
+	public int64 RemainingTime()
+	{
+		return this.handle.RemainingTime();
+	}
+	
+	public int64 RemainingTimeNSecs()
+	{
+		return this.handle.RemainingTimeNSecs();
+	}
+	
+	public void SetRemainingTime(int64 msecs)
+	{
+		this.handle.SetRemainingTime(msecs);
+	}
+	
+	public void SetPreciseRemainingTime(int64 secs)
+	{
+		this.handle.SetPreciseRemainingTime(secs);
+	}
+	
+	public int64 Deadline()
+	{
+		return this.handle.Deadline();
+	}
+	
+	public int64 DeadlineNSecs()
+	{
+		return this.handle.DeadlineNSecs();
+	}
+	
+	public void SetDeadline(int64 msecs)
+	{
+		this.handle.SetDeadline(msecs);
+	}
+	
+	public void SetPreciseDeadline(int64 secs)
+	{
+		this.handle.SetPreciseDeadline(secs);
+	}
+	
+	public static void AddNSecs(IQDeadlineTimer dt, int64 nsecs)
+	{
+		QDeadlineTimerPtr.AddNSecs(default, nsecs);
+	}
+	
+	public static void Current()
+	{
+		QDeadlineTimerPtr.Current();
+	}
+	
+	public void* OperatorPlusAssign(int64 msecs)
+	{
+		return this.handle.OperatorPlusAssign(msecs);
+	}
+	
+	public void* OperatorMinusAssign(int64 msecs)
+	{
+		return this.handle.OperatorMinusAssign(msecs);
+	}
+	
+	public void OperatorAssign(IQDeadlineTimer param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void SetRemainingTime2(int64 msecs, int64 typeVal)
+	{
+		this.handle.SetRemainingTime2(msecs, typeVal);
+	}
+	
+	public void SetPreciseRemainingTime2(int64 secs, int64 nsecs)
+	{
+		this.handle.SetPreciseRemainingTime2(secs, nsecs);
+	}
+	
+	public void SetPreciseRemainingTime3(int64 secs, int64 nsecs, int64 typeVal)
+	{
+		this.handle.SetPreciseRemainingTime3(secs, nsecs, typeVal);
+	}
+	
+	public void SetDeadline2(int64 msecs, int64 timerType)
+	{
+		this.handle.SetDeadline2(msecs, timerType);
+	}
+	
+	public void SetPreciseDeadline2(int64 secs, int64 nsecs)
+	{
+		this.handle.SetPreciseDeadline2(secs, nsecs);
+	}
+	
+	public void SetPreciseDeadline3(int64 secs, int64 nsecs, int64 typeVal)
+	{
+		this.handle.SetPreciseDeadline3(secs, nsecs, typeVal);
+	}
+	
+	public static void Current1(int64 timerType)
+	{
+		QDeadlineTimerPtr.Current1(timerType);
 	}
 	
 }

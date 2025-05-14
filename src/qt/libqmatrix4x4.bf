@@ -17,17 +17,22 @@ public interface IQMatrix4x4
 {
 	void* NativePtr { get; }
 }
-public class QMatrix4x4 : IQMatrix4x4
+public struct QMatrix4x4Ptr : IQMatrix4x4, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQMatrix4x4 other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QMatrix4x4_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQMatrix4x4 other)
+	{
+		return .(CQt.QMatrix4x4_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QMatrix4x4_Delete(this.nativePtr);
 	}
@@ -39,7 +44,7 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void SetColumn(int32 index, IQVector4D value)
 	{
-		CQt.QMatrix4x4_SetColumn(this.nativePtr, index, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QMatrix4x4_SetColumn(this.nativePtr, index, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public void Row(int32 index)
@@ -49,7 +54,7 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void SetRow(int32 index, IQVector4D value)
 	{
-		CQt.QMatrix4x4_SetRow(this.nativePtr, index, (value == default) ? default : (void*)value.NativePtr);
+		CQt.QMatrix4x4_SetRow(this.nativePtr, index, (value == default || value.NativePtr == default) ? default : value.NativePtr);
 	}
 	
 	public bool IsAffine()
@@ -89,17 +94,17 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void* OperatorPlusAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorPlusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMatrix4x4_OperatorPlusAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorMinusAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorMinusAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMatrix4x4_OperatorMinusAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssign(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorMultiplyAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMatrix4x4_OperatorMultiplyAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void* OperatorMultiplyAssignWithFactor(float factor)
@@ -114,27 +119,27 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public bool OperatorEqual(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMatrix4x4_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQMatrix4x4 other)
 	{
-		return CQt.QMatrix4x4_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QMatrix4x4_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Scale(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Scale(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
+		CQt.QMatrix4x4_Scale(this.nativePtr, (vector == default || vector.NativePtr == default) ? default : vector.NativePtr);
 	}
 	
 	public void Translate(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Translate(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
+		CQt.QMatrix4x4_Translate(this.nativePtr, (vector == default || vector.NativePtr == default) ? default : vector.NativePtr);
 	}
 	
 	public void Rotate(float angle, IQVector3D vector)
 	{
-		CQt.QMatrix4x4_Rotate(this.nativePtr, angle, (vector == default) ? default : (void*)vector.NativePtr);
+		CQt.QMatrix4x4_Rotate(this.nativePtr, angle, (vector == default || vector.NativePtr == default) ? default : vector.NativePtr);
 	}
 	
 	public void Scale2(float x, float y)
@@ -169,17 +174,17 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void RotateWithQuaternion(IQQuaternion quaternion)
 	{
-		CQt.QMatrix4x4_RotateWithQuaternion(this.nativePtr, (quaternion == default) ? default : (void*)quaternion.NativePtr);
+		CQt.QMatrix4x4_RotateWithQuaternion(this.nativePtr, (quaternion == default || quaternion.NativePtr == default) ? default : quaternion.NativePtr);
 	}
 	
 	public void Ortho(IQRect rect)
 	{
-		CQt.QMatrix4x4_Ortho(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QMatrix4x4_Ortho(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void OrthoWithRect(IQRectF rect)
 	{
-		CQt.QMatrix4x4_OrthoWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QMatrix4x4_OrthoWithRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Ortho2(float left, float right, float bottom, float top, float nearPlane, float farPlane)
@@ -199,12 +204,12 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void LookAt(IQVector3D eye, IQVector3D center, IQVector3D up)
 	{
-		CQt.QMatrix4x4_LookAt(this.nativePtr, (eye == default) ? default : (void*)eye.NativePtr, (center == default) ? default : (void*)center.NativePtr, (up == default) ? default : (void*)up.NativePtr);
+		CQt.QMatrix4x4_LookAt(this.nativePtr, (eye == default || eye.NativePtr == default) ? default : eye.NativePtr, (center == default || center.NativePtr == default) ? default : center.NativePtr, (up == default || up.NativePtr == default) ? default : up.NativePtr);
 	}
 	
 	public void Viewport(IQRectF rect)
 	{
-		CQt.QMatrix4x4_Viewport(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QMatrix4x4_Viewport(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Viewport2(float left, float bottom, float width, float height)
@@ -234,37 +239,37 @@ public class QMatrix4x4 : IQMatrix4x4
 	
 	public void Map(IQPoint point)
 	{
-		CQt.QMatrix4x4_Map(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		CQt.QMatrix4x4_Map(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public void MapWithPoint(IQPointF point)
 	{
-		CQt.QMatrix4x4_MapWithPoint(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		CQt.QMatrix4x4_MapWithPoint(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public void Map2(IQVector3D point)
 	{
-		CQt.QMatrix4x4_Map2(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		CQt.QMatrix4x4_Map2(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public void MapVector(IQVector3D vector)
 	{
-		CQt.QMatrix4x4_MapVector(this.nativePtr, (vector == default) ? default : (void*)vector.NativePtr);
+		CQt.QMatrix4x4_MapVector(this.nativePtr, (vector == default || vector.NativePtr == default) ? default : vector.NativePtr);
 	}
 	
 	public void Map3(IQVector4D point)
 	{
-		CQt.QMatrix4x4_Map3(this.nativePtr, (point == default) ? default : (void*)point.NativePtr);
+		CQt.QMatrix4x4_Map3(this.nativePtr, (point == default || point.NativePtr == default) ? default : point.NativePtr);
 	}
 	
 	public void MapRect(IQRect rect)
 	{
-		CQt.QMatrix4x4_MapRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QMatrix4x4_MapRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void MapRectWithRect(IQRectF rect)
 	{
-		CQt.QMatrix4x4_MapRectWithRect(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QMatrix4x4_MapRectWithRect(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public float* Data()
@@ -320,6 +325,316 @@ public class QMatrix4x4 : IQMatrix4x4
 	public void Viewport6(float left, float bottom, float width, float height, float nearPlane, float farPlane)
 	{
 		CQt.QMatrix4x4_Viewport6(this.nativePtr, left, bottom, width, height, nearPlane, farPlane);
+	}
+	
+}
+public class QMatrix4x4
+{
+	public QMatrix4x4Ptr handle;
+	
+	public static implicit operator QMatrix4x4Ptr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQMatrix4x4 other)
+	{
+		this.handle = QMatrix4x4Ptr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void Column(int32 index)
+	{
+		this.handle.Column(index);
+	}
+	
+	public void SetColumn(int32 index, IQVector4D value)
+	{
+		this.handle.SetColumn(index, value);
+	}
+	
+	public void Row(int32 index)
+	{
+		this.handle.Row(index);
+	}
+	
+	public void SetRow(int32 index, IQVector4D value)
+	{
+		this.handle.SetRow(index, value);
+	}
+	
+	public bool IsAffine()
+	{
+		return this.handle.IsAffine();
+	}
+	
+	public bool IsIdentity()
+	{
+		return this.handle.IsIdentity();
+	}
+	
+	public void SetToIdentity()
+	{
+		this.handle.SetToIdentity();
+	}
+	
+	public void Fill(float value)
+	{
+		this.handle.Fill(value);
+	}
+	
+	public double Determinant()
+	{
+		return this.handle.Determinant();
+	}
+	
+	public void Inverted()
+	{
+		this.handle.Inverted();
+	}
+	
+	public void Transposed()
+	{
+		this.handle.Transposed();
+	}
+	
+	public void* OperatorPlusAssign(IQMatrix4x4 other)
+	{
+		return this.handle.OperatorPlusAssign(other);
+	}
+	
+	public void* OperatorMinusAssign(IQMatrix4x4 other)
+	{
+		return this.handle.OperatorMinusAssign(other);
+	}
+	
+	public void* OperatorMultiplyAssign(IQMatrix4x4 other)
+	{
+		return this.handle.OperatorMultiplyAssign(other);
+	}
+	
+	public void* OperatorMultiplyAssignWithFactor(float factor)
+	{
+		return this.handle.OperatorMultiplyAssignWithFactor(factor);
+	}
+	
+	public void* OperatorDivideAssign(float divisor)
+	{
+		return this.handle.OperatorDivideAssign(divisor);
+	}
+	
+	public bool OperatorEqual(IQMatrix4x4 other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQMatrix4x4 other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public void Scale(IQVector3D vector)
+	{
+		this.handle.Scale(vector);
+	}
+	
+	public void Translate(IQVector3D vector)
+	{
+		this.handle.Translate(vector);
+	}
+	
+	public void Rotate(float angle, IQVector3D vector)
+	{
+		this.handle.Rotate(angle, vector);
+	}
+	
+	public void Scale2(float x, float y)
+	{
+		this.handle.Scale2(x, y);
+	}
+	
+	public void Scale3(float x, float y, float z)
+	{
+		this.handle.Scale3(x, y, z);
+	}
+	
+	public void ScaleWithFactor(float factor)
+	{
+		this.handle.ScaleWithFactor(factor);
+	}
+	
+	public void Translate2(float x, float y)
+	{
+		this.handle.Translate2(x, y);
+	}
+	
+	public void Translate3(float x, float y, float z)
+	{
+		this.handle.Translate3(x, y, z);
+	}
+	
+	public void Rotate2(float angle, float x, float y)
+	{
+		this.handle.Rotate2(angle, x, y);
+	}
+	
+	public void RotateWithQuaternion(IQQuaternion quaternion)
+	{
+		this.handle.RotateWithQuaternion(quaternion);
+	}
+	
+	public void Ortho(IQRect rect)
+	{
+		this.handle.Ortho(rect);
+	}
+	
+	public void OrthoWithRect(IQRectF rect)
+	{
+		this.handle.OrthoWithRect(rect);
+	}
+	
+	public void Ortho2(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+	{
+		this.handle.Ortho2(left, right, bottom, top, nearPlane, farPlane);
+	}
+	
+	public void Frustum(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+	{
+		this.handle.Frustum(left, right, bottom, top, nearPlane, farPlane);
+	}
+	
+	public void Perspective(float verticalAngle, float aspectRatio, float nearPlane, float farPlane)
+	{
+		this.handle.Perspective(verticalAngle, aspectRatio, nearPlane, farPlane);
+	}
+	
+	public void LookAt(IQVector3D eye, IQVector3D center, IQVector3D up)
+	{
+		this.handle.LookAt(eye, center, up);
+	}
+	
+	public void Viewport(IQRectF rect)
+	{
+		this.handle.Viewport(rect);
+	}
+	
+	public void Viewport2(float left, float bottom, float width, float height)
+	{
+		this.handle.Viewport2(left, bottom, width, height);
+	}
+	
+	public void FlipCoordinates()
+	{
+		this.handle.FlipCoordinates();
+	}
+	
+	public void CopyDataTo(float* values)
+	{
+		this.handle.CopyDataTo(values);
+	}
+	
+	public void ToTransform()
+	{
+		this.handle.ToTransform();
+	}
+	
+	public void ToTransformWithDistanceToPlane(float distanceToPlane)
+	{
+		this.handle.ToTransformWithDistanceToPlane(distanceToPlane);
+	}
+	
+	public void Map(IQPoint point)
+	{
+		this.handle.Map(point);
+	}
+	
+	public void MapWithPoint(IQPointF point)
+	{
+		this.handle.MapWithPoint(point);
+	}
+	
+	public void Map2(IQVector3D point)
+	{
+		this.handle.Map2(point);
+	}
+	
+	public void MapVector(IQVector3D vector)
+	{
+		this.handle.MapVector(vector);
+	}
+	
+	public void Map3(IQVector4D point)
+	{
+		this.handle.Map3(point);
+	}
+	
+	public void MapRect(IQRect rect)
+	{
+		this.handle.MapRect(rect);
+	}
+	
+	public void MapRectWithRect(IQRectF rect)
+	{
+		this.handle.MapRectWithRect(rect);
+	}
+	
+	public float* Data()
+	{
+		return this.handle.Data();
+	}
+	
+	public float* Data2()
+	{
+		return this.handle.Data2();
+	}
+	
+	public float* ConstData()
+	{
+		return this.handle.ConstData();
+	}
+	
+	public void Optimize()
+	{
+		this.handle.Optimize();
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public void ProjectedRotate(float angle, float x, float y, float z)
+	{
+		this.handle.ProjectedRotate(angle, x, y, z);
+	}
+	
+	public int64 Flags()
+	{
+		return this.handle.Flags();
+	}
+	
+	public void Inverted1(bool* invertible)
+	{
+		this.handle.Inverted1(invertible);
+	}
+	
+	public void Rotate4(float angle, float x, float y, float z)
+	{
+		this.handle.Rotate4(angle, x, y, z);
+	}
+	
+	public void Viewport5(float left, float bottom, float width, float height, float nearPlane)
+	{
+		this.handle.Viewport5(left, bottom, width, height, nearPlane);
+	}
+	
+	public void Viewport6(float left, float bottom, float width, float height, float nearPlane, float farPlane)
+	{
+		this.handle.Viewport6(left, bottom, width, height, nearPlane, farPlane);
 	}
 	
 }

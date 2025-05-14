@@ -6,39 +6,44 @@ public interface IQFileInfo
 {
 	void* NativePtr { get; }
 }
-public class QFileInfo : IQFileInfo
+public struct QFileInfoPtr : IQFileInfo, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QFileInfo_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QFileInfo_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFileInfo_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQFileInfo fileinfo)
 	{
-		CQt.QFileInfo_OperatorAssign(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
+		CQt.QFileInfo_OperatorAssign(this.nativePtr, (fileinfo == default || fileinfo.NativePtr == default) ? default : fileinfo.NativePtr);
 	}
 	
 	public void Swap(IQFileInfo other)
 	{
-		CQt.QFileInfo_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QFileInfo_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQFileInfo fileinfo)
 	{
-		return CQt.QFileInfo_OperatorEqual(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
+		return CQt.QFileInfo_OperatorEqual(this.nativePtr, (fileinfo == default || fileinfo.NativePtr == default) ? default : fileinfo.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQFileInfo fileinfo)
 	{
-		return CQt.QFileInfo_OperatorNotEqual(this.nativePtr, (fileinfo == default) ? default : (void*)fileinfo.NativePtr);
+		return CQt.QFileInfo_OperatorNotEqual(this.nativePtr, (fileinfo == default || fileinfo.NativePtr == default) ? default : fileinfo.NativePtr);
 	}
 	
 	public void SetFile(String file)
@@ -48,12 +53,12 @@ public class QFileInfo : IQFileInfo
 	
 	public void SetFileWithFile(IQFileDevice file)
 	{
-		CQt.QFileInfo_SetFileWithFile(this.nativePtr, (file == default) ? default : (void*)file.NativePtr);
+		CQt.QFileInfo_SetFileWithFile(this.nativePtr, (file == default || file.NativePtr == default) ? default : file.NativePtr);
 	}
 	
 	public void SetFile2(IQDir dir, String file)
 	{
-		CQt.QFileInfo_SetFile2(this.nativePtr, (dir == default) ? default : (void*)dir.NativePtr, libqt_string(file));
+		CQt.QFileInfo_SetFile2(this.nativePtr, (dir == default || dir.NativePtr == default) ? default : dir.NativePtr, libqt_string(file));
 	}
 	
 	public bool Exists()
@@ -293,7 +298,7 @@ public class QFileInfo : IQFileInfo
 	
 	public void FileTime(int64 time)
 	{
-		CQt.QFileInfo_FileTime(this.nativePtr, time);
+		CQt.QFileInfo_FileTime(this.nativePtr, (int64)time);
 	}
 	
 	public bool Caching()
@@ -309,6 +314,316 @@ public class QFileInfo : IQFileInfo
 	public void Stat()
 	{
 		CQt.QFileInfo_Stat(this.nativePtr);
+	}
+	
+}
+public class QFileInfo
+{
+	public QFileInfoPtr handle;
+	
+	public static implicit operator QFileInfoPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QFileInfoPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQFileInfo fileinfo)
+	{
+		this.handle.OperatorAssign(fileinfo);
+	}
+	
+	public void Swap(IQFileInfo other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool OperatorEqual(IQFileInfo fileinfo)
+	{
+		return this.handle.OperatorEqual(fileinfo);
+	}
+	
+	public bool OperatorNotEqual(IQFileInfo fileinfo)
+	{
+		return this.handle.OperatorNotEqual(fileinfo);
+	}
+	
+	public void SetFile(String file)
+	{
+		this.handle.SetFile(file);
+	}
+	
+	public void SetFileWithFile(IQFileDevice file)
+	{
+		this.handle.SetFileWithFile(file);
+	}
+	
+	public void SetFile2(IQDir dir, String file)
+	{
+		this.handle.SetFile2(dir, file);
+	}
+	
+	public bool Exists()
+	{
+		return this.handle.Exists();
+	}
+	
+	public static bool ExistsWithFile(String file)
+	{
+		return QFileInfoPtr.ExistsWithFile(file);
+	}
+	
+	public void Refresh()
+	{
+		this.handle.Refresh();
+	}
+	
+	public libqt_string FilePath()
+	{
+		return this.handle.FilePath();
+	}
+	
+	public libqt_string AbsoluteFilePath()
+	{
+		return this.handle.AbsoluteFilePath();
+	}
+	
+	public libqt_string CanonicalFilePath()
+	{
+		return this.handle.CanonicalFilePath();
+	}
+	
+	public libqt_string FileName()
+	{
+		return this.handle.FileName();
+	}
+	
+	public libqt_string BaseName()
+	{
+		return this.handle.BaseName();
+	}
+	
+	public libqt_string CompleteBaseName()
+	{
+		return this.handle.CompleteBaseName();
+	}
+	
+	public libqt_string Suffix()
+	{
+		return this.handle.Suffix();
+	}
+	
+	public libqt_string BundleName()
+	{
+		return this.handle.BundleName();
+	}
+	
+	public libqt_string CompleteSuffix()
+	{
+		return this.handle.CompleteSuffix();
+	}
+	
+	public libqt_string Path()
+	{
+		return this.handle.Path();
+	}
+	
+	public libqt_string AbsolutePath()
+	{
+		return this.handle.AbsolutePath();
+	}
+	
+	public libqt_string CanonicalPath()
+	{
+		return this.handle.CanonicalPath();
+	}
+	
+	public void Dir()
+	{
+		this.handle.Dir();
+	}
+	
+	public void AbsoluteDir()
+	{
+		this.handle.AbsoluteDir();
+	}
+	
+	public bool IsReadable()
+	{
+		return this.handle.IsReadable();
+	}
+	
+	public bool IsWritable()
+	{
+		return this.handle.IsWritable();
+	}
+	
+	public bool IsExecutable()
+	{
+		return this.handle.IsExecutable();
+	}
+	
+	public bool IsHidden()
+	{
+		return this.handle.IsHidden();
+	}
+	
+	public bool IsNativePath()
+	{
+		return this.handle.IsNativePath();
+	}
+	
+	public bool IsRelative()
+	{
+		return this.handle.IsRelative();
+	}
+	
+	public bool IsAbsolute()
+	{
+		return this.handle.IsAbsolute();
+	}
+	
+	public bool MakeAbsolute()
+	{
+		return this.handle.MakeAbsolute();
+	}
+	
+	public bool IsFile()
+	{
+		return this.handle.IsFile();
+	}
+	
+	public bool IsDir()
+	{
+		return this.handle.IsDir();
+	}
+	
+	public bool IsSymLink()
+	{
+		return this.handle.IsSymLink();
+	}
+	
+	public bool IsSymbolicLink()
+	{
+		return this.handle.IsSymbolicLink();
+	}
+	
+	public bool IsShortcut()
+	{
+		return this.handle.IsShortcut();
+	}
+	
+	public bool IsAlias()
+	{
+		return this.handle.IsAlias();
+	}
+	
+	public bool IsJunction()
+	{
+		return this.handle.IsJunction();
+	}
+	
+	public bool IsRoot()
+	{
+		return this.handle.IsRoot();
+	}
+	
+	public bool IsBundle()
+	{
+		return this.handle.IsBundle();
+	}
+	
+	public libqt_string SymLinkTarget()
+	{
+		return this.handle.SymLinkTarget();
+	}
+	
+	public libqt_string JunctionTarget()
+	{
+		return this.handle.JunctionTarget();
+	}
+	
+	public libqt_string Owner()
+	{
+		return this.handle.Owner();
+	}
+	
+	public uint32 OwnerId()
+	{
+		return this.handle.OwnerId();
+	}
+	
+	public libqt_string Group()
+	{
+		return this.handle.Group();
+	}
+	
+	public uint32 GroupId()
+	{
+		return this.handle.GroupId();
+	}
+	
+	public bool Permission(int64 permissions)
+	{
+		return this.handle.Permission(permissions);
+	}
+	
+	public int64 Permissions()
+	{
+		return this.handle.Permissions();
+	}
+	
+	public int64 Size()
+	{
+		return this.handle.Size();
+	}
+	
+	public void BirthTime()
+	{
+		this.handle.BirthTime();
+	}
+	
+	public void MetadataChangeTime()
+	{
+		this.handle.MetadataChangeTime();
+	}
+	
+	public void LastModified()
+	{
+		this.handle.LastModified();
+	}
+	
+	public void LastRead()
+	{
+		this.handle.LastRead();
+	}
+	
+	public void FileTime(int64 time)
+	{
+		this.handle.FileTime(time);
+	}
+	
+	public bool Caching()
+	{
+		return this.handle.Caching();
+	}
+	
+	public void SetCaching(bool on)
+	{
+		this.handle.SetCaching(on);
+	}
+	
+	public void Stat()
+	{
+		this.handle.Stat();
 	}
 	
 }

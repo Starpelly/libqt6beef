@@ -60,12 +60,17 @@ public interface IQCborError
 {
 	void* NativePtr { get; }
 }
-public class QCborError : IQCborError
+public struct QCborErrorPtr : IQCborError, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QCborError_Delete(this.nativePtr);
 	}
@@ -78,6 +83,31 @@ public class QCborError : IQCborError
 	public libqt_string ToString()
 	{
 		return CQt.QCborError_ToString(this.nativePtr);
+	}
+	
+}
+public class QCborError
+{
+	public QCborErrorPtr handle;
+	
+	public static implicit operator QCborErrorPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public int64 ToQCborError__Code()
+	{
+		return this.handle.ToQCborError__Code();
+	}
+	
+	public libqt_string ToString()
+	{
+		return this.handle.ToString();
 	}
 	
 }

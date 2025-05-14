@@ -59,17 +59,22 @@ public interface IQAudioFormat
 {
 	void* NativePtr { get; }
 }
-public class QAudioFormat : IQAudioFormat
+public struct QAudioFormatPtr : IQAudioFormat, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this(IQAudioFormat other)
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QAudioFormat_new((other == default) ? default : (void*)other.NativePtr);
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New(IQAudioFormat other)
+	{
+		return .(CQt.QAudioFormat_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	
+	public void Dispose()
 	{
 		CQt.QAudioFormat_Delete(this.nativePtr);
 	}
@@ -91,7 +96,7 @@ public class QAudioFormat : IQAudioFormat
 	
 	public void SetChannelConfig(int64 config)
 	{
-		CQt.QAudioFormat_SetChannelConfig(this.nativePtr, config);
+		CQt.QAudioFormat_SetChannelConfig(this.nativePtr, (int64)config);
 	}
 	
 	public int64 ChannelConfig()
@@ -111,12 +116,12 @@ public class QAudioFormat : IQAudioFormat
 	
 	public int32 ChannelOffset(int64 channel)
 	{
-		return CQt.QAudioFormat_ChannelOffset(this.nativePtr, channel);
+		return CQt.QAudioFormat_ChannelOffset(this.nativePtr, (int64)channel);
 	}
 	
 	public void SetSampleFormat(int64 f)
 	{
-		CQt.QAudioFormat_SetSampleFormat(this.nativePtr, f);
+		CQt.QAudioFormat_SetSampleFormat(this.nativePtr, (int64)f);
 	}
 	
 	public int64 SampleFormat()
@@ -172,6 +177,126 @@ public class QAudioFormat : IQAudioFormat
 	public static int64 DefaultChannelConfigForChannelCount(int32 channelCount)
 	{
 		return CQt.QAudioFormat_DefaultChannelConfigForChannelCount(channelCount);
+	}
+	
+}
+public class QAudioFormat
+{
+	public QAudioFormatPtr handle;
+	
+	public static implicit operator QAudioFormatPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this(IQAudioFormat other)
+	{
+		this.handle = QAudioFormatPtr.New(other);
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public bool IsValid()
+	{
+		return this.handle.IsValid();
+	}
+	
+	public void SetSampleRate(int32 sampleRate)
+	{
+		this.handle.SetSampleRate(sampleRate);
+	}
+	
+	public int32 SampleRate()
+	{
+		return this.handle.SampleRate();
+	}
+	
+	public void SetChannelConfig(int64 config)
+	{
+		this.handle.SetChannelConfig(config);
+	}
+	
+	public int64 ChannelConfig()
+	{
+		return this.handle.ChannelConfig();
+	}
+	
+	public void SetChannelCount(int32 channelCount)
+	{
+		this.handle.SetChannelCount(channelCount);
+	}
+	
+	public int32 ChannelCount()
+	{
+		return this.handle.ChannelCount();
+	}
+	
+	public int32 ChannelOffset(int64 channel)
+	{
+		return this.handle.ChannelOffset(channel);
+	}
+	
+	public void SetSampleFormat(int64 f)
+	{
+		this.handle.SetSampleFormat(f);
+	}
+	
+	public int64 SampleFormat()
+	{
+		return this.handle.SampleFormat();
+	}
+	
+	public int32 BytesForDuration(int64 microseconds)
+	{
+		return this.handle.BytesForDuration(microseconds);
+	}
+	
+	public int64 DurationForBytes(int32 byteCount)
+	{
+		return this.handle.DurationForBytes(byteCount);
+	}
+	
+	public int32 BytesForFrames(int32 frameCount)
+	{
+		return this.handle.BytesForFrames(frameCount);
+	}
+	
+	public int32 FramesForBytes(int32 byteCount)
+	{
+		return this.handle.FramesForBytes(byteCount);
+	}
+	
+	public int32 FramesForDuration(int64 microseconds)
+	{
+		return this.handle.FramesForDuration(microseconds);
+	}
+	
+	public int64 DurationForFrames(int32 frameCount)
+	{
+		return this.handle.DurationForFrames(frameCount);
+	}
+	
+	public int32 BytesPerFrame()
+	{
+		return this.handle.BytesPerFrame();
+	}
+	
+	public int32 BytesPerSample()
+	{
+		return this.handle.BytesPerSample();
+	}
+	
+	public float NormalizedSampleValue(void* sample)
+	{
+		return this.handle.NormalizedSampleValue(sample);
+	}
+	
+	public static int64 DefaultChannelConfigForChannelCount(int32 channelCount)
+	{
+		return QAudioFormatPtr.DefaultChannelConfigForChannelCount(channelCount);
 	}
 	
 }

@@ -6,29 +6,34 @@ public interface IQPixmap
 {
 	void* NativePtr { get; }
 }
-public class QPixmap : IQPixmap, IQPaintDevice
+public struct QPixmapPtr : IQPixmap, IDisposable, IQPaintDevice
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QPixmap_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QPixmap_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QPixmap_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQPixmap param1)
 	{
-		CQt.QPixmap_OperatorAssign(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QPixmap_OperatorAssign(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public void Swap(IQPixmap other)
 	{
-		CQt.QPixmap_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QPixmap_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void ToQVariant()
@@ -41,7 +46,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 		return CQt.QPixmap_IsNull(this.nativePtr);
 	}
 	
-	public virtual int32 DevType()
+	public int32 DevType()
 	{
 		return CQt.QPixmap_DevType(this.nativePtr);
 	}
@@ -88,7 +93,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void SetMask(IQBitmap mask)
 	{
-		CQt.QPixmap_SetMask(this.nativePtr, (mask == default) ? default : (void*)mask.NativePtr);
+		CQt.QPixmap_SetMask(this.nativePtr, (mask == default || mask.NativePtr == default) ? default : mask.NativePtr);
 	}
 	
 	public double DevicePixelRatio()
@@ -123,7 +128,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void CreateMaskFromColor(IQColor maskColor)
 	{
-		CQt.QPixmap_CreateMaskFromColor(this.nativePtr, (maskColor == default) ? default : (void*)maskColor.NativePtr);
+		CQt.QPixmap_CreateMaskFromColor(this.nativePtr, (maskColor == default || maskColor.NativePtr == default) ? default : maskColor.NativePtr);
 	}
 	
 	public void Scaled(int32 w, int32 h)
@@ -133,7 +138,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void ScaledWithQSize(IQSize s)
 	{
-		CQt.QPixmap_ScaledWithQSize(this.nativePtr, (s == default) ? default : (void*)s.NativePtr);
+		CQt.QPixmap_ScaledWithQSize(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr);
 	}
 	
 	public void ScaledToWidth(int32 w)
@@ -148,12 +153,12 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void Transformed(IQTransform param1)
 	{
-		CQt.QPixmap_Transformed(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr);
+		CQt.QPixmap_Transformed(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr);
 	}
 	
 	public static void TrueMatrix(IQTransform m, int32 w, int32 h)
 	{
-		CQt.QPixmap_TrueMatrix((m == default) ? default : (void*)m.NativePtr, w, h);
+		CQt.QPixmap_TrueMatrix((m == default || m.NativePtr == default) ? default : m.NativePtr, w, h);
 	}
 	
 	public void ToImage()
@@ -163,12 +168,12 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public static void FromImage(IQImage image)
 	{
-		CQt.QPixmap_FromImage((image == default) ? default : (void*)image.NativePtr);
+		CQt.QPixmap_FromImage((image == default || image.NativePtr == default) ? default : image.NativePtr);
 	}
 	
 	public static void FromImageReader(IQImageReader imageReader)
 	{
-		CQt.QPixmap_FromImageReader((imageReader == null) ? null : (void*)imageReader.NativePtr);
+		CQt.QPixmap_FromImageReader((imageReader == default || imageReader.NativePtr == default) ? default : imageReader.NativePtr);
 	}
 	
 	public bool Load(String fileName)
@@ -193,12 +198,12 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public bool SaveWithDevice(IQIODevice device)
 	{
-		return CQt.QPixmap_SaveWithDevice(this.nativePtr, (device == null) ? null : (void*)device.NativePtr);
+		return CQt.QPixmap_SaveWithDevice(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr);
 	}
 	
 	public bool ConvertFromImage(IQImage img)
 	{
-		return CQt.QPixmap_ConvertFromImage(this.nativePtr, (img == default) ? default : (void*)img.NativePtr);
+		return CQt.QPixmap_ConvertFromImage(this.nativePtr, (img == default || img.NativePtr == default) ? default : img.NativePtr);
 	}
 	
 	public void Copy(int32 x, int32 y, int32 width, int32 height)
@@ -218,7 +223,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void Scroll2(int32 dx, int32 dy, IQRect rect)
 	{
-		CQt.QPixmap_Scroll2(this.nativePtr, dx, dy, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QPixmap_Scroll2(this.nativePtr, dx, dy, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public int64 CacheKey()
@@ -241,7 +246,7 @@ public class QPixmap : IQPixmap, IQPaintDevice
 		return CQt.QPixmap_IsQBitmap(this.nativePtr);
 	}
 	
-	public virtual void* PaintEngine()
+	public void* PaintEngine()
 	{
 		return CQt.QPixmap_PaintEngine(this.nativePtr);
 	}
@@ -251,14 +256,14 @@ public class QPixmap : IQPixmap, IQPaintDevice
 		return CQt.QPixmap_OperatorNot(this.nativePtr);
 	}
 	
-	public virtual int32 Metric(int64 param1)
+	public int32 Metric(int64 param1)
 	{
-		return CQt.QPixmap_Metric(this.nativePtr, param1);
+		return CQt.QPixmap_Metric(this.nativePtr, (int64)param1);
 	}
 	
 	public void Fill1(IQColor fillColor)
 	{
-		CQt.QPixmap_Fill1(this.nativePtr, (fillColor == default) ? default : (void*)fillColor.NativePtr);
+		CQt.QPixmap_Fill1(this.nativePtr, (fillColor == default || fillColor.NativePtr == default) ? default : fillColor.NativePtr);
 	}
 	
 	public void CreateHeuristicMask1(bool clipTight)
@@ -268,52 +273,52 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public void CreateMaskFromColor2(IQColor maskColor, int64 mode)
 	{
-		CQt.QPixmap_CreateMaskFromColor2(this.nativePtr, (maskColor == default) ? default : (void*)maskColor.NativePtr, mode);
+		CQt.QPixmap_CreateMaskFromColor2(this.nativePtr, (maskColor == default || maskColor.NativePtr == default) ? default : maskColor.NativePtr, (int64)mode);
 	}
 	
 	public void Scaled3(int32 w, int32 h, int64 aspectMode)
 	{
-		CQt.QPixmap_Scaled3(this.nativePtr, w, h, aspectMode);
+		CQt.QPixmap_Scaled3(this.nativePtr, w, h, (int64)aspectMode);
 	}
 	
 	public void Scaled4(int32 w, int32 h, int64 aspectMode, int64 mode)
 	{
-		CQt.QPixmap_Scaled4(this.nativePtr, w, h, aspectMode, mode);
+		CQt.QPixmap_Scaled4(this.nativePtr, w, h, (int64)aspectMode, (int64)mode);
 	}
 	
 	public void Scaled2(IQSize s, int64 aspectMode)
 	{
-		CQt.QPixmap_Scaled2(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode);
+		CQt.QPixmap_Scaled2(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)aspectMode);
 	}
 	
 	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
 	{
-		CQt.QPixmap_Scaled32(this.nativePtr, (s == default) ? default : (void*)s.NativePtr, aspectMode, mode);
+		CQt.QPixmap_Scaled32(this.nativePtr, (s == default || s.NativePtr == default) ? default : s.NativePtr, (int64)aspectMode, (int64)mode);
 	}
 	
 	public void ScaledToWidth2(int32 w, int64 mode)
 	{
-		CQt.QPixmap_ScaledToWidth2(this.nativePtr, w, mode);
+		CQt.QPixmap_ScaledToWidth2(this.nativePtr, w, (int64)mode);
 	}
 	
 	public void ScaledToHeight2(int32 h, int64 mode)
 	{
-		CQt.QPixmap_ScaledToHeight2(this.nativePtr, h, mode);
+		CQt.QPixmap_ScaledToHeight2(this.nativePtr, h, (int64)mode);
 	}
 	
 	public void Transformed2(IQTransform param1, int64 mode)
 	{
-		CQt.QPixmap_Transformed2(this.nativePtr, (param1 == default) ? default : (void*)param1.NativePtr, mode);
+		CQt.QPixmap_Transformed2(this.nativePtr, (param1 == default || param1.NativePtr == default) ? default : param1.NativePtr, (int64)mode);
 	}
 	
 	public static void FromImage2(IQImage image, int64 flags)
 	{
-		CQt.QPixmap_FromImage2((image == default) ? default : (void*)image.NativePtr, flags);
+		CQt.QPixmap_FromImage2((image == default || image.NativePtr == default) ? default : image.NativePtr, flags);
 	}
 	
 	public static void FromImageReader2(IQImageReader imageReader, int64 flags)
 	{
-		CQt.QPixmap_FromImageReader2((imageReader == null) ? null : (void*)imageReader.NativePtr, flags);
+		CQt.QPixmap_FromImageReader2((imageReader == default || imageReader.NativePtr == default) ? default : imageReader.NativePtr, flags);
 	}
 	
 	public bool Load2(String fileName, char8* format)
@@ -358,32 +363,32 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	
 	public bool Save22(IQIODevice device, char8* format)
 	{
-		return CQt.QPixmap_Save22(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format);
+		return CQt.QPixmap_Save22(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr, format);
 	}
 	
 	public bool Save32(IQIODevice device, char8* format, int32 quality)
 	{
-		return CQt.QPixmap_Save32(this.nativePtr, (device == null) ? null : (void*)device.NativePtr, format, quality);
+		return CQt.QPixmap_Save32(this.nativePtr, (device == default || device.NativePtr == default) ? default : device.NativePtr, format, quality);
 	}
 	
 	public bool ConvertFromImage2(IQImage img, int64 flags)
 	{
-		return CQt.QPixmap_ConvertFromImage2(this.nativePtr, (img == default) ? default : (void*)img.NativePtr, flags);
+		return CQt.QPixmap_ConvertFromImage2(this.nativePtr, (img == default || img.NativePtr == default) ? default : img.NativePtr, flags);
 	}
 	
 	public void Copy1(IQRect rect)
 	{
-		CQt.QPixmap_Copy1(this.nativePtr, (rect == default) ? default : (void*)rect.NativePtr);
+		CQt.QPixmap_Copy1(this.nativePtr, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr);
 	}
 	
 	public void Scroll7(int32 dx, int32 dy, int32 x, int32 y, int32 width, int32 height, IQRegion exposed)
 	{
-		CQt.QPixmap_Scroll7(this.nativePtr, dx, dy, x, y, width, height, (exposed == null) ? null : (void*)exposed.NativePtr);
+		CQt.QPixmap_Scroll7(this.nativePtr, dx, dy, x, y, width, height, (exposed == default || exposed.NativePtr == default) ? default : exposed.NativePtr);
 	}
 	
 	public void Scroll4(int32 dx, int32 dy, IQRect rect, IQRegion exposed)
 	{
-		CQt.QPixmap_Scroll4(this.nativePtr, dx, dy, (rect == default) ? default : (void*)rect.NativePtr, (exposed == null) ? null : (void*)exposed.NativePtr);
+		CQt.QPixmap_Scroll4(this.nativePtr, dx, dy, (rect == default || rect.NativePtr == default) ? default : rect.NativePtr, (exposed == default || exposed.NativePtr == default) ? default : exposed.NativePtr);
 	}
 	
 	public bool PaintingActive()
@@ -434,6 +439,441 @@ public class QPixmap : IQPixmap, IQPaintDevice
 	public static double DevicePixelRatioFScale()
 	{
 		return CQt.QPaintDevice_DevicePixelRatioFScale();
+	}
+	
+}
+public class QPixmap
+{
+	public QPixmapPtr handle;
+	
+	public static implicit operator QPixmapPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QPixmapPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQPixmap param1)
+	{
+		this.handle.OperatorAssign(param1);
+	}
+	
+	public void Swap(IQPixmap other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public void ToQVariant()
+	{
+		this.handle.ToQVariant();
+	}
+	
+	public bool IsNull()
+	{
+		return this.handle.IsNull();
+	}
+	
+	public virtual int32 DevType()
+	{
+		return this.handle.DevType();
+	}
+	
+	public int32 Width()
+	{
+		return this.handle.Width();
+	}
+	
+	public int32 Height()
+	{
+		return this.handle.Height();
+	}
+	
+	public void Size()
+	{
+		this.handle.Size();
+	}
+	
+	public void Rect()
+	{
+		this.handle.Rect();
+	}
+	
+	public int32 Depth()
+	{
+		return this.handle.Depth();
+	}
+	
+	public static int32 DefaultDepth()
+	{
+		return QPixmapPtr.DefaultDepth();
+	}
+	
+	public void Fill()
+	{
+		this.handle.Fill();
+	}
+	
+	public void Mask()
+	{
+		this.handle.Mask();
+	}
+	
+	public void SetMask(IQBitmap mask)
+	{
+		this.handle.SetMask(mask);
+	}
+	
+	public double DevicePixelRatio()
+	{
+		return this.handle.DevicePixelRatio();
+	}
+	
+	public void SetDevicePixelRatio(double scaleFactor)
+	{
+		this.handle.SetDevicePixelRatio(scaleFactor);
+	}
+	
+	public void DeviceIndependentSize()
+	{
+		this.handle.DeviceIndependentSize();
+	}
+	
+	public bool HasAlpha()
+	{
+		return this.handle.HasAlpha();
+	}
+	
+	public bool HasAlphaChannel()
+	{
+		return this.handle.HasAlphaChannel();
+	}
+	
+	public void CreateHeuristicMask()
+	{
+		this.handle.CreateHeuristicMask();
+	}
+	
+	public void CreateMaskFromColor(IQColor maskColor)
+	{
+		this.handle.CreateMaskFromColor(maskColor);
+	}
+	
+	public void Scaled(int32 w, int32 h)
+	{
+		this.handle.Scaled(w, h);
+	}
+	
+	public void ScaledWithQSize(IQSize s)
+	{
+		this.handle.ScaledWithQSize(s);
+	}
+	
+	public void ScaledToWidth(int32 w)
+	{
+		this.handle.ScaledToWidth(w);
+	}
+	
+	public void ScaledToHeight(int32 h)
+	{
+		this.handle.ScaledToHeight(h);
+	}
+	
+	public void Transformed(IQTransform param1)
+	{
+		this.handle.Transformed(param1);
+	}
+	
+	public static void TrueMatrix(IQTransform m, int32 w, int32 h)
+	{
+		QPixmapPtr.TrueMatrix(m, w, h);
+	}
+	
+	public void ToImage()
+	{
+		this.handle.ToImage();
+	}
+	
+	public static void FromImage(IQImage image)
+	{
+		QPixmapPtr.FromImage(image);
+	}
+	
+	public static void FromImageReader(IQImageReader imageReader)
+	{
+		QPixmapPtr.FromImageReader(imageReader);
+	}
+	
+	public bool Load(String fileName)
+	{
+		return this.handle.Load(fileName);
+	}
+	
+	public bool LoadFromData(uint8* buf, uint32 lenVal)
+	{
+		return this.handle.LoadFromData(buf, lenVal);
+	}
+	
+	public bool LoadFromDataWithData(String data)
+	{
+		return this.handle.LoadFromDataWithData(data);
+	}
+	
+	public bool Save(String fileName)
+	{
+		return this.handle.Save(fileName);
+	}
+	
+	public bool SaveWithDevice(IQIODevice device)
+	{
+		return this.handle.SaveWithDevice(device);
+	}
+	
+	public bool ConvertFromImage(IQImage img)
+	{
+		return this.handle.ConvertFromImage(img);
+	}
+	
+	public void Copy(int32 x, int32 y, int32 width, int32 height)
+	{
+		this.handle.Copy(x, y, width, height);
+	}
+	
+	public void Copy2()
+	{
+		this.handle.Copy2();
+	}
+	
+	public void Scroll(int32 dx, int32 dy, int32 x, int32 y, int32 width, int32 height)
+	{
+		this.handle.Scroll(dx, dy, x, y, width, height);
+	}
+	
+	public void Scroll2(int32 dx, int32 dy, IQRect rect)
+	{
+		this.handle.Scroll2(dx, dy, rect);
+	}
+	
+	public int64 CacheKey()
+	{
+		return this.handle.CacheKey();
+	}
+	
+	public bool IsDetached()
+	{
+		return this.handle.IsDetached();
+	}
+	
+	public void Detach()
+	{
+		this.handle.Detach();
+	}
+	
+	public bool IsQBitmap()
+	{
+		return this.handle.IsQBitmap();
+	}
+	
+	public virtual void* PaintEngine()
+	{
+		return this.handle.PaintEngine();
+	}
+	
+	public bool OperatorNot()
+	{
+		return this.handle.OperatorNot();
+	}
+	
+	public virtual int32 Metric(int64 param1)
+	{
+		return this.handle.Metric(param1);
+	}
+	
+	public void Fill1(IQColor fillColor)
+	{
+		this.handle.Fill1(fillColor);
+	}
+	
+	public void CreateHeuristicMask1(bool clipTight)
+	{
+		this.handle.CreateHeuristicMask1(clipTight);
+	}
+	
+	public void CreateMaskFromColor2(IQColor maskColor, int64 mode)
+	{
+		this.handle.CreateMaskFromColor2(maskColor, mode);
+	}
+	
+	public void Scaled3(int32 w, int32 h, int64 aspectMode)
+	{
+		this.handle.Scaled3(w, h, aspectMode);
+	}
+	
+	public void Scaled4(int32 w, int32 h, int64 aspectMode, int64 mode)
+	{
+		this.handle.Scaled4(w, h, aspectMode, mode);
+	}
+	
+	public void Scaled2(IQSize s, int64 aspectMode)
+	{
+		this.handle.Scaled2(s, aspectMode);
+	}
+	
+	public void Scaled32(IQSize s, int64 aspectMode, int64 mode)
+	{
+		this.handle.Scaled32(s, aspectMode, mode);
+	}
+	
+	public void ScaledToWidth2(int32 w, int64 mode)
+	{
+		this.handle.ScaledToWidth2(w, mode);
+	}
+	
+	public void ScaledToHeight2(int32 h, int64 mode)
+	{
+		this.handle.ScaledToHeight2(h, mode);
+	}
+	
+	public void Transformed2(IQTransform param1, int64 mode)
+	{
+		this.handle.Transformed2(param1, mode);
+	}
+	
+	public static void FromImage2(IQImage image, int64 flags)
+	{
+		QPixmapPtr.FromImage2(image, flags);
+	}
+	
+	public static void FromImageReader2(IQImageReader imageReader, int64 flags)
+	{
+		QPixmapPtr.FromImageReader2(imageReader, flags);
+	}
+	
+	public bool Load2(String fileName, char8* format)
+	{
+		return this.handle.Load2(fileName, format);
+	}
+	
+	public bool Load3(String fileName, char8* format, int64 flags)
+	{
+		return this.handle.Load3(fileName, format, flags);
+	}
+	
+	public bool LoadFromData3(uint8* buf, uint32 lenVal, char8* format)
+	{
+		return this.handle.LoadFromData3(buf, lenVal, format);
+	}
+	
+	public bool LoadFromData4(uint8* buf, uint32 lenVal, char8* format, int64 flags)
+	{
+		return this.handle.LoadFromData4(buf, lenVal, format, flags);
+	}
+	
+	public bool LoadFromData2(String data, char8* format)
+	{
+		return this.handle.LoadFromData2(data, format);
+	}
+	
+	public bool LoadFromData32(String data, char8* format, int64 flags)
+	{
+		return this.handle.LoadFromData32(data, format, flags);
+	}
+	
+	public bool Save2(String fileName, char8* format)
+	{
+		return this.handle.Save2(fileName, format);
+	}
+	
+	public bool Save3(String fileName, char8* format, int32 quality)
+	{
+		return this.handle.Save3(fileName, format, quality);
+	}
+	
+	public bool Save22(IQIODevice device, char8* format)
+	{
+		return this.handle.Save22(device, format);
+	}
+	
+	public bool Save32(IQIODevice device, char8* format, int32 quality)
+	{
+		return this.handle.Save32(device, format, quality);
+	}
+	
+	public bool ConvertFromImage2(IQImage img, int64 flags)
+	{
+		return this.handle.ConvertFromImage2(img, flags);
+	}
+	
+	public void Copy1(IQRect rect)
+	{
+		this.handle.Copy1(rect);
+	}
+	
+	public void Scroll7(int32 dx, int32 dy, int32 x, int32 y, int32 width, int32 height, IQRegion exposed)
+	{
+		this.handle.Scroll7(dx, dy, x, y, width, height, exposed);
+	}
+	
+	public void Scroll4(int32 dx, int32 dy, IQRect rect, IQRegion exposed)
+	{
+		this.handle.Scroll4(dx, dy, rect, exposed);
+	}
+	
+	public bool PaintingActive()
+	{
+		return this.handle.PaintingActive();
+	}
+	
+	public int32 WidthMM()
+	{
+		return this.handle.WidthMM();
+	}
+	
+	public int32 HeightMM()
+	{
+		return this.handle.HeightMM();
+	}
+	
+	public int32 LogicalDpiX()
+	{
+		return this.handle.LogicalDpiX();
+	}
+	
+	public int32 LogicalDpiY()
+	{
+		return this.handle.LogicalDpiY();
+	}
+	
+	public int32 PhysicalDpiX()
+	{
+		return this.handle.PhysicalDpiX();
+	}
+	
+	public int32 PhysicalDpiY()
+	{
+		return this.handle.PhysicalDpiY();
+	}
+	
+	public double DevicePixelRatioF()
+	{
+		return this.handle.DevicePixelRatioF();
+	}
+	
+	public int32 ColorCount()
+	{
+		return this.handle.ColorCount();
+	}
+	
+	public static double DevicePixelRatioFScale()
+	{
+		return QPixmapPtr.DevicePixelRatioFScale();
 	}
 	
 }

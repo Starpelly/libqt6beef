@@ -59,39 +59,44 @@ public interface IQEasingCurve
 {
 	void* NativePtr { get; }
 }
-public class QEasingCurve : IQEasingCurve
+public struct QEasingCurvePtr : IQEasingCurve, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QEasingCurve_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QEasingCurve_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QEasingCurve_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQEasingCurve other)
 	{
-		CQt.QEasingCurve_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QEasingCurve_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void Swap(IQEasingCurve other)
 	{
-		CQt.QEasingCurve_Swap(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QEasingCurve_Swap(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorEqual(IQEasingCurve other)
 	{
-		return CQt.QEasingCurve_OperatorEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QEasingCurve_OperatorEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public bool OperatorNotEqual(IQEasingCurve other)
 	{
-		return CQt.QEasingCurve_OperatorNotEqual(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		return CQt.QEasingCurve_OperatorNotEqual(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public double Amplitude()
@@ -126,12 +131,12 @@ public class QEasingCurve : IQEasingCurve
 	
 	public void AddCubicBezierSegment(IQPointF c1, IQPointF c2, IQPointF endPoint)
 	{
-		CQt.QEasingCurve_AddCubicBezierSegment(this.nativePtr, (c1 == default) ? default : (void*)c1.NativePtr, (c2 == default) ? default : (void*)c2.NativePtr, (endPoint == default) ? default : (void*)endPoint.NativePtr);
+		CQt.QEasingCurve_AddCubicBezierSegment(this.nativePtr, (c1 == default || c1.NativePtr == default) ? default : c1.NativePtr, (c2 == default || c2.NativePtr == default) ? default : c2.NativePtr, (endPoint == default || endPoint.NativePtr == default) ? default : endPoint.NativePtr);
 	}
 	
 	public void AddTCBSegment(IQPointF nextPoint, double t, double c, double b)
 	{
-		CQt.QEasingCurve_AddTCBSegment(this.nativePtr, (nextPoint == default) ? default : (void*)nextPoint.NativePtr, t, c, b);
+		CQt.QEasingCurve_AddTCBSegment(this.nativePtr, (nextPoint == default || nextPoint.NativePtr == default) ? default : nextPoint.NativePtr, t, c, b);
 	}
 	
 	public void[] ToCubicSpline()
@@ -146,12 +151,112 @@ public class QEasingCurve : IQEasingCurve
 	
 	public void SetType(int64 typeVal)
 	{
-		CQt.QEasingCurve_SetType(this.nativePtr, typeVal);
+		CQt.QEasingCurve_SetType(this.nativePtr, (int64)typeVal);
 	}
 	
 	public double ValueForProgress(double progress)
 	{
 		return CQt.QEasingCurve_ValueForProgress(this.nativePtr, progress);
+	}
+	
+}
+public class QEasingCurve
+{
+	public QEasingCurvePtr handle;
+	
+	public static implicit operator QEasingCurvePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QEasingCurvePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQEasingCurve other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void Swap(IQEasingCurve other)
+	{
+		this.handle.Swap(other);
+	}
+	
+	public bool OperatorEqual(IQEasingCurve other)
+	{
+		return this.handle.OperatorEqual(other);
+	}
+	
+	public bool OperatorNotEqual(IQEasingCurve other)
+	{
+		return this.handle.OperatorNotEqual(other);
+	}
+	
+	public double Amplitude()
+	{
+		return this.handle.Amplitude();
+	}
+	
+	public void SetAmplitude(double amplitude)
+	{
+		this.handle.SetAmplitude(amplitude);
+	}
+	
+	public double Period()
+	{
+		return this.handle.Period();
+	}
+	
+	public void SetPeriod(double period)
+	{
+		this.handle.SetPeriod(period);
+	}
+	
+	public double Overshoot()
+	{
+		return this.handle.Overshoot();
+	}
+	
+	public void SetOvershoot(double overshoot)
+	{
+		this.handle.SetOvershoot(overshoot);
+	}
+	
+	public void AddCubicBezierSegment(IQPointF c1, IQPointF c2, IQPointF endPoint)
+	{
+		this.handle.AddCubicBezierSegment(c1, c2, endPoint);
+	}
+	
+	public void AddTCBSegment(IQPointF nextPoint, double t, double c, double b)
+	{
+		this.handle.AddTCBSegment(nextPoint, t, c, b);
+	}
+	
+	public void[] ToCubicSpline()
+	{
+		return this.handle.ToCubicSpline();
+	}
+	
+	public int64 Type()
+	{
+		return this.handle.Type();
+	}
+	
+	public void SetType(int64 typeVal)
+	{
+		this.handle.SetType(typeVal);
+	}
+	
+	public double ValueForProgress(double progress)
+	{
+		return this.handle.ValueForProgress(progress);
 	}
 	
 }

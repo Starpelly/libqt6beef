@@ -6,19 +6,44 @@ public interface IQFactoryInterface
 {
 	void* NativePtr { get; }
 }
-public class QFactoryInterface : IQFactoryInterface
+public struct QFactoryInterfacePtr : IQFactoryInterface, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public ~this()
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public void Dispose()
 	{
 		CQt.QFactoryInterface_Delete(this.nativePtr);
 	}
 	
-	public virtual libqt_string[] Keys()
+	public libqt_string[] Keys()
 	{
 		return CQt.QFactoryInterface_Keys(this.nativePtr);
+	}
+	
+}
+public class QFactoryInterface
+{
+	public QFactoryInterfacePtr handle;
+	
+	public static implicit operator QFactoryInterfacePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual libqt_string[] Keys()
+	{
+		return this.handle.Keys();
 	}
 	
 }

@@ -6,22 +6,27 @@ public interface IQRunnable
 {
 	void* NativePtr { get; }
 }
-public class QRunnable : IQRunnable
+public struct QRunnablePtr : IQRunnable, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QRunnable_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QRunnable_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QRunnable_Delete(this.nativePtr);
 	}
 	
-	public virtual void Run()
+	public void Run()
 	{
 		CQt.QRunnable_Run(this.nativePtr);
 	}
@@ -34,6 +39,41 @@ public class QRunnable : IQRunnable
 	public void SetAutoDelete(bool autoDelete)
 	{
 		CQt.QRunnable_SetAutoDelete(this.nativePtr, autoDelete);
+	}
+	
+}
+public class QRunnable
+{
+	public QRunnablePtr handle;
+	
+	public static implicit operator QRunnablePtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QRunnablePtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public virtual void Run()
+	{
+		this.handle.Run();
+	}
+	
+	public bool AutoDelete()
+	{
+		return this.handle.AutoDelete();
+	}
+	
+	public void SetAutoDelete(bool autoDelete)
+	{
+		this.handle.SetAutoDelete(autoDelete);
 	}
 	
 }

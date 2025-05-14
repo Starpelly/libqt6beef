@@ -6,18 +6,41 @@ public interface IQAbstractConcatenable
 {
 	void* NativePtr { get; }
 }
-public class QAbstractConcatenable : IQAbstractConcatenable
+public struct QAbstractConcatenablePtr : IQAbstractConcatenable, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQAbstractConcatenable other)
+	{
+		return .(CQt.QAbstractConcatenable_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+	public void Dispose()
+	{
+		CQt.QAbstractConcatenable_Delete(this.nativePtr);
+	}
+}
+public class QAbstractConcatenable
+{
+	public QAbstractConcatenablePtr handle;
+	
+	public static implicit operator QAbstractConcatenablePtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQAbstractConcatenable other)
 	{
-		this.nativePtr = CQt.QAbstractConcatenable_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QAbstractConcatenablePtr.New(other);
 	}
 	public ~this()
 	{
-		CQt.QAbstractConcatenable_Delete(this.nativePtr);
+		this.handle.Dispose();
 	}
 }
 extension CQt

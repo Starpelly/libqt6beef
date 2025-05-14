@@ -6,24 +6,29 @@ public interface IQByteArrayMatcher
 {
 	void* NativePtr { get; }
 }
-public class QByteArrayMatcher : IQByteArrayMatcher
+public struct QByteArrayMatcherPtr : IQByteArrayMatcher, IDisposable
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
-	public this()
+	public this(void* ptr)
 	{
-		this.nativePtr = CQt.QByteArrayMatcher_new();
+		this.nativePtr = ptr;
 	}
 	
-	public ~this()
+	public static Self New()
+	{
+		return .(CQt.QByteArrayMatcher_new());
+	}
+	
+	public void Dispose()
 	{
 		CQt.QByteArrayMatcher_Delete(this.nativePtr);
 	}
 	
 	public void OperatorAssign(IQByteArrayMatcher other)
 	{
-		CQt.QByteArrayMatcher_OperatorAssign(this.nativePtr, (other == default) ? default : (void*)other.NativePtr);
+		CQt.QByteArrayMatcher_OperatorAssign(this.nativePtr, (other == default || other.NativePtr == default) ? default : other.NativePtr);
 	}
 	
 	public void SetPattern(String pattern)
@@ -36,9 +41,9 @@ public class QByteArrayMatcher : IQByteArrayMatcher
 		return CQt.QByteArrayMatcher_IndexIn(this.nativePtr, str, lenVal);
 	}
 	
-	public int32 IndexInWithData(IQByteArrayView data)
+	public int32 IndexInWithData(char8* data)
 	{
-		return CQt.QByteArrayMatcher_IndexInWithData(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr);
+		return CQt.QByteArrayMatcher_IndexInWithData(this.nativePtr, data);
 	}
 	
 	public libqt_string Pattern()
@@ -51,9 +56,64 @@ public class QByteArrayMatcher : IQByteArrayMatcher
 		return CQt.QByteArrayMatcher_IndexIn3(this.nativePtr, str, lenVal, from);
 	}
 	
-	public int32 IndexIn2(IQByteArrayView data, int32 from)
+	public int32 IndexIn2(char8* data, int32 from)
 	{
-		return CQt.QByteArrayMatcher_IndexIn2(this.nativePtr, (data == default) ? default : (char8*)data.NativePtr, from);
+		return CQt.QByteArrayMatcher_IndexIn2(this.nativePtr, data, from);
+	}
+	
+}
+public class QByteArrayMatcher
+{
+	public QByteArrayMatcherPtr handle;
+	
+	public static implicit operator QByteArrayMatcherPtr(Self self)
+	{
+		return self.handle;
+	}
+	
+	public this()
+	{
+		this.handle = QByteArrayMatcherPtr.New();
+	}
+	
+	public ~this()
+	{
+		this.handle.Dispose();
+	}
+	
+	public void OperatorAssign(IQByteArrayMatcher other)
+	{
+		this.handle.OperatorAssign(other);
+	}
+	
+	public void SetPattern(String pattern)
+	{
+		this.handle.SetPattern(pattern);
+	}
+	
+	public int32 IndexIn(char8* str, int32 lenVal)
+	{
+		return this.handle.IndexIn(str, lenVal);
+	}
+	
+	public int32 IndexInWithData(char8* data)
+	{
+		return this.handle.IndexInWithData(data);
+	}
+	
+	public libqt_string Pattern()
+	{
+		return this.handle.Pattern();
+	}
+	
+	public int32 IndexIn3(char8* str, int32 lenVal, int32 from)
+	{
+		return this.handle.IndexIn3(str, lenVal, from);
+	}
+	
+	public int32 IndexIn2(char8* data, int32 from)
+	{
+		return this.handle.IndexIn2(data, from);
 	}
 	
 }
@@ -93,14 +153,33 @@ public interface IQStaticByteArrayMatcherBase
 {
 	void* NativePtr { get; }
 }
-public class QStaticByteArrayMatcherBase : IQStaticByteArrayMatcherBase
+public struct QStaticByteArrayMatcherBasePtr : IQStaticByteArrayMatcherBase
 {
 	protected void* nativePtr;
 	public void* NativePtr => nativePtr;
 	
+	public this(void* ptr)
+	{
+		this.nativePtr = ptr;
+	}
+	
+	public static Self New(IQStaticByteArrayMatcherBase other)
+	{
+		return .(CQt.QStaticByteArrayMatcherBase_new((other == default || other.NativePtr == default) ? default : other.NativePtr));
+	}
+}
+public class QStaticByteArrayMatcherBase
+{
+	public QStaticByteArrayMatcherBasePtr handle;
+	
+	public static implicit operator QStaticByteArrayMatcherBasePtr(Self self)
+	{
+		return self.handle;
+	}
+	
 	public this(IQStaticByteArrayMatcherBase other)
 	{
-		this.nativePtr = CQt.QStaticByteArrayMatcherBase_new((other == default) ? default : (void*)other.NativePtr);
+		this.handle = QStaticByteArrayMatcherBasePtr.New(other);
 	}
 }
 extension CQt
